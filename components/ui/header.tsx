@@ -4,16 +4,24 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ChevronDown, 
-  ArrowRight, 
-  Sparkles, 
-  Camera, 
-  MessageCircle, 
-  Code, 
-  Globe, 
-  Lock, 
-  Zap, 
+import {
+  ChevronDown,
+  ArrowRight,
+  Sparkles,
+  Camera,
+  MessageCircle,
+  Code,
+  Globe,
+  Lock,
+  Network,
+  Terminal,
+  Users,
+  Github,
+  CheckCircle,
+  Brain,
+  Mail,
+  Puzzle,
+  Zap,
   Chrome,
   Bot,
   BookOpen,
@@ -123,112 +131,124 @@ export default function Header() {
                               Features
                             </h3>
                             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+
                               <DropdownLink
-                                href="/features/ai-help-center"
-                                iconColor="text-sky-500"
-                                bgColor="bg-sky-50"
-                                icon={Sparkles}
-                                title="Help Center"
-                                description="Self-updating knowledge base"
+                                href="/features/ai-workforce"
+                                iconColor="text-purple-500"
+                                bgColor="bg-purple-50"
+                                icon={Users} // Add Users icon from lucide-react
+                                title="AI Workforce"
+                                description="Multiple AI employees working together"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/ai-documentation-agent"
-                                iconColor="text-amber-500"
-                                bgColor="bg-amber-50"
-                                icon={Bot}
-                                title="AI agent"
-                                description="AI that writes your docs"
+                                href="/features/github-integration"
+                                iconColor="text-slate-700"
+                                bgColor="bg-slate-50"
+                                icon={Github} // Add Github icon from lucide-react
+                                title="GitHub Integration"
+                                description="Autonomous commits, PRs, and code reviews"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/automated-screenshots-for-docs"
-                                iconColor="text-red-500"
-                                bgColor="bg-red-50"
-                                icon={Camera}
-                                title="Automated screenshots"
-                                description="Screenshots that stay current"
+                                href="/features/task-execution"
+                                iconColor="text-emerald-500"
+                                bgColor="bg-emerald-50"
+                                icon={CheckCircle} // Add CheckCircle icon
+                                title="Task Execution"
+                                description="End-to-end task completion, not just answers"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/self-service-help-widget"
-                                iconColor="text-rose-500"
-                                bgColor="bg-rose-50"
-                                icon={MessageCircle}
-                                title="Self-service widget"
-                                description="Embed help in your product"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-                              <DropdownLink
-                                href="/create-a-blog-notion"
-                                iconColor="text-blue-500"
-                                bgColor="bg-blue-50"
-                                icon={BookOpen}
-                                title="Blog"
-                                description="Beautiful automated blog"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-                              <DropdownLink
-                                href="/create-a-changelog-notion"
+                                href="/features/persistent-memory"
                                 iconColor="text-indigo-500"
                                 bgColor="bg-indigo-50"
-                                icon={ScrollText}
-                                title="Changelog"
-                                description="Automated product updates"
+                                icon={Brain} // Add Brain icon
+                                title="Persistent Memory"
+                                description="Remembers context across all tasks"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/code-to-docs"
+                                href="/features/browser-control"
+                                iconColor="text-blue-500"
+                                bgColor="bg-blue-50"
+                                icon={Globe}
+                                title="Browser Control"
+                                description="Navigate web, fill forms, extract data"
+                                onClick={() => setDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/features/system-access"
+                                iconColor="text-orange-500"
+                                bgColor="bg-orange-50"
+                                icon={Terminal} // Add Terminal icon
+                                title="Full System Access"
+                                description="Execute scripts, manage files, run commands"
+                                onClick={() => setDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/features/email-automation"
+                                iconColor="text-red-500"
+                                bgColor="bg-red-50"
+                                icon={Mail} // Add Mail icon
+                                title="Email & Communication"
+                                description="Gmail, Slack, Discord integration"
+                                onClick={() => setDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/features/skills-plugins"
                                 iconColor="text-violet-500"
                                 bgColor="bg-violet-50"
-                                icon={Code}
-                                title="Code to help docs"
-                                description="Sync docs with your code"
+                                icon={Puzzle} // Add Puzzle icon
+                                title="Skills & Plugins"
+                                description="Extend with community or custom skills"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/multilingual-knowledge-base"
-                                iconColor="text-teal-500"
-                                bgColor="bg-teal-50"
-                                icon={Globe}
-                                title="Multilingual"
-                                description="Translate your help center"
+                                href="/features/multi-agent-collaboration"
+                                iconColor="text-cyan-500"
+                                bgColor="bg-cyan-50"
+                                icon={Network} // Add Network icon
+                                title="Multi-Agent Teams"
+                                description="AI employees collaborate on complex tasks"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/internal-knowledge-base"
-                                iconColor="text-stone-500"
-                                bgColor="bg-stone-50"
-                                icon={Lock}
-                                title="Internal knowledge base"
-                                description="Private docs with login required"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-                              <DropdownLink
-                                href="/features/generative-ai-customer-service"
-                                iconColor="text-lime-600"
-                                bgColor="bg-lime-50"
+                                href="/features/openclaw-powered"
+                                iconColor="text-pink-500"
+                                bgColor="bg-pink-50"
                                 icon={Sparkles}
-                                title="AI answers"
-                                description="Help desk chatbot for support"
+                                title="OpenClaw Runtime"
+                                description="Built on proven OpenClaw framework"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
                                 href="/integration"
                                 iconColor="text-blue-500"
                                 bgColor="bg-blue-50"
                                 icon={Zap}
                                 title="Integrations"
-                                description="Connect your favorite tools"
+                                description="GitHub, Gmail, Notion, APIs & more"
                                 onClick={() => setDropdownOpen(false)}
                               />
+
                               <DropdownLink
-                                href="/features/chrome-extension-for-documentation"
-                                iconColor="text-amber-700"
-                                bgColor="bg-amber-50/50"
-                                icon={Chrome}
-                                title="Chrome extension"
-                                description="Update docs from any tab"
+                                href="/features/chat-interfaces"
+                                iconColor="text-green-500"
+                                bgColor="bg-green-50"
+                                icon={MessageCircle}
+                                title="Chat Anywhere"
+                                description="WhatsApp, Telegram, Discord, Slack, Signal"
                                 onClick={() => setDropdownOpen(false)}
                               />
                             </div>

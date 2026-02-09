@@ -7,21 +7,21 @@ import {
   Twitter,
   Linkedin,
   Youtube,
-  Sparkles,
-  Bot,
-  Image as ImageIcon,
-  MessageCircle,
-  Code,
+  Github,
+  Users,
+  CheckCircle,
+  Brain,
   Globe,
-  Lock,
-  MessageSquare,
-  Plug,
-  Chrome,
+  Terminal,
+  Mail,
+  Puzzle,
+  Network,
+  Sparkles,
+  MessageCircle,
+  Zap,
   BookOpen,
   Pen,
-  Users,
   Bell,
-  Heart,
 } from 'lucide-react'
 
 export default function Footer() {
@@ -40,7 +40,7 @@ export default function Footer() {
               />
             </div>
             <p className="mt-2 text-xs sm:text-sm text-neutral-500 leading-relaxed">
-            The AI agent that keeps your help center, blog, changelog, and documentation up to date.
+              AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks autonomously across GitHub, email, browsers, and your entire tech stack.
             </p>
             <p className="text-sm text-slate-600 mb-4">
               Lead by <a className="text-red-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
@@ -92,73 +92,82 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/ai-workforce"
                     >
-                      <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-sky-500 flex-shrink-0" />
-                      <span className="break-words">Notion Integration</span>
+                      <Users className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
+                      <span className="break-words">AI Workforce</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/github-integration"
                     >
-                      <Bot className="h-3 w-3 sm:h-4 sm:w-4 text-amber-500 flex-shrink-0" />
-                      <span className="break-words">AI-Agents</span>
+                      <Github className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
+                      <span className="break-words">GitHub Integration</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/task-execution"
                     >
-                      <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
-                      <span className="break-words">Custom Themes</span>
+                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
+                      <span className="break-words">Task Execution</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/persistent-memory"
                     >
-                      <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 text-rose-500 flex-shrink-0" />
-                      <span className="break-words">Forms & Widgets</span>
+                      <Brain className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
+                      <span className="break-words">Persistent Memory</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/browser-control"
                     >
-                      <Code className="h-3 w-3 sm:h-4 sm:w-4 text-violet-500 flex-shrink-0" />
-                      <span className="break-words">Custom Code</span>
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
+                      <span className="break-words">Browser Control</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/system-access"
                     >
-                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-teal-500 flex-shrink-0" />
-                      <span className="break-words">Custom Domains</span>
+                      <Terminal className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-500 flex-shrink-0" />
+                      <span className="break-words">System Access</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/email-automation"
                     >
-                      <Lock className="h-3 w-3 sm:h-4 sm:w-4 text-stone-500 flex-shrink-0" />
-                      <span className="break-words">SEO Ready</span>
+                      <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-violet-500 flex-shrink-0" />
+                      <span className="break-words">Email & Communication</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="/features/skills-plugins"
                     >
-                      <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 text-lime-600 flex-shrink-0" />
-                      <span className="break-words">Analytics</span>
+                      <Puzzle className="h-3 w-3 sm:h-4 sm:w-4 text-pink-500 flex-shrink-0" />
+                      <span className="break-words">Skills & Plugins</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      href="/features/multi-agent-collaboration"
+                    >
+                      <Network className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-500 flex-shrink-0" />
+                      <span className="break-words">Multi-Agent Teams</span>
                     </Link>
                   </li>
                   <li>
@@ -166,17 +175,8 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="/integration"
                     >
-                      <Plug className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
+                      <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 flex-shrink-0" />
                       <span className="break-words">Integrations</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/create-a-chrome-extension"
-                    >
-                      <Chrome className="h-3 w-3 sm:h-4 sm:w-4 text-amber-800/30 flex-shrink-0" />
-                      <span className="break-words">Chrome Extension</span>
                     </Link>
                   </li>
                 </ul>
@@ -273,10 +273,11 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="#"
+                      href="https://docs.openclaw.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-sky-500 flex-shrink-0" />
-                      <span className="break-words">Help Center</span>
+                      <span className="break-words">Documentation</span>
                     </Link>
                   </li>
                   <li>
@@ -284,7 +285,6 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="#"
                     >
-                      <Pen className="h-3 w-3 sm:h-4 sm:w-4 text-amber-500 flex-shrink-0" />
                       <span className="break-words">Blog</span>
                     </Link>
                   </li>
@@ -293,7 +293,6 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="/showcase"
                     >
-                      <Users className="h-3 w-3 sm:h-4 sm:w-4 text-violet-500 flex-shrink-0" />
                       <span className="break-words">Case studies</span>
                     </Link>
                   </li>
@@ -302,131 +301,67 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="#"
                     >
-                      <Bell className="h-3 w-3 sm:h-4 sm:w-4 text-lime-500 flex-shrink-0" />
                       <span className="break-words">Changelog</span>
                     </Link>
                   </li>
-
                 </ul>
               </div>
             </div>
 
-            {/* Alternatives Column */}
+            {/* OpenClaw & Community Column */}
             <div className="space-y-6 sm:space-y-8">
               <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">Alternatives</span>
+                <span className="text-xs sm:text-sm font-semibold text-neutral-800">OpenClaw Ecosystem</span>
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
-                    <Link
+                    <a
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/helpdocs-io"
+                      href="https://openclaw.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <span className="break-words">Helpdocs.io alternative</span>
-                    </Link>
+                      <span className="break-words">OpenClaw AI</span>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/mintlify"
+                      href="https://github.com/openclaw/openclaw"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <span className="break-words">Mintlify alternative</span>
-                    </Link>
+                      <span className="break-words">GitHub OpenClaw</span>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/zendesk-help-center"
+                      href="https://clawhub.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <span className="break-words">Zendesk Help Center alternative</span>
-                    </Link>
+                      <span className="break-words">ClawHub Skills</span>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/intercom-help-center"
+                      href="https://discord.com/invite/clawd"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <span className="break-words">Intercom Help Center alternative</span>
-                    </Link>
+                      <span className="break-words">Discord Community</span>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/docusaurus"
+                      href="https://docs.openclaw.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <span className="break-words">Docusaurus alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/gitbook"
-                    >
-                      <span className="break-words">GitBook alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/document360"
-                    >
-                      <span className="break-words">Document360 alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/proprofs-kb"
-                    >
-                      <span className="break-words">ProProfs KB alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/zoho-desk"
-                    >
-                      <span className="break-words">Zoho Desk alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/help-scout"
-                    >
-                      <span className="break-words">Help Scout alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/helpjuice"
-                    >
-                      <span className="break-words">Helpjuice alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/knowledgeowl"
-                    >
-                      <span className="break-words">KnowledgeOwl alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/archbee"
-                    >
-                      <span className="break-words">Archbee alternative</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/compare-against/stonly"
-                    >
-                      <span className="break-words">Stonly alternative</span>
-                    </Link>
+                      <span className="break-words">OpenClaw Docs</span>
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -469,14 +404,13 @@ export default function Footer() {
           </li>
           <li>
             <a
-              href="https://www.notion.com/integrations/wonder-sites"
+              href="https://openclaw.ai"
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center items-center text-slate-600 hover:text-slate-900 bg-white hover:bg-white-100 rounded-md shadow transition duration-150 ease-in-out border px-3 py-1 md:px-4 md:py-1 text-sm"
             >
-              
               <span className="hidden md:inline">Powered by <b className="px-2">🦞 OpenClaw</b></span>
-              <span className="md:hidden">Notion Partner</span>
+              <span className="md:hidden">🦞 OpenClaw</span>
             </a>
           </li>
         </ul>
