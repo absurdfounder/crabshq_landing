@@ -157,7 +157,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                     <span className="reveal reveal__hello-3">Crabs.</span>
                   </div>
                   <span className="block reveal reveal__usp mt-1 sm:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-                    AI workforce set on a mission, powered by <span style={{ color: '#bc0010' }}>OpenClaw</span>.
+                    AI workforce set on a mission, <span className='opacity-50'>powered by <span style={{ color: '#bc0010' }}>OpenClaw</span></span>.
                   </span>
                 </h1>
 
