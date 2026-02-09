@@ -239,15 +239,12 @@ export default function Header() {
                   </AnimatePresence>
                 </li>
 
-                <NavLink href="/showcase" text="Examples" />
                 <NavLink href="/pricing" text="Pricing" />
-                <NavLink href="https://app.crabshq.com" text="Login" />
 
                 <li>
-                  <button
-                    data-cal-namespace="setup-call"
-                    data-cal-link="set-meeting/setup-call"
-                    data-cal-config='{"layout":"month_view"}'
+                  <Link
+                    href="https://app.crabshq.com"
+                    target='_blank'
                     className="btn-sm text-black border border-gray-200 bg-white hover:bg-slate-800 hover:text-white ml-2 flex items-center justify-between px-3 py-1.5 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base"
                     onMouseEnter={() => setIsBookHovered(true)}
                     onMouseLeave={() => setIsBookHovered(false)}
@@ -257,7 +254,7 @@ export default function Header() {
                         <span className="truncate max-w-[120px]">Sign In</span>
                       </div>
                     </div>
-                  </button>
+                  </Link>
                 </li>
 
                 <li>

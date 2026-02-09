@@ -9,56 +9,63 @@ export default function OldWays() {
   const [cardTransforms, setCardTransforms] = useState<Array<{ scale: number; opacity: number; y: number }>>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const cards = [
-    {
-      tag: "No Hosting Hassles",
-      title: "Your content",
-      highlight: "lives inside Notion or Github",
-      description: "Your work stays in a place you control and love, while CrabsHQ handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
-      image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
-      alt: "Write on Notion"
-    },
-    {
-      tag: "Optimized for",
-      title: "Perfected for",
-      highlight: "SEO",
-      description: "All you have to do is to write good content that satisfies the needs of your readers. We take care of the rest. Set all the proper meta tags and canonical links, Structured Schema markup for all your posts, Served from the edge to make the blog super fast, Easy controls to override the SEO settings.",
-      image: "https://dazzling-cat.netlify.app/performancewebsite.png",
-      alt: "Performance Website"
-    },
-    {
-      tag: "Paid Subscribers",
-      title: "Membership for",
-      highlight: "paid subscribers.",
-      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside CrabsHQ without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
-      image: "https://dazzling-cat.netlify.app/notion%20to%20website.png",
-      alt: "Notion to Website"
-    },
-    {
-      tag: "In-built",
-      title: "In-built",
-      highlight: "analytics",
-      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. CrabsHQ provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
-      image: "https://dazzling-cat.netlify.app/analyticsseo.png",
-      alt: "Analytics SEO"
-    },
-    {
-      tag: "AI SUPPORT & SUGGESTIONS",
-      title: "Intelligent assistance",
-      highlight: "for your users.",
-      description: "Create AI Agents for support, suggestions, sales, therapy or any other purposes you have in mind. Because it's 2025 and AI is cheap. Make AI do most of work so that you can focus on whats important.",
-      image: "https://dazzling-cat.netlify.app/aisupportreco.png",
-      alt: "AI Support"
-    },
-    {
-      tag: "Integrates with",
-      title: "Integrates with",
-      highlight: "your existing apps",
-      description: "CrabsHQ integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Crabs HQ? We got you covered.",
-      image: "https://dazzling-cat.netlify.app/integrationsdb.png",
-      alt: "Integrations DB"
-    }
-  ];
+const cards = [
+  {
+    tag: "AI ORGANIZATIONS",
+    title: "AI organizations, not",
+    highlight: "single-purpose agents.",
+    description:
+      "Crabs HQ lets you create AI organizations made up of multiple AI employees. Each organization works together on tasks, shares context, and coordinates execution — similar to how real teams operate.",
+    image: "https://dazzling-cat.netlify.app/notion%20to%20website.png",
+    alt: "AI organizations"
+  },
+  {
+    tag: "SKILLS & INTEGRATIONS",
+    title: "AI employees with real",
+    highlight: "skills and system access.",
+    description:
+      "AI employees can be connected to skills like GitHub, Gmail, Apple Notes, databases, APIs, and internal tools through OpenClaw. They don’t just think — they operate inside your actual systems.",
+    image: "https://dazzling-cat.netlify.app/integrationsdb.png",
+    alt: "Skills and integrations"
+  },
+  {
+    tag: "ACTION, NOT ANSWERS",
+    title: "AI that takes",
+    highlight: "action — not just questions.",
+    description:
+      "Instead of replying with suggestions, AI employees create issues, update files, send emails, take screenshots, post updates, and complete real tasks from start to finish.",
+    image: "https://dazzling-cat.netlify.app/performancewebsite.png",
+    alt: "AI taking action"
+  },
+  {
+    tag: "INFINITE MEMORY",
+    title: "Persistent memory across",
+    highlight: "tasks, projects, and time.",
+    description:
+      "AI employees remember past work, decisions, preferences, and project context. Every task builds on previous knowledge, so work gets faster and more accurate over time.",
+    image: "https://dazzling-cat.netlify.app/analyticsseo.png",
+    alt: "Infinite memory"
+  },
+  {
+    tag: "COLLABORATION",
+    title: "Multiple AI employees",
+    highlight: "working together.",
+    description:
+      "Complex tasks are automatically split across AI employees. Research, execution, review, and follow-ups happen in parallel — with shared memory and coordinated progress.",
+    image: "https://dazzling-cat.netlify.app/aisupportreco.png",
+    alt: "AI collaboration"
+  },
+  {
+    tag: "OPENCLAW RUNTIME",
+    title: "Powered by OpenClaw for",
+    highlight: "high-agency execution.",
+    description:
+      "Crabs HQ is built on OpenClaw, enabling safe, observable, high-agency AI execution. Every action is logged, reviewable, and controllable from a single interface.",
+    image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
+    alt: "OpenClaw execution runtime"
+  }
+];
+
 
   useEffect(() => {
     const calculateTransforms = () => {
