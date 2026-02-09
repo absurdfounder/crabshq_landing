@@ -27,7 +27,7 @@ export default function TellaVideoButton() {
         <div 
           className="relative w-full max-w-6xl mx-auto rounded-xl overflow-hidden p-6 md:p-8 lg:p-12 flex items-center justify-center"
           style={{
-            backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
+            backgroundImage: "linear-gradient(rgb(255 255 255), rgb(255 255 255 / 70%), rgb(255 255 255 / 48%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed"

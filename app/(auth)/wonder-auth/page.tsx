@@ -185,7 +185,7 @@ export default function AuthLanding() {
             <div
                 className="min-h-screen flex flex-col pb-12"
                 style={{
-                    backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
+                    backgroundImage: "linear-gradient(rgb(255 255 255), rgb(255 255 255 / 70%), rgb(255 255 255 / 48%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
