@@ -69,8 +69,19 @@ const CHAT_SCRIPT = [
   { type: "reaction", emoji: "👍", count: 3, delay: 800 },
 ];
 
+/* ─── Types ─── */
+type Task = typeof PHASE1_TASKS[number];
+interface Message {
+  sender: string;
+  role: string;
+  text: string;
+  isHuman: boolean;
+  time: string;
+  reaction?: { emoji: string; count: number };
+}
+
 /* ─── Helpers ─── */
-function Av({ name, size = 28, border = true }) {
+function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const p = ALL_PEOPLE[name];
   const src = p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
   return (
@@ -83,7 +94,7 @@ function Av({ name, size = 28, border = true }) {
   );
 }
 
-function AvatarStack({ names, size = 22, max = 2 }) {
+function AvatarStack({ names, size = 22, max = 2 }: { names: string[]; size?: number; max?: number }) {
   const shown = names.slice(0, max);
   const extra = names.length - max;
   return (
@@ -105,7 +116,7 @@ function AvatarStack({ names, size = 22, max = 2 }) {
   );
 }
 
-function TaskTag({ text }) {
+function TaskTag({ text }: { text: string }) {
   return (
     <span style={{
       fontSize: 11, fontWeight: 500, color: "#525252",
@@ -115,7 +126,7 @@ function TaskTag({ text }) {
   );
 }
 
-function TaskCard({ task, index }) {
+function TaskCard({ task, index }: { task: Task; index: number }) {
   return (
     <div style={{
       background: "white", borderRadius: 12, border: "1.5px dashed #d4d4d4",
@@ -154,7 +165,7 @@ const COL_META = {
   review: { label: "Review", bg: "#f3e8ff", accent: "#9333ea" },
 };
 
-function KanbanColumn({ colKey, tasks }) {
+function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks: Task[] }) {
   const m = COL_META[colKey];
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
@@ -177,7 +188,7 @@ function KanbanColumn({ colKey, tasks }) {
 }
 
 /* ─── Typing Indicator ─── */
-function TypingIndicator({ name }) {
+function TypingIndicator({ name }: { name: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", animation: "fadeIn 0.25s ease both" }}>
       <Av name={name} size={24} />
@@ -195,17 +206,17 @@ function TypingIndicator({ name }) {
 
 /* ─── Main ─── */
 export default function CrabsHQDemo() {
-  const [messages, setMessages] = useState([]);
-  const [tasks, setTasks] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [inputText, setInputText] = useState("");
-  const [activeAgents, setActiveAgents] = useState(new Set());
+  const [activeAgents, setActiveAgents] = useState<Set<string>>(new Set());
   const [mentionTab, setMentionTab] = useState("");
   const [nickTyping, setNickTyping] = useState(false);
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  const chatRef = useRef(null);
-  const timerRef = useRef(null);
-  const typeRef = useRef(null);
+  const chatRef = useRef<HTMLDivElement | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const typeRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -216,7 +227,7 @@ export default function CrabsHQDemo() {
     if (typeRef.current) clearInterval(typeRef.current);
   }, []);
 
-  const processStep = useCallback((idx) => {
+  const processStep = useCallback((idx: number) => {
     if (idx >= CHAT_SCRIPT.length) {
       timerRef.current = setTimeout(() => {
         setMessages([]); setTasks([]); setInputText("");
@@ -297,7 +308,7 @@ export default function CrabsHQDemo() {
     setScriptIndex(0); setIsRunning(true);
   };
 
-  const cols = { inbox: [], assigned: [], progress: [], review: [] };
+  const cols: Record<string, Task[]> = { inbox: [], assigned: [], progress: [], review: [] };
   tasks.forEach(t => { if (cols[t.col]) cols[t.col].push(t); });
 
   return (
@@ -446,7 +457,7 @@ export default function CrabsHQDemo() {
           {/* ═══ CENTER KANBAN ═══ */}
           <div style={{ flex: 1, overflow: "hidden", padding: "14px 16px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", gap: 12, flex: 1, overflow: "hidden" }}>
-              {["inbox", "assigned", "progress", "review"].map(k => (
+              {(["inbox", "assigned", "progress", "review"] as const).map(k => (
                 <KanbanColumn key={k} colKey={k} tasks={cols[k]} />
               ))}
             </div>
