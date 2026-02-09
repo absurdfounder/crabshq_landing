@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
 export default function OldWays() {
-  const [cardTransforms, setCardTransforms] = useState([]);
-  const cardRefs = useRef([]);
+  const [cardTransforms, setCardTransforms] = useState<Array<{ scale: number; opacity: number; y: number }>>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const cards = [
     {
@@ -152,7 +152,7 @@ export default function OldWays() {
             return (
               <div
                 key={index}
-                ref={(el) => (cardRefs.current[index] = el)}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 className="xl:sticky mb-6 lg:mb-8"
                 style={{
                   top: 'calc(15vh)', // Sticky at 15% from viewport top
