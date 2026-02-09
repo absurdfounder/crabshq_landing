@@ -123,7 +123,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute left-0 top-full mt-2 z-50"
+                        className="absolute right-0 top-full mt-2 z-50"
                       >
                         <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black/5 bg-white">
                           <div className="p-6 w-[640px]">
@@ -259,7 +259,6 @@ export default function Header() {
                   </AnimatePresence>
                 </li>
 
-                <NavLink href="/pricing" text="Pricing" />
 
                 <li>
                   <Link

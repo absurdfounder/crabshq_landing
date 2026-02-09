@@ -699,7 +699,7 @@ const Pricing: React.FC = () => {
                     <div className="text-start mb-16">
                         <h1 className="font-funneldisplay text-4xl md:text-5xl tracking-tight mb-6">
                             <span className="text-slate-800 block mb-2">
-                                Setup <img src="favicon.ico" className="inline-block w-12 h-12 rounded-md align-middle mx-1" /> CrabsHQ at your company
+                                Deploy <img src="favicon.ico" className="inline-block w-16 h-16 rounded-md align-middle mx-1" /> Crabs at your company
                             </span>
                         </h1>
                         <p className="body-text max-w-2xl">

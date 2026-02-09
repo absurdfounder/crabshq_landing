@@ -66,6 +66,7 @@ import NotionToWebsite from '@/components/NotionToWebsite'
 import SimpleAnalyticsDashboard from '@/components/DashboardComponent'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import WonderComparison from '@/components/comparison'
+import SimplePricing from '@/components/SimplePricing'
 
 export default function Home() {
   return (
@@ -162,7 +163,7 @@ export default function Home() {
 
       <OldWays />
 
-
+      <SimplePricing />
 
     </>
   )
