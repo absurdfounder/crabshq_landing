@@ -232,6 +232,25 @@ export default function CrabsHQDemo() {
         .crabs-scrollbar::-webkit-scrollbar-track{background:transparent}
         .crabs-scrollbar::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
         *{box-sizing:border-box}
+        
+        /* Responsive Layout */
+        @media (max-width: 1024px) {
+          .crabs-sidebar { width: 120px !important; min-width: 120px !important; padding: 8px 0 !important; }
+          .crabs-sidebar span { font-size: 8px !important; }
+          .crabs-chat { width: 250px !important; min-width: 250px !important; }
+        }
+        
+        @media (max-width: 768px) {
+          .crabs-sidebar { display: none !important; }
+          .crabs-chat { display: none !important; }
+          .crabs-container { height: 280px !important; }
+          .crabs-kanban { padding: 8px !important; }
+        }
+        
+        @media (max-width: 640px) {
+          .crabs-container { height: 240px !important; }
+          .crabs-kanban { padding: 6px !important; gap: 4px !important; }
+        }
       `}</style>
 
       <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid #d4d4d4", boxShadow: "0 25px 50px rgba(0,0,0,.1), 0 8px 20px rgba(0,0,0,.05)", background: "#fafaf9" }}>
@@ -285,10 +304,10 @@ export default function CrabsHQDemo() {
         </div>
 
         {/* ── 3-Panel ── */}
-        <div style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
+        <div className="crabs-container" style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
 
           {/* LEFT SIDEBAR */}
-          <div className="crabs-scrollbar" style={{ width: 185, minWidth: 185, borderRight: "1px solid #e5e7eb", background: "white", overflowY: "auto", padding: "10px 0" }}>
+          <div className="crabs-sidebar crabs-scrollbar" style={{ width: 185, minWidth: 185, borderRight: "1px solid #e5e7eb", background: "white", overflowY: "auto", padding: "10px 0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "0 12px", marginBottom: 8 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
               <span style={{ fontSize: 10, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Team</span>
@@ -348,7 +367,7 @@ export default function CrabsHQDemo() {
           </div>
 
           {/* CENTER KANBAN */}
-          <div style={{ flex: 1, overflow: "hidden", padding: "10px 12px", display: "flex", flexDirection: "column" }}>
+          <div className="crabs-kanban" style={{ flex: 1, overflow: "hidden", padding: "10px 12px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", gap: 8, flex: 1, overflow: "hidden" }}>
               {["inbox", "assigned", "progress", "review"].map(k => (
                 <KanbanColumn key={k} colKey={k as keyof typeof COL_META} tasks={cols[k as keyof typeof COL_META]} />
@@ -357,7 +376,7 @@ export default function CrabsHQDemo() {
           </div>
 
           {/* RIGHT CHAT */}
-          <div style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
+          <div className="crabs-chat" style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #e5e7eb", gap: 16 }}>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#ef4444", borderBottom: "2px solid #ef4444", paddingBottom: 3, display: "flex", alignItems: "center", gap: 4 }}>
                 <MessageCircle size={13} strokeWidth={2} /> Team Chat
