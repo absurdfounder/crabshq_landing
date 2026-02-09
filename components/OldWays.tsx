@@ -116,7 +116,7 @@ export default function OldWays() {
 
     calculateTransforms();
 
-    let rafId;
+    let rafId: number | undefined;
     const handleScroll = () => {
       if (rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(calculateTransforms);
