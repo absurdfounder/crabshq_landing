@@ -102,7 +102,7 @@ export default function Newsletter() {
                 width={600}
                 height={600}
                 className="block"
-                src="https://dazzling-cat.netlify.app/wonderdesktop.png" />
+                src="https://dazzling-cat.netlify.app/crabsperson.png" />
             </div>
 
             <div className="relative flex flex-col lg:flex-row justify-between items-center">
@@ -110,7 +110,7 @@ export default function Newsletter() {
               {/* CTA content */}
               <div className="text-center lg:text-left lg:max-w-xl">
                 <h3 className="h2 text-slate-800 my-2">
-                  Stop living at your desk all day <span style={{ color: '#009fbc' }}>automate it </span>.
+                  Stop living at your desk all day <span style={{ color: '#ff3d3d' }}>automate it </span>.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
                 {/* <h3 className="h2 text-slate-800 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}

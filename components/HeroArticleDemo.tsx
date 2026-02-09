@@ -8,7 +8,7 @@ import {
 /* ─── Data ─── */
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
-  { name: "Alex", role: "Product Manager", img: "https://i.pravatar.cc/150?u=human-alex" },
+  { name: "Ryan", role: "Product Manager", img: "https://i.pravatar.cc/150?u=human-timmy" },
 ];
 
 const AGENTS = [
