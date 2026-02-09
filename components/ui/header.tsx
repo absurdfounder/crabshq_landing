@@ -308,7 +308,7 @@ export default function Header() {
 
 interface DropdownLinkProps {
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: string | number }>;
   iconColor: string;
   bgColor: string;
   title: string;
