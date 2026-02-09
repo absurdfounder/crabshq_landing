@@ -64,7 +64,7 @@ export default function OldWays() {
     const calculateTransforms = () => {
       const viewportHeight = window.innerHeight;
       const stickyTop = viewportHeight * 0.15; // 15% from top - more centered
-      const transforms = [];
+      const transforms: { scale: number; opacity: number; y: number }[] = [];
 
       // Find which card is currently "active" (at sticky position)
       let activeCardIndex = 0;
