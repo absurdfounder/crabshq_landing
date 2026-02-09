@@ -17,7 +17,7 @@ const ProductHuntBadge = () => (
     <a href="https://www.producthunt.com/posts/wonder-1999?utm_source=badge-top-post-badge&amp;utm_medium=badge&amp;utm_souce=badge-wonder-2"
       target="_blank"
       className="group justify-center grid mb-4 sm:mb-6 md:mb-8 w-full"
-      title="View Wonder Sites on Product Hunt">
+      title="View Crabs HQ on Product Hunt">
       <Image
         src="https://dazzling-cat.netlify.app/producthunt.svg" // Using the provided URL
         width={192}
@@ -169,7 +169,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-start justify-start px-4 sm:px-0 lg:px-0">
                 <Link
-                  href="https://app.wonderdesk.ai?ref=herolanding"
+                  href="https://app.crabshq.com?ref=herolanding"
                   className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-orange-600 text-white rounded-md font-medium hover:bg-orange-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}

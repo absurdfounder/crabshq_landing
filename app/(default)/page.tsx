@@ -1,5 +1,5 @@
 export const metadata = {
-  metadataBase: new URL('https://wonderdesk.ai'),
+  metadataBase: new URL('https://crabshq.com'),
   title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
   description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
   openGraph: {

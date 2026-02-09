@@ -59,7 +59,7 @@ export async function generateMetadata(
       title: 'Integrate Integration with Wonder  Sites',
       description: 'Connect Wonder to an integration',
       alternates: {
-        canonical: `https://wonderdesk.ai/integration/${slug}`,
+        canonical: `https://crabshq.com/integration/${slug}`,
       },
     };
   }
@@ -71,7 +71,7 @@ export async function generateMetadata(
       images: [{ url: filteredContent.proof.screenshot }],
     },
     alternates: {
-      canonical: `https://wonderdesk.ai/integration/${slug}`,
+      canonical: `https://crabshq.com/integration/${slug}`,
     },
   };
 }

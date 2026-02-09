@@ -5,11 +5,11 @@ import { Metadata } from "next";
 import ShowcaseClient from "./ShowcaseClient";
 
 export const metadata: Metadata = {
-  title: "Websites built on Wonder Sites – Simple to Use - Transparent Pricing",
+  title: "Websites built on Crabs HQ – Simple to Use - Transparent Pricing",
   description:
-    "Explore the websites built on Wonder Sites. From personal projects to enterprise-scale solutions, unlock unlimited AI-powered websites, custom domains, analytics, SEO tools, and more — all built on Notion. Try free for 3 days!",
+    "Explore the websites built on Crabs HQ. From personal projects to enterprise-scale solutions, unlock unlimited AI-powered websites, custom domains, analytics, SEO tools, and more — all built on Notion. Try free for 3 days!",
     alternates: {
-      canonical: "https://wonderdesk.ai/showcase",
+      canonical: "https://crabshq.com/showcase",
     },
   openGraph: {
     images: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         url: "https://dazzling-cat.netlify.app/notiontohelpdesk_socialshare.png",
         width: 1200,
         height: 630,
-        alt: "Wonder Sites Showcase",
+        alt: "Crabs HQ Showcase",
       },
     ],
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://dazzling-cat.netlify.app/notiontohelpdesk_socialshare.png",
-        alt: "Wonder Sites Showcase",
+        alt: "Crabs HQ Showcase",
       },
     ],
   },

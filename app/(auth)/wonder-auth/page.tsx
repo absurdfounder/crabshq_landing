@@ -243,7 +243,7 @@ export default function AuthLanding() {
                 <div className="mx-auto w-full max-w-6xl px-1 sm:px-1 mt-12">
                     <div className="flex flex-col items-center text-center gap-6 pb-16">
                         <a
-                            href="https://wonderdesk.ai/quarterly"
+                            href="https://crabshq.com/quarterly"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-all shadow-sm"
@@ -303,7 +303,7 @@ export default function AuthLanding() {
                     {/* Product Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <a
-                            href="https://wonderdesk.ai/app"
+                            href="https://crabshq.com/app"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group block rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-all p-5 hover:shadow-md"
@@ -327,7 +327,7 @@ export default function AuthLanding() {
                         </a>
 
                         <a
-                            href="https://wonderdesk.ai/staking-as-a-service"
+                            href="https://crabshq.com/staking-as-a-service"
                             className="group block rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-all p-5 hover:shadow-md"
                         >
                             <div className="relative h-56 rounded-lg overflow-hidden border border-gray-200 mb-4">
@@ -352,7 +352,7 @@ export default function AuthLanding() {
                     {/* Gateway & Ironforge */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                         <a
-                            href="https://wonderdesk.ai/gateway"
+                            href="https://crabshq.com/gateway"
                             className="group block rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-all p-5 hover:shadow-md"
                         >
                             <div className="relative h-56 rounded-lg overflow-hidden border border-gray-200 mb-4">
@@ -372,7 +372,7 @@ export default function AuthLanding() {
                         </a>
 
                         <a
-                            href="https://wonderdesk.ai/ironforge"
+                            href="https://crabshq.com/ironforge"
                             className="group block rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-all p-5 hover:shadow-md"
                         >
                             <div className="relative h-56 rounded-lg overflow-hidden border border-gray-200 mb-4">

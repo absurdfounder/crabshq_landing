@@ -340,11 +340,11 @@ export default function MarketplaceType() {
       {/* Call to Action Section */}
       <div className="mt-8 sm:mt-12 text-center">
         <a
-          href="https://app.wonderdesk.ai"
+          href="https://app.crabshq.com"
           className="inline-flex items-center text-orange-500 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded text-sm sm:text-base font-medium"
-          aria-label="Learn more about building with Wonder Sites"
+          aria-label="Learn more about building with Crabs HQ"
         >
-          Build any kind of solution with Wonder Sites
+          Build any kind of solution with Crabs HQ
           <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
         </a>
       </div>

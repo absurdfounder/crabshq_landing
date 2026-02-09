@@ -5,7 +5,7 @@ const AggregateStats: React.FC = () => {
   const stats = [
     {
       percentage: "86%",
-      description: "of users save time with Wonder Sites",
+      description: "of users save time with Crabs HQ",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-orange-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -46,7 +46,7 @@ const AggregateStats: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            More gets done with Wonder Sites
+            More gets done with Crabs HQ
           </h2>
           <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
             Jumpstart your SaaS business with pre-built solutions from Wonder  and our community.
@@ -78,7 +78,7 @@ const AggregateStats: React.FC = () => {
               <span className="font-bold">Join 50+ teams</span> already using Wonder  to simplify their workflow
             </p>
             <a 
-              href="https://app.wonderdesk.ai" 
+              href="https://app.crabshq.com" 
               className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-medium rounded-md transition-colors hover:bg-slate-800"
             >
               Create a free account

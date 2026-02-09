@@ -26,7 +26,7 @@ export const metadata = {
     description:
         "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free Wonder  knowledge base website in a minute!",
     alternates: {
-        canonical: "https://wonderdesk.ai/create-a-knowledge-base-notion",
+        canonical: "https://crabshq.com/create-a-knowledge-base-notion",
     },
     openGraph: {
         images: [

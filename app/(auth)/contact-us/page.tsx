@@ -176,7 +176,7 @@ export default function ContactUs() {
           </div>
           <div className="text-center">
             <h3 className="text-xl font-semibold">VP of Success</h3>
-            <a href="mailto:success@wonderdesk.ai" className="text-orange-700 block">success@wonderdesk.ai</a>
+            <a href="mailto:success@crabshq.com" className="text-orange-700 block">success@crabshq.com</a>
           </div>
           <p className="text-center mt-4 mb-8">Please complete this form, and VP of Success will be in touch with you shortly.</p>
           <TrustedBy />

@@ -34,7 +34,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Image
                 src={Logo}
-                alt="Wonder Sites"
+                alt="Crabs HQ"
                 width={169}
                 className="rounded-lg w-32 sm:w-40 md:w-auto"
               />
@@ -260,7 +260,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="https://app.wonderdesk.ai"
+                      href="https://app.crabshq.com"
                     >
                       <span className="break-words">Dashboard</span>
                     </Link>

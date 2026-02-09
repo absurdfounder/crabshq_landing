@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /private
 Allow: /
 
-Sitemap: https://wonderdesk.ai/sitemap.xml
+Sitemap: https://crabshq.com/sitemap.xml

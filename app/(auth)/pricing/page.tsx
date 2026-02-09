@@ -5,11 +5,11 @@ import { Metadata } from "next";
 import PricingClient from "./PricingClient";
 
 export const metadata: Metadata = {
-  title: "Wonder Sites Pricing – Simple, Transparent, and Scalable Plans",
+  title: "Crabs HQ Pricing – Simple, Transparent, and Scalable Plans",
   description:
-    "Explore Wonder Sites’ flexible pricing plans. From personal projects to enterprise-scale solutions, unlock unlimited AI-powered websites, custom domains, analytics, SEO tools, and more — all built on Notion. Try free for 3 days!",
+    "Explore Crabs HQ’ flexible pricing plans. From personal projects to enterprise-scale solutions, unlock unlimited AI-powered websites, custom domains, analytics, SEO tools, and more — all built on Notion. Try free for 3 days!",
   alternates: {
-    canonical: "https://wonderdesk.ai/pricing",
+    canonical: "https://crabshq.com/pricing",
   },
   openGraph: {
     images: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         url: "https://dazzling-cat.netlify.app/notiontohelpdesk_socialshare.png",
         width: 1200,
         height: 630,
-        alt: "Wonder Sites Pricing Overview",
+        alt: "Crabs HQ Pricing Overview",
       },
     ],
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://dazzling-cat.netlify.app/notiontohelpdesk_socialshare.png",
-        alt: "Wonder Sites Pricing Overview",
+        alt: "Crabs HQ Pricing Overview",
       },
     ],
   },

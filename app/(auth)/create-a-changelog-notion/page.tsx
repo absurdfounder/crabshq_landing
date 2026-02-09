@@ -26,7 +26,7 @@ export const metadata = {
     description:
         "Build a directory in Notion, with our Notion directory maker. Go live in under a minute.  Build your free Wonder  directory website in a minute!",
     alternates: {
-        canonical: "https://wonderdesk.ai/create-a-directory-notion",
+        canonical: "https://crabshq.com/create-a-directory-notion",
     },
     openGraph: {
         images: [

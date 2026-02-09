@@ -69,7 +69,7 @@ export async function generateMetadata(
         title: 'Wonder- Error Loading Content',
         description: 'Unable to load template content',
         alternates: {
-          canonical: `https://wonderdesk.ai/showcase/${slug}`,
+          canonical: `https://crabshq.com/showcase/${slug}`,
         },
       };
     }
@@ -81,7 +81,7 @@ export async function generateMetadata(
         title: 'Wonder vs Unknown Template',
         description: 'Compare Wonder  to an unknown template',
         alternates: {
-          canonical: `https://wonderdesk.ai/showcase/${slug}`,
+          canonical: `https://crabshq.com/showcase/${slug}`,
         },
       };
     }
@@ -93,7 +93,7 @@ export async function generateMetadata(
         images: [{ url: filteredContent.proof.screenshot }],
       },
       alternates: {
-        canonical: `https://wonderdesk.ai/showcase/${slug}`,
+        canonical: `https://crabshq.com/showcase/${slug}`,
       },
     };
   } catch (error) {
@@ -102,7 +102,7 @@ export async function generateMetadata(
       title: 'Wonder- Error',
       description: 'An error occurred while loading the content',
       alternates: {
-        canonical: `https://wonderdesk.ai/showcase/${params.slug}`,
+        canonical: `https://crabshq.com/showcase/${params.slug}`,
       },
     };
   }

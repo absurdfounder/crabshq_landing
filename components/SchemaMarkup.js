@@ -5,11 +5,11 @@ const SchemaMarkup = () => {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Wonder Sites",
-    "url": "https://wonderdesk.ai/",
+    "name": "Crabs HQ",
+    "url": "https://crabshq.com/",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://wonderdesk.ai/search?q={search_term_string}",
+      "target": "https://crabshq.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -17,8 +17,8 @@ const SchemaMarkup = () => {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Wonder Sites",
-    "url": "https://wonderdesk.ai",
+    "name": "Crabs HQ",
+    "url": "https://crabshq.com",
     "logo": "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
     "sameAs": [
       "https://twitter.com/WonderSites",
@@ -30,7 +30,7 @@ const SchemaMarkup = () => {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Wonder Sites",
+    "name": "Crabs HQ",
     "applicationCategory": "WebApplication",
     "operatingSystem": "All",
     "description": "Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!",
@@ -44,7 +44,7 @@ const SchemaMarkup = () => {
       "price": "7.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "url": "https://wonderdesk.ai/pricing",
+      "url": "https://crabshq.com/pricing",
       "priceValidUntil": "2025-12-31",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -94,7 +94,7 @@ const SchemaMarkup = () => {
         "name": "How fast are websites created with Wonder  Sites?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Wonder Sites using Amazon AWS the websites are superfast and optimized for excellent SEO. You can go from Notion to a live website in minutes using our AI Agents."
+          "text": "Crabs HQ using Amazon AWS the websites are superfast and optimized for excellent SEO. You can go from Notion to a live website in minutes using our AI Agents."
         }
       }
     ]
@@ -108,25 +108,25 @@ const SchemaMarkup = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Websites Built on Wonder ",
-        "item": "https://wonderdesk.ai/showcase"
+        "item": "https://crabshq.com/showcase"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Pricing",
-        "item": "https://wonderdesk.ai/pricing"
+        "item": "https://crabshq.com/pricing"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Integrations",
-        "item": "https://wonderdesk.ai/integrations"
+        "item": "https://crabshq.com/integrations"
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": "Wonder App",
-        "item": "https://app.wonderdesk.ai"
+        "item": "https://app.crabshq.com"
       }
     ]
   };

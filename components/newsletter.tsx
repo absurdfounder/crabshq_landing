@@ -123,7 +123,7 @@ export default function Newsletter() {
                   <div className="flex flex-col sm:flex-row max-w-xs mx-auto sm:max-w-md lg:mx-0">
                     {/* --- UPDATED CTA Button --- */}
                     <FlippingButtonLink
-                      href="https://app.wonderdesk.ai"
+                      href="https://app.crabshq.com"
                       initialText="Get started - free"
                       hoverText="in just 15 mins" // Customize hover text if needed
                       // Removed flex items-center justify-center as base class handles it
@@ -132,7 +132,7 @@ export default function Newsletter() {
                     {/* --- END OF UPDATE --- */}
 
                     {/* Original button commented out for reference */}
-                    {/* <Link href="https://app.wonderdesk.ai" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
+                    {/* <Link href="https://app.crabshq.com" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
 
                     {/* Original Subscribe button (commented out in user code) */}
                     {/* <button type="submit" className="btn text-white bg-blue-600 hover:bg-blue-700 shadow" href="#0">Subscribe</button> */}

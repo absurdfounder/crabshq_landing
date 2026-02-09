@@ -10,7 +10,7 @@ export const metadata = {
     description:
         "Sync your documentation with your codebase automatically. Wonder generates docs from your code and keeps them in sync.",
     alternates: {
-        canonical: "https://wonderdesk.ai/features/code-to-docs",
+        canonical: "https://crabshq.com/features/code-to-docs",
     },
     openGraph: {
         images: [
@@ -69,7 +69,7 @@ export default function CodeToDocsPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.wonderdesk.ai" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-orange-700 sm:w-auto">
+                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-orange-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>

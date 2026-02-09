@@ -35,16 +35,16 @@ export const viewport = {
 }
 
 export const metadata = {
-  metadataBase: new URL('https://wonderdesk.ai'),
+  metadataBase: new URL('https://crabshq.com'),
   title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
   description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
   alternates: {
-    canonical: 'https://wonderdesk.ai',
+    canonical: 'https://crabshq.com',
   },
   openGraph: {
     title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
     description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
-    url: 'https://wonderdesk.ai',
+    url: 'https://crabshq.com',
     siteName: 'Wonder',
     images: [
       {
@@ -67,7 +67,7 @@ export const metadata = {
         alt: 'Get a Marketplace with Notion',
       },
     ],
-    site: '@WonderSitesCo',
+    site: '@Crabs_HQ',
   },
   icons: {
     icon: '/favicon.ico',
@@ -82,7 +82,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const canonicalUrl = 'https://wonderdesk.ai'
+  const canonicalUrl = 'https://crabshq.com'
   return (
     <html lang="en">
       <head>

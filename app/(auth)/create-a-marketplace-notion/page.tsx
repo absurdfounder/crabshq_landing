@@ -25,7 +25,7 @@ export const metadata = {
     description:
         "Build a marketplace in Notion, with our Notion marketplace maker. Go live in under a minute.  Build your free Wonder  marketplace website in a minute!",
     alternates: {
-        canonical: "https://wonderdesk.ai/create-a-company-wiki-notion",
+        canonical: "https://crabshq.com/create-a-company-wiki-notion",
     },
     openGraph: {
         images: [

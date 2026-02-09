@@ -96,7 +96,7 @@ const TemplateDesign = () => {
                   </p>
                   
                   <Link 
-                    href="https://app.wonderdesk.ai" 
+                    href="https://app.crabshq.com" 
                     className="inline-flex items-center px-6 py-3 bg-slate-900 text-white font-medium rounded-md hover:bg-slate-800 transition-colors duration-200 shadow-sm hover:shadow-md"
                     rel="noopener" 
                     target="_blank" 
@@ -122,7 +122,7 @@ const TemplateDesign = () => {
               Start creating beautiful, high-performance websites with Wonder  today.
             </p>
             <Link 
-              href="https://app.wonderdesk.ai" 
+              href="https://app.crabshq.com" 
               className="inline-flex items-center px-8 py-4 bg-orange-700 text-white font-medium rounded-md hover:bg-orange-500 transition-colors duration-200 shadow-lg text-lg"
               rel="noopener" 
               target="_blank" 

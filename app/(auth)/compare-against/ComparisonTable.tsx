@@ -21,7 +21,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
   return (
     <div className="max-w-4xl mx-auto py-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Get so much more with Wonder Sites</h2>
+        <h2 className="text-3xl font-bold mb-4">Get so much more with Crabs HQ</h2>
         <p className="text-lg text-slate-600 max-w-2xl">
           Wonder  has everything you need, from task tracking to templates to documentation.
           Get comfortable — you won't be leaving all that often.
@@ -37,7 +37,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
                 {competitorName}
               </th>
               <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4 bg-orange-50">
-                Wonder Sites
+                Crabs HQ
               </th>
             </tr>
           </thead>

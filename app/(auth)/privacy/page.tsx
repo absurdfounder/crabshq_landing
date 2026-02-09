@@ -3,22 +3,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Wonder Sites Privacy Policy', // Slightly more descriptive title
-  description: 'Privacy Policy for Wonder Sites (wonderdesk.ai)', // Slightly more descriptive
+  title: 'Crabs HQ Privacy Policy', // Slightly more descriptive title
+  description: 'Privacy Policy for Crabs HQ (crabshq.com)', // Slightly more descriptive
   alternates: {
-    canonical: "https://wonderdesk.ai/privacy",
+    canonical: "https://crabshq.com/privacy",
   },
   openGraph: {
-    title: 'Wonder Sites Privacy Policy', // Consistent title
-    description: 'How Wonder Sites handles your personal information.', // Specific OG description
-    url: "https://wonderdesk.ai/privacy", // Add URL
-    siteName: 'Wonder Sites', // Add site name
+    title: 'Crabs HQ Privacy Policy', // Consistent title
+    description: 'How Crabs HQ handles your personal information.', // Specific OG description
+    url: "https://crabshq.com/privacy", // Add URL
+    siteName: 'Crabs HQ', // Add site name
     images: [
         {
             url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
             width: 1200,
             height: 630,
-            alt: "Wonder Sites - Notion to Website", // More relevant alt text
+            alt: "Crabs HQ - Notion to Website", // More relevant alt text
         },
     ],
     locale: 'en_US', // Optional: Specify locale
@@ -26,15 +26,15 @@ export const metadata = {
 },
 twitter: {
     card: "summary_large_image",
-    title: 'Wonder Sites Privacy Policy', // Consistent title
-    description: 'How Wonder Sites handles your personal information.', // Specific Twitter description
+    title: 'Crabs HQ Privacy Policy', // Consistent title
+    description: 'How Crabs HQ handles your personal information.', // Specific Twitter description
     // siteId: '@YourTwitterHandle', // Optional: Add Twitter handle ID
     // creator: '@YourTwitterHandle', // Optional: Add creator handle
     // creatorId: 'YourTwitterID', // Optional: Add creator ID
     images: [ // Twitter uses 'images' array like openGraph
         {
             url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-            alt: "Wonder Sites - Notion to Website", // More relevant alt text
+            alt: "Crabs HQ - Notion to Website", // More relevant alt text
         },
     ],
 },
@@ -86,7 +86,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
 
             {/* Sections */}
             <h2 id="overview">Overview</h2>
-            <p>This Privacy Policy describes how Wonder Sites ("we," "us," or "our") collects, uses, and shares your personal information when you visit or use the services provided through <code>https://wonderdesk.ai</code> (the “Service” or “Site”). This policy applies to users of the Wonder Sites platform. Please note that websites created <em>by our users</em> using the Wonder Sites service are governed by the privacy policies of those individual site owners.</p>
+            <p>This Privacy Policy describes how Crabs HQ ("we," "us," or "our") collects, uses, and shares your personal information when you visit or use the services provided through <code>https://crabshq.com</code> (the “Service” or “Site”). This policy applies to users of the Crabs HQ platform. Please note that websites created <em>by our users</em> using the Crabs HQ service are governed by the privacy policies of those individual site owners.</p>
 
             <hr className="my-8" />
 
@@ -106,7 +106,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
                 <strong>Information Collected Automatically:</strong>
                 <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
                   <li><strong>Device Information:</strong> When you visit the Site, we automatically collect certain information about your device, including information about your web browser, IP address, time zone, and some of the cookies installed on your device.</li>
-                  <li><strong>Usage Information:</strong> As you navigate and interact with the Service (our website <code>wonderdesk.ai</code>, not the sites you build), we collect information about how you use the Service, such as the pages you view, features you use, and actions you take. We refer to this automatically-collected information collectively with device details as “Usage & Device Information.”</li>
+                  <li><strong>Usage Information:</strong> As you navigate and interact with the Service (our website <code>crabshq.com</code>, not the sites you build), we collect information about how you use the Service, such as the pages you view, features you use, and actions you take. We refer to this automatically-collected information collectively with device details as “Usage & Device Information.”</li>
                 </ul>
               </li>
             </ol>
@@ -123,7 +123,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <h2 id="how-do-we-use-your-personal-information">How Do We Use Your Personal Information?</h2>
             <p>We use the Personal Information we collect to:</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
-              <li><strong>Provide and Maintain the Service:</strong> Operate the Wonder Sites platform, authenticate users, connect to Notion accounts, process payments, and fulfill our contractual obligations to you.</li>
+              <li><strong>Provide and Maintain the Service:</strong> Operate the Crabs HQ platform, authenticate users, connect to Notion accounts, process payments, and fulfill our contractual obligations to you.</li>
               <li><strong>Communicate with You:</strong> Respond to support requests, send service-related announcements (e.g., maintenance, security alerts, account notifications), and, if aligned with your preferences, send marketing communications about our products or services (you can opt-out).</li>
               <li><strong>Improve and Optimize the Service:</strong> Analyze how users interact with our Site and Service to understand usage patterns, identify areas for improvement, assess the success of features or marketing campaigns, and enhance user experience (e.g., using analytics).</li>
               <li><strong>Screen for Risk and Fraud:</strong> Use information (particularly Payment Information and Usage & Device Information like IP addresses) to detect and prevent fraudulent activity, security incidents, and abuse.</li>
@@ -137,15 +137,15 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <ul className="list-disc list-inside space-y-1 mb-4">
               <li><strong>Service Providers:</strong> We engage third-party companies and individuals to perform services on our behalf (e.g., payment processing [like Stripe], website hosting and infrastructure [like Vercel or AWS], data analytics, email delivery, customer support platforms). These providers only have access to the Personal Information necessary to perform their tasks and are obligated not to disclose or use it for other purposes. <em>[Ensure this list reflects your actual providers]</em></li>
               <li><strong>Notion:</strong> We share necessary authentication information (handled securely) with Notion to enable the integration you authorize. Notion's use of your data is governed by their own privacy policy.</li>
-              <li><strong>Legal Compliance and Protection:</strong> We may disclose your Personal Information if required by law, regulation, legal process (like a subpoena or search warrant), or governmental request, or to protect the rights, property, or safety of Wonder Sites, our users, or the public.</li>
-              <li><strong>Business Transfers:</strong> If Wonder Sites is involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of assets, your Personal Information may be transferred as part of that transaction, subject to standard confidentiality arrangements.</li>
+              <li><strong>Legal Compliance and Protection:</strong> We may disclose your Personal Information if required by law, regulation, legal process (like a subpoena or search warrant), or governmental request, or to protect the rights, property, or safety of Crabs HQ, our users, or the public.</li>
+              <li><strong>Business Transfers:</strong> If Crabs HQ is involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of assets, your Personal Information may be transferred as part of that transaction, subject to standard confidentiality arrangements.</li>
             </ul>
             <p>We do <strong>not</strong> sell your Personal Information.</p>
 
             <hr className="my-8" />
 
             <h2 id="anonymous-performance-data-collection">Anonymous Performance Data Collection</h2>
-            <p>Wonder Sites gathers anonymous performance data to assess platform and content delivery network (CDN) performance for the websites built using our service.</p>
+            <p>Crabs HQ gathers anonymous performance data to assess platform and content delivery network (CDN) performance for the websites built using our service.</p>
             <p>We gather information about the time it takes to deliver and render page content for sites hosted via our platform. This helps us ensure our platform and CDN are working optimally for speed and efficiency, ensuring user-created sites perform well.</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
               <li><strong>Potential Domain:</strong> <code>vitals.vercel-insights.com</code> (if using Vercel infrastructure)</li>
@@ -158,7 +158,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <hr className="my-8" />
 
              <h2 id="behavioral-advertising">Behavioral Advertising</h2>
-            <p>As described above, we may use your Personal Information (primarily Usage & Device Information collected on <code>wonderdesk.ai</code>) to provide you with targeted advertisements or marketing communications we believe may be of interest to you. For more information about how targeted advertising works, visit the Network Advertising Initiative’s (“NAI”) educational page: <a href="http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work</a>.</p>
+            <p>As described above, we may use your Personal Information (primarily Usage & Device Information collected on <code>crabshq.com</code>) to provide you with targeted advertisements or marketing communications we believe may be of interest to you. For more information about how targeted advertising works, visit the Network Advertising Initiative’s (“NAI”) educational page: <a href="http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work</a>.</p>
             <p>We might share information about your use of our Site and your interaction with our ads on other websites with advertising partners, sometimes through cookies or similar technologies (subject to your consent where required). <em>[Review if this section accurately reflects your practices]</em></p>
             <p>You can opt out of targeted advertising using these links:</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
@@ -179,7 +179,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <p>If you are a resident of the European Economic Area (“EEA”), pursuant to the General Data Protection Regulation (“GDPR”), we process your personal information under the following lawful bases:</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
                 <li>Your consent (where applicable, e.g., for non-essential cookies or marketing emails);</li>
-                <li>The performance of the contract between you and the Site (i.e., providing the Wonder Sites service you signed up for);</li>
+                <li>The performance of the contract between you and the Site (i.e., providing the Crabs HQ service you signed up for);</li>
                 <li>Compliance with our legal obligations;</li>
                 <li>To protect your vital interests or those of another person;</li>
                 <li>To perform a task carried out in the public interest (less common for our service);</li>
@@ -238,7 +238,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
               <li><strong>Email:</strong> <a href="mailto:querykitty@gmail.com" className="text-blue-600 hover:underline">querykitty@gmail.com</a></li>
               <li><strong>Mailing Address:</strong> Boring Sites LLC , Delaware</li>
             </ul>
-            <p>Please identify Wonder Sites as the data controller for the Personal Information collected through the <code>wonderdesk.ai</code> service in your communication where relevant (e.g., for GDPR requests).</p>
+            <p>Please identify Crabs HQ as the data controller for the Personal Information collected through the <code>crabshq.com</code> service in your communication where relevant (e.g., for GDPR requests).</p>
 
           </div>
           {/* Privacy Policy Content End */}

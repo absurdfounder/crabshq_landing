@@ -34,10 +34,10 @@ const BrowserExtensionWizard: React.FC = () => {
   // State variables
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>("chrome");
-  const [name, setName] = useState<string>('Wonder Sites Extension');
+  const [name, setName] = useState<string>('Crabs HQ Extension');
   const [description, setDescription] = useState<string>('Easily create a chrome extension..');
   const [version, setVersion] = useState<string>('1.0');
-  const [websiteUrl, setWebsiteUrl] = useState<string>('https://wonderdesk.ai');
+  const [websiteUrl, setWebsiteUrl] = useState<string>('https://crabshq.com');
   const [icon, setIcon] = useState<File | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -288,7 +288,7 @@ body {
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
                 className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-l-md"
-                placeholder="https://app.wonderdesk.ai"
+                placeholder="https://app.crabshq.com"
               />
               <button
                 onClick={openIframePopup}

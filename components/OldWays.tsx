@@ -54,7 +54,7 @@ export default function OldWays() {
       tag: "Integrates with",
       title: "Integrates with",
       highlight: "your existing apps",
-      description: "Wonder integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Wonder Sites? We got you covered.",
+      description: "Wonder integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Crabs HQ? We got you covered.",
       image: "https://dazzling-cat.netlify.app/integrationsdb.png",
       alt: "Integrations DB"
     }

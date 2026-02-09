@@ -97,7 +97,7 @@ export default function AIAgentSection() {
                     d="M12 11c0-1.657-1.343-3-3-3s-3 1.343-3 3 1.343 3 3 3 3-1.343 3-3zm0 0c0 1.657 1.343 3 3 3s3-1.343 3-3-1.343-3-3-3-3 1.343-3 3zm0 0v9"
                   />
                 </svg>
-                <span className="truncate">app.wonderdesk.ai/chat</span>
+                <span className="truncate">app.crabshq.com/chat</span>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ export default function AIAgentSection() {
                       Hey Wonder, can you remove all phone-number mentions and replace with our
                       support portal link →{' '}
                       <span className="text-neutral-800 underline decoration-neutral-300 underline-offset-2">
-                        wonderdesk.ai/help
+                        crabshq.com/help
                       </span>
                     </p>
                   </div>

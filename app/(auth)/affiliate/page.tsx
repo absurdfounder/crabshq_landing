@@ -6,7 +6,7 @@ export const metadata = {
   title: 'Affiliate Program',
   description: 'Join the Wonder affiliate program to become our partner. Spread the website builder and earn money with us.',
   alternates: {
-    canonical: "https://wonderdesk.ai/affiliate",
+    canonical: "https://crabshq.com/affiliate",
   },
   openGraph: {
     images: [
@@ -223,7 +223,7 @@ refer to Wonder  Sites, without limits. Join
                 </li>
               </ul>
               <div className="text-center mt-8">
-                <Link href="https://partner.wonderdesk.ai/" target="_self" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Start to earn money</Link>
+                <Link href="https://partner.crabshq.com/" target="_self" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Start to earn money</Link>
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ refer to Wonder  Sites, without limits. Join
 
           <div className="bg-slate-800 border border-slate-800 text-white border-2 border-dashed py-20 rounded-md">
     <div className="max-w-md mx-auto text-center">
-        <h2 className="h2 font-bold">Start earning cash by referring customers to Wonder Sites</h2>
+        <h2 className="h2 font-bold">Start earning cash by referring customers to Crabs HQ</h2>
         <br />
         <p className="mt-4">Quick payouts to Wise, Paypal or your local bank. Premium support and cross-promotions from us.</p>
         <div className="mt-8"><Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="btn text-slate-900 bg-slate-200 hover:bg-slate-600 w-full mb-4 sm:w-auto sm:mb-0">Become our partner</Link></div>

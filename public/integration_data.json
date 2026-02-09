@@ -9,7 +9,7 @@
         "description": "Embed interactive product demos in your documentation and turn all users into power users. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai/install-arcade-Wonder-Sites"
+          "link": "https://app.crabshq.com/install-arcade-Wonder-Sites"
         }
       },
       "overview": {
@@ -32,20 +32,20 @@
         "logo": "https://framerusercontent.com/images/m9aUcDVUAGUkouzars7JOPL4pzU.png",
         "name": "Discord",
         "provider": "Discord",
-        "description": "Notify a server channel in Discord with real-time events from Wonder Sites.",
+        "description": "Notify a server channel in Discord with real-time events from Crabs HQ.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
         "content": "The Wonder Discord integration brings the power of Wonder to your Discord Server. Your members have instant access to your Wonder knowledge base, without leaving the app."
       },
       "howItWorks": {
-        "content": "Get notified of what's important: Receive real-time Discord notifications when something important happens to your content on Wonder Sites. For example, when your content is updated or published. Pick and choose what, where, and how you wish to be notified."
+        "content": "Get notified of what's important: Receive real-time Discord notifications when something important happens to your content on Crabs HQ. For example, when your content is updated or published. Pick and choose what, where, and how you wish to be notified."
       },
       "configuration": {
-        "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Discord integration on multiple on all spaces you can enable this through organization settings. To configure the integration you will have to authorize the connection between Discord and Wonder Sites. You can also select the default server to post messages to.        "
+        "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Discord integration on multiple on all spaces you can enable this through organization settings. To configure the integration you will have to authorize the connection between Discord and Crabs HQ. You can also select the default server to post messages to.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/TG0d5w0jhfPMdJeURf3p9xlsRY.jpg",
@@ -61,7 +61,7 @@
         "description": "Receive Wonder traffic insights directly in your Fathom dashboard.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -87,7 +87,7 @@
         "description": "Embed Figma files and designs directly into Wonder pages.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -97,7 +97,7 @@
         "content": "Embedding Figma files into Wonder  is simple - just paste a Figma link into the Wonder editor. The app will turn the link into an embed that shows the Figma file name along with an image snapshot of what the file looked like at the moment that you embedded it. When viewing an embed, click on the maximize button to preview the file in Wonder or on the file or artboard name to open it in Figma."
       },
       "configuration": {
-        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Wonder Sites. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/CLU1xN0NghWWs6cGzzm2YMotM8A.png",
@@ -110,10 +110,10 @@
         "logo": "https://framerusercontent.com/images/2apJ8byRbIeR25LAoZZ6FgxfmtY.png",
         "name": "Formspree",
         "provider": "Formspree",
-        "description": "A simple Formspree integration to collect user signups directly in your published Wonder sites.        ",
+        "description": "A simple Formspree integration to collect user signups directly in your published Crabs HQ.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -123,7 +123,7 @@
         "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Formspree integration on multiple on all spaces you can enable this through organization settings. From here you can specify different Formspree IDs for different spaces.        "
       },
       "configuration": {
-        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Wonder Sites. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/pUatWqAkCnCDA5WkYaNx0k00Fo0.png",
@@ -139,7 +139,7 @@
         "description": "Receive Wonder traffic insights directly in your Google Analytics dashboard.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -165,7 +165,7 @@
         "description": "Add interactive demos & guides to your documentation and boost user adoption.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -191,7 +191,7 @@
         "description": "Plug your Wonder site to your Heap Analytics instance.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -217,7 +217,7 @@
         "description": "Plug your Wonder site to your Hotjar installation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -243,7 +243,7 @@
         "description": "Add the Intercom chat widget to your published Wonder content        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -269,7 +269,7 @@
         "description": "Embed Jira issues directly in your Wonder documentation. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -279,7 +279,7 @@
         "content": "Embedding Jira issues in your documentation is simple - just paste a Jira link into the Wonder editor. The app will turn the link into an embed that show details of the Jira issue like the title, status, and assignee.        "
       },
       "configuration": {
-        "content": "Authorize the connection between Jira and Wonder Sites. You can install the integration on single space directly from your sub-navigation panel by clicking on Integrations or enable it in multiple or all of your spaces by navigating to the integrations tab in the organization settings.        "
+        "content": "Authorize the connection between Jira and Crabs HQ. You can install the integration on single space directly from your sub-navigation panel by clicking on Integrations or enable it in multiple or all of your spaces by navigating to the integrations tab in the organization settings.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/iOD7ihlakislXZzAYZhqHZDw.png",
@@ -292,10 +292,10 @@
         "logo": "https://framerusercontent.com/images/atHDM5krB5QGJNCVQHHVHSNckBw.png?scale-down-to=512",
         "name": "Lucid",
         "provider": "Lucid",
-        "description": "Embed Lucid projects directly into Wonder Sites.        ",
+        "description": "Embed Lucid projects directly into Crabs HQ.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -321,7 +321,7 @@
         "description": "Plug your Wonder site to your PostHog installation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -347,14 +347,14 @@
         "description": "Embed interactive Node.js notebooks in your Wonder documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
         "content": "RunKit notebooks are interactive JavaScript playgrounds connected to a complete Node environment right in your browser. Every npm module pre-installed. They make it easy for your users to run sample code right from your documentation. "
       },
       "howItWorks": {
-        "content": "The integration allows you to embed live examples into your Wonder Sites, removing the friction of trying new ideas. You can bring your code to life by allowing your users to run the sample of your code within your documentation. Adding RunKit notebooks in your documentation is simple - select the RunKit block from the command palette and insert your code snippet.  Or paste the link to an existing RunKit notebook into the Wonder editor to embed it in your page. "
+        "content": "The integration allows you to embed live examples into your Crabs HQ, removing the friction of trying new ideas. You can bring your code to life by allowing your users to run the sample of your code within your documentation. Adding RunKit notebooks in your documentation is simple - select the RunKit block from the command palette and insert your code snippet.  Or paste the link to an existing RunKit notebook into the Wonder editor to embed it in your page. "
       },
       "configuration": {
         "content": "Click Integrations button in sub-navigation to install the RunKit in a single space, alternatively navigate to your organization settings to install it on multiple or all spaces."
@@ -373,7 +373,7 @@
         "description": "Embed Sentry issues in your Wonder documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -383,7 +383,7 @@
         "content": "Embedding Sentry in your documentation is simple - just paste a Sentry issue link (e.g https://try.sentry-demo.com/organizations/artistic-mudfish/issues/179907/) into the Wonder editor. The app will turn the link into an embed that show details of the Sentry issue like the title, status & culprit of issue etc.        "
       },
       "configuration": {
-        "content": "You can install Sentry on a single space by clicking on the Integrations button or on multiple or all spaces by going into your organization settings.  To complete the installation you will need to provide a API Auth Token.  To generate an auth token follow the instructions here. Choose event:read scope and copy-paste the new generated token in the respective configuration in Wonder Sites. "
+        "content": "You can install Sentry on a single space by clicking on the Integrations button or on multiple or all spaces by going into your organization settings.  To complete the installation you will need to provide a API Auth Token.  To generate an auth token follow the instructions here. Choose event:read scope and copy-paste the new generated token in the respective configuration in Crabs HQ. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/TVBHmJTGsShVU8J9GOQffCb6ljI.png",
@@ -399,7 +399,7 @@
         "description": "Integrate your Wonder public documentation with your Segment pipeline.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -425,7 +425,7 @@
         "description": "Help users master your product easily by embedding interactive product tours in your documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -451,7 +451,7 @@
         "description": "Embed SupaDemo issues directly in your Wonder documentation. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {
@@ -477,7 +477,7 @@
         "description": "Embed Toucan's customer-facing analytics in your Wonder content.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.wonderdesk.ai"
+          "link": "https://app.crabshq.com"
         }
       },
       "overview": {

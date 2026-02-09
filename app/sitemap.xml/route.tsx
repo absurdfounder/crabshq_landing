@@ -2,7 +2,7 @@
 import { type NextRequest } from 'next/server';
 import { _loadFromJson, _loadFromJsonComparison } from "../utils/helper";
 
-const URL = "https://wonderdesk.ai";
+const URL = "https://crabshq.com";
 
 interface IntegrationOrTemplate {
   id: string;

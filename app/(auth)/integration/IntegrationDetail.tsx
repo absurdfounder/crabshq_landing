@@ -28,14 +28,14 @@ function IntegrationDetail() {
                     </div>
                     <div className="space-y-2" >
                       <h1 className="font-funneldisplay text-2xl font-bold text-slate-800">Arcade</h1>
-                      <p className="text-md text-slate-600">By Wonder Sites</p>
+                      <p className="text-md text-slate-600">By Crabs HQ</p>
                     </div>
                   </div>
                   <div className="text-slate-800" >
                     <p>Embed interactive product demos in your documentation and turn all users into power users.</p>
                   </div>
                   <div className="flex space-x-2 items-center" >
-                    <Link href="https://app.wonderdesk.ai/integrations/arcade" className="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md inline-flex items-center"  target="_blank" rel="noopener" >
+                    <Link href="https://app.crabshq.com/integrations/arcade" className="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md inline-flex items-center"  target="_blank" rel="noopener" >
                       <span>Install</span>
                     </Link>
                   </div>

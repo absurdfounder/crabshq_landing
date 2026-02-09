@@ -58,7 +58,7 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
 
 
                         <Link
-                            href="https://app.wonderdesk.ai" // Make sure this is the correct link for the discounted offer
+                            href="https://app.crabshq.com" // Make sure this is the correct link for the discounted offer
                             className="bg-orange-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-orange-700 transition-colors shadow-lg font-medium"
                             onClick={() => {
                                 // You might want to track this conversion
@@ -193,7 +193,7 @@ const comparisonCategories: ComparisonCategory[] = [
 
 // Features for Scale/Rocket plan
 const scaleFeatures: Feature[] = [
-    { name: "Unlimited Websites", description: "Set up and manage unlimited helpdesks, documentations, directories and blogs on Wonder Sites.", imageUrl: "/api/placeholder/200/150" },
+    { name: "Unlimited Websites", description: "Set up and manage unlimited helpdesks, documentations, directories and blogs on Crabs HQ.", imageUrl: "/api/placeholder/200/150" },
     { name: "Unlimited Custom Domain / SSL", description: "Use your own domain name and benefit from included SSL encryption for enhanced security.", imageUrl: "/api/placeholder/200/150" },
     { name: "Unlimited articles & collections", description: "Create unlimited articles and collections without any restrictions.", imageUrl: "/api/placeholder/200/150" },
     { name: "Unlimited Analytics", description: "Access comprehensive analytics to gain deep insights into your site's performance and user behavior.", imageUrl: "/api/placeholder/200/150" },
@@ -237,7 +237,7 @@ const faqs: Record<string, FAQ[]> = {
         },
         {
             question: "Are there discounts for students, startups, or nonprofits?",
-            answer: "Yes! We offer special discounts. Please contact support@wonderdesk.ai with proof of eligibility to apply.",
+            answer: "Yes! We offer special discounts. Please contact support@crabshq.com with proof of eligibility to apply.",
         },
         {
             question: "Do you offer custom pricing for agencies or enterprises?",
@@ -416,7 +416,7 @@ const FAQSection: React.FC = () => {
                     <p className="text-slate-600 max-w-2xl">
                         Have a different question? Reach out to our support team by
                         <a
-                            href="mailto:vaibhav@wonderdesk.ai"
+                            href="mailto:vaibhav@crabshq.com"
                             className="text-orange-600 hover:text-orange-700 hover:underline px-2"
                         >
                             sending us an email
@@ -766,7 +766,7 @@ const Pricing: React.FC = () => {
                             <div className="px-6 pb-6 mt-4">
                                 {/* --- UPDATED TO USE FlippingButtonLink --- */}
                                 <FlippingButtonLink
-                                    href="https://app.wonderdesk.ai"
+                                    href="https://app.crabshq.com"
                                     initialText="Get started - free"
                                     hoverText="in under 15 mins" // Customize hover text if needed
                                     className={tier.highlight
@@ -865,7 +865,7 @@ const Pricing: React.FC = () => {
                                     <div />
                                     <div className="flex justify-center px-4">
                                         <Link
-                                            href="https://app.wonderdesk.ai"
+                                            href="https://app.crabshq.com"
                                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
                                         >
                                             Start free trial
@@ -873,7 +873,7 @@ const Pricing: React.FC = () => {
                                     </div>
                                     <div className="flex justify-center px-4">
                                         <Link
-                                            href="https://app.wonderdesk.ai"
+                                            href="https://app.crabshq.com"
                                             className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors"
                                         >
                                             Start free trial

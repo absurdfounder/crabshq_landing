@@ -31,7 +31,7 @@ export default function HowItWorksSection() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
               <Link
-                href="https://app.wonderdesk.ai"
+                href="https://app.crabshq.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative flex rounded-[10px] p-0.5 duration-200 hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-b from-slate-900 to-slate-950 text-white"
@@ -42,7 +42,7 @@ export default function HowItWorksSection() {
                 </span>
               </Link>
               <Link
-                href="https://app.wonderdesk.ai"
+                href="https://app.crabshq.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative flex rounded-[10px] p-0.5 duration-200 hover:scale-[1.02] active:scale-[0.98] ring ring-black/8 border border-white bg-gradient-to-b from-white via-white to-white shadow-sm text-slate-600"

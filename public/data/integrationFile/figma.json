@@ -1,9 +1,9 @@
 {
   "title": "Introducing Arcade",
-  "subtitle": "By Wonder Sites",
+  "subtitle": "By Crabs HQ",
   "description": "Embed interactive product demos in your documentation and turn all users into power users.",
   "image": "https://framerusercontent.com/images/FS1of0gxF0A6UP7GmCpIBKQM.png",
-  "link": "https://app.wonderdesk.ai/integrations/arcade",
+  "link": "https://app.crabshq.com/integrations/arcade",
   "secondaryImage": "https://framerusercontent.com/images/JwSD9igebl5YjP1p0XBssmuRU4.png",
   "sections": [
     {
@@ -35,14 +35,14 @@
     {
       "type": "list",
       "items": [
-        "Simple integration with Wonder Sites",
+        "Simple integration with Crabs HQ",
         "User-friendly interactive demos",
         "Customizable demo flows"
       ]
     },
     {
       "type": "link",
-      "href": "https://app.wonderdesk.ai/more-info",
+      "href": "https://app.crabshq.com/more-info",
       "text": "Find out more here"
     },
     {
@@ -78,7 +78,7 @@
     },
     {
       "type": "iframe",
-      "src": "https://app.wonderdesk.ai/interactive-demo"
+      "src": "https://app.crabshq.com/interactive-demo"
     },
     {
       "type": "heading",

@@ -3,22 +3,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'Wonder Sites Terms of Service', // More specific title
-    description: 'Terms of Service for using Wonder Sites (wonderdesk.ai)', // More specific description
+    title: 'Crabs HQ Terms of Service', // More specific title
+    description: 'Terms of Service for using Crabs HQ (crabshq.com)', // More specific description
     alternates: {
-        canonical: "https://wonderdesk.ai/terms",
+        canonical: "https://crabshq.com/terms",
       },
     openGraph: {
-        title: 'Wonder Sites Terms of Service', // Consistent title
-        description: 'Read the terms governing your use of the Wonder Sites platform.', // Specific OG description
-        url: "https://wonderdesk.ai/terms", // Add URL
-        siteName: 'Wonder Sites', // Add site name
+        title: 'Crabs HQ Terms of Service', // Consistent title
+        description: 'Read the terms governing your use of the Crabs HQ platform.', // Specific OG description
+        url: "https://crabshq.com/terms", // Add URL
+        siteName: 'Crabs HQ', // Add site name
         images: [
             {
                 url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
                 width: 1200,
                 height: 630,
-                alt: "Wonder Sites - Notion to Website", // More relevant alt text
+                alt: "Crabs HQ - Notion to Website", // More relevant alt text
             },
         ],
         locale: 'en_US', // Optional: Specify locale
@@ -26,12 +26,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: 'Wonder Sites Terms of Service', // Consistent title
-        description: 'Read the terms governing your use of the Wonder Sites platform.', // Specific Twitter description
+        title: 'Crabs HQ Terms of Service', // Consistent title
+        description: 'Read the terms governing your use of the Crabs HQ platform.', // Specific Twitter description
         images: [
             {
                 url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-                alt: "Wonder Sites - Notion to Website", // More relevant alt text
+                alt: "Crabs HQ - Notion to Website", // More relevant alt text
             },
         ],
     },
@@ -60,7 +60,7 @@ export default function TermsOfServicePage() { // Renamed component
                                 <li><a href="#overview" className="text-blue-600 hover:underline">Overview</a></li>
                                 <li><a href="#eligibility-account-use" className="text-blue-600 hover:underline">Eligibility and Account Use</a></li>
                                 <li><a href="#general-conditions" className="text-blue-600 hover:underline">General Conditions</a></li>
-                                <li><a href="#info-accuracy" className="text-blue-600 hover:underline">Accuracy, Completeness and Timeliness of Information (on Wonder Sites)</a></li>
+                                <li><a href="#info-accuracy" className="text-blue-600 hover:underline">Accuracy, Completeness and Timeliness of Information (on Crabs HQ)</a></li>
                                 <li><a href="#modifications-prices" className="text-blue-600 hover:underline">Modifications to the Service and Prices</a></li>
                                 <li><a href="#service-description" className="text-blue-600 hover:underline">Service Description and Limitations</a></li>
                                 <li>
@@ -73,7 +73,7 @@ export default function TermsOfServicePage() { // Renamed component
                                 <li><a href="#third-party" className="text-blue-600 hover:underline">Third-Party Links and Services (including Notion)</a></li>
                                 <li><a href="#user-content" className="text-blue-600 hover:underline">User Content, Feedback, and Responsibilities</a></li>
                                 <li><a href="#personal-information" className="text-blue-600 hover:underline">Personal Information</a></li>
-                                <li><a href="#errors-omissions" className="text-blue-600 hover:underline">Errors, Inaccuracies and Omissions (on Wonder Sites)</a></li>
+                                <li><a href="#errors-omissions" className="text-blue-600 hover:underline">Errors, Inaccuracies and Omissions (on Crabs HQ)</a></li>
                                 <li><a href="#prohibited-uses" className="text-blue-600 hover:underline">Prohibited Uses</a></li>
                                 <li><a href="#disclaimer-liability" className="text-blue-600 hover:underline">Disclaimer of Warranties; Limitation of Liability</a></li>
                                 <li><a href="#indemnification" className="text-blue-600 hover:underline">Indemnification</a></li>
@@ -92,7 +92,7 @@ export default function TermsOfServicePage() { // Renamed component
 
                         {/* --- Overview --- */}
                         <h2 id="overview">Overview</h2>
-                        <p>This website and service (<code>https://wonderdesk.ai</code>) is operated by Wonder Sites ([Boring Sites LLC] "we", "us", "our"). Wonder Sites offers this platform, including all information, tools, and services available from this site (the "Service") to you, the user ("you"), conditioned upon your acceptance of all terms, conditions, policies, and notices stated here.</p>
+                        <p>This website and service (<code>https://crabshq.com</code>) is operated by Crabs HQ ([Boring Sites LLC] "we", "us", "our"). Crabs HQ offers this platform, including all information, tools, and services available from this site (the "Service") to you, the user ("you"), conditioned upon your acceptance of all terms, conditions, policies, and notices stated here.</p>
                         <p>By visiting our site and/or using our Service (e.g., creating an account, building a site, purchasing a subscription), you engage in our Service and agree to be bound by the following terms and conditions (“Terms of Service”, “Terms”), including those additional terms and policies referenced herein and/or available by hyperlink (such as our Privacy Policy). These Terms apply to all users of the Site and Service, including browsers, customers, and contributors of content or feedback.</p>
                         <p>Please read these Terms carefully before accessing or using our Service. By accessing or using any part of the Service, you agree to be bound by these Terms. If you do not agree to all the terms, then you may not access the website or use any Service. If these Terms are considered an offer, acceptance is expressly limited to these Terms.</p>
                         <p>Any new features or tools added to the current Service shall also be subject to these Terms. You can review the most current version of the Terms at any time on this page. We reserve the right to update, change, or replace any part of these Terms by posting updates/changes to our website. It is your responsibility to check this page periodically. Your continued use of or access to the Service following the posting of changes constitutes acceptance of those changes.</p>
@@ -118,9 +118,9 @@ export default function TermsOfServicePage() { // Renamed component
 
                         <hr className="my-8" />
 
-                        {/* --- 3. Accuracy, Completeness and Timeliness of Information (on Wonder Sites) --- */}
-                        <h2 id="info-accuracy">3. Accuracy, Completeness and Timeliness of Information (on Wonder Sites)</h2>
-                        <p>We are not responsible if information made available <em>on the Wonder Sites website (<code>wonderdesk.ai</code>)</em> itself (e.g., marketing materials, documentation) is not accurate, complete, or current. This material is for general information only and should not be the sole basis for decisions without consulting primary sources. Any reliance on the material on <em>this</em> site is at your own risk. This section does not apply to the content of websites <em>you</em> create using the Service.</p>
+                        {/* --- 3. Accuracy, Completeness and Timeliness of Information (on Crabs HQ) --- */}
+                        <h2 id="info-accuracy">3. Accuracy, Completeness and Timeliness of Information (on Crabs HQ)</h2>
+                        <p>We are not responsible if information made available <em>on the Crabs HQ website (<code>crabshq.com</code>)</em> itself (e.g., marketing materials, documentation) is not accurate, complete, or current. This material is for general information only and should not be the sole basis for decisions without consulting primary sources. Any reliance on the material on <em>this</em> site is at your own risk. This section does not apply to the content of websites <em>you</em> create using the Service.</p>
                         <p>Our site may contain historical information provided for reference only. We reserve the right to modify the contents of <em>our</em> site at any time, but have no obligation to update any information. You agree it is your responsibility to monitor changes to <em>our</em> site.</p>
 
                         <hr className="my-8" />
@@ -135,7 +135,7 @@ export default function TermsOfServicePage() { // Renamed component
 
                         {/* --- 5. Service Description and Limitations --- */}
                         <h2 id="service-description">5. Service Description and Limitations</h2>
-                        <p>Wonder Sites provides a platform enabling users to generate and publish websites based on content managed within their Notion workspace.</p>
+                        <p>Crabs HQ provides a platform enabling users to generate and publish websites based on content managed within their Notion workspace.</p>
                         <p>We reserve the right, but are not obligated, to limit the sales or provision of our Service to any person, geographic region, or jurisdiction. We may exercise this right case-by-case. We reserve the right to limit the features or plans available. All descriptions of the Service or pricing are subject to change at any time without notice, at our sole discretion. We reserve the right to discontinue any part of the Service at any time. Any offer is void where prohibited.</p>
                         <p>We do not warrant that the quality or functionality of the Service, or websites generated through it, will meet your specific expectations, or that any errors in the Service will be corrected. The final appearance and functionality depend on Notion's content structure, our platform's capabilities, and potential limitations of Notion's API or web technologies.</p>
 
@@ -163,9 +163,9 @@ export default function TermsOfServicePage() { // Renamed component
                         {/* --- 8. Third-Party Links and Services (including Notion) --- */}
                         <h2 id="third-party">8. Third-Party Links and Services (including Notion)</h2>
                         <p>Certain content or services available via our Service may include materials or links from third-parties. Our Service relies heavily on the availability and functionality of Notion and its API.</p>
-                        <p>Third-party links on <em>this</em> site (<code>wonderdesk.ai</code>) may direct you to websites not affiliated with us. We are not responsible for examining or evaluating the content or accuracy and do not warrant liability for third-party materials or websites linked <em>from our site</em>.</p>
+                        <p>Third-party links on <em>this</em> site (<code>crabshq.com</code>) may direct you to websites not affiliated with us. We are not responsible for examining or evaluating the content or accuracy and do not warrant liability for third-party materials or websites linked <em>from our site</em>.</p>
                         <p>We are not liable for harm or damages related to transactions made in connection with third-party websites. Review third-party policies carefully. Complaints regarding third-party products should be directed to the third-party.</p>
-                        <p>Furthermore, Wonder Sites is not responsible for the content, functionality, or privacy practices of third-party services or code that <em>you</em> choose to embed or link to on the websites <em>you create</em> using our Service. You are responsible for ensuring any third-party integrations you add to your site comply with applicable laws and terms.</p>
+                        <p>Furthermore, Crabs HQ is not responsible for the content, functionality, or privacy practices of third-party services or code that <em>you</em> choose to embed or link to on the websites <em>you create</em> using our Service. You are responsible for ensuring any third-party integrations you add to your site comply with applicable laws and terms.</p>
                         <p>Your use of Notion is governed by Notion's own Terms of Service and Privacy Policy. We are not responsible for Notion's service availability, data handling practices, or changes to their API that may affect our Service.</p>
 
                          <hr className="my-8" />
@@ -174,8 +174,8 @@ export default function TermsOfServicePage() { // Renamed component
                         <h2 id="user-content">9. User Content, Feedback, and Responsibilities</h2>
                         <ul className="list-disc list-inside space-y-2 mb-4">
                             <li><strong>Feedback:</strong> If you send us ideas, suggestions, proposals, or other materials ("Feedback"), you agree we may use, edit, copy, publish, distribute, and translate such Feedback without restriction or compensation. We are under no obligation to maintain Feedback in confidence, pay for it, or respond to it.</li>
-                            <li><strong>Notion Content:</strong> You retain ownership of the content you create and manage within your Notion workspace ("Notion Content"). By connecting your Notion account and using the Service to build a website, you grant Wonder Sites a limited, non-exclusive, worldwide, royalty-free license to access, use, reproduce, modify (for formatting/display purposes), publish, and distribute your selected Notion Content solely for the purpose of providing the Service to you and displaying it on the website you create.</li>
-                            <li><strong>User Site Content & Responsibility:</strong> You are solely responsible for all content, data, and information displayed on the websites you create using the Wonder Sites Service ("User Site Content"), including its legality, accuracy, appropriateness, and compliance with intellectual property laws and other regulations. You represent and warrant that you have all necessary rights to publish your User Site Content. Wonder Sites does not pre-screen or endorse User Site Content but reserves the right (though not the obligation) to remove content or suspend sites that violate these Terms or applicable law.</li>
+                            <li><strong>Notion Content:</strong> You retain ownership of the content you create and manage within your Notion workspace ("Notion Content"). By connecting your Notion account and using the Service to build a website, you grant Crabs HQ a limited, non-exclusive, worldwide, royalty-free license to access, use, reproduce, modify (for formatting/display purposes), publish, and distribute your selected Notion Content solely for the purpose of providing the Service to you and displaying it on the website you create.</li>
+                            <li><strong>User Site Content & Responsibility:</strong> You are solely responsible for all content, data, and information displayed on the websites you create using the Crabs HQ Service ("User Site Content"), including its legality, accuracy, appropriateness, and compliance with intellectual property laws and other regulations. You represent and warrant that you have all necessary rights to publish your User Site Content. Crabs HQ does not pre-screen or endorse User Site Content but reserves the right (though not the obligation) to remove content or suspend sites that violate these Terms or applicable law.</li>
                             <li><strong>Prohibited Content:</strong> You agree your Notion Content and User Site Content will not violate any third-party right (copyright, trademark, privacy, etc.), contain libelous, unlawful, abusive, or obscene material, or contain malware. You may not use false identities or mislead us or others.</li>
                             <li><strong>Monitoring:</strong> We may, but have no obligation to, monitor, edit, or remove content we determine in our sole discretion is unlawful, offensive, threatening, libelous, defamatory, obscene, or otherwise objectionable or violates any party’s IP or these Terms.</li>
                             <li><strong>Liability:</strong> We take no responsibility and assume no liability for any Notion Content or User Site Content posted by you or any third-party.</li>
@@ -189,8 +189,8 @@ export default function TermsOfServicePage() { // Renamed component
 
                         <hr className="my-8" />
 
-                        {/* --- 11. Errors, Inaccuracies and Omissions (on Wonder Sites) --- */}
-                        <h2 id="errors-omissions">11. Errors, Inaccuracies and Omissions (on Wonder Sites)</h2>
+                        {/* --- 11. Errors, Inaccuracies and Omissions (on Crabs HQ) --- */}
+                        <h2 id="errors-omissions">11. Errors, Inaccuracies and Omissions (on Crabs HQ)</h2>
                         <p>Occasionally there may be information on <em>our Site</em> or in the Service description that contains typographical errors, inaccuracies, or omissions relating to features, pricing, promotions, or availability. We reserve the right to correct any errors, inaccuracies, or omissions, and to change or update information or cancel orders/subscriptions if any information is inaccurate at any time without prior notice (including after you have subscribed).</p>
                         <p>We undertake no obligation to update, amend, or clarify information <em>on our Site</em> or in the Service, including pricing, except as required by law. No specified update date should be taken to indicate all information has been modified.</p>
 
@@ -225,13 +225,13 @@ export default function TermsOfServicePage() { // Renamed component
                         <p>We do not warrant that the results obtained from the use of the Service (e.g., website appearance, performance, SEO) will be accurate, reliable, or meet your requirements.</p>
                         <p>You agree we may remove the Service for indefinite periods or cancel it at any time, without notice (though we endeavor to provide notice for significant changes).</p>
                         <p>You expressly agree that your use of, or inability to use, the Service is at your sole risk. The Service is provided 'as is' and 'as available' for your use, without any representation, warranties, or conditions of any kind, either express or implied, including all implied warranties or conditions of merchantability, merchantable quality, fitness for a particular purpose, durability, title, and non-infringement.</p>
-                        <p>In no case shall Wonder Sites ([Specify Legal Entity Name]), our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, service providers, or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind, including, without limitation lost profits, lost revenue, lost savings, loss of data, replacement costs, or any similar damages, whether based in contract, tort (including negligence), strict liability or otherwise, arising from your use of the Service or any content generated via the Service, or for any other claim related in any way to your use of the Service, including errors or omissions in content, or loss/damage incurred as a result of using the Service or content made available via it, even if advised of their possibility. Because some jurisdictions do not allow the exclusion or limitation of liability for consequential or incidental damages, in such jurisdictions, our liability shall be limited to the maximum extent permitted by law.</p>
+                        <p>In no case shall Crabs HQ ([Specify Legal Entity Name]), our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, service providers, or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind, including, without limitation lost profits, lost revenue, lost savings, loss of data, replacement costs, or any similar damages, whether based in contract, tort (including negligence), strict liability or otherwise, arising from your use of the Service or any content generated via the Service, or for any other claim related in any way to your use of the Service, including errors or omissions in content, or loss/damage incurred as a result of using the Service or content made available via it, even if advised of their possibility. Because some jurisdictions do not allow the exclusion or limitation of liability for consequential or incidental damages, in such jurisdictions, our liability shall be limited to the maximum extent permitted by law.</p>
 
                         <hr className="my-8" />
 
                         {/* --- 14. Indemnification --- */}
                         <h2 id="indemnification">14. Indemnification</h2>
-                        <p>You agree to indemnify, defend, and hold harmless Wonder Sites ([Specify Legal Entity Name]) and our parent, subsidiaries, affiliates, partners, officers, directors, agents, contractors, licensors, service providers, subcontractors, suppliers, interns, and employees, from any claim or demand, including reasonable attorneys’ fees, made by any third-party due to or arising out of your breach of these Terms, the documents they incorporate by reference, your violation of any law or the rights of a third-party, or the content you publish on websites created using the Service.</p>
+                        <p>You agree to indemnify, defend, and hold harmless Crabs HQ ([Specify Legal Entity Name]) and our parent, subsidiaries, affiliates, partners, officers, directors, agents, contractors, licensors, service providers, subcontractors, suppliers, interns, and employees, from any claim or demand, including reasonable attorneys’ fees, made by any third-party due to or arising out of your breach of these Terms, the documents they incorporate by reference, your violation of any law or the rights of a third-party, or the content you publish on websites created using the Service.</p>
 
                         <hr className="my-8" />
 

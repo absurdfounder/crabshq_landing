@@ -168,7 +168,7 @@ export default function TabletMenu() {
                           <span className="text-sm sm:text-base font-medium text-slate-900 block">
                             Help Center
                           </span>
-                          <p className="mt-1 text-xs sm:text-sm text-slate-500">Get a professional self-service help center with Notion and Wonder Sites.</p>
+                          <p className="mt-1 text-xs sm:text-sm text-slate-500">Get a professional self-service help center with Notion and Crabs HQ.</p>
                         </div>
                       </Link>
                     </li>
@@ -190,7 +190,7 @@ export default function TabletMenu() {
                           <span className="text-sm sm:text-base font-medium text-slate-900 block">
                             Blog
                           </span>
-                          <p className="mt-1 text-xs sm:text-sm text-slate-500">Get a beautiful blog for your startup or company with Notion and Wonder Sites.</p>
+                          <p className="mt-1 text-xs sm:text-sm text-slate-500">Get a beautiful blog for your startup or company with Notion and Crabs HQ.</p>
                         </div>
                       </Link>
                     </li>
@@ -253,7 +253,7 @@ export default function TabletMenu() {
 
             {/* Login */}
             <li>
-              <Link href="https://app.wonderdesk.ai" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
+              <Link href="https://app.crabshq.com" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
                 setTabletNavOpen(false);
                 setDropdownOpen(false);
               }}>
@@ -264,7 +264,7 @@ export default function TabletMenu() {
             {/* Create Website button */}
             <li className="pt-2">
               <Link
-                href="https://app.wonderdesk.ai"
+                href="https://app.crabshq.com"
                 target='_blank'
                 className="btn-sm text-white bg-slate-900 hover:bg-slate-800 w-full flex items-center justify-between px-5 py-3 rounded-md transition duration-300 ease-in-out group relative overflow-hidden"
                 onClick={() => {

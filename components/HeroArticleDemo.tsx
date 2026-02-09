@@ -452,7 +452,7 @@ export default function HeroArticleDemo() {
                               <div className="flex-grow text-sm">
                                 <p className="text-sky-700">
                                   For advanced export options, see our{' '}
-                                  <a className="font-medium underline" href="https://wonderdesk.ai/help">API docs</a>.
+                                  <a className="font-medium underline" href="https://crabshq.com/help">API docs</a>.
                                 </p>
                               </div>
                             </div>
