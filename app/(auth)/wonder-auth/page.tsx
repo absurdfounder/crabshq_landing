@@ -248,7 +248,7 @@ export default function AuthLanding() {
                             rel="noopener noreferrer"
                             className="group flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition-all shadow-sm"
                         >
-                            <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                            <div className="h-2 w-2 rounded-full bg-red-500"></div>
                             <span>Open Sourcing - Soon</span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +269,7 @@ export default function AuthLanding() {
                         </a>
 
                         <h1 className="max-w-4xl text-[32px] sm:text-[52px] font-semibold tracking-tight text-gray-900 leading-tight">
-                            <span className="text-blue-500">Better than Privy</span> <span className=" block">Global Wallets, Half the Price</span>
+                            <span className="text-red-500">Better than Privy</span> <span className=" block">Global Wallets, Half the Price</span>
                         </h1>
                         <p className="max-w-2xl text-gray-600 text-lg">
                             Stop building auth from scratch. Add social logins, magic links, passkeys, and 2FA to your app in minutes. Secure, scalable, and developer-friendly.
@@ -314,7 +314,7 @@ export default function AuthLanding() {
                                     alt="Global Wallets"
                                     className="object-contain w-full h-full group-hover:scale-110 transition-all"
                                 />
-                                <div className="absolute top-4 right-4 bg-white/90 text-blue-600 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                                <div className="absolute top-4 right-4 bg-white/90 text-red-600 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
                                     All Ecosystem
                                 </div>
                             </div>
@@ -336,7 +336,7 @@ export default function AuthLanding() {
                                     alt="Embedded Wallet"
                                     className="object-contain w-full h-full group-hover:scale-110 transition-all"
                                 />
-                                <div className="absolute top-4 right-4 bg-white/90 text-blue-500 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                                <div className="absolute top-4 right-4 bg-white/90 text-red-500 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
                                     Coinbase x402
                                 </div>
                             </div>
@@ -464,8 +464,8 @@ export default function AuthLanding() {
                                     {/* Social Providers */}
                                     <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-5 shadow-sm">
                                         <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                                                <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                                <svg className="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
                                             </div>
@@ -520,8 +520,8 @@ export default function AuthLanding() {
                                     {/* Auth Methods */}
                                     <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-5 shadow-sm">
                                         <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                                                <Key className="w-4 h-4 text-blue-600" />
+                                            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                                <Key className="w-4 h-4 text-red-600" />
                                             </div>
                                             Auth Methods
                                         </h3>

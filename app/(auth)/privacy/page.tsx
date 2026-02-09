@@ -57,25 +57,25 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <div className="mb-8 p-4 border rounded bg-gray-50">
               <h2 className="text-xl font-semibold mb-3">Table of Contents</h2>
               <ul className="list-disc list-inside space-y-1">
-                <li><a href="#overview" className="text-blue-600 hover:underline">Overview</a></li>
-                <li><a href="#personal-information-we-collect" className="text-blue-600 hover:underline">Personal Information We Collect</a></li>
-                <li><a href="#how-do-we-use-your-personal-information" className="text-blue-600 hover:underline">How Do We Use Your Personal Information?</a></li>
-                <li><a href="#sharing-your-personal-information" className="text-blue-600 hover:underline">Sharing Your Personal Information</a></li>
-                <li><a href="#anonymous-performance-data-collection" className="text-blue-600 hover:underline">Anonymous Performance Data Collection</a></li>
-                <li><a href="#behavioral-advertising" className="text-blue-600 hover:underline">Behavioral Advertising</a></li>
-                <li><a href="#do-not-track" className="text-blue-600 hover:underline">Do Not Track</a></li>
-                <li><a href="#lawful-basis" className="text-blue-600 hover:underline">Lawful Basis (for EEA Residents)</a></li>
+                <li><a href="#overview" className="text-red-600 hover:underline">Overview</a></li>
+                <li><a href="#personal-information-we-collect" className="text-red-600 hover:underline">Personal Information We Collect</a></li>
+                <li><a href="#how-do-we-use-your-personal-information" className="text-red-600 hover:underline">How Do We Use Your Personal Information?</a></li>
+                <li><a href="#sharing-your-personal-information" className="text-red-600 hover:underline">Sharing Your Personal Information</a></li>
+                <li><a href="#anonymous-performance-data-collection" className="text-red-600 hover:underline">Anonymous Performance Data Collection</a></li>
+                <li><a href="#behavioral-advertising" className="text-red-600 hover:underline">Behavioral Advertising</a></li>
+                <li><a href="#do-not-track" className="text-red-600 hover:underline">Do Not Track</a></li>
+                <li><a href="#lawful-basis" className="text-red-600 hover:underline">Lawful Basis (for EEA Residents)</a></li>
                 <li>
-                  <a href="#your-rights" className="text-blue-600 hover:underline">Your Rights</a>
+                  <a href="#your-rights" className="text-red-600 hover:underline">Your Rights</a>
                   <ul className="list-disc list-inside ml-5 mt-1 space-y-1">
-                    <li><a href="#gdpr" className="text-blue-600 hover:underline">GDPR (EEA Residents)</a></li>
-                    <li><a href="#ccpa" className="text-blue-600 hover:underline">CCPA (California Residents)</a></li>
-                    <li><a href="#cookies" className="text-blue-600 hover:underline">Cookies</a></li>
+                    <li><a href="#gdpr" className="text-red-600 hover:underline">GDPR (EEA Residents)</a></li>
+                    <li><a href="#ccpa" className="text-red-600 hover:underline">CCPA (California Residents)</a></li>
+                    <li><a href="#cookies" className="text-red-600 hover:underline">Cookies</a></li>
                   </ul>
                 </li>
-                <li><a href="#data-retention" className="text-blue-600 hover:underline">Data Retention</a></li>
-                <li><a href="#changes" className="text-blue-600 hover:underline">Changes</a></li>
-                <li><a href="#contact-us" className="text-blue-600 hover:underline">Contact Us</a></li>
+                <li><a href="#data-retention" className="text-red-600 hover:underline">Data Retention</a></li>
+                <li><a href="#changes" className="text-red-600 hover:underline">Changes</a></li>
+                <li><a href="#contact-us" className="text-red-600 hover:underline">Contact Us</a></li>
               </ul>
             </div>
 
@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             </ol>
             <p>We collect Usage & Device Information using technologies like:</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
-                <li><strong>“Cookies”</strong>: Data files placed on your device, often including an anonymous unique identifier. Learn more at <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">allaboutcookies.org</a>.</li>
+                <li><strong>“Cookies”</strong>: Data files placed on your device, often including an anonymous unique identifier. Learn more at <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">allaboutcookies.org</a>.</li>
                 <li><strong>“Log files”</strong>: Track actions on the Site, collecting data like IP address, browser type, ISP, referring/exit pages, and date/time stamps.</li>
                 <li><strong>“Web beacons,” “tags,” and “pixels”</strong>: Electronic files used to record information about Browse activity.</li>
             </ul>
@@ -156,15 +156,15 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <hr className="my-8" />
 
              <h2 id="behavioral-advertising">Behavioral Advertising</h2>
-            <p>As described above, we may use your Personal Information (primarily Usage & Device Information collected on <code>crabshq.com</code>) to provide you with targeted advertisements or marketing communications we believe may be of interest to you. For more information about how targeted advertising works, visit the Network Advertising Initiative’s (“NAI”) educational page: <a href="http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work</a>.</p>
+            <p>As described above, we may use your Personal Information (primarily Usage & Device Information collected on <code>crabshq.com</code>) to provide you with targeted advertisements or marketing communications we believe may be of interest to you. For more information about how targeted advertising works, visit the Network Advertising Initiative’s (“NAI”) educational page: <a href="http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work</a>.</p>
             <p>We might share information about your use of our Site and your interaction with our ads on other websites with advertising partners, sometimes through cookies or similar technologies (subject to your consent where required). <em>[Review if this section accurately reflects your practices]</em></p>
             <p>You can opt out of targeted advertising using these links:</p>
             <ul className="list-disc list-inside space-y-1 mb-4">
-                <li><strong>Facebook:</strong> <a href="https://www.facebook.com/settings/?tab=ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://www.facebook.com/settings/?tab=ads</a></li>
-                <li><strong>Google:</strong> <a href="https://www.google.com/settings/ads/anonymous" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://www.google.com/settings/ads/anonymous</a></li>
-                <li><strong>Twitter:</strong> <a href="https://twitter.com/settings/your_twitter_data/audiences" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://twitter.com/settings/your_twitter_data/audiences</a> (Link may vary, check Twitter settings)</li>
+                <li><strong>Facebook:</strong> <a href="https://www.facebook.com/settings/?tab=ads" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">https://www.facebook.com/settings/?tab=ads</a></li>
+                <li><strong>Google:</strong> <a href="https://www.google.com/settings/ads/anonymous" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">https://www.google.com/settings/ads/anonymous</a></li>
+                <li><strong>Twitter:</strong> <a href="https://twitter.com/settings/your_twitter_data/audiences" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">https://twitter.com/settings/your_twitter_data/audiences</a> (Link may vary, check Twitter settings)</li>
             </ul>
-            <p>Additionally, you can opt out of some services via the Digital Advertising Alliance’s portal: <a href="http://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">http://optout.aboutads.info/</a>.</p>
+            <p>Additionally, you can opt out of some services via the Digital Advertising Alliance’s portal: <a href="http://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">http://optout.aboutads.info/</a>.</p>
 
             <hr className="my-8" />
 
@@ -216,7 +216,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
 
             <h3 id="cookies" className="text-xl font-semibold mt-6 mb-2">Cookies</h3>
             <p>A cookie is a small file downloaded to your device when you visit our Site. We use different types: functional, performance, advertising, social media/content cookies. They help remember actions/preferences (like login), provide usage insights, and optimize your experience.</p>
-            <p>Most browsers automatically accept cookies, but you can usually modify your browser setting to decline cookies if you prefer. Instructions are typically found in your browser's 'Help', 'Tools', or 'Edit' menus. Note that removing or blocking cookies can negatively impact your user experience and parts of our Site may become inaccessible. For more details, visit <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">allaboutcookies.org</a>.</p>
+            <p>Most browsers automatically accept cookies, but you can usually modify your browser setting to decline cookies if you prefer. Instructions are typically found in your browser's 'Help', 'Tools', or 'Edit' menus. Note that removing or blocking cookies can negatively impact your user experience and parts of our Site may become inaccessible. For more details, visit <a href="http://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">allaboutcookies.org</a>.</p>
 
             <hr className="my-8" />
 
@@ -233,7 +233,7 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
             <h2 id="contact-us">Contact Us</h2>
             <p>For more information about our privacy practices, if you have questions, would like to exercise your rights, or wish to make a complaint, please contact us by e-mail or mail:</p>
             <ul className="list-none space-y-1 mb-4"> {/* Using list-none for cleaner look */}
-              <li><strong>Email:</strong> <a href="mailto:querykitty@gmail.com" className="text-blue-600 hover:underline">querykitty@gmail.com</a></li>
+              <li><strong>Email:</strong> <a href="mailto:querykitty@gmail.com" className="text-red-600 hover:underline">querykitty@gmail.com</a></li>
               <li><strong>Mailing Address:</strong> Boring Sites LLC , Delaware</li>
             </ul>
             <p>Please identify Crabs HQ as the data controller for the Personal Information collected through the <code>crabshq.com</code> service in your communication where relevant (e.g., for GDPR requests).</p>

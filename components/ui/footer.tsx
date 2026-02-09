@@ -130,7 +130,7 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="/features/browser-control"
                     >
-                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
                       <span className="break-words">Browser Control</span>
                     </Link>
                   </li>

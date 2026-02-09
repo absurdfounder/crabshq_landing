@@ -398,7 +398,7 @@ body {
         <ol className="space-y-3">
           <li className="pb-3 border-b border-gray-100">
             <p className="font-medium">1. Create a developer account</p>
-            <p className="text-gray-600">Visit the <a href="https://chrome.google.com/webstore/devconsole" target="_blank" rel="noopener"  className="text-blue-600 hover:underline">Chrome Web Store Developer Dashboard</a></p>
+            <p className="text-gray-600">Visit the <a href="https://chrome.google.com/webstore/devconsole" target="_blank" rel="noopener"  className="text-red-600 hover:underline">Chrome Web Store Developer Dashboard</a></p>
           </li>
           
           <li className="pb-3 border-b border-gray-100">
@@ -426,7 +426,7 @@ body {
         <ol className="space-y-3">
           <li className="pb-3 border-b border-gray-100">
             <p className="font-medium">1. Create a Microsoft Partner Center account</p>
-            <p className="text-gray-600">Register at <a href="https://partner.microsoft.com/dashboard/microsoftedge/overview" target="_blank" rel="noopener"  className="text-blue-600 hover:underline">Microsoft Partner Center</a></p>
+            <p className="text-gray-600">Register at <a href="https://partner.microsoft.com/dashboard/microsoftedge/overview" target="_blank" rel="noopener"  className="text-red-600 hover:underline">Microsoft Partner Center</a></p>
           </li>
           
           <li className="pb-3 border-b border-gray-100">
@@ -451,7 +451,7 @@ body {
         <ol className="space-y-3">
           <li className="pb-3 border-b border-gray-100">
             <p className="font-medium">1. Create an Opera developer account</p>
-            <p className="text-gray-600">Sign up at <a href="https://addons.opera.com/developer/" target="_blank" rel="noopener"  className="text-blue-600 hover:underline">Opera Add-ons Dashboard</a></p>
+            <p className="text-gray-600">Sign up at <a href="https://addons.opera.com/developer/" target="_blank" rel="noopener"  className="text-red-600 hover:underline">Opera Add-ons Dashboard</a></p>
           </li>
           
           <li className="pb-3 border-b border-gray-100">
@@ -504,7 +504,7 @@ body {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 ${activeTab === tab.id ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'}`}
+                className={`flex items-center px-4 py-2 text-sm font-medium border-b-2 ${activeTab === tab.id ? 'text-red-600 border-red-600' : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'}`}
               >
                 <span className="mr-1.5">{tab.icon}</span>
                 <span>{tab.name}</span>
@@ -557,14 +557,14 @@ body {
           <div className="flex border-b items-center m-auto justify-center">
             <button 
               onClick={() => setActiveStep(1)}
-              className={`py-2 px-4 text-sm font-medium border-b-2 ${activeStep === 1 ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
+              className={`py-2 px-4 text-sm font-medium border-b-2 ${activeStep === 1 ? 'text-red-600 border-red-600' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
             >
               Generate Extension
             </button>
             
             <button 
               onClick={() => setActiveStep(2)}
-              className={`py-2 px-4 text-sm font-medium border-b-2 ${activeStep === 2 ? 'text-blue-600 border-blue-600' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
+              className={`py-2 px-4 text-sm font-medium border-b-2 ${activeStep === 2 ? 'text-red-600 border-red-600' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
             >
               Publish to Store
             </button>

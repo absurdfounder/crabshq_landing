@@ -257,7 +257,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
           {/* Screenshot with improved presentation */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-red-100 to-blue-100 rounded-2xl transform rotate-1 scale-105 opacity-30 -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-red-100 to-red-100 rounded-2xl transform rotate-1 scale-105 opacity-30 -z-10"></div>
             <div className="relative overflow-hidden rounded-xl shadow-2xl border border-slate-200">
               <Image
                 src={filterBySlug.proof.screenshot}
@@ -283,7 +283,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
           <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition duration-300">
             <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-              <span className="bg-blue-100 text-blue-700 w-8 h-8 rounded-md flex items-center justify-center text-sm mr-3">2</span>
+              <span className="bg-red-100 text-red-700 w-8 h-8 rounded-md flex items-center justify-center text-sm mr-3">2</span>
               Features
             </h2>
             <p className="text-slate-700 leading-relaxed">{filterBySlug.howItWorks.content}</p>

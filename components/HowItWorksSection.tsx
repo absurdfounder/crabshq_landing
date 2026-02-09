@@ -21,7 +21,7 @@ export default function HowItWorksSection() {
         <div className="flex flex-col gap-8 md:gap-12">
           {/* Text content on top */}
           <div className="pt-12 pb-4 sm:pt-20 text-center lg:text-left">
-            <span className="font-silkscreen text-blue-600 mb-4 text-xs sm:text-lg">How it works</span>
+            <span className="font-silkscreen text-red-600 mb-4 text-xs sm:text-lg">How it works</span>
             <h2 className="mt-4 font-funneldisplay font-display text-balance text-2xl sm:text-3xl md:text-4xl text-slate-800">
             One home for all product knowledge
             </h2>

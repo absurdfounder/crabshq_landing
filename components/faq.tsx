@@ -146,7 +146,7 @@ const FAQ: React.FC = () => {
             Have a different question and can't find the answer you're looking for? Reach out to us by
             <a 
               href="mailto:vaibhav@crabshq.com" 
-              className="text-red-800 hover:text-blue-500 hover:underline px-2"
+              className="text-red-800 hover:text-red-500 hover:underline px-2"
               target="_blank" rel="noopener"  
               
             >

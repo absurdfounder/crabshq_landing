@@ -68,7 +68,7 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <ul className="flex flex-row gap-3">
+    <ul className="flex flex-col sm:flex-row gap-3">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
           {feature.icon}
@@ -144,19 +144,19 @@ export default function Hero({ onCategorySelect }: HeroProps) {
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Left: text content */}
-            <div className="flex-1 lg:max-w-full text-left p-4">
+            <div className="flex-1 lg:max-w-full text-left p-4 space-y-6">
               <div className="px-2 sm:px-4 md:px-6 lg:px-0">
                 <div className="hidden flex justify-start">
                   <ProductHuntBadge />
                 </div>
 
-                <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl lg:text-5xl max-w-3xl lg:max-w-none mb-2 sm:mb-2 md:mb-2 leading-tight font-funneldisplay tracking-loose text-slate-700 font-normal">
-                  <div className="block opacity-50 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
+                  <div className="block opacity-50">
                     <span className="reveal reveal__hello-1">Hello,</span>{" "}
                     <span className="reveal reveal__hello-2">We are</span>{" "}
                     <span className="reveal reveal__hello-3">Crabs.</span>
                   </div>
-                  <span className="block reveal reveal__usp mt-1 sm:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+                  <span className="block reveal reveal__usp mt-1 sm:mt-2">
                     AI workforce set on a mission, <span className='opacity-50'>powered by <span style={{ color: '#bc0010' }}>OpenClaw</span></span>.
                   </span>
                 </h1>
@@ -167,7 +167,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-start justify-start px-4 sm:px-0 lg:px-0">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-stretch justify-start px-0">
                 <Link
                   href="https://app.crabshq.com?ref=herolanding"
                   className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"

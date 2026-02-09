@@ -136,7 +136,7 @@ const BelieveLandingPage = () => {
             </a>
             
             <a 
-              className="flex items-center justify-center font-semibold gap-2 py-2 px-4 rounded-full transition-all duration-200 flex-shrink-0 cursor-pointer mx-[-1px] bg-blue-600 hover:bg-blue-700 text-white flex lg:hidden" 
+              className="flex items-center justify-center font-semibold gap-2 py-2 px-4 rounded-full transition-all duration-200 flex-shrink-0 cursor-pointer mx-[-1px] bg-red-600 hover:bg-red-700 text-white flex lg:hidden" 
               target="_blank" 
               href="https://apps.apple.com/us/app/believe/id6737437664"
             >

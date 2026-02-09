@@ -15,7 +15,7 @@ export default function CustomerStorySection() {
     >
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center lg:grid-cols-2">
       <div className={`${sectionXPadding} flex flex-col gap-6 py-12`}>
-        <div className="font-silkscreen text-xl text-blue-600">Customer Story</div>
+        <div className="font-silkscreen text-xl text-red-600">Customer Story</div>
         <blockquote className="font-funneldisplay text-2xl font-medium text-neutral-800 lg:text-3xl pr-4">
           &ldquo;CrabsHQ is by far the best support product I have ever used.&rdquo;
         </blockquote>

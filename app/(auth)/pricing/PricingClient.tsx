@@ -139,7 +139,7 @@ const comparisonCategories: ComparisonCategory[] = [
     {
         title: "Sites & Publishing",
         icon: FileText,
-        iconColor: "text-blue-500",
+        iconColor: "text-red-500",
         rows: [
             { feature: "Websites", personal: { text: "1" }, business: { text: "10" } },
             { feature: "Unlimited pages", personal: true, business: true },
@@ -165,7 +165,7 @@ const comparisonCategories: ComparisonCategory[] = [
     {
         title: "Team & Collaboration",
         icon: Users,
-        iconColor: "text-blue-500",
+        iconColor: "text-red-500",
         rows: [
             { feature: "Team members", personal: { text: "Limited" }, business: { text: "Unlimited" } },
             { feature: "Membership sites", personal: false, business: true },
@@ -470,7 +470,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
     // Base classes for the link structure and behavior
-    const baseClasses = "flex items-center justify-center py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative";
+    const baseClasses = "flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative";
 
     return (
         <Link
@@ -479,8 +479,8 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {/* Container for the flipping text - adjust height (e.g., h-5) if needed */}
-            <div className="relative overflow-hidden h-5">
+            {/* Container for the flipping text - responsive height */}
+            <div className="relative overflow-hidden h-6 sm:h-7 md:h-8 leading-tight">
                 {/* Initial Text */}
                 <div
                     style={{
@@ -694,15 +694,19 @@ const Pricing: React.FC = () => {
 
 
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8 relative">
                 <div className="mb-8">
-                    <div className="text-start mb-16">
-                        <h1 className="font-funneldisplay text-4xl md:text-5xl tracking-tight mb-6">
+                    <div className="text-start mb-12 sm:mb-16">
+                        <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight mb-4 sm:mb-6 leading-tight">
                             <span className="text-slate-800 block mb-2">
-                                Deploy <img src="favicon.ico" className="inline-block w-16 h-16 rounded-md align-middle mx-1" /> Crabs at your company
+                                <span className="inline-flex items-center justify-center gap-2">
+                                  <span>Deploy</span>
+                                  <img src="favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-md align-middle" />
+                                  <span>Crabs at your company</span>
+                                </span>
                             </span>
                         </h1>
-                        <p className="body-text max-w-2xl">
+                        <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
 
                         Never write another help article.
                         CrabsHQ customers save 20 hours a month on support and docs on average. Get started today with a 7-day free trial. No credit card required.
@@ -712,58 +716,58 @@ const Pricing: React.FC = () => {
                 </div>
 
                 {/* Pricing Cards */}
-                <div className="grid md:grid-cols-2 gap-6 max-w-7xl mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-7xl mb-12 sm:mb-16">
                     {pricingTiers.map((tier, index) => (
                         <motion.div
                             key={tier.name}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className={`relative bg-white rounded-xl shadow-lg border ${tier.highlight
+                            className={`relative bg-white rounded-lg sm:rounded-xl shadow-lg border ${tier.highlight
                                 ? 'border-red-400 shadow-xl transform md:scale-105'
                                 : 'border-slate-200'
                                 } overflow-hidden flex flex-col h-full`}
                         >
                             {tier.highlight && (
-                                <div className="bg-red-300 text-black text-center py-1 text-sm font-medium">
+                                <div className="bg-red-300 text-black text-center py-1 text-xs sm:text-sm font-medium">
                                     MOST POPULAR
                                 </div>
                             )}
 
-                            <div className="p-6 flex-grow">
-                                <div className="text-center mb-6">
-                                    <h3 className="text-lg font-semibold text-slate-700 mb-1">{tier.name}</h3>
+                            <div className="p-4 sm:p-6 flex-grow">
+                                <div className="text-center mb-4 sm:mb-6">
+                                    <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-1">{tier.name}</h3>
                                     <div className="flex items-baseline justify-center">
-                                        <span className="text-4xl font-bold text-slate-900">
+                                        <span className="text-3xl sm:text-4xl font-bold text-slate-900">
                                             ${activeTab === 'Yearly' ? (tier.yearlyPrice / 12).toFixed(2) : tier.monthlyPrice}
                                         </span>
-                                        <span className="text-slate-600 ml-1">/mo</span>
+                                        <span className="text-slate-600 ml-1 text-sm sm:text-base">/mo</span>
                                     </div>
                                     {activeTab === 'Yearly' && (
-                                        <p className="text-slate-500 text-sm mt-1">
+                                        <p className="text-slate-500 text-xs sm:text-sm mt-1">
                                             Billed annually at ${tier.yearlyPrice}
                                         </p>
                                     )}
-                                    <p className="text-slate-500 text-sm mt-1">
+                                    <p className="text-slate-500 text-xs sm:text-sm mt-1">
                                         {tier.trafficLimit} users/month
                                     </p>
                                 </div>
 
 
-                                <div className="mt-6">
-                                    <div className="font-medium text-slate-800 mb-4">What's included:</div>
-                                    <ul className="space-y-3">
+                                <div className="mt-4 sm:mt-6">
+                                    <div className="font-medium text-sm sm:text-base text-slate-800 mb-3 sm:mb-4">What's included:</div>
+                                    <ul className="space-y-2 sm:space-y-3">
                                         {tier.features.map((feature, i) => (
                                             <li key={i} className="flex items-start">
-                                                <Check className="h-5 w-5 text-green-500 flex-shrink-0 mr-3 mt-0.5" />
-                                                <span className="text-slate-600">{feature}</span>
+                                                <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0 mr-2 sm:mr-3 mt-0.5" />
+                                                <span className="text-xs sm:text-sm text-slate-600">{feature}</span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
                             </div>
 
-                            <div className="px-6 pb-6 mt-4">
+                            <div className="px-4 sm:px-6 pb-4 sm:pb-6 mt-4">
                                 {/* --- UPDATED TO USE FlippingButtonLink --- */}
                                 <FlippingButtonLink
                                     href="https://app.crabshq.com"
@@ -781,8 +785,8 @@ const Pricing: React.FC = () => {
                 </div>
 
                 {/* Comparison Table (desktop) */}
-                <div className="hidden lg:block mb-20">
-                    <h4 className="text-2xl font-bold text-slate-900 text-start mb-8">
+                <div className="hidden lg:block mb-12 sm:mb-20">
+                    <h4 className="text-xl sm:text-2xl font-bold text-slate-900 text-start mb-6 sm:mb-8">
                         Compare plans
                     </h4>
                     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">

@@ -49,7 +49,7 @@ export default function FeaturesBlocks() {
       }} />
       
       <div className="max-w-6xl w-full text-left px-4 sm:px-6">
-        <span className='font-silkscreen text-blue-600 mb-2 sm:mb-4 text-xs sm:text-sm md:text-base lg:text-lg block'>what's CrabsHQ ?</span>
+        <span className='font-silkscreen text-red-600 mb-2 sm:mb-4 text-xs sm:text-sm md:text-base lg:text-lg block'>what's CrabsHQ ?</span>
 
         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-gray-500 leading-relaxed mb-4 sm:mb-6 leading-tight font-funneldisplay tracking-loose mt-2 sm:mt-4">
           CrabsHQ <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md align-middle mx-1" />{' '}
@@ -67,7 +67,7 @@ export default function FeaturesBlocks() {
             >
               <div className={`w-6 h-6 sm:w-8 sm:h-8 border-2 font-bold rounded flex items-center justify-center flex-shrink-0 transition-colors duration-500 ${
                 index === highlightedIndex 
-                  ? 'bg-blue-50 border-blue-500' 
+                  ? 'bg-red-50 border-red-500' 
                   : ' border-gray-300'
               }`}>
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 16 16" fill="none">

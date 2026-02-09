@@ -37,11 +37,11 @@ const TabImageHotspots = () => {
       title: 'Helpdesk',
       image: 'https://dazzling-cat.netlify.app/marketingai.png',
       icon: <Users size={isMobile ? 16 : 20} />,
-      activeColor: 'bg-blue-100',
-      inactiveColor: 'bg-blue-50',
-      bgColor: 'bg-blue-100',
-      textColor: 'text-blue-800',
-      borderColor: 'border-blue-500',
+      activeColor: 'bg-red-100',
+      inactiveColor: 'bg-red-50',
+      bgColor: 'bg-red-100',
+      textColor: 'text-red-800',
+      borderColor: 'border-red-500',
       hotspots: [
 
       ]
@@ -331,8 +331,8 @@ const TabImageHotspots = () => {
                           ${isExtraSmall ? 'w-5 h-5' : isSmall ? 'w-6 h-6' : 'w-8 h-8'} 
                           rounded-full
                           ${activeHotspot === hotspot.id
-                            ? 'bg-blue-600 text-white scale-110'
-                            : 'bg-white text-blue-600 hover:bg-blue-100 shadow-md hover:scale-105'
+                            ? 'bg-red-600 text-white scale-110'
+                            : 'bg-white text-red-600 hover:bg-red-100 shadow-md hover:scale-105'
                           }`}
                         onClick={() => handleHotspotInteraction(hotspot.id)}
                         onMouseEnter={() => !isMobile && handleHotspotInteraction(hotspot.id)}

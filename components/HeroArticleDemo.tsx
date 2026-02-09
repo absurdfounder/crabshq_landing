@@ -220,7 +220,7 @@ export default function CrabsHQDemo() {
   tasks.forEach((t: Task) => { if (cols[t.col as keyof typeof COL_META]) cols[t.col as keyof typeof COL_META].push(t); });
 
   return (
-    <div style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div className="crabs-demo" style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
@@ -233,23 +233,9 @@ export default function CrabsHQDemo() {
         .crabs-scrollbar::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
         *{box-sizing:border-box}
         
-        /* Responsive Layout */
+        /* Hide on mobile and tablet */
         @media (max-width: 1024px) {
-          .crabs-sidebar { width: 120px !important; min-width: 120px !important; padding: 8px 0 !important; }
-          .crabs-sidebar span { font-size: 8px !important; }
-          .crabs-chat { width: 250px !important; min-width: 250px !important; }
-        }
-        
-        @media (max-width: 768px) {
-          .crabs-sidebar { display: none !important; }
-          .crabs-chat { display: none !important; }
-          .crabs-container { height: 280px !important; }
-          .crabs-kanban { padding: 8px !important; }
-        }
-        
-        @media (max-width: 640px) {
-          .crabs-container { height: 240px !important; }
-          .crabs-kanban { padding: 6px !important; gap: 4px !important; }
+          .crabs-demo { display: none !important; }
         }
       `}</style>
 

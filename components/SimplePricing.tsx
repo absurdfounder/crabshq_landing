@@ -20,7 +20,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const baseClasses = 'flex items-center justify-center py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative';
+  const baseClasses = 'flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-xs sm:text-sm md:text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative';
 
   return (
     <Link
@@ -29,8 +29,9 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative overflow-hidden h-5">
+      <div className="relative overflow-hidden h-6 sm:h-7 md:h-8 leading-tight">
         <div
+          className="w-full text-center"
           style={{
             transform: isHovered ? 'translateY(-100%)' : 'translateY(0)',
             transition: 'transform 0.3s ease-in-out',
@@ -63,14 +64,18 @@ export default function SimplePricing() {
   ];
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-white py-8 sm:py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Deploy <img src="/favicon.ico" className="inline-block w-14 h-14 rounded-md align-middle mx-1" /> Crabs at your company
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 sm:mb-4 leading-tight">
+            <span className="inline-flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
+              <span>Deploy</span>
+              <img src="/favicon.ico" className="hidden sm:inline-block w-8 h-8 sm:w-14 sm:h-14 rounded-md align-middle" alt="logo" />
+              <span>Crabs at your company</span>
+            </span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg px-2">
             Never write another help article. CrabsHQ customers save 20 hours a month on support and docs on average. Get started today with a 7-day free trial. No credit card required.
           </p>
         </div>
@@ -80,26 +85,26 @@ export default function SimplePricing() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden flex flex-col w-full max-w-md"
+            className="bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden flex flex-col w-full max-w-md mx-4 sm:mx-auto"
           >
-            <div className="p-8 flex-grow">
+            <div className="p-4 sm:p-6 md:p-8 flex-grow">
               {/* Price */}
-              <div className="text-center mb-8">
-                <div className="flex items-baseline justify-center">
-                  <span className="text-5xl font-bold text-slate-900">
+              <div className="text-center mb-6 sm:mb-7 md:mb-8">
+                <div className="flex items-baseline justify-center flex-wrap gap-2">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
                     ${monthlyPrice}
                   </span>
-                  <span className="text-slate-600 ml-2">/ month</span>
+                  <span className="text-slate-600 text-sm sm:text-base">/ month</span>
                 </div>
               </div>
 
               {/* Features */}
-              <div className="mt-8">
-                <ul className="space-y-4">
+              <div className="mt-6 sm:mt-7 md:mt-8">
+                <ul className="space-y-3 sm:space-y-4">
                   {features.map((feature, i) => (
-                    <li key={i} className="flex items-center">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mr-3" />
-                      <span className="text-slate-700">{feature}</span>
+                    <li key={i} className="flex items-start sm:items-center">
+                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0 mr-2 sm:mr-3 mt-0.5 sm:mt-0" />
+                      <span className="text-sm sm:text-base text-slate-700">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -107,7 +112,7 @@ export default function SimplePricing() {
             </div>
 
             {/* CTA Button */}
-            <div className="px-8 pb-8">
+            <div className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8">
               <FlippingButtonLink
                 href="https://app.crabshq.com"
                 initialText="Get started - free"

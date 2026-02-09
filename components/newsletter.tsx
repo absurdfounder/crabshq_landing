@@ -28,7 +28,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   // Note: Original button used 'btn' class which might imply specific base styles.
   // We use flexbox for centering and pass other styles via className.
   // Adjust padding/height as needed to match 'btn' style if necessary.
-  const baseClasses = "flex items-center justify-center py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 relative";
+  const baseClasses = "flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 relative";
 
   return (
     <Link
@@ -39,8 +39,8 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
       target={target} // Pass target
       rel={rel}       // Pass rel
     >
-      {/* Container for the flipping text - adjust height (e.g., h-7) based on font size (text-2xl) */}
-      <div className="relative overflow-hidden h-7"> {/* Increased height for larger text */}
+      {/* Container for the flipping text - adjust height based on font size */}
+      <div className="relative overflow-hidden h-6 sm:h-7 md:h-8 leading-tight"> {/* Responsive height for text */}
         {/* Initial Text */}
         <div
           style={{
@@ -83,12 +83,12 @@ export default function Newsletter() {
 
   return (
     <section className='bg-white'>
-      <div className="max-w-7xl mx-auto px-1 sm:px-6 lg:px-1 newsletter-section">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 newsletter-section">
         <div className="pb-12 md:pb-20">
 
           {/* CTA box */}
           <div
-            className="relative py-10 px-8 md:py-16 md:px-12 overflow-hidden rounded-2xl my-8 border"
+            className="relative py-8 px-6 sm:px-8 md:py-16 md:px-12 overflow-hidden rounded-2xl my-8 border"
             style={{
               backgroundImage: 'linear-gradient(rgb(0 0 0 / 72%), rgb(0 0 0 / 51%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)',
               backgroundSize: 'cover',
@@ -109,25 +109,24 @@ export default function Newsletter() {
 
               {/* CTA content */}
               <div className="text-center lg:text-left lg:max-w-xl">
-                <h3 className="h2 text-slate-100 my-2">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 my-2 leading-tight">
                   Try the <span style={{ color: '#f9551f' }}>alien tech</span> in your company.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
-                {/* <h3 className="h2 text-slate-100 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
-                <p className="h5 font-normal text-slate-100/75 my-2">
+                {/* <h3 className="text-slate-100 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
+                <p className="text-sm sm:text-base font-normal text-slate-100/75 my-2">
                   Outdated posts are wasting time, money and affecting your reputation. Let CrabsHQ run your Helpdesk & Blog on pure automations.
                 </p>
 
                 {/* CTA form */}
-                <form className="w-full lg:w-auto mt-4">
-                  <div className="flex flex-col sm:flex-row max-w-xs mx-auto sm:max-w-md lg:mx-0">
+                <form className="w-full lg:w-auto mt-6">
+                  <div className="flex flex-col sm:flex-row gap-3 max-w-xs mx-auto sm:max-w-none lg:mx-0 lg:gap-2">
                     {/* --- UPDATED CTA Button --- */}
                     <FlippingButtonLink
                       href="https://app.crabshq.com"
                       initialText="Get started - free"
-                      hoverText="in just 15 mins" // Customize hover text if needed
-                      // Removed flex items-center justify-center as base class handles it
-                      className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0"
+                      hoverText="in just 15 mins"
+                      className="text-dark bg-red-300 hover:bg-red-700 hover:text-red-100 w-full sm:w-auto whitespace-nowrap"
                     />
                     {/* --- END OF UPDATE --- */}
 
@@ -135,7 +134,7 @@ export default function Newsletter() {
                     {/* <Link href="https://app.crabshq.com" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
 
                     {/* Original Subscribe button (commented out in user code) */}
-                    {/* <button type="submit" className="btn text-white bg-blue-600 hover:bg-blue-700 shadow" href="#0">Subscribe</button> */}
+                    {/* <button type="submit" className="btn text-white bg-red-600 hover:bg-red-700 shadow" href="#0">Subscribe</button> */}
                   </div>
                   {/* Success message (commented out in user code) */}
                   {/* <p className="text-sm text-gray-400 mt-3">Thanks for subscribing!</p> */}

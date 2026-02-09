@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Fragment } from 'react';
 import { Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
@@ -70,34 +70,34 @@ export default function MobileMenu() {
         </svg>
       </button>
 
-      {/* Mobile navigation */}
-      <Transition
-        show={mobileNavOpen}
-        as="div"
-        ref={mobileNav}
-        className="fixed inset-0 z-50 md:hidden"
-      >
-        {/* Background overlay */}
-        <div 
-          className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"
-          onClick={() => {
-            setMobileNavOpen(false);
-            setDropdownOpen(false);
-          }}
-        />
+      {/* Mobile navigation overlay and panel */}
+      <Transition show={mobileNavOpen} as={Fragment}>
+        {mobileNavOpen && (
+          <div className="fixed inset-0 z-50 md:hidden">
+            {/* Background overlay */}
+            <div
+              className=" inset-0 bg-white backdrop-blur-sm z-40"
+              onClick={() => {
+                setMobileNavOpen(false);
+                setDropdownOpen(false);
+              }}
+            />
 
-        <Transition.Child
-          as="nav"
-          id="mobile-nav"
-          className="absolute top-0 left-0 w-full h-full overflow-y-auto bg-white shadow-lg pt-16 pb-8"
-          enter="transition ease-out duration-300 transform"
-          enterFrom="opacity-0 -translate-y-full"
-          enterTo="opacity-100 translate-y-0"
-          leave="transition ease-in duration-200 transform"
-          leaveFrom="opacity-100 translate-y-0"
-          leaveTo="opacity-0 -translate-y-full"
-        >
-          <ul className="px-5 py-4 space-y-4">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-out duration-300 transform"
+              enterFrom="opacity-0 -translate-y-6"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-200 transform"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 -translate-y-6"
+            >
+              <nav
+                ref={mobileNav}
+                id="mobile-nav"
+                className="overflow-y-auto bg-white shadow-lg pb-8 flex flex-col"
+              >
+                <ul className="px-5 py-4 space-y-4 pt-16">
             {/* Website Examples */}
             <li>
               <Link href="/showcase" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2">
@@ -270,8 +270,11 @@ export default function MobileMenu() {
                 </svg>
               </Link>
             </li>
-          </ul>
-        </Transition.Child>
+                </ul>
+              </nav>
+            </Transition.Child>
+          </div>
+        )}
       </Transition>
     </div>
   );

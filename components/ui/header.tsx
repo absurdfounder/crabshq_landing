@@ -86,7 +86,7 @@ export default function Header() {
       <header
         className={`w-full z-30 transition-all duration-300 ease-in-out w-full fixed top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-gray-100 px-4 md:px-6 ${!top ? 'bg-none' : ''}`}
       >
-        <div className="max-w-7xl mx-auto py-2 px-4 sm:py-2.5 sm:px-6">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:py-2.5 sm:px-6">
           <div className="flex items-center justify-between h-11 sm:h-12 md:h-12">
             {/* Logo */}
             <div className='flex items-center'>
@@ -174,8 +174,8 @@ export default function Header() {
 
                               <DropdownLink
                                 href="/features/browser-control"
-                                iconColor="text-blue-500"
-                                bgColor="bg-blue-50"
+                                iconColor="text-red-500"
+                                bgColor="bg-red-50"
                                 icon={Globe}
                                 title="Browser Control"
                                 description="Navigate web, fill forms, extract data"
@@ -234,8 +234,8 @@ export default function Header() {
 
                               <DropdownLink
                                 href="/integration"
-                                iconColor="text-blue-500"
-                                bgColor="bg-blue-50"
+                                iconColor="text-red-500"
+                                bgColor="bg-red-50"
                                 icon={Zap}
                                 title="Integrations"
                                 description="GitHub, Gmail, Notion, APIs & more"
@@ -311,10 +311,7 @@ export default function Header() {
               <TabletMenu />
             </div>
 
-            {/* Mobile menu */}
-            <div className="block md:hidden">
-              <MobileMenu />
-            </div>
+
           </div>
         </div>
       </header>
