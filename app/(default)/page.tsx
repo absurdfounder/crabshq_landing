@@ -1,26 +1,48 @@
 export const metadata = {
   metadataBase: new URL('https://crabshq.com'),
-  title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
-  description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
+  title: 'Crabs HQ: AI Workforce Powered by OpenClaw | GitHub Integration',
+  description: 'Build AI workforce teams with OpenClaw AI. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs. From the creators of ClawdBot and MoltBot.',
+  alternates: {
+    canonical: 'https://crabshq.com',
+  },
   openGraph: {
+    title: 'Crabs HQ: AI Workforce Platform Built on OpenClaw GitHub',
+    description: 'Deploy AI workforce teams powered by OpenClaw AI. ClawdBot evolution for teams—GitHub commits, autonomous execution, persistent memory.',
+    url: 'https://crabshq.com',
+    siteName: 'Crabs HQ',
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
+        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
         width: 1200,
         height: 630,
-        alt: "Notion to Helpdesk , Notion to Directory , Notion to Blog",
+        alt: "Crabs HQ - OpenClaw AI Workforce Platform with GitHub Integration",
       },
     ],
+    locale: 'en_US',
+    type: 'website',
   },
   twitter: {
     card: "summary_large_image",
+    title: 'Crabs HQ: OpenClaw AI Workforce for Teams',
+    description: 'Scale your ClawdBot into a full AI workforce. Multiple OpenClaw AI employees working together—GitHub integration, autonomous execution.',
+    site: '@Crabs_HQ',
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-        alt: "Notion to Helpdesk , Notion to Directory , Notion to Blog",
+        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+        alt: "Crabs HQ - OpenClaw GitHub AI Workforce Platform",
       },
     ],
   },
+  keywords: [
+    'openclaw ai',
+    'github openclaw',
+    'openclaw github',
+    'openclaw clawdbot',
+    'clawdbot openclaw',
+    'clawdbot',
+    'moltbot',
+    'ai workforce',
+  ],
 }
 
 import Hero from '@/components/hero'

@@ -111,7 +111,7 @@ export default function HowtoDocs() {
 
                     >                      <img
                         src="https://dazzling-cat.netlify.app/notion%20to%20website.png"
-                        alt="Notion to Website"
+                        alt="OpenClaw AI Workforce"
                         className="w-full h-auto rounded-lg object-cover"
                       />
                     </div>

@@ -36,22 +36,22 @@ export const viewport = {
 
 export const metadata = {
   metadataBase: new URL('https://crabshq.com'),
-  title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
-  description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
+  title: 'Crabs HQ: AI Workforce Powered by OpenClaw | GitHub Integration',
+  description: 'Build AI workforce teams with OpenClaw AI. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs. From the creators of ClawdBot and MoltBot.',
   alternates: {
     canonical: 'https://crabshq.com',
   },
   openGraph: {
-    title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
-    description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
+    title: 'Crabs HQ: AI Workforce Platform Built on OpenClaw GitHub',
+    description: 'Deploy AI workforce teams powered by OpenClaw AI. ClawdBot evolution for teams—GitHub commits, autonomous execution, persistent memory. Real work, not just answers.',
     url: 'https://crabshq.com',
-    siteName: 'Wonder',
+    siteName: 'Crabs HQ',
     images: [
       {
-        url: 'https://dazzling-cat.netlify.app/WonderSites_socialshare.png',
+        url: 'https://dazzling-cat.netlify.app/crabshq_social.png',
         width: 1200,
         height: 630,
-        alt: 'Get a Marketplace with Notion',
+        alt: 'Crabs HQ - AI Workforce Powered by OpenClaw AI and ClawdBot',
       },
     ],
     locale: 'en_US',
@@ -59,12 +59,12 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wonder: Notion to Blog, Helpdesk & Directory Sites (NoCode & SEO)',
-    description: 'Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!',
+    title: 'Crabs HQ: OpenClaw AI Workforce for Teams | GitHub OpenClaw',
+    description: 'Scale your ClawdBot into a full AI workforce. Multiple OpenClaw AI employees working together—GitHub integration, autonomous execution, MoltBot evolution.',
     images: [
       {
-        url: 'https://dazzling-cat.netlify.app/WonderSites_socialshare.png',
-        alt: 'Get a Marketplace with Notion',
+        url: 'https://dazzling-cat.netlify.app/crabshq_social.png',
+        alt: 'Crabs HQ - OpenClaw GitHub AI Workforce Platform',
       },
     ],
     site: '@Crabs_HQ',
@@ -75,6 +75,18 @@ export const metadata = {
   },
   manifest: '/manifest.json',
   themeColor: '#ffffff',
+  keywords: [
+    'openclaw ai',
+    'github openclaw',
+    'openclaw github',
+    'openclaw clawdbot',
+    'clawdbot openclaw',
+    'clawdbot',
+    'moltbot',
+    'ai workforce',
+    'openclaw team',
+    'ai employees',
+  ],
 }
 
 export default function RootLayout({

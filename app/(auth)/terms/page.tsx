@@ -3,35 +3,36 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-    title: 'Crabs HQ Terms of Service', // More specific title
-    description: 'Terms of Service for using Crabs HQ (crabshq.com)', // More specific description
+    title: 'Crabs HQ Terms of Service | OpenClaw AI Workforce Platform',
+    description: 'Terms of Service for Crabs HQ - legal terms governing the use of our OpenClaw-powered AI workforce platform, GitHub integrations, and ClawdBot services.',
     alternates: {
         canonical: "https://crabshq.com/terms",
-      },
+    },
     openGraph: {
-        title: 'Crabs HQ Terms of Service', // Consistent title
-        description: 'Read the terms governing your use of the Crabs HQ platform.', // Specific OG description
-        url: "https://crabshq.com/terms", // Add URL
-        siteName: 'Crabs HQ', // Add site name
+        title: 'Terms of Service - Crabs HQ',
+        description: 'Legal terms governing the use of Crabs HQ AI workforce platform powered by OpenClaw AI and GitHub OpenClaw.',
+        url: "https://crabshq.com/terms",
+        siteName: 'Crabs HQ',
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
+                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ - Notion to Website", // More relevant alt text
+                alt: "Crabs HQ - OpenClaw AI Workforce Platform",
             },
         ],
-        locale: 'en_US', // Optional: Specify locale
+        locale: 'en_US',
         type: 'website',
     },
     twitter: {
         card: "summary_large_image",
-        title: 'Crabs HQ Terms of Service', // Consistent title
-        description: 'Read the terms governing your use of the Crabs HQ platform.', // Specific Twitter description
+        title: 'Terms of Service - Crabs HQ',
+        description: 'Legal terms governing the use of Crabs HQ AI workforce platform powered by OpenClaw AI.',
+        site: '@Crabs_HQ',
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-                alt: "Crabs HQ - Notion to Website", // More relevant alt text
+                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                alt: "Crabs HQ - OpenClaw AI Workforce Platform",
             },
         ],
     },

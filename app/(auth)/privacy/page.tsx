@@ -3,41 +3,39 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Crabs HQ Privacy Policy', // Slightly more descriptive title
-  description: 'Privacy Policy for Crabs HQ (crabshq.com)', // Slightly more descriptive
+  title: 'Crabs HQ Privacy Policy | OpenClaw AI Workforce Platform',
+  description: 'Privacy Policy for Crabs HQ - how we handle your data in our OpenClaw-powered AI workforce platform. Learn about data collection, storage, and your rights.',
   alternates: {
     canonical: "https://crabshq.com/privacy",
   },
   openGraph: {
-    title: 'Crabs HQ Privacy Policy', // Consistent title
-    description: 'How Crabs HQ handles your personal information.', // Specific OG description
-    url: "https://crabshq.com/privacy", // Add URL
-    siteName: 'Crabs HQ', // Add site name
+    title: 'Privacy Policy - Crabs HQ',
+    description: 'How Crabs HQ protects your data while running AI workforce teams with OpenClaw AI, ClawdBot, and GitHub integrations.',
+    url: "https://crabshq.com/privacy",
+    siteName: 'Crabs HQ',
     images: [
-        {
-            url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-            width: 1200,
-            height: 630,
-            alt: "Crabs HQ - Notion to Website", // More relevant alt text
-        },
+      {
+        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+        width: 1200,
+        height: 630,
+        alt: "Crabs HQ - OpenClaw AI Workforce Platform",
+      },
     ],
-    locale: 'en_US', // Optional: Specify locale
-    type: 'website', // Changed from 'article' to 'website' or 'article' if preferred
-},
-twitter: {
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
     card: "summary_large_image",
-    title: 'Crabs HQ Privacy Policy', // Consistent title
-    description: 'How Crabs HQ handles your personal information.', // Specific Twitter description
-    // siteId: '@YourTwitterHandle', // Optional: Add Twitter handle ID
-    // creator: '@YourTwitterHandle', // Optional: Add creator handle
-    // creatorId: 'YourTwitterID', // Optional: Add creator ID
-    images: [ // Twitter uses 'images' array like openGraph
-        {
-            url: "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
-            alt: "Crabs HQ - Notion to Website", // More relevant alt text
-        },
+    title: 'Privacy Policy - Crabs HQ',
+    description: 'How Crabs HQ protects your data while running AI workforce teams with OpenClaw AI.',
+    site: '@Crabs_HQ',
+    images: [
+      {
+        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+        alt: "Crabs HQ - OpenClaw AI Workforce Platform",
+      },
     ],
-},
+  },
 };
 
 export default function PrivacyPolicyPage() { // Renamed component for clarity
