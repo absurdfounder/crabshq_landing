@@ -699,7 +699,7 @@ const Pricing: React.FC = () => {
                     <div className="text-start mb-16">
                         <h1 className="font-funneldisplay text-4xl md:text-5xl tracking-tight mb-6">
                             <span className="text-slate-800 block mb-2">
-                                Setup <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-12 h-12 rounded-md align-middle mx-1" /> CrabsHQ at your company
+                                Setup <img src="favicon.ico" className="inline-block w-12 h-12 rounded-md align-middle mx-1" /> CrabsHQ at your company
                             </span>
                         </h1>
                         <p className="body-text max-w-2xl">
@@ -959,17 +959,7 @@ const Pricing: React.FC = () => {
 
 
 
-                {/* FAQ Section */}
-                <FAQSection />
 
-                {/* Testimonials and Rating */}
-                <div className="mt-20">
-                    <Rating />
-                </div>
-
-                <div className="mt-20">
-                    <Testimonials />
-                </div>
             </div>
         </div>
     );
