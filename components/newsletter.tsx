@@ -122,12 +122,12 @@ export default function Newsletter() {
                 <form className="w-full lg:w-auto mt-6">
                   <div className="flex flex-col sm:flex-row gap-3 max-w-xs mx-auto sm:max-w-none lg:mx-0 lg:gap-2">
                     {/* --- UPDATED CTA Button --- */}
-                    <FlippingButtonLink
+                    <Link
                       href="https://app.crabshq.com"
-                      initialText="Get started - free"
-                      hoverText="in just 15 mins"
-                      className="text-dark bg-red-300 hover:bg-red-700 hover:text-red-100 w-full sm:w-auto whitespace-nowrap"
-                    />
+                      className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg text-dark bg-red-300 hover:bg-red-700 hover:text-red-100 w-full sm:w-auto whitespace-nowrap"
+                    >
+                      Get started for free
+                    </Link>
                     {/* --- END OF UPDATE --- */}
 
                     {/* Original button commented out for reference */}

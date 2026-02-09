@@ -113,12 +113,12 @@ export default function SimplePricing() {
 
             {/* CTA Button */}
             <div className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8">
-              <FlippingButtonLink
+              <Link
                 href="https://app.crabshq.com"
-                initialText="Get started - free"
-                hoverText="in under 15 mins"
-                className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
-              />
+                className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-xs sm:text-sm md:text-base bg-red-600 hover:bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-full"
+              >
+                Get started - free
+              </Link>
             </div>
           </motion.div>
         </div>
