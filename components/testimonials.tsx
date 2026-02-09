@@ -49,7 +49,7 @@ const testimonials: Testimonial[] = [
     content:
       "First I downgraded my old site builder to the free plan. Then I stopped using it entirely.",
     additionalContent:
-      "What am I using now?\n\nThis thing called Wonder (crabshq.com) 🎉\n\nAfter trying it for half an hour I upgraded to a paid plan—and I really really like it.",
+      "What am I using now?\n\nThis thing called CrabsHQ (crabshq.com) 🎉\n\nAfter trying it for half an hour I upgraded to a paid plan—and I really really like it.",
     platform: "linkedin",
     category: ["All", "Product Docs", "Marketplace"]
   },
@@ -57,14 +57,14 @@ const testimonials: Testimonial[] = [
     name: "Annie Hwang",
     avatar: "https://framerusercontent.com/images/Y9stNCmCgju1PW4P2VKfoBK4Q.jpeg",
     content:
-      "The customization in Wonder is awesome. My product pages always look super fun and match Jemi's brand.",
+      "The customization in CrabsHQ is awesome. My product pages always look super fun and match Jemi's brand.",
     category: ["All", "Product Docs", "Blog"]
   },
   {
     name: "Ben Barrett-Forrest",
     avatar: "https://framerusercontent.com/images/VA5C0bceopw0oYN50h8gv6aP4.jpeg",
     content:
-      "I was up and running with Wonder in literally 2 minutes. I love how simple it is to launch landing pages. Would highly recommend!",
+      "I was up and running with CrabsHQ in literally 2 minutes. I love how simple it is to launch landing pages. Would highly recommend!",
     category: ["All", "Helpdesk", "Directory"]
   },
   {
@@ -89,7 +89,7 @@ const testimonials: Testimonial[] = [
     name: "Raffaele Gaito",
     avatar: "https://framerusercontent.com/images/D6HX35QUEaWpRufse6kuiDm3fo.png",
     content:
-      "I love Wonder, it's a platform that has incredibly sped up my site creation speed. If I'm growing quickly on YouTube, I owe it also to Wonder.",
+      "I love Wonder, it's a platform that has incredibly sped up my site creation speed. If I'm growing quickly on YouTube, I owe it also to CrabsHQ.",
     category: ["All", "Helpdesk", "Marketplace"]
   },
   {
@@ -106,7 +106,7 @@ const testimonials: Testimonial[] = [
     handle: "martin-cregut",
     avatar: "https://framerusercontent.com/images/MkF6kIsOTqaahIQbedhHEcGmM.jpeg",
     content:
-      "Wonder c'est Webflow en 100x plus intuitif, 100x plus beau et 100x plus vaste.",
+      "CrabsHQ c'est Webflow en 100x plus intuitif, 100x plus beau et 100x plus vaste.",
     platform: "linkedin",
     category: ["All", "Blog", "Marketplace"]
   },
@@ -124,7 +124,7 @@ const testimonials: Testimonial[] = [
     handle: "@simondela",
     avatar: "https://framerusercontent.com/images/tjmtGfBi6yjVmhqy5ZLuzQTm6E.png",
     content:
-      "One more vote for @Crabs_HQ! Have been using other builders for 3 years now and Wonder just kicks them out of the market imo.",
+      "One more vote for @Crabs_HQ! Have been using other builders for 3 years now and CrabsHQ just kicks them out of the market imo.",
     platform: "twitter",
     category: ["All", "Helpdesk", "Product Docs"]
   },

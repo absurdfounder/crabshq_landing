@@ -14,7 +14,7 @@ export default function OldWays() {
       tag: "No Hosting Hassles",
       title: "Your content",
       highlight: "lives inside Notion or Github",
-      description: "Your work stays in a place you control and love, while Wonder handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
+      description: "Your work stays in a place you control and love, while CrabsHQ handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
       image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
       alt: "Write on Notion"
     },
@@ -30,7 +30,7 @@ export default function OldWays() {
       tag: "Paid Subscribers",
       title: "Membership for",
       highlight: "paid subscribers.",
-      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside Wonder without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
+      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside CrabsHQ without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
       image: "https://dazzling-cat.netlify.app/notion%20to%20website.png",
       alt: "Notion to Website"
     },
@@ -38,7 +38,7 @@ export default function OldWays() {
       tag: "In-built",
       title: "In-built",
       highlight: "analytics",
-      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. Wonder provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
+      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. CrabsHQ provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
       image: "https://dazzling-cat.netlify.app/analyticsseo.png",
       alt: "Analytics SEO"
     },
@@ -54,7 +54,7 @@ export default function OldWays() {
       tag: "Integrates with",
       title: "Integrates with",
       highlight: "your existing apps",
-      description: "Wonder integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Crabs HQ? We got you covered.",
+      description: "CrabsHQ integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Crabs HQ? We got you covered.",
       image: "https://dazzling-cat.netlify.app/integrationsdb.png",
       alt: "Integrations DB"
     }
@@ -179,7 +179,7 @@ export default function OldWays() {
                         {card.tag}
                       </p>
                       <h3 className="text-xl sm:text-2xl lg:text-3xl font-funneldisplay font-bold tracking-tight text-slate-900 mt-3 sm:mt-4">
-                        {card.title} <span className="font-normal text-orange-600">{card.highlight}</span>
+                        {card.title} <span className="font-normal text-red-600">{card.highlight}</span>
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mt-4 leading-relaxed">
                         {card.description}

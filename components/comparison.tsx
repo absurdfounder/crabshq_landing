@@ -49,15 +49,15 @@ const WonderComparison: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-pink-50 py-16 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-50 py-16 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            <span className="text-orange-500">All-in-One</span> vs Integration Hell
+            <span className="text-red-500">All-in-One</span> vs Integration Hell
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See how WONDER stacks up against other AI app-building platforms
+            See how CrabsHQ stacks up against other AI app-building platforms
           </p>
         </div>
 
@@ -95,15 +95,15 @@ const WonderComparison: React.FC = () => {
             </div>
           </div>
 
-          {/* WONDER */}
+          {/* CrabsHQ */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full -translate-y-16 translate-x-16 opacity-10"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500 to-pink-500 rounded-full -translate-y-16 translate-x-16 opacity-10"></div>
             
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                <Sparkles className="w-5 h-5 text-orange-500" />
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                <Sparkles className="w-5 h-5 text-red-500" />
               </div>
-              <h2 className="text-2xl font-bold text-orange-500">WONDER</h2>
+              <h2 className="text-2xl font-bold text-red-500">WONDER</h2>
             </div>
 
             <div className="space-y-4">
@@ -121,10 +121,10 @@ const WonderComparison: React.FC = () => {
               })}
             </div>
 
-            <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
+            <div className="mt-6 p-4 bg-red-50 rounded-lg border border-red-200">
               <div className="flex items-center">
-                <Sparkles className="w-5 h-5 text-orange-500 mr-2" />
-                <span className="text-sm font-medium text-orange-700">Everything you need, ready to use instantly</span>
+                <Sparkles className="w-5 h-5 text-red-500 mr-2" />
+                <span className="text-sm font-medium text-red-700">Everything you need, ready to use instantly</span>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ const WonderComparison: React.FC = () => {
 
         {/* Bottom CTA */}
         <div className="text-center">
-          <div className="inline-flex items-center px-6 py-3 bg-orange-500 text-white rounded-full font-medium shadow-lg hover:bg-orange-600 transition-colors cursor-pointer">
+          <div className="inline-flex items-center px-6 py-3 bg-red-500 text-white rounded-full font-medium shadow-lg hover:bg-red-600 transition-colors cursor-pointer">
             <Clock className="w-5 h-5 mr-2" />
             Stop wasting time on integrations
           </div>

@@ -17,7 +17,7 @@ export default function CustomerStorySection() {
       <div className={`${sectionXPadding} flex flex-col gap-6 py-12`}>
         <div className="font-silkscreen text-xl text-blue-600">Customer Story</div>
         <blockquote className="font-funneldisplay text-2xl font-medium text-neutral-800 lg:text-3xl pr-4">
-          &ldquo;Wonder is by far the best support product I have ever used.&rdquo;
+          &ldquo;CrabsHQ is by far the best support product I have ever used.&rdquo;
         </blockquote>
         <div className="flex flex-col gap-1">
           <div className="font-medium text-neutral-800">Tristan Roth</div>

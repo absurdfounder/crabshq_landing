@@ -12,11 +12,11 @@
       },
       {
         "type": "paragraph",
-        "text": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allows you to embed Arcade interactive demos into your Wonder documentation."
+        "text": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allows you to embed Arcade interactive demos into your CrabsHQ documentation."
       },
       {
         "type":"paragraph",
-        "text":"Arcade is a powerful tool for creating interactive product demos. It allows you to Get a series of interactive steps that guide users through your product. You can embed these interactive demos directly into your Wonder documentation, making it easy for users to learn how to use your product."
+        "text":"Arcade is a powerful tool for creating interactive product demos. It allows you to Get a series of interactive steps that guide users through your product. You can embed these interactive demos directly into your CrabsHQ documentation, making it easy for users to learn how to use your product."
       }
       ,
       {
@@ -30,7 +30,7 @@
       },
       {
         "type": "paragraph",
-        "text": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the Wonder editor. The app will turn the link into an Arcade embed showing your recorded demo."
+        "text": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the CrabsHQ editor. The app will turn the link into an Arcade embed showing your recorded demo."
       },
       {
         "type": "list",
@@ -55,7 +55,7 @@
       },
       {
         "type": "paragraph",
-        "text": "To Create a free account with Arcade, you'll need to create an account and record your first demo. Once you've recorded your demo, you can embed it into your Wonder documentation."
+        "text": "To Create a free account with Arcade, you'll need to create an account and record your first demo. Once you've recorded your demo, you can embed it into your CrabsHQ documentation."
       },
       
       {

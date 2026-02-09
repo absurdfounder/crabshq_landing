@@ -9,7 +9,7 @@ const TemplateDesign = () => {
     {
       title: "Your content",
       highlight: "lives in Notion",
-      description: "Your work stays in a place you control and love, while Wonder  handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
+      description: "Your work stays in a place you control and love, while CrabsHQ  handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
       image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
       alt: "Content in Notion",
       imageFirst: false
@@ -17,7 +17,7 @@ const TemplateDesign = () => {
     {
       title: "Customize to",
       highlight: "your brand",
-      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside Wonder  without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
+      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside CrabsHQ  without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
       image: "https://dazzling-cat.netlify.app/notion%20to%20website.png",
       alt: "Customizable design templates",
       imageFirst: true
@@ -25,7 +25,7 @@ const TemplateDesign = () => {
     {
       title: "World-class",
       highlight: "Performance",
-      description: "Pages load instantly anywhere in the world giving your site visitors a pleasant and snappy experience—they'll never close the page for taking too long to load. On average Wonder  Sites perform better than any industry leading website builder. We use NextJs, Vercel and Google Cloud for your websites. You can scale to 100 million monthly active users with this stack.",
+      description: "Pages load instantly anywhere in the world giving your site visitors a pleasant and snappy experience—they'll never close the page for taking too long to load. On average CrabsHQ perform better than any industry leading website builder. We use NextJs, Vercel and Google Cloud for your websites. You can scale to 100 million monthly active users with this stack.",
       image: "https://dazzling-cat.netlify.app/performancewebsite.png",
       alt: "Fast website performance metrics",
       imageFirst: false
@@ -33,7 +33,7 @@ const TemplateDesign = () => {
     {
       title: "In-built",
       highlight: "analytics",
-      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. Wonder  provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
+      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. CrabsHQ  provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
       image: "https://dazzling-cat.netlify.app/analyticsseo.png",
       alt: "Website analytics dashboard",
       imageFirst: true
@@ -41,7 +41,7 @@ const TemplateDesign = () => {
     {
       title: "Integrates with",
       highlight: "your existing apps",
-      description: "Wonder integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Wonder  Sites? We got you covered.",
+      description: "CrabsHQ integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to CrabsHQ? We got you covered.",
       image: "https://dazzling-cat.netlify.app/integrationsdb.png",
       alt: "App integrations",
       imageFirst: true
@@ -53,7 +53,7 @@ const TemplateDesign = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            Powerful features with <span className="text-orange-600">simplicity in mind</span>
+            Powerful features with <span className="text-red-600">simplicity in mind</span>
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Everything you need to create, publish, and grow your web presence - without the complexity
@@ -78,7 +78,7 @@ const TemplateDesign = () => {
                     unoptimized
                   />
                 </div>
-                <div className="absolute -z-10 top-0 left-0 w-full h-full bg-orange-100 rounded-2xl transform rotate-3 translate-x-4 translate-y-6 opacity-30"></div>
+                <div className="absolute -z-10 top-0 left-0 w-full h-full bg-red-100 rounded-2xl transform rotate-3 translate-x-4 translate-y-6 opacity-30"></div>
               </div>
 
               {/* Content Section */}
@@ -86,7 +86,7 @@ const TemplateDesign = () => {
                 <div className="max-w-lg">
                   <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
                     {feature.title}{" "}
-                    <span className="font-serif font-normal text-orange-600">
+                    <span className="font-serif font-normal text-red-600">
                       {feature.highlight}
                     </span>
                   </h3>
@@ -119,11 +119,11 @@ const TemplateDesign = () => {
               Ship production ready apps on top of Notion
             </h3>
             <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-              Start creating beautiful, high-performance websites with Wonder  today.
+              Start creating beautiful, high-performance websites with CrabsHQ  today.
             </p>
             <Link 
               href="https://app.crabshq.com" 
-              className="inline-flex items-center px-8 py-4 bg-orange-700 text-white font-medium rounded-md hover:bg-orange-500 transition-colors duration-200 shadow-lg text-lg"
+              className="inline-flex items-center px-8 py-4 bg-red-700 text-white font-medium rounded-md hover:bg-red-500 transition-colors duration-200 shadow-lg text-lg"
               rel="noopener" 
               target="_blank" 
             >

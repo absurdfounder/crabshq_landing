@@ -56,8 +56,8 @@ export async function generateMetadata(
 
   if (!filteredContent) {
     return {
-      title: 'Integrate Integration with Wonder  Sites',
-      description: 'Connect Wonder to an integration',
+      title: 'Integrate Integration with CrabsHQ',
+      description: 'Connect CrabsHQ to an integration',
       alternates: {
         canonical: `https://crabshq.com/integration/${slug}`,
       },
@@ -65,8 +65,8 @@ export async function generateMetadata(
   }
 
   return {
-    title: `Integrate ${filteredContent.product.name} with Wonder  Sites`,
-    description: `Connect Wonder  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
+    title: `Integrate ${filteredContent.product.name} with CrabsHQ`,
+    description: `Connect CrabsHQ  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
     openGraph: {
       images: [{ url: filteredContent.proof.screenshot }],
     },

@@ -43,7 +43,7 @@ export default function Footer() {
             The AI agent that keeps your help center, blog, changelog, and documentation up to date.
             </p>
             <p className="text-sm text-slate-600 mb-4">
-              Lead by <a className="text-orange-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
+              Lead by <a className="text-red-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
             </p>
             <ul className="mt-3 space-y-1">
               <li>
@@ -112,7 +112,7 @@ export default function Footer() {
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="#"
                     >
-                      <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
+                      <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
                       <span className="break-words">Custom Themes</span>
                     </Link>
                   </li>

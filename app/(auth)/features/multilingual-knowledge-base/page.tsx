@@ -15,7 +15,7 @@ export const metadata = {
     openGraph: {
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/wondercollectivebanner.png",
+                url: "https://dazzling-cat.netlify.app/backgroundgreysketch.png",
                 width: 1200,
                 height: 630,
                 alt: "Multilingual Knowledge Base - Translate your help center",
@@ -26,7 +26,7 @@ export const metadata = {
         card: "summary_large_image",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/wondercollectivebanner.png",
+                url: "https://dazzling-cat.netlify.app/backgroundgreysketch.png",
                 alt: "Multilingual Knowledge Base - Translate your help center",
             },
         ],
@@ -38,7 +38,7 @@ export default function MultilingualKnowledgeBasePage() {
         <div>
             <section 
                 style={{
-                    backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/wondercollectivebanner.png)",
+                    backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundAttachment: "fixed"
@@ -65,11 +65,11 @@ export default function MultilingualKnowledgeBasePage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">help center</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Reach customers worldwide with automatic translations. Wonder translates your help center into multiple languages, making your documentation accessible to everyone.
+                                            Reach customers worldwide with automatic translations. CrabsHQ translates your help center into multiple languages, making your documentation accessible to everyone.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-orange-700 sm:w-auto">
+                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>

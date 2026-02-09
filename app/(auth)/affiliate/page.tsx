@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export const metadata = {
   title: 'Affiliate Program',
-  description: 'Join the Wonder affiliate program to become our partner. Spread the website builder and earn money with us.',
+  description: 'Join the CrabsHQ affiliate program to become our partner. Spread the website builder and earn money with us.',
   alternates: {
     canonical: "https://crabshq.com/affiliate",
   },
@@ -37,23 +37,23 @@ export default function PageDetail() {
 
           {/* Page header */}
 
-<div className="relative flex items-center justify-center px-3 py-1 text-sm font-semibold leading-6 rounded-md ring-1 opacity-60 hover:ring-orange-900/20 w-fit m-auto mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 32 32" className="w-4 h-4 mr-1"><path fill="currentColor" d="M30.674 15.2c.033-.118.072-.233.1-.353c.006-.024.008-.048.014-.072a7.274 7.274 0 0 0-1.651-6.612a7.807 7.807 0 0 0-6.323-3.148h-.052c-.1 0-.212.007-.318.01h-.121a39.667 39.667 0 0 0-6.282.854l-4.477-.715h-.035a9.745 9.745 0 0 0-6.237 1a8.767 8.767 0 0 0-2.71 2.558l-.041.055l-.025.035a8.6 8.6 0 0 0-.108 9.45c-.019.034-.03.072-.048.107a3.972 3.972 0 0 0-.221.537c-.032.1-.056.206-.079.31c-.018.085-.036.169-.048.254a3.395 3.395 0 0 0-.022.319c0 .086-.01.17-.006.255c.007.112.02.223.038.334c.012.079.018.158.036.236c.03.123.07.244.116.362c.023.063.038.128.066.19c.082.183.182.356.3.518A3.338 3.338 0 0 0 4.424 23a2.758 2.758 0 0 0 .95 2.272a4.058 4.058 0 0 0 2.028.954c.155.503.427.962.793 1.34a3.118 3.118 0 0 0 1.905.98c.174.593.504 1.129.956 1.55c.557.548 1.303.86 2.084.87a3.372 3.372 0 0 0 1.639-.434c.744.426 1.616.57 2.458.406a3.063 3.063 0 0 0 2.117-1.509c.021-.033.033-.062.052-.095c.85.174 1.735.021 2.478-.428a3.1 3.1 0 0 0 1.4-1.67c.894.012 1.76-.31 2.427-.905a3.045 3.045 0 0 0 1.026-2.595c0-.028-.007-.05-.009-.077a3 3 0 0 0 1.358-.855a3.29 3.29 0 0 0 .52-3.804a10.214 10.214 0 0 0 2-3.556c.024-.077.044-.161.068-.244Zm-1.712-1.7a6.27 6.27 0 0 1-.329 1.474l-.032.1a8.482 8.482 0 0 1-1.418 2.448c-3.137-2.738-7.7-6.734-8.075-7.092a2.349 2.349 0 0 0-1.608-.652a1.837 1.837 0 0 0-.549.079c-.634.2-2.192.7-3.552 1.205c-.52.193-1.114-.3-1.295-.72c-.12-.252-.14-.54-.058-.806c.163-.295.437-.514.761-.608a34.491 34.491 0 0 1 9.546-1.9h.121c.111 0 .221-.008.323-.01a5.48 5.48 0 0 1 2.179.413a7.135 7.135 0 0 1 2.624 2.05a5.633 5.633 0 0 1 1.272 2.483l.009.046a5.25 5.25 0 0 1 .091.746c.003.081.008.183.008.273c0 .145 0 .289-.017.432l-.001.039ZM4.007 20.159C4 20.116 4 20.069 4 20.024a1.275 1.275 0 0 1 0-.29a1.48 1.48 0 0 1 .043-.168c.02-.089.05-.176.086-.259c.033-.06.071-.118.113-.172a1.28 1.28 0 0 1 .215-.265l.006-.005l1.881-1.595a1.2 1.2 0 0 1 1.684.22a.807.807 0 0 1 .1.708l-2.95 2.874a1.178 1.178 0 0 1-1.021-.555a.942.942 0 0 1-.15-.358Zm2.516 2.395L9.76 19.4l-.015-.015a.986.986 0 0 1 .589-.092c.257.07.489.214.666.414c.176.15.294.356.334.584a1.23 1.23 0 0 1-.146.665a.817.817 0 0 0-.026.085l-3.271 3.187a1.602 1.602 0 0 1-1.234-.5a1.117 1.117 0 0 1-.134-1.174Zm2.785 3.085l3.38-3.289c.215.043.412.153.562.314a1.3 1.3 0 0 1 .412.693a.976.976 0 0 1-.015.347l-2.923 2.845a1.168 1.168 0 0 1-1.075-.36a1.363 1.363 0 0 1-.341-.55Zm3.137 3.012a1.617 1.617 0 0 1-.418-.58l2.761-2.687c.197.065.377.172.528.313a.96.96 0 0 1 .307.433a.741.741 0 0 1 0 .385a3.019 3.019 0 0 1-.611 1.094l-.756.88h.006c-.025.016-.053.023-.076.041a1.641 1.641 0 0 1-1.026.427a1.029 1.029 0 0 1-.715-.306Zm4.474.307c-.148.023-.297.03-.446.02l.074-.086l.024-.029l.001.001a5.96 5.96 0 0 0 .764-1.221l.442.468a1.95 1.95 0 0 1-.13.273a1.081 1.081 0 0 1-.729.574Zm6.4-3.725l-1.779-1.971a.999.999 0 0 0-1.694 1.002a1 1 0 0 0 .208.336l1.436 1.6c-.01.102-.031.203-.063.3a1.139 1.139 0 0 1-.53.669a1.46 1.46 0 0 1-1.06.216l-1.2-1.274a.993.993 0 0 0-1.03-.259a2.575 2.575 0 0 0-.063-.288a2.956 2.956 0 0 0-.887-1.347a3.525 3.525 0 0 0-.985-.635a2.783 2.783 0 0 0-.035-.556a3.267 3.267 0 0 0-.977-1.777a3.152 3.152 0 0 0-1.323-.8c.005-.134 0-.267-.015-.4a2.967 2.967 0 0 0-.912-1.759a3.352 3.352 0 0 0-1.671-.951a2.702 2.702 0 0 0-.659-.045a2.606 2.606 0 0 0-.465-1.025a3.2 3.2 0 0 0-4.493-.579l-.035.028l-1.235 1.04a6.542 6.542 0 0 1 .314-6.812l.021-.03A6.793 6.793 0 0 1 6.292 7.9a7.762 7.762 0 0 1 4.982-.751l.464.074A3.056 3.056 0 0 0 10.2 8.77a3.022 3.022 0 0 0 .066 2.356a3.154 3.154 0 0 0 3.834 1.812c1.32-.489 2.834-.98 3.4-1.159a.3.3 0 0 1 .238.105c.489.46 6.392 5.627 8.858 7.776l.2.171a1.32 1.32 0 0 1-.183 1.62a1 1 0 0 1-.535.3l-1.733-1.757a1.004 1.004 0 0 0-1.432 1.406l1.656 1.678c.007.03.015.06.024.089l.012.031a2.473 2.473 0 0 1 .135.662a1.061 1.061 0 0 1-.321.943c-.299.28-.694.434-1.103.43h.003Z"></path></svg>
-        Become a Wonder  Partner
+<div className="relative flex items-center justify-center px-3 py-1 text-sm font-semibold leading-6 rounded-md ring-1 opacity-60 hover:ring-red-900/20 w-fit m-auto mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 32 32" className="w-4 h-4 mr-1"><path fill="currentColor" d="M30.674 15.2c.033-.118.072-.233.1-.353c.006-.024.008-.048.014-.072a7.274 7.274 0 0 0-1.651-6.612a7.807 7.807 0 0 0-6.323-3.148h-.052c-.1 0-.212.007-.318.01h-.121a39.667 39.667 0 0 0-6.282.854l-4.477-.715h-.035a9.745 9.745 0 0 0-6.237 1a8.767 8.767 0 0 0-2.71 2.558l-.041.055l-.025.035a8.6 8.6 0 0 0-.108 9.45c-.019.034-.03.072-.048.107a3.972 3.972 0 0 0-.221.537c-.032.1-.056.206-.079.31c-.018.085-.036.169-.048.254a3.395 3.395 0 0 0-.022.319c0 .086-.01.17-.006.255c.007.112.02.223.038.334c.012.079.018.158.036.236c.03.123.07.244.116.362c.023.063.038.128.066.19c.082.183.182.356.3.518A3.338 3.338 0 0 0 4.424 23a2.758 2.758 0 0 0 .95 2.272a4.058 4.058 0 0 0 2.028.954c.155.503.427.962.793 1.34a3.118 3.118 0 0 0 1.905.98c.174.593.504 1.129.956 1.55c.557.548 1.303.86 2.084.87a3.372 3.372 0 0 0 1.639-.434c.744.426 1.616.57 2.458.406a3.063 3.063 0 0 0 2.117-1.509c.021-.033.033-.062.052-.095c.85.174 1.735.021 2.478-.428a3.1 3.1 0 0 0 1.4-1.67c.894.012 1.76-.31 2.427-.905a3.045 3.045 0 0 0 1.026-2.595c0-.028-.007-.05-.009-.077a3 3 0 0 0 1.358-.855a3.29 3.29 0 0 0 .52-3.804a10.214 10.214 0 0 0 2-3.556c.024-.077.044-.161.068-.244Zm-1.712-1.7a6.27 6.27 0 0 1-.329 1.474l-.032.1a8.482 8.482 0 0 1-1.418 2.448c-3.137-2.738-7.7-6.734-8.075-7.092a2.349 2.349 0 0 0-1.608-.652a1.837 1.837 0 0 0-.549.079c-.634.2-2.192.7-3.552 1.205c-.52.193-1.114-.3-1.295-.72c-.12-.252-.14-.54-.058-.806c.163-.295.437-.514.761-.608a34.491 34.491 0 0 1 9.546-1.9h.121c.111 0 .221-.008.323-.01a5.48 5.48 0 0 1 2.179.413a7.135 7.135 0 0 1 2.624 2.05a5.633 5.633 0 0 1 1.272 2.483l.009.046a5.25 5.25 0 0 1 .091.746c.003.081.008.183.008.273c0 .145 0 .289-.017.432l-.001.039ZM4.007 20.159C4 20.116 4 20.069 4 20.024a1.275 1.275 0 0 1 0-.29a1.48 1.48 0 0 1 .043-.168c.02-.089.05-.176.086-.259c.033-.06.071-.118.113-.172a1.28 1.28 0 0 1 .215-.265l.006-.005l1.881-1.595a1.2 1.2 0 0 1 1.684.22a.807.807 0 0 1 .1.708l-2.95 2.874a1.178 1.178 0 0 1-1.021-.555a.942.942 0 0 1-.15-.358Zm2.516 2.395L9.76 19.4l-.015-.015a.986.986 0 0 1 .589-.092c.257.07.489.214.666.414c.176.15.294.356.334.584a1.23 1.23 0 0 1-.146.665a.817.817 0 0 0-.026.085l-3.271 3.187a1.602 1.602 0 0 1-1.234-.5a1.117 1.117 0 0 1-.134-1.174Zm2.785 3.085l3.38-3.289c.215.043.412.153.562.314a1.3 1.3 0 0 1 .412.693a.976.976 0 0 1-.015.347l-2.923 2.845a1.168 1.168 0 0 1-1.075-.36a1.363 1.363 0 0 1-.341-.55Zm3.137 3.012a1.617 1.617 0 0 1-.418-.58l2.761-2.687c.197.065.377.172.528.313a.96.96 0 0 1 .307.433a.741.741 0 0 1 0 .385a3.019 3.019 0 0 1-.611 1.094l-.756.88h.006c-.025.016-.053.023-.076.041a1.641 1.641 0 0 1-1.026.427a1.029 1.029 0 0 1-.715-.306Zm4.474.307c-.148.023-.297.03-.446.02l.074-.086l.024-.029l.001.001a5.96 5.96 0 0 0 .764-1.221l.442.468a1.95 1.95 0 0 1-.13.273a1.081 1.081 0 0 1-.729.574Zm6.4-3.725l-1.779-1.971a.999.999 0 0 0-1.694 1.002a1 1 0 0 0 .208.336l1.436 1.6c-.01.102-.031.203-.063.3a1.139 1.139 0 0 1-.53.669a1.46 1.46 0 0 1-1.06.216l-1.2-1.274a.993.993 0 0 0-1.03-.259a2.575 2.575 0 0 0-.063-.288a2.956 2.956 0 0 0-.887-1.347a3.525 3.525 0 0 0-.985-.635a2.783 2.783 0 0 0-.035-.556a3.267 3.267 0 0 0-.977-1.777a3.152 3.152 0 0 0-1.323-.8c.005-.134 0-.267-.015-.4a2.967 2.967 0 0 0-.912-1.759a3.352 3.352 0 0 0-1.671-.951a2.702 2.702 0 0 0-.659-.045a2.606 2.606 0 0 0-.465-1.025a3.2 3.2 0 0 0-4.493-.579l-.035.028l-1.235 1.04a6.542 6.542 0 0 1 .314-6.812l.021-.03A6.793 6.793 0 0 1 6.292 7.9a7.762 7.762 0 0 1 4.982-.751l.464.074A3.056 3.056 0 0 0 10.2 8.77a3.022 3.022 0 0 0 .066 2.356a3.154 3.154 0 0 0 3.834 1.812c1.32-.489 2.834-.98 3.4-1.159a.3.3 0 0 1 .238.105c.489.46 6.392 5.627 8.858 7.776l.2.171a1.32 1.32 0 0 1-.183 1.62a1 1 0 0 1-.535.3l-1.733-1.757a1.004 1.004 0 0 0-1.432 1.406l1.656 1.678c.007.03.015.06.024.089l.012.031a2.473 2.473 0 0 1 .135.662a1.061 1.061 0 0 1-.321.943c-.299.28-.694.434-1.103.43h.003Z"></path></svg>
+        Become a CrabsHQ  Partner
       </div>
 
           <div className="max-w-3xl mx-auto text-center pb-4">
-            <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">Earn <b className="text-orange-600">$972 per month</b>* promoting an award-winning notion backed web app builder</h1>
+            <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">Earn <b className="text-red-600">$972 per month</b>* promoting an award-winning notion backed web app builder</h1>
             <p className="px-2 mt-6 leading-7 text-slate-600 sm:px-0 sm:text-lg sm:leading-8">
         Earn <b>30% recurring commissions</b> for every paying customer you
-refer to Wonder  Sites, without limits. Join
+refer to CrabsHQ, without limits. Join
         our affiliate program today and start earning money.
       </p>
           </div>
 
 
 
-          <div className="m-auto text-center"><Link className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="https://wondersites.lemonsqueezy.com/affiliates">Sign Up</Link></div>
-          <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="block mt-8 text-sm text-orange-600 sm:mt-4 m-auto w-fit">Already partner? Open the affiliate dashboard →</Link>
+          <div className="m-auto text-center"><Link className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="https://wondersites.lemonsqueezy.com/affiliates">Sign Up</Link></div>
+          <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="block mt-8 text-sm text-red-600 sm:mt-4 m-auto w-fit">Already partner? Open the affiliate dashboard →</Link>
 
 
 
@@ -83,7 +83,7 @@ refer to Wonder  Sites, without limits. Join
                         {/* SVG icon */}
                       </div>
                     </div>
-                    <div className="mt-4 text-center">Join Wonder  Sites's affiliate program, grab your unique link and share it.</div>
+                    <div className="mt-4 text-center">Join CrabsHQ's affiliate program, grab your unique link and share it.</div>
                   </li>
                   <li className="flex flex-col items-center">
                     <div className="relative">
@@ -104,7 +104,7 @@ refer to Wonder  Sites, without limits. Join
               </div>
 
               <div className="mt-8 text-center">
-                <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_self" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Become our Partner</Link>
+                <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_self" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Become our Partner</Link>
               </div>
             </div>
 
@@ -160,7 +160,7 @@ refer to Wonder  Sites, without limits. Join
             <Image src="https://dazzling-cat.netlify.app/freelancer-mockup.webp" unoptimized alt="Design agency" width={100} height={100} className="w-full lg:w-1/2 p-8 m-auto" />
             <div className="w-full lg:w-1/2 p-8 m-auto">
               <h2 className="h2 font-bold mb-8">You’re a freelancer or an agency</h2>
-              <p className="text-md mt-4 mb-4 text-slate-800">Demonstrate your industry knowledge by recommending Wonder  to your clients and fellow marketers. This will help you create an additional revenue source for your business. "Diversification is the key to financial resilience." — Warren Buffett.</p>
+              <p className="text-md mt-4 mb-4 text-slate-800">Demonstrate your industry knowledge by recommending CrabsHQ  to your clients and fellow marketers. This will help you create an additional revenue source for your business. "Diversification is the key to financial resilience." — Warren Buffett.</p>
             </div>
           </div>
 
@@ -223,7 +223,7 @@ refer to Wonder  Sites, without limits. Join
                 </li>
               </ul>
               <div className="text-center mt-8">
-                <Link href="https://partner.crabshq.com/" target="_self" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Start to earn money</Link>
+                <Link href="https://partner.crabshq.com/" target="_self" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Start to earn money</Link>
               </div>
             </div>
           </div>
@@ -273,17 +273,17 @@ refer to Wonder  Sites, without limits. Join
               <div className="mt-8">
                 <div className="space-y-6">
                   <div className='p-8 border rounded-2xl border-slate-600'>
-                    <h3 className="font-bold text-xl">Who is Wonder  for?</h3>
+                    <h3 className="font-bold text-xl">Who is CrabsHQ  for?</h3>
                     <br />
-                    <p className="text-md mt-4 mb-4 text-slate-800">Wonder is a quick business builder for startup founders. Our users can quickly Get a beautiful web apps, blogs, and helpdesks for a mobile or desktop, for a SaaS product, for a plugin, an open-source project, a SMM tool etc.</p>
-                    <p className="text-md mt-4 mb-4 text-slate-800">If your audience are tech guys, Wonder  is for them. They will be more willing to use a tailored tool for startups rather than generic old-fashioned Webflow or Wordpress.</p>
+                    <p className="text-md mt-4 mb-4 text-slate-800">CrabsHQ is a quick business builder for startup founders. Our users can quickly Get a beautiful web apps, blogs, and helpdesks for a mobile or desktop, for a SaaS product, for a plugin, an open-source project, a SMM tool etc.</p>
+                    <p className="text-md mt-4 mb-4 text-slate-800">If your audience are tech guys, CrabsHQ  is for them. They will be more willing to use a tailored tool for startups rather than generic old-fashioned Webflow or Wordpress.</p>
                   </div>
 
                   <div className='p-8 border rounded-2xl border-slate-600'>
                     <h3 className="font-bold text-xl">Why promote you while I can promote some other website builder?</h3>
                     <br />
                     <p className="text-md mt-4 mb-4 text-slate-800">The key advantage is the approach. We are building a landing page generator for startups only. That means, we pay all the attention to startups-only demands. In particular, we will provide not-so-popular integrations, specific components and templates.</p>
-                    <p className="text-md mt-4 mb-4 text-slate-800">This is why startup founders love Wonder  more than other tools.</p>
+                    <p className="text-md mt-4 mb-4 text-slate-800">This is why startup founders love CrabsHQ  more than other tools.</p>
                     <p className="text-md mt-4 mb-4 text-slate-800">Why believe me? Just A/B test it yourself. Put a Wix affiliate link for a month, measure your earnings. Then put our link. Compare. Pick the winner.</p>
                   </div>
 

@@ -24,7 +24,7 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a knowledge base with Notion (no-code and free)",
     description:
-        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free Wonder  knowledge base website in a minute!",
+        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free CrabsHQ  knowledge base website in a minute!",
     alternates: {
         canonical: "https://crabshq.com/create-a-knowledge-base-notion",
     },
@@ -55,7 +55,7 @@ export default function PageDetail() {
         <div>
             <section 
                     style={{
-          backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/wondercollectivebanner.png)",
+          backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed"
@@ -96,7 +96,7 @@ export default function PageDetail() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-orange-700 sm:w-auto">
+                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get a knowledge base with Notion →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>

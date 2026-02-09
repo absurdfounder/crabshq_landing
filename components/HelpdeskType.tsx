@@ -61,7 +61,7 @@ export default function Helpdesk_Type() {
             </p>
 
             <p className="text-lg text-gray-900 font-medium italic">
-              Or... you could just use Wonder...
+              Or... you could just use CrabsHQ...
             </p>
           </div>
         </div>

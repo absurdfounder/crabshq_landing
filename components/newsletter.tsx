@@ -90,7 +90,7 @@ export default function Newsletter() {
           <div
             className="relative py-10 px-8 md:py-16 md:px-12 overflow-hidden rounded-2xl my-8 border"
             style={{
-              backgroundImage: 'linear-gradient(rgb(255 255 255 / 87%), rgb(187 229 255 / 76%)), url(https://dazzling-cat.netlify.app/wondercollectivebanner.png)',
+              backgroundImage: 'linear-gradient(rgb(255 255 255 / 87%), rgb(187 229 255 / 76%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center center'
             }}
@@ -113,9 +113,9 @@ export default function Newsletter() {
                   Stop living at your desk all day <span style={{ color: '#009fbc' }}>automate it </span>.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
-                {/* <h3 className="h2 text-slate-800 my-2">Build <span className="text-orange-400">{words[index]}</span> Sites</h3> */}
+                {/* <h3 className="h2 text-slate-800 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
                 <p className="h5 font-normal text-slate-800 my-2">
-                  Outdated posts are wasting time, money and affecting your reputation. Let Wonder run your Helpdesk & Blog on pure automations.
+                  Outdated posts are wasting time, money and affecting your reputation. Let CrabsHQ run your Helpdesk & Blog on pure automations.
                 </p>
 
                 {/* CTA form */}
@@ -127,12 +127,12 @@ export default function Newsletter() {
                       initialText="Get started - free"
                       hoverText="in just 15 mins" // Customize hover text if needed
                       // Removed flex items-center justify-center as base class handles it
-                      className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0"
+                      className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0"
                     />
                     {/* --- END OF UPDATE --- */}
 
                     {/* Original button commented out for reference */}
-                    {/* <Link href="https://app.crabshq.com" className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
+                    {/* <Link href="https://app.crabshq.com" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
 
                     {/* Original Subscribe button (commented out in user code) */}
                     {/* <button type="submit" className="btn text-white bg-blue-600 hover:bg-blue-700 shadow" href="#0">Subscribe</button> */}

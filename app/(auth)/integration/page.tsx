@@ -5,7 +5,7 @@ import Header from '@/components/ui/header';
 
 import { _loadFromJson } from '@/app/utils/helper';
 export const metadata = {
-  title: 'Wonder Integrations',
+  title: 'CrabsHQ Integrations',
   description: 'Integrate with your stack and extend functionality with powerful integrations built by us and our amazing community.',
   alternates: {
     canonical: "https://crabshq.com/integration",
@@ -47,11 +47,11 @@ const Integration = async () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="pt-12 pb-6 md:pt-4 md:pb-6">
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-            <h1 className="font-funneldisplay h3 mb-4">Wonder Integrations</h1>
+            <h1 className="font-funneldisplay h3 mb-4">CrabsHQ Integrations</h1>
             <p className="text-xl text-slate-600">Integrate with your stack and extend functionality with powerful integrations built by us and our amazing community.</p>
 
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center aos-init aos-animate mt-6">
-              <div><Link className="btn text-dark text-2xl bg-orange-300 hover:bg-orange-700 hover:text-orange-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="/contact-us">Missing Integration? Ask for Help</Link></div>
+              <div><Link className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="/contact-us">Missing Integration? Ask for Help</Link></div>
             </div>
 
           </div>
@@ -87,7 +87,7 @@ const Integration = async () => {
                         <div className="w-10 h-10 bg-slate-200 rounded-md" ></div>
                         <span className="text-dark font-bold">And a lot more..</span>
                     </div>
-                    <button className="border border-slate-200 bg-orange-700 rounded-md w-full p-2 mt-4">Add More...</button>
+                    <button className="border border-slate-200 bg-red-700 rounded-md w-full p-2 mt-4">Add More...</button>
                 </div>
             </div>
 

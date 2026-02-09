@@ -33,7 +33,7 @@ export default function FeaturesBlocks() {
           Get discovered by <b>Users</b> and <b>AI assistants</b>           
           </h2>
           <p className="text-xl text-slate-600">
-            Busy teams need a simpler way to run marketing and support. Wonder automates both so you can focus on what matters.
+            Busy teams need a simpler way to run marketing and support. CrabsHQ automates both so you can focus on what matters.
           </p>
         </div>
       </div>

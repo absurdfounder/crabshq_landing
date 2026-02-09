@@ -26,7 +26,7 @@ export default function HowItWorksSection() {
             One home for all product knowledge
             </h2>
             <p className="body-text mt-6 max-w-4xl text-base text-slate-600 leading-relaxed">
-            Your current help center, blog, changelog, and documentation is a constant struggle to maintain. Wonder gives you a fully customizable, SEO-optimized help center that our AI agent, Wonder, automatically keeps in sync with your product.
+            Your current help center, blog, changelog, and documentation is a constant struggle to maintain. CrabsHQ gives you a fully customizable, SEO-optimized help center that our AI agent, Wonder, automatically keeps in sync with your product.
 
             </p>
             <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">

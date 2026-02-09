@@ -143,8 +143,8 @@ export default function Header() {
                               />
                               <DropdownLink
                                 href="/features/automated-screenshots-for-docs"
-                                iconColor="text-orange-500"
-                                bgColor="bg-orange-50"
+                                iconColor="text-red-500"
+                                bgColor="bg-red-50"
                                 icon={Camera}
                                 title="Automated screenshots"
                                 description="Screenshots that stay current"

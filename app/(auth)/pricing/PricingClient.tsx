@@ -47,19 +47,19 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
 
 
 
-                        <span className="text-lg font-bold bg-orange-600 text-white rounded-full p-2 px-4">Psst.</span>
+                        <span className="text-lg font-bold bg-red-600 text-white rounded-full p-2 px-4">Psst.</span>
 
                         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">
                             Before you go...
                         </h2>
                         <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                            Did we mention that the trial is free, you can signup in seconds, and no credit card is required? Give us a try, we'd love to show you what Wonder can do!
+                            Did we mention that the trial is free, you can signup in seconds, and no credit card is required? Give us a try, we'd love to show you what CrabsHQ can do!
                         </p>
 
 
                         <Link
                             href="https://app.crabshq.com" // Make sure this is the correct link for the discounted offer
-                            className="bg-orange-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-orange-700 transition-colors shadow-lg font-medium"
+                            className="bg-red-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-red-700 transition-colors shadow-lg font-medium"
                             onClick={() => {
                                 // You might want to track this conversion
                                 onClose();
@@ -132,7 +132,7 @@ const comparisonCategories: ComparisonCategory[] = [
         icon: Sparkles,
         iconColor: "text-violet-500",
         rows: [
-            { feature: "Wonder AI", personal: true, business: true },
+            { feature: "CrabsHQ AI", personal: true, business: true },
             { feature: "AI Teams (Designer & Developer)", personal: true, business: true },
         ],
     },
@@ -206,18 +206,18 @@ const scaleFeatures: Feature[] = [
     { name: "Tally Form Connection", description: "Seamlessly connect and use Tally forms within your site for data collection and user interaction.", imageUrl: "/api/placeholder/200/150" },
     { name: "Open AI Assistant", description: "Access an advanced AI assistant to help with content creation, site management, and user engagement.", imageUrl: "/api/placeholder/200/150" },
     { name: "General Search", description: "Implement a powerful, site-wide search feature to help users find content quickly and easily.", imageUrl: "/api/placeholder/200/150" },
-    { name: "Remove 'Watermark' badge", description: "Remove the 'Powered by Wonder  Sites badge for a fully branded, professional appearance.", imageUrl: "/api/placeholder/200/150" },
+    { name: "Remove 'Watermark' badge", description: "Remove the 'Powered by CrabsHQ badge for a fully branded, professional appearance.", imageUrl: "/api/placeholder/200/150" },
 ];
 
 const faqs: Record<string, FAQ[]> = {
     Pricing: [
         {
             question: "How does the free 3-day trial work?",
-            answer: "Wonder offers a 3-day free trial to help you explore everything we offer. There’s zero cost to get started, and during the trial you’ll have full access to all features. After the trial, you can choose a subscription plan to continue.",
+            answer: "CrabsHQ offers a 3-day free trial to help you explore everything we offer. There’s zero cost to get started, and during the trial you’ll have full access to all features. After the trial, you can choose a subscription plan to continue.",
         },
         {
             question: "What are the pricing plans?",
-            answer: "Wonder offers flexible pricing plans based on your needs. Plans vary based on usage and feature access. You can view full details on our pricing page.",
+            answer: "CrabsHQ offers flexible pricing plans based on your needs. Plans vary based on usage and feature access. You can view full details on our pricing page.",
         },
         {
             question: "Are there any additional fees?",
@@ -417,7 +417,7 @@ const FAQSection: React.FC = () => {
                         Have a different question? Reach out to our support team by
                         <a
                             href="mailto:vaibhav@crabshq.com"
-                            className="text-orange-600 hover:text-orange-700 hover:underline px-2"
+                            className="text-red-600 hover:text-red-700 hover:underline px-2"
                         >
                             sending us an email
                         </a>
@@ -431,7 +431,7 @@ const FAQSection: React.FC = () => {
                             <button
                                 key={tab}
                                 className={`px-4 py-2 mx-1 text-sm md:text-base font-medium rounded-md transition-colors ${activeTab === tab
-                                    ? "bg-orange-100 text-orange-800"
+                                    ? "bg-red-100 text-red-800"
                                     : "text-slate-600 hover:bg-slate-100"
                                     }`}
                                 onClick={() => setActiveTab(tab)}
@@ -539,7 +539,7 @@ const Pricing: React.FC = () => {
                 "All Type of Websites",
                 "Automatic SSL(https)",
                 "Custom domain",
-                "Wonder AI",
+                "CrabsHQ AI",
                 "AI Teams (Designer & Developer)",
                 "Privacy focused analytics",
                 "No Watermark",
@@ -699,13 +699,13 @@ const Pricing: React.FC = () => {
                     <div className="text-start mb-16">
                         <h1 className="font-funneldisplay text-4xl md:text-5xl tracking-tight mb-6">
                             <span className="text-slate-800 block mb-2">
-                                Setup <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-12 h-12 rounded-md align-middle mx-1" /> Wonder at your company
+                                Setup <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-12 h-12 rounded-md align-middle mx-1" /> CrabsHQ at your company
                             </span>
                         </h1>
                         <p className="body-text max-w-2xl">
 
                         Never write another help article.
-                        Wonder customers save 20 hours a month on support and docs on average. Get started today with a 7-day free trial. No credit card required.
+                        CrabsHQ customers save 20 hours a month on support and docs on average. Get started today with a 7-day free trial. No credit card required.
                         </p>
 
                     </div>
@@ -720,12 +720,12 @@ const Pricing: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             className={`relative bg-white rounded-xl shadow-lg border ${tier.highlight
-                                ? 'border-orange-400 shadow-xl transform md:scale-105'
+                                ? 'border-red-400 shadow-xl transform md:scale-105'
                                 : 'border-slate-200'
                                 } overflow-hidden flex flex-col h-full`}
                         >
                             {tier.highlight && (
-                                <div className="bg-orange-300 text-black text-center py-1 text-sm font-medium">
+                                <div className="bg-red-300 text-black text-center py-1 text-sm font-medium">
                                     MOST POPULAR
                                 </div>
                             )}
@@ -770,7 +770,7 @@ const Pricing: React.FC = () => {
                                     initialText="Get started - free"
                                     hoverText="in under 15 mins" // Customize hover text if needed
                                     className={tier.highlight
-                                        ? 'bg-orange-600 hover:bg-orange-700 text-white focus:ring-orange-500'
+                                        ? 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500'
                                         : 'bg-slate-100 hover:bg-slate-200 text-slate-800 focus:ring-slate-500'
                                     }
                                 />
@@ -923,7 +923,7 @@ const Pricing: React.FC = () => {
                                     </h3>
                                     <Link
                                         href="https://buy.stripe.com/5kAeV0b6K27w8BG6os"
-                                        className="bg-orange-600 text-white text-lg w-full py-3 px-6 rounded-lg block hover:bg-orange-700 transition-colors shadow-md font-medium"
+                                        className="bg-red-600 text-white text-lg w-full py-3 px-6 rounded-lg block hover:bg-red-700 transition-colors shadow-md font-medium"
                                     >
                                         Buy Now
                                     </Link>

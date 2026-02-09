@@ -157,10 +157,10 @@ const TranslateButton = () => {
     <div className="relative notranslate" translate="no" ref={dropdownRef} onClick={preventTranslation}>
       <button 
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="font-medium text-slate-900 hover:text-orange-600 px-4 py-3 flex items-center transition duration-150 ease-in-out relative group"
+        className="font-medium text-slate-900 hover:text-red-600 px-4 py-3 flex items-center transition duration-150 ease-in-out relative group"
         aria-label="Select language"
       >
-        <span className="relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-orange-600 group-hover:after:w-full after:transition-all after:duration-300 flex items-center">
+        <span className="relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-red-600 group-hover:after:w-full after:transition-all after:duration-300 flex items-center">
           <span className="mr-1 opacity-80">{selectedLanguage.flag}</span>
           <span className="mr-1">{selectedLanguage.code.toUpperCase()}</span>
         </span>
@@ -178,7 +178,7 @@ const TranslateButton = () => {
             <div className="px-3 py-2 border-b border-gray-100">
               <input
                 type="text"
-                className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Search languages..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -199,7 +199,7 @@ const TranslateButton = () => {
                     onClick={() => translatePage(language)}
                     className={`px-4 py-2 text-sm w-full text-left flex items-center ${
                       selectedLanguage.code === language.code 
-                        ? 'bg-orange-50 text-orange-700' 
+                        ? 'bg-red-50 text-red-700' 
                         : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                     }`}
                   >

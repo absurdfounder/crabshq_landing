@@ -52,7 +52,7 @@ const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ title, description, i
   // Use Next.js Link for client-side navigation
   <Link
     href={`/showcase?tags=${tag}`}
-    className="group bg-white p-4 sm:p-6 rounded-lg border shadow-md h-full w-full transition-all duration-200 hover:shadow-lg hover:border-orange-300 block relative focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" // Added group, block, relative, hover/focus effects
+    className="group bg-white p-4 sm:p-6 rounded-lg border shadow-md h-full w-full transition-all duration-200 hover:shadow-lg hover:border-red-300 block relative focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" // Added group, block, relative, hover/focus effects
     role="article" // Role remains appropriate for a self-contained item
     aria-labelledby={`marketplace-title-${index}`}
   >
@@ -69,7 +69,7 @@ const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ title, description, i
 
     {/* Hover Effect Text: "View Templates ->" */}
     <div
-      className="flex items-center text-orange-500 font-medium transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100 absolute bottom-4 right-4 sm:bottom-6 sm:right-6" // Show on hover, positioned bottom-right
+      className="flex items-center text-red-500 font-medium transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100 absolute bottom-4 right-4 sm:bottom-6 sm:right-6" // Show on hover, positioned bottom-right
       aria-hidden="true" // Hide decorative text from accessibility tree as the link itself is sufficient
     >
       View Templates <ArrowRight className="w-4 h-4 ml-1" />
@@ -272,8 +272,8 @@ export default function MarketplaceType() {
       <div className="max-w-3xl mx-auto text-center pt-4 mb-6 sm:mb-8">
         <h2 className="font-funneldisplay text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
           No matter how unique your concept,
-          <span className=" block font-normal text-orange-600">
-            Wonder can support it.
+          <span className=" block font-normal text-red-600">
+            CrabsHQ can support it.
           </span>
         </h2>
       </div>
@@ -341,7 +341,7 @@ export default function MarketplaceType() {
       <div className="mt-8 sm:mt-12 text-center">
         <a
           href="https://app.crabshq.com"
-          className="inline-flex items-center text-orange-500 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded text-sm sm:text-base font-medium"
+          className="inline-flex items-center text-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded text-sm sm:text-base font-medium"
           aria-label="Learn more about building with Crabs HQ"
         >
           Build any kind of solution with Crabs HQ

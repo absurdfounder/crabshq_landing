@@ -272,8 +272,8 @@ function TemplateClientContent() {
                                         {/* CTA content */}
                                         <div className="text-center lg:text-left lg:max-w-xl space-y-6">
                                             <h3 className="h3 text-white mb-2">
-                                                Planning to <b className="text-orange-600">migrate</b> to
-                                                Wonder  from another platform?
+                                                Planning to <b className="text-red-600">migrate</b> to
+                                                CrabsHQ  from another platform?
                                             </h3>
 
                                             {/* --- UPDATED Migration CTA Button --- */}
@@ -286,7 +286,7 @@ function TemplateClientContent() {
                                                         rel="noopener"
                                                         initialText="We can do it for you →"
                                                         hoverText="Request Migration" // Or other text
-                                                        className="btn bg-orange-700 hover:bg-orange-700 shadow px-12 inline-block text-slate-900 py-3" // Original classes merged with base
+                                                        className="btn bg-red-700 hover:bg-red-700 shadow px-12 inline-block text-slate-900 py-3" // Original classes merged with base
                                                     />
                                                 </div>
                                                 <p className="text-sm text-slate-400 mt-3">Free of charge</p>
@@ -320,7 +320,7 @@ function TemplateClientContent() {
                                         {/* CTA content */}
                                         <div className="text-center lg:text-left lg:max-w-xl space-y-6">
                                             <h3 className="h3 text-white mb-2">
-                                                Want to get <b className="text-orange-600">free design</b> assistance?
+                                                Want to get <b className="text-red-600">free design</b> assistance?
                                             </h3>
 
                                             {/* --- UPDATED Free Design CTA Button --- */}
@@ -333,7 +333,7 @@ function TemplateClientContent() {
                                                         rel="noopener"
                                                         initialText="Get started - free now →"
                                                         hoverText="in just 15 mins" // Or other text
-                                                        className="btn bg-white hover:bg-slate-100 shadow px-12 inline-block text-orange-600 py-3" // Original classes merged with base
+                                                        className="btn bg-white hover:bg-slate-100 shadow px-12 inline-block text-red-600 py-3" // Original classes merged with base
                                                     />
                                                  </div>
                                                 <p className="text-sm text-white mt-3">Professional design help at no cost</p>
@@ -354,7 +354,7 @@ function TemplateClientContent() {
                 <Link
                     href={`/showcase/${template.id}`}
                     key={`template-${i}`}
-                    className="group relative flex flex-col overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 h-full border border-slate-200 hover:border-orange-200"
+                    className="group relative flex flex-col overflow-hidden bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 h-full border border-slate-200 hover:border-red-200"
                 >
                     <div className="w-full">
                         {/* Image container with improved styling */}
@@ -371,16 +371,16 @@ function TemplateClientContent() {
 
                         <div className="p-6">
                             {/* Template type badge with improved styling */}
-                            <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-orange-100 text-orange-800">
+                            <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">
                                 {template?.product?.type || "Template"}
                             </span>
 
                             {/* Title with hover effect */}
                             <div className="mt-4 flex items-start">
-                                <h3 className="text-lg font-bold text-slate-900 group-hover:text-orange-600 transition-colors duration-200">
+                                <h3 className="text-lg font-bold text-slate-900 group-hover:text-red-600 transition-colors duration-200">
                                     {template?.product?.name || "Untitled Template"}
                                 </h3>
-                                <span className="ml-2 text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
+                                <span className="ml-2 text-slate-400 group-hover:text-red-500 transition-colors duration-200">
                                     <svg
                                         width="14"
                                         height="14"
@@ -414,7 +414,7 @@ function TemplateClientContent() {
                                         <span
                                             key={tagIndex}
                                             className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium transition-colors duration-200 ${selectedTags.includes(tag)
-                                                ? "bg-orange-200 text-orange-800"
+                                                ? "bg-red-200 text-red-800"
                                                 : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                                                 }`}
                                         >
@@ -458,7 +458,7 @@ function TemplateClientContent() {
                     <div className="mx-auto text-center">
                         <h1 className="font-funneldisplay text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-4xl mb-6">
                             <span className="block">Websites built on Wonder</span>
-                            <span className="block text-orange-600">and a few templates.</span>
+                            <span className="block text-red-600">and a few templates.</span>
                         </h1>
 
 
@@ -470,7 +470,7 @@ function TemplateClientContent() {
                                     <button
                                         onClick={() => toggleTag("free design")}
                                         className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${selectedTags.includes("free design")
-                                            ? "bg-orange-500 text-white"
+                                            ? "bg-red-500 text-white"
                                             : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                                             }`}
                                     >
@@ -488,7 +488,7 @@ function TemplateClientContent() {
                                                 key={tag}
                                                 onClick={() => toggleTag(tag)}
                                                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${selectedTags.includes(tag)
-                                                    ? "bg-orange-500 text-white"
+                                                    ? "bg-red-500 text-white"
                                                     : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                                                     }`}
                                             >
@@ -507,7 +507,7 @@ function TemplateClientContent() {
                                                 key={tag}
                                                 onClick={() => toggleTag(tag)}
                                                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${selectedTags.includes(tag)
-                                                    ? "bg-orange-500 text-white"
+                                                    ? "bg-red-500 text-white"
                                                     : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                                                     }`}
                                             >
@@ -523,7 +523,7 @@ function TemplateClientContent() {
                                 {lesserTags.length > 0 && (
                                     <button
                                         onClick={toggleShowAllTags}
-                                        className="mt-4 text-sm text-orange-600 hover:text-orange-800 font-medium transition-colors duration-200"
+                                        className="mt-4 text-sm text-red-600 hover:text-red-800 font-medium transition-colors duration-200"
                                     >
                                         {showAllTags ? "Show less" : `Show all (${lesserTags.length} more)`}
                                     </button>
@@ -533,7 +533,7 @@ function TemplateClientContent() {
                                     {selectedTags.length > 0 && (
                                         <button
                                             onClick={clearTags}
-                                            className="text-sm text-orange-600 hover:text-orange-800 font-medium transition-colors duration-200"
+                                            className="text-sm text-red-600 hover:text-red-800 font-medium transition-colors duration-200"
                                         >
                                             Clear all filters
                                         </button>
@@ -555,7 +555,7 @@ function TemplateClientContent() {
                     {/* Loading state */}
                     {isLoading ? (
                         <div className="flex justify-center items-center py-20">
-                            <div className="animate-spin rounded-md h-12 w-12 border-b-2 border-orange-500"></div>
+                            <div className="animate-spin rounded-md h-12 w-12 border-b-2 border-red-500"></div>
                         </div>
                     ) : (
                         <>
@@ -584,7 +584,7 @@ export default function TemplateClient() {
     return (
         <Suspense fallback={
             <div className="flex justify-center items-center min-h-screen"> {/* Added min-h-screen */}
-                <div className="animate-spin rounded-md h-12 w-12 border-b-2 border-orange-500"></div>
+                <div className="animate-spin rounded-md h-12 w-12 border-b-2 border-red-500"></div>
             </div>
         }>
             <TemplateClientContent />

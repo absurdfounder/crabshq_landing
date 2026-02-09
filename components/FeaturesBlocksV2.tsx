@@ -36,7 +36,7 @@ export default function FeaturesBlocks() {
             Continuously improve your help center
           </p>
           <p className="text-lg text-slate-600">
-            Wonder gives you the tools you need to optimize your help center and improve customer satisfaction.
+            CrabsHQ gives you the tools you need to optimize your help center and improve customer satisfaction.
           </p>
         </div>
       </div>

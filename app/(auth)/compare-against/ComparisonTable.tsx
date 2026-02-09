@@ -23,7 +23,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4">Get so much more with Crabs HQ</h2>
         <p className="text-lg text-slate-600 max-w-2xl">
-          Wonder  has everything you need, from task tracking to templates to documentation.
+          CrabsHQ  has everything you need, from task tracking to templates to documentation.
           Get comfortable — you won't be leaving all that often.
         </p>
       </div>
@@ -36,7 +36,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
               <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4">
                 {competitorName}
               </th>
-              <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4 bg-orange-50">
+              <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4 bg-red-50">
                 Crabs HQ
               </th>
             </tr>
@@ -62,9 +62,9 @@ const ComparisonTable = ({ id }: { id: string }) => {
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-center border-b border-slate-200 bg-orange-50">
+                  <td className="px-6 py-4 text-center border-b border-slate-200 bg-red-50">
                     {WonderSitesHasFeature ? (
-                      <span className="inline-flex items-center justify-center w-8 h-8 bg-orange-700 text-white rounded-md">
+                      <span className="inline-flex items-center justify-center w-8 h-8 bg-red-700 text-white rounded-md">
                         ✓
                       </span>
                     ) : (

@@ -49,9 +49,9 @@ function IntegrationDetail() {
               {/* Integration Overview */}
               <div>
                 <h3 className="h3 font-bold mt-4 mb-4">Overview</h3>
-                <p>Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allow you to embed Arcade interactive demos into your Wonder  documentation.</p>
+                <p>Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allow you to embed Arcade interactive demos into your CrabsHQ  documentation.</p>
                 <h3 className="h3 font-bold mt-4 mb-4">How it works</h3>
-                <p>Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the Wonder  editor. The app will turn the link into an Arcade embed showing your recorded demo.</p>
+                <p>Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the CrabsHQ  editor. The app will turn the link into an Arcade embed showing your recorded demo.</p>
                 <h3 className="h3 font-bold mt-4 mb-4">Configure</h3>
                 <p>To install on a single space navigate to integrations in sub-navigation. If you prefer to install the Arcade integration on multiple or all spaces, navigate to your organization settings and enable it from the integrations panel. This will give you access to the custom arcade block.</p>
               </div>

@@ -19,7 +19,7 @@ const features = [
   {
     icon: BarChart3,
     label: 'Built-in analytics',
-    color: 'text-orange-500',
+    color: 'text-red-500',
   },
   {
     icon: Globe,
@@ -103,7 +103,7 @@ export default function GetStartedSection() {
                 Zero-downtime migration
               </h2>
               <p className="mt-6 text-base text-slate-700">
-                Migrate your existing help center to Wonder in one-click without breaking links, or hurting your SEO.
+                Migrate your existing help center to CrabsHQ in one-click without breaking links, or hurting your SEO.
               </p>
             </div>
             <div className="pb-20">

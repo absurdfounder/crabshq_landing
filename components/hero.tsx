@@ -153,8 +153,8 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl lg:text-5xl max-w-3xl lg:max-w-none mb-2 sm:mb-2 md:mb-2 leading-tight font-funneldisplay tracking-loose text-slate-700 font-normal">
                   <div className="block opacity-50 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     <span className="reveal reveal__hello-1">Hello,</span>{" "}
-                    <span className="reveal reveal__hello-2">I&apos;m</span>{" "}
-                    <span className="reveal reveal__hello-3">Wonder.</span>
+                    <span className="reveal reveal__hello-2">We are</span>{" "}
+                    <span className="reveal reveal__hello-3">Crabs.</span>
                   </div>
                   <span className="block reveal reveal__usp mt-1 sm:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                     Automated way to keep your <b>blog</b> & <b>help center</b> <span style={{ color: '#009fbc' }}>up to date.</span>
@@ -170,7 +170,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-start justify-start px-4 sm:px-0 lg:px-0">
                 <Link
                   href="https://app.crabshq.com?ref=herolanding"
-                  className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-orange-600 text-white rounded-md font-medium hover:bg-orange-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
+                  className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
                 >

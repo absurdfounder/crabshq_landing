@@ -51,10 +51,10 @@ export default function Marketplace_Type() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
           <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">
-              Unique your knowledge base concept? <span className=" block font-normal text-orange-600">Wonder can support it.</span>
+              Unique your knowledge base concept? <span className=" block font-normal text-red-600">CrabsHQ can support it.</span>
             </h1>
             <p className="text-xl text-slate-600">
-              Wonder  is designed for all types from content curation to
+              CrabsHQ  is designed for all types from content curation to
               content creation. Build company blogs, helpdesks, company wiki,
               documentations, and marketplaces.
             </p>
@@ -70,7 +70,7 @@ export default function Marketplace_Type() {
               {/* Tabs buttons */}
               <div className="grid gap-4 mb-8 md:mb-0">
                 <Link href="#"
-                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 1 ? "bg-slate-100" : "bg-orange-800 text-white"
+                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 1 ? "bg-slate-100" : "bg-red-800 text-white"
                     }`}
 
                   onClick={(e) => {
@@ -86,7 +86,7 @@ export default function Marketplace_Type() {
                   </div>
                 </Link>
                 <Link href="#"
-                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 2 ? "bg-slate-100" : "bg-orange-800 text-white"
+                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 2 ? "bg-slate-100" : "bg-red-800 text-white"
                     }`}
 
                   onClick={(e) => {
@@ -103,7 +103,7 @@ export default function Marketplace_Type() {
                 </Link>
 
                 <Link href="#"
-                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 3 ? "bg-slate-100" : "bg-orange-800 text-white"
+                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 3 ? "bg-slate-100" : "bg-red-800 text-white"
                     }`}
 
                   onClick={(e) => {
@@ -120,7 +120,7 @@ export default function Marketplace_Type() {
                 </Link>
 
                 <Link href="#"
-                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 4 ? "bg-slate-100" : "bg-orange-800 text-white"
+                  className={`flex items-center text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out border border-dashed shadow-md border-slate-600 hover:shadow-lg text-slate-900 ${tab !== 4 ? "bg-slate-100" : "bg-red-800 text-white"
                     }`}
 
                   onClick={(e) => {

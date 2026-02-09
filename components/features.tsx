@@ -19,7 +19,7 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ tabIndex, icon: Icon, text, currentTab, setTab }) => (
   <button
     className={`group flex items-center justify-between text-base sm:text-lg p-4 sm:p-5 rounded-md border transition duration-300 ease-in-out hover:shadow-lg text-slate-900 ${
-      currentTab !== tabIndex ? "bg-slate-100" : "bg-orange-100 text-orange-600"
+      currentTab !== tabIndex ? "bg-slate-100" : "bg-red-100 text-red-600"
     }`}
     onClick={() => setTab(tabIndex)}
   >
@@ -110,10 +110,10 @@ export default function Features() {
         <div className="pt-6 md:pt-20">
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
             <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">
-              Unique your website concept? <span className=" block font-normal text-orange-600">Wonder can support it.</span>
+              Unique your website concept? <span className=" block font-normal text-red-600">CrabsHQ can support it.</span>
             </h1>
             <p className="text-xl text-slate-600">
-              Wonder  is designed for all types from content curation to
+              CrabsHQ  is designed for all types from content curation to
               content creation. Build company blogs, helpdesks, company wiki,
               documentations, and marketplaces.
             </p>

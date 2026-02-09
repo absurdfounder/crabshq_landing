@@ -78,8 +78,8 @@ export async function generateMetadata(
 
     if (!filteredContent) {
       return {
-        title: 'Wonder vs Unknown Template',
-        description: 'Compare Wonder  to an unknown template',
+        title: 'CrabsHQ vs Unknown Template',
+        description: 'Compare CrabsHQ  to an unknown template',
         alternates: {
           canonical: `https://crabshq.com/showcase/${slug}`,
         },
@@ -207,7 +207,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             {/* Template header */}
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <span className="bg-orange-100 text-orange-700 text-xs font-medium px-3 py-1 rounded-md">
+                <span className="bg-red-100 text-red-700 text-xs font-medium px-3 py-1 rounded-md">
                   {filterBySlug.product.type}
                 </span>
                 <span className="text-sm text-slate-600 flex items-center">
@@ -257,7 +257,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
           {/* Screenshot with improved presentation */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-orange-100 to-blue-100 rounded-2xl transform rotate-1 scale-105 opacity-30 -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-red-100 to-blue-100 rounded-2xl transform rotate-1 scale-105 opacity-30 -z-10"></div>
             <div className="relative overflow-hidden rounded-xl shadow-2xl border border-slate-200">
               <Image
                 src={filterBySlug.proof.screenshot}
@@ -275,7 +275,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <div className="grid gap-8 mb-16">
           <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition duration-300">
             <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-              <span className="bg-orange-100 text-orange-700 w-8 h-8 rounded-md flex items-center justify-center text-sm mr-3">1</span>
+              <span className="bg-red-100 text-red-700 w-8 h-8 rounded-md flex items-center justify-center text-sm mr-3">1</span>
               About
             </h2>
             <p className="text-slate-700 leading-relaxed">{filterBySlug.overview.content}</p>
@@ -329,12 +329,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
                 <div className="p-5 flex-1 flex flex-col">
                   <div className="mb-3">
-                    <span className="bg-orange-50 text-orange-600 text-xs font-medium px-2.5 py-1 rounded-md">
+                    <span className="bg-red-50 text-red-600 text-xs font-medium px-2.5 py-1 rounded-md">
                       {template.product.type}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-slate-800 group-hover:text-orange-600 transition-colors text-lg mb-2">
+                  <h3 className="font-bold text-slate-800 group-hover:text-red-600 transition-colors text-lg mb-2">
                     {template.product.name}
                   </h3>
 

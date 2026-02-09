@@ -185,7 +185,7 @@ export default function AuthLanding() {
             <div
                 className="min-h-screen flex flex-col pb-12"
                 style={{
-                    backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/wondercollectivebanner.png)",
+                    backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
@@ -278,7 +278,7 @@ export default function AuthLanding() {
                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-center justify-center px-4 sm:px-0">
                             <div
                                 onClick={() => setShowBuilder(true)}
-                                className="flex items-center justify-center py-3 sm:py-3 px-6 sm:px-6 bg-orange-600 text-white rounded-md font-medium hover:bg-orange-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto cursor-pointer"
+                                className="flex items-center justify-center py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto cursor-pointer"
                             >
                                 <div className="relative overflow-hidden mr-2 h-5 sm:h-5">
                                     <div className="transition-transform duration-150 whitespace-nowrap">
@@ -322,7 +322,7 @@ export default function AuthLanding() {
                                 Global Wallets
                             </h3>
                             <p className="text-gray-600 text-sm">
-                                One Wallet across all the Wonder Auth integrated ecosytem.
+                                One Wallet across all the CrabsHQ Auth integrated ecosytem.
                             </p>
                         </a>
 
@@ -381,7 +381,7 @@ export default function AuthLanding() {
                                     alt="Ironforge Security"
                                     className="object-contain w-full h-full group-hover:scale-110 transition-all"
                                 />
-                                <div className="absolute top-4 right-4 bg-white/90 text-orange-500 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                                <div className="absolute top-4 right-4 bg-white/90 text-red-500 text-sm px-3 py-1 rounded-full border border-gray-200 shadow-sm">
                                     Degens Defend Encryption
                                 </div>
                             </div>
@@ -420,8 +420,8 @@ export default function AuthLanding() {
                                     {/* Logo Customization */}
                                     <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-5 shadow-sm">
                                         <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                                                <svg className="w-4 h-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                                <svg className="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                             </div>
@@ -666,9 +666,9 @@ export default function AuthLanding() {
                             {/* Right Panel - Preview */}
                             <div className="flex-1 overflow-y-auto bg-slate-50 relative">
 
-                                <div className="flex justify-between w-full bg-orange-100 text-orange-900 items-center p-2 px-6 m-auto mb-4">
+                                <div className="flex justify-between w-full bg-red-100 text-red-900 items-center p-2 px-6 m-auto mb-4">
                                     Checkout the live demo
-                                    <button className="bg-orange-600 text-white h-fit px-2 py-1 rounded-lg font-bold hover:shadow-lg hover:shadow-[#e0a984]/50 transition-all">
+                                    <button className="bg-red-600 text-white h-fit px-2 py-1 rounded-lg font-bold hover:shadow-lg hover:shadow-[#e0a984]/50 transition-all">
                                         Try Live
                                     </button>
                                 </div>

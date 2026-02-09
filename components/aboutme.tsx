@@ -53,7 +53,7 @@ export default function AboutMe() {
             </p>
             <p className="my-2">
               <strong className="text-slate-900">
-                Wonder  is solving all of this. It is for businesses who need
+                CrabsHQ  is solving all of this. It is for businesses who need
                 an easy way to Get a reliable knowledge site powered by
                 Notion.{" "}
               </strong>

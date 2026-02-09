@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Rating = () => {
     return (
         <div className='max-w-3xl mx-auto text-center py-12 md:py-20 px-4 sm:px-6'>
-        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">Wonder is rated the Best.</h2>
+        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">CrabsHQ is rated the Best.</h2>
         <p className="text-lg sm:text-xl text-slate-600"> Numbers quantify everything, this is what stands us apart from the competition.</p>
 
 

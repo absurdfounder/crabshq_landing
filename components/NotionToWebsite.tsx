@@ -49,10 +49,10 @@ export default function FeaturesBlocks() {
       }} />
       
       <div className="max-w-6xl w-full text-left px-4 sm:px-6">
-        <span className='font-silkscreen text-blue-600 mb-2 sm:mb-4 text-xs sm:text-sm md:text-base lg:text-lg block'>what's wonder ?</span>
+        <span className='font-silkscreen text-blue-600 mb-2 sm:mb-4 text-xs sm:text-sm md:text-base lg:text-lg block'>what's CrabsHQ ?</span>
 
         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-gray-500 leading-relaxed mb-4 sm:mb-6 leading-tight font-funneldisplay tracking-loose mt-2 sm:mt-4">
-          Wonder <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md align-middle mx-1" />{' '}
+          CrabsHQ <img src="https://dazzling-cat.netlify.app/wonderbadge.png" className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md align-middle mx-1" />{' '}
           <span className="font-medium text-gray-900">AI agent</span>
           {' '}solves these
         </h1>

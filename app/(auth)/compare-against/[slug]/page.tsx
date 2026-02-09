@@ -65,9 +65,9 @@ export async function generateMetadata(
   }
 
   return {
-    title: `The simple, powerful ${filteredContent.product.name} alternative - Wonder vs ${filteredContent.product.name}`,
-    description: `Wonder is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
-Compare Wonder  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
+    title: `The simple, powerful ${filteredContent.product.name} alternative - CrabsHQ vs ${filteredContent.product.name}`,
+    description: `CrabsHQ is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
+Compare CrabsHQ  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
     openGraph: {
       images: [{ url: filteredContent.product.heroimage }],
     },
@@ -109,7 +109,7 @@ export default async function ComparisonAgainst({ params }: { params: { slug: st
               className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm rounded-md p-8 mb-8 m-auto"
             />
             <h1 className="text-4xl font-bold mb-4 font-funneldisplay">
-              Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to Wonder  Sites
+              Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to CrabsHQ
             </h1>
             <p className="text-lg sm:text-xl text-slate-600">
               {filteredContent.product.description}

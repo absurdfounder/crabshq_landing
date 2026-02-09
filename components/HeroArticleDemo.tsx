@@ -268,7 +268,7 @@ export default function HeroArticleDemo() {
               className="relative rounded-b-2xl rounded-t-xl border-x border-t border-neutral-200"
               style={{
                 height: '600px',
-                backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/wondercollectivebanner.png)",
+                backgroundImage: "linear-gradient(rgb(255 255 255 / 59%), rgba(255, 255, 255, 0)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -331,7 +331,7 @@ export default function HeroArticleDemo() {
                                 setProcessingIndex(0);
                                 setStep('processing');
                               }}
-                              className="relative flex cursor-pointer items-center gap-2 rounded-[10px] border border-white bg-orange-300 p-0.5 font-bold ring-2 ring-black/8 text-gray-600"
+                              className="relative flex cursor-pointer items-center gap-2 rounded-[10px] border border-white bg-red-300 p-0.5 font-bold ring-2 ring-black/8 text-gray-600"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               aria-label="Write my docs"
@@ -438,10 +438,10 @@ export default function HeroArticleDemo() {
                         >
                           <div className="mx-auto max-w-4xl">
                             <h2 className="mb-3 text-xl font-semibold text-neutral-800 sm:text-2xl">
-                              How to export your Wonder help articles
+                              How to export your CrabsHQ help articles
                             </h2>
                             <p className="mb-3 text-sm leading-relaxed text-neutral-600">
-                              Wonder lets you sync your help center from Notion. This guide walks you through
+                              CrabsHQ lets you sync your help center from Notion. This guide walks you through
                               exporting article data, backing up your content, and using the API for custom
                               workflows.
                             </p>
@@ -458,12 +458,12 @@ export default function HeroArticleDemo() {
                             </div>
                             <h3 className="mt-4 mb-2 text-lg font-semibold text-neutral-800">Getting started</h3>
                             <p className="mb-3 text-sm leading-relaxed text-neutral-600">
-                              Make sure your Notion workspace is connected to Wonder. Only workspace admins can
+                              Make sure your Notion workspace is connected to CrabsHQ. Only workspace admins can
                               export data.
                             </p>
                             <h3 className="mt-4 mb-2 text-lg font-semibold text-neutral-800">Export steps</h3>
                             <ol className="mb-3 list-decimal space-y-1.5 pl-5 text-sm text-neutral-600">
-                              <li>Open your Wonder dashboard and go to <span className="font-medium text-neutral-800">Settings</span></li>
+                              <li>Open your CrabsHQ dashboard and go to <span className="font-medium text-neutral-800">Settings</span></li>
                               <li>Select <span className="font-medium text-neutral-800">Export</span>, choose <span className="font-medium text-neutral-800">CSV</span> or <span className="font-medium text-neutral-800">JSON</span></li>
                               <li>Click <span className="font-medium text-neutral-800">Download</span> to get your file</li>
                             </ol>
