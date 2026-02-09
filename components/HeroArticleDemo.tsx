@@ -1,9 +1,48 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, ReactNode } from "react";
 import {
   MessageCircle, Send, AtSign, RotateCcw, Pause, Play, Lock, Bell,
   Users, Bot, ChevronRight, Hash, Paperclip, Smile, LayoutGrid,
   Clock, MessageSquare, Zap, Crown, Sparkles, Activity
 } from "lucide-react";
+
+/* ─── Types ─── */
+interface Task {
+  id: number;
+  title: string;
+  col: string;
+  status: string;
+  tags: string[];
+  watchers: string[];
+  comments: number;
+  by: string;
+  time: string;
+}
+
+interface Message {
+  sender: string;
+  role: string;
+  text: string;
+  isHuman: boolean;
+  time: string;
+  reaction?: {
+    emoji: string;
+    count: number;
+  };
+}
+
+interface ChatScript {
+  type: string;
+  text?: string;
+  delay: number;
+  sender?: string;
+  role?: string;
+  isHuman?: boolean;
+  time?: string;
+  phase?: number;
+  emoji?: string;
+  count?: number;
+  [key: string]: any;
+}
 
 /* ─── Data ─── */
 const HUMANS = [
@@ -69,17 +108,6 @@ const CHAT_SCRIPT = [
   { type: "reaction", emoji: "👍", count: 3, delay: 800 },
 ];
 
-/* ─── Types ─── */
-type Task = typeof PHASE1_TASKS[number];
-interface Message {
-  sender: string;
-  role: string;
-  text: string;
-  isHuman: boolean;
-  time: string;
-  reaction?: { emoji: string; count: number };
-}
-
 /* ─── Helpers ─── */
 function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const p = ALL_PEOPLE[name];
@@ -99,7 +127,7 @@ function AvatarStack({ names, size = 22, max = 2 }: { names: string[]; size?: nu
   const extra = names.length - max;
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
-      {shown.map((n, i) => (
+      {shown.map((n: string, i: number) => (
         <div key={n} style={{ marginLeft: i > 0 ? -7 : 0, zIndex: max - i, position: "relative" }}>
           <Av name={n} size={size} />
         </div>
@@ -136,7 +164,7 @@ function TaskCard({ task, index }: { task: Task; index: number }) {
       <div style={{ fontSize: 13.5, fontWeight: 600, color: "#1a1a1a", marginBottom: 3, lineHeight: 1.4 }}>{task.title}</div>
       <div style={{ fontSize: 11, color: "#a3a3a3", marginBottom: 8 }}>{task.status}</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
-        {task.tags.slice(0, 2).map(t => <TaskTag key={t} text={t} />)}
+        {task.tags.slice(0, 2).map((t: string) => <TaskTag key={t} text={t} />)}
         {task.tags.length > 2 && (
           <span style={{ fontSize: 11, color: "#a3a3a3", padding: "2px 6px", background: "#f5f5f5", borderRadius: 6, border: "1px solid #e5e5e5" }}>+1</span>
         )}
@@ -165,8 +193,8 @@ const COL_META = {
   review: { label: "Review", bg: "#f3e8ff", accent: "#9333ea" },
 };
 
-function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks: Task[] }) {
-  const m = COL_META[colKey];
+function KanbanColumn({ colKey, tasks }: { colKey: string; tasks: Task[] }) {
+  const m = COL_META[colKey as keyof typeof COL_META];
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
       <div style={{
@@ -181,7 +209,7 @@ function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks:
         }}>{tasks.length}</span>
       </div>
       <div className="crabs-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 3 }}>
-        {tasks.map((t, i) => <TaskCard key={t.id} task={t} index={i} />)}
+        {tasks.map((t: Task, i: number) => <TaskCard key={t.id} task={t} index={i} />)}
       </div>
     </div>
   );
@@ -214,12 +242,14 @@ export default function CrabsHQDemo() {
   const [nickTyping, setNickTyping] = useState(false);
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  const chatRef = useRef<HTMLDivElement | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const typeRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const typeRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
   }, [messages, inputText, nickTyping]);
 
   const cleanUp = useCallback(() => {
@@ -236,11 +266,11 @@ export default function CrabsHQDemo() {
       }, 5000);
       return;
     }
-    const step = CHAT_SCRIPT[idx];
+    const step: ChatScript = CHAT_SCRIPT[idx];
 
     timerRef.current = setTimeout(() => {
       if (step.type === "mention_tab") {
-        setMentionTab(step.text);
+        setMentionTab(step.text || "");
         setScriptIndex(idx + 1);
         return;
       }
@@ -250,9 +280,9 @@ export default function CrabsHQDemo() {
         setInputText("");
         typeRef.current = setInterval(() => {
           ci++;
-          setInputText(step.text.slice(0, ci));
-          if (ci >= step.text.length) {
-            clearInterval(typeRef.current);
+          setInputText((step.text || "").slice(0, ci));
+          if (ci >= (step.text || "").length) {
+            if (typeRef.current) clearInterval(typeRef.current);
             typeRef.current = null;
             setScriptIndex(idx + 1);
           }
@@ -261,27 +291,39 @@ export default function CrabsHQDemo() {
       }
       if (step.type === "send") {
         setInputText("");
-        setMessages(prev => [...prev, { sender: step.sender, role: step.role, text: step.text, isHuman: true, time: "14:52" }]);
+        setMessages(prev => [...prev, { 
+          sender: step.sender || "", 
+          role: step.role || "", 
+          text: step.text || "", 
+          isHuman: true, 
+          time: "14:52" 
+        }]);
         setScriptIndex(idx + 1);
         return;
       }
       if (step.type === "nick_typing") {
         setNickTyping(true);
-        setActiveAgents(prev => new Set([...prev, "Nick"]));
+        setActiveAgents(prev => new Set([...Array.from(prev), "Nick"]));
         setScriptIndex(idx + 1);
         return;
       }
       if (step.type === "response") {
         setNickTyping(false);
-        setActiveAgents(prev => new Set([...prev, step.sender]));
-        setMessages(prev => [...prev, { sender: step.sender, role: step.role, text: step.text, isHuman: false, time: step.time }]);
+        setActiveAgents(prev => new Set([...Array.from(prev), step.sender || ""]));
+        setMessages(prev => [...prev, { 
+          sender: step.sender || "", 
+          role: step.role || "", 
+          text: step.text || "", 
+          isHuman: false, 
+          time: step.time || "" 
+        }]);
         setScriptIndex(idx + 1);
         return;
       }
       if (step.type === "reaction") {
         setMessages(prev => {
           const c = [...prev];
-          if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: step.emoji, count: step.count } };
+          if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: step.emoji || "", count: step.count || 0 } };
           return c;
         });
         setScriptIndex(idx + 1);
@@ -308,8 +350,8 @@ export default function CrabsHQDemo() {
     setScriptIndex(0); setIsRunning(true);
   };
 
-  const cols: Record<string, Task[]> = { inbox: [], assigned: [], progress: [], review: [] };
-  tasks.forEach(t => { if (cols[t.col]) cols[t.col].push(t); });
+  const cols: { [key: string]: Task[] } = { inbox: [], assigned: [], progress: [], review: [] };
+  tasks.forEach((t: Task) => { if (cols[t.col]) cols[t.col].push(t); });
 
   return (
     <div style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
@@ -457,7 +499,7 @@ export default function CrabsHQDemo() {
           {/* ═══ CENTER KANBAN ═══ */}
           <div style={{ flex: 1, overflow: "hidden", padding: "14px 16px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", gap: 12, flex: 1, overflow: "hidden" }}>
-              {(["inbox", "assigned", "progress", "review"] as const).map(k => (
+              {["inbox", "assigned", "progress", "review"].map((k: string) => (
                 <KanbanColumn key={k} colKey={k} tasks={cols[k]} />
               ))}
             </div>
