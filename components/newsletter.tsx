@@ -53,7 +53,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
         </div>
         {/* Hover Text */}
         <div
-          className="absolute top-0 left-0 w-full text-center" // Center text
+          className="absolute right-0 top-0 pointer-events-none hidden lg:block" // Center text
           style={{
             transform: isHovered ? 'translateY(0)' : 'translateY(100%)',
             transition: 'transform 0.3s ease-in-out',
@@ -90,7 +90,7 @@ export default function Newsletter() {
           <div
             className="relative py-10 px-8 md:py-16 md:px-12 overflow-hidden rounded-2xl my-8 border"
             style={{
-              backgroundImage: 'linear-gradient(rgb(255 255 255 / 87%), rgb(252 165 165 / 38%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)',
+              backgroundImage: 'linear-gradient(rgb(0 0 0 / 72%), rgb(0 0 0 / 51%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)',
               backgroundSize: 'cover',
               backgroundPosition: 'center center'
             }}
@@ -109,12 +109,12 @@ export default function Newsletter() {
 
               {/* CTA content */}
               <div className="text-center lg:text-left lg:max-w-xl">
-                <h3 className="h2 text-slate-800 my-2">
-                  Stop living at your desk all day <span style={{ color: '#ff3d3d' }}>automate it </span>.
+                <h3 className="h2 text-slate-100 my-2">
+                  Try the <span style={{ color: '#f9551f' }}>alien tech</span> in your company.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
-                {/* <h3 className="h2 text-slate-800 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
-                <p className="h5 font-normal text-slate-800 my-2">
+                {/* <h3 className="h2 text-slate-100 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
+                <p className="h5 font-normal text-slate-100/75 my-2">
                   Outdated posts are wasting time, money and affecting your reputation. Let CrabsHQ run your Helpdesk & Blog on pure automations.
                 </p>
 
