@@ -68,7 +68,7 @@ export default function Home() {
         */}
       </div>
 
-      <section className="px-4 py-6 md:px-6 md:py-10 border-b bg-white">
+      <section className="hidden px-4 py-6 md:px-6 md:py-10 border-b bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:items-center">
             <span className="mt-1 text-base font-medium text-balance text-gray-400 md:text-left">
@@ -110,7 +110,6 @@ export default function Home() {
 
 
 
-      <NotionToWebsite />
 
 
       {/* 
@@ -122,15 +121,6 @@ export default function Home() {
       <SimpleAnalyticsDashboard />
       <GetStartedSection />
 
-*/}
-      <ModalVideo />
-
-      <CustomerStorySection />
-
-
-      <FeaturesBlocks />
-      <OldWays />
-
       <HowItWorksSection />
       <CustomerStorySection2 />
 
@@ -138,8 +128,19 @@ export default function Home() {
 
       <GetStartedSection />
 
+            <AIAgentSection />
+      <CustomerStorySection />
+      <FeaturesBlocks />
 
-      <AIAgentSection />
+      <ModalVideo />
+
+
+*/}
+
+
+      <OldWays />
+
+
 
     </>
   )

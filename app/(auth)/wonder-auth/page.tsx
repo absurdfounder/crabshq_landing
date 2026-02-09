@@ -711,7 +711,7 @@ export default function AuthLanding() {
                                                         <p className="text-white/60">Choose your authentication method</p>
                                                     </div>
 
-                                                    <div className="flex flex-col gap-3">
+                                                    <div className="flex flex-row gap-3">
                                                         {getEnabledSocialProviders().slice(0, 2).map((provider) => (
                                                             <button
                                                                 key={provider}

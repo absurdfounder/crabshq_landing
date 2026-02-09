@@ -51,25 +51,24 @@ const NotionIcon = () => (
 );
 
 
-// Features component with Lucide icons
 const Features = React.memo(() => {
   const features = [
     { 
-      name: "Our AI agent writes your help docs", 
+      name: "Plans and executes tasks end-to-end", 
       icon: <Sparkles className="w-5 h-5 text-lime-500" />
     },
     { 
-      name: "takes annotated screenshots for you", 
+      name: "Uses tools, browsers, and files autonomously", 
       icon: <FileImage className="w-5 h-5 text-sky-500" />
     },
     { 
-      name: "and responds to your customers while you sleep", 
+      name: "Owns outcomes without constant human input", 
       icon: <Smile className="w-5 h-5 text-amber-500" />
     }
   ];
 
   return (
-    <ul className="flex flex-col gap-3">
+    <ul className="flex flex-row gap-3">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
           {feature.icon}
@@ -81,6 +80,7 @@ const Features = React.memo(() => {
     </ul>
   );
 });
+
 
 interface HeroProps {
   onCategorySelect?: (category: string) => void;
@@ -142,11 +142,11 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
         <div className="pt-2 sm:pt-1 md:pt-2 pb-12 sm:pb-16 md:pb-20">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-4 xl:gap-6">
+          <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Left: text content */}
-            <div className="flex-1 lg:max-w-[48%] text-left">
+            <div className="flex-1 lg:max-w-full text-left p-4">
               <div className="px-2 sm:px-4 md:px-6 lg:px-0">
-                <div className="flex justify-start">
+                <div className="hidden flex justify-start">
                   <ProductHuntBadge />
                 </div>
 
@@ -157,7 +157,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                     <span className="reveal reveal__hello-3">Crabs.</span>
                   </div>
                   <span className="block reveal reveal__usp mt-1 sm:mt-2 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl">
-                    Automated way to keep your <b>blog</b> & <b>help center</b> <span style={{ color: '#009fbc' }}>up to date.</span>
+                    AI workforce set on a mission, powered by <span style={{ color: '#bc0010' }}>OpenClaw</span>.
                   </span>
                 </h1>
 
@@ -214,7 +214,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
             </div>
 
             {/* Right: interactive article demo */}
-            <div className="flex-1 lg:max-w-[52%] w-full mt-10 lg:mt-0 lg:pl-4">
+            <div className="flex-1  w-full mt-10 lg:mt-0 lg:pl-4">
               <HeroArticleDemo />
             </div>
           </div>
