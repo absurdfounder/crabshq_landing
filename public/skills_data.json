@@ -6,7 +6,8 @@
       "description": "Run Codex CLI, Claude Code, OpenCode, or Pi Coding Agent",
       "category": "Coding Agents & IDEs",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/coding-agent/SKILL.md",
-      "install_command": "npx clawhub@latest install coding-agent"
+      "install_command": "npx clawhub@latest install coding-agent",
+      "website": "github.com"
     },
     {
       "id": "docker-essentials",
@@ -14,7 +15,8 @@
       "description": "Essential Docker commands and workflows for container management",
       "category": "Coding Agents & IDEs",
       "link": "https://github.com/openclaw/skills/tree/main/skills/arnarsson/docker-essentials/SKILL.md",
-      "install_command": "npx clawhub@latest install docker-essentials"
+      "install_command": "npx clawhub@latest install docker-essentials",
+      "website": "docker.com"
     },
     {
       "id": "cursor-agent",
@@ -22,7 +24,8 @@
       "description": "A comprehensive skill for using the Cursor CLI agent",
       "category": "Coding Agents & IDEs",
       "link": "https://github.com/openclaw/skills/tree/main/skills/swiftlysingh/cursor-agent/SKILL.md",
-      "install_command": "npx clawhub@latest install cursor-agent"
+      "install_command": "npx clawhub@latest install cursor-agent",
+      "website": "cursor.com"
     },
     {
       "id": "github",
@@ -30,7 +33,8 @@
       "description": "Interact with GitHub using the gh CLI for repos, issues, and PRs",
       "category": "Git & GitHub",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/github/SKILL.md",
-      "install_command": "npx clawhub@latest install github"
+      "install_command": "npx clawhub@latest install github",
+      "website": "github.com"
     },
     {
       "id": "github-pr",
@@ -38,7 +42,8 @@
       "description": "Fetch, preview, merge, and test GitHub PRs locally",
       "category": "Git & GitHub",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/github-pr/SKILL.md",
-      "install_command": "npx clawhub@latest install github-pr"
+      "install_command": "npx clawhub@latest install github-pr",
+      "website": "github.com"
     },
     {
       "id": "conventional-commits",
@@ -46,7 +51,8 @@
       "description": "Format commit messages using the Conventional Commits standard",
       "category": "Git & GitHub",
       "link": "https://github.com/openclaw/skills/tree/main/skills/bastos/conventional-commits/SKILL.md",
-      "install_command": "npx clawhub@latest install conventional-commits"
+      "install_command": "npx clawhub@latest install conventional-commits",
+      "website": "conventionalcommits.org"
     },
     {
       "id": "moltbook",
@@ -54,7 +60,8 @@
       "description": "The social network for AI agents to share and collaborate",
       "category": "Moltbook",
       "link": "https://github.com/openclaw/skills/tree/main/skills/mattprd/moltbook/SKILL.md",
-      "install_command": "npx clawhub@latest install moltbook"
+      "install_command": "npx clawhub@latest install moltbook",
+      "website": "github.com"
     },
     {
       "id": "deploy-moltbot-to-fly",
@@ -62,7 +69,8 @@
       "description": "Deploy Moltbot (Clawdbot) to Fly.io with proper configuration",
       "category": "Moltbook",
       "link": "https://github.com/openclaw/skills/tree/main/skills/hollaugo/deploy-moltbot-to-fly/SKILL.md",
-      "install_command": "npx clawhub@latest install deploy-moltbot-to-fly"
+      "install_command": "npx clawhub@latest install deploy-moltbot-to-fly",
+      "website": "fly.io"
     },
     {
       "id": "nextjs-expert",
@@ -70,7 +78,8 @@
       "description": "Build Next.js 14/15 applications with the App Router",
       "category": "Web & Frontend Development",
       "link": "https://github.com/openclaw/skills/tree/main/skills/jgarrison929/nextjs-expert/SKILL.md",
-      "install_command": "npx clawhub@latest install nextjs-expert"
+      "install_command": "npx clawhub@latest install nextjs-expert",
+      "website": "nextjs.org"
     },
     {
       "id": "slack",
@@ -78,7 +87,8 @@
       "description": "Control Slack from Clawdbot — send messages, manage channels",
       "category": "Web & Frontend Development",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/slack/SKILL.md",
-      "install_command": "npx clawhub@latest install slack"
+      "install_command": "npx clawhub@latest install slack",
+      "website": "slack.com"
     },
     {
       "id": "wordpress",
@@ -86,7 +96,8 @@
       "description": "WordPress REST API CLI for managing posts, pages, and media",
       "category": "Web & Frontend Development",
       "link": "https://github.com/openclaw/skills/tree/main/skills/codedao12/wordpress/SKILL.md",
-      "install_command": "npx clawhub@latest install wordpress"
+      "install_command": "npx clawhub@latest install wordpress",
+      "website": "wordpress.org"
     },
     {
       "id": "aws-infra",
@@ -94,7 +105,8 @@
       "description": "Chat-based AWS infrastructure assistance using AWS CLI",
       "category": "DevOps & Cloud",
       "link": "https://github.com/openclaw/skills/tree/main/skills/bmdhodl/aws-infra/SKILL.md",
-      "install_command": "npx clawhub@latest install aws-infra"
+      "install_command": "npx clawhub@latest install aws-infra",
+      "website": "aws.amazon.com"
     },
     {
       "id": "cloudflare",
@@ -102,7 +114,8 @@
       "description": "Manage Cloudflare Workers, KV, D1, R2, and secrets via Wrangler CLI",
       "category": "DevOps & Cloud",
       "link": "https://github.com/openclaw/skills/tree/main/skills/asleep123/wrangler/SKILL.md",
-      "install_command": "npx clawhub@latest install cloudflare"
+      "install_command": "npx clawhub@latest install cloudflare",
+      "website": "cloudflare.com"
     },
     {
       "id": "vercel",
@@ -110,7 +123,8 @@
       "description": "Deploy applications and manage projects with Vercel CLI",
       "category": "DevOps & Cloud",
       "link": "https://github.com/openclaw/skills/tree/main/skills/thesethrose/vercel/SKILL.md",
-      "install_command": "npx clawhub@latest install vercel"
+      "install_command": "npx clawhub@latest install vercel",
+      "website": "vercel.com"
     },
     {
       "id": "playwright-cli",
@@ -118,7 +132,8 @@
       "description": "Browser automation via Playwright CLI for testing and scraping",
       "category": "Browser & Automation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/gumadeiras/playwright-cli/SKILL.md",
-      "install_command": "npx clawhub@latest install playwright-cli"
+      "install_command": "npx clawhub@latest install playwright-cli",
+      "website": "playwright.dev"
     },
     {
       "id": "browser-use",
@@ -126,7 +141,8 @@
       "description": "Spin up cloud browsers for Clawdbot using Browser Use API",
       "category": "Browser & Automation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/shawnpana/browser-use/SKILL.md",
-      "install_command": "npx clawhub@latest install browser-use"
+      "install_command": "npx clawhub@latest install browser-use",
+      "website": "browser-use.com"
     },
     {
       "id": "n8n-automation",
@@ -134,7 +150,8 @@
       "description": "Manage n8n workflows from OpenClaw via the n8n REST API",
       "category": "Browser & Automation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dilomcfly/n8n-automation/SKILL.md",
-      "install_command": "npx clawhub@latest install n8n-automation"
+      "install_command": "npx clawhub@latest install n8n-automation",
+      "website": "n8n.io"
     },
     {
       "id": "falimagegen",
@@ -142,7 +159,8 @@
       "description": "Call fal.ai model APIs for AI image generation",
       "category": "Image & Video Generation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/xxmzdxxxm/falimagegen/SKILL.md",
-      "install_command": "npx clawhub@latest install falimagegen"
+      "install_command": "npx clawhub@latest install falimagegen",
+      "website": "fal.ai"
     },
     {
       "id": "image-router",
@@ -150,7 +168,8 @@
       "description": "Generate AI images with any model using ImageRouter API",
       "category": "Image & Video Generation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dawe35/image-router/SKILL.md",
-      "install_command": "npx clawhub@latest install image-router"
+      "install_command": "npx clawhub@latest install image-router",
+      "website": "imagerouter.org"
     },
     {
       "id": "video-agent",
@@ -158,7 +177,8 @@
       "description": "Generate AI avatar videos with HeyGen's Video Agent API",
       "category": "Image & Video Generation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/michaelwang11394/video-agent/SKILL.md",
-      "install_command": "npx clawhub@latest install video-agent"
+      "install_command": "npx clawhub@latest install video-agent",
+      "website": "heygen.com"
     },
     {
       "id": "apple-notes",
@@ -166,7 +186,8 @@
       "description": "Manage Apple Notes via the memo CLI on macOS",
       "category": "Apple Apps & Services",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/apple-notes/SKILL.md",
-      "install_command": "npx clawhub@latest install apple-notes"
+      "install_command": "npx clawhub@latest install apple-notes",
+      "website": "apple.com"
     },
     {
       "id": "apple-reminders",
@@ -174,7 +195,8 @@
       "description": "Manage Apple Reminders via the remindctl CLI on macOS",
       "category": "Apple Apps & Services",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/apple-reminders/SKILL.md",
-      "install_command": "npx clawhub@latest install apple-reminders"
+      "install_command": "npx clawhub@latest install apple-reminders",
+      "website": "apple.com"
     },
     {
       "id": "firecrawl-skills",
@@ -182,7 +204,8 @@
       "description": "Web scraping, crawling, and structured data extraction",
       "category": "Search & Research",
       "link": "https://github.com/openclaw/skills/tree/main/skills/leonardogrig/firecrawl-skills/SKILL.md",
-      "install_command": "npx clawhub@latest install firecrawl-skills"
+      "install_command": "npx clawhub@latest install firecrawl-skills",
+      "website": "firecrawl.dev"
     },
     {
       "id": "serper",
@@ -190,7 +213,8 @@
       "description": "Google search via Serper API with full page content extraction",
       "category": "Search & Research",
       "link": "https://github.com/openclaw/skills/tree/main/skills/nesdeq/serper/SKILL.md",
-      "install_command": "npx clawhub@latest install serper"
+      "install_command": "npx clawhub@latest install serper",
+      "website": "serper.dev"
     },
     {
       "id": "tavily",
@@ -198,7 +222,8 @@
       "description": "AI-optimized web search using Tavily Search API",
       "category": "Search & Research",
       "link": "https://github.com/openclaw/skills/tree/main/skills/bert-builder/tavily/SKILL.md",
-      "install_command": "npx clawhub@latest install tavily"
+      "install_command": "npx clawhub@latest install tavily",
+      "website": "tavily.com"
     },
     {
       "id": "clawdbot-jira-skill",
@@ -206,7 +231,8 @@
       "description": "Manage Jira issues, transitions, worklogs, and sprints",
       "category": "Clawdbot Tools",
       "link": "https://github.com/openclaw/skills/tree/main/skills/kyjus25/clawdbot-jira-skill/SKILL.md",
-      "install_command": "npx clawhub@latest install clawdbot-jira-skill"
+      "install_command": "npx clawhub@latest install clawdbot-jira-skill",
+      "website": "atlassian.com"
     },
     {
       "id": "airtable-automation",
@@ -214,7 +240,8 @@
       "description": "Automate Airtable tasks via Rube MCP (Composio)",
       "category": "Clawdbot Tools",
       "link": "https://github.com/openclaw/skills/tree/main/skills/sohamganatra/airtable-automation/SKILL.md",
-      "install_command": "npx clawhub@latest install airtable-automation"
+      "install_command": "npx clawhub@latest install airtable-automation",
+      "website": "airtable.com"
     },
     {
       "id": "mcporter",
@@ -222,7 +249,8 @@
       "description": "List, configure, auth, and call MCP servers and tools",
       "category": "Clawdbot Tools",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/mcporter/SKILL.md",
-      "install_command": "npx clawhub@latest install mcporter"
+      "install_command": "npx clawhub@latest install mcporter",
+      "website": "github.com"
     },
     {
       "id": "docker-ctl",
@@ -230,7 +258,8 @@
       "description": "Inspect containers, logs, and images via podman",
       "category": "CLI Utilities",
       "link": "https://github.com/openclaw/skills/tree/main/skills/xejrax/docker-ctl/SKILL.md",
-      "install_command": "npx clawhub@latest install docker-ctl"
+      "install_command": "npx clawhub@latest install docker-ctl",
+      "website": "docker.com"
     },
     {
       "id": "ssh-exec",
@@ -238,7 +267,8 @@
       "description": "Run commands on remote Tailscale nodes via SSH",
       "category": "CLI Utilities",
       "link": "https://github.com/openclaw/skills/tree/main/skills/xejrax/ssh-exec/SKILL.md",
-      "install_command": "npx clawhub@latest install ssh-exec"
+      "install_command": "npx clawhub@latest install ssh-exec",
+      "website": "tailscale.com"
     },
     {
       "id": "sql-toolkit",
@@ -246,7 +276,8 @@
       "description": "Query, design, migrate, and optimize SQL databases",
       "category": "CLI Utilities",
       "link": "https://github.com/openclaw/skills/tree/main/skills/gitgoodordietrying/sql-toolkit/SKILL.md",
-      "install_command": "npx clawhub@latest install sql-toolkit"
+      "install_command": "npx clawhub@latest install sql-toolkit",
+      "website": "postgresql.org"
     },
     {
       "id": "apify-lead-generation",
@@ -254,7 +285,8 @@
       "description": "Generate B2B/B2C leads by scraping Google and social platforms",
       "category": "Marketing & Sales",
       "link": "https://github.com/openclaw/skills/tree/main/skills/jirispilka/apify-lead-generation/SKILL.md",
-      "install_command": "npx clawhub@latest install apify-lead-generation"
+      "install_command": "npx clawhub@latest install apify-lead-generation",
+      "website": "apify.com"
     },
     {
       "id": "activecampaign",
@@ -262,7 +294,8 @@
       "description": "CRM integration for lead management and deal tracking",
       "category": "Marketing & Sales",
       "link": "https://github.com/openclaw/skills/tree/main/skills/kesslerio/activecampaign/SKILL.md",
-      "install_command": "npx clawhub@latest install activecampaign"
+      "install_command": "npx clawhub@latest install activecampaign",
+      "website": "activecampaign.com"
     },
     {
       "id": "phantombuster",
@@ -270,7 +303,8 @@
       "description": "Control PhantomBuster automation agents via API",
       "category": "Marketing & Sales",
       "link": "https://github.com/openclaw/skills/tree/main/skills/andrewdmwalker/phantombuster/SKILL.md",
-      "install_command": "npx clawhub@latest install phantombuster"
+      "install_command": "npx clawhub@latest install phantombuster",
+      "website": "phantombuster.com"
     },
     {
       "id": "linear",
@@ -278,7 +312,8 @@
       "description": "Linear.app CLI for issue tracking and project management",
       "category": "Productivity & Tasks",
       "link": "https://github.com/openclaw/skills/tree/main/skills/whoisnnamdi/linearis/SKILL.md",
-      "install_command": "npx clawhub@latest install linear"
+      "install_command": "npx clawhub@latest install linear",
+      "website": "linear.app"
     },
     {
       "id": "google-tasks",
@@ -286,7 +321,8 @@
       "description": "Fetch, create, and manage Google Tasks via API",
       "category": "Productivity & Tasks",
       "link": "https://github.com/openclaw/skills/tree/main/skills/addozhang/google-tasks/SKILL.md",
-      "install_command": "npx clawhub@latest install google-tasks"
+      "install_command": "npx clawhub@latest install google-tasks",
+      "website": "google.com"
     },
     {
       "id": "calendly",
@@ -294,7 +330,8 @@
       "description": "Calendly scheduling integration for meetings and events",
       "category": "Productivity & Tasks",
       "link": "https://github.com/openclaw/skills/tree/main/skills/kesslerio/calendly/SKILL.md",
-      "install_command": "npx clawhub@latest install calendly"
+      "install_command": "npx clawhub@latest install calendly",
+      "website": "calendly.com"
     },
     {
       "id": "cellcog",
@@ -302,7 +339,8 @@
       "description": "#1 on DeepResearch Bench — advanced AI reasoning agent",
       "category": "AI & LLMs",
       "link": "https://github.com/openclaw/skills/tree/main/skills/nitishgargiitd/cellcog/SKILL.md",
-      "install_command": "npx clawhub@latest install cellcog"
+      "install_command": "npx clawhub@latest install cellcog",
+      "website": "github.com"
     },
     {
       "id": "multi-coding-agent",
@@ -310,7 +348,8 @@
       "description": "Run Codex CLI, Claude Code, OpenCode, or Pi Coding Agent",
       "category": "AI & LLMs",
       "link": "https://github.com/openclaw/skills/tree/main/skills/kesslerio/multi-coding-agent/SKILL.md",
-      "install_command": "npx clawhub@latest install multi-coding-agent"
+      "install_command": "npx clawhub@latest install multi-coding-agent",
+      "website": "openai.com"
     },
     {
       "id": "supabase",
@@ -318,7 +357,8 @@
       "description": "Database operations, vector search, and storage via Supabase",
       "category": "Data & Analytics",
       "link": "https://github.com/openclaw/skills/tree/main/skills/stopmoclay/supabase/SKILL.md",
-      "install_command": "npx clawhub@latest install supabase"
+      "install_command": "npx clawhub@latest install supabase",
+      "website": "supabase.com"
     },
     {
       "id": "data-analyst",
@@ -326,7 +366,8 @@
       "description": "Data visualization, report generation, and spreadsheet analysis",
       "category": "Data & Analytics",
       "link": "https://github.com/openclaw/skills/tree/main/skills/oyi77/data-analyst/SKILL.md",
-      "install_command": "npx clawhub@latest install data-analyst"
+      "install_command": "npx clawhub@latest install data-analyst",
+      "website": "github.com"
     },
     {
       "id": "add-analytics",
@@ -334,7 +375,8 @@
       "description": "Add Google Analytics 4 tracking to any project",
       "category": "Data & Analytics",
       "link": "https://github.com/openclaw/skills/tree/main/skills/jeftekhari/add-analytics/SKILL.md",
-      "install_command": "npx clawhub@latest install add-analytics"
+      "install_command": "npx clawhub@latest install add-analytics",
+      "website": "analytics.google.com"
     },
     {
       "id": "plaid",
@@ -342,7 +384,8 @@
       "description": "CLI for interacting with the Plaid finance platform",
       "category": "Finance",
       "link": "https://github.com/openclaw/skills/tree/main/skills/jverdi/plaid/SKILL.md",
-      "install_command": "npx clawhub@latest install plaid"
+      "install_command": "npx clawhub@latest install plaid",
+      "website": "plaid.com"
     },
     {
       "id": "expense-tracker-pro",
@@ -350,7 +393,8 @@
       "description": "Track expenses via natural language, get spending analysis",
       "category": "Finance",
       "link": "https://github.com/openclaw/skills/tree/main/skills/jhillin8/expense-tracker-pro/SKILL.md",
-      "install_command": "npx clawhub@latest install expense-tracker-pro"
+      "install_command": "npx clawhub@latest install expense-tracker-pro",
+      "website": "github.com"
     },
     {
       "id": "spotify",
@@ -358,7 +402,8 @@
       "description": "Control Spotify playback, playlists, and search",
       "category": "Media & Streaming",
       "link": "https://github.com/openclaw/skills/tree/main/skills/2mawi2/spotify/SKILL.md",
-      "install_command": "npx clawhub@latest install spotify"
+      "install_command": "npx clawhub@latest install spotify",
+      "website": "spotify.com"
     },
     {
       "id": "youtube-transcript",
@@ -366,7 +411,8 @@
       "description": "Fetch and summarize YouTube video transcripts",
       "category": "Media & Streaming",
       "link": "https://github.com/openclaw/skills/tree/main/skills/xthezealot/youtube-transcript/SKILL.md",
-      "install_command": "npx clawhub@latest install youtube-transcript"
+      "install_command": "npx clawhub@latest install youtube-transcript",
+      "website": "youtube.com"
     },
     {
       "id": "plex",
@@ -374,7 +420,8 @@
       "description": "Control Plex Media Server — browse libraries, search, play media",
       "category": "Media & Streaming",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/plex/SKILL.md",
-      "install_command": "npx clawhub@latest install plex"
+      "install_command": "npx clawhub@latest install plex",
+      "website": "plex.tv"
     },
     {
       "id": "notion",
@@ -382,7 +429,8 @@
       "description": "Notion API for creating and managing pages, databases, and blocks",
       "category": "Notes & PKM",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/notion/SKILL.md",
-      "install_command": "npx clawhub@latest install notion"
+      "install_command": "npx clawhub@latest install notion",
+      "website": "notion.so"
     },
     {
       "id": "obsidian",
@@ -390,7 +438,8 @@
       "description": "Work with Obsidian vaults and automate note management",
       "category": "Notes & PKM",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/obsidian/SKILL.md",
-      "install_command": "npx clawhub@latest install obsidian"
+      "install_command": "npx clawhub@latest install obsidian",
+      "website": "obsidian.md"
     },
     {
       "id": "readwise",
@@ -398,7 +447,8 @@
       "description": "Access Readwise highlights and Reader saved articles",
       "category": "Notes & PKM",
       "link": "https://github.com/openclaw/skills/tree/main/skills/refrigerator/readwise/SKILL.md",
-      "install_command": "npx clawhub@latest install readwise"
+      "install_command": "npx clawhub@latest install readwise",
+      "website": "readwise.io"
     },
     {
       "id": "swift-concurrency-expert",
@@ -406,7 +456,8 @@
       "description": "Swift Concurrency review and remediation for iOS/macOS",
       "category": "iOS & macOS Development",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/swift-concurrency-expert/SKILL.md",
-      "install_command": "npx clawhub@latest install swift-concurrency-expert"
+      "install_command": "npx clawhub@latest install swift-concurrency-expert",
+      "website": "developer.apple.com"
     },
     {
       "id": "ios-simulator",
@@ -414,7 +465,8 @@
       "description": "Automate iOS Simulator workflows with simctl and idb",
       "category": "iOS & macOS Development",
       "link": "https://github.com/openclaw/skills/tree/main/skills/tristanmanchester/ios-simulator/SKILL.md",
-      "install_command": "npx clawhub@latest install ios-simulator"
+      "install_command": "npx clawhub@latest install ios-simulator",
+      "website": "developer.apple.com"
     },
     {
       "id": "tesla",
@@ -422,7 +474,8 @@
       "description": "Control your Tesla — lock/unlock, climate, location, charge status",
       "category": "Transportation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/mvanhorn/tesla/SKILL.md",
-      "install_command": "npx clawhub@latest install tesla"
+      "install_command": "npx clawhub@latest install tesla",
+      "website": "tesla.com"
     },
     {
       "id": "flight-search",
@@ -430,7 +483,8 @@
       "description": "Search Google Flights for prices, times, and airlines",
       "category": "Transportation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/awlevin/flight-search/SKILL.md",
-      "install_command": "npx clawhub@latest install flight-search"
+      "install_command": "npx clawhub@latest install flight-search",
+      "website": "google.com"
     },
     {
       "id": "google-maps-search-api",
@@ -438,7 +492,8 @@
       "description": "Search Google Maps for places, directions, and business info",
       "category": "Transportation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/phheng/google-maps-search-api/SKILL.md",
-      "install_command": "npx clawhub@latest install google-maps-search-api"
+      "install_command": "npx clawhub@latest install google-maps-search-api",
+      "website": "maps.google.com"
     },
     {
       "id": "fitbit",
@@ -446,7 +501,8 @@
       "description": "Query Fitbit health data — sleep, heart rate, activity, SpO2",
       "category": "Health & Fitness",
       "link": "https://github.com/openclaw/skills/tree/main/skills/mjrussell/fitbit/SKILL.md",
-      "install_command": "npx clawhub@latest install fitbit"
+      "install_command": "npx clawhub@latest install fitbit",
+      "website": "fitbit.com"
     },
     {
       "id": "strava",
@@ -454,7 +510,8 @@
       "description": "Load and analyze Strava activities, stats, and workouts",
       "category": "Health & Fitness",
       "link": "https://github.com/openclaw/skills/tree/main/skills/bohdanpodvirnyi/strava/SKILL.md",
-      "install_command": "npx clawhub@latest install strava"
+      "install_command": "npx clawhub@latest install strava",
+      "website": "strava.com"
     },
     {
       "id": "calorie-counter",
@@ -462,7 +519,8 @@
       "description": "Track daily calorie and protein intake, set goals, log meals",
       "category": "Health & Fitness",
       "link": "https://github.com/openclaw/skills/tree/main/skills/cnqso/calorie-counter/SKILL.md",
-      "install_command": "npx clawhub@latest install calorie-counter"
+      "install_command": "npx clawhub@latest install calorie-counter",
+      "website": "github.com"
     },
     {
       "id": "gmail-client",
@@ -470,7 +528,8 @@
       "description": "Read, send, and manage emails via Gmail API",
       "category": "Communication",
       "link": "https://github.com/openclaw/skills/tree/main/skills/pierremenard/gmail-client/SKILL.md",
-      "install_command": "npx clawhub@latest install gmail-client"
+      "install_command": "npx clawhub@latest install gmail-client",
+      "website": "gmail.com"
     },
     {
       "id": "telegram-bot",
@@ -478,7 +537,8 @@
       "description": "Build and manage Telegram bots via the Telegram Bot API",
       "category": "Communication",
       "link": "https://github.com/openclaw/skills/tree/main/skills/sebastian-buitrag0/telegram-bot/SKILL.md",
-      "install_command": "npx clawhub@latest install telegram-bot"
+      "install_command": "npx clawhub@latest install telegram-bot",
+      "website": "telegram.org"
     },
     {
       "id": "wacli",
@@ -486,7 +546,8 @@
       "description": "Send WhatsApp messages and search/sync WhatsApp history",
       "category": "Communication",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/wacli/SKILL.md",
-      "install_command": "npx clawhub@latest install wacli"
+      "install_command": "npx clawhub@latest install wacli",
+      "website": "whatsapp.com"
     },
     {
       "id": "elevenlabs-tts",
@@ -494,7 +555,8 @@
       "description": "Text-to-speech with ElevenLabs — the best voice AI integration",
       "category": "Speech & Transcription",
       "link": "https://github.com/openclaw/skills/tree/main/skills/shaharsha/elevenlabs-tts/SKILL.md",
-      "install_command": "npx clawhub@latest install elevenlabs-tts"
+      "install_command": "npx clawhub@latest install elevenlabs-tts",
+      "website": "elevenlabs.io"
     },
     {
       "id": "openai-whisper",
@@ -502,7 +564,8 @@
       "description": "Local speech-to-text with the Whisper CLI — no API key needed",
       "category": "Speech & Transcription",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/openai-whisper/SKILL.md",
-      "install_command": "npx clawhub@latest install openai-whisper"
+      "install_command": "npx clawhub@latest install openai-whisper",
+      "website": "openai.com"
     },
     {
       "id": "deepgram",
@@ -510,7 +573,8 @@
       "description": "Command-line interface for Deepgram speech-to-text",
       "category": "Speech & Transcription",
       "link": "https://github.com/openclaw/skills/tree/main/skills/nerkn/deepgram/SKILL.md",
-      "install_command": "npx clawhub@latest install deepgram"
+      "install_command": "npx clawhub@latest install deepgram",
+      "website": "deepgram.com"
     },
     {
       "id": "homeassistant",
@@ -518,7 +582,8 @@
       "description": "Control Home Assistant — smart plugs, lights, scenes, automations",
       "category": "Smart Home & IoT",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/homeassistant/SKILL.md",
-      "install_command": "npx clawhub@latest install homeassistant"
+      "install_command": "npx clawhub@latest install homeassistant",
+      "website": "home-assistant.io"
     },
     {
       "id": "openhue",
@@ -526,7 +591,8 @@
       "description": "Control Philips Hue lights and scenes via the OpenHue CLI",
       "category": "Smart Home & IoT",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/openhue/SKILL.md",
-      "install_command": "npx clawhub@latest install openhue"
+      "install_command": "npx clawhub@latest install openhue",
+      "website": "philips-hue.com"
     },
     {
       "id": "shopify-admin-api",
@@ -534,7 +600,8 @@
       "description": "Full read/write access to Shopify Admin REST API",
       "category": "Shopping & E-commerce",
       "link": "https://github.com/openclaw/skills/tree/main/skills/zachgodsell93/shopify-admin-api/SKILL.md",
-      "install_command": "npx clawhub@latest install shopify-admin-api"
+      "install_command": "npx clawhub@latest install shopify-admin-api",
+      "website": "shopify.com"
     },
     {
       "id": "price-tracker",
@@ -542,7 +609,8 @@
       "description": "Monitor product prices across Amazon, eBay, and Walmart",
       "category": "Shopping & E-commerce",
       "link": "https://github.com/openclaw/skills/tree/main/skills/michael-laffin/price-tracker/SKILL.md",
-      "install_command": "npx clawhub@latest install price-tracker"
+      "install_command": "npx clawhub@latest install price-tracker",
+      "website": "amazon.com"
     },
     {
       "id": "google-calendar",
@@ -550,7 +618,8 @@
       "description": "Manage events and schedules via the Google Calendar API",
       "category": "Calendar & Scheduling",
       "link": "https://github.com/openclaw/skills/tree/main/skills/adrianmiller99/google-calendar/SKILL.md",
-      "install_command": "npx clawhub@latest install google-calendar"
+      "install_command": "npx clawhub@latest install google-calendar",
+      "website": "calendar.google.com"
     },
     {
       "id": "cron-scheduling",
@@ -558,7 +627,8 @@
       "description": "Schedule and manage recurring tasks with cron expressions",
       "category": "Calendar & Scheduling",
       "link": "https://github.com/openclaw/skills/tree/main/skills/gitgoodordietrying/cron-scheduling/SKILL.md",
-      "install_command": "npx clawhub@latest install cron-scheduling"
+      "install_command": "npx clawhub@latest install cron-scheduling",
+      "website": "github.com"
     },
     {
       "id": "excel",
@@ -566,7 +636,8 @@
       "description": "Read, write, edit, and format Excel files (.xlsx)",
       "category": "PDF & Documents",
       "link": "https://github.com/openclaw/skills/tree/main/skills/dbhurley/excel/SKILL.md",
-      "install_command": "npx clawhub@latest install excel"
+      "install_command": "npx clawhub@latest install excel",
+      "website": "microsoft.com"
     },
     {
       "id": "ai-pdf-builder",
@@ -574,7 +645,8 @@
       "description": "AI-powered PDF generator for legal docs, pitch decks, and reports",
       "category": "PDF & Documents",
       "link": "https://github.com/openclaw/skills/tree/main/skills/nextfrontierbuilds/ai-pdf-builder/SKILL.md",
-      "install_command": "npx clawhub@latest install ai-pdf-builder"
+      "install_command": "npx clawhub@latest install ai-pdf-builder",
+      "website": "github.com"
     },
     {
       "id": "confluence",
@@ -582,7 +654,8 @@
       "description": "Search and manage Confluence pages and spaces",
       "category": "PDF & Documents",
       "link": "https://github.com/openclaw/skills/tree/main/skills/francisbrero/confluence/SKILL.md",
-      "install_command": "npx clawhub@latest install confluence"
+      "install_command": "npx clawhub@latest install confluence",
+      "website": "atlassian.com"
     },
     {
       "id": "n8n",
@@ -590,7 +663,8 @@
       "description": "Manage n8n workflows and automations via API",
       "category": "Self-Hosted & Automation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/thomasansems/n8n/SKILL.md",
-      "install_command": "npx clawhub@latest install n8n"
+      "install_command": "npx clawhub@latest install n8n",
+      "website": "n8n.io"
     },
     {
       "id": "paperless-ngx",
@@ -598,7 +672,8 @@
       "description": "Interact with Paperless-ngx document management system",
       "category": "Self-Hosted & Automation",
       "link": "https://github.com/openclaw/skills/tree/main/skills/oskarstark/paperless-ngx/SKILL.md",
-      "install_command": "npx clawhub@latest install paperless-ngx"
+      "install_command": "npx clawhub@latest install paperless-ngx",
+      "website": "github.com"
     },
     {
       "id": "1password",
@@ -606,7 +681,8 @@
       "description": "Set up and use 1Password CLI for secrets management",
       "category": "Security & Passwords",
       "link": "https://github.com/openclaw/skills/tree/main/skills/steipete/1password/SKILL.md",
-      "install_command": "npx clawhub@latest install 1password"
+      "install_command": "npx clawhub@latest install 1password",
+      "website": "1password.com"
     },
     {
       "id": "bitwarden",
@@ -614,7 +690,8 @@
       "description": "Access and manage Bitwarden/Vaultwarden passwords securely",
       "category": "Security & Passwords",
       "link": "https://github.com/openclaw/skills/tree/main/skills/asleep123/bitwarden/SKILL.md",
-      "install_command": "npx clawhub@latest install bitwarden"
+      "install_command": "npx clawhub@latest install bitwarden",
+      "website": "bitwarden.com"
     },
     {
       "id": "ggshield-scanner",
@@ -622,7 +699,8 @@
       "description": "Detect 500+ types of hardcoded secrets in your codebase",
       "category": "Security & Passwords",
       "link": "https://github.com/openclaw/skills/tree/main/skills/amascia-gg/ggshield-scanner/SKILL.md",
-      "install_command": "npx clawhub@latest install ggshield-scanner"
+      "install_command": "npx clawhub@latest install ggshield-scanner",
+      "website": "gitguardian.com"
     }
   ]
 }
