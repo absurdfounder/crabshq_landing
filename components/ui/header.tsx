@@ -261,7 +261,7 @@ export default function Header() {
 
 
                 <li>
-                  <NavLink href="/integration" text="OpenClaw Skills" />
+                  <NavLink href="/integration" text="Skills" />
                 </li>
 
                 <li>

@@ -144,7 +144,7 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
       {/* Subtitle */}
       <div className="text-center mb-6">
         <p className="text-sm text-slate-500">
-          Curated from <span className="font-semibold text-slate-700">3,000+</span> skills on{' '}
+          <span className="font-semibold text-slate-700">{skills.length.toLocaleString()}</span> skills from{' '}
           <a
             href="https://github.com/VoltAgent/awesome-openclaw-skills"
             target="_blank"
@@ -207,7 +207,7 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors"
         >
-          Browse All 3,000+ Skills on ClawHub
+          Browse Skills on ClawHub
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
