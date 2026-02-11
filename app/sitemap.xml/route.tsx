@@ -60,6 +60,72 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${URL}/features/ai-workforce</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/github-integration</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/task-execution</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/persistent-memory</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/browser-control</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/system-access</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/email-automation</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/skills-plugins</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/multi-agent-collaboration</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/openclaw-powered</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${URL}/features/chat-interfaces</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   ${integrationsOrTemplates
       .map(item => `
   <url>
