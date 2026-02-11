@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   MessageCircle, Send, AtSign, RotateCcw, Pause, Play, Lock, Bell,

@@ -107,24 +107,18 @@ const SchemaMarkup = () => {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Websites Built on CrabsHQ ",
-        "item": "https://crabshq.com/showcase"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
         "name": "Pricing",
         "item": "https://crabshq.com/pricing"
       },
       {
         "@type": "ListItem",
-        "position": 3,
+        "position": 2,
         "name": "Integrations",
         "item": "https://crabshq.com/integrations"
       },
       {
         "@type": "ListItem",
-        "position": 4,
+        "position": 3,
         "name": "CrabsHQ App",
         "item": "https://app.crabshq.com"
       }

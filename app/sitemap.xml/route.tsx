@@ -7,23 +7,21 @@ const URL = "https://crabshq.com";
 
 interface IntegrationOrTemplate {
   id: string;
-  type: 'integration' | 'showcase' | 'compare-against';
+  type: 'integration' | 'compare-against';
 }
 
 async function loadIntegrations(): Promise<IntegrationOrTemplate[]> {
   try {
-    const [integrationsFile, templatesFile, comparison, skills] = await Promise.all([
+    const [integrationsFile, comparison, skills] = await Promise.all([
       _loadFromJson(false).then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'integration' }))),
-      _loadFromJson().then((items: any[]): IntegrationOrTemplate[] =>
-        items.map(item => ({ ...item, type: 'showcase' }))),
       _loadFromJsonComparison().then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'compare-against' }))),
       _loadSkills().then((items: Skill[]): IntegrationOrTemplate[] =>
         items.map(item => ({ id: item.id, type: 'integration' })))
     ]);
 
-    return [...integrationsFile, ...templatesFile, ...comparison, ...skills];
+    return [...integrationsFile, ...comparison, ...skills];
   } catch (error) {
     console.error("Failed to load integrations", error);
     return [];
@@ -55,12 +53,6 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
     <loc>${URL}/affiliate</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${URL}/showcase</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>

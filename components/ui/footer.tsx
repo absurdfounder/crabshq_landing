@@ -244,14 +244,6 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/showcase"
-                    >
-                      <span className="break-words">Showcase</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
                       href="#"
                     >
                       <span className="break-words">Changelog</span>
@@ -286,14 +278,6 @@ export default function Footer() {
                       href="#"
                     >
                       <span className="break-words">Blog</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
-                      href="/showcase"
-                    >
-                      <span className="break-words">Case studies</span>
                     </Link>
                   </li>
                   <li>
