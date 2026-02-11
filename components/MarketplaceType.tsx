@@ -51,7 +51,7 @@ interface TabItem {
 const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ title, description, index, tag }) => (
   // Use Next.js Link for client-side navigation
   <Link
-    href={`/showcase?tags=${tag}`}
+    href={`/integration`}
     className="group bg-white p-4 sm:p-6 rounded-lg border shadow-md h-full w-full transition-all duration-200 hover:shadow-lg hover:border-red-300 block relative focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" // Added group, block, relative, hover/focus effects
     role="article" // Role remains appropriate for a self-contained item
     aria-labelledby={`marketplace-title-${index}`}

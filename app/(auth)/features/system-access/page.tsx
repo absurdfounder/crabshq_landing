@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/ui/header";
 import FeaturesBlocks from "@/components/FeaturesBlocks";
 import Testimonials from "@/components/testimonials";
-import ModalVideo from "@/components/FullModalVideo";
+import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
     title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Crabs HQ",
@@ -86,7 +86,7 @@ export default function SystemAccessPage() {
                             </div>
                         </div>
 
-                        <ModalVideo />
+                        <HeroArticleDemo />
                     </div>
                 </div>
             </section>

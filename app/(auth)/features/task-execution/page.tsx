@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/ui/header";
 import FeaturesBlocks from "@/components/FeaturesBlocks";
 import Testimonials from "@/components/testimonials";
-import ModalVideo from "@/components/FullModalVideo";
+import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
     title: "Task Execution - End-to-End AI Task Completion | Crabs HQ",
@@ -86,7 +86,7 @@ export default function TaskExecutionPage() {
                             </div>
                         </div>
 
-                        <ModalVideo />
+                        <HeroArticleDemo />
                     </div>
                 </div>
             </section>

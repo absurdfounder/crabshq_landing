@@ -179,9 +179,9 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
 
         <Link
           className="w-full sm:w-auto px-6 py-3 text-base sm:text-lg lg:text-xl border border-slate-900 text-slate-800 rounded-lg hover:bg-slate-800 hover:text-white transition-colors duration-300 text-center whitespace-nowrap"
-          href="/showcase"
+          href="/integration"
         >
-          Explore all Showcases 
+          Explore all Integrations
         </Link>
       </div>
 
@@ -355,7 +355,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                 className="flex h-full"
               >
                 <Link
-                  href={"/showcase/" + template.id}
+                  href={"/integration/" + template.id}
                   className="relative flex flex-col w-full overflow-hidden bg-white rounded-2xl  border hover:shadow-2xl transition-shadow duration-300"
                 >
                   <div className="w-full p-4">
@@ -372,7 +372,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                     <div className="p-4 text-start">
 
                       <div className='flex flex-col sm:flex-row justify-between gap-2 sm:gap-4'>
-                        <Link href={"/showcase/" + template.id} className="group flex gap-2 items-center flex-1 min-w-0">
+                        <Link href={"/integration/" + template.id} className="group flex gap-2 items-center flex-1 min-w-0">
                           <span className="text-start font-bold group-hover:text-red-600 transition-colors duration-300 truncate">
                             {template.product.name}
                           </span>

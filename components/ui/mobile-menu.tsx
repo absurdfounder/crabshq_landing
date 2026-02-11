@@ -98,10 +98,6 @@ export default function MobileMenu() {
                 className="overflow-y-auto bg-white shadow-lg pb-8 flex flex-col"
               >
                 <ul className="px-5 py-4 space-y-4 pt-16">
-            {/* Website Examples */}
-            <li>
-              <Link href="/showcase" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2">
-                Website Examples
               </Link>
             </li>
 

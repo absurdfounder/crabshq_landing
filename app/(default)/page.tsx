@@ -57,7 +57,7 @@ import CustomerStorySection2 from '@/components/CustomerStorySection2'
 import GetStartedSection from '@/components/GetStartedSection'
 import OldWays from '@/components/OldWays'
 import Testimonials from '@/components/testimonials'
-import Showcases from '@/components/showcase'
+
 import Newsletter from '@/components/newsletter'
 import MarketplaceType from '@/components/MarketplaceType'
 import FAQ from '@/components/faq'

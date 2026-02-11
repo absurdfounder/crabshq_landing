@@ -98,18 +98,6 @@ export default function TabletMenu() {
           leaveTo="opacity-0 -translate-y-full"
         >
           <ul className="px-5 py-4 space-y-4">
-            {/* Website Examples */}
-            <li>
-              <Link href="/showcase" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
-                setTabletNavOpen(false);
-                setDropdownOpen(false);
-              }}>
-                Website Examples
-              </Link>
-            </li>
-
-            {/* Affiliate Link */}
-            <li>
               <Link href="https://wondersites.lemonsqueezy.com/affiliates" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
                 setTabletNavOpen(false);
                 setDropdownOpen(false);

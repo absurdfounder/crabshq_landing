@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/ui/header";
 import FeaturesBlocks from "@/components/FeaturesBlocks";
 import Testimonials from "@/components/testimonials";
-import ModalVideo from "@/components/FullModalVideo";
+import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
     title: "AI Answers - Help desk chatbot for support | Wonder",
@@ -80,7 +80,7 @@ export default function GenerativeAICustomerServicePage() {
                             </div>
                         </div>
 
-                        <ModalVideo />
+                        <HeroArticleDemo />
                     </div>
                 </div>
             </section>
