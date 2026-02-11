@@ -45,13 +45,13 @@ const Integration = async () => {
       <br/>
       <br/>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl px-4 sm:px-6 m-auto">
         <div className="pt-12 pb-6 md:pt-4 md:pb-6">
-          <div className="max-w-3xl mx-auto text-center pb-8 md:pb-12">
+          <div className="max-w-3xl text-start pb-8 md:pb-12">
             <h1 className="font-funneldisplay text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
               OpenClaw Skills
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl">
               Extend your AI workforce with thousands of community-built skills. From GitHub to Gmail, Slack to Shopify — connect your entire stack.
             </p>
           </div>

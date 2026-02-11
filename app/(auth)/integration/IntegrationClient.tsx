@@ -1,43 +1,80 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ExternalLink, Terminal, Copy, Check } from 'lucide-react'
+import { 
+  ExternalLink, 
+  Terminal, 
+  Copy, 
+  Check, 
+  Sparkles,
+  Code2,
+  GitBranch,
+  BookOpen,
+  Globe,
+  Cloud,
+  MousePointer,
+  Image,
+  Apple,
+  Search,
+  Bot,
+  FileCode,
+  TrendingUp,
+  CheckSquare,
+  Brain,
+  BarChart3,
+  DollarSign,
+  Play,
+  FileText,
+  Smartphone,
+  Car,
+  Heart,
+  MessageSquare,
+  Mic,
+  Home,
+  ShoppingCart,
+  Calendar,
+  FileType,
+  Zap,
+  Lock,
+  LayoutGrid
+} from 'lucide-react'
 import type { Skill } from '@/app/utils/helper'
+import type { LucideIcon } from 'lucide-react'
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  'Coding Agents & IDEs': { bg: 'bg-purple-50', text: 'text-purple-700', dot: 'bg-purple-500' },
-  'Git & GitHub': { bg: 'bg-slate-50', text: 'text-slate-700', dot: 'bg-slate-600' },
-  'Moltbook': { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500' },
-  'Web & Frontend Development': { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
-  'DevOps & Cloud': { bg: 'bg-cyan-50', text: 'text-cyan-700', dot: 'bg-cyan-500' },
-  'Browser & Automation': { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
-  'Image & Video Generation': { bg: 'bg-pink-50', text: 'text-pink-700', dot: 'bg-pink-500' },
-  'Apple Apps & Services': { bg: 'bg-gray-50', text: 'text-gray-700', dot: 'bg-gray-500' },
-  'Search & Research': { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
-  'Clawdbot Tools': { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' },
-  'CLI Utilities': { bg: 'bg-zinc-50', text: 'text-zinc-700', dot: 'bg-zinc-500' },
-  'Marketing & Sales': { bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500' },
-  'Productivity & Tasks': { bg: 'bg-indigo-50', text: 'text-indigo-700', dot: 'bg-indigo-500' },
-  'AI & LLMs': { bg: 'bg-violet-50', text: 'text-violet-700', dot: 'bg-violet-500' },
-  'Data & Analytics': { bg: 'bg-teal-50', text: 'text-teal-700', dot: 'bg-teal-500' },
-  'Finance': { bg: 'bg-green-50', text: 'text-green-700', dot: 'bg-green-500' },
-  'Media & Streaming': { bg: 'bg-fuchsia-50', text: 'text-fuchsia-700', dot: 'bg-fuchsia-500' },
-  'Notes & PKM': { bg: 'bg-yellow-50', text: 'text-yellow-700', dot: 'bg-yellow-600' },
-  'iOS & macOS Development': { bg: 'bg-sky-50', text: 'text-sky-700', dot: 'bg-sky-500' },
-  'Transportation': { bg: 'bg-lime-50', text: 'text-lime-700', dot: 'bg-lime-600' },
-  'Health & Fitness': { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' },
-  'Communication': { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
-  'Speech & Transcription': { bg: 'bg-purple-50', text: 'text-purple-700', dot: 'bg-purple-500' },
-  'Smart Home & IoT': { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500' },
-  'Shopping & E-commerce': { bg: 'bg-pink-50', text: 'text-pink-700', dot: 'bg-pink-500' },
-  'Calendar & Scheduling': { bg: 'bg-indigo-50', text: 'text-indigo-700', dot: 'bg-indigo-500' },
-  'PDF & Documents': { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
-  'Self-Hosted & Automation': { bg: 'bg-cyan-50', text: 'text-cyan-700', dot: 'bg-cyan-500' },
-  'Security & Passwords': { bg: 'bg-slate-50', text: 'text-slate-700', dot: 'bg-slate-600' },
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  'Coding Agents & IDEs': Code2,
+  'Git & GitHub': GitBranch,
+  'Moltbook': BookOpen,
+  'Web & Frontend Development': Globe,
+  'DevOps & Cloud': Cloud,
+  'Browser & Automation': MousePointer,
+  'Image & Video Generation': Image,
+  'Apple Apps & Services': Apple,
+  'Search & Research': Search,
+  'Clawdbot Tools': Bot,
+  'CLI Utilities': Terminal,
+  'Marketing & Sales': TrendingUp,
+  'Productivity & Tasks': CheckSquare,
+  'AI & LLMs': Brain,
+  'Data & Analytics': BarChart3,
+  'Finance': DollarSign,
+  'Media & Streaming': Play,
+  'Notes & PKM': FileText,
+  'iOS & macOS Development': Smartphone,
+  'Transportation': Car,
+  'Health & Fitness': Heart,
+  'Communication': MessageSquare,
+  'Speech & Transcription': Mic,
+  'Smart Home & IoT': Home,
+  'Shopping & E-commerce': ShoppingCart,
+  'Calendar & Scheduling': Calendar,
+  'PDF & Documents': FileType,
+  'Self-Hosted & Automation': Zap,
+  'Security & Passwords': Lock,
 }
 
-function getCategoryColor(category: string) {
-  return CATEGORY_COLORS[category] || { bg: 'bg-gray-50', text: 'text-gray-700', dot: 'bg-gray-500' }
+function getCategoryIcon(category: string): LucideIcon {
+  return CATEGORY_ICONS[category] || LayoutGrid
 }
 
 function getFaviconUrl(website: string) {
@@ -46,7 +83,7 @@ function getFaviconUrl(website: string) {
 
 function SkillCard({ skill }: { skill: Skill }) {
   const [copied, setCopied] = useState(false)
-  const color = getCategoryColor(skill.category)
+  const CategoryIcon = getCategoryIcon(skill.category)
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -61,51 +98,60 @@ function SkillCard({ skill }: { skill: Skill }) {
   }
 
   return (
-    <div className="relative flex flex-col p-5 bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-md transition-all duration-200 h-full">
-      <div className="flex items-start justify-between mb-3">
-        <div className="w-10 h-10 rounded-lg bg-white border border-neutral-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+    <div className="group relative flex flex-col p-6 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 h-full">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="w-12 h-12 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden group-hover:border-gray-200 transition-colors">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={getFaviconUrl(skill.website)}
             alt={skill.name}
-            width={24}
-            height={24}
-            className="w-6 h-6"
+            width={32}
+            height={32}
+            className="w-8 h-8"
             loading="lazy"
           />
         </div>
-        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${color.bg} ${color.text} whitespace-nowrap`}>
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-700 whitespace-nowrap">
+          <CategoryIcon className="w-3.5 h-3.5" />
           {skill.category}
         </span>
       </div>
 
-      <h3 className="font-semibold text-slate-900 text-sm mb-1">{skill.name}</h3>
-      <p className="text-xs text-slate-500 leading-relaxed mb-4 flex-1">{skill.description}</p>
+      {/* Content */}
+      <div className="flex-1 mb-5">
+        <h3 className="font-semibold text-gray-900 text-base mb-2 tracking-tight">{skill.name}</h3>
+        <p className="text-sm text-gray-600 leading-relaxed">{skill.description}</p>
+      </div>
 
-      <div className="mt-auto space-y-2">
-        <div className="flex items-center gap-1 bg-slate-50 rounded-md px-2 py-1.5 group">
-          <Terminal className="w-3 h-3 text-slate-400 flex-shrink-0" />
-          <code className="text-[10px] text-slate-600 truncate flex-1 font-mono">
+      {/* Actions */}
+      <div className="space-y-3">
+        {/* Install Command */}
+        <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 group/cmd border border-gray-100 hover:border-gray-200 transition-colors">
+          <Terminal className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <code className="text-xs text-gray-700 truncate flex-1 font-mono">
             {skill.install_command}
           </code>
           <button
             onClick={handleCopy}
-            className="p-0.5 rounded hover:bg-slate-200 transition-colors flex-shrink-0"
+            className="p-1 rounded-md hover:bg-gray-200 transition-colors flex-shrink-0"
             title="Copy install command"
           >
             {copied ? (
-              <Check className="w-3 h-3 text-green-500" />
+              <Check className="w-3.5 h-3.5 text-green-600" />
             ) : (
-              <Copy className="w-3 h-3 text-slate-400 group-hover:text-slate-600" />
+              <Copy className="w-3.5 h-3.5 text-gray-400 group-hover/cmd:text-gray-600" />
             )}
           </button>
         </div>
+
+        {/* View Button */}
         <a
           href={`/integration/${skill.id}`}
-          className="flex items-center justify-center gap-1.5 w-full py-1.5 text-xs font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors"
+          className="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-lg transition-all duration-200"
         >
-          View Skill
-          <ExternalLink className="w-3 h-3" />
+          View Details
+          <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
     </div>
@@ -138,51 +184,36 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
   }, [skills])
 
   return (
-    <div>
-      {/* Subtitle */}
-      <div className="text-center mb-6">
-        <p className="text-sm text-slate-500">
-          <span className="font-semibold text-slate-700">{skills.length.toLocaleString()}</span> skills from{' '}
-          <a
-            href="https://github.com/VoltAgent/awesome-openclaw-skills"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-red-600 hover:text-red-700 underline underline-offset-2"
-          >
-            awesome-openclaw-skills
-          </a>
-          {' '}&middot;{' '}Install via{' '}
-          <a
-            href="https://www.clawhub.ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-red-600 hover:text-red-700 underline underline-offset-2"
-          >
-            ClawHub
-          </a>
-        </p>
+    <div className="max-w-7xl mx-auto">
+      {/* Header Section */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-3">
+          <p className="text-sm text-gray-600">
+            <span className="font-semibold text-gray-900">{skills.length.toLocaleString()}</span> skills available
+          </p>
+        </div>
       </div>
 
-      {/* Category filters */}
-      <div className="flex flex-wrap gap-2 justify-center mb-8">
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-2 mb-10">
         {categories.map(cat => {
           const isActive = selectedCategory === cat
-          const color = cat === 'All' ? { bg: 'bg-slate-50', text: 'text-slate-700', dot: 'bg-slate-500' } : getCategoryColor(cat)
+          const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
           return (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
                 isActive
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : `${color.bg} ${color.text} hover:ring-1 hover:ring-slate-200`
+                  ? 'bg-black text-white border-black shadow-sm'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm'
               }`}
             >
-              {cat !== 'All' && (
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white' : color.dot}`} />
-              )}
+              <CategoryIcon className="w-4 h-4" />
               {cat}
-              <span className={`text-[10px] ${isActive ? 'text-slate-300' : 'opacity-60'}`}>
+              <span className={`text-xs px-1.5 py-0.5 rounded ${
+                isActive ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'
+              }`}>
                 {skillCountByCategory[cat] || 0}
               </span>
             </button>
@@ -190,22 +221,22 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
         })}
       </div>
 
-      {/* Skills grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {/* Skills Grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredSkills.map((skill) => (
           <SkillCard key={skill.id} skill={skill} />
         ))}
       </div>
 
-      {/* Browse all CTA */}
-      <div className="text-center mt-10">
+      {/* Footer CTA */}
+      <div className="mt-16 text-center">
         <a
           href="https://www.clawhub.ai/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md"
         >
-          Browse Skills on ClawHub
+          Explore All Skills on ClawHub
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
