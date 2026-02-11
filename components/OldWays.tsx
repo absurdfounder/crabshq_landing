@@ -31,7 +31,7 @@ const cards = [
   {
     tag: "ACTION, NOT ANSWERS",
     title: "AI that takes",
-    highlight: "action — not just questions.",
+    highlight: "action, not just questions.",
     description:
       "Instead of replying with suggestions, AI employees create issues, update files, send emails, take screenshots, post updates, and complete real tasks from start to finish.",
     image: "https://dazzling-cat.netlify.app/performancewebsite.png",
@@ -49,7 +49,7 @@ const cards = [
   {
     tag: "COLLABORATION",
     title: "Multiple AI employees",
-    highlight: "working together.",
+    highlight: "collaborating together.",
     description:
       "Complex tasks are automatically split across AI employees. Research, execution, review, and follow-ups happen in parallel — with shared memory and coordinated progress.",
     image: "https://dazzling-cat.netlify.app/aisupportreco.png",
@@ -57,10 +57,10 @@ const cards = [
   },
   {
     tag: "OPENCLAW RUNTIME",
-    title: "Powered by OpenClaw for",
-    highlight: "high-agency execution.",
+    title: "Powered by OpenClaw",
+    highlight: "private server for each org.",
     description:
-      "Crabs HQ is built on OpenClaw, enabling safe, observable, high-agency AI execution. Every action is logged, reviewable, and controllable from a single interface.",
+      "Crabs HQ deploys OpenClaw backend on a private server, Keeping your company data siloed and safe. Also giving you full untampered access to OpenClaw with a beautiful UI.",
     image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
     alt: "OpenClaw execution runtime"
   }

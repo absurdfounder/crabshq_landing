@@ -56,11 +56,14 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
 export default function SimplePricing() {
   const monthlyPrice = 99;
   const features = [
+    'Private Server',
     'Unlimited AI agents',
-    'Mission Control dashboard',
+    'Full Mission Control',
+    'OpenClaw Skills',
     'Telegram integration',
-    'Custom squad setup',
-    'Personal onboarding',
+    'Custom team setup',
+    'Trained on Company Wiki',
+    'Beautiful UI',
   ];
 
   return (

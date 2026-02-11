@@ -43,7 +43,7 @@ export default function Footer() {
               AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks autonomously across GitHub, email, browsers, and your entire tech stack.
             </p>
             <p className="text-sm text-slate-600 mb-4">
-              Lead by <a className="text-red-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
+              Built by <a className="text-red-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
             </p>
             <ul className="mt-3 space-y-1">
               <li>
