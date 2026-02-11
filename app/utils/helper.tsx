@@ -84,10 +84,24 @@ interface ContentItem {
   src?: string;
 }
 
+export interface Skill {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  link: string;
+  install_command: string;
+}
+
+interface SkillsData {
+  skill_library: Skill[];
+}
+
 // Import JSON data
 import templateData from '../../public/showcase_data.json';
 import integrationData from '../../public/integration_data.json';
 import comparisonData from '../../public/comparison_data.json';
+import skillsData from '../../public/skills_data.json';
 
 export const goBack = () => {
   window.history.back();
@@ -180,6 +194,15 @@ export const _loadFromJson = async (template: boolean = true): Promise<Template[
     }
   } catch (error) {
     console.error("Failed to load templates", error);
+    return [];
+  }
+};
+
+export const _loadSkills = async (): Promise<Skill[]> => {
+  try {
+    return (skillsData as SkillsData).skill_library;
+  } catch (error) {
+    console.error("Failed to load skills", error);
     return [];
   }
 };
