@@ -25,7 +25,20 @@ import {
   Chrome,
   Bot,
   BookOpen,
-  ScrollText
+  ScrollText,
+  Megaphone,
+  TrendingUp,
+  Wrench,
+  Palette,
+  Headphones,
+  Settings,
+  DollarSign,
+  Scale,
+  Briefcase,
+  FlaskConical,
+  Shield,
+  Radio,
+  Rocket
 } from 'lucide-react';
 import Logo from '@/public/images/logonew-black.png';
 import MobileMenu from './mobile-menu';
@@ -36,9 +49,11 @@ import { getCalApi } from "@calcom/embed-react";
 export default function Header() {
   const [top, setTop] = useState<boolean>(true);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [teamsDropdownOpen, setTeamsDropdownOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isBookHovered, setIsBookHovered] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
+  const teamsDropdownRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -53,15 +68,19 @@ export default function Header() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
-    };
-
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && dropdownOpen) {
-        setDropdownOpen(false);
+      if (teamsDropdownRef.current && !teamsDropdownRef.current.contains(event.target as Node)) {
+        setTeamsDropdownOpen(false);
       }
     };
 
-    if (dropdownOpen) {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (dropdownOpen) setDropdownOpen(false);
+        if (teamsDropdownOpen) setTeamsDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen || teamsDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscapeKey);
     }
@@ -70,7 +89,7 @@ export default function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [dropdownOpen]);
+  }, [dropdownOpen, teamsDropdownOpen]);
 
   // Initialize Cal.com booking widget
   useEffect(() => {
@@ -259,6 +278,168 @@ export default function Header() {
                   </AnimatePresence>
                 </li>
 
+                <li className="relative" ref={teamsDropdownRef}>
+                  <button
+                    className="font-bold text-slate-800 hover:text-[#009fbc] py-2 flex items-center transition duration-150 ease-in-out relative group text-base"
+                    onClick={() => setTeamsDropdownOpen(!teamsDropdownOpen)}
+                    aria-expanded={teamsDropdownOpen}
+                  >
+                    <span className="relative overflow-hidden text-ellipsis max-w-[120px] block after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[#009fbc] group-hover:after:w-full after:transition-all after:duration-300">Teams</span>
+                    <ChevronDown className={`w-4 h-4 ml-1 text-slate-400 transition-transform duration-200 flex-shrink-0 ${teamsDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {teamsDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute right-0 top-full mt-2 z-50"
+                      >
+                        <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black/5 bg-white">
+                          <div className="p-6 w-[640px]">
+                            <h3 className="mb-4 text-xs font-semibold tracking-wider text-neutral-400 uppercase">
+                              AI Teams
+                            </h3>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+
+                              <DropdownLink
+                                href="/teams/marketing"
+                                iconColor="text-pink-500"
+                                bgColor="bg-pink-50"
+                                icon={Megaphone}
+                                title="Marketing Team"
+                                description="AI-powered marketing campaigns & strategies"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/sales"
+                                iconColor="text-blue-500"
+                                bgColor="bg-blue-50"
+                                icon={TrendingUp}
+                                title="Sales Team"
+                                description="Intelligent lead generation & deal closing"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/engineering"
+                                iconColor="text-slate-600"
+                                bgColor="bg-slate-50"
+                                icon={Code}
+                                title="Engineering Team"
+                                description="Automated development & code reviews"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/design"
+                                iconColor="text-purple-500"
+                                bgColor="bg-purple-50"
+                                icon={Palette}
+                                title="Design Team"
+                                description="Creative design & brand assets"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/customer-support"
+                                iconColor="text-green-500"
+                                bgColor="bg-green-50"
+                                icon={Headphones}
+                                title="Customer Support Team"
+                                description="24/7 support & customer success"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/operations"
+                                iconColor="text-orange-500"
+                                bgColor="bg-orange-50"
+                                icon={Settings}
+                                title="Operations Team"
+                                description="Process automation & optimization"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/finance"
+                                iconColor="text-emerald-500"
+                                bgColor="bg-emerald-50"
+                                icon={DollarSign}
+                                title="Finance Team"
+                                description="Financial planning & analysis"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/legal"
+                                iconColor="text-indigo-500"
+                                bgColor="bg-indigo-50"
+                                icon={Scale}
+                                title="Legal Team"
+                                description="Contract review & compliance"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/business-development"
+                                iconColor="text-cyan-500"
+                                bgColor="bg-cyan-50"
+                                icon={Briefcase}
+                                title="Business Development"
+                                description="Partnership & growth opportunities"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/research"
+                                iconColor="text-violet-500"
+                                bgColor="bg-violet-50"
+                                icon={FlaskConical}
+                                title="Research Team"
+                                description="Market research & data analysis"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/security"
+                                iconColor="text-red-500"
+                                bgColor="bg-red-50"
+                                icon={Shield}
+                                title="Security Team"
+                                description="Security audits & threat detection"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/pr"
+                                iconColor="text-fuchsia-500"
+                                bgColor="bg-fuchsia-50"
+                                icon={Radio}
+                                title="PR Team"
+                                description="Public relations & media management"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                              <DropdownLink
+                                href="/teams/growth"
+                                iconColor="text-amber-500"
+                                bgColor="bg-amber-50"
+                                icon={Rocket}
+                                title="Growth Team"
+                                description="User acquisition & retention strategies"
+                                onClick={() => setTeamsDropdownOpen(false)}
+                              />
+
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
 
                 <li>
                   <NavLink href="/integration" text="Skills" />
