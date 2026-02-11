@@ -122,7 +122,7 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
 
   const categories = useMemo(() => {
-    const cats = [...new Set(skills.map(s => s.category))]
+    const cats = Array.from(new Set(skills.map(s => s.category)))
     return ['All', ...cats.sort()]
   }, [skills])
 
