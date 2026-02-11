@@ -91,6 +91,7 @@ export interface Skill {
   category: string;
   link: string;
   install_command: string;
+  website: string;
 }
 
 interface SkillsData {

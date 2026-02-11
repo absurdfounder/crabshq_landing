@@ -261,6 +261,10 @@ export default function Header() {
 
 
                 <li>
+                  <NavLink href="/integration" text="OpenClaw Skills" />
+                </li>
+
+                <li>
                   <Link
                     href="https://app.crabshq.com"
                     target='_blank'
