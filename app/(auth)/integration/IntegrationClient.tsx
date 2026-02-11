@@ -101,9 +101,7 @@ function SkillCard({ skill }: { skill: Skill }) {
           </button>
         </div>
         <a
-          href={skill.link}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/integration/${skill.id}`}
           className="flex items-center justify-center gap-1.5 w-full py-1.5 text-xs font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-md transition-colors"
         >
           View Skill

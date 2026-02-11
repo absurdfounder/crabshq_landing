@@ -1,6 +1,7 @@
 // app/sitemap.xml/route.ts
 import { type NextRequest } from 'next/server';
-import { _loadFromJson, _loadFromJsonComparison } from "../utils/helper";
+import { _loadFromJson, _loadFromJsonComparison, _loadSkills } from "../utils/helper";
+import type { Skill } from "../utils/helper";
 
 const URL = "https://crabshq.com";
 
@@ -11,16 +12,18 @@ interface IntegrationOrTemplate {
 
 async function loadIntegrations(): Promise<IntegrationOrTemplate[]> {
   try {
-    const [integrationsFile, templatesFile, comparison] = await Promise.all([
+    const [integrationsFile, templatesFile, comparison, skills] = await Promise.all([
       _loadFromJson(false).then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'integration' }))),
       _loadFromJson().then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'showcase' }))),
       _loadFromJsonComparison().then((items: any[]): IntegrationOrTemplate[] =>
-        items.map(item => ({ ...item, type: 'compare-against' })))
+        items.map(item => ({ ...item, type: 'compare-against' }))),
+      _loadSkills().then((items: Skill[]): IntegrationOrTemplate[] =>
+        items.map(item => ({ id: item.id, type: 'integration' })))
     ]);
 
-    return [...integrationsFile, ...templatesFile, ...comparison];
+    return [...integrationsFile, ...templatesFile, ...comparison, ...skills];
   } catch (error) {
     console.error("Failed to load integrations", error);
     return [];
