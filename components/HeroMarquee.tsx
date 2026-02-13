@@ -13,6 +13,7 @@ import {
   BarChart3,
   Code,
   AlertCircle,
+  type LucideIcon,
 } from 'lucide-react';
 
 const tags = [
@@ -29,7 +30,7 @@ const tags = [
   { label: "issues", icon: AlertCircle },
 ];
 
-const Tag = ({ label, Icon }) => (
+const Tag = ({ label, Icon }: { label: string; Icon: LucideIcon }) => (
   <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-slate-200 bg-white/60 text-slate-500 text-xs font-medium whitespace-nowrap flex-shrink-0 hover:border-slate-300 hover:text-slate-700 hover:bg-white transition-all duration-200">
     <Icon className="w-3.5 h-3.5" />
     <span>{label}</span>
