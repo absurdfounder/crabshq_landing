@@ -66,7 +66,6 @@ const Features = React.memo(() => {
     <ul className="flex flex-col sm:flex-col gap-3 opacity-75 uppercase text-sm">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
-          {feature.icon}
           <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-200">
             {feature.name}
           </span>
