@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Github, Sparkles, FileImage, Smile } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image'; // Use Next.js Image for optimization
+import Image from 'next/image';
 
 import HeroArticleDemo from './HeroArticleDemo';
+import HeroMarquee from './HeroMarquee';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -19,11 +20,11 @@ const ProductHuntBadge = () => (
       className="group justify-center grid mb-4 sm:mb-6 md:mb-8 w-full"
       title="View Crabs HQ on Product Hunt">
       <Image
-        src="https://dazzling-cat.netlify.app/producthunt.svg" // Using the provided URL
+        src="https://dazzling-cat.netlify.app/producthunt.svg"
         width={192}
         height={37}
         alt="Product Hunt Badge"
-        priority // Mark as priority for immediate loading
+        priority
         className="w-40 h-auto sm:w-44 md:w-48"
       />
     </a>
@@ -33,11 +34,11 @@ const ProductHuntBadge = () => (
 const NotionLogo = () => (
   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mr-1 sm:mr-2 flex items-center justify-center rounded">
     <Image
-      src="https://dazzling-cat.netlify.app/notionicon.svg" // Using the provided URL
+      src="https://dazzling-cat.netlify.app/notionicon.svg"
       width={48}
       height={48}
       alt="Notion Logo"
-      priority // Mark as priority for immediate loading
+      priority
       className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
     />
   </div>
@@ -54,21 +55,15 @@ const NotionIcon = () => (
 const Features = React.memo(() => {
   const features = [
     { 
-      name: "Plans and executes tasks end-to-end", 
-      icon: <Sparkles className="w-5 h-5 text-lime-500" />
+      name: "Crabs have their own computer", 
     },
     { 
-      name: "Uses tools, browsers, and files autonomously", 
-      icon: <FileImage className="w-5 h-5 text-sky-500" />
-    },
-    { 
-      name: "Owns outcomes without constant human input", 
-      icon: <Smile className="w-5 h-5 text-amber-500" />
+      name: "It writes code, deploys apps, and connects to 3,000 tools.", 
     }
   ];
 
   return (
-    <ul className="flex flex-col sm:flex-row gap-3">
+    <ul className="flex flex-col sm:flex-col gap-3 opacity-75 uppercase text-sm">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
           {feature.icon}
@@ -87,14 +82,10 @@ interface HeroProps {
 }
 
 export default function Hero({ onCategorySelect }: HeroProps) {
-  // Simplified state - removed index since we no longer need rotating words
   const [isHovered, setIsHovered] = useState(false);
-
-  // Removed words array and rotation effect since they're no longer needed
 
   // Defer Cal.com widget loading to well after initial render
   useEffect(() => {
-    // Only load Cal.com after a delay to prioritize core content rendering
     const timer = setTimeout(() => {
       const loadCalApi = async () => {
         try {
@@ -106,18 +97,16 @@ export default function Hero({ onCategorySelect }: HeroProps) {
         }
       };
 
-      // Use requestIdleCallback for low-priority loading
       if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
         window.requestIdleCallback(loadCalApi);
       } else {
-        setTimeout(loadCalApi, 2000); // Longer fallback delay
+        setTimeout(loadCalApi, 2000);
       }
-    }, 1500); // Delay initial load attempt
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Optimized category click handler
   const handleCategoryClick = (category: string) => {
     if (onCategorySelect) {
       onCategorySelect(category);
@@ -161,8 +150,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   </span>
                 </h1>
 
-
-
+                <p>AI coworkers that automates tasks, writes code, connects to 3,000 tools, and gets things done , not just answers questions.</p>
 
               </div>
 
@@ -212,6 +200,9 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <Features />
               </div>
             </div>
+
+            {/* Marquee Strip */}
+            <HeroMarquee />
 
             {/* Right: interactive article demo */}
             <div className="flex-1  w-full mt-10 lg:mt-0 lg:pl-4">
