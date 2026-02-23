@@ -1,0 +1,44 @@
+# Crabs HQ
+
+> AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.
+
+## About
+
+Crabs HQ is an AI workforce platform built on OpenClaw technology. It enables teams to deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks. From the creators of ClawdBot and MoltBot.
+
+## Core Features
+
+- AI Workforce Teams: Deploy multiple AI agents that collaborate on tasks
+- GitHub Integration: AI employees make real commits, PRs, and code reviews
+- Task Execution: Autonomous multi-step task completion
+- Persistent Memory: AI agents remember context across sessions
+- Browser Control: AI agents navigate and interact with websites
+- System Access: Secure access to files, terminals, and APIs
+- Email Automation: AI agents compose and send emails via Gmail
+- Skills & Plugins: 3,000+ OpenClaw skills for extending agent capabilities
+- Multi-Agent Collaboration: Multiple AI agents working together
+- Chat Interfaces: Conversational UI for interacting with AI workforce
+
+## Skills Catalog
+
+Browse 3,000+ OpenClaw skills at: https://crabshq.com/integration
+Skills are installable via: npx clawhub@latest install <skill-name>
+Categories include: Coding Agents & IDEs, Browser Automation, Data & Analytics, DevOps, Testing, Documentation, and more.
+
+## Links
+
+- Website: https://crabshq.com
+- Skills Catalog: https://crabshq.com/integration
+- Pricing: https://crabshq.com/pricing
+- GitHub Integration: https://crabshq.com/features/github-integration
+- AI Workforce: https://crabshq.com/features/ai-workforce
+- Task Execution: https://crabshq.com/features/task-execution
+- Browser Control: https://crabshq.com/features/browser-control
+- Skills & Plugins: https://crabshq.com/features/skills-plugins
+- Email Automation: https://crabshq.com/features/email-automation
+- Persistent Memory: https://crabshq.com/features/persistent-memory
+- System Access: https://crabshq.com/features/system-access
+- Multi-Agent: https://crabshq.com/features/multi-agent-collaboration
+- OpenClaw Powered: https://crabshq.com/features/openclaw-powered
+- Chat Interfaces: https://crabshq.com/features/chat-interfaces
+- Full Details: https://crabshq.com/llms-full.txt

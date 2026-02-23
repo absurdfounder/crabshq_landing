@@ -7,9 +7,10 @@ const SchemaMarkup = () => {
     "@type": "WebSite",
     "name": "Crabs HQ",
     "url": "https://crabshq.com/",
+    "description": "AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://crabshq.com/search?q={search_term_string}",
+      "target": "https://crabshq.com/integration?search={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -19,21 +20,38 @@ const SchemaMarkup = () => {
     "@type": "Organization",
     "name": "Crabs HQ",
     "url": "https://crabshq.com",
-    "logo": "https://dazzling-cat.netlify.app/WonderSites_socialshare.png",
+    "logo": "https://dazzling-cat.netlify.app/crabshq_social.png",
+    "description": "Crabs HQ builds AI workforce teams powered by OpenClaw. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs.",
     "sameAs": [
-      "https://twitter.com/WonderSites",
-      "https://www.facebook.com/WonderSites",
-      "https://www.linkedin.com/company/WonderSites"
-    ]
+      "https://twitter.com/Crabs_HQ"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "url": "https://crabshq.com/contact"
+    }
   };
 
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Crabs HQ",
-    "applicationCategory": "WebApplication",
-    "operatingSystem": "All",
-    "description": "Create superfast websites with Notion as your CMS. Go from Notion to Blog, Helpdesk, Documentation, Marketplace or Directory in minutes. Build unlimited sites!",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI workforce platform powered by OpenClaw. Deploy multiple AI employees that make GitHub commits, send emails, browse the web, and execute complex multi-step tasks autonomously.",
+    "url": "https://crabshq.com",
+    "featureList": [
+      "AI Workforce Teams",
+      "GitHub Integration with real commits",
+      "Autonomous Task Execution",
+      "Persistent Memory across sessions",
+      "Browser Control and automation",
+      "Email Automation via Gmail",
+      "3000+ OpenClaw Skills and Plugins",
+      "Multi-Agent Collaboration",
+      "System Access and API integration",
+      "Chat Interfaces"
+    ],
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
@@ -45,7 +63,7 @@ const SchemaMarkup = () => {
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
       "url": "https://crabshq.com/pricing",
-      "priceValidUntil": "2025-12-31",
+      "priceValidUntil": "2026-12-31",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
         "price": "7.00",
@@ -53,13 +71,12 @@ const SchemaMarkup = () => {
         "referenceQuantity": {
           "@type": "QuantitativeValue",
           "value": 1,
-          "unitCode": "MON"  // "MON" is a common code to indicate a monthly period
+          "unitCode": "MON"
         },
         "description": "$7 per month subscription"
       }
     }
   };
-  
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -67,34 +84,34 @@ const SchemaMarkup = () => {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How do I create a website with CrabsHQ?",
+        "name": "What is Crabs HQ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can create a website using Notion as your CMS and CrabsHQ to turn it into powerful blog, helpdesk, documentation site, marketplace, or directory in minutes."
+          "text": "Crabs HQ is an AI workforce platform powered by OpenClaw technology. It lets you deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks."
         }
       },
       {
         "@type": "Question",
-        "name": "Is CrabsHQ SEO-friendly?",
+        "name": "What are OpenClaw Skills?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, CrabsHQ creates superfast websites that are SEO-friendly, helping your content rank better in search engines."
+          "text": "OpenClaw Skills are installable capabilities for AI agents. With 3,000+ skills available, they extend agent functionality across coding, browser automation, data analytics, DevOps, testing, and more. Install via: npx clawhub@latest install <skill-name>."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I create a marketplace with CrabsHQ?",
+        "name": "How does GitHub integration work?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, you can create a marketplace or directory site with CrabsHQ using Notion as your CMS. It's a no-code solution that lets you build unlimited sites."
+          "text": "CrabsHQ AI agents connect directly to your GitHub repositories. They can make real commits, create pull requests, review code, manage branches, and resolve merge conflicts — all autonomously."
         }
       },
       {
         "@type": "Question",
-        "name": "How fast are websites created with CrabsHQ?",
+        "name": "Can multiple AI agents work together?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Crabs HQ using Amazon AWS the websites are superfast and optimized for excellent SEO. You can go from Notion to a live website in minutes using our AI Agents."
+          "text": "Yes, CrabsHQ supports multi-agent collaboration. Multiple AI agents can work on the same project, communicate with each other, delegate tasks, and orchestrate complex workflows together."
         }
       }
     ]
@@ -107,20 +124,26 @@ const SchemaMarkup = () => {
       {
         "@type": "ListItem",
         "position": 1,
+        "name": "Home",
+        "item": "https://crabshq.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Skills Catalog",
+        "item": "https://crabshq.com/integration"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
         "name": "Pricing",
         "item": "https://crabshq.com/pricing"
       },
       {
         "@type": "ListItem",
-        "position": 2,
-        "name": "Integrations",
-        "item": "https://crabshq.com/integrations"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "CrabsHQ App",
-        "item": "https://app.crabshq.com"
+        "position": 4,
+        "name": "Features",
+        "item": "https://crabshq.com/features/ai-workforce"
       }
     ]
   };

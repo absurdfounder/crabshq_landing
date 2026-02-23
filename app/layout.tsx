@@ -86,7 +86,14 @@ export const metadata = {
     'ai workforce',
     'openclaw team',
     'ai employees',
+    'ai agents',
+    'autonomous ai',
+    'openclaw skills',
+    'ai workforce platform',
   ],
+  other: {
+    'robots': 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  },
 }
 
 export default function RootLayout({
@@ -99,6 +106,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href={canonicalUrl} />
+        {/* LLM Indexing - llms.txt standard */}
+        <link rel="alternate" type="text/plain" href="https://crabshq.com/llms.txt" title="LLM-readable summary" />
+        <link rel="alternate" type="text/plain" href="https://crabshq.com/llms-full.txt" title="LLM-readable full reference" />
         {/* Google Translate Script */}
         <Script 
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" 

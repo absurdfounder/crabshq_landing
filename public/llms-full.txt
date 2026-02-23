@@ -1,0 +1,159 @@
+# Crabs HQ — Complete Reference
+
+> AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.
+
+## Company Overview
+
+Crabs HQ is an AI workforce platform that transforms how teams work by deploying autonomous AI employees powered by OpenClaw technology. Unlike simple chatbots, CrabsHQ AI agents perform real work: making GitHub commits, sending emails, browsing the web, managing files, and executing complex multi-step workflows.
+
+The platform evolved from ClawdBot (a single AI assistant) into a full multi-agent workforce system (MoltBot evolution), enabling teams to scale their AI capabilities across multiple specialized agents.
+
+## Platform Architecture
+
+### AI Workforce Teams
+Deploy teams of AI employees, each specialized for different tasks. Agents collaborate, share context, and work in parallel to complete complex projects.
+
+### OpenClaw Foundation
+Built on the OpenClaw open-source AI framework, providing:
+- Standardized skill definitions and installation
+- Cross-platform agent compatibility
+- Community-driven skill marketplace
+- Extensible plugin architecture
+
+## Core Features
+
+### 1. GitHub Integration
+- AI agents make real commits to repositories
+- Automated pull request creation and review
+- Branch management and merge conflict resolution
+- Code review with intelligent suggestions
+- Integration with GitHub Actions workflows
+
+### 2. Task Execution
+- Multi-step autonomous task completion
+- Task decomposition and planning
+- Progress tracking and reporting
+- Error handling and retry logic
+- Parallel task execution across agents
+
+### 3. Persistent Memory
+- Agents remember context across sessions
+- Project-specific knowledge retention
+- Team-wide shared memory
+- Configurable memory scopes (agent, project, organization)
+
+### 4. Browser Control
+- AI agents navigate and interact with any website
+- Form filling and data extraction
+- Screenshot capture and visual verification
+- Multi-tab and multi-window support
+- Headless and visual browser modes
+
+### 5. System Access
+- Secure terminal command execution
+- File system read/write operations
+- API integration and webhook handling
+- Environment variable management
+- Sandboxed execution environments
+
+### 6. Email Automation
+- Gmail integration for sending/receiving
+- Template-based email composition
+- Attachment handling
+- Email thread management
+- Scheduled email campaigns
+
+### 7. Skills & Plugins (3,000+ Available)
+The OpenClaw Skills ecosystem provides installable capabilities:
+- Install via: npx clawhub@latest install <skill-name>
+- Manual install: copy to ~/.openclaw/skills/ (global) or <project>/skills/ (workspace)
+- Categories: Coding, Browser, Data, DevOps, Testing, Documentation, Security, Design, and more
+- Community-contributed and officially maintained skills
+- Full catalog: https://crabshq.com/integration
+
+### 8. Multi-Agent Collaboration
+- Multiple AI agents working on the same project
+- Inter-agent communication and task delegation
+- Specialized agent roles (coder, reviewer, tester, writer)
+- Conflict resolution between agents
+- Orchestrated workflows
+
+### 9. Chat Interfaces
+- Conversational UI for interacting with AI workforce
+- Natural language task assignment
+- Real-time progress updates
+- Multi-channel support (web, Slack, Discord)
+
+## Pricing
+
+Available at: https://crabshq.com/pricing
+Subscription-based model starting at $7/month.
+
+## Skills Catalog
+
+Browse and search 3,000+ OpenClaw skills at: https://crabshq.com/integration
+
+### Skill Categories
+- Coding Agents & IDEs
+- Browser Automation
+- Data & Analytics
+- DevOps & Infrastructure
+- Testing & QA
+- Documentation
+- Security
+- Design & UI
+- Communication
+- Project Management
+- And many more...
+
+### Installing Skills
+```
+npx clawhub@latest install <skill-name>
+```
+
+### Skill Structure
+Each skill includes:
+- SKILL.md: Main skill definition and instructions
+- _meta.json: Metadata (name, description, category, tags)
+- EXAMPLES.md: Usage examples
+- REFERENCE.md: Detailed reference documentation
+- setup.json: Configuration and dependencies
+
+## Integration Partners
+
+CrabsHQ integrates with popular tools and platforms. Browse all integrations at: https://crabshq.com/integration
+
+## Getting Started
+
+1. Sign up at https://app.crabshq.com
+2. Connect your GitHub repositories
+3. Deploy your first AI agent
+4. Install relevant skills from the catalog
+5. Assign tasks and watch your AI workforce execute
+
+## Contact & Support
+
+- Website: https://crabshq.com
+- Twitter: @Crabs_HQ
+- Support: Available via in-app chat (Channel.io)
+
+## All Pages
+
+- Home: https://crabshq.com
+- Pricing: https://crabshq.com/pricing
+- Skills Catalog: https://crabshq.com/integration
+- AI Workforce: https://crabshq.com/features/ai-workforce
+- GitHub Integration: https://crabshq.com/features/github-integration
+- Task Execution: https://crabshq.com/features/task-execution
+- Persistent Memory: https://crabshq.com/features/persistent-memory
+- Browser Control: https://crabshq.com/features/browser-control
+- System Access: https://crabshq.com/features/system-access
+- Email Automation: https://crabshq.com/features/email-automation
+- Skills & Plugins: https://crabshq.com/features/skills-plugins
+- Multi-Agent Collaboration: https://crabshq.com/features/multi-agent-collaboration
+- OpenClaw Powered: https://crabshq.com/features/openclaw-powered
+- Chat Interfaces: https://crabshq.com/features/chat-interfaces
+- Affiliate Program: https://crabshq.com/affiliate
+- Privacy Policy: https://crabshq.com/privacy-policy
+- Terms of Service: https://crabshq.com/terms-of-service
+- Contact: https://crabshq.com/contact
