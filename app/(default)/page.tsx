@@ -47,25 +47,8 @@ export const metadata = {
 
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
-import Features from '@/components/features'
-import FeaturesBlocks from '@/components/FeaturesBlocks'
-import FeaturesBlocksV2 from '@/components/FeaturesBlocksV2'
-import HowItWorksSection from '@/components/HowItWorksSection'
-import AIAgentSection from '@/components/AIAgentSection'
-import CustomerStorySection from '@/components/CustomerStorySection'
-import CustomerStorySection2 from '@/components/CustomerStorySection2'
-import GetStartedSection from '@/components/GetStartedSection'
 import OldWays from '@/components/OldWays'
-import Testimonials from '@/components/testimonials'
-
-import Newsletter from '@/components/newsletter'
-import MarketplaceType from '@/components/MarketplaceType'
-import FAQ from '@/components/faq'
-import ModalVideo from '@/components/ModalVideo'
-import NotionToWebsite from '@/components/NotionToWebsite'
-import SimpleAnalyticsDashboard from '@/components/DashboardComponent'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
-import WonderComparison from '@/components/comparison'
 import SimplePricing from '@/components/SimplePricing'
 
 export default function Home() {
@@ -91,7 +74,7 @@ export default function Home() {
         */}
       </div>
 
-      <section className="hidden px-4 py-6 md:px-6 md:py-10 border-b bg-white">
+      <section className="px-4 py-6 md:px-6 md:py-10 border-b bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:items-center">
             <span className="mt-1 text-base font-medium text-balance text-gray-400 md:text-left">
@@ -135,30 +118,7 @@ export default function Home() {
 
 
 
-      {/* 
-      <MarketplaceType />
-      <Testimonials />
-      <ModalVideo />
-      <AIAgentSection />
-      <OldWays />
-      <SimpleAnalyticsDashboard />
-      <GetStartedSection />
 
-      <HowItWorksSection />
-      <CustomerStorySection2 />
-
-      <Showcases />
-
-      <GetStartedSection />
-
-            <AIAgentSection />
-      <CustomerStorySection />
-      <FeaturesBlocks />
-
-      <ModalVideo />
-
-
-*/}
 
 
       <OldWays />

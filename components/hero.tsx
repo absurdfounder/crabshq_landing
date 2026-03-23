@@ -92,7 +92,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
           const cal = await getCalApi({ "namespace": "setup-call" });
           cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
         } catch (error) {
-          console.error("Failed to load Cal.com widget:", error);
+          // Cal.com widget failed to load silently
         }
       };
 
@@ -121,14 +121,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
     <section className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
 
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-
-
-        <div className="pt-2 sm:pt-1 md:pt-2 pb-12 sm:pb-16 md:pb-20">
+        <div className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Left: text content */}
@@ -149,7 +142,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   </span>
                 </h1>
 
-                <p>AI coworkers that automates tasks, writes code, connects to 3,000 tools, and gets things done , not just answers questions.</p>
+                <p>AI coworkers that automate tasks, write code, connect to 3,000 tools, and get things done — not just answer questions.</p>
 
               </div>
 
