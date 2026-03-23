@@ -362,16 +362,7 @@ export default function Footer() {
           <Link href="/terms" className="hover:text-slate-900">Terms</Link>
         </div>
         <ul className="flex flex-wrap mb-4 md:mb-0 order-1 md:order-2 gap-3 items-center">
-          <li>
-            <Image
-              width={199}
-              height={35}
-              src="https://buildform.ai/wp-content/uploads/2024/09/Frame-2147225210.svg"
-              alt=""
-              className="attachment-large size-large"
-              unoptimized
-            />
-          </li>
+
           <li>
             <a
               className="flex justify-center items-center text-slate-600 hover:text-slate-900 bg-white hover:bg-white-100 rounded-md shadow transition duration-150 ease-in-out border px-3 py-1 md:px-4 md:py-1 text-sm"

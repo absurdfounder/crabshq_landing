@@ -474,7 +474,7 @@ export default function OldWays() {
               <div
                 key={index}
                 ref={(el) => { cardRefs.current[index] = el; }}
-                className="xl:sticky mb-6 lg:mb-8"
+                className="lg:sticky mb-6 lg:mb-8"
                 style={{ top: 'calc(15vh)', zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div

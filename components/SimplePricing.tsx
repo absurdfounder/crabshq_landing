@@ -119,7 +119,7 @@ export default function SimplePricing() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 sm:mb-4 leading-tight">
             <span className="inline-flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
               <span>Deploy</span>
-              <img src="/favicon.ico" className="hidden sm:inline-block w-8 h-8 sm:w-14 sm:h-14 rounded-md align-middle" alt="logo" />
+              <img src="/favicon.ico" className="hidden sm:inline-block w-8 h-8 sm:w-9 sm:h-9 rounded-md align-middle" alt="logo" />
               <span>Crabs at your company</span>
             </span>
           </h2>
