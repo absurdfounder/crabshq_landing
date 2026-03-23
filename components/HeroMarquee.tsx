@@ -42,12 +42,6 @@ export default function HeroMarquee() {
 
   return (
     <>
-      <style jsx global>{`
-        @keyframes heroMarqueeScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.333%); }
-        }
-      `}</style>
       <div
         className="w-full overflow-hidden my-4"
         style={{

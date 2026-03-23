@@ -115,7 +115,7 @@ export default function Newsletter() {
                 {/* Original rotating text logic (kept for reference) */}
                 {/* <h3 className="text-slate-100 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
                 <p className="text-sm sm:text-base font-normal text-slate-100/75 my-2">
-                  Outdated posts are wasting time, money and affecting your reputation. Let CrabsHQ run your Helpdesk & Blog on pure automations.
+                  Deploy AI employees that write code, manage tasks, connect to 3,000 tools, and get things done — without the overhead of hiring.
                 </p>
 
                 {/* CTA form */}
@@ -124,7 +124,7 @@ export default function Newsletter() {
                     {/* --- UPDATED CTA Button --- */}
                     <Link
                       href="https://app.crabshq.com"
-                      className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg text-dark bg-red-300 hover:bg-red-700 hover:text-red-100 w-full sm:w-auto whitespace-nowrap"
+                      className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg text-white bg-red-600 hover:bg-red-700 w-full sm:w-auto whitespace-nowrap"
                     >
                       Get started for free
                     </Link>

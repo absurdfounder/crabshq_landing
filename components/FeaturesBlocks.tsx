@@ -33,7 +33,7 @@ export default function FeaturesBlocks() {
           Get discovered by <b>Users</b> and <b>AI assistants</b>           
           </h2>
           <p className="text-xl text-slate-600">
-            Busy teams need a simpler way to run marketing and support. CrabsHQ automates both so you can focus on what matters.
+            CrabsHQ optimizes your content so it ranks on Google, surfaces in ChatGPT, and gets referenced by AI assistants — automatically.
           </p>
         </div>
       </div>

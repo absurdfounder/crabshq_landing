@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Github, Sparkles, FileImage, Smile } from 'lucide-react';
 import Link from 'next/link';
@@ -66,7 +66,7 @@ const Features = React.memo(() => {
     <ul className="flex flex-col sm:flex-col gap-3 text-sm text-slate-500">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
-          <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-200">
+          <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-400">
             {feature.name}
           </span>
         </li>
@@ -81,8 +81,6 @@ interface HeroProps {
 }
 
 export default function Hero({ onCategorySelect }: HeroProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
   // Defer Cal.com widget loading to well after initial render
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -127,7 +125,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
             {/* Left: text content */}
             <div className="flex-1 lg:max-w-full text-left p-4 space-y-6">
               <div className="px-2 sm:px-4 md:px-6 lg:px-0">
-                <div className="hidden flex justify-start">
+                <div className="hidden">
                   <ProductHuntBadge />
                 </div>
 
@@ -138,7 +136,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                     <span className="reveal reveal__hello-3">Crabs.</span>
                   </div>
                   <span className="block reveal reveal__usp mt-1 sm:mt-2">
-                    AI workforce set on a mission, <span className='opacity-50'>powered by <span style={{ color: '#bc0010' }}>OpenClaw</span></span>.
+                    AI workforce set on a mission, <span className='opacity-70'>powered by <span style={{ color: '#bc0010' }}>OpenClaw</span></span>.
                   </span>
                 </h1>
 
@@ -151,27 +149,8 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <Link
                   href="https://app.crabshq.com?ref=herolanding"
                   className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
                 >
-                  <div className="relative overflow-hidden mr-2 h-5 sm:h-5">
-                    <div
-                      className="transition-transform duration-150 whitespace-nowrap"
-                      style={{
-                        transform: isHovered ? 'translateY(-100%)' : 'translateY(0)'
-                      }}
-                    >
-                      Get Started for free
-                    </div>
-                    <div
-                      className="absolute top-0 left-0 w-full text-center transition-transform duration-150 whitespace-nowrap"
-                      style={{
-                        transform: isHovered ? 'translateY(0)' : 'translateY(100%)'
-                      }}
-                    >
-                      in just 15 mins.
-                    </div>
-                  </div>
+                  <span>Get Started for free</span>
                 </Link>
 
                 <button
@@ -197,7 +176,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
             <HeroMarquee />
 
             {/* Right: interactive article demo */}
-            <div className="flex-1  w-full mt-10 lg:mt-0 lg:pl-4">
+            <div className="flex-1 w-full mt-10 lg:mt-0 lg:pl-4">
               <HeroArticleDemo />
             </div>
           </div>

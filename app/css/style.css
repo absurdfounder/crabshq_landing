@@ -16,6 +16,12 @@
   }
 }
 
+/* Hero marquee scroll animation */
+@keyframes heroMarqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
 
 
 .font-roboto-mono {

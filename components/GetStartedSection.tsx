@@ -69,14 +69,13 @@ export default function GetStartedSection() {
         <section className="overflow-hidden">
           <div className="pr-0 lg:pr-8">
             <div className="pt-12 pb-12 sm:pt-20">
-              <span className="font-silkscreen text-lg text-red-600">Wonder-hosted</span>
+              <span className="font-silkscreen text-lg text-red-600">Crabs Cloud</span>
               <h2 className="mt-4 font-funneldisplay text-balance text-neutral-800 text-3xl lg:text-4xl">
                 Get started in minutes
               </h2>
               <div className="mt-6">
                 <p className="text-base text-slate-700">
-                  Don&apos;t have a help center yet? Set up your help center and let our agent draft articles
-                  for you in minutes.
+                  Deploy your AI workforce in minutes. We provision your dedicated server and get your AI employees up and running fast.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   {features.map((feature) => {
@@ -98,12 +97,12 @@ export default function GetStartedSection() {
         <section className="overflow-hidden">
           <div className="pl-0 lg:pl-8">
             <div className="pt-12 pb-12 sm:pt-20">
-              <span className="font-silkscreen text-lg text-red-600">ONE-click migration</span>
+              <span className="font-silkscreen text-lg text-red-600">Private server</span>
               <h2 className="mt-4 font-funneldisplay text-balance text-neutral-800 text-3xl lg:text-4xl">
-                Zero-downtime migration
+                Your data, your control
               </h2>
               <p className="mt-6 text-base text-slate-700">
-                Migrate your existing help center to CrabsHQ in one-click without breaking links, or hurting your SEO.
+                Run CrabsHQ on your own infrastructure. Your keys, your data, fully isolated — no shared infrastructure, no vendor lock-in.
               </p>
             </div>
             <div className="pb-20">

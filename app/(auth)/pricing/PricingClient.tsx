@@ -53,7 +53,7 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
                             Before you go...
                         </h2>
                         <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                            Did we mention that the trial is free, you can signup in seconds, and no credit card is required? Give us a try, we'd love to show you what CrabsHQ can do!
+                            Get started in minutes - your dedicated server is ready to go. No credit card friction, just sign up and deploy.
                         </p>
 
 
@@ -212,24 +212,16 @@ const scaleFeatures: Feature[] = [
 const faqs: Record<string, FAQ[]> = {
     Pricing: [
         {
-            question: "How does the free 3-day trial work?",
-            answer: "CrabsHQ offers a 3-day free trial to help you explore everything we offer. There’s zero cost to get started, and during the trial you’ll have full access to all features. After the trial, you can choose a subscription plan to continue.",
-        },
-        {
             question: "What are the pricing plans?",
-            answer: "CrabsHQ offers flexible pricing plans based on your needs. Plans vary based on usage and feature access. You can view full details on our pricing page.",
+            answer: "CrabsHQ offers two plans: Crabs Cloud Computer at $49/mo (we manage your dedicated server) and Private/Enterprise at $149/mo (runs on your own infrastructure). Both plans include unlimited AI agents, browser use, skills, devices, channels, chats, adaptive memory, and long-running tasks.",
         },
         {
             question: "Are there any additional fees?",
             answer: "Pricing is exclusive of taxes. Some add-ons and advanced features may have additional costs, which are clearly outlined when applicable.",
         },
         {
-            question: "Do I need to enter my credit card to start the trial?",
-            answer: "No. You can start your free trial without providing payment details. Payment is only required when you're ready to upgrade.",
-        },
-        {
-            question: "What happens after my free trial ends?",
-            answer: "Once your trial ends, you’ll be asked to choose a subscription plan. If you don't upgrade, your site will be paused, but your content will remain saved.",
+            question: "Is there a free trial?",
+            answer: "CrabsHQ does not currently offer a free trial. You can get started with either plan and cancel anytime if it's not the right fit.",
         },
         {
             question: "Can I cancel or switch plans anytime?",
@@ -249,21 +241,21 @@ const faqs: Record<string, FAQ[]> = {
         },
         {
             question: "Will my site go offline if my payment fails?",
-            answer: "We’ll notify you if there’s an issue with your payment and provide a grace period to update your billing info. Your site won't be taken down immediately.",
+            answer: "We'll notify you if there's an issue with your payment and provide a grace period to update your billing info. Your site won't be taken down immediately.",
         },
     ],
     Features: [
         {
             question: "What is Wondersites?",
-            answer: "Wondersites is a powerful no-code website builder that turns your Notion pages into beautiful, functional websites—perfect for blogs, documentation, directories, and more.",
+            answer: "Wondersites is a powerful no-code website builder that turns your Notion pages into beautiful, functional websites-perfect for blogs, documentation, directories, and more.",
         },
         {
             question: "What types of websites can I build?",
-            answer: "You can create blogs, help centers, knowledge bases, directories, marketing pages, and even marketplaces—all powered by Notion.",
+            answer: "You can create blogs, help centers, knowledge bases, directories, marketing pages, and even marketplaces-all powered by Notion.",
         },
         {
             question: "Do I need to know how to code?",
-            answer: "No! Wondersites is built for non-technical users. You can build a complete site using Notion and our tools—no coding required.",
+            answer: "No! Wondersites is built for non-technical users. You can build a complete site using Notion and our tools-no coding required.",
         },
         {
             question: "Can I use my own custom domain?",
@@ -271,7 +263,7 @@ const faqs: Record<string, FAQ[]> = {
         },
         {
             question: "Is my content synced with Notion?",
-            answer: "Yes. Any changes you make in Notion will be automatically reflected on your live site. It’s always up to date.",
+            answer: "Yes. Any changes you make in Notion will be automatically reflected on your live site. It's always up to date.",
         },
         {
             question: "Does Wondersites support SEO?",
@@ -708,8 +700,8 @@ const Pricing: React.FC = () => {
                         </h1>
                         <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
 
-                        Never write another help article.
-                        CrabsHQ customers save 20 hours a month on support and docs on average. Get started today with a 7-day free trial. No credit card required.
+                        Deploy AI employees that get real work done.
+                        CrabsHQ gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
                         </p>
 
                     </div>
@@ -729,7 +721,7 @@ const Pricing: React.FC = () => {
                                 } overflow-hidden flex flex-col h-full`}
                         >
                             {tier.highlight && (
-                                <div className="bg-red-300 text-black text-center py-1 text-xs sm:text-sm font-medium">
+                                <div className="bg-red-600 text-white text-center py-1 text-xs sm:text-sm font-medium">
                                     MOST POPULAR
                                 </div>
                             )}
@@ -771,7 +763,7 @@ const Pricing: React.FC = () => {
                                 {/* --- UPDATED TO USE FlippingButtonLink --- */}
                                 <FlippingButtonLink
                                     href="https://app.crabshq.com"
-                                    initialText="Get started - free"
+                                    initialText="Get started"
                                     hoverText="in under 15 mins" // Customize hover text if needed
                                     className={tier.highlight
                                         ? 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500'
@@ -872,7 +864,7 @@ const Pricing: React.FC = () => {
                                             href="https://app.crabshq.com"
                                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
                                         >
-                                            Start free trial
+                                            Get started
                                         </Link>
                                     </div>
                                     <div className="flex justify-center px-4">
@@ -880,7 +872,7 @@ const Pricing: React.FC = () => {
                                             href="https://app.crabshq.com"
                                             className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors"
                                         >
-                                            Start free trial
+                                            Get started
                                         </Link>
                                     </div>
                                 </div>
