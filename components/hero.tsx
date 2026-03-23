@@ -63,7 +63,7 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <ul className="flex flex-col sm:flex-col gap-3 opacity-75 uppercase text-sm">
+    <ul className="flex flex-col sm:flex-col gap-3 opacity-90 text-sm">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
           <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-200">
@@ -132,7 +132,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
-                  <div className="block opacity-50">
+                  <div className="block opacity-70">
                     <span className="reveal reveal__hello-1">Hello,</span>{" "}
                     <span className="reveal reveal__hello-2">We are</span>{" "}
                     <span className="reveal reveal__hello-3">Crabs.</span>

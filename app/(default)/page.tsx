@@ -69,18 +69,16 @@ export default function Home() {
 
         <Hero />
 
-        {/** 
-        <WonderComparison/>
-        */}
+
       </div>
 
       <section className="px-4 py-6 md:px-6 md:py-10 border-b bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:items-center">
-            <span className="mt-1 text-base font-medium text-balance text-gray-400 md:text-left">
+          <div className="flex flex-col items-center gap-4">
+            <span className="mt-1 text-base font-medium text-balance text-gray-400 text-center">
               Trusted by leading product-led companies
             </span>
-            <div className="mx-auto flex flex-wrap place-items-center items-center justify-center gap-8">
+            <div className="flex flex-wrap place-items-center items-center justify-center gap-8">
               <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
                 <img
                   className="h-full w-full origin-center object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
