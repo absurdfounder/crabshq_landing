@@ -55,7 +55,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
 
 const plans = [
   {
-    name: 'Crabs Cloud',
+    name: 'Crabs Computer',
     price: 49,
     description: 'We deploy and manage your dedicated server. You just use it.',
     badge: null,
