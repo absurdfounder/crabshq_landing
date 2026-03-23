@@ -63,7 +63,7 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <ul className="flex flex-col sm:flex-col gap-3 opacity-90 text-sm">
+    <ul className="flex flex-col sm:flex-col gap-3 text-sm text-slate-500">
       {features.map((feature, index) => (
         <li key={index} className="flex items-center gap-2">
           <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-200">
@@ -142,12 +142,12 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   </span>
                 </h1>
 
-                <p>AI coworkers that automate tasks, write code, connect to 3,000 tools, and get things done — not just answer questions.</p>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that automate tasks, write code, connect to 3,000 tools, and get things done — not just answer questions.</p>
 
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 sm:mt-4 mb-2 sm:mb-2 items-stretch justify-start px-0">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 mb-2 items-stretch justify-start px-0">
                 <Link
                   href="https://app.crabshq.com?ref=herolanding"
                   className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"

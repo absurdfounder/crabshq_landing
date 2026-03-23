@@ -123,7 +123,7 @@ export default function SimplePricing() {
               <span>Crabs at your company</span>
             </span>
           </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg px-2">
+          <p className="text-slate-700 max-w-2xl mx-auto text-base sm:text-lg md:text-xl px-2 font-medium">
             Every plan gets its own isolated server. The difference is who controls it.
           </p>
         </div>

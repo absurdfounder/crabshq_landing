@@ -72,7 +72,7 @@ export default function Home() {
 
       </div>
 
-      <section className="px-4 py-6 md:px-6 md:py-10 border-b bg-white">
+      <section className="px-4 py-8 md:px-6 md:py-12 border-b bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4">
             <span className="mt-1 text-base font-medium text-balance text-gray-400 text-center">
@@ -81,28 +81,28 @@ export default function Home() {
             <div className="flex flex-wrap place-items-center items-center justify-center gap-8">
               <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
                 <img
-                  className="h-full w-full origin-center object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   src="https://dazzling-cat.netlify.app/logos/zeroslistlogo.png"
                   alt="Transistor"
                 />
               </div>
               <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
                 <img
-                  className="h-full w-full origin-center object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   src="https://dazzling-cat.netlify.app/logos/marketingxlogo.png"
                   alt="Gummy Search"
                 />
               </div>
               <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
                 <img
-                  className="h-full w-full origin-center object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   src="https://dazzling-cat.netlify.app/logos/dealflowlogo.png"
                   alt="Right Message"
                 />
               </div>
               <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
                 <img
-                  className="h-full w-full origin-center object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
                   src="https://dazzling-cat.netlify.app/logos/downtownlogo.png"
                   alt="Company 4"
                 />

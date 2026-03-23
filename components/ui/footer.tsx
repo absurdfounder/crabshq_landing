@@ -39,7 +39,7 @@ export default function Footer() {
                 className="rounded-lg w-32 sm:w-40 md:w-auto"
               />
             </div>
-            <p className="mt-2 text-xs sm:text-sm text-neutral-500 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed">
               AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks autonomously across GitHub, email, browsers, and your entire tech stack.
             </p>
             <p className="text-sm text-slate-600 mb-4">
@@ -48,7 +48,7 @@ export default function Footer() {
             <ul className="mt-3 space-y-1">
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://twitter.com/absurdfounder"
@@ -59,7 +59,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.linkedin.com/company/wondersites"
@@ -70,7 +70,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.youtube.com/@wondersites"
@@ -91,7 +91,7 @@ export default function Footer() {
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/ai-workforce"
                     >
                       <Users className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
@@ -100,7 +100,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/github-integration"
                     >
                       <Github className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
@@ -109,7 +109,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/task-execution"
                     >
                       <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
@@ -118,7 +118,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/persistent-memory"
                     >
                       <Brain className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
@@ -127,7 +127,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/browser-control"
                     >
                       <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
@@ -136,7 +136,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/system-access"
                     >
                       <Terminal className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-500 flex-shrink-0" />
@@ -145,7 +145,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/email-automation"
                     >
                       <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-violet-500 flex-shrink-0" />
@@ -154,7 +154,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/skills-plugins"
                     >
                       <Puzzle className="h-3 w-3 sm:h-4 sm:w-4 text-pink-500 flex-shrink-0" />
@@ -163,7 +163,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/features/multi-agent-collaboration"
                     >
                       <Network className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-500 flex-shrink-0" />
@@ -172,7 +172,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/integration"
                     >
                       <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 flex-shrink-0" />
@@ -186,7 +186,7 @@ export default function Footer() {
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="mailto:support@wondersites.ai"
                     >
                       <span className="break-words">Contact us</span>
@@ -194,7 +194,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/privacy"
                     >
                       <span className="break-words">Privacy policy</span>
@@ -202,7 +202,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/terms"
                     >
                       <span className="break-words">Terms of service</span>
@@ -219,7 +219,7 @@ export default function Footer() {
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/"
                     >
                       <span className="break-words">How it works</span>
@@ -227,7 +227,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/integration"
                     >
                       <span className="break-words">Integrations</span>
@@ -235,7 +235,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="/pricing"
                     >
                       <span className="break-words">Pricing</span>
@@ -243,7 +243,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="#"
                     >
                       <span className="break-words">Changelog</span>
@@ -251,7 +251,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://app.crabshq.com"
                     >
                       <span className="break-words">Dashboard</span>
@@ -264,7 +264,7 @@ export default function Footer() {
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://docs.openclaw.ai"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -274,7 +274,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="#"
                     >
                       <span className="break-words">Blog</span>
@@ -282,7 +282,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="#"
                     >
                       <span className="break-words">Changelog</span>
@@ -299,7 +299,7 @@ export default function Footer() {
                 <ul className="mt-2 sm:mt-3 space-y-1">
                   <li>
                     <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://openclaw.ai"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -309,7 +309,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://github.com/openclaw/openclaw"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -319,7 +319,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://clawhub.com"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -329,7 +329,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://discord.com/invite/clawd"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -339,7 +339,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-600 transition-colors hover:text-neutral-800"
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                       href="https://docs.openclaw.ai"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -356,7 +356,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between py-6 md:py-8 border-t border-slate-200 max-w-7xl m-auto">
-        <div className="text-xs md:text-sm text-slate-600 mb-4 md:mb-0 order-2 md:order-1 flex flex-wrap gap-4">
+        <div className="text-xs md:text-sm text-slate-700 mb-4 md:mb-0 order-2 md:order-1 flex flex-wrap gap-4">
           © Boring Sites LLC. All rights reserved.{' '}
           <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
           <Link href="/terms" className="hover:text-slate-900">Terms</Link>

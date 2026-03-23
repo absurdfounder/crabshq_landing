@@ -465,7 +465,7 @@ export default function Header() {
                   <Link
                     href="https://app.crabshq.com"
                     target='_blank'
-                    className="btn-sm text-white bg-slate-900 hover:bg-slate-800 ml-2 flex items-center justify-between px-3 py-1.5 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base"
+                    className="btn-sm text-white bg-red-600 hover:bg-red-700 ml-2 flex items-center justify-between px-4 py-2 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base font-semibold"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
