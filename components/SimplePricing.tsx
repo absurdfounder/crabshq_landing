@@ -15,6 +15,8 @@ import {
   Puzzle,
   Globe,
   Smartphone,
+  Eye,
+  History,
 } from 'lucide-react';
 
 interface FlippingButtonLinkProps {
@@ -67,6 +69,8 @@ const coreFeatures = [
   { icon: Sparkles, label: 'All AI Models' },
   { icon: Terminal, label: 'Claude Code & Codex' },
   { icon: Brain, label: 'Adaptive Memory' },
+  { icon: Eye, label: 'Context Awareness' },
+  { icon: History, label: 'System Memory' },
   { icon: ShieldCheck, label: 'Data Encryption' },
   { icon: Puzzle, label: '3,000+ OpenClaw Skills' },
   { icon: Globe, label: 'Browser Automation' },
