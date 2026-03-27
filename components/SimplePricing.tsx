@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  Check,
   Bot,
   MessageSquare,
   Monitor,
@@ -17,6 +16,30 @@ import {
   Smartphone,
   Eye,
   History,
+  Users,
+  Server,
+  Cloud,
+  Cpu,
+  Workflow,
+  GitBranch,
+  Mail,
+  Share2,
+  Rocket,
+  Settings,
+  Headphones,
+  ArrowRight,
+  Network,
+  Lock,
+  Palette,
+  UserPlus,
+  BookOpen,
+  FileCheck,
+  Wrench,
+  Database,
+  BadgeCheck,
+  LucideIcon,
+  DollarSign,
+  Infinity,
 } from 'lucide-react';
 
 interface FlippingButtonLinkProps {
@@ -62,20 +85,11 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   );
 };
 
-const coreFeatures = [
-  { icon: Bot, label: 'Unlimited Agents' },
-  { icon: MessageSquare, label: 'Unlimited Chats' },
-  { icon: Monitor, label: 'Unlimited Devices' },
-  { icon: Sparkles, label: 'All AI Models' },
-  { icon: Terminal, label: 'Claude Code & Codex' },
-  { icon: Brain, label: 'Adaptive Memory' },
-  { icon: Eye, label: 'Context Awareness' },
-  { icon: History, label: 'System Memory' },
-  { icon: ShieldCheck, label: 'Data Encryption' },
-  { icon: Puzzle, label: '3,000+ OpenClaw Skills' },
-  { icon: Globe, label: 'Browser Automation' },
-  { icon: Smartphone, label: 'Mac, Windows, iOS, Android' },
-];
+type Feature = {
+  icon: LucideIcon;
+  label: string;
+  color: string;
+};
 
 type Plan = {
   name: string;
@@ -86,13 +100,35 @@ type Plan = {
   description: string;
   badge?: string | null;
   note?: string;
-  features: string[];
+  coreFeatures: Feature[];
+  planFeatures: Feature[];
   cta: {
     text: string;
     href: string;
   };
   highlight?: boolean;
 };
+
+const sharedCoreFeatures: Feature[] = [
+  { icon: Bot, label: 'Unlimited Agents', color: 'text-red-500' },
+  { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-orange-500' },
+  { icon: Monitor, label: 'Unlimited Devices', color: 'text-yellow-500' },
+  { icon: Sparkles, label: 'All AI Models', color: 'text-emerald-500' },
+  { icon: Terminal, label: 'Claude Code & Codex', color: 'text-indigo-500' },
+  { icon: Brain, label: 'Adaptive Memory', color: 'text-green-500' },
+  { icon: Eye, label: 'Context Awareness', color: 'text-cyan-500' },
+  { icon: History, label: 'System Memory', color: 'text-violet-500' },
+  { icon: ShieldCheck, label: 'Data Encryption', color: 'text-blue-500' },
+  { icon: Puzzle, label: '3,000+ OpenClaw Skills', color: 'text-pink-500' },
+  { icon: Globe, label: 'Browser Automation', color: 'text-red-500' },
+  { icon: Smartphone, label: 'Mac, Windows, iOS, Android', color: 'text-slate-500' },
+  { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
+  { icon: Workflow, label: 'Long-running workflows & persistent agents', color: 'text-orange-500' },
+  { icon: Rocket, label: 'OpenClaw-powered task execution', color: 'text-pink-500' },
+  { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
+  { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
+  { icon: Rocket, label: 'Deploy apps, automations, and internal tools', color: 'text-yellow-500' },
+];
 
 const plans: Plan[] = [
   {
@@ -104,10 +140,11 @@ const plans: Plan[] = [
       'For solo founders who want full control. Self-host on your own machine, pay once, use forever.',
     badge: 'Lifetime Access',
     note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
-    features: [
-      'Lifetime access for 1 user',
-      'Self-hosted on your own machine',
-      'Crabs workflows and agents',
+    coreFeatures: sharedCoreFeatures,
+    planFeatures: [
+      { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-emerald-500' },
+      { icon: Server, label: 'Self-hosted on your own machine', color: 'text-indigo-500' },
+      { icon: Workflow, label: 'Crabs workflows and agents', color: 'text-orange-500' },
     ],
     cta: {
       text: 'Get lifetime deal',
@@ -125,20 +162,15 @@ const plans: Plan[] = [
       'Your managed AI workspace in the cloud. We host the computer, workflows, and runtime for your team.',
     badge: 'Most Popular',
     note: '5 seats included. Additional seats $8/mo each. Bring your own API keys for model usage.',
-    features: [
-      '5 team seats included',
-      'Additional seats at $8/user/month',
-      'Dedicated hosted workspace',
-      'Long-running workflows and persistent agents',
-      'Persistent cloud computer',
-      'OpenClaw-powered task execution',
-      'Multi-agent orchestration',
-      'GitHub integration (commits, PRs, reviews)',
-      'Email automation',
-      'Team collaboration and shared memory',
-      'Deploy apps, automations, and internal tools',
-      'Admin controls',
-      'Priority email support',
+    coreFeatures: sharedCoreFeatures,
+    planFeatures: [
+      { icon: Users, label: '5 team seats included', color: 'text-red-500' },
+      { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
+      { icon: Cloud, label: 'Dedicated hosted workspace', color: 'text-blue-500' },
+      { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
+      { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
+      { icon: Settings, label: 'Admin controls', color: 'text-slate-500' },
+      { icon: Headphones, label: 'Priority email support', color: 'text-blue-500' },
     ],
     cta: {
       text: 'Start with cloud',
@@ -156,18 +188,19 @@ const plans: Plan[] = [
       'For companies that want Crabs HQ on their own infrastructure, with full control and custom pricing.',
     badge: 'Self-host',
     note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
-    features: [
-      'Everything in Cloud, plus:',
-      'Self-hosted deployment on your infra',
-      'Private VPC / on-prem options',
-      'SSO and enterprise auth',
-      'Custom seat volume pricing',
-      'White-label and custom domain',
-      'Dedicated onboarding and migration',
-      'Security reviews and custom agreements',
-      'Internal integrations and custom workflows',
-      'Shared company memory and knowledge',
-      'Priority support with SLA',
+    coreFeatures: sharedCoreFeatures,
+    planFeatures: [
+      { icon: ArrowRight, label: 'Everything in Cloud, plus:', color: 'text-red-500' },
+      { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-indigo-500' },
+      { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-blue-500' },
+      { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-green-500' },
+      { icon: DollarSign, label: 'Custom seat volume pricing', color: 'text-emerald-500' },
+      { icon: Palette, label: 'White-label and custom domain', color: 'text-pink-500' },
+      { icon: UserPlus, label: 'Dedicated onboarding and migration', color: 'text-orange-500' },
+      { icon: FileCheck, label: 'Security reviews and custom agreements', color: 'text-cyan-500' },
+      { icon: Wrench, label: 'Internal integrations and custom workflows', color: 'text-violet-500' },
+      { icon: Database, label: 'Shared company memory and knowledge', color: 'text-yellow-500' },
+      { icon: Headphones, label: 'Priority support with SLA', color: 'text-blue-500' },
     ],
     cta: {
       text: 'Talk to sales',
@@ -181,8 +214,7 @@ export default function SimplePricing() {
   return (
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        {/* Core features hero */}
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
             Pricing
           </div>
@@ -193,43 +225,11 @@ export default function SimplePricing() {
 
           <p className="mt-4 text-base text-slate-500 md:text-lg">
             Every Crabs HQ plan ships with the full platform. No feature gates, no limits on usage.
+            Bring your own API keys.
           </p>
         </div>
 
-        {/* Core features grid - the golden features */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          viewport={{ once: true }}
-          className="mx-auto mt-10 max-w-4xl"
-        >
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-            {coreFeatures.map((feature) => (
-              <div
-                key={feature.label}
-                className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50/60 px-3 py-5 text-center transition-colors hover:border-slate-200 hover:bg-slate-50"
-              >
-                <feature.icon className="h-6 w-6 text-red-600" />
-                <span className="text-sm font-medium text-slate-800">{feature.label}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Plan selection heading */}
-        <div className="mx-auto mt-16 max-w-3xl text-center">
-          <h3 className="text-xl font-semibold text-slate-900 md:text-2xl">
-            Choose how you want to run it
-          </h3>
-          <p className="mt-2 text-sm text-slate-500">
-            Start with a lifetime deal, move to hosted cloud for your team,
-            or self-host for enterprise control. Bring your own API keys.
-          </p>
-        </div>
-
-        {/* Plan cards */}
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => (
             <motion.div
               key={plan.name}
@@ -296,14 +296,34 @@ export default function SimplePricing() {
                 />
               </div>
 
-              <ul className="mt-8 space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                    <span className="text-sm text-slate-700">{feature}</span>
+              {/* Core features - on every card */}
+              <ul className="mt-8 space-y-2">
+                {plan.coreFeatures.map((feature) => (
+                  <li key={feature.label} className="flex items-center gap-2">
+                    <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
+                    <span className="text-sm text-slate-700">{feature.label}</span>
                   </li>
                 ))}
               </ul>
+
+              {/* Plan-specific features */}
+              {plan.planFeatures.length > 0 && (
+                <>
+                  <div className="mt-6 border-t border-slate-100 pt-6">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                      {plan.name === 'Solo Founder' ? 'Solo plan' : plan.name === 'CrabsHQ Cloud' ? 'Cloud plan' : 'Enterprise plan'}
+                    </p>
+                  </div>
+                  <ul className="mt-4 space-y-2">
+                    {plan.planFeatures.map((feature) => (
+                      <li key={feature.label} className="flex items-center gap-2">
+                        <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
+                        <span className="text-sm text-slate-700">{feature.label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </motion.div>
           ))}
         </div>
