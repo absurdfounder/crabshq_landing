@@ -190,47 +190,63 @@ const faqs: Record<string, FAQItem[]> = {
     Pricing: [
         {
             question: "Do I need my own API keys?",
-            answer: "Yes. Crabs HQ follows a bring-your-own-key model, so you connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers.",
+            answer: "Yes. Crabs HQ follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately — no markup, you pay providers directly at their rates.",
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: "Solo is a one-time $79 lifetime deal for individual founders with all core features. Cloud is $99/mo with team seats, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support.",
+            answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features. Cloud is $99/mo with 5 team seats, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
         },
         {
             question: "Does CrabsHQ Cloud include hosting?",
-            answer: "Yes. With CrabsHQ Cloud, we host and manage the workspace, virtual PC, and runtime so your team can focus on using workflows instead of operating infrastructure.",
+            answer: "Yes. With CrabsHQ Cloud, we host and manage the workspace, Always-on Virtual PC, and runtime. Your team gets a dedicated environment without managing any infrastructure.",
+        },
+        {
+            question: "Can I self-host Crabs HQ?",
+            answer: "Yes. Enterprise customers deploy on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
         },
         {
             question: "Can I upgrade later from the lifetime deal?",
-            answer: "Yes. The lifetime deal is designed for solo founders to get started quickly. As your needs grow, you can move to Cloud for team features or Enterprise for self-hosted deployment.",
+            answer: "Yes. The lifetime deal is designed for solo founders to get started quickly. As your needs grow, you can move to Cloud for team collaboration or Enterprise for self-hosted deployment.",
         },
         {
             question: "Are there discounts for startups or nonprofits?",
-            answer: "Yes! We offer special discounts. Please contact support@crabshq.com with proof of eligibility to apply.",
+            answer: "Yes. We offer special discounts for students, startups, and nonprofits. Contact support@crabshq.com with proof of eligibility.",
         },
         {
             question: "Can I cancel or switch plans anytime?",
-            answer: "Yes, you can upgrade, downgrade, or cancel your plan at any time from your dashboard. Changes will take effect in your next billing cycle.",
+            answer: "Yes. You can upgrade, downgrade, or cancel your plan at any time from your dashboard. Changes take effect in your next billing cycle.",
         },
     ],
-    Features: [
+    "AI Features": [
         {
-            question: "What is Crabs HQ?",
-            answer: "Crabs HQ is an AI workspace platform powered by OpenClaw. It lets you run AI agents, workflows, and automations using your own API keys from providers like OpenAI, Anthropic, and Google.",
+            question: "What can the AI agents actually do?",
+            answer: "Agents write and commit code to GitHub, create and review pull requests, browse any website, fill forms, extract data, send and read emails, run shell commands, query databases, process files, write documentation, and coordinate with other agents on complex multi-step workflows — all autonomously.",
         },
         {
-            question: "How is Crabs HQ different from ChatGPT or Claude?",
-            answer: "ChatGPT and Claude are single-model chat interfaces. Crabs HQ is a workspace where you can run multiple AI agents, build persistent workflows, connect to tools like GitHub and Gmail, and deploy automations that run 24/7.",
+            question: "What is the Always-on Virtual PC?",
+            answer: "Every workspace includes a persistent virtual computer that runs 24/7. Agents use it to execute code, run scripts, browse the web, and manage files — even when you're not online. Like giving your AI employees their own dedicated workstation.",
         },
         {
-            question: "What AI models does Crabs HQ support?",
-            answer: "Crabs HQ works with OpenAI (GPT-4, GPT-4o), Anthropic (Claude), Google (Gemini), and other providers. You bring your own API keys and choose which models to use.",
+            question: "How does multi-agent orchestration work?",
+            answer: "Deploy multiple specialized agents that collaborate. A research agent gathers data, a coding agent writes the implementation, a review agent checks the code, a docs agent updates documentation — all running in parallel, sharing context through organizational memory.",
+        },
+        {
+            question: "What is Adaptive Memory and System Memory?",
+            answer: "Adaptive Memory means agents remember your preferences, project conventions, and past decisions across sessions — they get smarter over time. System Memory tracks every edit, deletion, and config change in your workspace, giving agents a complete audit trail of what changed, when, and why.",
+        },
+        {
+            question: "What integrations are supported?",
+            answer: "GitHub, Gmail, Slack, Discord, WhatsApp, Telegram, Signal, Salesforce, Linear, Trello, Jira, Notion, Figma, Stripe, Vercel, PostgreSQL, and any tool with an API. Plus 3,000+ OpenClaw skills from ClawHub for extending capabilities.",
+        },
+        {
+            question: "Can agents run code and shell commands?",
+            answer: "Yes. Agents execute code in any language (Python, Node.js, Bash, etc.), run shell commands, query databases, manage files, and interact with APIs — all within sandboxed environments on the Always-on Virtual PC.",
         },
         {
             question: "What is OpenClaw?",
-            answer: "OpenClaw is the AI execution engine behind Crabs HQ. It powers task execution, agent orchestration, and persistent workflows across your workspace.",
+            answer: "OpenClaw is the open-source AI execution engine powering Crabs HQ. It handles agent orchestration, persistent memory, multi-agent collaboration, skill execution, and task management. CrabsHQ provides a polished UI and managed infrastructure on top of it.",
         },
-    ]
+    ],
 };
 
 // --- FAQ Accordion ---
