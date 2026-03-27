@@ -19,6 +19,7 @@ import {
   Users,
   Server,
   Cpu,
+  Workflow,
   GitBranch,
   Mail,
   Share2,
@@ -106,16 +107,18 @@ const soloFeatures: Feature[] = [
   { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
   { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
   { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-emerald-500' },
-  { icon: Server, label: 'Self-hosted on your own machine', color: 'text-indigo-500' },
 ];
 
-// Cloud-only additions
+// Cloud-only additions - team/collab features
 const cloudFeatures: Feature[] = [
   { icon: Users, label: '5 team seats included', color: 'text-red-500' },
   { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
-  { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
-  { icon: Settings, label: 'Admin controls', color: 'text-slate-500' },
+  { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-orange-500' },
+  { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
+  { icon: Settings, label: 'Admin controls and permissions', color: 'text-slate-500' },
+  { icon: Database, label: 'Shared team knowledge base', color: 'text-yellow-500' },
+  { icon: Workflow, label: 'Shared workflows across team', color: 'text-cyan-500' },
   { icon: Headphones, label: 'Priority email support', color: 'text-blue-500' },
 ];
 
@@ -185,7 +188,7 @@ const plans: Plan[] = [
     note: '5 seats included. Additional seats $8/mo each. Bring your own API keys for model usage.',
     sections: [
       { label: '', features: cloudFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything in Solo Founder' },
+      { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
     ],
     cta: {
       text: 'Start with cloud',
@@ -205,7 +208,7 @@ const plans: Plan[] = [
     note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
     sections: [
       { label: '', features: enterpriseFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything in CrabsHQ Cloud' },
+      { label: '', features: [], inheritsFrom: 'Everything from Cloud Plan' },
     ],
     cta: {
       text: 'Talk to sales',
