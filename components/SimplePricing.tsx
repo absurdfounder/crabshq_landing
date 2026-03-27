@@ -222,20 +222,17 @@ export default function SimplePricing() {
   return (
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
-            Pricing
-          </div>
-
-          <h2 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-            <span className="inline-flex items-center justify-center gap-2 flex-wrap">
-              <span>Deploy</span>
-              <img src="/favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md align-middle" />
-              <span>Crabs at your company</span>
+        <div className="text-start mb-12 sm:mb-16">
+          <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight mb-4 sm:mb-6 leading-tight">
+            <span className="text-slate-800 block mb-2">
+              <span className="inline-flex items-center justify-center gap-2">
+                <span>Deploy</span>
+                <img src="/favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-md align-middle" />
+                <span>Crabs at your company</span>
+              </span>
             </span>
-          </h2>
-
-          <p className="mt-4 text-base text-slate-500 md:text-lg">
+          </h1>
+          <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
             Deploy AI employees that get real work done.
             CrabsHQ gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
           </p>
