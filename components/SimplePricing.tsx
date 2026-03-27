@@ -123,11 +123,8 @@ const sharedCoreFeatures: Feature[] = [
   { icon: Globe, label: 'Browser Automation', color: 'text-red-500' },
   { icon: Smartphone, label: 'Mac, Windows, iOS, Android', color: 'text-slate-500' },
   { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
-  { icon: Workflow, label: 'Long-running workflows & persistent agents', color: 'text-orange-500' },
-  { icon: Rocket, label: 'OpenClaw-powered task execution', color: 'text-pink-500' },
   { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
   { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
-  { icon: Rocket, label: 'Deploy apps, automations, and internal tools', color: 'text-yellow-500' },
 ];
 
 const plans: Plan[] = [
@@ -144,7 +141,6 @@ const plans: Plan[] = [
     planFeatures: [
       { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-emerald-500' },
       { icon: Server, label: 'Self-hosted on your own machine', color: 'text-indigo-500' },
-      { icon: Workflow, label: 'Crabs workflows and agents', color: 'text-orange-500' },
     ],
     cta: {
       text: 'Get lifetime deal',
@@ -166,7 +162,6 @@ const plans: Plan[] = [
     planFeatures: [
       { icon: Users, label: '5 team seats included', color: 'text-red-500' },
       { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
-      { icon: Cloud, label: 'Dedicated hosted workspace', color: 'text-blue-500' },
       { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
       { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
       { icon: Settings, label: 'Admin controls', color: 'text-slate-500' },
