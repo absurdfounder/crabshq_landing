@@ -166,7 +166,7 @@ const ExpandableSection = ({ id, title, icon: Icon, children, isOpen, onToggle, 
 );
 
 // --- MAIN DASHBOARD COMPONENT ---
-const WondersitesDashboard = () => {
+const CrabsHQDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeSection, setActiveSection] = useState('overview');
   const [loading, setLoading] = useState(false);
@@ -466,7 +466,7 @@ const fetchAllData = async () => {
 
   // Navigation setup
   const navItems = [
-    { id: 'overview', label: '✨ Wondersites', emoji: '✨' },
+    { id: 'overview', label: '✨ Crabs HQ', emoji: '✨' },
     { id: 'solana', label: '💜 Solana Eco', emoji: '💜' },
   ];
 
@@ -512,7 +512,7 @@ const fetchAllData = async () => {
           useCORS: true,
         });
         const link = document.createElement('a');
-        link.download = 'wondersites-dashboard-snapshot.png';
+        link.download = 'crabshq-dashboard-snapshot.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       } catch (error) {
@@ -738,7 +738,7 @@ const fetchAllData = async () => {
              isOpen={expandedWONDERSection === 'what-is-WONDER'} 
              onToggle={setExpandedWONDERSection}
            >
-             CrabsHQ powers the Wondersites ecosystem and is the native token of our platform. 
+             CrabsHQ powers the Crabs HQ ecosystem and is the native token of our platform. 
              It's used for website creation, platform fees, and gets burned with every user action, 
              creating a deflationary mechanism that benefits all holders.
            </ExpandableSection>
@@ -893,4 +893,4 @@ const fetchAllData = async () => {
  );
 };
 
-export default WondersitesDashboard;
+export default CrabsHQDashboard;

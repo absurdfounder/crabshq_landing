@@ -39,7 +39,7 @@
           "logo": "https://dazzling-cat.netlify.app/template_images/airdrop.work.png",
           "name": "Crypto Airdrop Aggregator",
           "type": "Marketplace",
-          "provider": "WonderSites",
+          "provider": "CrabsHQ",
           "description": "Latest crypto airdrop guides hand-picked platform by us and the community.",
           "callToCopy": {
             "text": "Deploy Template",
@@ -683,7 +683,7 @@
           "description": "Product Hunt styled template.",
           "callToCopy": {
             "text": "Deploy Template",
-            "link": "https://app.crabshq.com/install-arcade-Wonder-Sites"
+            "link": "https://app.crabshq.com/install-arcade-CrabsHQ"
           },
           "viewDemo": {
             "text": "View Demo",

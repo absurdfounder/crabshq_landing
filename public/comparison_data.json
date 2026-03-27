@@ -1,11 +1,11 @@
 {
   "comparision_library": [
     {
-      "id": "WonderSites-vs-webflow",
+      "id": "CrabsHQ-vs-webflow",
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Webflow",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Tagline why CrabsHQ  is better than Webflow.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2699/PNG/512/webflow_logo_icon_169218.png"
       },
@@ -104,11 +104,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-wix",
+      "id": "CrabsHQ-vs-wix",
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Wix",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Why CrabsHQ  is a versatile alternative to Wix for dynamic website creation.",
         "heroimage": "https://cdn-icons-png.flaticon.com/512/5968/5968770.png"
       },
@@ -207,11 +207,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-wordpress",
+      "id": "CrabsHQ-vs-wordpress",
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "WordPress",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Exploring how CrabsHQ offers a streamlined, user-friendly alternative to WordPress.",
         "heroimage": "https://cdn0.iconfinder.com/data/icons/social-flat-rounded-rects/512/wordpress-512.png"
       },
@@ -310,11 +310,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-squarespace",
+      "id": "CrabsHQ-vs-squarespace",
       "product": {
         "logo": "https://www.helpmyrank.com/wp-content/uploads/2022/04/channels4_profile.jpg",
         "name": "Squarespace",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Why CrabsHQ offers a more versatile solution compared to Squarespace for creative website building.",
         "heroimage": "https://www.helpmyrank.com/wp-content/uploads/2022/04/channels4_profile.jpg"
       },
@@ -413,11 +413,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-shopify",
+      "id": "CrabsHQ-vs-shopify",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2428/PNG/512/shopify_black_logo_icon_147085.png",
         "name": "Shopify",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Discover why CrabsHQ  is a comprehensive alternative to Shopify for seamless e-commerce solutions.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2428/PNG/512/shopify_black_logo_icon_147085.png"
       },
@@ -516,11 +516,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-zendesk",
+      "id": "CrabsHQ-vs-zendesk",
       "product": {
         "logo": "https://static-00.iconduck.com/assets.00/zendesk-icon-2048x2048-q18vy4hu.png",
         "name": "Zendesk",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "How CrabsHQ presents a comprehensive alternative to Zendesk for customer support and helpdesk management.",
         "heroimage": "https://static-00.iconduck.com/assets.00/zendesk-icon-2048x2048-q18vy4hu.png"
       },
@@ -619,11 +619,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-intercom",
+      "id": "CrabsHQ-vs-intercom",
       "product": {
         "logo": "https://dazzling-cat.netlify.app/integration_icons/intercom.png",
         "name": "Intercom",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Why CrabsHQ  is a robust alternative to Intercom for customer support and engagement.",
         "heroimage": "https://dazzling-cat.netlify.app/integration_icons/intercom.png"
       },
@@ -722,11 +722,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-gitbook",
+      "id": "CrabsHQ-vs-gitbook",
       "product": {
         "logo": "https://dazzling-cat.netlify.app/integration_icons/gitbook.jpg",
         "name": "GitBook",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "How CrabsHQ  is a versatile alternative to GitBook for documentation and collaboration.",
         "heroimage": "https://dazzling-cat.netlify.app/integration_icons/gitbook.jpg"
       },
@@ -825,11 +825,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-docusaurus",
+      "id": "CrabsHQ-vs-docusaurus",
       "product": {
         "logo": "https://static-00.iconduck.com/assets.00/docusaurus-icon-2048x1741-ditzh04o.png",
         "name": "Docusaurus",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "How CrabsHQ  is a versatile alternative to GitBook for documentation and collaboration.",
         "heroimage": "https://static-00.iconduck.com/assets.00/docusaurus-icon-2048x1741-ditzh04o.png"
       },
@@ -929,11 +929,11 @@
     },
 
     {
-      "id": "WonderSites-vs-framer",
+      "id": "CrabsHQ-vs-framer",
       "product": {
         "logo": "https://pbs.twimg.com/profile_images/1469296240991125519/xpZr8yYS_400x400.jpg",
         "name": "Framer",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Why CrabsHQ  is a feature-rich alternative to Framer for design-focused web development.",
         "heroimage": "https://pbs.twimg.com/profile_images/1469296240991125519/xpZr8yYS_400x400.jpg"
       },
@@ -1032,11 +1032,11 @@
       ]
     },
     {
-      "id": "WonderSites-vs-ghost",
+      "id": "CrabsHQ-vs-ghost",
       "product": {
         "logo": "https://ghost.org/images/logos/ghost-logo-orb.png",
         "name": "Ghost",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Why CrabsHQ  is a comprehensive alternative to Ghost for blogging and content management.",
         "heroimage": "https://ghost.org/images/logos/ghost-logo-orb.png"
       },
@@ -1135,12 +1135,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-joomla",
+      "id": "CrabsHQ-vs-joomla",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2428/PNG/512/joomla_logo_icon_147117.png",
         "name": "Joomla",
-        "provider": "WonderSites",
-        "description": "Comparing the flexibility of WonderSites with the traditional CMS capabilities of Joomla.",
+        "provider": "CrabsHQ",
+        "description": "Comparing the flexibility of CrabsHQ with the traditional CMS capabilities of Joomla.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2428/PNG/512/joomla_logo_icon_147117.png"
       },
       "comparison_table": [
@@ -1238,12 +1238,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-medium",
+      "id": "CrabsHQ-vs-medium",
       "product": {
         "logo": "https://cdn4.iconfinder.com/data/icons/social-media-2210/24/Medium-512.png",
         "name": "Medium",
-        "provider": "WonderSites",
-        "description": "WonderSites as a customizable alternative to Medium for publishing content online.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as a customizable alternative to Medium for publishing content online.",
         "heroimage": "https://cdn4.iconfinder.com/data/icons/social-media-2210/24/Medium-512.png"
       },
       "comparison_table": [
@@ -1341,12 +1341,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-confluence",
+      "id": "CrabsHQ-vs-confluence",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2699/PNG/512/atlassian_confluence_logo_icon_170581.png",
         "name": "Confluence",
-        "provider": "WonderSites",
-        "description": "How WonderSites provides a simpler alternative to Confluence for team knowledge bases.",
+        "provider": "CrabsHQ",
+        "description": "How CrabsHQ provides a simpler alternative to Confluence for team knowledge bases.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2699/PNG/512/atlassian_confluence_logo_icon_170581.png"
       },
       "comparison_table": [
@@ -1444,12 +1444,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-super",
+      "id": "CrabsHQ-vs-super",
       "product": {
         "logo": "https://super-static.storage.googleapis.com/logo.png",
         "name": "Super.so",
-        "provider": "WonderSites",
-        "description": "Why WonderSites is a powerful alternative to Super.so for building websites from Notion.",
+        "provider": "CrabsHQ",
+        "description": "Why CrabsHQ is a powerful alternative to Super.so for building websites from Notion.",
         "heroimage": "https://super-static.storage.googleapis.com/logo.png"
       },
       "comparison_table": [
@@ -1547,12 +1547,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-carrd",
+      "id": "CrabsHQ-vs-carrd",
       "product": {
         "logo": "https://seeklogo.com/images/C/carrd-logo-A17F4F877F-seeklogo.com.png",
         "name": "Carrd",
-        "provider": "WonderSites",
-        "description": "Explore how WonderSites offers more features than Carrd for building single-page sites and beyond.",
+        "provider": "CrabsHQ",
+        "description": "Explore how CrabsHQ offers more features than Carrd for building single-page sites and beyond.",
         "heroimage": "https://seeklogo.com/images/C/carrd-logo-A17F4F877F-seeklogo.com.png"
       },
       "comparison_table": [
@@ -1650,12 +1650,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-bubble",
+      "id": "CrabsHQ-vs-bubble",
       "product": {
         "logo": "https://seeklogo.com/images/B/bubble-logo-9DA649CA3D-seeklogo.com.png",
         "name": "Bubble",
-        "provider": "WonderSites",
-        "description": "Comparing WonderSites' ease of use with Bubble's powerful no-code app building capabilities.",
+        "provider": "CrabsHQ",
+        "description": "Comparing CrabsHQ' ease of use with Bubble's powerful no-code app building capabilities.",
         "heroimage": "https://seeklogo.com/images/B/bubble-logo-9DA649CA3D-seeklogo.com.png"
       },
       "comparison_table": [
@@ -1753,12 +1753,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-bigcommerce",
+      "id": "CrabsHQ-vs-bigcommerce",
       "product": {
         "logo": "https://cdn.iconscout.com/icon/free/png-256/free-bigcommerce-3521298-2944740.png",
         "name": "BigCommerce",
-        "provider": "WonderSites",
-        "description": "WonderSites as a versatile platform versus BigCommerce's dedicated e-commerce focus.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as a versatile platform versus BigCommerce's dedicated e-commerce focus.",
         "heroimage": "https://cdn.iconscout.com/icon/free/png-256/free-bigcommerce-3521298-2944740.png"
       },
       "comparison_table": [
@@ -1856,12 +1856,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-helpscout",
+      "id": "CrabsHQ-vs-helpscout",
       "product": {
         "logo": "https://cdn.worldvectorlogo.com/logos/helpscout-icon.svg",
         "name": "Help Scout",
-        "provider": "WonderSites",
-        "description": "How WonderSites offers broader functionality compared to Help Scout's focused customer support tools.",
+        "provider": "CrabsHQ",
+        "description": "How CrabsHQ offers broader functionality compared to Help Scout's focused customer support tools.",
         "heroimage": "https://cdn.worldvectorlogo.com/logos/helpscout-icon.svg"
       },
       "comparison_table": [
@@ -1959,12 +1959,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-substack",
+      "id": "CrabsHQ-vs-substack",
       "product": {
         "logo": "https://substack--cdn--com.cdn.ampproject.org/i/s/substack-cdn.com/icons/substack-circle-logo.svg",
         "name": "Substack",
-        "provider": "WonderSites",
-        "description": "WonderSites as a full-featured website builder alternative to Substack's newsletter platform.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as a full-featured website builder alternative to Substack's newsletter platform.",
         "heroimage": "https://substack--cdn--com.cdn.ampproject.org/i/s/substack-cdn.com/icons/substack-circle-logo.svg"
       },
       "comparison_table": [
@@ -2062,12 +2062,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-duda",
+      "id": "CrabsHQ-vs-duda",
       "product": {
         "logo": "https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_04a16181a979c6ef1ac6349022f7477c/duda.png",
         "name": "Duda",
-        "provider": "WonderSites",
-        "description": "Exploring WonderSites as an alternative to Duda's agency-centric website building platform.",
+        "provider": "CrabsHQ",
+        "description": "Exploring CrabsHQ as an alternative to Duda's agency-centric website building platform.",
         "heroimage": "https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_04a16181a979c6ef1ac6349022f7477c/duda.png"
       },
       "comparison_table": [
@@ -2165,12 +2165,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-featurebase",
+      "id": "CrabsHQ-vs-featurebase",
       "product": {
         "logo": "https://assets-global.website-files.com/636a6b7f852f1016a4cef701/654e1ac65847e3d9b2a24f03_nav-logomark.svg",
         "name": "FeatureBase",
-        "provider": "WonderSites",
-        "description": "WonderSites as a comprehensive site builder versus FeatureBase's dedicated feedback and changelog tools.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as a comprehensive site builder versus FeatureBase's dedicated feedback and changelog tools.",
         "heroimage": "https://assets-global.website-files.com/636a6b7f852f1016a4cef701/654e1ac65847e3d9b2a24f03_nav-logomark.svg"
       },
       "comparison_table": [
@@ -2268,12 +2268,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-freshdesk",
+      "id": "CrabsHQ-vs-freshdesk",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2699/PNG/512/freshdesk_logo_icon_168401.png",
         "name": "Freshdesk",
-        "provider": "WonderSites",
-        "description": "Comparing WonderSites' integrated tools with Freshdesk's specialized customer support platform.",
+        "provider": "CrabsHQ",
+        "description": "Comparing CrabsHQ' integrated tools with Freshdesk's specialized customer support platform.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2699/PNG/512/freshdesk_logo_icon_168401.png"
       },
       "comparison_table": [
@@ -2372,12 +2372,12 @@
     },
 
     {
-      "id": "WonderSites-vs-beehiiv",
+      "id": "CrabsHQ-vs-beehiiv",
       "product": {
         "logo": "https://www.beehiiv.com/beehiiv-logo-dark.svg",
         "name": "Beehiiv",
-        "provider": "WonderSites",
-        "description": "How WonderSites provides broader website capabilities compared to Beehiiv's newsletter and publishing focus.",
+        "provider": "CrabsHQ",
+        "description": "How CrabsHQ provides broader website capabilities compared to Beehiiv's newsletter and publishing focus.",
         "heroimage": "https://www.beehiiv.com/beehiiv-logo-dark.svg"
       },
       "comparison_table": [
@@ -2475,12 +2475,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-softr",
+      "id": "CrabsHQ-vs-softr",
       "product": {
         "logo": "https://www.softr.io/l/logo-softr-dark.svg",
         "name": "Softr",
-        "provider": "WonderSites",
-        "description": "Comparing WonderSites with Softr's capabilities for building directories, client portals, and internal tools.",
+        "provider": "CrabsHQ",
+        "description": "Comparing CrabsHQ with Softr's capabilities for building directories, client portals, and internal tools.",
         "heroimage": "https://www.softr.io/l/logo-softr-dark.svg"
       },
       "comparison_table": [
@@ -2578,12 +2578,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-canny",
+      "id": "CrabsHQ-vs-canny",
       "product": {
         "logo": "https://canny.io/images/canny-logo.svg",
         "name": "Canny",
-        "provider": "WonderSites",
-        "description": "How WonderSites provides a broader platform compared to Canny's focused user feedback and roadmap tools.",
+        "provider": "CrabsHQ",
+        "description": "How CrabsHQ provides a broader platform compared to Canny's focused user feedback and roadmap tools.",
         "heroimage": "https://canny.io/images/canny-logo.svg"
       },
       "comparison_table": [
@@ -2681,12 +2681,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-notion-sites",
+      "id": "CrabsHQ-vs-notion-sites",
       "product": {
         "logo": "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png",
         "name": "Notion Sites",
-        "provider": "WonderSites",
-        "description": "Comparing WonderSites' dedicated features against Notion Sites for publishing simple websites directly from Notion.",
+        "provider": "CrabsHQ",
+        "description": "Comparing CrabsHQ' dedicated features against Notion Sites for publishing simple websites directly from Notion.",
         "heroimage": "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png"
       },
       "comparison_table": [
@@ -2784,12 +2784,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-glide",
+      "id": "CrabsHQ-vs-glide",
       "product": {
         "logo": "https://storage.googleapis.com/glideapps-downloads/logos/glide-logo-dark-padding.png",
         "name": "Glide",
-        "provider": "WonderSites",
-        "description": "WonderSites for comprehensive websites compared to Glide for building mobile-first apps from data.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ for comprehensive websites compared to Glide for building mobile-first apps from data.",
         "heroimage": "https://storage.googleapis.com/glideapps-downloads/logos/glide-logo-dark-padding.png"
       },
       "comparison_table": [
@@ -2887,12 +2887,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-convertkit",
+      "id": "CrabsHQ-vs-convertkit",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2699/PNG/512/convertkit_logo_icon_169103.png",
         "name": "ConvertKit",
-        "provider": "WonderSites",
-        "description": "WonderSites as a full website solution versus ConvertKit's focus on email marketing and creator landing pages.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as a full website solution versus ConvertKit's focus on email marketing and creator landing pages.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2699/PNG/512/convertkit_logo_icon_169103.png"
       },
       "comparison_table": [
@@ -2990,12 +2990,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-gorgias",
+      "id": "CrabsHQ-vs-gorgias",
       "product": {
         "logo": "https://assets-global.website-files.com/626a589154cc6a67a116751e/6272a7a41862c2a55c1a424c_Logo%20Lockup%20Primary%20-%20Dark.svg",
         "name": "Gorgias",
-        "provider": "WonderSites",
-        "description": "Comparing WonderSites' broad features against Gorgias' specialized helpdesk tailored for e-commerce businesses.",
+        "provider": "CrabsHQ",
+        "description": "Comparing CrabsHQ' broad features against Gorgias' specialized helpdesk tailored for e-commerce businesses.",
         "heroimage": "https://assets-global.website-files.com/626a589154cc6a67a116751e/6272a7a41862c2a55c1a424c_Logo%20Lockup%20Primary%20-%20Dark.svg"
       },
       "comparison_table": [
@@ -3093,12 +3093,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-woocommerce",
+      "id": "CrabsHQ-vs-woocommerce",
       "product": {
         "logo": "https://cdn.icon-icons.com/icons2/2428/PNG/512/woocommerce_black_logo_icon_147111.png",
         "name": "WooCommerce",
-        "provider": "WonderSites",
-        "description": "WonderSites as an all-in-one platform versus WooCommerce's e-commerce capabilities within WordPress.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ as an all-in-one platform versus WooCommerce's e-commerce capabilities within WordPress.",
         "heroimage": "https://cdn.icon-icons.com/icons2/2428/PNG/512/woocommerce_black_logo_icon_147111.png"
       },
       "comparison_table": [
@@ -3196,12 +3196,12 @@
       ]
     },
     {
-      "id": "WonderSites-vs-slab",
+      "id": "CrabsHQ-vs-slab",
       "product": {
         "logo": "https://pbs.twimg.com/profile_images/1305576116867895296/qprB4e-C_400x400.png",
         "name": "Slab",
-        "provider": "WonderSites",
-        "description": "WonderSites for diverse web needs versus Slab's dedicated focus on team knowledge bases and wikis.",
+        "provider": "CrabsHQ",
+        "description": "CrabsHQ for diverse web needs versus Slab's dedicated focus on team knowledge bases and wikis.",
         "heroimage": "https://pbs.twimg.com/profile_images/1305576116867895296/qprB4e-C_400x400.png"
       },
       "comparison_table": [
@@ -3303,7 +3303,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Helpdocs.io",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is the modern, flexible alternative to Helpdocs.io for creating beautiful documentation and help centers.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -3406,7 +3406,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Mintlify",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ offers a powerful alternative to Mintlify for building modern documentation sites with ease.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -3509,7 +3509,7 @@
       "product": {
         "logo": "https://static-00.iconduck.com/assets.00/zendesk-icon-2048x2048-q18vy4hu.png",
         "name": "Zendesk Help Center",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a comprehensive alternative to Zendesk Help Center for customer support and knowledge management.",
         "heroimage": "https://static-00.iconduck.com/assets.00/zendesk-icon-2048x2048-q18vy4hu.png"
       },
@@ -3612,7 +3612,7 @@
       "product": {
         "logo": "https://dazzling-cat.netlify.app/integration_icons/intercom.png",
         "name": "Intercom Help Center",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ provides a robust alternative to Intercom Help Center for customer support and engagement.",
         "heroimage": "https://dazzling-cat.netlify.app/integration_icons/intercom.png"
       },
@@ -3715,7 +3715,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Docusaurus",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a simpler, more intuitive alternative to Docusaurus for building documentation websites.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -3818,7 +3818,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "GitBook",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ offers a modern alternative to GitBook for creating beautiful documentation and knowledge bases.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -3921,7 +3921,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Document360",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a flexible alternative to Document360 for creating comprehensive knowledge bases and documentation.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4024,7 +4024,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "ProProfs KB",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a modern alternative to ProProfs KB for building knowledge bases and help centers.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4127,7 +4127,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Zoho Desk",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a comprehensive alternative to Zoho Desk for customer support and helpdesk management.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4230,7 +4230,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Help Scout",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a modern alternative to Help Scout for customer support and helpdesk solutions.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4333,7 +4333,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Helpjuice",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a powerful alternative to Helpjuice for creating knowledge bases and help centers.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4436,7 +4436,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "KnowledgeOwl",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a modern alternative to KnowledgeOwl for building knowledge bases and documentation sites.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4539,7 +4539,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Archbee",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a flexible alternative to Archbee for creating documentation and knowledge bases.",
         "heroimage": "https://via.placeholder.com/400"
       },
@@ -4642,7 +4642,7 @@
       "product": {
         "logo": "https://via.placeholder.com/100",
         "name": "Stonly",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "CrabsHQ is a comprehensive alternative to Stonly for creating interactive guides and help centers.",
         "heroimage": "https://via.placeholder.com/400"
       },

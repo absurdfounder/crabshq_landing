@@ -14,7 +14,7 @@ export const metadata = {
     description: 'Extend your AI workforce with 3,000+ OpenClaw skills.',
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/WonderSitesintegrations_socialshare.png",
+        url: "https://dazzling-cat.netlify.app/CrabsHQintegrations_socialshare.png",
         width: 1200,
         height: 630,
         alt: "Crabs HQ OpenClaw Skills",
@@ -25,7 +25,7 @@ export const metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/WonderSitesintegrations_socialshare.png",
+        url: "https://dazzling-cat.netlify.app/CrabsHQintegrations_socialshare.png",
         alt: "Crabs HQ OpenClaw Skills",
       },
     ],

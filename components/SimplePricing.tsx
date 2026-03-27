@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 interface FlippingButtonLinkProps {
   href: string;
@@ -48,15 +48,21 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   );
 };
 
+type Feature = {
+  text: string;
+  included: boolean;
+};
+
 type Plan = {
   name: string;
   eyebrow?: string;
   price: string;
   cadence: string;
+  perSeat?: string;
   description: string;
   badge?: string | null;
   note?: string;
-  features: string[];
+  features: Feature[];
   cta: {
     text: string;
     href: string;
@@ -69,20 +75,20 @@ const plans: Plan[] = [
     name: 'Solo Founder',
     eyebrow: 'Lifetime deal',
     price: '$79',
-    cadence: 'one-time',
+    cadence: 'one-time payment',
     description:
-      'Best for solo founders who want the Crabs HQ experience with their own API keys.',
-    badge: null,
-    note: 'Bring your own API keys. API usage is billed separately by your model providers.',
+      'For solo founders who want the Crabs HQ experience with their own API keys. Pay once, use forever.',
+    badge: 'Lifetime Access',
+    note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
     features: [
-      'Lifetime access for 1 founder',
-      'Bring your own OpenAI / Anthropic / Gemini keys',
-      'Use Crabs workflows and agents',
-      'Local or lightweight self-managed setup',
-      'Core chat, tasks, and workflow memory',
-      'No hosted cloud computer included',
-      'No team seats',
-      'No enterprise support',
+      { text: 'Lifetime access for 1 user', included: true },
+      { text: 'Bring your own OpenAI / Anthropic / Gemini keys', included: true },
+      { text: 'Crabs workflows and agents', included: true },
+      { text: 'Local or lightweight self-managed setup', included: true },
+      { text: 'Core chat, tasks, and workflow memory', included: true },
+      { text: 'Hosted cloud computer', included: false },
+      { text: 'Team seats or collaboration', included: false },
+      { text: 'Enterprise support', included: false },
     ],
     cta: {
       text: 'Get lifetime deal',
@@ -95,24 +101,25 @@ const plans: Plan[] = [
     eyebrow: 'Hosted by us',
     price: '$99',
     cadence: '/ month',
+    perSeat: '$8 per additional seat / month',
     description:
-      'Your managed AI workspace in the cloud. We host the computer, workflows, and runtime.',
+      'Your managed AI workspace in the cloud. We host the computer, workflows, and runtime for your team.',
     badge: 'Most Popular',
-    note: 'Includes hosted infrastructure. Bring your own API keys for model usage.',
+    note: '5 seats included. Additional seats $8/mo each. Bring your own API keys for model usage.',
     features: [
-      'Dedicated hosted Crabs workspace',
-      '5 users included',
-      'Additional seats can be added later',
-      'Long-running workflows and agents',
-      'Persistent cloud computer',
-      'OpenClaw-powered task execution',
-      'Team collaboration and shared memory',
-      'Deploy apps, automations, and internal tools',
-      'Admin controls',
-      'Priority email support',
+      { text: '5 team seats included', included: true },
+      { text: 'Additional seats at $8/user/month', included: true },
+      { text: 'Dedicated hosted Crabs workspace', included: true },
+      { text: 'Long-running workflows and agents', included: true },
+      { text: 'Persistent cloud computer', included: true },
+      { text: 'OpenClaw-powered task execution', included: true },
+      { text: 'Team collaboration and shared memory', included: true },
+      { text: 'Deploy apps, automations, and internal tools', included: true },
+      { text: 'Admin controls', included: true },
+      { text: 'Priority email support', included: true },
     ],
     cta: {
-      text: 'Start in cloud',
+      text: 'Start with cloud',
       href: 'https://app.crabshq.com',
     },
     highlight: true,
@@ -122,21 +129,22 @@ const plans: Plan[] = [
     eyebrow: 'Self-host / private deployment',
     price: 'Custom',
     cadence: '',
+    perSeat: 'Volume pricing from ~$4/seat/month',
     description:
-      'For companies that want Crabs HQ on their own infrastructure, with full control.',
+      'For companies that want Crabs HQ on their own infrastructure, with full control and custom pricing.',
     badge: 'Self-host',
-    note: 'Runs on your infra. Your keys, your data, your security policies.',
+    note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
     features: [
-      'Self-hosted deployment',
-      'Private VPC / on-prem options',
-      'SSO and enterprise auth',
-      'Custom seat volume pricing',
-      'White-label and custom domain options',
-      'Dedicated onboarding',
-      'Security reviews and custom agreements',
-      'Internal integrations and custom workflows',
-      'Shared company memory and knowledge',
-      'Priority support and migration help',
+      { text: 'Self-hosted deployment on your infra', included: true },
+      { text: 'Private VPC / on-prem options', included: true },
+      { text: 'SSO and enterprise auth', included: true },
+      { text: 'Custom seat volume pricing', included: true },
+      { text: 'White-label and custom domain', included: true },
+      { text: 'Dedicated onboarding and migration', included: true },
+      { text: 'Security reviews and custom agreements', included: true },
+      { text: 'Internal integrations and custom workflows', included: true },
+      { text: 'Shared company memory and knowledge', included: true },
+      { text: 'Priority support with SLA', included: true },
     ],
     cta: {
       text: 'Talk to sales',
@@ -148,20 +156,20 @@ const plans: Plan[] = [
 
 export default function SimplePricing() {
   return (
-    <section className="relative py-20 md:py-24">
+    <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs font-medium text-zinc-300">
+          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
             Pricing
           </div>
 
-          <h2 className="mt-6 text-3xl font-semibold tracking-tight text-white md:text-5xl">
-            Pricing shaped like how people actually buy AI tools
+          <h2 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl">
+            Choose how you want to run Crabs HQ
           </h2>
 
-          <p className="mt-4 text-base text-zinc-400 md:text-lg">
-            Start solo with a lifetime deal, move to CrabsHQ Cloud when you want hosted
-            workflows, or self-host for enterprise control.
+          <p className="mt-4 text-base text-slate-500 md:text-lg">
+            Start with a lifetime deal, move to hosted cloud for your team,
+            or self-host for enterprise control. Bring your own API keys.
           </p>
         </div>
 
@@ -175,56 +183,74 @@ export default function SimplePricing() {
               viewport={{ once: true }}
               className={`rounded-3xl border p-6 md:p-8 ${
                 plan.highlight
-                  ? 'border-cyan-400/40 bg-zinc-900 shadow-[0_0_0_1px_rgba(34,211,238,0.15)]'
-                  : 'border-zinc-800 bg-zinc-950/70'
+                  ? 'border-red-200 bg-white shadow-lg shadow-red-100/50 ring-1 ring-red-100'
+                  : 'border-slate-200 bg-white'
               }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   {plan.eyebrow && (
-                    <div className="text-sm font-medium text-cyan-300">{plan.eyebrow}</div>
+                    <div className={`text-sm font-medium ${plan.highlight ? 'text-red-600' : 'text-slate-500'}`}>
+                      {plan.eyebrow}
+                    </div>
                   )}
-                  <h3 className="mt-2 text-2xl font-semibold text-white">{plan.name}</h3>
+                  <h3 className="mt-2 text-2xl font-semibold text-slate-900">{plan.name}</h3>
                 </div>
 
                 {plan.badge && (
-                  <div className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-200">
+                  <div className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    plan.highlight
+                      ? 'bg-red-50 text-red-700 border border-red-200'
+                      : plan.badge === 'Lifetime Access'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                      : 'bg-slate-100 text-slate-600 border border-slate-200'
+                  }`}>
                     {plan.badge}
                   </div>
                 )}
               </div>
 
-              <p className="mt-4 text-sm leading-6 text-zinc-400">{plan.description}</p>
+              <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
 
               <div className="mt-6 flex items-end gap-2">
-                <div className="text-4xl font-semibold tracking-tight text-white">
+                <div className="text-4xl font-semibold tracking-tight text-slate-900">
                   {plan.price}
                 </div>
-                <div className="pb-1 text-sm text-zinc-400">{plan.cadence}</div>
+                <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
               </div>
 
+              {plan.perSeat && (
+                <p className="mt-2 text-sm font-medium text-red-600">{plan.perSeat}</p>
+              )}
+
               {plan.note && (
-                <p className="mt-3 text-xs leading-5 text-zinc-500">{plan.note}</p>
+                <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
               )}
 
               <div className="mt-6">
                 <FlippingButtonLink
                   href={plan.cta.href}
                   initialText={plan.cta.text}
-                  hoverText="Let’s go"
+                  hoverText="Let's go"
                   className={
                     plan.highlight
-                      ? 'bg-cyan-400 text-black hover:bg-cyan-300 focus:ring-cyan-400'
-                      : 'bg-white text-black hover:bg-zinc-200 focus:ring-white'
+                      ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
+                      : 'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-500'
                   }
                 />
               </div>
 
               <ul className="mt-8 space-y-3">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
-                    <span className="text-sm text-zinc-300">{feature}</span>
+                  <li key={feature.text} className="flex items-start gap-3">
+                    {feature.included ? (
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                    ) : (
+                      <X className="mt-0.5 h-4 w-4 shrink-0 text-slate-300" />
+                    )}
+                    <span className={`text-sm ${feature.included ? 'text-slate-700' : 'text-slate-400'}`}>
+                      {feature.text}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -232,9 +258,9 @@ export default function SimplePricing() {
           ))}
         </div>
 
-        <div className="mx-auto mt-8 max-w-3xl text-center text-sm text-zinc-500">
-          Model usage is not included in the plans above. Customers connect their own API keys
-          and pay OpenAI, Anthropic, Google, or other providers directly for consumption.
+        <div className="mx-auto mt-10 max-w-3xl text-center text-sm text-slate-400">
+          Model usage is not included. You connect your own API keys and pay
+          OpenAI, Anthropic, Google, or other providers directly for consumption.
         </div>
       </div>
     </section>

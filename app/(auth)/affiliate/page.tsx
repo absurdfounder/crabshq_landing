@@ -11,7 +11,7 @@ export const metadata = {
   openGraph: {
     images: [
         {
-            url: "https://dazzling-cat.netlify.app/WonderSitesaffilate_socialshare.png",
+            url: "https://dazzling-cat.netlify.app/CrabsHQaffilate_socialshare.png",
             width: 1200,
             height: 630,
             alt: "Get a Marketplace with Notion",
@@ -22,7 +22,7 @@ twitter: {
     card: "summary_large_image",
     images: [
         {
-            url: "https://dazzling-cat.netlify.app/WonderSitesaffilate_socialshare.png",
+            url: "https://dazzling-cat.netlify.app/CrabsHQaffilate_socialshare.png",
             alt: "Get a Marketplace with Notion",
         },
     ],
@@ -52,8 +52,8 @@ refer to CrabsHQ, without limits. Join
 
 
 
-          <div className="m-auto text-center"><Link className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="https://wondersites.lemonsqueezy.com/affiliates">Sign Up</Link></div>
-          <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="block mt-8 text-sm text-red-600 sm:mt-4 m-auto w-fit">Already partner? Open the affiliate dashboard →</Link>
+          <div className="m-auto text-center"><Link className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" href="https://crabshq.lemonsqueezy.com/affiliates">Sign Up</Link></div>
+          <Link href="https://crabshq.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="block mt-8 text-sm text-red-600 sm:mt-4 m-auto w-fit">Already partner? Open the affiliate dashboard →</Link>
 
 
 
@@ -104,7 +104,7 @@ refer to CrabsHQ, without limits. Join
               </div>
 
               <div className="mt-8 text-center">
-                <Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_self" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Become our Partner</Link>
+                <Link href="https://crabshq.lemonsqueezy.com/affiliates" target="_self" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center">Become our Partner</Link>
               </div>
             </div>
 
@@ -320,7 +320,7 @@ refer to CrabsHQ, without limits. Join
         <h2 className="h2 font-bold">Start earning cash by referring customers to Crabs HQ</h2>
         <br />
         <p className="mt-4">Quick payouts to Wise, Paypal or your local bank. Premium support and cross-promotions from us.</p>
-        <div className="mt-8"><Link href="https://wondersites.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="btn text-slate-900 bg-slate-200 hover:bg-slate-600 w-full mb-4 sm:w-auto sm:mb-0">Become our partner</Link></div>
+        <div className="mt-8"><Link href="https://crabshq.lemonsqueezy.com/affiliates" target="_blank" rel="noopener"  className="btn text-slate-900 bg-slate-200 hover:bg-slate-600 w-full mb-4 sm:w-auto sm:mb-0">Become our partner</Link></div>
     </div>
 </div>
 

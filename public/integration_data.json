@@ -5,11 +5,11 @@
       "product": {
         "logo": "https://framerusercontent.com/images/FS1of0gxF0A6UP7GmCpIBKQM.png",
         "name": "Arcade",
-        "provider": "WonderSites",
+        "provider": "CrabsHQ",
         "description": "Embed interactive product demos in your documentation and turn all users into power users. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com/install-arcade-Wonder-Sites"
+          "link": "https://app.crabshq.com/install-arcade-CrabsHQ"
         }
       },
       "overview": {
@@ -23,7 +23,7 @@
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/JwSD9igebl5YjP1p0XBssmuRU4.png",
-        "youtubevideo": "https://youtube.com/watch?v=example-arcade-Wonder-Sites"
+        "youtubevideo": "https://youtube.com/watch?v=example-arcade-CrabsHQ"
       }
     },
     {
@@ -97,7 +97,7 @@
         "content": "Embedding Figma files into CrabsHQ  is simple - just paste a Figma link into the CrabsHQ editor. The app will turn the link into an embed that shows the Figma file name along with an image snapshot of what the file looked like at the moment that you embedded it. When viewing an embed, click on the maximize button to preview the file in CrabsHQ or on the file or artboard name to open it in Figma."
       },
       "configuration": {
-        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "CrabsHQ admins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/CLU1xN0NghWWs6cGzzm2YMotM8A.png",
@@ -123,7 +123,7 @@
         "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Formspree integration on multiple on all spaces you can enable this through organization settings. From here you can specify different Formspree IDs for different spaces.        "
       },
       "configuration": {
-        "content": "Wonderadmins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "CrabsHQ admins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/pUatWqAkCnCDA5WkYaNx0k00Fo0.png",
@@ -149,7 +149,7 @@
         "content": "Automatic tracking in your documentation: Each of your connected CrabsHQ spaces will fetch the Google Analytics tracking script and inject it into your public content.        "
       },
       "configuration": {
-        "content": "Wonderadmins can enable the Google Analytics integration by navigating to organization settings.  The integration can be enabled on single or multiple spaces available publicly.        "
+        "content": "CrabsHQ admins can enable the Google Analytics integration by navigating to organization settings.  The integration can be enabled on single or multiple spaces available publicly.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/4vgn7bvtoXSFilUkbngh5ytjnU.png",
@@ -175,7 +175,7 @@
         "content": "Create an account on Guideflow (it's free), capture your first demo or guide, and make it public! Then, just copy the public link of your interactive demo or guide and past it into your CrabsHQ  documentation! CrabsHQ  will automatically convert the link to an embedded interactive demo.  Magical, isn't it?"
       },
       "configuration": {
-        "content": "Wonderadmins can enable the Guideflow integration by navigating to organization settings. The integration can be enabled on single or multiple spaces available publicly.        "
+        "content": "CrabsHQ admins can enable the Guideflow integration by navigating to organization settings. The integration can be enabled on single or multiple spaces available publicly.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/FWbeZsKePcGOIWqR7lXk82KD0.png",
@@ -406,7 +406,7 @@
         "content": "The CrabsHQ Segment integration empowers your teams by connecting your CrabsHQ public documentation to your Segment pipeline.        "
       },
       "howItWorks": {
-        "content": "Automatic page view events on your public documentation: Each of your connected CrabsHQ spaces will send a [WonderSites] space_view event to the associated Segment source. Track your users' actions across all your company's websites: - Each [WonderSites] space_view includes the anonymousId property.        - If the active user has already visited one of your other company's websites, the anonymousId will match the one already set by Segment. - Otherwise, CrabsHQ  will associate a new anonymousId for the user matching Segment's format. "
+        "content": "Automatic page view events on your public documentation: Each of your connected CrabsHQ spaces will send a [CrabsHQ] space_view event to the associated Segment source. Track your users' actions across all your company's websites: - Each [CrabsHQ] space_view includes the anonymousId property.        - If the active user has already visited one of your other company's websites, the anonymousId will match the one already set by Segment. - Otherwise, CrabsHQ  will associate a new anonymousId for the user matching Segment's format. "
       },
       "configuration": {
         "content": "To install the Segment integration on a single space click on the Integrations button in sub-navigation. Alternatively, you can install it on multiple or all spaces by going into your organization settings. You will need the Segment Write Key to help you identify the data source.        "
