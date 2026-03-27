@@ -58,19 +58,33 @@ const faqs: FAQCategories = {
     },
   ],
   Pricing: [
-    {
-      question: "Does Wondersites offer a free trial?",
-      answer: "Yes, there’s a 7-day free trial to explore all premium features before choosing a subscription plan.",
-    },
-    {
-      question: "What are the pricing plans?",
-      answer: "Wondersites starts at $9/month (billed annually). The plan includes one website, custom domain support, analytics, and AI tools.",
-    },
-    {
-      question: "Are there any additional charges?",
-      answer: "Some advanced features or integrations may carry additional charges, but core functionality is included in your subscription.",
-    }
-  ],
+  {
+    question: "Do I need my own API keys?",
+    answer:
+      "Yes. Crabs HQ follows a bring-your-own-key model, so you connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers.",
+  },
+  {
+    question: "What is the difference between Solo, Cloud, and Enterprise?",
+    answer:
+      "Solo is a one-time lifetime deal for individual founders using their own API keys. Cloud is our hosted subscription where we manage the infrastructure for you. Enterprise is a private self-hosted deployment for companies that want full control over infrastructure, security, and branding.",
+  },
+  {
+    question: "Does CrabsHQ Cloud include hosting?",
+    answer:
+      "Yes. With CrabsHQ Cloud, we host and manage the workspace, cloud computer, and runtime so your team can focus on using workflows instead of operating infrastructure.",
+  },
+  {
+    question: "Can I self-host Crabs HQ for my company?",
+    answer:
+      "Yes. Enterprise customers can deploy Crabs HQ on their own infrastructure with private networking, internal integrations, and custom security requirements.",
+  },
+  {
+    question: "Can I upgrade later from the lifetime deal?",
+    answer:
+      "Yes. The lifetime deal is designed for solo founders to get started quickly. As your needs grow, you can move to Cloud for hosted workflows or Enterprise for self-hosted deployment.",
+  },
+],
+  
   Technical: [
     {
       question: "Do I need to host my site separately?",
