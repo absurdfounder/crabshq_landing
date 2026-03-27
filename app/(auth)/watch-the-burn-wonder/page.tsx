@@ -14,7 +14,7 @@ import BlogType from "@/components/BlogType";
 import Testimonials from "@/components/testimonials";
 import Header from "@/components/ui/header";
 import TokenPage from "@/components/TokenPage";
-import WondersitesDashboard from "@/components/watchburn";
+import CrabsHQDashboard from "@/components/watchburn";
 
 
 import Aos from "aos";
@@ -114,7 +114,7 @@ export default function PageDetail() {
                                 </div>
                             </div>
 
-                            <WondersitesDashboard />
+                            <CrabsHQDashboard />
 
 
 

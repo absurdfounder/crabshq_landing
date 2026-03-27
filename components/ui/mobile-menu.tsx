@@ -145,7 +145,7 @@ export default function MobileMenu() {
             <nav className="p-4 space-y-1">
               {/* Affiliate */}
               <Link
-                href="https://wondersites.lemonsqueezy.com/affiliates"
+                href="https://crabshq.lemonsqueezy.com/affiliates"
                 onClick={handleClose}
                 className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
               >

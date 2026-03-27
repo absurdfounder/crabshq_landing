@@ -99,7 +99,7 @@ export default function TabletMenu() {
         >
           <ul className="px-5 py-4 space-y-4">
             <li>
-              <Link href="https://wondersites.lemonsqueezy.com/affiliates" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
+              <Link href="https://crabshq.lemonsqueezy.com/affiliates" className="font-medium text-slate-600 hover:text-slate-900 px-5 py-3 flex items-center transition duration-150 ease-in-out w-full justify-between border-b-2" onClick={() => {
                 setTabletNavOpen(false);
                 setDropdownOpen(false);
               }}>

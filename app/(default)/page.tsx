@@ -50,6 +50,7 @@ import Header from '@/components/ui/header'
 import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
+import FAQ from '@/components/faq'
 
 export default function Home() {
   return (
@@ -122,6 +123,8 @@ export default function Home() {
       <OldWays />
 
       <SimplePricing />
+
+      <FAQ />
 
     </>
   )

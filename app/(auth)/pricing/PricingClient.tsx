@@ -246,8 +246,8 @@ const faqs: Record<string, FAQ[]> = {
     ],
     Features: [
         {
-            question: "What is Wondersites?",
-            answer: "Wondersites is a powerful no-code website builder that turns your Notion pages into beautiful, functional websites-perfect for blogs, documentation, directories, and more.",
+            question: "What is Crabs HQ?",
+            answer: "Crabs HQ is a powerful no-code website builder that turns your Notion pages into beautiful, functional websites-perfect for blogs, documentation, directories, and more.",
         },
         {
             question: "What types of websites can I build?",
@@ -255,35 +255,35 @@ const faqs: Record<string, FAQ[]> = {
         },
         {
             question: "Do I need to know how to code?",
-            answer: "No! Wondersites is built for non-technical users. You can build a complete site using Notion and our tools-no coding required.",
+            answer: "No! Crabs HQ is built for non-technical users. You can build a complete site using Notion and our tools-no coding required.",
         },
         {
             question: "Can I use my own custom domain?",
-            answer: "Yes, Wondersites lets you connect your own custom domain to your site for a branded experience.",
+            answer: "Yes, Crabs HQ lets you connect your own custom domain to your site for a branded experience.",
         },
         {
             question: "Is my content synced with Notion?",
             answer: "Yes. Any changes you make in Notion will be automatically reflected on your live site. It's always up to date.",
         },
         {
-            question: "Does Wondersites support SEO?",
-            answer: "Absolutely. Wondersites offers built-in SEO tools like meta tags, custom URLs, fast loading speeds, and mobile-friendly design.",
+            question: "Does Crabs HQ support SEO?",
+            answer: "Absolutely. Crabs HQ offers built-in SEO tools like meta tags, custom URLs, fast loading speeds, and mobile-friendly design.",
         },
         {
             question: "Can I customize my site's design?",
             answer: "Yes. Choose from pre-built themes, adjust layout settings, or add custom CSS and code to make your site truly yours.",
         },
         {
-            question: "Is Wondersites mobile-friendly?",
-            answer: "Yes. Every Wondersite is fully responsive, meaning it looks great on desktops, tablets, and mobile devices.",
+            question: "Is Crabs HQ mobile-friendly?",
+            answer: "Yes. Every Crabs HQ site is fully responsive, meaning it looks great on desktops, tablets, and mobile devices.",
         },
         {
             question: "Can I track analytics?",
-            answer: "Yes. Wondersites includes built-in privacy-friendly analytics, and you can also connect external tools like Google Analytics.",
+            answer: "Yes. Crabs HQ includes built-in privacy-friendly analytics, and you can also connect external tools like Google Analytics.",
         },
         {
             question: "Is it secure?",
-            answer: "Wondersites follows best practices in security including HTTPS, secure Notion access, and regular data protection protocols.",
+            answer: "Crabs HQ follows best practices in security including HTTPS, secure Notion access, and regular data protection protocols.",
         }
     ]
 };

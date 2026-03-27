@@ -44,7 +44,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
           <tbody>
             {libraryItem.comparison_table.map((item: any, index: number) => {
               const competitorHasFeature = item.feature_value[competitorName] || false;
-              const WonderSitesHasFeature = item.feature_value["WonderSites"] || item.feature_value["Notion"] || false;
+              const crabsHQHasFeature = item.feature_value["CrabsHQ"] || item.feature_value["Notion"] || false;
 
               return (
                 <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
@@ -63,7 +63,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-center border-b border-slate-200 bg-red-50">
-                    {WonderSitesHasFeature ? (
+                    {crabsHQHasFeature ? (
                       <span className="inline-flex items-center justify-center w-8 h-8 bg-red-700 text-white rounded-md">
                         ✓
                       </span>

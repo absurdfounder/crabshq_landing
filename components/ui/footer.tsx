@@ -62,7 +62,7 @@ export default function Footer() {
                   className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://www.linkedin.com/company/wondersites"
+                  href="https://www.linkedin.com/company/crabshq"
                 >
                   <Linkedin className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
                   <span>LinkedIn</span>
@@ -73,7 +73,7 @@ export default function Footer() {
                   className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://www.youtube.com/@wondersites"
+                  href="https://www.youtube.com/@crabshq"
                 >
                   <Youtube className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
                   <span>YouTube</span>
@@ -187,7 +187,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="mailto:support@wondersites.ai"
+                      href="mailto:support@crabshq.com"
                     >
                       <span className="break-words">Contact us</span>
                     </Link>
