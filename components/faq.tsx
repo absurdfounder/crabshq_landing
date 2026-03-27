@@ -50,7 +50,7 @@ const faqs: FAQCategories = {
   {
     question: "What is the difference between Solo, Cloud, and Enterprise?",
     answer:
-      "Solo is a one-time lifetime deal for individual founders using their own API keys. Cloud is our hosted subscription where we manage the infrastructure for you. Enterprise is a private self-hosted deployment for companies that want full control over infrastructure, security, and branding.",
+      "Solo is a one-time lifetime deal for individual founders. You self-host on your own machine using your own API keys. Cloud is our hosted subscription where we manage the infrastructure for your team. Enterprise is a private self-hosted deployment for companies that want full control over infrastructure, security, and branding. All plans include Mac, Windows, iOS, and Android apps.",
   },
   {
     question: "Does CrabsHQ Cloud include hosting?",
