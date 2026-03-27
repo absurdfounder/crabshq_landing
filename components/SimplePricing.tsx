@@ -48,11 +48,6 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   );
 };
 
-type Feature = {
-  text: string;
-  included: boolean;
-};
-
 type Plan = {
   name: string;
   eyebrow?: string;
@@ -62,13 +57,26 @@ type Plan = {
   description: string;
   badge?: string | null;
   note?: string;
-  features: Feature[];
+  features: string[];
   cta: {
     text: string;
     href: string;
   };
   highlight?: boolean;
 };
+
+const sharedFeatures = [
+  'Unlimited agents',
+  'Unlimited chats',
+  'Unlimited devices',
+  'All AI models (OpenAI, Claude, Gemini, etc.)',
+  'Supports Claude Code & Codex subscriptions',
+  'Adaptive memory',
+  'Data encryption',
+  '3,000+ OpenClaw skills marketplace',
+  'Browser automation and web control',
+  'Mac, Windows, iOS, and Android apps',
+];
 
 const plans: Plan[] = [
   {
@@ -81,22 +89,9 @@ const plans: Plan[] = [
     badge: 'Lifetime Access',
     note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
     features: [
-      { text: 'Lifetime access for 1 user', included: true },
-      { text: 'Self-hosted on your own machine', included: true },
-      { text: 'Unlimited agents', included: true },
-      { text: 'Unlimited chats', included: true },
-      { text: 'Unlimited devices', included: true },
-      { text: 'All AI models (OpenAI, Claude, Gemini, etc.)', included: true },
-      { text: 'Supports Claude Code & Codex subscriptions', included: true },
-      { text: 'Adaptive memory', included: true },
-      { text: 'Data encryption', included: true },
-      { text: 'Crabs workflows and agents', included: true },
-      { text: '3,000+ OpenClaw skills marketplace', included: true },
-      { text: 'Browser automation and web control', included: true },
-      { text: 'Mac, Windows, iOS, and Android apps', included: true },
-      { text: 'Team seats or collaboration', included: false },
-      { text: 'Cloud-hosted compute', included: false },
-      { text: 'Enterprise support', included: false },
+      'Lifetime access for 1 user',
+      'Self-hosted on your own machine',
+      'Crabs workflows and agents',
     ],
     cta: {
       text: 'Get lifetime deal',
@@ -115,29 +110,19 @@ const plans: Plan[] = [
     badge: 'Most Popular',
     note: '5 seats included. Additional seats $8/mo each. Bring your own API keys for model usage.',
     features: [
-      { text: '5 team seats included', included: true },
-      { text: 'Additional seats at $8/user/month', included: true },
-      { text: 'Unlimited agents', included: true },
-      { text: 'Unlimited chats', included: true },
-      { text: 'Unlimited devices', included: true },
-      { text: 'All AI models (OpenAI, Claude, Gemini, etc.)', included: true },
-      { text: 'Supports Claude Code & Codex subscriptions', included: true },
-      { text: 'Adaptive memory', included: true },
-      { text: 'Data encryption', included: true },
-      { text: 'Dedicated hosted Crabs workspace', included: true },
-      { text: 'Long-running workflows and persistent agents', included: true },
-      { text: 'Persistent cloud computer', included: true },
-      { text: 'OpenClaw-powered task execution', included: true },
-      { text: '3,000+ OpenClaw skills marketplace', included: true },
-      { text: 'Multi-agent orchestration', included: true },
-      { text: 'GitHub integration (commits, PRs, reviews)', included: true },
-      { text: 'Browser automation and web control', included: true },
-      { text: 'Email automation', included: true },
-      { text: 'Team collaboration and shared memory', included: true },
-      { text: 'Mac, Windows, iOS, and Android apps', included: true },
-      { text: 'Deploy apps, automations, and internal tools', included: true },
-      { text: 'Admin controls', included: true },
-      { text: 'Priority email support', included: true },
+      '5 team seats included',
+      'Additional seats at $8/user/month',
+      'Dedicated hosted workspace',
+      'Long-running workflows and persistent agents',
+      'Persistent cloud computer',
+      'OpenClaw-powered task execution',
+      'Multi-agent orchestration',
+      'GitHub integration (commits, PRs, reviews)',
+      'Email automation',
+      'Team collaboration and shared memory',
+      'Deploy apps, automations, and internal tools',
+      'Admin controls',
+      'Priority email support',
     ],
     cta: {
       text: 'Start with cloud',
@@ -156,25 +141,17 @@ const plans: Plan[] = [
     badge: 'Self-host',
     note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
     features: [
-      { text: 'Everything in Cloud, plus:', included: true },
-      { text: 'Unlimited agents', included: true },
-      { text: 'Unlimited chats', included: true },
-      { text: 'Unlimited devices', included: true },
-      { text: 'All AI models (OpenAI, Claude, Gemini, etc.)', included: true },
-      { text: 'Supports Claude Code & Codex subscriptions', included: true },
-      { text: 'Adaptive memory', included: true },
-      { text: 'Data encryption', included: true },
-      { text: 'Self-hosted deployment on your infra', included: true },
-      { text: 'Private VPC / on-prem options', included: true },
-      { text: 'SSO and enterprise auth', included: true },
-      { text: 'Custom seat volume pricing', included: true },
-      { text: 'White-label and custom domain', included: true },
-      { text: 'Mac, Windows, iOS, and Android apps', included: true },
-      { text: 'Dedicated onboarding and migration', included: true },
-      { text: 'Security reviews and custom agreements', included: true },
-      { text: 'Internal integrations and custom workflows', included: true },
-      { text: 'Shared company memory and knowledge', included: true },
-      { text: 'Priority support with SLA', included: true },
+      'Everything in Cloud, plus:',
+      'Self-hosted deployment on your infra',
+      'Private VPC / on-prem options',
+      'SSO and enterprise auth',
+      'Custom seat volume pricing',
+      'White-label and custom domain',
+      'Dedicated onboarding and migration',
+      'Security reviews and custom agreements',
+      'Internal integrations and custom workflows',
+      'Shared company memory and knowledge',
+      'Priority support with SLA',
     ],
     cta: {
       text: 'Talk to sales',
@@ -272,15 +249,9 @@ export default function SimplePricing() {
 
               <ul className="mt-8 space-y-3">
                 {plan.features.map((feature) => (
-                  <li key={feature.text} className="flex items-start gap-3">
-                    {feature.included ? (
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                    ) : (
-                      <X className="mt-0.5 h-4 w-4 shrink-0 text-slate-300" />
-                    )}
-                    <span className={`text-sm ${feature.included ? 'text-slate-700' : 'text-slate-400'}`}>
-                      {feature.text}
-                    </span>
+                  <li key={feature} className="flex items-start gap-3">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                    <span className="text-sm text-slate-700">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -288,7 +259,28 @@ export default function SimplePricing() {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl text-center text-sm text-slate-400">
+        {/* Shared features strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="mx-auto mt-12 max-w-5xl rounded-2xl border border-slate-200 bg-slate-50 px-6 py-8 md:px-10"
+        >
+          <p className="text-center text-sm font-semibold text-slate-900">
+            Included in every plan
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3 lg:grid-cols-5">
+            {sharedFeatures.map((feature) => (
+              <div key={feature} className="flex items-start gap-2">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                <span className="text-sm text-slate-600">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <div className="mx-auto mt-8 max-w-3xl text-center text-sm text-slate-400">
           Model usage is not included. You connect your own API keys and pay
           OpenAI, Anthropic, Google, or other providers directly for consumption.
         </div>
