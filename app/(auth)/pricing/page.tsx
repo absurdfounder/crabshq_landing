@@ -2,9 +2,7 @@
 
 import React from "react";
 import { Metadata } from "next";
-import Header from "@/components/ui/header";
-import SimplePricing from "@/components/SimplePricing";
-import FAQ from "@/components/faq";
+import PricingClient from "./PricingClient";
 
 export const metadata: Metadata = {
   title: "Crabs HQ Pricing – Solo Lifetime Deal, Cloud, and Enterprise",
@@ -35,13 +33,5 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  return (
-    <div className="bg-white min-h-screen">
-      <Header />
-      <div className="pt-16">
-        <SimplePricing />
-        <FAQ />
-      </div>
-    </div>
-  );
+  return <PricingClient />;
 }
