@@ -15,46 +15,30 @@ type FAQCategories = {
 }
 
 const faqs: FAQCategories = {
-  Website: [
+  General: [
     {
-      question: "What is Wondersites?",
-      answer: "Wondersites is an all-in-one, no-code website builder that transforms your Notion pages into fully functional, professional websites. It supports blogs, help centers, directories, landing pages, and more, all without writing a single line of code.",
+      question: "What is Crabs HQ?",
+      answer: "Crabs HQ is an AI workspace platform powered by OpenClaw. It lets you run AI agents, workflows, and automations using your own API keys from providers like OpenAI, Anthropic, and Google.",
     },
     {
-      question: "Can I use my own domain with Wondersites?",
-      answer: "Yes. Wondersites allows you to connect a custom domain to your website, making your site look more professional and aligned with your brand.",
+      question: "How is Crabs HQ different from ChatGPT or Claude?",
+      answer: "ChatGPT and Claude are single-model chat interfaces. Crabs HQ is a workspace where you can run multiple AI agents, build persistent workflows, connect to tools like GitHub and Gmail, and deploy automations that run 24/7.",
     },
     {
-      question: "What types of websites can I build with Wondersites?",
-      answer: "You can build a variety of websites including blogs, directories, help centers, landing pages, and marketplaces using Notion as your CMS.",
+      question: "Do I need technical knowledge to use Crabs HQ?",
+      answer: "No. Crabs HQ is designed for founders and teams who want to use AI without managing infrastructure. The cloud plan handles everything for you. Power users can self-host for full control.",
     },
     {
-      question: "Is SEO optimization available?",
-      answer: "Yes, Wondersites includes built-in SEO tools to ensure your website is optimized for search engines including fast loading speeds and metadata customization.",
+      question: "What AI models does Crabs HQ support?",
+      answer: "Crabs HQ works with OpenAI (GPT-4, GPT-4o), Anthropic (Claude), Google (Gemini), and other providers. You bring your own API keys and choose which models to use.",
     },
     {
-      question: "How does Wondersites handle content updates from Notion?",
-      answer: "Your site syncs with Notion, meaning any updates you make in Notion will reflect on your live website in real-time.",
+      question: "Can I use Crabs HQ for my team?",
+      answer: "Yes. The Cloud plan includes 5 team seats with shared workspaces, collaborative memory, and admin controls. Enterprise customers can add unlimited seats with volume pricing.",
     },
     {
-      question: "Can I add custom code?",
-      answer: "Yes. For users who want advanced control, Wondersites supports adding custom code to enhance functionality or design.",
-    },
-    {
-      question: "Is Wondersites suitable for non-technical users?",
-      answer: "Absolutely. Wondersites is designed to be user-friendly and doesn't require any technical knowledge. It's perfect for creators, startups, and businesses.",
-    },
-    {
-      question: "Can I track website analytics?",
-      answer: "Yes. Wondersites comes with privacy-focused analytics, letting you monitor visitor activity without compromising data privacy.",
-    },
-    {
-      question: "Can I build a help center or documentation site?",
-      answer: "Yes. You can build a professional help center similar to HelpKit.so, powered entirely by Notion pages and customizable through Wondersites.",
-    },
-    {
-      question: "Can I create a membership or subscription-based website?",
-      answer: "Yes, Wondersites supports gated content and user-level access, enabling you to build membership-based sites with ease.",
+      question: "What is OpenClaw?",
+      answer: "OpenClaw is the AI execution engine behind Crabs HQ. It powers task execution, agent orchestration, and persistent workflows across your workspace.",
     },
   ],
   Pricing: [
@@ -87,24 +71,24 @@ const faqs: FAQCategories = {
   
   Technical: [
     {
-      question: "Do I need to host my site separately?",
-      answer: "No. Hosting is managed entirely by Wondersites. You don’t need to worry about servers or technical setup.",
+      question: "Do I need to manage any infrastructure?",
+      answer: "No. With CrabsHQ Cloud, we handle all hosting, compute, and runtime. You just connect your API keys and start building. Enterprise customers can self-host on their own infrastructure if needed.",
     },
     {
-      question: "Is Wondersites optimized for speed?",
-      answer: "Yes. All Wondersites are optimized for performance and speed to ensure a seamless browsing experience and better SEO.",
+      question: "Is my data secure?",
+      answer: "Yes. Crabs HQ follows security best practices including encrypted connections, isolated workspaces, and no storage of your API keys on our servers. Enterprise customers get additional controls like SSO and private VPC deployment.",
     },
     {
-      question: "Can I integrate third-party tools?",
-      answer: "Yes. You can integrate various third-party services like email tools, analytics, and chat widgets to extend your site's functionality.",
+      question: "Can I integrate third-party tools and APIs?",
+      answer: "Yes. Crabs HQ supports integrations with GitHub, Gmail, browsers, and external APIs. Enterprise customers can build custom integrations for internal tools and workflows.",
     },
     {
-      question: "Is Wondersites secure?",
-      answer: "Yes. Wondersites follows best practices for web security, including HTTPS and data protection protocols.",
+      question: "What happens if I hit usage limits?",
+      answer: "Crabs HQ does not limit your AI model usage since you use your own API keys. Cloud compute and workspace limits depend on your plan, and you can upgrade anytime.",
     },
     {
-      question: "Does Wondersites support mobile optimization?",
-      answer: "Yes. Every site built with Wondersites is fully responsive and looks great on all devices.",
+      question: "Can I export my data?",
+      answer: "Yes. Your workflows, agents, and workspace data can be exported. Enterprise customers on self-hosted deployments have full ownership and control of all data.",
     }
   ]
 };
@@ -147,7 +131,7 @@ const FAQAccordion: React.FC<FAQAccordionProps> = ({ question, answer }) => {
 };
 
 const FAQ: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("Website");
+  const [activeTab, setActiveTab] = useState<string>("General");
 
   return (
     <div className="mx-auto mt-10">
