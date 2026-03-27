@@ -228,12 +228,16 @@ export default function SimplePricing() {
           </div>
 
           <h2 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-            Everything you need. Every plan.
+            <span className="inline-flex items-center justify-center gap-2 flex-wrap">
+              <span>Deploy</span>
+              <img src="/favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-md align-middle" />
+              <span>Crabs at your company</span>
+            </span>
           </h2>
 
           <p className="mt-4 text-base text-slate-500 md:text-lg">
-            Every Crabs HQ plan ships with the full platform. No feature gates, no limits on usage.
-            Bring your own API keys.
+            Deploy AI employees that get real work done.
+            CrabsHQ gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
           </p>
         </div>
 
