@@ -3,7 +3,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Check, X } from 'lucide-react';
+import {
+  Check,
+  Bot,
+  MessageSquare,
+  Monitor,
+  Sparkles,
+  Terminal,
+  Brain,
+  ShieldCheck,
+  Puzzle,
+  Globe,
+  Smartphone,
+  Eye,
+  History,
+} from 'lucide-react';
 
 interface FlippingButtonLinkProps {
   href: string;
@@ -48,6 +62,21 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   );
 };
 
+const coreFeatures = [
+  { icon: Bot, label: 'Unlimited Agents' },
+  { icon: MessageSquare, label: 'Unlimited Chats' },
+  { icon: Monitor, label: 'Unlimited Devices' },
+  { icon: Sparkles, label: 'All AI Models' },
+  { icon: Terminal, label: 'Claude Code & Codex' },
+  { icon: Brain, label: 'Adaptive Memory' },
+  { icon: Eye, label: 'Context Awareness' },
+  { icon: History, label: 'System Memory' },
+  { icon: ShieldCheck, label: 'Data Encryption' },
+  { icon: Puzzle, label: '3,000+ OpenClaw Skills' },
+  { icon: Globe, label: 'Browser Automation' },
+  { icon: Smartphone, label: 'Mac, Windows, iOS, Android' },
+];
+
 type Plan = {
   name: string;
   eyebrow?: string;
@@ -64,19 +93,6 @@ type Plan = {
   };
   highlight?: boolean;
 };
-
-const sharedFeatures = [
-  'Unlimited agents',
-  'Unlimited chats',
-  'Unlimited devices',
-  'All AI models (OpenAI, Claude, Gemini, etc.)',
-  'Supports Claude Code & Codex subscriptions',
-  'Adaptive memory',
-  'Data encryption',
-  '3,000+ OpenClaw skills marketplace',
-  'Browser automation and web control',
-  'Mac, Windows, iOS, and Android apps',
-];
 
 const plans: Plan[] = [
   {
@@ -165,22 +181,55 @@ export default function SimplePricing() {
   return (
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
+        {/* Core features hero */}
+        <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600">
             Pricing
           </div>
 
           <h2 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-            Choose how you want to run Crabs HQ
+            Everything you need. Every plan.
           </h2>
 
           <p className="mt-4 text-base text-slate-500 md:text-lg">
+            Every Crabs HQ plan ships with the full platform. No feature gates, no limits on usage.
+          </p>
+        </div>
+
+        {/* Core features grid - the golden features */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          viewport={{ once: true }}
+          className="mx-auto mt-10 max-w-4xl"
+        >
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+            {coreFeatures.map((feature) => (
+              <div
+                key={feature.label}
+                className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50/60 px-3 py-5 text-center transition-colors hover:border-slate-200 hover:bg-slate-50"
+              >
+                <feature.icon className="h-6 w-6 text-red-600" />
+                <span className="text-sm font-medium text-slate-800">{feature.label}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Plan selection heading */}
+        <div className="mx-auto mt-16 max-w-3xl text-center">
+          <h3 className="text-xl font-semibold text-slate-900 md:text-2xl">
+            Choose how you want to run it
+          </h3>
+          <p className="mt-2 text-sm text-slate-500">
             Start with a lifetime deal, move to hosted cloud for your team,
             or self-host for enterprise control. Bring your own API keys.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        {/* Plan cards */}
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => (
             <motion.div
               key={plan.name}
@@ -259,28 +308,7 @@ export default function SimplePricing() {
           ))}
         </div>
 
-        {/* Shared features strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="mx-auto mt-12 max-w-5xl rounded-2xl border border-slate-200 bg-slate-50 px-6 py-8 md:px-10"
-        >
-          <p className="text-center text-sm font-semibold text-slate-900">
-            Included in every plan
-          </p>
-          <div className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3 lg:grid-cols-5">
-            {sharedFeatures.map((feature) => (
-              <div key={feature} className="flex items-start gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                <span className="text-sm text-slate-600">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <div className="mx-auto mt-8 max-w-3xl text-center text-sm text-slate-400">
+        <div className="mx-auto mt-10 max-w-3xl text-center text-sm text-slate-400">
           Model usage is not included. You connect your own API keys and pay
           OpenAI, Anthropic, Google, or other providers directly for consumption.
         </div>
