@@ -54,11 +54,14 @@ const NotionIcon = () => (
 
 const Features = React.memo(() => {
   const features = [
-    { 
-      name: "Crabs have their own computer", 
+    {
+      name: "Not a chatbot. Agents have jobs, not chat windows.",
     },
-    { 
-      name: "It writes code, deploys apps, and connects to 3,000 tools.", 
+    {
+      name: "Not a prompt tool. This is an AI workforce with org charts, memory, and goals.",
+    },
+    {
+      name: "You're the board. Agents can't act without your approval.",
     }
   ];
 
@@ -130,17 +133,13 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
-                  <div className="block opacity-70">
-                    <span className="reveal reveal__hello-1">Hello,</span>{" "}
-                    <span className="reveal reveal__hello-2">We are</span>{" "}
-                    <span className="reveal reveal__hello-3">Crabs.</span>
-                  </div>
-                  <span className="block reveal reveal__usp mt-1 sm:mt-2">
-                    AI workforce set on a mission, <span className='opacity-70'>powered by <span style={{ color: '#bc0010' }}>OpenClaw</span></span>.
+                  <span className="block reveal reveal__usp">
+                    Hire AI employees. Set goals.{' '}
+                    <span className="text-slate-900">Your company runs itself.</span>
                   </span>
                 </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that automate tasks, write code, connect to 3,000 tools, and get things done — not just answer questions.</p>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span style={{ color: '#bc0010' }} className="font-medium">OpenClaw</span>.</p>
 
               </div>
 
