@@ -412,6 +412,216 @@ const OpenClawVisual = () => (
   </div>
 );
 
+/* ─── Visual 7: Ticket System — traced conversations ─── */
+const TicketVisual = () => (
+  <div className="h-full flex flex-col bg-white">
+    <div className="p-5 space-y-0">
+      {/* Ticket header */}
+      <div className="rounded-lg border border-slate-200 bg-white p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="text-sm font-mono text-slate-400">#1042</span>
+          <span className="font-semibold text-sm text-slate-900">Deploy updated pricing page</span>
+        </div>
+        <div className="flex gap-2">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">In Progress</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 font-medium flex items-center gap-1">
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-7H1m22 0h-4m-1.3-5.7l-2.8 2.8m-5.8 5.8l-2.8 2.8m11.4 0l-2.8-2.8M6.3 6.3L3.5 3.5"/></svg>
+            CTO
+          </span>
+        </div>
+      </div>
+
+      {/* Conversation thread */}
+      <div className="space-y-3 mt-4">
+        <div className="flex items-start gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <div className="flex items-baseline gap-2"><span className="font-semibold text-[12px] text-slate-800">You</span><span className="text-[10px] text-slate-400">2 min ago</span></div>
+            <p className="text-[12px] text-slate-600 mt-0.5">Deploy the updated pricing page to production. Run tests first.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-7H1m22 0h-4"/></svg>
+          </div>
+          <div>
+            <div className="flex items-baseline gap-2"><span className="font-semibold text-[12px] text-slate-800">CTO Agent</span><span className="text-[10px] text-slate-400">1 min ago</span></div>
+            <p className="text-[12px] text-slate-600 mt-0.5">Running test suite and staging deployment now. I&apos;ll promote to production once smoke tests pass.</p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <div className="flex items-baseline gap-2"><span className="font-semibold text-[12px] text-slate-800">You</span><span className="text-[10px] text-slate-400">just now</span></div>
+            <p className="text-[12px] text-slate-600 mt-0.5">Approved. Go ahead.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Trace */}
+      <div className="mt-5 border-t border-slate-100 pt-4">
+        <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.12em] text-slate-400 mb-3">Trace</p>
+        <div className="space-y-2">
+          {[
+            { fn: 'run_tests()', status: 'passed', color: 'text-emerald-500' },
+            { fn: 'deploy_to_staging()', status: 'done', color: 'text-emerald-500' },
+            { fn: 'smoke_test()', status: 'passed', color: 'text-emerald-500' },
+            { fn: 'deploy_to_production()', status: 'running', color: 'text-amber-500' },
+          ].map((t) => (
+            <div key={t.fn} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${t.color === 'text-amber-500' ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
+                <span className="text-[12px] font-mono text-slate-700">{t.fn}</span>
+              </div>
+              <span className={`text-[11px] font-medium ${t.color}`}>{t.status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+/* ─── Visual 8: Goal Alignment — nested goal cascade ─── */
+const GoalVisual = () => (
+  <div className="h-full flex flex-col justify-center p-6 sm:p-8">
+    <div className="rounded-xl bg-slate-50 border border-slate-200 p-6">
+      <div className="space-y-0">
+        {[
+          { label: 'COMPANY MISSION', text: 'Build the #1 AI workforce platform', indent: 0, opacity: 'border-slate-300' },
+          { label: 'PROJECT GOAL', text: 'Ship team collaboration features', indent: 1, opacity: 'border-slate-300' },
+          { label: 'AGENT GOAL', text: 'Implement real-time sync engine', indent: 2, opacity: 'border-slate-300' },
+          { label: 'TASK', text: 'Write WebSocket handler for live updates', indent: 3, opacity: 'border-slate-400' },
+        ].map((g, i) => (
+          <div key={i} className="relative" style={{ paddingLeft: `${g.indent * 24}px` }}>
+            {i > 0 && (
+              <div className="absolute top-0 h-full" style={{ left: `${(g.indent - 1) * 24 + 12}px` }}>
+                <div className="w-px h-4 bg-slate-200" />
+              </div>
+            )}
+            <div className={`rounded-lg border ${g.opacity} bg-white p-4 mb-3`}>
+              <div className="flex items-center gap-2">
+                <div className={`w-3 h-3 rounded-full border-2 ${i === 3 ? 'border-slate-500 bg-slate-500' : i === 2 ? 'border-slate-400' : i === 1 ? 'border-slate-300 bg-slate-50' : 'border-slate-300'}`} />
+                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-slate-400">{g.label}</span>
+              </div>
+              <p className="text-[13px] text-slate-800 font-medium mt-1.5">{g.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="mt-6 space-y-2">
+      <p className="text-[13px] text-slate-500 leading-relaxed">
+        Every piece of work is given context that traces back to the company mission. Your agents will know <em>what</em> to do and <em>why</em>.
+      </p>
+      <p className="text-[13px] text-slate-500 leading-relaxed">
+        OpenClaw <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">SKILLS.md</code> means your agents know how to discover the context they need.
+      </p>
+    </div>
+  </div>
+);
+
+/* ─── Visual 9: Bring Your Own Agent — org chart with mixed providers ─── */
+const BYOAVisual = () => {
+  const agents = [
+    { name: 'CEO', role: 'Claude', icon: '🏠', active: false },
+  ];
+  const managers = [
+    { name: 'CMO', provider: 'OpenClaw', active: true },
+    { name: 'CTO', provider: 'Cursor', active: false },
+    { name: 'COO', provider: 'Claude', active: false },
+  ];
+  const engineers = [
+    { name: 'CodexCoder', role: 'Engineer', provider: 'Codex' },
+    { name: 'ClaudeCoder', role: 'Engineer', provider: 'Claude' },
+  ];
+
+  return (
+    <div className="h-full flex flex-col justify-center p-6 sm:p-8 bg-slate-50/50">
+      <div className="flex flex-col items-center">
+        {/* CEO */}
+        <div className="bg-white rounded-lg border border-slate-200 px-5 py-3 text-center shadow-sm">
+          <p className="font-semibold text-[13px] text-slate-900">CEO</p>
+          <div className="flex items-center justify-center gap-1 mt-1">
+            <div className="w-2 h-2 rounded-full bg-amber-400" />
+            <span className="text-[11px] text-slate-400">Claude</span>
+          </div>
+        </div>
+
+        {/* Connector */}
+        <div className="relative w-full max-w-[400px] h-8">
+          <div className="absolute left-1/2 top-0 w-px h-3 bg-slate-300 -translate-x-1/2" />
+          <div className="absolute top-3 left-[16%] right-[16%] h-px bg-slate-300" />
+          <div className="absolute top-3 left-[16%] w-px h-5 bg-slate-300" />
+          <div className="absolute top-3 left-1/2 w-px h-5 bg-slate-300 -translate-x-1/2" />
+          <div className="absolute top-3 right-[16%] w-px h-5 bg-slate-300" />
+        </div>
+
+        {/* Managers */}
+        <div className="flex gap-3 sm:gap-5">
+          {managers.map((m, i) => (
+            <div key={i} className={`rounded-lg border px-4 py-3 text-center shadow-sm ${m.active ? 'border-emerald-300 bg-white ring-1 ring-emerald-100' : 'border-slate-200 bg-white'}`}>
+              {m.active && <span className="text-[9px] font-medium text-emerald-600 uppercase tracking-wider">Active</span>}
+              <p className="font-semibold text-[12px] text-slate-900">{m.name}</p>
+              <div className="flex items-center justify-center gap-1 mt-0.5">
+                <div className={`w-1.5 h-1.5 rounded-full ${m.active ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                <span className="text-[10px] text-slate-400">{m.provider}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTO sub-tree connector */}
+        <div className="relative w-full max-w-[200px] h-6">
+          <div className="absolute left-1/2 top-0 w-px h-2 bg-slate-300 -translate-x-1/2" />
+          <div className="absolute top-2 left-[25%] right-[25%] h-px bg-slate-300" />
+          <div className="absolute top-2 left-[25%] w-px h-4 bg-slate-300" />
+          <div className="absolute top-2 right-[25%] w-px h-4 bg-slate-300" />
+        </div>
+
+        {/* Engineers */}
+        <div className="flex gap-3">
+          {engineers.map((e, i) => (
+            <div key={i} className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-center shadow-sm">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <span className="text-[10px] text-slate-400">&lt;&gt;</span>
+              </div>
+              <p className="font-semibold text-[11px] text-slate-900">{e.name}</p>
+              <p className="text-[10px] text-slate-400">{e.role}</p>
+              <div className="flex items-center justify-center gap-1 mt-0.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                <span className="text-[10px] text-slate-400">{e.provider}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Works with any agent */}
+      <div className="mt-8">
+        <p className="text-[11px] text-slate-400 italic mb-3">Works with any agent</p>
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+          {['OpenClaw', 'Claude', 'Codex', 'Cursor', 'Bash', 'HTTP'].map((a) => (
+            <div key={a} className="flex flex-col items-center gap-1">
+              <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center">
+                <span className="text-[10px] text-slate-400">{a[0]}</span>
+              </div>
+              <span className="text-[9px] text-slate-400">{a}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─── Card visuals ─── */
 const cardVisuals = [
   <OrgVisual key="org" />,
@@ -420,6 +630,9 @@ const cardVisuals = [
   <MemoryVisual key="mem" />,
   <CollabVisual key="col" />,
   <OpenClawVisual key="oc" />,
+  <TicketVisual key="ticket" />,
+  <GoalVisual key="goal" />,
+  <BYOAVisual key="byoa" />,
 ];
 
 /* ─── Main ─── */
@@ -434,6 +647,9 @@ export default function OldWays() {
     { tag: "INFINITE MEMORY", title: "Persistent memory across", highlight: "tasks, projects, and time.", description: "AI employees remember past work, decisions, preferences, and project context. Every task builds on previous knowledge, so work gets faster and more accurate over time." },
     { tag: "WEEKS-LONG RUNS", title: "Runs for weeks without", highlight: "losing context.", description: "AI employees don't forget after a session ends. They maintain full context across weeks-long projects, coordinating deadlines, tracking progress, and keeping your team aligned from start to finish." },
     { tag: "OPENCLAW RUNTIME", title: "Powered by OpenClaw", highlight: "private server for each org.", description: "Crabs HQ deploys OpenClaw backend on a private server, keeping your company data siloed and safe. Also giving you full untampered access to OpenClaw with a beautiful UI." },
+    { tag: "TICKET SYSTEM", title: "Every conversation traced.", highlight: "Every decision explained.", description: "You communicate with agents through tickets. Every instruction, every response, every tool call and decision is recorded with full tracing. Nothing happens in the dark." },
+    { tag: "GOAL ALIGNMENT", title: "Keep your agents aligned", highlight: "on the goal.", description: "Every piece of work is given context that traces back to the company mission. Your agents will know what to do and why. Goals cascade from company → project → agent → task." },
+    { tag: "BRING YOUR OWN AGENT", title: "Bring your own bot.", highlight: "", description: "Your OpenClaw, Claude, Cursor, and Codex — organized under one org structure, pointed at one goal. If it can receive a heartbeat, it's hired." },
   ];
 
   useEffect(() => {
