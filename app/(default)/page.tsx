@@ -50,6 +50,7 @@ import Header from '@/components/ui/header'
 import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
+import Positioning from '@/components/Positioning'
 import FAQ from '@/components/faq'
 
 export default function Home() {
@@ -122,18 +123,7 @@ export default function Home() {
 
       <OldWays />
 
-      {/* Positioning block */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <p className="text-xs font-mono font-bold uppercase tracking-[0.15em] text-red-600">What Crabs HQ is not</p>
-          <div className="mt-6 space-y-4 text-lg sm:text-xl text-slate-400 leading-relaxed font-funneldisplay">
-            <p><span className="text-slate-900 font-semibold">Not a chatbot.</span> Agents have jobs, not chat windows.</p>
-            <p><span className="text-slate-900 font-semibold">Not a prompt tool.</span> This is a company of AI employees with org charts, goals, and budgets.</p>
-            <p><span className="text-slate-900 font-semibold">Not a single-agent toy.</span> Deploy teams. Coordinate work. Ship real output.</p>
-          </div>
-          <p className="mt-8 text-sm text-slate-500">Autonomy is a privilege you grant, not a default. You stay in control.</p>
-        </div>
-      </section>
+      <Positioning />
 
       <SimplePricing />
 
