@@ -51,6 +51,7 @@ import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
 import Positioning from '@/components/Positioning'
+import MultiCompany from '@/components/MultiCompany'
 import FAQ from '@/components/faq'
 
 export default function Home() {
@@ -124,6 +125,8 @@ export default function Home() {
       <OldWays />
 
       <Positioning />
+
+      <MultiCompany />
 
       <SimplePricing />
 
