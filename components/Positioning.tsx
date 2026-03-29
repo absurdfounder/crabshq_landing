@@ -118,8 +118,6 @@ const capabilities = [
   { icon: '🧪', label: 'RL Training', detail: 'Agents learn and improve through reinforcement learning loops' },
   { icon: '🏠', label: 'Home Assistant', detail: 'Control smart home devices — lights, locks, thermostats, and more' },
 ];
-  },
-];
 
 const UnderTheHood = () => (
   <section className="bg-slate-50">
