@@ -100,6 +100,27 @@ const specials = [
   },
 ];
 
+const capabilities = [
+  { icon: '🌐', label: 'Browser Automation', detail: 'Navigate, click, type, scroll — full browser control' },
+  { icon: '🔍', label: 'Web Search & Scraping', detail: 'Search the web and extract structured data from any page' },
+  { icon: '💻', label: 'Terminal & Processes', detail: 'Run shell commands, manage processes, execute scripts' },
+  { icon: '📁', label: 'File Operations', detail: 'Read, write, patch, and search across your entire filesystem' },
+  { icon: '⚡', label: 'Code Execution', detail: 'Run code in any language — Python, Node.js, Bash, and more' },
+  { icon: '👁️', label: 'Vision & Image Analysis', detail: 'Agents can see — analyze screenshots, images, and visual data' },
+  { icon: '🎨', label: 'Image Generation', detail: 'Create images, diagrams, and visual assets on demand' },
+  { icon: '🔊', label: 'Text-to-Speech', detail: 'Generate natural-sounding speech from any text' },
+  { icon: '🧠', label: 'Mixture of Agents', detail: 'Multiple AI models collaborate on the same task for better results' },
+  { icon: '👥', label: 'Task Delegation', detail: 'Agents delegate sub-tasks to other agents autonomously' },
+  { icon: '⏰', label: 'Cron Jobs', detail: 'Schedule recurring autonomous work — reports, monitoring, updates' },
+  { icon: '💾', label: 'Persistent Memory', detail: 'Agents remember everything across sessions — preferences, context, decisions' },
+  { icon: '🔎', label: 'Session Search', detail: 'Search and reference any past conversation or decision' },
+  { icon: '📋', label: 'Task Planning', detail: 'Agents break complex work into structured, trackable sub-tasks' },
+  { icon: '🧪', label: 'RL Training', detail: 'Agents learn and improve through reinforcement learning loops' },
+  { icon: '🏠', label: 'Home Assistant', detail: 'Control smart home devices — lights, locks, thermostats, and more' },
+];
+  },
+];
+
 const UnderTheHood = () => (
   <section className="bg-slate-50">
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -128,6 +149,36 @@ const UnderTheHood = () => (
             <p className="text-sm text-slate-500 mt-2 leading-relaxed">{s.detail}</p>
           </motion.div>
         ))}
+      </div>
+
+      {/* Agent capabilities */}
+      <div className="mt-16">
+        <div className="mb-8">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Agent Capabilities</span>
+          <h3 className="font-funneldisplay text-xl sm:text-2xl md:text-3xl tracking-tight text-slate-900 mt-3">
+            What your agents can do.
+          </h3>
+          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg">
+            Every agent has access to the full toolset. Not plugins you install — native capabilities that work out of the box.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {capabilities.map((c, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: i * 0.03 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-lg border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all"
+            >
+              <span className="text-lg">{c.icon}</span>
+              <h4 className="text-[13px] font-semibold text-slate-900 mt-2">{c.label}</h4>
+              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{c.detail}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
