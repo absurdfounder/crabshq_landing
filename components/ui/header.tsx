@@ -446,6 +446,10 @@ export default function Header() {
                 </li>
 
                 <li>
+                  <NavLink href="/download" text="Download" />
+                </li>
+
+                <li>
                   <Link
                     href="https://app.crabshq.com"
                     target='_blank'

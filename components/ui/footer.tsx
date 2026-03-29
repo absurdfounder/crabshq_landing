@@ -244,9 +244,17 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="#"
+                      href="https://app.crabshq.com/changelog"
                     >
                       <span className="break-words">Changelog</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
+                      href="/download"
+                    >
+                      <span className="break-words">Download</span>
                     </Link>
                   </li>
                   <li>
@@ -275,7 +283,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="#"
+                      href="https://app.crabshq.com/blog"
                     >
                       <span className="break-words">Blog</span>
                     </Link>
@@ -283,7 +291,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="#"
+                      href="https://app.crabshq.com/changelog"
                     >
                       <span className="break-words">Changelog</span>
                     </Link>
