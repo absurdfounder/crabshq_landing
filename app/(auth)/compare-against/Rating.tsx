@@ -12,7 +12,7 @@ const Rating = () => {
         {/* Items */}
         <div className="max-w-sm mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4 items-start md:max-w-2xl lg:max-w-none mt-8">
           {/* 1st item */}
-          <Link href={"0"} className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
+          <Link href="/" className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
             <div>
               <div>
                 <h3 className="text-3xl sm:text-4xl mb-2 sm:mb-4 text-slate-500 font-bold">86%</h3>
@@ -22,7 +22,7 @@ const Rating = () => {
           </Link>
 
           {/* 2nd item */}
-          <Link href={"0"} className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
+          <Link href="/" className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
             <div>
               <div>
                 <h3 className="text-3xl sm:text-4xl mb-2 sm:mb-4 text-slate-500 font-bold">90%</h3>
@@ -31,7 +31,7 @@ const Rating = () => {
             </div>
           </Link>
           {/* 3rd item */}
-          <Link href={"0"} className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
+          <Link href="/" className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
             <div>
               <div>
                 <h3 className="text-3xl sm:text-4xl mb-2 sm:mb-4 text-slate-500 font-bold">91%</h3>
@@ -40,7 +40,7 @@ const Rating = () => {
             </div>
           </Link>
           {/* 4th item */}
-          <Link href={"0"} className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
+          <Link href="/" className="relative flex flex-col items-center p-4 sm:p-6 bg-white rounded-md h-full shadow-sm hover:shadow-md transition-shadow">
             <div>
               <div>
                 <h3 className="text-3xl sm:text-4xl mb-2 sm:mb-4 text-slate-500 font-bold">86%</h3>

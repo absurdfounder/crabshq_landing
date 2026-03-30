@@ -161,6 +161,15 @@ export default function MobileMenu() {
                 <span className="font-medium">Pricing</span>
               </Link>
 
+              {/* Download */}
+              <Link
+                href="/download"
+                onClick={handleClose}
+                className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                <span className="font-medium">Download</span>
+              </Link>
+
               {/* Build Dropdown */}
               <div>
                 <button
