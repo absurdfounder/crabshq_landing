@@ -38,6 +38,7 @@ import {
   DollarSign,
   Infinity,
   CheckCircle,
+  Building2,
 } from 'lucide-react';
 
 interface FlippingButtonLinkProps {
@@ -106,11 +107,13 @@ const soloFeatures: Feature[] = [
   { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
   { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
   { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
+  { icon: Building2, label: 'License for 1 org', color: 'text-slate-600' },
   { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-emerald-500' },
 ];
 
 // Cloud-only additions - team/collab features
 const cloudFeatures: Feature[] = [
+  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
   { icon: Users, label: '5 team seats included', color: 'text-red-500' },
   { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
@@ -124,6 +127,7 @@ const cloudFeatures: Feature[] = [
 
 // Enterprise-only additions
 const enterpriseFeatures: Feature[] = [
+  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
   { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-indigo-500' },
   { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-blue-500' },
   { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-green-500' },

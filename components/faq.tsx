@@ -90,7 +90,7 @@ const faqs: FAQCategories = {
     },
     {
       question: "What is the difference between Solo, Cloud, and Enterprise?",
-      answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features. Cloud is $99/mo with team seats, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
+      answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features and a license for 1 org. Cloud is $99/mo with team seats, multi-org support, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
     },
     {
       question: "Does CrabsHQ Cloud include hosting?",

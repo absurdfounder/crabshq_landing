@@ -140,6 +140,7 @@ const comparisonCategories: ComparisonCategory[] = [
         iconColor: "text-red-500",
         rows: [
             { feature: "Team seats", solo: { text: "1 user" }, cloud: { text: "5 included", sub: "+$8/seat/mo" }, enterprise: { text: "Custom" } },
+            { feature: "Org licensing", solo: { text: "License for 1 org" }, cloud: { text: "Multi-org support" }, enterprise: { text: "Multi-org support" } },
             { feature: "Invite teammates & assign roles", solo: false, cloud: true, enterprise: true },
             { feature: "Team collaboration & shared memory", solo: false, cloud: true, enterprise: true },
             { feature: "Admin controls & permissions", solo: false, cloud: true, enterprise: true },
@@ -194,7 +195,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features. Cloud is $99/mo with 5 team seats, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
+            answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features and a license for 1 org. Cloud is $99/mo with 5 team seats, multi-org support, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
         },
         {
             question: "Does CrabsHQ Cloud include hosting?",
