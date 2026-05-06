@@ -106,8 +106,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href={canonicalUrl} />
-        {/* Traffic Source Analytics */}
-        <script defer src="https://askgator.app/t.js" data-site="1"></script>
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://crabshq.com/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://crabshq.com/llms-full.txt" title="LLM-readable full reference" />

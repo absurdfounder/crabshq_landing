@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import PlausibleProvider from 'next-plausible'
 import Script from 'next/script'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -72,7 +73,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
   `;
 
   return (
-    <>
+    <PlausibleProvider domain="crabshq.com">
 
       {/* Google Analytics */}
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
@@ -125,6 +126,6 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 
       <Newsletter />
       <Footer />
-    </>
+    </PlausibleProvider>
   )
 }
