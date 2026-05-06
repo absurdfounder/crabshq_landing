@@ -73,13 +73,6 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 
   return (
     <>
-      {/* Traffic Source Analytics */}
-      <Script
-        id="traffic-source-analytics"
-        src="https://traffic-source-production-5f97.up.railway.app/t.js"
-        data-site="1"
-        strategy="afterInteractive"
-      />
 
       {/* Google Analytics */}
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
