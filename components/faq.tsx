@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, HelpCircle, BookOpen, ShoppingBag, Lock, AlignLeft, ArrowRight, LucideIcon } from 'lucide-react';
-
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface FAQ {
   question: string;
@@ -12,7 +10,7 @@ interface FAQ {
 
 type FAQCategories = {
   [key: string]: FAQ[];
-}
+};
 
 const faqs: FAQCategories = {
   General: [
@@ -134,39 +132,68 @@ const faqs: FAQCategories = {
       question: "Can I export my data?",
       answer: "Yes. Workflows, agent configurations, and workspace data can be exported. Enterprise customers on self-hosted deployments have full ownership and control of all data.",
     },
-  ]
+  ],
 };
 
-
-interface FAQAccordionProps {
+interface FAQCellProps {
   question: string;
   answer: string;
+  index: number;
+  totalRows: number;
+  totalCount: number;
 }
 
-const FAQAccordion: React.FC<FAQAccordionProps> = ({ question, answer }) => {
+const FAQCell: React.FC<FAQCellProps> = ({ question, answer, index, totalRows, totalCount }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // For 2-col md grid: cells in left column (even index) need right hairline on md+.
+  // Cells in last row drop bottom hairline.
+  const isLeftCol = index % 2 === 0;
+  const rowIndex = Math.floor(index / 2);
+  const isLastRowDesktop = rowIndex === totalRows - 1;
+  const isLastMobile = index === totalCount - 1;
+
+  const borderClasses = [
+    // Mobile: every cell gets a bottom hairline except the final cell
+    !isLastMobile ? 'border-b border-slate-200' : '',
+    // Desktop: bottom hairline unless on last row
+    'md:border-b',
+    isLastRowDesktop ? 'md:border-b-0' : '',
+    // Desktop: right hairline only on left column
+    isLeftCol ? 'md:border-r md:border-slate-200' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className="border p-2 rounded-md bg-white">
+    <div className={`relative group bg-white ${borderClasses}`}>
       <button
-        className="w-full text-left p-4 flex justify-between items-center"
+        className="w-full text-left px-5 sm:px-6 py-5 sm:py-6 flex items-start gap-4"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
       >
-        <span className="font-semibold text-slate-900 text-lg">{question}</span>
-        <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-          <ChevronDown />
+        <span className="flex-1 font-semibold text-slate-900 text-[15px] sm:text-base leading-snug">
+          {question}
+        </span>
+        <span
+          className="font-mono text-slate-400 text-base leading-none mt-0.5 select-none"
+          aria-hidden="true"
+        >
+          {isOpen ? '[−]' : '[+]'}
         </span>
       </button>
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="px-4 pb-4 text-slate-500"
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
           >
-            <p>{answer}</p>
+            <div className="px-5 sm:px-6 pb-6 text-sm leading-relaxed text-slate-600">
+              {answer}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -175,53 +202,59 @@ const FAQAccordion: React.FC<FAQAccordionProps> = ({ question, answer }) => {
 };
 
 const FAQ: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("General");
+  const [activeTab, setActiveTab] = useState<string>('General');
+  const activeFaqs = faqs[activeTab];
+  const totalRows = Math.ceil(activeFaqs.length / 2);
 
   return (
-    <div className="mx-auto mt-10">
-      <div className="px-4 py-16 mx-auto max-w-7xl sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-center sm:max-w-2xl lg:mx-auto">
-          <h2 className="font-funneldisplay text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-base font-normal text-slate-600 mt-4 sm:text-lg">
-            Have a different question and can't find the answer you're looking for? Reach out to us by
-            <a 
-              href="mailto:vaibhav@trooper.so" 
-              className="text-red-800 hover:text-red-500 hover:underline px-2"
-              target="_blank" rel="noopener"  
-              
-            >
-              sending us an email.
-            </a>
-          </p>
-        </div>
+    <div className="px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-16 sm:pb-24 max-w-7xl mx-auto">
+      <div className="max-w-2xl">
+        <h2 className="font-funneldisplay text-3xl sm:text-4xl tracking-tight text-slate-900">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-sm sm:text-base text-slate-600 mt-3">
+          Have a different question and can&apos;t find the answer you&apos;re looking for? Reach out by{' '}
+          <a
+            href="mailto:vaibhav@trooper.so"
+            className="text-emerald-700 hover:text-emerald-500 hover:underline"
+            target="_blank"
+            rel="noopener"
+          >
+            sending us an email
+          </a>
+          .
+        </p>
+      </div>
 
-        <div className="mt-12">
-          <div className="flex justify-center mb-8 flex-wrap">
-            {Object.keys(faqs).map((tab) => (
-              <motion.button
-                key={tab}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-4 py-2 font-semibold text-lg rounded-md m-2 font-roboto-mono ${
-                  activeTab === tab 
-                    ? "bg-red-700 text-red-50" 
-                    : "text-slate-700 hover:bg-red-100"
-                }`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </motion.button>
-            ))}
-          </div>
+      {/* Category tabs — flat mono text links with red underline on active */}
+      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-b border-slate-200">
+        {Object.keys(faqs).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`-mb-px pb-3 font-mono text-[12px] uppercase tracking-[0.15em] transition-colors ${
+              activeTab === tab
+                ? 'text-slate-900 border-b-2 border-emerald-600'
+                : 'text-slate-500 hover:text-slate-800 border-b-2 border-transparent'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
-          <div className="space-y-6">
-            {faqs[activeTab].map((faq, index) => (
-              <FAQAccordion key={index} {...faq} />
-            ))}
-          </div>
-        </div>
+      {/* 2-column shared-border grid */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 border border-slate-200 bg-white">
+        {activeFaqs.map((faq, index) => (
+          <FAQCell
+            key={`${activeTab}-${index}`}
+            question={faq.question}
+            answer={faq.answer}
+            index={index}
+            totalRows={totalRows}
+            totalCount={activeFaqs.length}
+          />
+        ))}
       </div>
     </div>
   );

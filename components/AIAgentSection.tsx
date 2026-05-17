@@ -59,7 +59,7 @@ export default function AIAgentSection() {
       <div className={`${sectionXPadding} mx-auto max-w-7xl`}>
         {/* Headline section */}
         <div className="pt-12 pb-8 sm:pt-20 sm:pb-10">
-          <span className="font-silkscreen text-red-600 mb-4 text-xs sm:text-lg">
+          <span className="font-silkscreen text-emerald-600 mb-4 text-xs sm:text-lg">
             Just ask Wonder
           </span>
           <h2 className="mt-4 max-w-2xl font-funneldisplay text-2xl font-bold leading-tight text-neutral-800 text-balance sm:text-3xl">
@@ -78,7 +78,7 @@ export default function AIAgentSection() {
             <div className="flex items-center gap-2 border-b border-neutral-200 bg-neutral-100 px-4 py-3">
               {/* Traffic lights */}
               <div className="flex items-center gap-1.5">
-                <span className="h-3 w-3 rounded-full bg-red-400" />
+                <span className="h-3 w-3 rounded-full bg-emerald-400" />
                 <span className="h-3 w-3 rounded-full bg-yellow-400" />
                 <span className="h-3 w-3 rounded-full bg-green-400" />
               </div>
@@ -132,7 +132,7 @@ export default function AIAgentSection() {
 
                 {/* Agent reply 1 */}
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-red-500 text-lg font-semibold text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-emerald-500 text-lg font-semibold text-white">
                     <img src='https://dazzling-cat.netlify.app/wonderbadge.png' alt='Wonder' width={48} height={48} />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -148,7 +148,7 @@ export default function AIAgentSection() {
 
                 {/* Agent reply 2 with CTA and draft cards */}
                 <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-red-500 text-lg font-semibold text-white">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-emerald-500 text-lg font-semibold text-white">
                     <img src='https://dazzling-cat.netlify.app/wonderbadge.png' alt='Wonder' width={48} height={48} />
                   </div>
                   <div className="min-w-0 flex-1">

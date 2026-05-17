@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Header from "@/components/ui/header";
+import SectionShell from "@/components/ui/SectionShell";
 import FeaturesBlocks from "@/components/FeaturesBlocks";
 import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
@@ -75,7 +76,7 @@ export default function SystemAccessPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-emerald-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -91,6 +92,7 @@ export default function SystemAccessPage() {
                 </div>
             </section>
 
+            <SectionShell eyebrow="OVERVIEW" eyebrowNumber="02" bgClass="bg-white">
             <section className="relative py-12 md:py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-3xl">
@@ -126,9 +128,15 @@ export default function SystemAccessPage() {
                     </div>
                 </div>
             </section>
+            </SectionShell>
 
-            <FeaturesBlocks />
-            <Testimonials />
+            <SectionShell eyebrow="CAPABILITIES" eyebrowNumber="03" bgClass="bg-slate-50">
+              <FeaturesBlocks />
+            </SectionShell>
+
+            <SectionShell eyebrow="TESTIMONIALS" eyebrowNumber="04" bgClass="bg-white">
+              <Testimonials />
+            </SectionShell>
         </div>
     );
 }

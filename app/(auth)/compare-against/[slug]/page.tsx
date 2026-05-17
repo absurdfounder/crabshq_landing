@@ -11,6 +11,7 @@ import { _loadFromJsonComparison, _transformDataToPostPageView } from '../../../
 import MoveBack from '@/components/MoveBack';
 import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
+import SectionShell from '@/components/ui/SectionShell';
 
 interface CallToAction {
   text: string;
@@ -97,35 +98,47 @@ export default async function ComparisonAgainst({ params }: { params: { slug: st
 <br/>
 
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="pt-24 pb-12 md:pt-20 md:pb-20">
-          <div className="max-w-xl mx-auto text-center pb-12 md:pb-20 pt-12">
-            <Image
-              src={filteredContent.product.heroimage}
-              alt={filteredContent.product.name}
-              width={150}
-              height={300}
-              loading="eager"
-              className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm rounded-md p-8 mb-8 m-auto"
-            />
-            <h1 className="text-4xl font-bold mb-4 font-funneldisplay">
-              Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to Trooper
-            </h1>
-            <p className="text-lg sm:text-xl text-slate-600">
-              {filteredContent.product.description}
-            </p>
-            <Link href="https://app.trooper.so" className="text-white bg-slate-900 rounded-md w-fit p-2 mt-4 px-4 mt-2 block m-auto">
-              Build sites using AI
-            </Link>
+      <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="pt-24 pb-12 md:pt-20 md:pb-20">
+            <div className="max-w-xl mx-auto text-center pb-12 md:pb-20 pt-12">
+              <Image
+                src={filteredContent.product.heroimage}
+                alt={filteredContent.product.name}
+                width={150}
+                height={300}
+                loading="eager"
+                className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm rounded-md p-8 mb-8 m-auto"
+              />
+              <h1 className="text-4xl font-bold mb-4 font-funneldisplay">
+                Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to Trooper
+              </h1>
+              <p className="text-lg sm:text-xl text-slate-600">
+                {filteredContent.product.description}
+              </p>
+              <Link href="https://app.trooper.so" className="text-white bg-slate-900 rounded-md w-fit p-2 mt-4 px-4 mt-2 block m-auto">
+                Build sites using AI
+              </Link>
+            </div>
+            <TrustedBy />
           </div>
-          <TrustedBy />
+        </div>
+      </SectionShell>
+
+      <SectionShell eyebrow="COMPARE" eyebrowNumber="02" bgClass="bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <ComparisonTable id={filteredContent.id} />
           <Rating />
+        </div>
+      </SectionShell>
+
+      <SectionShell eyebrow="TEMPLATES" eyebrowNumber="03" bgClass="bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <TemplateDesign />
           <AggregateStats />
           <TemplateLibrary />
         </div>
-      </div>
+      </SectionShell>
     </section>
   );
 }

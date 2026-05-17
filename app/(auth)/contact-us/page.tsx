@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import TrustedBy from '../compare-against/TrustedBy';
 import Header from '@/components/ui/header';
+import SectionShell from '@/components/ui/SectionShell';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -168,6 +169,8 @@ export default function ContactUs() {
 <br/>
 <br/>
 
+      <SectionShell eyebrow="CONTACT" eyebrowNumber="01" bgClass="bg-white">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       <div className="justify-center mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-2 items-start max-w-7xl border bg-slate-100 rounded-2xl p-8 mb-12">
         <div className="w-full p-4 h-full px-12">
           <h3 className="text-center text-lg font-semibold mt-12 mb-12 opacity-75 w-xl">"Your success is our success. This is why all our services are at cost to cost basis. <u>We only make money when you grow</u> ."</h3>
@@ -176,7 +179,7 @@ export default function ContactUs() {
           </div>
           <div className="text-center">
             <h3 className="text-xl font-semibold">VP of Success</h3>
-            <a href="mailto:success@trooper.so" className="text-red-700 block">success@trooper.so</a>
+            <a href="mailto:success@trooper.so" className="text-emerald-700 block">success@trooper.so</a>
           </div>
           <p className="text-center mt-4 mb-8">Please complete this form, and VP of Success will be in touch with you shortly.</p>
           <TrustedBy />
@@ -197,6 +200,8 @@ export default function ContactUs() {
 
         </div>
       </div>
+      </div>
+      </SectionShell>
     </div>
   );
 }

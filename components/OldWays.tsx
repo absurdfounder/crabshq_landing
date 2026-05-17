@@ -1,12 +1,22 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
+import { Terminal, Globe } from "lucide-react";
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
+/* ─── Trooper pixel character (replaces 🦀 in avatars) ─── */
+const TrooperChar = ({ className = "" }: { className?: string }) => (
+  <img
+    src="/images/trooper-character.png"
+    alt="Trooper"
+    className={`w-full h-full object-contain [image-rendering:pixelated] ${className}`}
+  />
+);
+
 /* ─── Favicon helper ─── */
 const Fav = ({ domain, size = 28 }: { domain: string; size?: number }) => (
-  <div className="border border-dashed border-slate-300 rounded-lg p-2.5 flex items-center justify-center bg-white">
+  <div className="border border-dashed border-slate-300 rounded-sm p-2.5 flex items-center justify-center bg-white">
     <img
       src={`https://${domain}/favicon.ico`}
       alt={domain.split('.')[0]}
@@ -19,17 +29,62 @@ const Fav = ({ domain, size = 28 }: { domain: string; size?: number }) => (
   </div>
 );
 
-/* ─── Crab bot message ─── */
-const CrabMsg = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex items-start gap-3">
-    <div className="w-8 h-8 rounded-md bg-red-50 flex items-center justify-center text-base flex-shrink-0 border border-red-100">🦀</div>
-    <div className="text-[13px] text-slate-600 leading-relaxed font-mono">{children}</div>
-  </div>
+/* ─── Small inline favicon chip for provider labels and badges ─── */
+const PROVIDER_DOMAINS: Record<string, string> = {
+  Claude: 'claude.ai',
+  CLAUDE: 'claude.ai',
+  Cursor: 'cursor.com',
+  CURSOR: 'cursor.com',
+  Codex: 'openai.com',
+  CODEX: 'openai.com',
+  OpenClaw: 'openclaw.ai',
+  OPENCLAW: 'openclaw.ai',
+};
+
+/* ─── Inline OpenClaw favicon with Trooper-character fallback ─── */
+const OpenClawFavicon = ({ size = 14, className = "" }: { size?: number; className?: string }) => (
+  <img
+    src="https://openclaw.ai/favicon.ico"
+    alt="OpenClaw"
+    style={{ width: size, height: size }}
+    className={`inline-block rounded-sm flex-shrink-0 ${className}`}
+    loading="lazy"
+    onError={(e) => {
+      const t = e.target as HTMLImageElement;
+      t.src = '/images/trooper-character.png';
+      t.style.imageRendering = 'pixelated';
+      t.classList.remove('rounded-sm');
+    }}
+  />
 );
+
+const FaviconChip = ({ provider, size = 14 }: { provider: string; size?: number }) => {
+  if (provider === 'OpenClaw' || provider === 'OPENCLAW') {
+    return <OpenClawFavicon size={size} />;
+  }
+  if (provider === 'BASH') {
+    return <Terminal size={size} strokeWidth={1.75} className="inline-block text-slate-500 flex-shrink-0" />;
+  }
+  if (provider === 'HTTP') {
+    return <Globe size={size} strokeWidth={1.75} className="inline-block text-slate-500 flex-shrink-0" />;
+  }
+  const domain = PROVIDER_DOMAINS[provider];
+  if (!domain) return null;
+  return (
+    <img
+      src={`https://${domain}/favicon.ico`}
+      alt={provider}
+      style={{ width: size, height: size }}
+      className="inline-block rounded-sm flex-shrink-0"
+      loading="lazy"
+      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+    />
+  );
+};
 
 /* ─── Dashed label tag ─── */
 const DashedLabel = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
-  <div className="inline-flex items-center gap-2 border border-dashed border-slate-300 rounded-lg px-3 py-1.5 bg-white">
+  <div className="inline-flex items-center gap-2 border border-dashed border-slate-300 rounded-sm px-3 py-1.5 bg-white">
     <span className="text-slate-400">{icon}</span>
     <span className="text-[11px] font-mono font-semibold uppercase tracking-[0.12em] text-slate-600">{text}</span>
   </div>
@@ -45,204 +100,180 @@ const FlowLine = ({ className = '' }: { className?: string }) => (
 
 /* ─── Visual 1: AI Org — Org chart with Trooper ─── */
 const OrgVisual = () => (
-  <div className="h-full flex flex-col items-center justify-center p-6 sm:p-8">
+  <div className="flex flex-col items-center justify-center h-full p-5">
     {/* CEO / Founder */}
     <div className="flex flex-col items-center">
-      <div className="w-14 h-14 rounded-full border-2 border-white shadow-md overflow-hidden bg-red-50 flex items-center justify-center text-2xl -mb-4 relative z-10">
-        🦀
+      <div className="w-14 h-14 rounded-full border-2 border-white overflow-hidden bg-emerald-50 flex items-center justify-center -mb-4 relative z-10 p-1.5">
+        <TrooperChar />
       </div>
-      <div className="bg-white rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.06)] border border-slate-200 px-6 py-4 text-center min-w-[180px]">
-        <p className="font-semibold text-[14px] text-slate-900 mt-1">Crab Prime</p>
+      <div className="bg-white rounded-sm border border-slate-200 px-6 py-4 text-center min-w-[180px]">
+        <p className="font-semibold text-[14px] text-slate-900 mt-1">Trooper Prime</p>
         <p className="text-[12px] text-slate-400">CEO, Founder</p>
       </div>
-      <div className="flex items-center gap-1.5 mt-2 bg-slate-900 text-white rounded-md px-2.5 py-1">
-        <span className="text-[11px] font-semibold">44</span>
-        <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
-      </div>
+      <span className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] bg-slate-900 text-white rounded-sm px-2.5 py-1">
+        +44 reports
+      </span>
     </div>
 
     {/* Connector lines */}
-    <div className="relative w-full max-w-[420px] h-10">
-      {/* Vertical line from CEO */}
-      <div className="absolute left-1/2 top-0 w-px h-4 bg-slate-300 -translate-x-1/2" />
-      {/* Horizontal bar */}
-      <div className="absolute top-4 left-[25%] right-[25%] h-px bg-slate-300" />
-      {/* Left vertical */}
-      <div className="absolute top-4 left-[25%] w-px h-6 bg-slate-300" />
-      {/* Right vertical */}
-      <div className="absolute top-4 right-[25%] w-px h-6 bg-slate-300" />
+    <div className="relative w-full max-w-[420px] h-6">
+      <div className="absolute left-1/2 top-0 w-px h-2 bg-slate-300 -translate-x-1/2" />
+      <div className="absolute top-2 left-[25%] right-[25%] h-px bg-slate-300" />
+      <div className="absolute top-2 left-[25%] w-px h-4 bg-slate-300" />
+      <div className="absolute top-2 right-[25%] w-px h-4 bg-slate-300" />
     </div>
 
     {/* Managers row */}
     <div className="flex gap-6 sm:gap-10">
       {[
-        { name: 'Research Crab', role: 'Head of Research', count: 24 },
-        { name: 'Dev Crab', role: 'Head of Engineering', count: 18 },
+        { name: 'Research Trooper', role: 'Head of Research', count: 24 },
+        { name: 'Dev Trooper', role: 'Head of Engineering', count: 18 },
       ].map((mgr, i) => (
         <div key={i} className="flex flex-col items-center">
-          <div className="w-11 h-11 rounded-full border-2 border-white shadow-md overflow-hidden bg-slate-100 flex items-center justify-center text-lg -mb-3 relative z-10">
-            🦀
+          <div className="w-11 h-11 rounded-full border-2 border-white overflow-hidden bg-slate-100 flex items-center justify-center -mb-3 relative z-10 p-1">
+            <TrooperChar />
           </div>
-          <div className="bg-white rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.06)] border border-slate-200 px-5 py-3 text-center min-w-[150px]">
+          <div className="bg-white rounded-sm border border-slate-200 px-5 py-3 text-center min-w-[150px]">
             <p className="font-semibold text-[13px] text-slate-900 mt-0.5">{mgr.name}</p>
             <p className="text-[11px] text-slate-400">{mgr.role}</p>
           </div>
-          <div className="flex items-center gap-1.5 mt-2 bg-white border border-slate-200 rounded-md px-2.5 py-1 shadow-sm">
+          <div className="flex items-center gap-1.5 mt-2 bg-white border border-slate-200 rounded-sm px-2.5 py-1">
             <span className="text-[11px] font-semibold text-slate-700">{mgr.count}</span>
             <svg className="w-3 h-3 text-slate-400" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
           </div>
         </div>
       ))}
     </div>
+
+    <p className="mt-5 text-center text-[11px] font-mono uppercase tracking-[0.18em] text-slate-400">2 leaders · 44 reports</p>
   </div>
 );
 
-/* ─── Visual 2: Integrations — favicon grid + "Over 3000" ─── */
+/* ─── Visual 2: Integrations — favicon grid + live row ─── */
 const IntegrationsVisual = () => {
   const row1 = ['salesforce.com', 'google.com', 'linear.app', 'trello.com', 'slack.com', 'figma.com'];
   const row2 = ['notion.so', 'atlassian.com', 'dropbox.com', 'asana.com', 'gmail.com', 'github.com'];
 
   return (
-    <div className="relative h-full flex flex-col justify-center p-6 sm:p-8 overflow-hidden">
-      <FlowLine className="inset-0 opacity-40" />
-      <div className="relative z-10">
-        <div className="border border-dashed border-slate-300 rounded-xl p-4 bg-white/60 backdrop-blur-sm">
-          <div className="grid grid-cols-6 gap-2 mb-2">
-            {row1.map((d) => <Fav key={d} domain={d} />)}
-          </div>
-          <div className="grid grid-cols-6 gap-2">
-            {row2.map((d) => <Fav key={d} domain={d} />)}
-          </div>
-          <p className="text-center text-[12px] text-slate-400 font-mono mt-4 tracking-wide">Over 3000 integrations</p>
+    <div className="flex flex-col justify-center h-full p-5 sm:p-6">
+      <div className="border border-dashed border-slate-300 rounded-sm p-4 bg-white/60">
+        <div className="grid grid-cols-6 gap-2 mb-2">
+          {row1.map((d) => <Fav key={d} domain={d} />)}
         </div>
+        <div className="grid grid-cols-6 gap-2">
+          {row2.map((d) => <Fav key={d} domain={d} />)}
+        </div>
+        <p className="text-center text-[12px] text-slate-400 font-mono mt-4 tracking-wide">Over 3000 integrations</p>
+      </div>
 
-        <div className="mt-8 flex items-end justify-end">
-          <div>
-            <p className="text-7xl sm:text-8xl font-bold text-slate-200 leading-none tracking-tighter">3k</p>
-            <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-400 mt-1">Integrations via browser and native APIs</p>
-          </div>
-        </div>
+      <div className="mt-4 flex items-center gap-2.5 flex-wrap">
+        <span className="font-mono text-xl font-bold text-slate-400 leading-none tabular-nums">3k</span>
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-emerald-50 border border-emerald-200">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">Live</span>
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+          Integrations via browser and native APIs
+        </span>
       </div>
     </div>
   );
 };
 
-/* ─── Shared chat components ─── */
-const ChatHeader = () => (
-  <div className="flex items-center justify-between px-4 py-2.5 border-b border-slate-100">
-    <span className="text-xs font-medium text-slate-500">Thread</span>
-    <div className="flex items-center gap-1">
-      {['M3 16V14H10V16H3ZM3 12V10H14V12H3ZM3 8V6H14V8H3ZM16 20V16H12V14H16V10H18V14H22V16H18V20H16Z',
-        'M12 20C11.45 20 10.9792 19.8042 10.5875 19.4125C10.1958 19.0208 10 18.55 10 18C10 17.45 10.1958 16.9792 10.5875 16.5875C10.9792 16.1958 11.45 16 12 16C12.55 16 13.0208 16.1958 13.4125 16.5875C13.8042 16.9792 14 17.45 14 18C14 18.55 13.8042 19.0208 13.4125 19.4125C13.0208 19.8042 12.55 20 12 20ZM12 14C11.45 14 10.9792 13.8042 10.5875 13.4125C10.1958 13.0208 10 12.55 10 12C10 11.45 10.1958 10.9792 10.5875 10.5875C10.9792 10.1958 11.45 10 12 10C12.55 10 13.0208 10.1958 13.4125 10.5875C13.8042 10.9792 14 11.45 14 12C14 12.55 13.8042 13.0208 13.4125 13.4125C13.0208 13.8042 12.55 14 12 14ZM12 8C11.45 8 10.9792 7.80417 10.5875 7.4125C10.1958 7.02083 10 6.55 10 6C10 5.45 10.1958 4.97917 10.5875 4.5875C10.9792 4.19583 11.45 4 12 4C12.55 4 13.0208 4.19583 13.4125 4.5875C13.8042 4.97917 14 5.45 14 6C14 6.55 13.8042 7.02083 13.4125 7.4125C13.0208 7.80417 12.55 8 12 8Z',
-        'M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z',
-      ].map((d, i) => (
-        <button key={i} className="p-1 hover:bg-slate-50 rounded transition-colors">
-          <svg className="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="currentColor"><path d={d} /></svg>
-        </button>
-      ))}
-    </div>
-  </div>
-);
-
-const ChatUser = ({ name, time, children }: { name: string; time: string; children: React.ReactNode }) => (
-  <div className="flex items-start gap-2.5">
-    <img src={`https://i.pravatar.cc/150?u=human-${name.toLowerCase()}`} alt={name} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
-    <div className="flex-1 min-w-0">
-      <div className="flex items-baseline gap-2">
-        <span className="font-semibold text-[13px] text-slate-800">{name}</span>
-        <span className="text-[11px] text-slate-400">{time}</span>
-      </div>
-      <div className="text-[13px] text-slate-600 mt-0.5 leading-relaxed">{children}</div>
-    </div>
-  </div>
-);
-
-const ChatBot = ({ time, children }: { time: string; children: React.ReactNode }) => (
-  <div className="flex items-start gap-2.5">
-    <div className="w-8 h-8 rounded-md bg-red-50 flex items-center justify-center flex-shrink-0 text-base">🦀</div>
-    <div className="flex-1 min-w-0">
-      <div className="flex items-center gap-2">
-        <span className="font-semibold text-[13px] text-slate-800">Crab AI</span>
-        <span className="text-[9px] px-1 py-px bg-slate-100 text-slate-500 rounded font-medium">APP</span>
-        <span className="text-[11px] text-slate-400">{time}</span>
-      </div>
-      <div className="text-[13px] text-slate-600 mt-0.5 leading-relaxed">{children}</div>
-    </div>
-  </div>
-);
-
-const ChatReply = () => (
-  <div className="flex items-center gap-2 py-1">
-    <span className="text-[11px] text-blue-500 font-medium">1 reply</span>
-    <div className="flex-1 h-px bg-slate-100" />
-  </div>
-);
-
-/* ─── Visual 3: Action — Slack thread showing real actions ─── */
+/* ─── Visual 3: Action — single resolved-incident card ─── */
 const ActionVisual = () => (
-  <div className="h-full flex flex-col bg-white">
-    <ChatHeader />
-    <div className="p-4 space-y-4 flex-1">
-      <ChatUser name="sarah" time="3 minutes ago">
-        <span className="text-red-500 font-medium">@Crab AI</span> 3 users just reported checkout failures in the support channel. Can you look into it and fix it?
-      </ChatUser>
-      <ChatReply />
-      <ChatBot time="2 minutes ago">
-        <p>Investigated the issue. Here&apos;s what I found and did:</p>
-        <p className="mt-2"><strong>Root cause:</strong> Stripe webhook timeout — the <code className="text-[12px] bg-slate-100 px-1 py-0.5 rounded">/api/webhooks/stripe</code> endpoint was timing out at 10s.</p>
-        <p className="mt-2"><strong>Actions taken:</strong></p>
-        <p>• Increased timeout to 30s on Vercel config</p>
-        <p>• Added retry logic for failed webhook events</p>
-        <p>• Created Linear issue <span className="text-blue-500">ENG-1847</span> for permanent fix</p>
-        <p>• Notified #engineering on Slack</p>
-        <p className="mt-2"><strong>Status:</strong> Webhook processing is back to normal. All 3 failed checkouts have been retried and completed successfully.</p>
-      </ChatBot>
-      <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-        <div className="flex -space-x-1">
-          {['linear.app', 'vercel.com', 'slack.com', 'stripe.com'].map((d) => (
-            <img key={d} src={`https://${d}/favicon.ico`} alt="" className="w-4 h-4 rounded-sm border border-white" />
-          ))}
-        </div>
-        <span className="text-[10px] text-slate-400">Used 4 tools to resolve this</span>
+  <div className="flex flex-col h-full p-5 sm:p-6">
+    <div className="flex items-center gap-3 mb-3">
+      <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        Incident Resolved
+      </span>
+      <span className="font-mono text-[11px] text-slate-400">2 min ago</span>
+    </div>
+
+    <h4 className="font-semibold text-base sm:text-lg text-slate-900 leading-snug mb-5">
+      Stripe webhook timeout &mdash; resolved
+    </h4>
+
+    <div className="flex-1 grid grid-cols-2 border border-slate-200 rounded-sm bg-white overflow-hidden">
+      <div className="p-4 border-r border-slate-200">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Root cause</p>
+        <p className="text-[13px] text-slate-700 leading-relaxed">
+          <code className="font-mono text-[11px] bg-slate-100 px-1 py-0.5 rounded-sm">/api/webhooks/stripe</code> timed out at 10s during a marketing burst.
+        </p>
+        <p className="text-[13px] text-slate-500 leading-relaxed mt-2">
+          3 failed checkouts. Webhook retries exhausted.
+        </p>
       </div>
+      <div className="p-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Fix applied</p>
+        <ul className="space-y-1.5 text-[13px] text-slate-700 leading-relaxed">
+          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Increased timeout <span className="font-mono text-[11px] text-slate-500">10s → 30s</span></span></li>
+          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Added retry queue for failed events</span></li>
+          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Filed <span className="font-mono text-[12px] text-blue-600">ENG-1847</span></span></li>
+          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Posted to <span className="text-blue-600">#engineering</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div className="mt-4 flex items-center gap-3">
+      <div className="flex -space-x-1.5">
+        {['linear.app', 'vercel.com', 'slack.com', 'stripe.com'].map((d) => (
+          <div key={d} className="w-6 h-6 rounded-sm border border-slate-200 bg-white flex items-center justify-center">
+            <img src={`https://${d}/favicon.ico`} alt="" className="w-3.5 h-3.5" />
+          </div>
+        ))}
+      </div>
+      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Used 4 tools to resolve</span>
     </div>
   </div>
 );
 
-/* ─── Visual 4: Memory — Slack thread showing memory in action ─── */
-const MemoryVisual = () => (
-  <div className="h-full flex flex-col bg-white">
-    <ChatHeader />
-    <div className="p-4 space-y-4 flex-1">
-      <ChatUser name="peter" time="9:15 AM">
-        <span className="text-red-500 font-medium">@Crab AI</span> write a blog post about our new pricing page and deploy it
-      </ChatUser>
-      <ChatReply />
-      <ChatBot time="9:16 AM">
-        <p>On it. Using what I know from previous work:</p>
-        <div className="mt-2 border border-slate-100 rounded-lg p-2.5 bg-slate-50 text-[12px] text-slate-500 space-y-1">
-          <p>📎 <span className="text-slate-600">Tone:</span> casual, technical, under 1200 words</p>
-          <p>📎 <span className="text-slate-600">Stack:</span> Notion draft → Vercel deploy</p>
-          <p>📎 <span className="text-slate-600">Last sprint:</span> you deprioritized the onboarding rewrite, so I&apos;m keeping this pricing-focused</p>
-          <p>📎 <span className="text-slate-600">Style:</span> you rejected bullet-heavy format last time — using narrative paragraphs</p>
-        </div>
-        <p className="mt-3"><strong>Done:</strong></p>
-        <p>• Draft written in Notion workspace → <span className="text-blue-500">view draft</span></p>
-        <p>• Blog published to <code className="text-[12px] bg-slate-100 px-1 py-0.5 rounded">/blog/new-pricing</code></p>
-        <p>• Deployed to production on Vercel → <span className="text-blue-500">preview</span></p>
-        <p>• Shared to #marketing on Slack for review</p>
-      </ChatBot>
-      <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-        <div className="flex -space-x-1">
-          {['notion.so', 'vercel.com', 'slack.com'].map((d) => (
-            <img key={d} src={`https://${d}/favicon.ico`} alt="" className="w-4 h-4 rounded-sm border border-white" />
-          ))}
-        </div>
-        <span className="text-[10px] text-slate-400">Recalled 4 preferences from past conversations</span>
+/* ─── Visual 4: Memory — focused "what I recalled" card ─── */
+const MemoryVisual = () => {
+  const chips = [
+    { label: 'Tone', value: 'casual, technical, under 1200 words' },
+    { label: 'Stack', value: 'Notion draft → Vercel deploy' },
+    { label: 'Style', value: 'narrative paragraphs, not bullet lists' },
+    { label: 'Last sprint', value: 'deprioritized onboarding rewrite' },
+  ];
+
+  return (
+    <div className="flex flex-col h-full p-5 sm:p-6">
+      <div className="flex items-center justify-between mb-4">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="w-1.5 h-1.5 rounded-sm bg-slate-400" />
+          Recalled from memory
+        </span>
+        <span className="font-mono text-[11px] text-slate-400">9:16 AM</span>
+      </div>
+
+      <h4 className="font-semibold text-base sm:text-lg text-slate-900 leading-snug mb-5">
+        Drafted the blog post your way.
+      </h4>
+
+      <div className="grid grid-cols-2 gap-2.5 flex-1">
+        {chips.map((c) => (
+          <div key={c.label} className="border border-slate-200 rounded-sm bg-white p-3.5 flex flex-col">
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-1.5">{c.label}</span>
+            <span className="text-[13px] text-slate-700 leading-relaxed">{c.value}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-[13px] text-slate-600 italic leading-relaxed mt-5">
+        Used these 4 preferences to draft and ship the post in 3 minutes.
+      </p>
+
+      <div className="mt-3 pt-3 border-t border-slate-100">
+        <span className="font-mono text-[11px] text-slate-400">Across 47 past conversations</span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ─── Visual 5: Weeks-long runs — Gantt timeline ─── */
 const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
@@ -256,14 +287,14 @@ const weekDates = [
 const totalCols = 20;
 
 const ganttTasks = [
-  { label: 'Research & analysis', startCol: 0, span: 4, color: '#FEE2E2' },
-  { label: 'Blog series (8 posts)', startCol: 2, span: 7, color: '#FECACA' },
-  { label: 'Landing page v2', startCol: 5, span: 5, color: '#FCA5A5' },
-  { label: 'Email sequences', startCol: 8, span: 6, color: '#FEE2E2' },
-  { label: 'Social media calendar', startCol: 3, span: 10, color: '#FECDD3' },
-  { label: 'SEO audit & fixes', startCol: 11, span: 4, color: '#FECACA' },
-  { label: 'A/B test creatives', startCol: 13, span: 5, color: '#FCA5A5' },
-  { label: 'Analytics dashboard', startCol: 16, span: 4, color: '#FEE2E2' },
+  { label: 'Research & analysis', startCol: 0, span: 4, color: '#d1fae5' },
+  { label: 'Blog series (8 posts)', startCol: 2, span: 7, color: '#a7f3d0' },
+  { label: 'Landing page v2', startCol: 5, span: 5, color: '#6ee7b7' },
+  { label: 'Email sequences', startCol: 8, span: 6, color: '#d1fae5' },
+  { label: 'Social media calendar', startCol: 3, span: 10, color: '#a7f3d0' },
+  { label: 'SEO audit & fixes', startCol: 11, span: 4, color: '#a7f3d0' },
+  { label: 'A/B test creatives', startCol: 13, span: 5, color: '#6ee7b7' },
+  { label: 'Analytics dashboard', startCol: 16, span: 4, color: '#d1fae5' },
 ];
 
 const CollabVisual = () => {
@@ -277,7 +308,7 @@ const CollabVisual = () => {
   }, []);
 
   return (
-    <div ref={ref} className="h-full flex flex-col p-5 overflow-x-auto">
+    <div ref={ref} className="min-h-[460px] h-full flex flex-col p-5 overflow-x-auto">
       <div className="min-w-[600px] flex-1 flex flex-col">
         {/* Week headers */}
         <div className="grid grid-cols-5 mb-0.5">
@@ -320,7 +351,7 @@ const CollabVisual = () => {
                     transitionDelay: `${300 + i * 80}ms`,
                   }}
                 >
-                  <span className="text-[9px] font-medium text-red-900/60 whitespace-nowrap truncate">{task.label}</span>
+                  <span className="text-[9px] font-medium text-emerald-900/70 whitespace-nowrap truncate">{task.label}</span>
                 </div>
               </div>
             ))}
@@ -328,18 +359,20 @@ const CollabVisual = () => {
 
           {/* Today marker */}
           <div className="absolute top-0 bottom-0 z-10" style={{ left: `${(14 / totalCols) * 100}%` }}>
-            <div className="w-px h-full bg-red-300/50" />
-            <div className="absolute -top-px -left-[2.5px] w-[6px] h-[6px] rounded-full bg-red-400" />
+            <div className="w-px h-full bg-emerald-400/60" />
+            <div className="absolute -top-px -left-[2.5px] w-[6px] h-[6px] rounded-full bg-emerald-500" />
           </div>
 
           {/* Message bubbles */}
           <div className="absolute z-20" style={{ bottom: '80px', left: '1%', width: 'clamp(200px, 38%, 320px)' }}>
-            <div className="border border-slate-200 rounded-lg p-2.5 bg-white/90 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
               <div className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-red-50 flex items-center justify-center text-[10px] flex-shrink-0">🦀</div>
+                <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
+                  <TrooperChar />
+                </div>
                 <div>
                   <div className="flex items-center gap-1">
-                    <span className="font-medium text-[10px] text-slate-800">Crab AI</span>
+                    <span className="font-medium text-[10px] text-slate-800">Trooper AI</span>
                     <span className="text-[8px] px-1 bg-slate-100 text-slate-500 rounded">APP</span>
                     <span className="text-[9px] text-slate-400">12m ago</span>
                   </div>
@@ -350,12 +383,14 @@ const CollabVisual = () => {
           </div>
 
           <div className="absolute z-20" style={{ bottom: '80px', right: '1%', width: 'clamp(180px, 30%, 280px)' }}>
-            <div className="border border-slate-200 rounded-lg p-2.5 bg-white/90 backdrop-blur-sm shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
               <div className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-red-50 flex items-center justify-center text-[10px] flex-shrink-0">🦀</div>
+                <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
+                  <TrooperChar />
+                </div>
                 <div>
                   <div className="flex items-center gap-1">
-                    <span className="font-medium text-[10px] text-slate-800">Crab AI</span>
+                    <span className="font-medium text-[10px] text-slate-800">Trooper AI</span>
                     <span className="text-[8px] px-1 bg-slate-100 text-slate-500 rounded">APP</span>
                     <span className="text-[9px] text-slate-400">1m ago</span>
                   </div>
@@ -368,12 +403,14 @@ const CollabVisual = () => {
           {/* Avatar stack */}
           <div className="absolute z-20 flex flex-col items-center gap-1" style={{ bottom: '16px', right: '4%' }}>
             <div className="flex -space-x-2">
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-red-50 flex items-center justify-center text-[10px] shadow-sm">🦀</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-emerald-50 flex items-center justify-center overflow-hidden p-1">
+                <TrooperChar />
+              </div>
               {['human-sandeep', 'human-lisa', 'human-marco'].map((id) => (
-                <img key={id} src={`https://i.pravatar.cc/150?u=${id}`} alt="" className="w-7 h-7 rounded-full border-2 border-white object-cover shadow-sm" />
+                <img key={id} src={`https://i.pravatar.cc/150?u=${id}`} alt="" className="w-7 h-7 rounded-full border-2 border-white object-cover" />
               ))}
             </div>
-            <span className="text-[9px] text-slate-400">Crab is like one of us now</span>
+            <span className="text-[9px] text-slate-400">Trooper is like one of us now</span>
           </div>
         </div>
       </div>
@@ -383,24 +420,52 @@ const CollabVisual = () => {
 
 /* ─── Visual 6: OpenClaw Runtime ─── */
 const OpenClawVisual = () => (
-  <div className="relative h-full flex flex-col justify-center p-6 sm:p-8 overflow-hidden">
+  <div className="relative flex flex-col h-full justify-between p-6 sm:p-8 overflow-hidden">
     <FlowLine className="inset-0 opacity-40" />
     <div className="relative z-10 space-y-6">
-      <div className="border border-dashed border-slate-300 rounded-xl overflow-hidden bg-white/60 backdrop-blur-sm">
-        <div className="bg-slate-950 p-5 font-mono text-[12px] leading-relaxed">
-          <p className="text-slate-500">$ openclaw deploy --org acme-corp</p>
-          <p className="text-slate-600 mt-2">→ Provisioning private server...</p>
-          <p className="text-slate-600">→ Mounting encrypted volume...</p>
-          <p className="text-slate-600">→ Loading 4 AI employees...</p>
-          <p className="text-emerald-400 mt-2">✓ Runtime ready</p>
-          <p className="text-slate-500">  https://acme.openclaw.run</p>
+      <div className="border border-dashed border-slate-300 rounded-sm overflow-hidden bg-white/60 backdrop-blur-sm">
+        <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 flex items-center gap-1.5">
+            <OpenClawFavicon size={11} />
+            openclaw — bash
+          </span>
+        </div>
+        <div className="bg-slate-950 py-4 font-mono text-[12px] leading-[1.7]">
+          {[
+            { ln: 1, content: <><span className="text-emerald-500 select-none">$</span> <span className="text-slate-200">openclaw deploy </span><span className="text-amber-400">--org</span><span className="text-slate-200"> acme-corp</span></> },
+            { ln: 2 },
+            { ln: 3, content: <span className="text-slate-400">→ Provisioning private server...</span> },
+            { ln: 4, content: <span className="text-slate-400">→ Mounting encrypted volume...</span> },
+            { ln: 5, content: <span className="text-slate-400">→ Loading 4 AI employees...</span> },
+            { ln: 6 },
+            { ln: 7, content: <span className="text-emerald-400 font-semibold">✓ Runtime ready</span>, highlight: true },
+            { ln: 8, content: <span className="text-slate-500">  https://acme.openclaw.run</span> },
+          ].map((row) => (
+            <div
+              key={row.ln}
+              className={`flex items-baseline ${row.highlight ? 'bg-emerald-500/10 border-l-2 border-emerald-500' : 'border-l-2 border-transparent'}`}
+            >
+              <span className="text-slate-700 select-none tabular-nums w-10 text-right pr-3 flex-shrink-0">
+                {row.ln}
+              </span>
+              <span className="min-h-[1.4em]">{row.content || '\u00A0'}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="flex items-end justify-between">
         <div className="space-y-3">
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg>} text="Data siloed per org" />
-          <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>} text="Private server" />
+          <div className="flex items-center gap-2">
+            <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>} text="Private server" />
+            <span className="inline-flex items-center px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-sm">Recommended</span>
+          </div>
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/></svg>} text="Full API access" />
         </div>
         <div className="text-right">
@@ -412,138 +477,139 @@ const OpenClawVisual = () => (
   </div>
 );
 
-/* ─── Visual 7: Ticket System — traced conversations ─── */
-const TicketVisual = () => (
-  <div className="h-full flex flex-col bg-white p-5">
-    {/* Ticket header */}
-    <div className="rounded-lg border border-slate-200 bg-white p-3.5 mb-4">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-[12px] font-mono text-slate-400">#1042</span>
-        <span className="font-semibold text-[13px] text-slate-900">Deploy updated pricing page</span>
-      </div>
-      <div className="flex gap-2">
-        <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">In Progress</span>
-        <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 font-medium">CTO</span>
-      </div>
-    </div>
+/* ─── Visual 7: Ticket System — single polished ticket with live trace ─── */
+const TicketVisual = () => {
+  const steps = [
+    { fn: 'run_tests()', status: 'passed', running: false },
+    { fn: 'deploy_to_staging()', status: 'passed', running: false },
+    { fn: 'smoke_test()', status: 'passed', running: false },
+    { fn: 'deploy_to_production()', status: 'running', running: true },
+  ];
 
-    {/* Compact conversation */}
-    <div className="space-y-3 mb-4">
-      {[
-        { who: 'You', time: '2 min ago', msg: 'Deploy the updated pricing page to production. Run tests first.', isAgent: false },
-        { who: 'CTO Agent', time: '1 min ago', msg: "Running test suite and staging deployment now. I'll promote to production once smoke tests pass.", isAgent: true },
-        { who: 'You', time: 'just now', msg: 'Approved. Go ahead.', isAgent: false },
-      ].map((m, i) => (
-        <div key={i} className="flex items-start gap-2">
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] ${m.isAgent ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
-            {m.isAgent ? '⚙' : '👤'}
-          </div>
-          <div className="min-w-0">
-            <span className="font-semibold text-[11px] text-slate-800">{m.who}</span>
-            <span className="text-[10px] text-slate-400 ml-1.5">{m.time}</span>
-            <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">{m.msg}</p>
-          </div>
+  return (
+    <div className="flex flex-col h-full p-5 sm:p-6">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="font-mono text-[12px] text-slate-400 tabular-nums flex-shrink-0">#1042</span>
+          <span className="font-semibold text-sm sm:text-base text-slate-900 truncate">Deploy updated pricing page</span>
         </div>
-      ))}
-    </div>
-
-    {/* Trace */}
-    <div className="border-t border-slate-100 pt-3">
-      <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.12em] text-slate-400 mb-2">Trace</p>
-      <div className="space-y-1.5">
-        {[
-          { fn: 'run_tests()', status: 'passed', color: 'text-emerald-500', bg: 'bg-emerald-400' },
-          { fn: 'deploy_to_staging()', status: 'done', color: 'text-emerald-500', bg: 'bg-emerald-400' },
-          { fn: 'smoke_test()', status: 'passed', color: 'text-emerald-500', bg: 'bg-emerald-400' },
-          { fn: 'deploy_to_production()', status: 'running', color: 'text-amber-500', bg: 'bg-amber-400 animate-pulse' },
-        ].map((t) => (
-          <div key={t.fn} className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className={`w-1.5 h-1.5 rounded-full ${t.bg}`} />
-              <span className="text-[11px] font-mono text-slate-700">{t.fn}</span>
-            </div>
-            <span className={`text-[10px] font-medium ${t.color}`}>{t.status}</span>
-          </div>
-        ))}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded-sm bg-amber-50 text-amber-700 border border-amber-200">In Progress</span>
+          <img src="https://i.pravatar.cc/150?u=cto-agent" alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200" />
+        </div>
       </div>
-    </div>
 
-    {/* Sub-features */}
-    <div className="mt-auto pt-4 space-y-2">
-      {[
-        { label: 'Structured tickets', detail: 'Every task is a ticket with a clear owner, status, and thread.' },
-        { label: 'Full trace', detail: 'Every tool call, API request, and decision point is logged and visible.' },
-        { label: 'Immutable audit log', detail: 'Append-only history. No edits, no deletions. Full accountability.' },
-      ].map((f) => (
-        <div key={f.label} className="flex items-start gap-2">
-          <div className="w-4 h-4 rounded bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <span className="text-[8px] text-slate-400">✓</span>
+      {/* Metadata row */}
+      <div className="flex items-center gap-3 mb-5">
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">CTO</span>
+        <div className="flex items-center gap-1.5">
+          <div className="flex -space-x-1.5">
+            {['watcher-1', 'watcher-2'].map((id) => (
+              <img key={id} src={`https://i.pravatar.cc/150?u=${id}`} alt="" className="w-4 h-4 rounded-full object-cover ring-1 ring-white" />
+            ))}
           </div>
-          <div>
-            <span className="text-[11px] font-semibold text-slate-800">{f.label}</span>
-            <span className="text-[11px] text-slate-500 ml-1">{f.detail}</span>
-          </div>
+          <span className="text-[11px] text-slate-400">+ 2 more watchers</span>
         </div>
-      ))}
-    </div>
-  </div>
-);
+        <span className="font-mono text-[11px] text-slate-400 ml-auto">Updated 1m ago</span>
+      </div>
 
-/* ─── Visual 8: Goal Alignment — nested goal cascade (Paperclip style) ─── */
-const GoalVisual = () => (
-  <div className="h-full flex flex-col p-6 sm:p-8">
-    {/* Nested cards — each indented more, stacked with overlap feel */}
-    <div className="flex-1 flex flex-col justify-center">
-      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="w-4 h-4 rounded-full border-2 border-slate-300" />
-          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-slate-400">Company Mission</span>
+      {/* Focal point: vertical trace timeline */}
+      <div className="border border-slate-200 rounded-sm bg-white flex-1 flex flex-col">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Live trace</span>
+          <span className="font-mono text-[10px] text-slate-400 tabular-nums">{steps.length} steps</span>
         </div>
-        <p className="text-[13px] text-slate-800 font-medium ml-6">Build the #1 AI workforce platform</p>
-
-        <div className="ml-4 mt-3 rounded-xl border border-slate-200 bg-white p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-4 h-4 rounded-full border-2 border-slate-300 bg-slate-50" />
-            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-slate-400">Project Goal</span>
-          </div>
-          <p className="text-[13px] text-slate-800 font-medium ml-6">Ship team collaboration features</p>
-
-          <div className="ml-4 mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-400" />
-              <span className="text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-slate-400">Agent Goal</span>
-            </div>
-            <p className="text-[13px] text-slate-800 font-medium ml-6">Implement real-time sync engine</p>
-
-            <div className="ml-4 mt-3 rounded-xl border border-slate-200 bg-white p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full border-2 border-slate-500 bg-slate-500" />
-                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.12em] text-slate-500">Task</span>
+        <div className="relative px-4 py-3 flex-1">
+          {/* Connecting line behind dots */}
+          <div className="absolute left-[24px] top-5 bottom-5 w-px bg-slate-200" aria-hidden="true" />
+          {steps.map((t, idx) => (
+            <div key={t.fn} className={`relative flex items-center justify-between py-2.5 ${idx < steps.length - 1 ? 'border-b border-slate-100' : ''}`}>
+              <div className="flex items-center gap-3 relative z-10">
+                {t.running ? (
+                  <span className="relative flex items-center justify-center w-2.5 h-2.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500 ring-[3px] ring-white" />
+                  </span>
+                ) : (
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-[3px] ring-white" />
+                )}
+                <span className="font-mono text-[12px] text-slate-700">{t.fn}</span>
               </div>
-              <p className="text-[13px] text-slate-800 font-medium ml-6">Write WebSocket handler for document updates</p>
+              <span className={`font-mono text-[10px] uppercase tracking-[0.16em] ${t.running ? 'text-amber-600' : 'text-emerald-600'}`}>{t.status}</span>
             </div>
-          </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Audit log strip */}
+      <div className="mt-3 flex items-center justify-between pt-3 border-t border-slate-200">
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Audit log</span>
+        <a className="font-mono text-[11px] text-emerald-600 hover:underline cursor-pointer">View 47 events →</a>
+      </div>
+    </div>
+  );
+};
+
+/* ─── Visual 8: Goal Alignment — vertical thread of cards on a slate line ─── */
+const GoalVisual = () => {
+  const levels = [
+    { label: 'Mission', value: 'Build the #1 AI workforce platform' },
+    { label: 'Project', value: 'Ship team collaboration features' },
+    { label: 'Agent goal', value: 'Implement real-time sync engine' },
+    { label: 'Task', value: 'Write WebSocket handler for document updates' },
+  ];
+
+  return (
+    <div className="flex flex-col justify-center h-full p-6 sm:p-8">
+      <div className="relative pl-6">
+        {/* 2px vertical thread line */}
+        <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-slate-300" aria-hidden="true" />
+        <div className="space-y-3">
+          {levels.map((lv) => {
+            const isTask = lv.label === 'Task';
+            return (
+              <div key={lv.label} className="relative">
+                {/* Hairline elbow into the card */}
+                <div className="absolute -left-6 top-5 w-6 h-px bg-slate-300" aria-hidden="true" />
+                <div
+                  className={`relative rounded-sm border p-3.5 ${
+                    isTask ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`font-mono text-[10px] uppercase tracking-[0.18em] ${
+                        isTask ? 'text-emerald-700' : 'text-slate-400'
+                      }`}
+                    >
+                      {lv.label}
+                    </span>
+                    {isTask && (
+                      <span className="font-mono text-[9px] uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm bg-emerald-600 text-white">
+                        Work happens here
+                      </span>
+                    )}
+                  </div>
+                  <p
+                    className={`text-[13px] sm:text-sm mt-1 font-medium ${
+                      isTask ? 'text-emerald-900' : 'text-slate-900'
+                    }`}
+                  >
+                    {lv.value}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
-
-    {/* Context text */}
-    <div className="mt-6 space-y-2">
-      <p className="text-[13px] text-slate-500 leading-relaxed">
-        Every piece of work is given context that traces back to the company mission. Your agents will know <em>what</em> to do and <em>why</em>.
-      </p>
-      <p className="text-[13px] text-slate-500 leading-relaxed">
-        OpenClaw <code className="text-[11px] bg-slate-100 px-1 py-0.5 rounded">SKILLS.md</code> means your agents know how to discover the context they need.
-      </p>
-    </div>
-  </div>
-);
+  );
+};
 
 /* ─── Visual 9: Bring Your Own Agent — org chart with mixed providers ─── */
 const BYOAVisual = () => {
-  const agents = [
-    { name: 'CEO', role: 'Claude', icon: '🏠', active: false },
-  ];
   const managers = [
     { name: 'CMO', provider: 'OpenClaw', active: true },
     { name: 'CTO', provider: 'Cursor', active: false },
@@ -555,18 +621,18 @@ const BYOAVisual = () => {
   ];
 
   return (
-    <div className="h-full flex flex-col justify-center p-6 sm:p-8 bg-slate-50/50">
-      <div className="flex flex-col items-center">
+    <div className="flex flex-col p-6 sm:p-8 h-full">
+      <div className="flex flex-col items-center pt-6 sm:pt-8">
         {/* CEO */}
-        <div className="bg-white rounded-lg border border-slate-200 px-5 py-3 text-center shadow-sm">
+        <div className="bg-white rounded-sm border border-slate-200 px-5 py-3.5 text-center">
           <p className="font-semibold text-[13px] text-slate-900">CEO</p>
-          <div className="flex items-center justify-center gap-1 mt-1">
-            <div className="w-2 h-2 rounded-full bg-amber-400" />
+          <div className="flex items-center justify-center gap-1.5 mt-1">
+            <FaviconChip provider="Claude" size={12} />
             <span className="text-[11px] text-slate-400">Claude</span>
           </div>
         </div>
 
-        {/* Connector */}
+        {/* Connector CEO → Managers */}
         <div className="relative w-full max-w-[400px] h-8">
           <div className="absolute left-1/2 top-0 w-px h-3 bg-slate-300 -translate-x-1/2" />
           <div className="absolute top-3 left-[16%] right-[16%] h-px bg-slate-300" />
@@ -578,36 +644,45 @@ const BYOAVisual = () => {
         {/* Managers */}
         <div className="flex gap-3 sm:gap-5">
           {managers.map((m, i) => (
-            <div key={i} className={`rounded-lg border px-4 py-3 text-center shadow-sm ${m.active ? 'border-emerald-300 bg-white ring-1 ring-emerald-100' : 'border-slate-200 bg-white'}`}>
-              {m.active && <span className="text-[9px] font-medium text-emerald-600 uppercase tracking-wider">Active</span>}
-              <p className="font-semibold text-[12px] text-slate-900">{m.name}</p>
-              <div className="flex items-center justify-center gap-1 mt-0.5">
-                <div className={`w-1.5 h-1.5 rounded-full ${m.active ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+            <div
+              key={i}
+              className={`relative rounded-sm border px-5 py-3.5 text-center ${
+                m.active ? 'border-slate-200 bg-white border-t-2 border-t-emerald-500' : 'border-slate-200 bg-white'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-1.5">
+                <p className="font-semibold text-[12px] text-slate-900">{m.name}</p>
+                {m.active && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-sm">Recommended</span>
+                )}
+              </div>
+              <div className="flex items-center justify-center gap-1.5 mt-1">
+                <FaviconChip provider={m.provider} size={12} />
                 <span className="text-[10px] text-slate-400">{m.provider}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* CTO sub-tree connector */}
-        <div className="relative w-full max-w-[200px] h-6">
-          <div className="absolute left-1/2 top-0 w-px h-2 bg-slate-300 -translate-x-1/2" />
-          <div className="absolute top-2 left-[25%] right-[25%] h-px bg-slate-300" />
-          <div className="absolute top-2 left-[25%] w-px h-4 bg-slate-300" />
-          <div className="absolute top-2 right-[25%] w-px h-4 bg-slate-300" />
+        {/* CTO sub-tree connector (extra breathing room before engineers) */}
+        <div className="relative w-full max-w-[200px] h-10">
+          <div className="absolute left-1/2 top-0 w-px h-4 bg-slate-300 -translate-x-1/2" />
+          <div className="absolute top-4 left-[25%] right-[25%] h-px bg-slate-300" />
+          <div className="absolute top-4 left-[25%] w-px h-6 bg-slate-300" />
+          <div className="absolute top-4 right-[25%] w-px h-6 bg-slate-300" />
         </div>
 
         {/* Engineers */}
         <div className="flex gap-3">
           {engineers.map((e, i) => (
-            <div key={i} className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-center shadow-sm">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <span className="text-[10px] text-slate-400">&lt;&gt;</span>
+            <div key={i} className="rounded-sm border border-slate-200 bg-white px-5 py-3.5 text-center">
+              <div className="flex items-center justify-center mb-1">
+                <FaviconChip provider={e.provider} size={14} />
               </div>
               <p className="font-semibold text-[11px] text-slate-900">{e.name}</p>
               <p className="text-[10px] text-slate-400">{e.role}</p>
-              <div className="flex items-center justify-center gap-1 mt-0.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+              <div className="flex items-center justify-center gap-1.5 mt-1">
+                <FaviconChip provider={e.provider} size={12} />
                 <span className="text-[10px] text-slate-400">{e.provider}</span>
               </div>
             </div>
@@ -615,16 +690,14 @@ const BYOAVisual = () => {
         </div>
       </div>
 
-      {/* Works with any agent */}
-      <div className="mt-8">
-        <p className="text-[11px] text-slate-400 italic mb-3">Works with any agent</p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-          {['OpenClaw', 'Claude', 'Codex', 'Cursor', 'Bash', 'HTTP'].map((a) => (
-            <div key={a} className="flex flex-col items-center gap-1">
-              <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center">
-                <span className="text-[10px] text-slate-400">{a[0]}</span>
-              </div>
-              <span className="text-[9px] text-slate-400">{a}</span>
+      {/* Runtime agents — anchored to bottom of card */}
+      <div className="mt-auto pt-8">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Runtime agents</p>
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+          {['OPENCLAW', 'CLAUDE', 'CODEX', 'CURSOR', 'BASH', 'HTTP'].map((a) => (
+            <div key={a} className="border border-slate-200 px-3 py-2 rounded-sm bg-white flex items-center justify-center gap-1.5">
+              <FaviconChip provider={a} size={12} />
+              <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-700">{a}</span>
             </div>
           ))}
         </div>
@@ -632,6 +705,23 @@ const BYOAVisual = () => {
     </div>
   );
 };
+
+/* ─── Pixel-art bleed wrapper that frames each visual as a clean white card on a pixel scene ─── */
+const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
+  <div
+    className="p-8 sm:p-12 lg:p-14 relative h-full flex flex-col"
+    style={{
+      backgroundImage: `linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.55)), url('/images/feature-bg-pixel.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      imageRendering: 'pixelated',
+    }}
+  >
+    <div className="border border-slate-200 bg-white overflow-hidden shadow-[0_1px_0_rgba(0,0,0,0.04)] flex-1 flex flex-col">
+      {children}
+    </div>
+  </div>
+);
 
 /* ─── Card visuals ─── */
 const cardVisuals = [
@@ -705,26 +795,37 @@ export default function OldWays() {
                 style={{ top: 'calc(15vh)', zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden transition-[filter] duration-200"
+                  className="relative bg-white border border-slate-200 overflow-hidden transition-[filter] duration-200 min-h-[520px] flex flex-col"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
                     transformOrigin: 'center top',
                     filter: t.scale < 1 ? `blur(${(1 - t.scale) * 15}px)` : 'none',
-                    boxShadow: t.scale < 1 ? `0 25px 50px -12px rgba(0,0,0,${0.06 + (1 - t.scale) * 0.1})` : '0 1px 3px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.03)',
                     transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
                   }}
                 >
-                  <div className="grid md:flex items-stretch">
-                    <div className={`${sectionXPadding} py-8 sm:py-10 lg:py-12 md:w-[38%] w-full flex flex-col justify-center`}>
-                      <p className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">{card.tag}</p>
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
+                  {index === 8 && (
+                    <span className="absolute top-4 right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-sm">
+                      FLAGSHIP
+                    </span>
+                  )}
+                  <div className="grid md:flex items-stretch flex-1">
+                    <div className={`${sectionXPadding} pt-8 sm:pt-10 pb-8 sm:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                        <span className="text-slate-400">[{String(index + 1).padStart(2, '0')}]</span>&nbsp;{card.tag}
+                      </p>
+                      <h3 className="font-funneldisplay text-xl sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
                         {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-4 leading-relaxed">{card.description}</p>
+                      <p className="mt-auto pt-6 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                        Learn more →
+                      </p>
                     </div>
-                    <div className="w-full md:w-[62%] bg-slate-50 border-t md:border-t-0 md:border-l border-slate-100 h-[520px] overflow-y-auto">
-                      {cardVisuals[index]}
+                    <div className="w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col">
+                      <PixelFramedVisual>
+                        {cardVisuals[index]}
+                      </PixelFramedVisual>
                     </div>
                   </div>
                 </div>

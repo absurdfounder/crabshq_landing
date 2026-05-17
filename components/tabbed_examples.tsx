@@ -37,11 +37,11 @@ const TabImageHotspots = () => {
       title: 'Helpdesk',
       image: 'https://dazzling-cat.netlify.app/marketingai.png',
       icon: <Users size={isMobile ? 16 : 20} />,
-      activeColor: 'bg-red-100',
-      inactiveColor: 'bg-red-50',
-      bgColor: 'bg-red-100',
-      textColor: 'text-red-800',
-      borderColor: 'border-red-500',
+      activeColor: 'bg-emerald-100',
+      inactiveColor: 'bg-emerald-50',
+      bgColor: 'bg-emerald-100',
+      textColor: 'text-emerald-700',
+      borderColor: 'border-emerald-500',
       hotspots: [
 
       ]
@@ -283,7 +283,7 @@ const TabImageHotspots = () => {
             {/* Browser Chrome - Responsive */}
             <div className={`bg-gray-100 ${isExtraSmall ? 'px-2 py-1' : isSmall ? 'px-3 py-1.5' : 'px-4 py-2'} border-b border-gray-200`}>
               <div className="flex gap-1 sm:gap-2">
-                <div className={`${isExtraSmall ? 'w-2 h-2' : 'w-3 h-3'} rounded-full bg-red-400`}></div>
+                <div className={`${isExtraSmall ? 'w-2 h-2' : 'w-3 h-3'} rounded-full bg-emerald-400`}></div>
                 <div className={`${isExtraSmall ? 'w-2 h-2' : 'w-3 h-3'} rounded-full bg-yellow-400`}></div>
                 <div className={`${isExtraSmall ? 'w-2 h-2' : 'w-3 h-3'} rounded-full bg-green-400`}></div>
               </div>
@@ -331,8 +331,8 @@ const TabImageHotspots = () => {
                           ${isExtraSmall ? 'w-5 h-5' : isSmall ? 'w-6 h-6' : 'w-8 h-8'} 
                           rounded-full
                           ${activeHotspot === hotspot.id
-                            ? 'bg-red-600 text-white scale-110'
-                            : 'bg-white text-red-600 hover:bg-red-100 shadow-md hover:scale-105'
+                            ? 'bg-emerald-600 text-white scale-110'
+                            : 'bg-white text-emerald-600 hover:bg-emerald-100 shadow-md hover:scale-105'
                           }`}
                         onClick={() => handleHotspotInteraction(hotspot.id)}
                         onMouseEnter={() => !isMobile && handleHotspotInteraction(hotspot.id)}

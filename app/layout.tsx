@@ -1,32 +1,29 @@
 // app/layout.tsx or layout.js (depending on your setup)
 import './css/style.css'
 
-import { Inter, Roboto_Mono, Source_Serif_4, Comfortaa, Josefin_Slab } from 'next/font/google'
+import { Inter, Roboto_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import Script from 'next/script'
 
 import Banner from '@/components/banner'
 import SchemaMarkup from '@/components/SchemaMarkup'
 
+/** Body — paragraphs, nav, UI */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-const robotoMono = Roboto_Mono({ subsets: ['latin'], variable: '--font-roboto-mono', display: 'swap' })
-const sourceSerif4 = Source_Serif_4({ subsets: ['latin'], variable: '--font-source-serif-4', display: 'swap' })
-const comfortaa = Comfortaa({ subsets: ['latin'], variable: '--font-comfortaa', display: 'swap' })
-const josefinSlab = Josefin_Slab({ subsets: ['latin'], variable: '--font-josefin-slab', display: 'swap' })
 
+/** Code, CLI, integrations, agent UI */
+const robotoMono = Roboto_Mono({ subsets: ['latin'], variable: '--font-roboto-mono', display: 'swap' })
+
+/** Logo wordmark, badges, small brand labels only */
 const silkscreen = localFont({
   src: [{ path: '../public/fonts/Silkscreen-Regular.ttf', weight: '400', style: 'normal' }],
-  variable: '--font-silkscreen'
+  variable: '--font-silkscreen',
 })
 
-const bungee = localFont({
-  src: '../public/fonts/Bungee-Regular.ttf',
-  variable: '--font-bungee'
-})
-
+/** H1, hero, section titles */
 const funneldisplay = localFont({
   src: '../public/fonts/FunnelDisplay-VariableFont_wght.ttf',
-  variable: '--font-funneldisplay'
+  variable: '--font-funneldisplay',
 })
 
 export const viewport = {
@@ -154,7 +151,9 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.variable} ${robotoMono.variable} ${sourceSerif4.variable} ${comfortaa.variable} ${josefinSlab.variable} ${silkscreen.variable} ${bungee.variable} ${funneldisplay.variable} bg-gray-50 font-inter antialiased text-slate-900 tracking-tight`}>
+      <body
+        className={`${inter.variable} ${robotoMono.variable} ${silkscreen.variable} ${funneldisplay.variable} bg-gray-50 font-sans antialiased text-slate-900 tracking-tight`}
+      >
         <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
           {children}
           <SchemaMarkup />

@@ -144,7 +144,7 @@ export const renderContent = (item: ContentItem, index: number) => {
           href={item.href || '#'} 
           target="_blank" rel="noopener"  
            
-          className="text-red-500 hover:text-red-700 underline"
+          className="text-emerald-500 hover:text-emerald-700 underline"
         >
           {item.text}
         </Link>

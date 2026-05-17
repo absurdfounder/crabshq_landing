@@ -1,6 +1,7 @@
 import Link from 'next/link';
 // Image import is present but not used in this specific policy content
 import Image from 'next/image';
+import SectionShell from '@/components/ui/SectionShell';
 
 export const metadata = {
     title: 'Trooper Terms of Service | OpenClaw AI Workforce Platform',
@@ -41,7 +42,7 @@ export const metadata = {
 
 export default function TermsOfServicePage() { // Renamed component
     return (
-        <section>
+        <SectionShell eyebrow="TERMS OF SERVICE" eyebrowNumber="01" bgClass="bg-white">
             <div className="max-w-3xl mx-auto px-4 sm:px-6"> {/* Adjusted max-width */}
                 <div className="pt-12 pb-12 md:pt-16 md:pb-20"> {/* Adjusted padding */}
 
@@ -58,32 +59,32 @@ export default function TermsOfServicePage() { // Renamed component
                         <div className="mb-8 p-4 border rounded bg-gray-50">
                             <h2 className="text-xl font-semibold mb-3">Table of Contents</h2>
                             <ol className="list-decimal list-inside space-y-1">
-                                <li><a href="#overview" className="text-red-600 hover:underline">Overview</a></li>
-                                <li><a href="#eligibility-account-use" className="text-red-600 hover:underline">Eligibility and Account Use</a></li>
-                                <li><a href="#general-conditions" className="text-red-600 hover:underline">General Conditions</a></li>
-                                <li><a href="#info-accuracy" className="text-red-600 hover:underline">Accuracy, Completeness and Timeliness of Information (on Trooper)</a></li>
-                                <li><a href="#modifications-prices" className="text-red-600 hover:underline">Modifications to the Service and Prices</a></li>
-                                <li><a href="#service-description" className="text-red-600 hover:underline">Service Description and Limitations</a></li>
+                                <li><a href="#overview" className="text-emerald-600 hover:underline">Overview</a></li>
+                                <li><a href="#eligibility-account-use" className="text-emerald-600 hover:underline">Eligibility and Account Use</a></li>
+                                <li><a href="#general-conditions" className="text-emerald-600 hover:underline">General Conditions</a></li>
+                                <li><a href="#info-accuracy" className="text-emerald-600 hover:underline">Accuracy, Completeness and Timeliness of Information (on Trooper)</a></li>
+                                <li><a href="#modifications-prices" className="text-emerald-600 hover:underline">Modifications to the Service and Prices</a></li>
+                                <li><a href="#service-description" className="text-emerald-600 hover:underline">Service Description and Limitations</a></li>
                                 <li>
-                                    <a href="#billing-account-payments" className="text-red-600 hover:underline">Billing, Account Information, and Payments</a>
+                                    <a href="#billing-account-payments" className="text-emerald-600 hover:underline">Billing, Account Information, and Payments</a>
                                     <ul className="list-disc list-inside ml-5 mt-1">
-                                      <li><a href="#refund-policy" className="text-red-600 hover:underline">Refund Policy</a></li>
+                                      <li><a href="#refund-policy" className="text-emerald-600 hover:underline">Refund Policy</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#optional-tools" className="text-red-600 hover:underline">Optional Tools and Integrations</a></li>
-                                <li><a href="#third-party" className="text-red-600 hover:underline">Third-Party Links and Services (including Notion)</a></li>
-                                <li><a href="#user-content" className="text-red-600 hover:underline">User Content, Feedback, and Responsibilities</a></li>
-                                <li><a href="#personal-information" className="text-red-600 hover:underline">Personal Information</a></li>
-                                <li><a href="#errors-omissions" className="text-red-600 hover:underline">Errors, Inaccuracies and Omissions (on Trooper)</a></li>
-                                <li><a href="#prohibited-uses" className="text-red-600 hover:underline">Prohibited Uses</a></li>
-                                <li><a href="#disclaimer-liability" className="text-red-600 hover:underline">Disclaimer of Warranties; Limitation of Liability</a></li>
-                                <li><a href="#indemnification" className="text-red-600 hover:underline">Indemnification</a></li>
-                                <li><a href="#severability" className="text-red-600 hover:underline">Severability</a></li>
-                                <li><a href="#termination" className="text-red-600 hover:underline">Termination</a></li>
-                                <li><a href="#entire-agreement" className="text-red-600 hover:underline">Entire Agreement</a></li>
-                                <li><a href="#governing-law" className="text-red-600 hover:underline">Governing Law</a></li>
-                                <li><a href="#changes-tos" className="text-red-600 hover:underline">Changes to Terms of Service</a></li>
-                                <li><a href="#contact-info" className="text-red-600 hover:underline">Contact Information</a></li>
+                                <li><a href="#optional-tools" className="text-emerald-600 hover:underline">Optional Tools and Integrations</a></li>
+                                <li><a href="#third-party" className="text-emerald-600 hover:underline">Third-Party Links and Services (including Notion)</a></li>
+                                <li><a href="#user-content" className="text-emerald-600 hover:underline">User Content, Feedback, and Responsibilities</a></li>
+                                <li><a href="#personal-information" className="text-emerald-600 hover:underline">Personal Information</a></li>
+                                <li><a href="#errors-omissions" className="text-emerald-600 hover:underline">Errors, Inaccuracies and Omissions (on Trooper)</a></li>
+                                <li><a href="#prohibited-uses" className="text-emerald-600 hover:underline">Prohibited Uses</a></li>
+                                <li><a href="#disclaimer-liability" className="text-emerald-600 hover:underline">Disclaimer of Warranties; Limitation of Liability</a></li>
+                                <li><a href="#indemnification" className="text-emerald-600 hover:underline">Indemnification</a></li>
+                                <li><a href="#severability" className="text-emerald-600 hover:underline">Severability</a></li>
+                                <li><a href="#termination" className="text-emerald-600 hover:underline">Termination</a></li>
+                                <li><a href="#entire-agreement" className="text-emerald-600 hover:underline">Entire Agreement</a></li>
+                                <li><a href="#governing-law" className="text-emerald-600 hover:underline">Governing Law</a></li>
+                                <li><a href="#changes-tos" className="text-emerald-600 hover:underline">Changes to Terms of Service</a></li>
+                                <li><a href="#contact-info" className="text-emerald-600 hover:underline">Contact Information</a></li>
                             </ol>
                         </div>
 
@@ -186,7 +187,7 @@ export default function TermsOfServicePage() { // Renamed component
 
                         {/* --- 10. Personal Information --- */}
                         <h2 id="personal-information">10. Personal Information</h2>
-                        <p>Your submission and our collection and use of personal information through the Service is governed by our <Link href="/privacy" className="text-red-600 hover:underline">Privacy Policy</Link>.</p>
+                        <p>Your submission and our collection and use of personal information through the Service is governed by our <Link href="/privacy" className="text-emerald-600 hover:underline">Privacy Policy</Link>.</p>
 
                         <hr className="my-8" />
 
@@ -274,7 +275,7 @@ export default function TermsOfServicePage() { // Renamed component
                         {/* --- 20. Contact Information --- */}
                         <p>Questions about the Terms of Service should be sent to us at:</p>
                         <ul className="list-none space-y-1 mb-4"> {/* Using list-none for cleaner look */}
-              <li><strong>Email:</strong> <a href="mailto:querykitty@gmail.com" className="text-red-600 hover:underline">querykitty@gmail.com</a></li>
+              <li><strong>Email:</strong> <a href="mailto:querykitty@gmail.com" className="text-emerald-600 hover:underline">querykitty@gmail.com</a></li>
               <li><strong>Mailing Address:</strong> Boring Sites LLC , Delaware</li>
             </ul>
 
@@ -283,6 +284,6 @@ export default function TermsOfServicePage() { // Renamed component
 
                 </div>
             </div>
-        </section>
+        </SectionShell>
     );
 }

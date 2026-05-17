@@ -7,6 +7,7 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import Footer from '@/components/ui/footer'
 import Newsletter from '@/components/newsletter'
+import SectionShell from '@/components/ui/SectionShell'
 import { initGoogleTranslate, ensureTranslation } from '@/app/utils/googleTranslateHelper';
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
@@ -124,7 +125,14 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         {children}
       </main>
 
-      <Newsletter />
+      <SectionShell
+        eyebrow="Get Started"
+        eyebrowNumber="08"
+        bgClass="bg-white"
+        noBorderBottom={false}
+      >
+        <Newsletter />
+      </SectionShell>
       <Footer />
     </PlausibleProvider>
   )

@@ -1,557 +1,234 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowRight, ChevronDown } from 'lucide-react'
+
+import TrooperLogo from '@/components/ui/TrooperLogo'
+import MobileMenu from './mobile-menu'
+import PixelButton from './PixelButton'
+import TranslateButton from './TranslateButton'
 import {
-  ChevronDown,
-  ArrowRight,
-  Sparkles,
-  Camera,
-  MessageCircle,
-  Code,
-  Globe,
-  Lock,
-  Network,
-  Terminal,
-  Users,
-  Github,
-  CheckCircle,
-  Brain,
-  Mail,
-  Puzzle,
-  Zap,
-  Chrome,
-  Bot,
-  BookOpen,
-  ScrollText,
-  Megaphone,
-  TrendingUp,
-  Wrench,
-  Palette,
-  Headphones,
-  Settings,
-  DollarSign,
-  Scale,
-  Briefcase,
-  FlaskConical,
-  Shield,
-  Radio,
-  Rocket
-} from 'lucide-react';
-import Logo from '@/public/images/trooper-logo.png';
-import MobileMenu from './mobile-menu';
-import TabletMenu from './tablet-menu';
-import TranslateButton from './TranslateButton';
-import { getCalApi } from "@calcom/embed-react";
+  featureNavItems,
+  primaryNavLinks,
+  teamNavItems,
+  type NavItem,
+} from './nav-data'
+
+type DropdownKey = 'features' | 'teams' | null
 
 export default function Header() {
-  const [top, setTop] = useState<boolean>(true);
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [teamsDropdownOpen, setTeamsDropdownOpen] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isBookHovered, setIsBookHovered] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLLIElement>(null);
-  const teamsDropdownRef = useRef<HTMLLIElement>(null);
+  const [scrolled, setScrolled] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
+  const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    const scrollHandler = () => {
-      window.pageYOffset > 10 ? setTop(false) : setTop(true);
-    };
-    window.addEventListener('scroll', scrollHandler);
-    return () => window.removeEventListener('scroll', scrollHandler);
-  }, []);
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
+    if (!openDropdown) return
+    const onClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null)
       }
-      if (teamsDropdownRef.current && !teamsDropdownRef.current.contains(event.target as Node)) {
-        setTeamsDropdownOpen(false);
-      }
-    };
-
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        if (dropdownOpen) setDropdownOpen(false);
-        if (teamsDropdownOpen) setTeamsDropdownOpen(false);
-      }
-    };
-
-    if (dropdownOpen || teamsDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleEscapeKey);
     }
-
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenDropdown(null)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscapeKey);
-    };
-  }, [dropdownOpen, teamsDropdownOpen]);
-
-  // Initialize Cal.com booking widget
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ "namespace": "setup-call" });
-      cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
-    })();
-  }, []);
+      document.removeEventListener('mousedown', onClickOutside)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [openDropdown])
 
   return (
-    <>
-      {/* Main Header */}
-      <header
-        className={`w-full z-30 transition-all duration-300 ease-in-out w-full fixed top-0 z-40 bg-white/80 backdrop-blur-sm border-b border-gray-100 px-4 md:px-6 ${!top ? 'bg-none' : ''}`}
-      >
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:py-2.5 sm:px-6">
-          <div className="flex items-center justify-between h-11 sm:h-12 md:h-12">
-            {/* Logo */}
-            <div className='flex items-center'>
-              <Link href="/" className="shrink-0 mr-2 sm:mr-4 relative group">
-                <Image
-                  src={Logo}
-                  alt="Trooper"
-                  width={260}
-                  height={200}
-                  className="relative w-44 h-auto sm:w-52 md:w-56 lg:w-48"
-                  priority
-                />
-              </Link>
+    <header
+      className={`fixed top-0 z-40 w-full border-b border-slate-200 transition-all duration-200 ${
+        scrolled
+          ? 'bg-white/90 shadow-sm backdrop-blur-md'
+          : 'bg-white/80 backdrop-blur-sm'
+      }`}
+    >
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 border-l border-r border-slate-200 px-4 sm:h-16 sm:px-6">
+        <TrooperLogo
+          asLink
+          priority
+          className="shrink-0"
+          characterClassName="h-7 w-auto sm:h-8 [image-rendering:pixelated]"
+          textClassName="text-base sm:text-lg"
+        />
 
-              <TranslateButton />
-            </div>
+        <nav
+          ref={navRef}
+          className="hidden flex-1 items-center justify-center lg:flex"
+          aria-label="Primary"
+        >
+          <ul className="flex items-center gap-1">
+            <NavDropdownItem
+              label="Features"
+              title="Features"
+              items={featureNavItems}
+              isOpen={openDropdown === 'features'}
+              onToggle={() =>
+                setOpenDropdown(openDropdown === 'features' ? null : 'features')
+              }
+              onClose={() => setOpenDropdown(null)}
+            />
+            <NavDropdownItem
+              label="Teams"
+              title="AI Teams"
+              items={teamNavItems}
+              isOpen={openDropdown === 'teams'}
+              onToggle={() =>
+                setOpenDropdown(openDropdown === 'teams' ? null : 'teams')
+              }
+              onClose={() => setOpenDropdown(null)}
+            />
+            {primaryNavLinks.map((link) => (
+              <li key={link.href}>
+                <NavLink href={link.href} label={link.label} />
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-            {/* Desktop navigation */}
-            <nav className="hidden lg:flex lg:grow">
-              <ul className="flex gap-2 sm:gap-3 items-center justify-end w-full">
-                <li className="relative" ref={dropdownRef}>
-                  <button
-                    className="font-bold text-slate-800 hover:text-[#009fbc] py-2 flex items-center transition duration-150 ease-in-out relative group text-base"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    aria-expanded={dropdownOpen}
-                  >
-                    <span className="relative overflow-hidden text-ellipsis max-w-[120px] block after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[#009fbc] group-hover:after:w-full after:transition-all after:duration-300">Features</span>
-                    <ChevronDown className={`w-4 h-4 ml-1 text-slate-400 transition-transform duration-200 flex-shrink-0 ${dropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {dropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute right-0 top-full mt-2 z-50"
-                      >
-                        <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black/5 bg-white">
-                          <div className="p-6 w-[640px]">
-                            <h3 className="mb-4 text-xs font-semibold tracking-wider text-neutral-400 uppercase">
-                              Features
-                            </h3>
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-
-                              <DropdownLink
-                                href="/features/ai-workforce"
-                                iconColor="text-purple-500"
-                                bgColor="bg-purple-50"
-                                icon={Users} // Add Users icon from lucide-react
-                                title="AI Workforce"
-                                description="Multiple AI employees working together"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/github-integration"
-                                iconColor="text-slate-700"
-                                bgColor="bg-slate-50"
-                                icon={Github} // Add Github icon from lucide-react
-                                title="GitHub Integration"
-                                description="Autonomous commits, PRs, and code reviews"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/task-execution"
-                                iconColor="text-emerald-500"
-                                bgColor="bg-emerald-50"
-                                icon={CheckCircle} // Add CheckCircle icon
-                                title="Task Execution"
-                                description="End-to-end task completion, not just answers"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/persistent-memory"
-                                iconColor="text-indigo-500"
-                                bgColor="bg-indigo-50"
-                                icon={Brain} // Add Brain icon
-                                title="Persistent Memory"
-                                description="Remembers context across all tasks"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/browser-control"
-                                iconColor="text-red-500"
-                                bgColor="bg-red-50"
-                                icon={Globe}
-                                title="Browser Control"
-                                description="Navigate web, fill forms, extract data"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/system-access"
-                                iconColor="text-orange-500"
-                                bgColor="bg-orange-50"
-                                icon={Terminal} // Add Terminal icon
-                                title="Full System Access"
-                                description="Execute scripts, manage files, run commands"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/email-automation"
-                                iconColor="text-red-500"
-                                bgColor="bg-red-50"
-                                icon={Mail} // Add Mail icon
-                                title="Email & Communication"
-                                description="Gmail, Slack, Discord integration"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/skills-plugins"
-                                iconColor="text-violet-500"
-                                bgColor="bg-violet-50"
-                                icon={Puzzle} // Add Puzzle icon
-                                title="Skills & Plugins"
-                                description="Extend with community or custom skills"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/multi-agent-collaboration"
-                                iconColor="text-cyan-500"
-                                bgColor="bg-cyan-50"
-                                icon={Network} // Add Network icon
-                                title="Multi-Agent Teams"
-                                description="AI employees collaborate on complex tasks"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/openclaw-powered"
-                                iconColor="text-pink-500"
-                                bgColor="bg-pink-50"
-                                icon={Sparkles}
-                                title="OpenClaw Runtime"
-                                description="Built on proven OpenClaw framework"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/integration"
-                                iconColor="text-red-500"
-                                bgColor="bg-red-50"
-                                icon={Zap}
-                                title="Integrations"
-                                description="GitHub, Gmail, Notion, APIs & more"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/features/chat-interfaces"
-                                iconColor="text-green-500"
-                                bgColor="bg-green-50"
-                                icon={MessageCircle}
-                                title="Chat Anywhere"
-                                description="WhatsApp, Telegram, Discord, Slack, Signal"
-                                onClick={() => setDropdownOpen(false)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </li>
-
-                <li className="relative" ref={teamsDropdownRef}>
-                  <button
-                    className="font-bold text-slate-800 hover:text-[#009fbc] py-2 flex items-center transition duration-150 ease-in-out relative group text-base"
-                    onClick={() => setTeamsDropdownOpen(!teamsDropdownOpen)}
-                    aria-expanded={teamsDropdownOpen}
-                  >
-                    <span className="relative overflow-hidden text-ellipsis max-w-[120px] block after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[#009fbc] group-hover:after:w-full after:transition-all after:duration-300">Teams</span>
-                    <ChevronDown className={`w-4 h-4 ml-1 text-slate-400 transition-transform duration-200 flex-shrink-0 ${teamsDropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {teamsDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute right-0 top-full mt-2 z-50"
-                      >
-                        <div className="overflow-hidden rounded-lg shadow-xl ring-1 ring-black/5 bg-white">
-                          <div className="p-6 w-[640px]">
-                            <h3 className="mb-4 text-xs font-semibold tracking-wider text-neutral-400 uppercase">
-                              AI Teams
-                            </h3>
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-
-                              <DropdownLink
-                                href="/teams/marketing"
-                                iconColor="text-pink-500"
-                                bgColor="bg-pink-50"
-                                icon={Megaphone}
-                                title="Marketing Team"
-                                description="AI-powered marketing campaigns & strategies"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/sales"
-                                iconColor="text-blue-500"
-                                bgColor="bg-blue-50"
-                                icon={TrendingUp}
-                                title="Sales Team"
-                                description="Intelligent lead generation & deal closing"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/engineering"
-                                iconColor="text-slate-600"
-                                bgColor="bg-slate-50"
-                                icon={Code}
-                                title="Engineering Team"
-                                description="Automated development & code reviews"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/design"
-                                iconColor="text-purple-500"
-                                bgColor="bg-purple-50"
-                                icon={Palette}
-                                title="Design Team"
-                                description="Creative design & brand assets"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/customer-support"
-                                iconColor="text-green-500"
-                                bgColor="bg-green-50"
-                                icon={Headphones}
-                                title="Customer Support Team"
-                                description="24/7 support & customer success"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/operations"
-                                iconColor="text-orange-500"
-                                bgColor="bg-orange-50"
-                                icon={Settings}
-                                title="Operations Team"
-                                description="Process automation & optimization"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/finance"
-                                iconColor="text-emerald-500"
-                                bgColor="bg-emerald-50"
-                                icon={DollarSign}
-                                title="Finance Team"
-                                description="Financial planning & analysis"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/legal"
-                                iconColor="text-indigo-500"
-                                bgColor="bg-indigo-50"
-                                icon={Scale}
-                                title="Legal Team"
-                                description="Contract review & compliance"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/business-development"
-                                iconColor="text-cyan-500"
-                                bgColor="bg-cyan-50"
-                                icon={Briefcase}
-                                title="Business Development"
-                                description="Partnership & growth opportunities"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/research"
-                                iconColor="text-violet-500"
-                                bgColor="bg-violet-50"
-                                icon={FlaskConical}
-                                title="Research Team"
-                                description="Market research & data analysis"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/security"
-                                iconColor="text-red-500"
-                                bgColor="bg-red-50"
-                                icon={Shield}
-                                title="Security Team"
-                                description="Security audits & threat detection"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/pr"
-                                iconColor="text-fuchsia-500"
-                                bgColor="bg-fuchsia-50"
-                                icon={Radio}
-                                title="PR Team"
-                                description="Public relations & media management"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                              <DropdownLink
-                                href="/teams/growth"
-                                iconColor="text-amber-500"
-                                bgColor="bg-amber-50"
-                                icon={Rocket}
-                                title="Growth Team"
-                                description="User acquisition & retention strategies"
-                                onClick={() => setTeamsDropdownOpen(false)}
-                              />
-
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </li>
-
-                <li>
-                  <NavLink href="/integration" text="Skills" />
-                </li>
-
-                <li>
-                  <NavLink href="/download" text="Download" />
-                </li>
-
-                <li>
-                  <Link
-                    href="https://app.trooper.so"
-                    target='_blank'
-                    className="btn-sm text-black border border-gray-200 bg-white hover:bg-slate-800 hover:text-white ml-2 flex items-center justify-between px-3 py-1.5 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base"
-                    onMouseEnter={() => setIsBookHovered(true)}
-                    onMouseLeave={() => setIsBookHovered(false)}
-                  >
-                    <div className="relative z-10 overflow-hidden w-full">
-                      <div className="flex items-center justify-between">
-                        <span className="truncate max-w-[120px]">Sign In</span>
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="https://app.trooper.so"
-                    target='_blank'
-                    className="btn-sm text-white bg-red-600 hover:bg-red-700 ml-2 flex items-center justify-between px-4 py-2 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base font-semibold"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    <div className="relative z-10 overflow-hidden w-full">
-                      <div className="flex items-center justify-between">
-                        <div className="transition-transform duration-300 transform truncate max-w-[150px]"
-                          style={{
-                            transform: isHovered ? 'translateY(-100%)' : 'translateY(0)'
-                          }}>
-                          Get Started for free
-                        </div>
-                        <div className="transition-transform duration-300 transform absolute top-0 left-0 truncate max-w-[150px]"
-                          style={{
-                            transform: isHovered ? 'translateY(0)' : 'translateY(100%)'
-                          }}>
-                          Takes 15 mins
-                        </div>
-                        <ArrowRight className="w-4 h-4 ml-2 relative z-10 transform group-hover:translate-x-1 transition-transform flex-shrink-0" />
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-
-            {/* Tablet menu */}
-            <div className="hidden md:block lg:hidden">
-              <TabletMenu />
-            </div>
-
-
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+          <div className="hidden lg:block">
+            <TranslateButton />
           </div>
+
+          <Link
+            href="https://app.trooper.so"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 lg:inline-flex"
+          >
+            Sign in
+          </Link>
+
+          <PixelButton
+            href="https://app.trooper.so"
+            external
+            size="sm"
+            tone="brand"
+            className="hidden lg:inline-flex"
+            icon={<ArrowRight className="h-3.5 w-3.5" />}
+          >
+            Get started
+          </PixelButton>
+
+          <MobileMenu />
         </div>
-      </header>
-    </>
-  );
+      </div>
+    </header>
+  )
 }
 
-interface DropdownLinkProps {
-  href: string;
-  icon: React.ComponentType<{ className?: string; strokeWidth?: string | number }>;
-  iconColor: string;
-  bgColor: string;
-  title: string;
-  description: string;
-  onClick?: () => void;
+function NavDropdownItem({
+  label,
+  title,
+  items,
+  isOpen,
+  onToggle,
+  onClose,
+}: {
+  label: string
+  title: string
+  items: NavItem[]
+  isOpen: boolean
+  onToggle: () => void
+  onClose: () => void
+}) {
+  return (
+    <li className="relative">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+          isOpen
+            ? 'bg-slate-50 text-slate-900'
+            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+        }`}
+      >
+        {label}
+        <ChevronDown
+          className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+            isOpen ? 'rotate-180 text-slate-600' : ''
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen ? (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            className="absolute left-1/2 top-full z-50 mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
+            role="menu"
+          >
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5">
+              <div className="p-5">
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    {title}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                  {items.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={onClose}
+                        role="menuitem"
+                        className="group flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-slate-50"
+                      >
+                        <span
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.bgColor} transition-transform group-hover:scale-105`}
+                        >
+                          <Icon className={`h-4 w-4 ${item.iconColor}`} strokeWidth={2} />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-medium text-slate-900 group-hover:text-emerald-600">
+                            {item.title}
+                          </span>
+                          {item.description ? (
+                            <span className="mt-0.5 block truncate text-xs text-slate-500">
+                              {item.description}
+                            </span>
+                          ) : null}
+                        </span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </li>
+  )
 }
 
-function DropdownLink({ href, icon: Icon, iconColor, bgColor, title, description, onClick }: DropdownLinkProps) {
+function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      onClick={onClick}
-      className="flex items-center gap-3 rounded-lg px-3 py-3 transition-all duration-200 hover:bg-neutral-50 group"
+      className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
     >
-      <div className={`flex-shrink-0 ${iconColor} ${bgColor} transition-all duration-200 group-hover:scale-110 p-2.5 rounded-lg`}>
-        <Icon className="w-[18px] h-[18px]" strokeWidth={2} />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-neutral-800 group-hover:text-[#009fbc] transition-colors duration-200 mb-0.5">
-          {title}
-        </p>
-        <p className="text-xs text-neutral-500 leading-snug">
-          {description}
-        </p>
-      </div>
+      {label}
     </Link>
-  );
-}
-
-interface NavLinkProps {
-  href: string;
-  text: string;
-}
-
-function NavLink({ href, text }: NavLinkProps) {
-  return (
-    <Link
-      href={href}
-      className="font-medium text-slate-900 hover:text-[#009fbc] px-1 py-2 flex items-center transition duration-150 ease-in-out relative group text-base"
-    >
-      <span className="relative truncate max-w-[120px] block after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-[#009fbc] group-hover:after:w-full after:transition-all after:duration-300">{text}</span>
-    </Link>
-  );
+  )
 }

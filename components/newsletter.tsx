@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'; // Import React hooks
-import Image from 'next/image'; // Import the Image component from Next.js
 import Link from 'next/link';
+import PixelButton from './ui/PixelButton';
 
 // --- Reusable Flipping Button Component ---
 interface FlippingButtonLinkProps {
@@ -96,14 +96,7 @@ export default function Newsletter() {
             }}
           >
 
-            {/* Background illustration */}
-            <div className="absolute right-0 pointer-events-none hidden lg:block" >
-              <Image alt="Logo"
-                width={600}
-                height={600}
-                className="block"
-                src="https://dazzling-cat.netlify.app/Trooperperson.png" />
-            </div>
+            {/* removed broken Trooperperson.png — gradient bg carries the look */}
 
             <div className="relative flex flex-col lg:flex-row justify-between items-center">
 
@@ -113,7 +106,7 @@ export default function Newsletter() {
                   Try the <span style={{ color: '#f9551f' }}>alien tech</span> in your company.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
-                {/* <h3 className="text-slate-100 my-2">Build <span className="text-red-400">{words[index]}</span> Sites</h3> */}
+                {/* <h3 className="text-slate-100 my-2">Build <span className="text-emerald-400">{words[index]}</span> Sites</h3> */}
                 <p className="text-sm sm:text-base font-normal text-slate-100/75 my-2">
                   Deploy AI employees that write code, manage tasks, connect to 3,000 tools, and get things done — without the overhead of hiring.
                 </p>
@@ -122,19 +115,16 @@ export default function Newsletter() {
                 <form className="w-full lg:w-auto mt-6">
                   <div className="flex flex-col sm:flex-row gap-3 max-w-xs mx-auto sm:max-w-none lg:mx-0 lg:gap-2">
                     {/* --- UPDATED CTA Button --- */}
-                    <Link
-                      href="https://app.trooper.so"
-                      className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg text-white bg-red-600 hover:bg-red-700 w-full sm:w-auto whitespace-nowrap"
-                    >
+                    <PixelButton href="https://app.trooper.so" external size="md">
                       Get started for free
-                    </Link>
+                    </PixelButton>
                     {/* --- END OF UPDATE --- */}
 
                     {/* Original button commented out for reference */}
-                    {/* <Link href="https://app.trooper.so" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
+                    {/* <Link href="https://app.trooper.so" className="btn text-dark text-2xl bg-emerald-300 hover:bg-emerald-700 hover:text-emerald-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
 
                     {/* Original Subscribe button (commented out in user code) */}
-                    {/* <button type="submit" className="btn text-white bg-red-600 hover:bg-red-700 shadow" href="#0">Subscribe</button> */}
+                    {/* <button type="submit" className="btn text-white bg-emerald-600 hover:bg-emerald-700 shadow" href="#0">Subscribe</button> */}
                   </div>
                   {/* Success message (commented out in user code) */}
                   {/* <p className="text-sm text-gray-400 mt-3">Thanks for subscribing!</p> */}

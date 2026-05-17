@@ -3,11 +3,11 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Github, Sparkles, FileImage, Smile } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
+import PixelButton from './ui/PixelButton';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -66,12 +66,13 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <ul className="flex flex-col sm:flex-col gap-3 text-sm text-slate-500">
+    <ul className="flex flex-col border border-slate-200 p-4 sm:p-5 divide-y divide-slate-200">
       {features.map((feature, index) => (
-        <li key={index} className="flex items-center gap-2">
-          <span className="underline cursor-pointer decoration-dashed underline-offset-4 decoration-neutral-400">
-            {feature.name}
+        <li key={index} className="flex items-start gap-3 py-2.5 text-sm text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
+          <span className="font-mono text-[11px] text-slate-400 tracking-[0.18em] pt-0.5 flex-shrink-0">
+            {String(index + 1).padStart(2, '0')}
           </span>
+          <span>{feature.name}</span>
         </li>
       ))}
     </ul>
@@ -120,7 +121,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 border-l border-r border-slate-200">
 
         <div className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
@@ -132,6 +133,12 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   <ProductHuntBadge />
                 </div>
 
+                <div className="mb-4">
+                  <span className="type-eyebrow-num">
+                    <span className="text-slate-400">[01]</span>&nbsp;Hero
+                  </span>
+                </div>
+
                 <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
                   <span className="block reveal reveal__usp">
                     Hire AI employees. Set goals.{' '}
@@ -139,30 +146,33 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   </span>
                 </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span style={{ color: '#bc0010' }} className="font-medium">OpenClaw</span>.</p>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span className="font-medium text-emerald-600">OpenClaw</span>.</p>
 
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 mb-2 items-stretch justify-start px-0">
-                <Link
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mt-4 sm:mt-6 mb-2 items-start justify-start px-0">
+                <PixelButton
                   href="https://app.trooper.so?ref=herolanding"
-                  className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
+                  external
+                  size="lg"
+                  tone="brand"
+                  icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  <span>Get Started for free</span>
-                </Link>
+                  Get Started for free
+                </PixelButton>
 
-                <button
+                <PixelButton
+                  size="lg"
+                  variant="outline"
+                  tone="dark"
+                  icon={<ArrowRight className="h-4 w-4" />}
                   data-cal-namespace="setup-call"
                   data-cal-link="set-meeting/setup-call"
                   data-cal-config='{"layout":"month_view"}'
-                  className="text-black border border-gray-600 bg-white hover:bg-slate-800 hover:text-white flex items-center justify-start px-4 py-2.5 sm:py-2.5 rounded-md transition duration-150 ease-in-out group w-full sm:w-auto text-sm sm:text-base min-h-[48px] sm:min-h-auto sm:ml-0"
                 >
-                  <div className="flex items-center justify-start w-full">
-                    <span>Book a Demo</span>
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
+                  Book a Demo
+                </PixelButton>
               </div>
 
               {/* Features - Works with (align left on desktop) */}

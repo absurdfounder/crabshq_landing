@@ -1,265 +1,181 @@
 'use client'
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { X, Menu, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 
-interface MenuItem {
-  label: string;
-  href: string;
-  description?: string;
-  icon?: React.ReactNode;
+import {
+  featureNavItems,
+  primaryNavLinks,
+  teamNavItems,
+  type NavItem,
+} from './nav-data'
+
+type AccordionProps = {
+  label: string
+  items: NavItem[]
+  onNavigate: () => void
+  defaultOpen?: boolean
+}
+
+function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionProps) {
+  const [open, setOpen] = useState(defaultOpen)
+
+  return (
+    <div className="border-b border-slate-100">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex w-full items-center justify-between py-4 text-left text-[15px] font-semibold text-slate-900"
+        aria-expanded={open}
+      >
+        <span>{label}</span>
+        <ChevronDown
+          className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+      {open ? (
+        <ul className="grid grid-cols-1 gap-1 pb-3">
+          {items.map((item) => {
+            const Icon = item.icon
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onNavigate}
+                  className="flex items-center gap-3 rounded-lg p-2 text-slate-800 active:bg-slate-50"
+                >
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ${item.bgColor}`}
+                  >
+                    <Icon className={`h-4 w-4 ${item.iconColor}`} strokeWidth={2} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-medium text-slate-900">{item.title}</span>
+                    {item.description ? (
+                      <span className="block truncate text-xs text-slate-500">
+                        {item.description}
+                      </span>
+                    ) : null}
+                  </span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      ) : null}
+    </div>
+  )
 }
 
 export default function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [buildMenuOpen, setBuildMenuOpen] = useState(false);
-
-  const buildItems: MenuItem[] = [
-    {
-      label: 'Help Center',
-      href: '/create-a-helpdesk-servicedesk-notion',
-      description: 'Professional self-service help center with Notion',
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Blog',
-      href: '/create-a-blog-notion',
-      description: 'Beautiful blog for your startup with Notion',
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Changelogs',
-      href: '/create-a-company-wiki-notion',
-      description: 'Company wiki with protected access and AI',
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Product Docs',
-      href: '/create-a-documentation-notion',
-      description: 'Product docs, wikis, and API dashboards',
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Marketplace',
-      href: '/create-a-marketplace-notion',
-      description: 'Community marketplace handling millions in traffic',
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-        </svg>
-      ),
-    },
-  ];
-
-  const handleClose = () => {
-    setIsOpen(false);
-    setBuildMenuOpen(false);
-  };
+  const [isOpen, setIsOpen] = useState(false)
+  const close = () => setIsOpen(false)
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    if (!isOpen) return
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    document.documentElement.dataset.menuOpen = 'true'
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
     }
+    document.addEventListener('keydown', onKey)
     return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose();
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = previous
+      delete document.documentElement.dataset.menuOpen
+      document.removeEventListener('keydown', onKey)
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
-    <>
-      {/* Menu Toggle Button */}
+    <div className="lg:hidden">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
-        aria-label="Toggle menu"
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm active:bg-slate-50"
+        aria-label="Open menu"
+        aria-expanded={isOpen}
       >
-        {isOpen ? (
-          <X className="w-6 h-6 text-slate-900" />
-        ) : (
-          <Menu className="w-6 h-6 text-slate-900" />
-        )}
+        <Menu className="h-5 w-5" />
       </button>
 
-      {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 md:hidden"
-          onClick={handleClose}
-          style={{
-            animation: 'fadeIn 0.2s ease-out',
-          }}
+      {isOpen ? (
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={close}
+          className="fixed inset-0 z-[100] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out]"
         />
-      )}
+      ) : null}
 
-      {/* Side Menu Panel */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 md:hidden transform transition-transform duration-300 ease-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        aria-hidden={!isOpen}
+        className={`fixed inset-y-0 right-0 z-[110] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+          isOpen ? 'translate-x-0' : 'pointer-events-none translate-x-full'
         }`}
       >
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-slate-200">
-            <h2 className="text-lg font-bold text-slate-900">Menu</h2>
-            <button
-              onClick={handleClose}
-              className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5 text-slate-600" />
-            </button>
-          </div>
-
-          {/* Menu Content */}
-          <div className="flex-1 overflow-y-auto">
-            <nav className="p-4 space-y-1">
-              {/* Affiliate */}
-              <Link
-                href="https://trooper.lemonsqueezy.com/affiliates"
-                onClick={handleClose}
-                className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Affiliate</span>
-              </Link>
-
-              {/* Pricing */}
-              <Link
-                href="/pricing"
-                onClick={handleClose}
-                className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Pricing</span>
-              </Link>
-
-              {/* Download */}
-              <Link
-                href="/download"
-                onClick={handleClose}
-                className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Download</span>
-              </Link>
-
-              {/* Build Dropdown */}
-              <div>
-                <button
-                  onClick={() => setBuildMenuOpen(!buildMenuOpen)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-                >
-                  <span className="font-medium">Build</span>
-                  <ChevronRight
-                    className={`w-5 h-5 text-slate-400 transition-transform duration-200 ${
-                      buildMenuOpen ? 'rotate-90' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Build Submenu */}
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    buildMenuOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="pl-4 pr-2 py-2 space-y-2">
-                    {buildItems.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={handleClose}
-                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="text-red-600 flex-shrink-0 mt-0.5">
-                          {item.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-slate-900 text-sm group-hover:text-red-600 transition-colors">
-                            {item.label}
-                          </div>
-                          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
-                            {item.description}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Login */}
-              <Link
-                href="https://app.trooper.so"
-                onClick={handleClose}
-                className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                <span className="font-medium">Login</span>
-              </Link>
-            </nav>
-          </div>
-
-          {/* Footer CTA */}
-          <div className="p-4 border-t border-slate-200">
-            <Link
-              href="https://app.trooper.so"
-              target="_blank"
-              onClick={handleClose}
-              className="flex items-center justify-center w-full px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all duration-300 font-medium group"
-            >
-              <span>Create free account</span>
-              <svg
-                className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
-                fill="currentColor"
-                viewBox="0 0 12 12"
-              >
-                <path
-                  d="M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z"
-                  fillRule="nonzero"
-                />
-              </svg>
-            </Link>
-          </div>
+        <div className="flex h-14 items-center justify-between border-b border-slate-100 bg-white px-4">
+          <span className="font-display text-base font-bold text-slate-900">Menu</span>
+          <button
+            type="button"
+            onClick={close}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 active:bg-slate-100"
+            aria-label="Close menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
-      </div>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-      `}</style>
-    </>
-  );
+        <nav className="flex-1 overflow-y-auto overscroll-contain bg-white px-4 pb-4">
+          <Accordion label="Features" items={featureNavItems} onNavigate={close} defaultOpen />
+          <Accordion label="Teams" items={teamNavItems} onNavigate={close} />
+
+          {primaryNavLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={close}
+              className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <Link
+            href="https://app.trooper.so"
+            onClick={close}
+            className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
+          >
+            Sign in
+          </Link>
+        </nav>
+
+        <div className="border-t border-slate-100 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <Link
+            href="https://app.trooper.so"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={close}
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm active:bg-emerald-700"
+          >
+            Get started free
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/pricing"
+            onClick={close}
+            className="mt-2 flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50"
+          >
+            View pricing
+          </Link>
+        </div>
+      </aside>
+    </div>
+  )
 }

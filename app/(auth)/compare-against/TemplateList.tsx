@@ -215,7 +215,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                 <button
                   key={tag}
                   onClick={() => toggleTag(tag)}
-                  className={`w-full px-4 py-2 text-left flex items-center justify-between ${selectedTags.includes(tag) ? 'bg-red-700 text-white' : 'hover:bg-slate-100'}`}
+                  className={`w-full px-4 py-2 text-left flex items-center justify-between ${selectedTags.includes(tag) ? 'bg-emerald-700 text-white' : 'hover:bg-slate-100'}`}
                 >
                   <span className="flex items-center">
                     <Tag className="mr-2 h-4 w-4" />
@@ -235,7 +235,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                     <button
                       key={tag}
                       onClick={() => toggleTag(tag)}
-                      className={`w-full px-4 py-2 text-left flex items-center justify-between ${selectedTags.includes(tag) ? 'bg-red-700 text-white' : 'hover:bg-slate-100'}`}
+                      className={`w-full px-4 py-2 text-left flex items-center justify-between ${selectedTags.includes(tag) ? 'bg-emerald-700 text-white' : 'hover:bg-slate-100'}`}
                     >
                       <span className="flex items-center">
                         <Tag className="mr-2 h-4 w-4" />
@@ -253,7 +253,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
               {lesserTags.length > 0 && (
                 <button
                   onClick={() => setShowAllTags(!showAllTags)}
-                  className="w-full px-4 py-2 text-left text-red-600 border-t"
+                  className="w-full px-4 py-2 text-left text-emerald-600 border-t"
                 >
                   {showAllTags ? "Show less" : `Show all (${lesserTags.length} more)`}
                 </button>
@@ -263,7 +263,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
               {selectedTags.length > 0 && (
                 <button
                   onClick={clearTags}
-                  className="w-full px-4 py-2 text-left text-red-600 border-t"
+                  className="w-full px-4 py-2 text-left text-emerald-600 border-t"
                 >
                   Clear all tags
                 </button>
@@ -281,7 +281,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                 key={tag}
                 onClick={() => toggleTag(tag)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${selectedTags.includes(tag)
-                  ? "bg-red-500 text-white"
+                  ? "bg-emerald-500 text-white"
                   : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                   }`}
                 whileHover={{ scale: 1.05 }}
@@ -300,7 +300,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
                 key={tag}
                 onClick={() => toggleTag(tag)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${selectedTags.includes(tag)
-                  ? "bg-red-500 text-white"
+                  ? "bg-emerald-500 text-white"
                   : "bg-slate-200 text-slate-600 hover:bg-slate-200"
                   }`}
                 whileHover={{ scale: 1.05 }}
@@ -318,7 +318,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
           {lesserTags.length > 0 && (
             <button
               onClick={toggleShowAllTags}
-              className="text-sm text-red-600 hover:text-red-800 font-medium transition-colors duration-200 mt-2"
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200 mt-2"
             >
               {showAllTags ? "Show less" : `Show all (${lesserTags.length} more)`}
             </button>
@@ -328,7 +328,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
           {selectedTags.length > 0 && (
             <button
               onClick={clearTags}
-              className="text-sm text-red-600 hover:text-red-800 font-medium transition-colors duration-200 mt-2"
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200 mt-2"
             >
               Clear all filters
             </button>
@@ -373,10 +373,10 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
 
                       <div className='flex flex-col sm:flex-row justify-between gap-2 sm:gap-4'>
                         <Link href={"/integration/" + template.id} className="group flex gap-2 items-center flex-1 min-w-0">
-                          <span className="text-start font-bold group-hover:text-red-600 transition-colors duration-300 truncate">
+                          <span className="text-start font-bold group-hover:text-emerald-600 transition-colors duration-300 truncate">
                             {template.product.name}
                           </span>
-                          <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-red-600 transition-colors duration-300 flex-shrink-0" />
+                          <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors duration-300 flex-shrink-0" />
                         </Link>
 
                         <span className="inline-block bg-slate-100 border-slate-200 border-dashed border-2 px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap self-start sm:self-auto">

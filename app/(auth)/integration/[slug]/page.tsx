@@ -6,6 +6,7 @@ import type { Skill } from '../../../utils/helper';
 import MoveBack from '@/components/MoveBack';
 import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
+import SectionShell from '@/components/ui/SectionShell';
 import SkillDetailClient from './SkillDetailClient';
 
 // Type definitions for integrations
@@ -288,7 +289,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <div>
         <Header />
         <br/><br/><br/><br/><br/>
-        <div className="max-w-6xl m-auto my-8">
+        <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white">
+        <div className="max-w-6xl m-auto my-8 px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-y-8 gap-x-8 lg:grid-cols-2 xl:gap-x-12">
             <div>
               <MoveBack />
@@ -329,6 +331,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
               quality="90"
             />
           </div>
+        </div>
+        </SectionShell>
+
+        <SectionShell eyebrow="HOW IT WORKS" eyebrowNumber="02" bgClass="bg-slate-50">
+        <div className="max-w-6xl m-auto py-8 px-4 sm:px-6">
           <div className="mb-4">
             <h1 className="font-funneldisplay text-2xl font-bold text-slate-800">Overview</h1>
             <p className="text-md text-slate-600">{integration.overview.content}</p>
@@ -342,6 +349,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <p className="text-md text-slate-600">{integration.configuration.content}</p>
           </div>
         </div>
+        </SectionShell>
       </div>
     );
   }
@@ -365,6 +373,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <article itemScope itemType="https://schema.org/SoftwareSourceCode">
       <Header />
       <SkillStructuredData skill={skill} relatedSkills={relatedSkills} />
+      <SectionShell eyebrow="SKILL" eyebrowNumber="01" bgClass="bg-white">
       <div className="pt-24 pb-4">
         {/* Breadcrumb navigation */}
         <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -478,7 +487,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                   <div className="mt-4">
                     <Link
                       href="/integration"
-                      className="text-sm text-red-600 hover:text-red-700 font-medium font-mono"
+                      className="text-sm text-emerald-600 hover:text-emerald-700 font-medium font-mono"
                     >
                       View all skills &rarr;
                     </Link>
@@ -500,7 +509,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                       <span className="text-sm text-slate-500 font-mono">Category</span>
                       <Link
                         href={`/integration?category=${encodeURIComponent(skill.category)}`}
-                        className="text-sm text-red-600 hover:text-red-700 font-medium"
+                        className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                       >
                         {skill.category}
                       </Link>
@@ -585,6 +594,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </div>
+      </SectionShell>
     </article>
   );
 }

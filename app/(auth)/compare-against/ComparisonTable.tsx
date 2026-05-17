@@ -36,7 +36,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
               <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4">
                 {competitorName}
               </th>
-              <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4 bg-red-50">
+              <th className="px-6 py-4 text-center font-semibold text-slate-700 border-b w-1/4 bg-emerald-50">
                 Trooper
               </th>
             </tr>
@@ -62,9 +62,9 @@ const ComparisonTable = ({ id }: { id: string }) => {
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-center border-b border-slate-200 bg-red-50">
+                  <td className="px-6 py-4 text-center border-b border-slate-200 bg-emerald-50">
                     {trooperHasFeature ? (
-                      <span className="inline-flex items-center justify-center w-8 h-8 bg-red-700 text-white rounded-md">
+                      <span className="inline-flex items-center justify-center w-8 h-8 bg-emerald-700 text-white rounded-md">
                         ✓
                       </span>
                     ) : (

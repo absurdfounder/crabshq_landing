@@ -59,8 +59,22 @@ module.exports = {
         '3/4': '75%',
         '1/1': '100%',
       },
+      /*
+       * Trooper typography (4 roles)
+       * — font-sans / font-inter     → body, UI
+       * — font-display / font-funneldisplay → headlines
+       * — font-mono                  → code, terminal, agent UI
+       * — font-brand / font-silkscreen → logo wordmark, chips (sparingly)
+       * Utilities: type-h1, type-h2, type-body, type-caption, type-label, type-code
+       */
       fontFamily: {
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-funneldisplay)', 'var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-roboto-mono)', 'ui-monospace', 'monospace'],
+        brand: ['var(--font-silkscreen)', 'monospace'],
         inter: ['var(--font-inter)', 'sans-serif'],
+        funneldisplay: ['var(--font-funneldisplay)', 'sans-serif'],
+        silkscreen: ['var(--font-silkscreen)', 'monospace'],
       },
       fontSize: {
         xs: '0.75rem',

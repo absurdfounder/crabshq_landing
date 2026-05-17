@@ -53,7 +53,7 @@ const TemplateDesign = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            Powerful features with <span className="text-red-600">simplicity in mind</span>
+            Powerful features with <span className="text-emerald-600">simplicity in mind</span>
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Everything you need to create, publish, and grow your web presence - without the complexity
@@ -78,7 +78,7 @@ const TemplateDesign = () => {
                     unoptimized
                   />
                 </div>
-                <div className="absolute -z-10 top-0 left-0 w-full h-full bg-red-100 rounded-2xl transform rotate-3 translate-x-4 translate-y-6 opacity-30"></div>
+                <div className="absolute -z-10 top-0 left-0 w-full h-full bg-emerald-100 rounded-2xl transform rotate-3 translate-x-4 translate-y-6 opacity-30"></div>
               </div>
 
               {/* Content Section */}
@@ -86,7 +86,7 @@ const TemplateDesign = () => {
                 <div className="max-w-lg">
                   <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
                     {feature.title}{" "}
-                    <span className="font-serif font-normal text-red-600">
+                    <span className="font-serif font-normal text-emerald-600">
                       {feature.highlight}
                     </span>
                   </h3>
@@ -123,7 +123,7 @@ const TemplateDesign = () => {
             </p>
             <Link 
               href="https://app.trooper.so" 
-              className="inline-flex items-center px-8 py-4 bg-red-700 text-white font-medium rounded-md hover:bg-red-500 transition-colors duration-200 shadow-lg text-lg"
+              className="inline-flex items-center px-8 py-4 bg-emerald-700 text-white font-medium rounded-md hover:bg-emerald-500 transition-colors duration-200 shadow-lg text-lg"
               rel="noopener" 
               target="_blank" 
             >

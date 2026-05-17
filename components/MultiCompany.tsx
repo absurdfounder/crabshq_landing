@@ -99,11 +99,11 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.2 }}
-      className="rounded-xl border border-emerald-200 bg-white p-5 shadow-sm"
+      className="border border-slate-200 bg-white p-5"
     >
       <div className="flex flex-col items-center">
         {/* CEO */}
-        <div className="rounded-lg border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-medium text-slate-700 flex items-center gap-1.5 shadow-sm">
+        <div className="border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-medium text-slate-700 flex items-center gap-1.5">
           <span>{orgChart.ceo.icon}</span>
           <span>{orgChart.ceo.label}</span>
         </div>
@@ -111,7 +111,13 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
         {/* Connector CEO → Managers */}
         <div className="w-px h-4 bg-slate-300" />
         <div className="relative w-full flex justify-center">
-          <div className="absolute top-0 h-px bg-slate-300" style={{ left: `${50 - (orgChart.managers.length - 1) * 16}%`, right: `${50 - (orgChart.managers.length - 1) * 16}%` }} />
+          <div
+            className="absolute top-0 h-px bg-slate-300"
+            style={{
+              left: `${50 - (orgChart.managers.length - 1) * 16}%`,
+              right: `${50 - (orgChart.managers.length - 1) * 16}%`,
+            }}
+          />
         </div>
 
         {/* Managers */}
@@ -119,7 +125,7 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
           {orgChart.managers.map((m, i) => (
             <div key={i} className="flex flex-col items-center">
               <div className="w-px h-3 bg-slate-300" />
-              <div className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-medium text-slate-600 flex items-center gap-1 shadow-sm">
+              <div className="border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-medium text-slate-600 flex items-center gap-1">
                 <span>{m.icon}</span>
                 <span>{m.label}</span>
               </div>
@@ -130,7 +136,13 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
         {/* Connector Managers → Agents */}
         <div className="w-px h-3 bg-slate-300" />
         <div className="relative w-full flex justify-center">
-          <div className="absolute top-0 h-px bg-slate-300" style={{ left: `${50 - (orgChart.agents.length - 1) * 12}%`, right: `${50 - (orgChart.agents.length - 1) * 12}%` }} />
+          <div
+            className="absolute top-0 h-px bg-slate-300"
+            style={{
+              left: `${50 - (orgChart.agents.length - 1) * 12}%`,
+              right: `${50 - (orgChart.agents.length - 1) * 12}%`,
+            }}
+          />
         </div>
 
         {/* Agents */}
@@ -138,7 +150,7 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
           {orgChart.agents.map((a, i) => (
             <div key={i} className="flex flex-col items-center">
               <div className="w-px h-3 bg-slate-300" />
-              <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] text-slate-500 flex items-center gap-1">
+              <div className="border border-dashed border-slate-300 bg-slate-50 px-3 py-1.5 text-[10px] text-slate-500 flex items-center gap-1">
                 <span>{a.icon}</span>
                 <span>{a.label}</span>
               </div>
@@ -152,18 +164,37 @@ function MiniOrgChart({ orgChart }: { orgChart: Company['orgChart'] }) {
 
 export default function MultiCompany() {
   const [hovered, setHovered] = useState<number | null>(null);
+  const totalTiles = companies.length + 1; // +1 for Add placeholder
+
+  // Shared-hairline classes for a tile in a 2-col (mobile) / 4-col (sm+) grid.
+  // 4 tiles total → 2x2 on mobile, 1x4 on sm+.
+  const tileBorders = (i: number) => {
+    const isLastMobile = i === totalTiles - 1; // index 3
+    const isMobileRight = i % 2 === 1; // 1, 3
+    const isMobileBottomRow = i >= totalTiles - 2; // 2, 3
+    const isSmLast = i === totalTiles - 1; // 3
+
+    return [
+      // bottom hairline on mobile when not in bottom row
+      !isMobileBottomRow ? 'border-b border-slate-200' : '',
+      // right hairline on mobile when not in right column
+      !isMobileRight ? 'border-r border-slate-200' : '',
+      // sm: collapse to single row → no bottom borders
+      'sm:border-b-0',
+      // sm: right hairline on every tile except last
+      isSmLast ? 'sm:border-r-0' : 'sm:border-r sm:border-slate-200',
+    ]
+      .filter(Boolean)
+      .join(' ');
+  };
 
   return (
     <section className="bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <hr className="border-slate-200 mb-12" />
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="mb-10">
-          <span className="inline-block rounded-md border border-slate-200 bg-white px-3 py-1 text-[11px] font-mono font-semibold uppercase tracking-[0.1em] text-slate-600">
-            Multi-Company
-          </span>
-          <h2 className="font-funneldisplay text-3xl sm:text-4xl md:text-[42px] tracking-tight text-slate-900 mt-4 leading-tight">
-            One deployment.<br />
+          <h2 className="font-funneldisplay text-3xl sm:text-4xl md:text-[42px] tracking-tight text-slate-900 leading-tight">
+            One deployment.
+            <br />
             Many companies.
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
@@ -172,33 +203,39 @@ export default function MultiCompany() {
           </p>
         </div>
 
-        {/* Company cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        {/* Workspace tiles — shared-border grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 bg-white">
           {companies.map((c, i) => (
             <div
               key={i}
-              className={`rounded-xl border p-4 sm:p-5 cursor-pointer transition-all duration-200 ${
-                hovered === i
-                  ? 'border-emerald-400 bg-white shadow-sm'
-                  : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'
-              }`}
+              className={[
+                'p-5 sm:p-6 cursor-pointer transition-colors duration-200 bg-white',
+                tileBorders(i),
+                hovered === i ? 'bg-slate-50' : 'hover:bg-slate-50/60',
+              ]
+                .filter(Boolean)
+                .join(' ')}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
             >
               <div className="mb-3">{c.icon}</div>
               <h3 className="text-sm font-semibold text-slate-900 leading-snug">{c.name}</h3>
               <p className="text-[12px] text-slate-400 mt-1">{c.agents} agents</p>
-              <p className="text-[12px] font-medium text-emerald-600 mt-1">Active</p>
+              <p className="text-[11px] font-mono uppercase tracking-[0.15em] text-emerald-600 mt-2">
+                Active
+              </p>
             </div>
           ))}
 
           {/* Add company placeholder */}
           <div
-            className={`rounded-xl border border-dashed p-4 sm:p-5 cursor-pointer transition-all duration-200 flex flex-col items-center justify-center ${
-              hovered === 3
-                ? 'border-emerald-400 bg-white'
-                : 'border-slate-300 hover:border-slate-400'
-            }`}
+            className={[
+              'p-5 sm:p-6 cursor-pointer transition-colors duration-200 flex flex-col items-center justify-center bg-white',
+              tileBorders(totalTiles - 1),
+              hovered === 3 ? 'bg-slate-50' : 'hover:bg-slate-50/60',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             onMouseEnter={() => setHovered(3)}
             onMouseLeave={() => setHovered(null)}
           >

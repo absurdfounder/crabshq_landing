@@ -11,6 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import Header from "@/components/ui/header";
+import SectionShell from "@/components/ui/SectionShell";
 
 type Platform = "mac" | "windows" | "ios" | "android" | "unknown";
 
@@ -96,6 +97,7 @@ export default function DownloadClient() {
     <div className="bg-white min-h-screen">
       <Header />
 
+      <SectionShell eyebrow="DOWNLOAD" eyebrowNumber="01" bgClass="bg-white">
       <div className="pt-24 pb-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
           {/* Heading */}
@@ -204,7 +206,7 @@ export default function DownloadClient() {
             Or use{" "}
             <Link
               href="https://app.trooper.so"
-              className="text-red-600 hover:text-red-700 hover:underline font-medium"
+              className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium"
             >
               app.trooper.so
             </Link>{" "}
@@ -212,6 +214,7 @@ export default function DownloadClient() {
           </motion.div>
         </div>
       </div>
+      </SectionShell>
     </div>
   );
 }

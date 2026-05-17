@@ -53,6 +53,14 @@ import SimplePricing from '@/components/SimplePricing'
 import Positioning from '@/components/Positioning'
 import MultiCompany from '@/components/MultiCompany'
 import FAQ from '@/components/faq'
+import SectionShell from '@/components/ui/SectionShell'
+
+const trustedLogos = [
+  { src: 'https://dazzling-cat.netlify.app/logos/zeroslistlogo.png', alt: 'Zeros List' },
+  { src: 'https://dazzling-cat.netlify.app/logos/marketingxlogo.png', alt: 'Marketing X' },
+  { src: 'https://dazzling-cat.netlify.app/logos/dealflowlogo.png', alt: 'Dealflow' },
+  { src: 'https://dazzling-cat.netlify.app/logos/downtownlogo.png', alt: 'Downtown' },
+]
 
 export default function Home() {
   return (
@@ -67,71 +75,60 @@ export default function Home() {
         }}
       >
         <Header />
-
-
-
         <Hero />
-
-
       </div>
 
-      <section className="px-4 py-8 md:px-6 md:py-12 border-b bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-4">
-            <span className="mt-1 text-base font-medium text-balance text-gray-400 text-center">
-              Trusted by leading product-led companies
-            </span>
-            <div className="flex flex-wrap place-items-center items-center justify-center gap-8">
-              <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
+      <SectionShell eyebrow="Trusted By" eyebrowNumber="02" bgClass="bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 md:pb-14">
+          <p className="text-sm font-medium text-slate-500 text-center mb-6">
+            Trusted by leading product-led companies
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 bg-white">
+            {trustedLogos.map((logo, i) => (
+              <div
+                key={logo.alt}
+                className={[
+                  'flex items-center justify-center h-20 sm:h-24 px-4',
+                  // Mobile (2-up grid): vertical divider between left/right column, bottom divider between rows
+                  i % 2 === 0 ? 'border-r border-slate-200' : '',
+                  i < 2 ? 'border-b border-slate-200 sm:border-b-0' : '',
+                  // Desktop (4-up): vertical dividers between every cell except the last
+                  i < trustedLogos.length - 1 ? 'sm:border-r sm:border-slate-200' : 'sm:border-r-0',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
                 <img
-                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                  src="https://dazzling-cat.netlify.app/logos/zeroslistlogo.png"
-                  alt="Transistor"
+                  className="h-10 sm:h-12 w-auto max-w-[140px] origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
                 />
               </div>
-              <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
-                <img
-                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                  src="https://dazzling-cat.netlify.app/logos/marketingxlogo.png"
-                  alt="Gummy Search"
-                />
-              </div>
-              <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
-                <img
-                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                  src="https://dazzling-cat.netlify.app/logos/dealflowlogo.png"
-                  alt="Right Message"
-                />
-              </div>
-              <div className="h-12 max-h-12 w-32 transition-all duration-300 hover:scale-110">
-                <img
-                  className="h-full w-full origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                  src="https://dazzling-cat.netlify.app/logos/downtownlogo.png"
-                  alt="Company 4"
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
+      <SectionShell eyebrow="Workforce" eyebrowNumber="03" bgClass="bg-slate-50">
+        <OldWays />
+      </SectionShell>
 
+      <SectionShell eyebrow="How It Works" eyebrowNumber="04" bgClass="bg-white">
+        <Positioning />
+      </SectionShell>
 
+      <SectionShell eyebrow="Workspaces" eyebrowNumber="05" bgClass="bg-white">
+        <MultiCompany />
+      </SectionShell>
 
+      <SectionShell eyebrow="Pricing" eyebrowNumber="06" bgClass="bg-white">
+        <SimplePricing />
+      </SectionShell>
 
-
-
-
-      <OldWays />
-
-      <Positioning />
-
-      <MultiCompany />
-
-      <SimplePricing />
-
-      <FAQ />
-
+      <SectionShell eyebrow="FAQ" eyebrowNumber="07" bgClass="bg-gray-50">
+        <FAQ />
+      </SectionShell>
     </>
   )
 }

@@ -128,7 +128,7 @@ export default function ChatInput() {
       transition={{ duration: 0.5, delay: 0.3 }}
     >
       <div className="relative">
-        <div className="bg-white border border-slate-300 rounded-xl overflow-hidden opacity-80 hover:opacity-100 focus:opacity-100 active:opacity-100 shadow-md hover:shadow-lg transition-shadow duration-300 focus-within:ring-2 focus-within:ring-red-300 focus-within:border-slate-600">
+        <div className="bg-white border border-slate-300 rounded-xl overflow-hidden opacity-80 hover:opacity-100 focus:opacity-100 active:opacity-100 shadow-md hover:shadow-lg transition-shadow duration-300 focus-within:ring-2 focus-within:ring-emerald-300 focus-within:border-slate-600">
           <div className="relative">
             <textarea
               ref={inputRef}
@@ -144,7 +144,7 @@ export default function ChatInput() {
             {isAnimating && (
               <div className="absolute top-0 left-0 w-full h-full pointer-events-none p-5 flex items-start text-lg text-slate-400 font-lato">
                 Ask Trooper  to create <span className="ml-2">{displayedPhrase}</span>
-                <span className={`${cursorVisible ? "opacity-100" : "opacity-0"} transition-opacity text-red-500`}>|</span>
+                <span className={`${cursorVisible ? "opacity-100" : "opacity-0"} transition-opacity text-emerald-500`}>|</span>
               </div>
             )}
           </div>
@@ -153,7 +153,7 @@ export default function ChatInput() {
             <div className="flex items-center justify-between flex-wrap">
               <div className="flex gap-2 items-center">
                 <button
-                  className="text-slate-900 hover:text-red-600 transition-colors rounded-md flex items-center justify-center gap-1 px-2 py-1.5 text-sm font-medium hover:bg-slate-100"
+                  className="text-slate-900 hover:text-emerald-600 transition-colors rounded-md flex items-center justify-center gap-1 px-2 py-1.5 text-sm font-medium hover:bg-slate-100"
                   type="button"
                   onClick={() => setShowLoginPopup(true)}
                 >
@@ -179,7 +179,7 @@ export default function ChatInput() {
                   tabIndex={-1}
                 />
                 <button
-                  className="text-slate-900 hover:text-red-600 transition-colors rounded-md flex items-center justify-center gap-1 px-2 py-1.5 text-sm font-medium hover:bg-slate-100"
+                  className="text-slate-900 hover:text-emerald-600 transition-colors rounded-md flex items-center justify-center gap-1 px-2 py-1.5 text-sm font-medium hover:bg-slate-100"
                   type="button"
                   aria-haspopup="dialog"
                   aria-expanded="false"
@@ -222,7 +222,7 @@ export default function ChatInput() {
                   type="submit"
                   className={`flex gap-2 px-2 items-center justify-center rounded-md p-1 ${
                     inputValue.trim()
-                      ? "bg-slate-900 text-white hover:bg-red-600"
+                      ? "bg-slate-900 text-white hover:bg-emerald-600"
                       : "bg-slate-200 text-slate-400"
                   } transition-colors duration-150 ease-out`}
                   disabled={!inputValue.trim()}

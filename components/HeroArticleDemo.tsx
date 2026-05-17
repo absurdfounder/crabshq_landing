@@ -65,7 +65,7 @@ const CHAT_SCRIPT = [
   { type: "nick_typing", delay: 800 },
   { type: "response", sender: "Nick", role: "Chief of Staff", text: "on it — matching tasks by each agent's skillset and past performance. Coulson's got SEO, Vision's on content, Wanda's handling UX & design...", time: "14:54", delay: 1200 },
   { type: "addTasks", phase: 2, delay: 500 },
-  { type: "response", sender: "Nick", role: "Chief of Staff", text: "done! all 10 tasks assigned and the team's already working. I'll flag anything that needs your attention. go enjoy launch day 🦀💪", time: "14:55", delay: 1400 },
+  { type: "response", sender: "Nick", role: "Chief of Staff", text: "done! all 10 tasks assigned and the team's already working. I'll flag anything that needs your attention. go enjoy launch day 🪖💪", time: "14:55", delay: 1400 },
   { type: "reaction", emoji: "👍", count: 3, delay: 600 },
 ];
 
@@ -95,7 +95,7 @@ function TaskTag({ text }: { text: string }) {
 function TaskCard({ task, index }: { task: (typeof PHASE1_TASKS)[number]; index: number }) {
   return (
     <div style={{
-      background: "white", borderRadius: 10, border: "1.5px dashed #d4d4d4",
+      background: "white", borderRadius: 2, border: "1px solid #e2e8f0",
       padding: "10px 12px", marginBottom: 6,
       animation: `cardIn 0.4s ease ${index * 80}ms both`,
     }}>
@@ -141,9 +141,9 @@ function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks:
   const m = COL_META[colKey];
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", marginBottom: 8, background: m.bg, borderRadius: 8 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", marginBottom: 8, background: m.bg, borderRadius: 2 }}>
         <span style={{ fontSize: 12, fontWeight: 700, color: m.accent === "#737373" ? "#525252" : m.accent }}>{m.label}</span>
-        <span style={{ fontSize: 11, fontWeight: 800, color: m.accent, background: m.accent + "18", padding: "0 7px", borderRadius: 8, lineHeight: "20px" }}>{tasks.length}</span>
+        <span style={{ fontSize: 11, fontWeight: 800, color: m.accent, background: m.accent + "18", padding: "0 7px", borderRadius: 2, lineHeight: "20px" }}>{tasks.length}</span>
       </div>
       <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 2 }}>
         {tasks.map((t, i) => <TaskCard key={t.id} task={t} index={i} />)}
@@ -241,7 +241,7 @@ export default function TrooperDemo() {
         }
       `}</style>
 
-      <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid #d4d4d4", boxShadow: "0 25px 50px rgba(0,0,0,.1), 0 8px 20px rgba(0,0,0,.05)", background: "#fafaf9" }}>
+      <div style={{ borderRadius: 0, overflow: "hidden", border: "1px solid #e2e8f0", background: "#fafaf9" }}>
 
         {/* macOS bar */}
         <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: "#fafaf9", borderBottom: "1px solid #e7e5e4", gap: 12 }}>
@@ -251,16 +251,16 @@ export default function TrooperDemo() {
             <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#28c840" }} />
           </div>
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#f0efed", borderRadius: 7, padding: "4px 18px", fontSize: 11.5, color: "#78716c", border: "1px solid #e7e5e4", maxWidth: 280, width: "100%", justifyContent: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#f0efed", borderRadius: 2, padding: "4px 18px", fontSize: 11.5, color: "#78716c", border: "1px solid #e2e8f0", maxWidth: 280, width: "100%", justifyContent: "center" }}>
               <Lock size={10} strokeWidth={2.5} color="#78716c" />
               app.trooper.so
             </div>
           </div>
           <div style={{ display: "flex", gap: 5 }}>
-            <button onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 5, border: "1px solid #d6d3d1", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
+            <button onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 2, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
               {isRunning ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
             </button>
-            <button onClick={restart} style={{ width: 26, height: 26, borderRadius: 5, border: "1px solid #d6d3d1", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
+            <button onClick={restart} style={{ width: 26, height: 26, borderRadius: 2, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
               <RotateCcw size={12} strokeWidth={2} />
             </button>
           </div>
@@ -269,8 +269,8 @@ export default function TrooperDemo() {
         {/* App Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 18px", background: "white", borderBottom: "1px solid #e5e7eb" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="https://dazzling-cat.netlify.app/crabhq1.png" alt="Trooper" style={{ height: 30, objectFit: "contain" }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: "#78716c", background: "#f5f5f4", padding: "3px 10px", borderRadius: 7, border: "1px solid #e7e5e4", display: "flex", alignItems: "center", gap: 4, marginLeft: 4 }}>
+            <img src="/images/logonew-black.png" alt="Trooper" style={{ height: 30, objectFit: "contain" }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "#78716c", background: "#f5f5f4", padding: "3px 10px", borderRadius: 2, border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: 4, marginLeft: 4 }}>
               <LayoutGrid size={11} strokeWidth={2} /> Wonder
             </span>
           </div>
@@ -279,7 +279,7 @@ export default function TrooperDemo() {
               <div style={{ textAlign: "center" }}><div style={{ fontSize: 17, fontWeight: 800, color: "#171717" }}>19</div><div style={{ fontSize: 8, fontWeight: 600, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Active</div></div>
               <div style={{ textAlign: "center" }}><div style={{ fontSize: 17, fontWeight: 800, color: "#171717" }}>10</div><div style={{ fontSize: 8, fontWeight: 600, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Queued</div></div>
             </div>
-            <button style={{ display: "flex", alignItems: "center", gap: 5, background: "#ef4444", color: "white", padding: "5px 14px", borderRadius: 8, border: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite" }}>
+            <button style={{ display: "flex", alignItems: "center", gap: 5, background: "#ef4444", color: "white", padding: "5px 14px", borderRadius: 2, border: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite" }}>
               <Bell size={12} strokeWidth={2.5} /> Attention
             </button>
             <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#a3a3a3", fontWeight: 500 }}>
@@ -304,7 +304,7 @@ export default function TrooperDemo() {
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 8px 10px", padding: "6px 8px", background: "#f5f5f5", borderRadius: 8, border: "1px solid #e5e7eb", cursor: "pointer" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 8px 10px", padding: "6px 8px", background: "#f5f5f5", borderRadius: 2, border: "1px solid #e2e8f0", cursor: "pointer" }}>
               <LayoutGrid size={14} strokeWidth={1.5} color="#737373" />
               <span style={{ fontSize: 12, fontWeight: 700, color: "#171717" }}>All Tasks</span>
             </div>
@@ -413,7 +413,7 @@ export default function TrooperDemo() {
 
             {/* Input */}
             <div style={{ padding: "8px 12px", borderTop: "1px solid #e5e7eb" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f5f5f5", borderRadius: 9, border: "1px solid #e5e5e5", padding: "8px 12px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f5f5f5", borderRadius: 2, border: "1px solid #e2e8f0", padding: "8px 12px" }}>
                 <div style={{ flex: 1, fontSize: 12, color: inputText ? "#171717" : "#a3a3a3", minHeight: 16, fontWeight: inputText ? 500 : 400, lineHeight: 1.4, wordBreak: "break-word" }}>
                   {inputText ? (
                     <>
@@ -427,7 +427,7 @@ export default function TrooperDemo() {
                 <div style={{ display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
                   <Paperclip size={14} strokeWidth={1.5} color="#b5b5b5" />
                   <Smile size={14} strokeWidth={1.5} color="#b5b5b5" />
-                  <div style={{ width: 28, height: 28, borderRadius: 7, background: inputText ? "#ef4444" : "#e5e5e5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 2, background: inputText ? "#ef4444" : "#e5e5e5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
                     <Send size={13} strokeWidth={2} color={inputText ? "white" : "#b5b5b5"} />
                   </div>
                 </div>

@@ -22,38 +22,98 @@
   100% { transform: translateX(-33.333%); }
 }
 
-
-
-.font-roboto-mono {
-  font-family: var(--font-roboto-mono);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.font-source-serif-4 {
-  font-family: var(--font-source-serif-4);
-  font-family: "Source Serif 4", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+/* Hide Channel.io chat widget while the mobile menu is open */
+html[data-menu-open='true'] #ch-plugin,
+html[data-menu-open='true'] [data-ch-testid='launcher'],
+html[data-menu-open='true'] iframe[name^='ch-plugin'],
+html[data-menu-open='true'] .ch-plugin {
+  visibility: hidden !important;
+}
+
+/* Channel.io launcher restyle — square dark to match grid aesthetic */
+#ch-plugin,
+#ch-plugin-launcher,
+#ch-plugin .ch-launcher,
+.ch-launcher,
+#ch-plugin button[class*='launcher'] {
+  border-radius: 4px !important;
+  background: #0f172a !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
+}
+
+/* Pixel-band decorative divider — opt-in utility to bridge sections with a
+   pixelated slate-200 edge. Apply <div className="pixel-divider" /> between
+   sections (recommended above <SectionShell eyebrow="Trusted By">). */
+.pixel-divider {
+  height: 32px;
+  width: 100%;
+  background-color: transparent;
+  background-image: linear-gradient(
+      to right,
+      #e2e8f0 0,
+      #e2e8f0 4px,
+      transparent 4px,
+      transparent 8px
+    ),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent 4px,
+      #e2e8f0 4px,
+      #e2e8f0 8px
+    );
+  background-size: 8px 4px, 8px 4px;
+  background-position: 0 0, 0 4px;
+  background-repeat: repeat-x, repeat-x;
 }
 
 
-.font-comfortaa {
-  font-family: var(--font-comfortaa);
-}
 
-.font-funneldisplay {
-  font-family: var(--font-funneldisplay);
-}
+/* Trooper typography utilities — see tailwind.config.js fontFamily */
+@layer components {
+  .type-h1 {
+    @apply font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl;
+  }
 
-.font-josefin-slab {
-  font-family: var(--font-josefin-slab);
-}
+  .type-h2 {
+    @apply font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl;
+  }
 
-.font-silkscreen {
-  font-family: var(--font-silkscreen);
-}
+  .type-h3 {
+    @apply font-display text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl;
+  }
 
-.font-bungee {
-  font-family: var(--font-bungee);
-}
+  .type-body {
+    @apply font-sans text-base leading-relaxed text-slate-600;
+  }
 
+  .type-caption {
+    @apply font-sans text-sm text-slate-500;
+  }
+
+  .type-label {
+    @apply font-brand text-xs lowercase tracking-tight text-emerald-600 sm:text-sm;
+  }
+
+  .type-code {
+    @apply font-mono text-sm text-slate-700;
+  }
+
+  .type-eyebrow {
+    @apply font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-emerald-600;
+  }
+
+  /* Numbered grid-style eyebrow used by SectionShell: [02] WORKFORCE */
+  .type-eyebrow-num {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500;
+  }
+}
 
 /*custom css for the website here*/
 

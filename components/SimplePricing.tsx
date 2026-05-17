@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import PixelButton from './ui/PixelButton';
 import {
   Bot,
   MessageSquare,
@@ -57,7 +58,7 @@ const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const baseClasses =
-    'flex items-center justify-center py-3 px-4 rounded-xl font-medium text-sm md:text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative overflow-hidden';
+    'flex items-center justify-center py-3 px-4 rounded-sm font-medium text-sm md:text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative overflow-hidden';
 
   return (
     <Link
@@ -92,7 +93,7 @@ type Feature = {
 
 // Solo features - the base that every plan gets
 const soloFeatures: Feature[] = [
-  { icon: Bot, label: 'Unlimited Agents', color: 'text-red-500' },
+  { icon: Bot, label: 'Unlimited Agents', color: 'text-emerald-500' },
   { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-orange-500' },
   { icon: Monitor, label: 'Unlimited Devices', color: 'text-yellow-500' },
   { icon: Sparkles, label: 'All AI Models', color: 'text-emerald-500' },
@@ -102,7 +103,7 @@ const soloFeatures: Feature[] = [
   { icon: History, label: 'System Memory', color: 'text-violet-500' },
   { icon: ShieldCheck, label: 'Data Encryption', color: 'text-blue-500' },
   { icon: Puzzle, label: '3,000+ OpenClaw Skills', color: 'text-pink-500' },
-  { icon: Globe, label: 'Browser Automation', color: 'text-red-500' },
+  { icon: Globe, label: 'Browser Automation', color: 'text-emerald-500' },
   { icon: Smartphone, label: 'Mac, Windows, iOS, Android', color: 'text-slate-500' },
   { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
   { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
@@ -114,7 +115,7 @@ const soloFeatures: Feature[] = [
 // Cloud-only additions - team/collab features
 const cloudFeatures: Feature[] = [
   { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
-  { icon: Users, label: '5 team seats included', color: 'text-red-500' },
+  { icon: Users, label: '5 team seats included', color: 'text-emerald-500' },
   { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
   { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-orange-500' },
@@ -224,115 +225,143 @@ const plans: Plan[] = [
 
 export default function SimplePricing() {
   return (
-    <section className="relative bg-white py-20 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-start mb-12 sm:mb-16">
+    <section className="relative bg-white py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-start mb-10 sm:mb-12">
           <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight mb-4 sm:mb-6 leading-tight">
             <span className="text-slate-800 block mb-2">
-              <span className="inline-flex items-center justify-center gap-2">
+              <span className="inline-flex items-center gap-2">
                 <span>Deploy</span>
-                <img src="/favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-md align-middle" />
+                <img
+                  src="/favicon.ico"
+                  alt="logo"
+                  className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-sm align-middle"
+                />
                 <span>Trooper at your company</span>
               </span>
             </span>
           </h1>
           <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
-            Deploy AI employees that get real work done.
-            Trooper gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
+            Deploy AI employees that get real work done. Trooper gives your team dedicated AI
+            coworkers on their own private server — no shared infra, no vendor lock-in.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-              viewport={{ once: true }}
-              className={`rounded-3xl border p-6 md:p-8 ${
-                plan.highlight
-                  ? 'border-red-200 bg-white shadow-lg shadow-red-100/50 ring-1 ring-red-100'
-                  : 'border-slate-200 bg-white'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  {plan.eyebrow && (
-                    <div className={`text-sm font-medium ${plan.highlight ? 'text-red-600' : 'text-slate-500'}`}>
-                      {plan.eyebrow}
+        {/* Shared-border pricing row */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 border border-slate-200 bg-white">
+          {plans.map((plan, idx) => {
+            const isLast = idx === plans.length - 1;
+            return (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+                viewport={{ once: true }}
+                className={[
+                  'relative flex flex-col bg-white p-6 md:p-8',
+                  // Hairlines: bottom on mobile (drop on last), right on desktop (drop on last)
+                  !isLast ? 'border-b border-slate-200 lg:border-b-0' : '',
+                  !isLast ? 'lg:border-r lg:border-slate-200' : '',
+                  // Featured accent: top brand bar
+                  plan.highlight ? 'border-t-2 border-t-emerald-500 -mt-px lg:-mt-0.5' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    {plan.eyebrow && (
+                      <div
+                        className={`font-mono text-[11px] uppercase tracking-[0.15em] ${
+                          plan.highlight ? 'text-emerald-600' : 'text-slate-500'
+                        }`}
+                      >
+                        {plan.eyebrow}
+                      </div>
+                    )}
+                    <h3 className="mt-2 text-2xl font-semibold text-slate-900">{plan.name}</h3>
+                  </div>
+
+                  {plan.badge && (
+                    <div
+                      className={`rounded-sm px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.1em] ${
+                        plan.highlight
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                          : plan.badge === 'Lifetime Access'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                          : 'bg-slate-100 text-slate-600 border border-slate-200'
+                      }`}
+                    >
+                      {plan.badge}
                     </div>
                   )}
-                  <h3 className="mt-2 text-2xl font-semibold text-slate-900">{plan.name}</h3>
                 </div>
 
-                {plan.badge && (
-                  <div className={`rounded-full px-3 py-1 text-xs font-medium ${
-                    plan.highlight
-                      ? 'bg-red-50 text-red-700 border border-red-200'
-                      : plan.badge === 'Lifetime Access'
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200'
-                  }`}>
-                    {plan.badge}
+                <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
+
+                <div className="mt-6 flex items-end gap-2">
+                  <div className="text-4xl font-semibold tracking-tight text-slate-900">
+                    {plan.price}
                   </div>
+                  <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
+                </div>
+
+                {plan.perSeat && (
+                  <p className="mt-2 text-sm font-medium text-emerald-600">{plan.perSeat}</p>
                 )}
-              </div>
 
-              <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
+                {plan.note && (
+                  <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
+                )}
 
-              <div className="mt-6 flex items-end gap-2">
-                <div className="text-4xl font-semibold tracking-tight text-slate-900">
-                  {plan.price}
+                <div className="mt-6">
+                  {plan.highlight ? (
+                    <PixelButton
+                      href={plan.cta.href}
+                      external={plan.cta.href.startsWith('http')}
+                      size="md"
+                      tone="brand"
+                    >
+                      {plan.cta.text}
+                    </PixelButton>
+                  ) : (
+                    <FlippingButtonLink
+                      href={plan.cta.href}
+                      initialText={plan.cta.text}
+                      hoverText="Let's go"
+                      className="bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-500"
+                    />
+                  )}
                 </div>
-                <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
-              </div>
 
-              {plan.perSeat && (
-                <p className="mt-2 text-sm font-medium text-red-600">{plan.perSeat}</p>
-              )}
-
-              {plan.note && (
-                <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
-              )}
-
-              <div className="mt-6">
-                <FlippingButtonLink
-                  href={plan.cta.href}
-                  initialText={plan.cta.text}
-                  hoverText="Let's go"
-                  className={
-                    plan.highlight
-                      ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
-                      : 'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-500'
-                  }
-                />
-              </div>
-
-              {/* Feature sections */}
-              <div className="mt-8">
-                {plan.sections.map((section, sIdx) => (
-                  <div key={sIdx}>
-                    {section.inheritsFrom ? (
-                      <div className="mt-5 flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2.5 border border-slate-100">
-                        <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
-                        <span className="text-sm font-medium text-slate-600">{section.inheritsFrom}</span>
-                      </div>
-                    ) : (
-                      <ul className="space-y-2">
-                        {section.features.map((feature) => (
-                          <li key={feature.label} className="flex items-center gap-2">
-                            <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
-                            <span className="text-sm text-slate-700">{feature.label}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                {/* Feature sections */}
+                <div className="mt-8">
+                  {plan.sections.map((section, sIdx) => (
+                    <div key={sIdx}>
+                      {section.inheritsFrom ? (
+                        <div className="mt-5 flex items-center gap-2 bg-slate-50 px-3 py-2.5 border border-slate-200">
+                          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
+                          <span className="text-sm font-medium text-slate-600">
+                            {section.inheritsFrom}
+                          </span>
+                        </div>
+                      ) : (
+                        <ul className="space-y-2">
+                          {section.features.map((feature) => (
+                            <li key={feature.label} className="flex items-center gap-2">
+                              <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
+                              <span className="text-sm text-slate-700">{feature.label}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

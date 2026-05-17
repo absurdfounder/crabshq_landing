@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image'
 import Header from '@/components/ui/header';
+import SectionShell from '@/components/ui/SectionShell';
 
 
 export const metadata = {
@@ -42,6 +43,7 @@ export default function PageDetail() {
 <br/>
 
 
+            <SectionShell eyebrow="HERO" eyebrowNumber="01" bgClass="bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className="pt-12 pb-6 md:pt-4 md:pb-6">
 
@@ -61,11 +63,17 @@ export default function PageDetail() {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            </SectionShell>
 
+            <SectionShell eyebrow="WHAT WE DO" eyebrowNumber="02" bgClass="bg-slate-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="pt-12 pb-6 md:pt-8 md:pb-6">
                     <section className="mb-20">
                         <div className="px-6 pt-5 pb-10 bg-white lg:px-8">
                             <div className="max-w-4xl mx-auto text-center">
-                                <p className="text-base font-semibold leading-7 text-red-600">
+                                <p className="text-base font-semibold leading-7 text-emerald-600">
                                     EXPERTS CAN HELP
                                 </p>
                                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -122,6 +130,7 @@ export default function PageDetail() {
 
                 </div>
             </div>
+            </SectionShell>
         </section>
     )
 }

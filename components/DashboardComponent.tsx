@@ -131,7 +131,7 @@ const SimpleAnalyticsDashboard: React.FC = () => {
     <div className="text-gray-900 p-8 w-full max-w-6xl mx-auto rounded-lg">
       <h2 className="font-bold text-3xl mb-4 m-auto text-center mt-8">
         We know you're busy.
-        <span className="block font-normal text-red-600">Experience clutter-free dashboard</span>
+        <span className="block font-normal text-emerald-600">Experience clutter-free dashboard</span>
       </h2>
 
       {/* Header */}
@@ -148,11 +148,11 @@ const SimpleAnalyticsDashboard: React.FC = () => {
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
             className={`
-              flex items-center gap-2 px-4 py-2 rounded-md border-2 font-bold border-red-300 text-red-500 transition-all duration-200
+              flex items-center gap-2 px-4 py-2 rounded-md border-2 font-bold border-emerald-300 text-emerald-500 transition-all duration-200
               ${tab.special
-                ? 'text-red-900 border-red-500'
+                ? 'text-emerald-900 border-emerald-500'
                 : activeTab === tab.id
-                  ? 'bg-red-600 border-red-600 text-white shadow-lg'
+                  ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg'
                   : 'bg-white/50 hover:bg-white hover:shadow-md'
               }
             `}
@@ -166,14 +166,14 @@ const SimpleAnalyticsDashboard: React.FC = () => {
       {/* Chart/Video Section */}
       <div className="relative w-full bg-slate-900/70 rounded-lg overflow-hidden shadow-lg">
         {isVideoLoading ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-red-600 to-red-700 text-white text-xl font-medium">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-emerald-700 text-white text-xl font-medium">
             <div className="flex items-center gap-3">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
               Loading {tabs.find(t => t.id === activeTab)?.label} Demo...
             </div>
           </div>
         ) : videoError ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-red-600 text-white text-center p-8">
+          <div className="absolute inset-0 flex items-center justify-center bg-emerald-600 text-white text-center p-8">
             <div>
               <h3 className="text-xl font-bold mb-2">Video Unavailable</h3>
               <p className="text-sm opacity-90">

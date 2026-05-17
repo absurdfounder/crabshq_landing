@@ -31,39 +31,56 @@ const problems = [
   },
 ];
 
+const pad = (n: number) => String(n + 1).padStart(2, '0');
+
 const ProblemsSolved = () => (
   <section className="bg-white">
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <hr className="border-slate-200 mb-12" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="mb-10">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Problems Solved</span>
-        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
+        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
           What changes with Trooper.
         </h2>
       </div>
 
-      <div className="space-y-6">
+      {/* Bordered table: each row shares hairlines, [number] [without] [→] [with] */}
+      <div className="border border-slate-200 bg-white">
         {problems.map((p, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.05 }}
+            transition={{ duration: 0.3, delay: i * 0.04 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-6 items-start"
+            className={[
+              'grid grid-cols-1 md:grid-cols-[64px_1fr_40px_1fr] items-stretch',
+              i !== problems.length - 1 ? 'border-b border-slate-200' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
           >
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-slate-400">Without</span>
-              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed">{p.without}</p>
+            <div className="hidden md:flex items-start justify-center pt-6 border-r border-slate-200 bg-slate-50/50">
+              <span className="font-mono text-2xl sm:text-3xl text-slate-300">{pad(i)}</span>
             </div>
 
-            <div className="hidden md:flex items-center justify-center pt-6">
+            <div className="p-5 md:p-6 md:border-r md:border-slate-200 bg-slate-50">
+              <div className="flex items-center gap-2">
+                <span className="md:hidden font-mono text-base text-slate-300">{pad(i)}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                  Without
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 mt-2 leading-relaxed">{p.without}</p>
+            </div>
+
+            <div className="hidden md:flex items-center justify-center border-r border-slate-200 bg-white">
               <ArrowRight className="w-4 h-4 text-slate-300" />
             </div>
 
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-4">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-emerald-600">With Trooper</span>
-              <p className="text-sm text-slate-700 mt-1.5 leading-relaxed">{p.with}</p>
+            <div className="p-5 md:p-6 bg-white border-t border-slate-200 md:border-t-0">
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-600">
+                With Trooper
+              </span>
+              <p className="text-sm text-slate-700 mt-2 leading-relaxed">{p.with}</p>
             </div>
           </motion.div>
         ))}
@@ -121,61 +138,108 @@ const capabilities = [
 
 const UnderTheHood = () => (
   <section className="bg-slate-50">
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <hr className="border-slate-200 mb-12" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="mb-10">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Under the Hood</span>
-        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
+        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
           Why Trooper is different.
         </h2>
-        <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-xl">
+        <p className="text-slate-500 text-sm sm:text-base mt-3 max-w-xl">
           Trooper handles the hard orchestration details correctly.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {specials.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.05 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-lg border border-slate-200 p-5"
-          >
-            <h3 className="text-sm font-semibold text-slate-900">{s.title}</h3>
-            <p className="text-sm text-slate-500 mt-2 leading-relaxed">{s.detail}</p>
-          </motion.div>
-        ))}
+      {/* Specials grid — shared hairlines, numbered cells */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border border-slate-200 bg-white">
+        {specials.map((s, i) => {
+          // Compute borders based on responsive breakpoints
+          const total = specials.length;
+          // Mobile: every cell except last has border-b
+          // sm (2-col): cells with index < total-2 have border-b; even-index cells have border-r
+          // lg (3-col): cells with index < total-3 have border-b; index%3 !== 2 cells have border-r
+          const isLastMobile = i === total - 1;
+          const isSmLastRow = i >= total - 2;
+          const isSmRightCol = i % 2 === 1;
+          const isLgLastRow = i >= total - 3;
+          const isLgRightCol = i % 3 === 2;
+
+          const cls = [
+            !isLastMobile ? 'border-b border-slate-200' : '',
+            isSmLastRow ? 'sm:border-b-0' : 'sm:border-b',
+            !isSmRightCol ? 'sm:border-r sm:border-slate-200' : 'sm:border-r-0',
+            isLgLastRow ? 'lg:border-b-0' : 'lg:border-b',
+            !isLgRightCol ? 'lg:border-r lg:border-slate-200' : 'lg:border-r-0',
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.04 }}
+              viewport={{ once: true }}
+              className={`relative bg-white p-6 ${cls}`}
+            >
+              <span className="absolute top-4 right-4 font-mono text-2xl sm:text-3xl text-slate-200 leading-none">
+                {pad(i)}
+              </span>
+              <h3 className="text-sm font-semibold text-slate-900 pr-10">{s.title}</h3>
+              <p className="text-sm text-slate-500 mt-2 leading-relaxed">{s.detail}</p>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Agent capabilities */}
       <div className="mt-16">
         <div className="mb-8">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Agent Capabilities</span>
-          <h3 className="font-funneldisplay text-xl sm:text-2xl md:text-3xl tracking-tight text-slate-900 mt-3">
+          <h3 className="font-funneldisplay text-xl sm:text-2xl md:text-3xl tracking-tight text-slate-900">
             What your agents can do.
           </h3>
-          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-lg">
-            Every agent has access to the full toolset. Not plugins you install — native capabilities that work out of the box.
+          <p className="text-slate-500 text-sm sm:text-base mt-3 max-w-lg">
+            Every agent has access to the full toolset. Not plugins you install — native capabilities
+            that work out of the box.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {capabilities.map((c, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, delay: i * 0.03 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-lg border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all"
-            >
-              <span className="text-lg">{c.icon}</span>
-              <h4 className="text-[13px] font-semibold text-slate-900 mt-2">{c.label}</h4>
-              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{c.detail}</p>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border border-slate-200 bg-white">
+          {capabilities.map((c, i) => {
+            const total = capabilities.length;
+            // Mobile 2-col, sm 3-col, lg 4-col
+            const mIsLastRow = i >= total - (total % 2 === 0 ? 2 : 1);
+            const mIsRightCol = i % 2 === 1;
+            const sIsLastRow = i >= total - (total % 3 === 0 ? 3 : total % 3);
+            const sIsRightCol = i % 3 === 2;
+            const lIsLastRow = i >= total - (total % 4 === 0 ? 4 : total % 4);
+            const lIsRightCol = i % 4 === 3;
+
+            const cls = [
+              !mIsLastRow ? 'border-b border-slate-200' : '',
+              !mIsRightCol ? 'border-r border-slate-200' : '',
+              sIsLastRow ? 'sm:border-b-0' : 'sm:border-b',
+              sIsRightCol ? 'sm:border-r-0' : 'sm:border-r sm:border-slate-200',
+              lIsLastRow ? 'lg:border-b-0' : 'lg:border-b',
+              lIsRightCol ? 'lg:border-r-0' : 'lg:border-r lg:border-slate-200',
+            ]
+              .filter(Boolean)
+              .join(' ');
+
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: i * 0.025 }}
+                viewport={{ once: true }}
+                className={`bg-white p-4 ${cls}`}
+              >
+                <span className="text-lg">{c.icon}</span>
+                <h4 className="text-[13px] font-semibold text-slate-900 mt-2">{c.label}</h4>
+                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{c.detail}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -202,32 +266,49 @@ const diffs = [
   },
   {
     title: 'Not a single-agent toy.',
-    detail: "This is for teams. Hierarchies. Companies. If you have one agent, you might not need this. If you have twenty — you definitely do.",
-    wide: true,
+    detail:
+      "This is for teams. Hierarchies. Companies. If you have one agent, you might not need this. If you have twenty — you definitely do.",
   },
 ];
 
 const Differentiation = () => (
   <section className="bg-white">
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <hr className="border-slate-200 mb-12" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="mb-10">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Differentiation</span>
-        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
+        <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
           What Trooper is not.
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {diffs.map((d, i) => (
-          <div
-            key={i}
-            className={`border-l-2 border-slate-200 pl-5 py-1 ${d.wide ? 'sm:col-span-2' : ''}`}
-          >
-            <h3 className="text-sm font-semibold text-slate-900">{d.title}</h3>
-            <p className="text-sm text-slate-500 mt-1 leading-relaxed">{d.detail}</p>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 border border-slate-200 bg-white">
+        {diffs.map((d, i) => {
+          const total = diffs.length;
+          const isLastMobile = i === total - 1;
+          const isLoneInLastRow = i === total - 1 && total % 2 === 1;
+          const lastRowStart = Math.floor((total - 1) / 2) * 2;
+          const isLastRowDesktop = i >= lastRowStart;
+          const isLeftCol = i % 2 === 0;
+          const dropMdBorderR = !isLeftCol || isLoneInLastRow;
+
+          const cls = [
+            !isLastMobile ? 'border-b border-slate-200' : '',
+            isLastRowDesktop ? 'md:border-b-0' : 'md:border-b',
+            dropMdBorderR ? 'md:border-r-0' : 'md:border-r md:border-slate-200',
+            isLoneInLastRow ? 'md:col-span-2' : '',
+          ]
+            .filter(Boolean)
+            .join(' ');
+
+          return (
+            <div key={i} className={`relative bg-white p-6 md:p-8 ${cls}`}>
+              <span className="absolute top-4 right-4 font-mono text-2xl sm:text-3xl text-slate-200 leading-none">
+                {pad(i)}
+              </span>
+              <h3 className="text-base font-semibold text-slate-900 pr-10">{d.title}</h3>
+              <p className="text-sm text-slate-500 mt-2 leading-relaxed">{d.detail}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   </section>

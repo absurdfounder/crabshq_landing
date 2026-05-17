@@ -11,6 +11,7 @@ import {
     Workflow, Palette, UserPlus, FileCheck, Wrench, DollarSign,
 } from 'lucide-react';
 import Header from "@/components/ui/header";
+import SectionShell from "@/components/ui/SectionShell";
 import SimplePricing from "@/components/SimplePricing";
 import FAQ from "@/components/faq";
 
@@ -44,7 +45,7 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
                         >
                             <X size={16} />
                         </button>
-                        <span className="text-lg font-bold bg-red-600 text-white rounded-full p-2 px-4">Psst.</span>
+                        <span className="text-lg font-bold bg-emerald-600 text-white rounded-full p-2 px-4">Psst.</span>
                         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mt-2 mb-3">
                             Before you go...
                         </h2>
@@ -53,7 +54,7 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
                         </p>
                         <Link
                             href="https://app.trooper.so"
-                            className="bg-red-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-red-700 transition-colors shadow-lg font-medium"
+                            className="bg-emerald-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-emerald-700 transition-colors shadow-lg font-medium"
                             onClick={() => onClose()}
                         >
                             OK Lets get started
@@ -137,7 +138,7 @@ const comparisonCategories: ComparisonCategory[] = [
     {
         title: "Team & Collaboration",
         icon: Users,
-        iconColor: "text-red-500",
+        iconColor: "text-emerald-500",
         rows: [
             { feature: "Team seats", solo: { text: "1 user" }, cloud: { text: "5 included", sub: "+$8/seat/mo" }, enterprise: { text: "Custom" } },
             { feature: "Org licensing", solo: { text: "License for 1 org" }, cloud: { text: "Multi-org support" }, enterprise: { text: "Multi-org support" } },
@@ -297,7 +298,7 @@ const FAQSection: React.FC = () => {
                         Have a different question? Reach out to our support team by
                         <a
                             href="mailto:vaibhav@trooper.so"
-                            className="text-red-600 hover:text-red-700 hover:underline px-2"
+                            className="text-emerald-600 hover:text-emerald-700 hover:underline px-2"
                         >
                             sending us an email
                         </a>
@@ -311,7 +312,7 @@ const FAQSection: React.FC = () => {
                             <button
                                 key={tab}
                                 className={`px-4 py-2 mx-1 text-sm md:text-base font-medium rounded-md transition-colors ${activeTab === tab
-                                    ? "bg-red-100 text-red-800"
+                                    ? "bg-emerald-100 text-emerald-700"
                                     : "text-slate-600 hover:bg-slate-100"
                                     }`}
                                 onClick={() => setActiveTab(tab)}
@@ -370,11 +371,14 @@ const Pricing: React.FC = () => {
             <ExitIntentPopup isOpen={showExitPopup} onClose={() => setShowExitPopup(false)} />
             <Header />
 
-            {/* SimplePricing section */}
-            <div className="pt-16">
-                <SimplePricing />
-            </div>
+            <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white">
+                {/* SimplePricing section */}
+                <div className="pt-16">
+                    <SimplePricing />
+                </div>
+            </SectionShell>
 
+            <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-slate-50">
             {/* Comparison Table */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 {/* Desktop comparison */}
@@ -451,7 +455,7 @@ const Pricing: React.FC = () => {
                                     <div className="flex justify-center px-4">
                                         <Link
                                             href="https://app.trooper.so"
-                                            className="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
+                                            className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
                                         >
                                             Start with cloud
                                         </Link>
@@ -506,10 +510,14 @@ const Pricing: React.FC = () => {
                         );
                     })}
                 </div>
-
-                {/* FAQ */}
-                <FAQSection />
             </div>
+            </SectionShell>
+
+            <SectionShell eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12">
+                    <FAQSection />
+                </div>
+            </SectionShell>
         </div>
     );
 };

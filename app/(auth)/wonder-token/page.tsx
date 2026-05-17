@@ -102,7 +102,7 @@ export default function PageDetail() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-emerald-700 sm:w-auto">
                                                     <strong className="mr-1">Trading on Believe App</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>1672</strong> believers who share the same vision.</p>
@@ -111,7 +111,7 @@ export default function PageDetail() {
 
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row invisible">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-emerald-700 sm:w-auto">
                                                     <strong className="mr-1">Generate a Site</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
