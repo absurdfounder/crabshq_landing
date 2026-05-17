@@ -112,6 +112,7 @@ html[data-menu-open='true'] .ch-plugin {
   /* Numbered grid-style eyebrow used by SectionShell: [02] WORKFORCE */
   .type-eyebrow-num {
     @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500;
+    display: none;
   }
 }
 
