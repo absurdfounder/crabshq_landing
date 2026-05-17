@@ -5,25 +5,25 @@
       "product": {
         "logo": "https://framerusercontent.com/images/FS1of0gxF0A6UP7GmCpIBKQM.png",
         "name": "Arcade",
-        "provider": "CrabsHQ",
+        "provider": "Trooper",
         "description": "Embed interactive product demos in your documentation and turn all users into power users. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com/install-arcade-CrabsHQ"
+          "link": "https://app.trooper.so/install-arcade-Trooper"
         }
       },
       "overview": {
-        "content": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allow you to embed Arcade interactive demos into your CrabsHQ documentation."
+        "content": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allow you to embed Arcade interactive demos into your Trooper documentation."
       },
       "howItWorks": {
-        "content": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the CrabsHQ editor. The app will turn the link into an Arcade embed showing your recorded demo."
+        "content": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the Trooper editor. The app will turn the link into an Arcade embed showing your recorded demo."
       },
       "configuration": {
         "content": "To install on a single space navigate to integrations in sub-navigation. If you prefer to install the Arcade integration on multiple or all spaces, navigate to your organization settings and enable it from the integrations panel. This will give you access to the custom arcade block."
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/JwSD9igebl5YjP1p0XBssmuRU4.png",
-        "youtubevideo": "https://youtube.com/watch?v=example-arcade-CrabsHQ"
+        "youtubevideo": "https://youtube.com/watch?v=example-arcade-Trooper"
       }
     },
     {
@@ -32,20 +32,20 @@
         "logo": "https://framerusercontent.com/images/m9aUcDVUAGUkouzars7JOPL4pzU.png",
         "name": "Discord",
         "provider": "Discord",
-        "description": "Notify a server channel in Discord with real-time events from Crabs HQ.",
+        "description": "Notify a server channel in Discord with real-time events from Trooper.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "The CrabsHQ Discord integration brings the power of CrabsHQ to your Discord Server. Your members have instant access to your CrabsHQ knowledge base, without leaving the app."
+        "content": "The Trooper Discord integration brings the power of Trooper to your Discord Server. Your members have instant access to your Trooper knowledge base, without leaving the app."
       },
       "howItWorks": {
-        "content": "Get notified of what's important: Receive real-time Discord notifications when something important happens to your content on Crabs HQ. For example, when your content is updated or published. Pick and choose what, where, and how you wish to be notified."
+        "content": "Get notified of what's important: Receive real-time Discord notifications when something important happens to your content on Trooper. For example, when your content is updated or published. Pick and choose what, where, and how you wish to be notified."
       },
       "configuration": {
-        "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Discord integration on multiple on all spaces you can enable this through organization settings. To configure the integration you will have to authorize the connection between Discord and Crabs HQ. You can also select the default server to post messages to.        "
+        "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Discord integration on multiple on all spaces you can enable this through organization settings. To configure the integration you will have to authorize the connection between Discord and Trooper. You can also select the default server to post messages to.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/TG0d5w0jhfPMdJeURf3p9xlsRY.jpg",
@@ -58,17 +58,17 @@
         "logo": "https://framerusercontent.com/images/DA65II8e2dwHkaDz1CqTV7Pra6k.png",
         "name": "fathom",
         "provider": "fathom",
-        "description": "Receive CrabsHQ traffic insights directly in your Fathom dashboard.        ",
+        "description": "Receive Trooper traffic insights directly in your Fathom dashboard.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
         "content": "Fathom Analytics is a no cookie analytics platform which you can enable with a single line of code. Gain valuable insights into your website or web application while being GDPR, CCPA, ePrivacy, PECR (and more) compliant.        "
       },
       "howItWorks": {
-        "content": "The CrabsHQ Fathom Analytics integration allows you to track traffic in your published spaces from your Fathom dashboard. Automatic tracking in your documentation: Each of your connected CrabsHQ spaces will fetch the light-weight Fathom tracking script and inject it in your public content."
+        "content": "The Trooper Fathom Analytics integration allows you to track traffic in your published spaces from your Fathom dashboard. Automatic tracking in your documentation: Each of your connected Trooper spaces will fetch the light-weight Fathom tracking script and inject it in your public content."
       },
       "configuration": {
         "content": "Analytics integrations can be configured only for spaces that are published. To enable the integration in a single space, click on Integrations button in the sub-navigation. Alternatively you can enable it for multiple or all published spaces by going into your organization settings. You will need your Site ID to finish the configuration."
@@ -84,20 +84,20 @@
         "logo": "https://framerusercontent.com/images/Dies87xzsIZvlFyRdxkVgDUnU.png",
         "name": "Figma",
         "provider": "Figma",
-        "description": "Embed Figma files and designs directly into CrabsHQ pages.",
+        "description": "Embed Figma files and designs directly into Trooper pages.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "This integration embeds Figma artboards and files into CrabsHQ documents, making it easy to find and view relevant design files whenever you need them. Never search through Figma, Slack, or emails to find design files again."
+        "content": "This integration embeds Figma artboards and files into Trooper documents, making it easy to find and view relevant design files whenever you need them. Never search through Figma, Slack, or emails to find design files again."
       },
       "howItWorks": {
-        "content": "Embedding Figma files into CrabsHQ  is simple - just paste a Figma link into the CrabsHQ editor. The app will turn the link into an embed that shows the Figma file name along with an image snapshot of what the file looked like at the moment that you embedded it. When viewing an embed, click on the maximize button to preview the file in CrabsHQ or on the file or artboard name to open it in Figma."
+        "content": "Embedding Figma files into Trooper  is simple - just paste a Figma link into the Trooper editor. The app will turn the link into an embed that shows the Figma file name along with an image snapshot of what the file looked like at the moment that you embedded it. When viewing an embed, click on the maximize button to preview the file in Trooper or on the file or artboard name to open it in Figma."
       },
       "configuration": {
-        "content": "CrabsHQ admins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "Trooper admins can go to the integrations settings to connect your organization's Figma account to Trooper. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/CLU1xN0NghWWs6cGzzm2YMotM8A.png",
@@ -110,20 +110,20 @@
         "logo": "https://framerusercontent.com/images/2apJ8byRbIeR25LAoZZ6FgxfmtY.png",
         "name": "Formspree",
         "provider": "Formspree",
-        "description": "A simple Formspree integration to collect user signups directly in your published Crabs HQ.        ",
+        "description": "A simple Formspree integration to collect user signups directly in your published Trooper.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "The CrabsHQ  formspree integration allows you to specify a form ID from your Formspree account to collect user signups.        "
+        "content": "The Trooper  formspree integration allows you to specify a form ID from your Formspree account to collect user signups.        "
       },
       "howItWorks": {
         "content": "You can install the integration on a single space by clicking the integrations button in sub-navigation panel. If you prefer to install the Formspree integration on multiple on all spaces you can enable this through organization settings. From here you can specify different Formspree IDs for different spaces.        "
       },
       "configuration": {
-        "content": "CrabsHQ admins can go to the integrations settings to connect your organization's Figma account to Crabs HQ. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
+        "content": "Trooper admins can go to the integrations settings to connect your organization's Figma account to Trooper. Once enabled, the integration will work for all spaces where it's enabled in your organization. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/pUatWqAkCnCDA5WkYaNx0k00Fo0.png",
@@ -136,20 +136,20 @@
         "logo": "https://framerusercontent.com/images/hCeODO0SYPhy7utYRTw2AmqUiU.png",
         "name": "Google Analytics",
         "provider": "Google Analytics",
-        "description": "Receive CrabsHQ traffic insights directly in your Google Analytics dashboard.        ",
+        "description": "Receive Trooper traffic insights directly in your Google Analytics dashboard.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Google Analytics allows you to get a in-depth understanding of your customers across devices and platforms. The Google Analytics integration for CrabsHQ allows you to track traffic in your published spaces from your Google Tags Manager dashboard, giving you a fuller picture of how your customer interacts across your sites and apps throughout their lifecycle.        "
+        "content": "Google Analytics allows you to get a in-depth understanding of your customers across devices and platforms. The Google Analytics integration for Trooper allows you to track traffic in your published spaces from your Google Tags Manager dashboard, giving you a fuller picture of how your customer interacts across your sites and apps throughout their lifecycle.        "
       },
       "howItWorks": {
-        "content": "Automatic tracking in your documentation: Each of your connected CrabsHQ spaces will fetch the Google Analytics tracking script and inject it into your public content.        "
+        "content": "Automatic tracking in your documentation: Each of your connected Trooper spaces will fetch the Google Analytics tracking script and inject it into your public content.        "
       },
       "configuration": {
-        "content": "CrabsHQ admins can enable the Google Analytics integration by navigating to organization settings.  The integration can be enabled on single or multiple spaces available publicly.        "
+        "content": "Trooper admins can enable the Google Analytics integration by navigating to organization settings.  The integration can be enabled on single or multiple spaces available publicly.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/4vgn7bvtoXSFilUkbngh5ytjnU.png",
@@ -165,17 +165,17 @@
         "description": "Add interactive demos & guides to your documentation and boost user adoption.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Create interactive demos, interactive tours or interactive guides with Guideflow to supercharge your sales, boost your website conversion, onboard your customers, train your team in seconds or upgrade your customer support. Guideflow is the easiest & the most advanced platform to capture, customize & share interactive demos in seconds. Capture your screen, app or website in a few clicks, customize your guideflow, share it into your CrabsHQ space & get deep analytics to optimize your process. This integration allows you to embed Guideflow's interactive product demos or guides directly into your CrabsHQ documentation."
+        "content": "Create interactive demos, interactive tours or interactive guides with Guideflow to supercharge your sales, boost your website conversion, onboard your customers, train your team in seconds or upgrade your customer support. Guideflow is the easiest & the most advanced platform to capture, customize & share interactive demos in seconds. Capture your screen, app or website in a few clicks, customize your guideflow, share it into your Trooper space & get deep analytics to optimize your process. This integration allows you to embed Guideflow's interactive product demos or guides directly into your Trooper documentation."
       },
       "howItWorks": {
-        "content": "Create an account on Guideflow (it's free), capture your first demo or guide, and make it public! Then, just copy the public link of your interactive demo or guide and past it into your CrabsHQ  documentation! CrabsHQ  will automatically convert the link to an embedded interactive demo.  Magical, isn't it?"
+        "content": "Create an account on Guideflow (it's free), capture your first demo or guide, and make it public! Then, just copy the public link of your interactive demo or guide and past it into your Trooper  documentation! Trooper  will automatically convert the link to an embedded interactive demo.  Magical, isn't it?"
       },
       "configuration": {
-        "content": "CrabsHQ admins can enable the Guideflow integration by navigating to organization settings. The integration can be enabled on single or multiple spaces available publicly.        "
+        "content": "Trooper admins can enable the Guideflow integration by navigating to organization settings. The integration can be enabled on single or multiple spaces available publicly.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/FWbeZsKePcGOIWqR7lXk82KD0.png",
@@ -188,20 +188,20 @@
         "logo": "https://framerusercontent.com/images/w9RxUlmzPZiqLrNkjoT1nLfoQY.png",
         "name": "Heap",
         "provider": "Heap",
-        "description": "Plug your CrabsHQ site to your Heap Analytics instance.        ",
+        "description": "Plug your Trooper site to your Heap Analytics instance.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "This integration allows to add the Heap Analytics tracker on your published CrabsHQ site.        "
+        "content": "This integration allows to add the Heap Analytics tracker on your published Trooper site.        "
       },
       "howItWorks": {
-        "content": "The integration injects the Heap Analytics script on your page, using the configured environment ID, so that you can get analytics information from your CrabsHQ site directly inside of Heap."
+        "content": "The integration injects the Heap Analytics script on your page, using the configured environment ID, so that you can get analytics information from your Trooper site directly inside of Heap."
       },
       "configuration": {
-        "content": "Install the integration on the CrabsHQ space of your choice.  Locate the Heap environment ID you want to use, which is available in Heap's dashboard under Account > Install :  * choose Install Heap myself, then Web and Code  * locate the line showing `heap.load(some ID here)`  * copy the ID and paste it in the CrabsHQ integration's configuration screen  "
+        "content": "Install the integration on the Trooper space of your choice.  Locate the Heap environment ID you want to use, which is available in Heap's dashboard under Account > Install :  * choose Install Heap myself, then Web and Code  * locate the line showing `heap.load(some ID here)`  * copy the ID and paste it in the Trooper integration's configuration screen  "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/30whb0hKPg2FaC4t36ad7ZMMLxM.jpg",
@@ -214,20 +214,20 @@
         "logo": "https://framerusercontent.com/images/cVYWHSTm7adkAawKC6g1CKUo.png",
         "name": "Hotjar",
         "provider": "Hotjar",
-        "description": "Plug your CrabsHQ site to your Hotjar installation.        ",
+        "description": "Plug your Trooper site to your Hotjar installation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "This integration allows to add the Hotjar tracker on your published CrabsHQ site. "
+        "content": "This integration allows to add the Hotjar tracker on your published Trooper site. "
       },
       "howItWorks": {
-        "content": "The integration injects the Hotjar Analytics script on your page, using the configured environment ID, so that you can get analytics information from your CrabsHQ site directly inside of Heap."
+        "content": "The integration injects the Hotjar Analytics script on your page, using the configured environment ID, so that you can get analytics information from your Trooper site directly inside of Heap."
       },
       "configuration": {
-        "content": "Install the integration on the CrabsHQ space of your choice. Locate the Hotjar site ID you want to use, which is available in Hotjar's Organization & sites section "
+        "content": "Install the integration on the Trooper space of your choice. Locate the Hotjar site ID you want to use, which is available in Hotjar's Organization & sites section "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/ek7rYNyc2CptW1J56CoqshZENcU.jpg",
@@ -240,17 +240,17 @@
         "logo": "https://framerusercontent.com/images/am9Np4VEQ3rSKkSbGOWbdPU85ec.png",
         "name": "Intercom",
         "provider": "Intercom",
-        "description": "Add the Intercom chat widget to your published CrabsHQ content        ",
+        "description": "Add the Intercom chat widget to your published Trooper content        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "The Intercom integration for CrabsHQ allows you to display the Intercom chat widget on your public documentation to connect and interact with your readers.        "
+        "content": "The Intercom integration for Trooper allows you to display the Intercom chat widget on your public documentation to connect and interact with your readers.        "
       },
       "howItWorks": {
-        "content": "Automatic chat widget on your documentation: Each of your connected CrabsHQ spaces will fetch the Intercom chat widget script and inject it in your published content.        "
+        "content": "Automatic chat widget on your documentation: Each of your connected Trooper spaces will fetch the Intercom chat widget script and inject it in your published content.        "
       },
       "configuration": {
         "content": "You can configure the integration on single or multiple public spaces by navigating to the integrations in sub-navigation or org settings. You will then have to provide Application ID to finish the configuration.        "
@@ -266,20 +266,20 @@
         "logo": "https://framerusercontent.com/images/ZvVsvsOfnrJGkvfPX9b6hZ7OM.png",
         "name": "Jira",
         "provider": "Jira",
-        "description": "Embed Jira issues directly in your CrabsHQ documentation. ",
+        "description": "Embed Jira issues directly in your Trooper documentation. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Plan, track, and manage your agile and software development projects in Jira. Customize your workflow, collaborate, and release great software. Embed Jira issues directly in your CrabsHQ documentation.        "
+        "content": "Plan, track, and manage your agile and software development projects in Jira. Customize your workflow, collaborate, and release great software. Embed Jira issues directly in your Trooper documentation.        "
       },
       "howItWorks": {
-        "content": "Embedding Jira issues in your documentation is simple - just paste a Jira link into the CrabsHQ editor. The app will turn the link into an embed that show details of the Jira issue like the title, status, and assignee.        "
+        "content": "Embedding Jira issues in your documentation is simple - just paste a Jira link into the Trooper editor. The app will turn the link into an embed that show details of the Jira issue like the title, status, and assignee.        "
       },
       "configuration": {
-        "content": "Authorize the connection between Jira and Crabs HQ. You can install the integration on single space directly from your sub-navigation panel by clicking on Integrations or enable it in multiple or all of your spaces by navigating to the integrations tab in the organization settings.        "
+        "content": "Authorize the connection between Jira and Trooper. You can install the integration on single space directly from your sub-navigation panel by clicking on Integrations or enable it in multiple or all of your spaces by navigating to the integrations tab in the organization settings.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/iOD7ihlakislXZzAYZhqHZDw.png",
@@ -292,20 +292,20 @@
         "logo": "https://framerusercontent.com/images/atHDM5krB5QGJNCVQHHVHSNckBw.png?scale-down-to=512",
         "name": "Lucid",
         "provider": "Lucid",
-        "description": "Embed Lucid projects directly into Crabs HQ.        ",
+        "description": "Embed Lucid projects directly into Trooper.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Lucid provides teams with software that helps to gain insights and make informed decisions through market research and data analytics.  This integration lets you embed Lucid projects into your CrabsHQ documentation. It allows your reader to get a preview of the project right from your published site. "
+        "content": "Lucid provides teams with software that helps to gain insights and make informed decisions through market research and data analytics.  This integration lets you embed Lucid projects into your Trooper documentation. It allows your reader to get a preview of the project right from your published site. "
       },
       "howItWorks": {
-        "content": "Embedding Lucid in your documentation is simple - just paste a Lucid share link into the CrabsHQ editor. The app will turn the link into an embed that shows an interactive version of the Lucid project.        "
+        "content": "Embedding Lucid in your documentation is simple - just paste a Lucid share link into the Trooper editor. The app will turn the link into an embed that shows an interactive version of the Lucid project.        "
       },
       "configuration": {
-        "content": "Once the Lucid integration has been installed, you can insert the Lucid block into any CrabsHQ space through the / menu.        "
+        "content": "Once the Lucid integration has been installed, you can insert the Lucid block into any Trooper space through the / menu.        "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/7RwiY9WcscmdQ970xbTIlNWSK4.png",
@@ -318,20 +318,20 @@
         "logo": "https://framerusercontent.com/images/2lFzVISZE800E4UHnCx1kOKwUbA.png",
         "name": "PostHog",
         "provider": "PostHog",
-        "description": "Plug your CrabsHQ site to your PostHog installation.        ",
+        "description": "Plug your Trooper site to your PostHog installation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "This integration allows to add the PostHog installation snippet on your published CrabsHQ site.        "
+        "content": "This integration allows to add the PostHog installation snippet on your published Trooper site.        "
       },
       "howItWorks": {
-        "content": "The integration injects the PostHog script on your page, using the configured project API key and instance address,  so that you can get analytics information from your CrabsHQ site directly inside of PostHog."
+        "content": "The integration injects the PostHog script on your page, using the configured project API key and instance address,  so that you can get analytics information from your Trooper site directly inside of PostHog."
       },
       "configuration": {
-        "content": "Install the integration on the CrabsHQ space of your choice. Locate the PostHog project API key and instance address you are using, which is available in PostHog's installation section.  "
+        "content": "Install the integration on the Trooper space of your choice. Locate the PostHog project API key and instance address you are using, which is available in PostHog's installation section.  "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/nB51O4XSVhanNbdq0cO1cbHQvX8.png",
@@ -344,17 +344,17 @@
         "logo": "https://framerusercontent.com/images/8BFoU8bYggq6gGSU22AchCKSiM.png",
         "name": "RunKit",
         "provider": "RunKit",
-        "description": "Embed interactive Node.js notebooks in your CrabsHQ documentation.        ",
+        "description": "Embed interactive Node.js notebooks in your Trooper documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
         "content": "RunKit notebooks are interactive JavaScript playgrounds connected to a complete Node environment right in your browser. Every npm module pre-installed. They make it easy for your users to run sample code right from your documentation. "
       },
       "howItWorks": {
-        "content": "The integration allows you to embed live examples into your Crabs HQ, removing the friction of trying new ideas. You can bring your code to life by allowing your users to run the sample of your code within your documentation. Adding RunKit notebooks in your documentation is simple - select the RunKit block from the command palette and insert your code snippet.  Or paste the link to an existing RunKit notebook into the CrabsHQ editor to embed it in your page. "
+        "content": "The integration allows you to embed live examples into your Trooper, removing the friction of trying new ideas. You can bring your code to life by allowing your users to run the sample of your code within your documentation. Adding RunKit notebooks in your documentation is simple - select the RunKit block from the command palette and insert your code snippet.  Or paste the link to an existing RunKit notebook into the Trooper editor to embed it in your page. "
       },
       "configuration": {
         "content": "Click Integrations button in sub-navigation to install the RunKit in a single space, alternatively navigate to your organization settings to install it on multiple or all spaces."
@@ -370,20 +370,20 @@
         "logo": "https://framerusercontent.com/images/4sAs4M68hd8JIysUI1Y8ckkwwZg.png?scale-down-to=512",
         "name": "Sentry",
         "provider": "Sentry",
-        "description": "Embed Sentry issues in your CrabsHQ documentation.        ",
+        "description": "Embed Sentry issues in your Trooper documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Sentry helps developers and organizations see what actually matters, solve errors and performance issues quicker, and learn continuously about their application health - from the frontend to the backend. This integration lets you embed Sentry issues into your CrabsHQ documentation. It allows your reader to get a preview of the issues right from your documentation pages.   "
+        "content": "Sentry helps developers and organizations see what actually matters, solve errors and performance issues quicker, and learn continuously about their application health - from the frontend to the backend. This integration lets you embed Sentry issues into your Trooper documentation. It allows your reader to get a preview of the issues right from your documentation pages.   "
       },
       "howItWorks": {
-        "content": "Embedding Sentry in your documentation is simple - just paste a Sentry issue link (e.g https://try.sentry-demo.com/organizations/artistic-mudfish/issues/179907/) into the CrabsHQ editor. The app will turn the link into an embed that show details of the Sentry issue like the title, status & culprit of issue etc.        "
+        "content": "Embedding Sentry in your documentation is simple - just paste a Sentry issue link (e.g https://try.sentry-demo.com/organizations/artistic-mudfish/issues/179907/) into the Trooper editor. The app will turn the link into an embed that show details of the Sentry issue like the title, status & culprit of issue etc.        "
       },
       "configuration": {
-        "content": "You can install Sentry on a single space by clicking on the Integrations button or on multiple or all spaces by going into your organization settings.  To complete the installation you will need to provide a API Auth Token.  To generate an auth token follow the instructions here. Choose event:read scope and copy-paste the new generated token in the respective configuration in Crabs HQ. "
+        "content": "You can install Sentry on a single space by clicking on the Integrations button or on multiple or all spaces by going into your organization settings.  To complete the installation you will need to provide a API Auth Token.  To generate an auth token follow the instructions here. Choose event:read scope and copy-paste the new generated token in the respective configuration in Trooper. "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/TVBHmJTGsShVU8J9GOQffCb6ljI.png",
@@ -396,17 +396,17 @@
         "logo": "https://framerusercontent.com/images/IcOCUnPwBrbT9ws7CknBVeZcE.png",
         "name": "Segment",
         "provider": "Segment",
-        "description": "Integrate your CrabsHQ public documentation with your Segment pipeline.        ",
+        "description": "Integrate your Trooper public documentation with your Segment pipeline.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "The CrabsHQ Segment integration empowers your teams by connecting your CrabsHQ public documentation to your Segment pipeline.        "
+        "content": "The Trooper Segment integration empowers your teams by connecting your Trooper public documentation to your Segment pipeline.        "
       },
       "howItWorks": {
-        "content": "Automatic page view events on your public documentation: Each of your connected CrabsHQ spaces will send a [CrabsHQ] space_view event to the associated Segment source. Track your users' actions across all your company's websites: - Each [CrabsHQ] space_view includes the anonymousId property.        - If the active user has already visited one of your other company's websites, the anonymousId will match the one already set by Segment. - Otherwise, CrabsHQ  will associate a new anonymousId for the user matching Segment's format. "
+        "content": "Automatic page view events on your public documentation: Each of your connected Trooper spaces will send a [Trooper] space_view event to the associated Segment source. Track your users' actions across all your company's websites: - Each [Trooper] space_view includes the anonymousId property.        - If the active user has already visited one of your other company's websites, the anonymousId will match the one already set by Segment. - Otherwise, Trooper  will associate a new anonymousId for the user matching Segment's format. "
       },
       "configuration": {
         "content": "To install the Segment integration on a single space click on the Integrations button in sub-navigation. Alternatively, you can install it on multiple or all spaces by going into your organization settings. You will need the Segment Write Key to help you identify the data source.        "
@@ -425,17 +425,17 @@
         "description": "Help users master your product easily by embedding interactive product tours in your documentation.        ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "Forget videos. Now add interactive walkthroughs of your product to your documentation in minutes and make it easier for your customers to get to their aha moments, at their own pace. With Storylane’s product tours, you can give your customers a more hands-on experience of how your product functions and help them Create a free account immediately. This integration allows you to embed Storylane’s interactive product tours into your CrabsHQ powered documentation. "
+        "content": "Forget videos. Now add interactive walkthroughs of your product to your documentation in minutes and make it easier for your customers to get to their aha moments, at their own pace. With Storylane’s product tours, you can give your customers a more hands-on experience of how your product functions and help them Create a free account immediately. This integration allows you to embed Storylane’s interactive product tours into your Trooper powered documentation. "
       },
       "howItWorks": {
-        "content": "Once you’ve published a product tour on Storylane, the simplest way to embed it in your documentation is to just copy the public share URL of the product tour and paste it. CrabsHQ  will automatically convert the link to an embedded product tour.        "
+        "content": "Once you’ve published a product tour on Storylane, the simplest way to embed it in your documentation is to just copy the public share URL of the product tour and paste it. Trooper  will automatically convert the link to an embedded product tour.        "
       },
       "configuration": {
-        "content": "The integration is simple two-step process. CrabsHQ admins can enable the Storylane integration by, 1. Clicking on “Integrations” in the space sub-navigation. You’ll be redirected to the integrations library. 2. Here, select Storylane and then click on “Install” (bottom right corner) And you’re done! "
+        "content": "The integration is simple two-step process. Trooper admins can enable the Storylane integration by, 1. Clicking on “Integrations” in the space sub-navigation. You’ll be redirected to the integrations library. 2. Here, select Storylane and then click on “Install” (bottom right corner) And you’re done! "
       },
       "proof": {
         "screenshot": "https://framerusercontent.com/images/ukGiwXcuGqICuQW4XYFSzKYjo8g.png",
@@ -448,17 +448,17 @@
         "logo": "https://framerusercontent.com/images/hWrLXuzBYlgnmnUf2hiEti4s.png",
         "name": "SupaDemo",
         "provider": "SupaDemo",
-        "description": "Embed SupaDemo issues directly in your CrabsHQ documentation. ",
+        "description": "Embed SupaDemo issues directly in your Trooper documentation. ",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
-        "content": "With Supademo, you can easily make interactive product demos in just minutes. It helps turn all users into experts by allowing them to experience your product through interactive and guided demos. This integration allows you to embed Supademo interactive demos into your CrabsHQ documentation. "
+        "content": "With Supademo, you can easily make interactive product demos in just minutes. It helps turn all users into experts by allowing them to experience your product through interactive and guided demos. This integration allows you to embed Supademo interactive demos into your Trooper documentation. "
       },
       "howItWorks": {
-        "content": "Embedding a Supademo in your documentation is simple - just paste your Supademo link into the CrabsHQ editor. The app will turn the link into a Supademo embed showing your recorded demo. "
+        "content": "Embedding a Supademo in your documentation is simple - just paste your Supademo link into the Trooper editor. The app will turn the link into a Supademo embed showing your recorded demo. "
       },
       "configuration": {
         "content": "To install on a single space navigate to integrations in sub-navigation. If you prefer to install the Supademo integration on multiple or all spaces, navigate to your organization settings and enable it from the integrations panel. This will give you access to the custom Supademo block."
@@ -474,17 +474,17 @@
         "logo": "https://framerusercontent.com/images/Ga77rWvmvcRj4PWGIbdNWKPEYM.png",
         "name": "Toucan Toco",
         "provider": "Toucan Toco",
-        "description": "Embed Toucan's customer-facing analytics in your CrabsHQ content.",
+        "description": "Embed Toucan's customer-facing analytics in your Trooper content.",
         "callToAction": {
           "text": "Install",
-          "link": "https://app.crabshq.com"
+          "link": "https://app.trooper.so"
         }
       },
       "overview": {
         "content": "Toucan is a customer-facing analytics platform that empowers organizations to drive engagement with the best end user experience.        "
       },
       "howItWorks": {
-        "content": "Toucan for Embedded Analytics is a complete workflow to help you build and maintain analytics in your CrabsHQ content. Once the integration is installed, simply paste a Toucan embed link anywhere in CrabsHQ to transform it into a rich Toucan embed.        "
+        "content": "Toucan for Embedded Analytics is a complete workflow to help you build and maintain analytics in your Trooper content. Once the integration is installed, simply paste a Toucan embed link anywhere in Trooper to transform it into a rich Toucan embed.        "
       },
       "configuration": {
         "content": "To install on a single space navigate to integrations in sub-navigation. If you prefer to install the Toucan integration on multiple or all spaces, navigate to your organization settings and enable it from the integrations panel.        "

@@ -57,7 +57,7 @@ const WonderComparison: React.FC = () => {
             <span className="text-red-500">All-in-One</span> vs Integration Hell
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See how CrabsHQ stacks up against other AI app-building platforms
+            See how Trooper stacks up against other AI app-building platforms
           </p>
         </div>
 
@@ -95,7 +95,7 @@ const WonderComparison: React.FC = () => {
             </div>
           </div>
 
-          {/* CrabsHQ */}
+          {/* Trooper */}
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500 to-pink-500 rounded-full -translate-y-16 translate-x-16 opacity-10"></div>
             

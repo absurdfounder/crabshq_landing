@@ -5,19 +5,19 @@ import { Metadata } from "next";
 import PricingClient from "./PricingClient";
 
 export const metadata: Metadata = {
-  title: "Crabs HQ Pricing – Solo Lifetime Deal, Cloud, and Enterprise",
+  title: "Trooper Pricing – Solo Lifetime Deal, Cloud, and Enterprise",
   description:
-    "Choose how you want to run Crabs HQ. Solo lifetime deal for $79, hosted cloud for teams at $99/mo, or self-host for enterprise. Unlimited agents, all AI models, bring your own API keys.",
+    "Choose how you want to run Trooper. Solo lifetime deal for $79, hosted cloud for teams at $99/mo, or self-host for enterprise. Unlimited agents, all AI models, bring your own API keys.",
   alternates: {
-    canonical: "https://crabshq.com/pricing",
+    canonical: "https://trooper.so/pricing",
   },
   openGraph: {
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+        url: "https://dazzling-cat.netlify.app/trooper_social.png",
         width: 1200,
         height: 630,
-        alt: "Crabs HQ Pricing – Solo, Cloud, Enterprise",
+        alt: "Trooper Pricing – Solo, Cloud, Enterprise",
       },
     ],
   },
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-        alt: "Crabs HQ Pricing – Solo, Cloud, Enterprise",
+        url: "https://dazzling-cat.netlify.app/trooper_social.png",
+        alt: "Trooper Pricing – Solo, Cloud, Enterprise",
       },
     ],
   },

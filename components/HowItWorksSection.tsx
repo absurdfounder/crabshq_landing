@@ -26,12 +26,12 @@ export default function HowItWorksSection() {
             One home for all product knowledge
             </h2>
             <p className="body-text mt-6 max-w-4xl text-base text-slate-600 leading-relaxed">
-            Your current help center, blog, changelog, and documentation is a constant struggle to maintain. CrabsHQ gives you a fully customizable, SEO-optimized help center that our AI agent, Wonder, automatically keeps in sync with your product.
+            Your current help center, blog, changelog, and documentation is a constant struggle to maintain. Trooper gives you a fully customizable, SEO-optimized help center that our AI agent, Wonder, automatically keeps in sync with your product.
 
             </p>
             <div className="mt-6 flex flex-wrap gap-3 justify-center lg:justify-start">
               <Link
-                href="https://app.crabshq.com"
+                href="https://app.trooper.so"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative flex rounded-[10px] p-0.5 duration-200 hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-b from-slate-900 to-slate-950 text-white"
@@ -42,7 +42,7 @@ export default function HowItWorksSection() {
                 </span>
               </Link>
               <Link
-                href="https://app.crabshq.com"
+                href="https://app.trooper.so"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative flex rounded-[10px] p-0.5 duration-200 hover:scale-[1.02] active:scale-[0.98] ring ring-black/8 border border-white bg-gradient-to-b from-white via-white to-white shadow-sm text-slate-600"

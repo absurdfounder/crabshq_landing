@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Design Team - Automated Design & Brand Assets | Crabs HQ",
+    title: "AI Design Team - Automated Design & Brand Assets | Trooper",
     description:
-        "Deploy an AI-powered design team with Crabs HQ. Automate UI/UX design, brand assets, graphics, presentations, and design system management to scale your creative output.",
+        "Deploy an AI-powered design team with Trooper. Automate UI/UX design, brand assets, graphics, presentations, and design system management to scale your creative output.",
     alternates: {
-        canonical: "https://crabshq.com/teams/design",
+        canonical: "https://trooper.so/teams/design",
     },
     openGraph: {
-        title: "AI Design Team - Automated Design & Brand Assets | Crabs HQ",
+        title: "AI Design Team - Automated Design & Brand Assets | Trooper",
         description:
-            "Deploy an AI-powered design team with Crabs HQ. Automate UI/UX design, brand assets, graphics, and design system management.",
+            "Deploy an AI-powered design team with Trooper. Automate UI/UX design, brand assets, graphics, and design system management.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Design Team - Automated Creative Work",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Design Team - Automated Design & Brand Assets | Crabs HQ",
+        title: "AI Design Team - Automated Design & Brand Assets | Trooper",
         description:
-            "Deploy an AI-powered design team with Crabs HQ. Automate UI/UX design, brand assets, and graphics creation.",
+            "Deploy an AI-powered design team with Trooper. Automate UI/UX design, brand assets, and graphics creation.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Design Team - Automated Creative Work",
             },
         ],
@@ -75,7 +75,7 @@ export default function DesignTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function DesignTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional design teams struggle with consistency, bandwidth limitations, and high costs. Crabs HQ's AI design team maintains perfect brand consistency while producing unlimited creative assets across all channels.
+                                Traditional design teams struggle with consistency, bandwidth limitations, and high costs. Trooper's AI design team maintains perfect brand consistency while producing unlimited creative assets across all channels.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI design team can create UI mockups, design social media graphics, build presentations, maintain design systems, generate marketing materials, and ensure brand consistency. All while following your design guidelines and brand standards.

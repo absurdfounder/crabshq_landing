@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Persistent Memory - AI That Remembers Context Across Tasks | Crabs HQ",
+    title: "Persistent Memory - AI That Remembers Context Across Tasks | Trooper",
     description:
         "AI employees with persistent memory that remember past work, decisions, and preferences. Every task builds on previous knowledge for faster, more accurate results.",
     alternates: {
-        canonical: "https://crabshq.com/features/persistent-memory",
+        canonical: "https://trooper.so/features/persistent-memory",
     },
     openGraph: {
-        title: "Persistent Memory - AI That Remembers Context Across Tasks | Crabs HQ",
+        title: "Persistent Memory - AI That Remembers Context Across Tasks | Trooper",
         description:
             "AI employees with persistent memory that remember past work, decisions, and preferences. Every task builds on previous knowledge.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Persistent Memory - AI That Remembers Everything",
+                alt: "Trooper Persistent Memory - AI That Remembers Everything",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Persistent Memory - AI That Remembers Context Across Tasks | Crabs HQ",
+        title: "Persistent Memory - AI That Remembers Context Across Tasks | Trooper",
         description:
             "AI employees with persistent memory. Every task builds on previous knowledge for faster, more accurate results.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Persistent Memory - AI That Remembers Everything",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Persistent Memory - AI That Remembers Everything",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function PersistentMemoryPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">across every task</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Unlike chatbots that forget everything between sessions, Crabs HQ AI employees maintain persistent memory. Past work, decisions, preferences, and project context carry forward across every task, making each interaction smarter than the last.
+                                            Unlike chatbots that forget everything between sessions, Trooper AI employees maintain persistent memory. Past work, decisions, preferences, and project context carry forward across every task, making each interaction smarter than the last.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function PersistentMemoryPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                A real employee does not start from scratch every morning. They remember what was discussed yesterday, what decisions were made last week, and what the team prefers. Crabs HQ AI employees work the same way through persistent memory powered by OpenClaw.
+                                A real employee does not start from scratch every morning. They remember what was discussed yesterday, what decisions were made last week, and what the team prefers. Trooper AI employees work the same way through persistent memory powered by OpenClaw.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Every task an AI employee completes becomes part of their accumulated knowledge. They remember your codebase conventions, your communication style, your project priorities, and the outcomes of previous work. This means an AI employee assigned to your repository today will be significantly more effective next month.

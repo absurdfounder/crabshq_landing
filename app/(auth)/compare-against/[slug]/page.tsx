@@ -65,14 +65,14 @@ export async function generateMetadata(
   }
 
   return {
-    title: `The simple, powerful ${filteredContent.product.name} alternative - CrabsHQ vs ${filteredContent.product.name}`,
-    description: `CrabsHQ is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
-Compare CrabsHQ  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
+    title: `The simple, powerful ${filteredContent.product.name} alternative - Trooper vs ${filteredContent.product.name}`,
+    description: `Trooper is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
+Compare Trooper  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
     openGraph: {
       images: [{ url: filteredContent.product.heroimage }],
     },
     alternates: {
-      canonical: `https://crabshq.com/compare-against/${slug}`,
+      canonical: `https://trooper.so/compare-against/${slug}`,
     },
   };
 }
@@ -109,12 +109,12 @@ export default async function ComparisonAgainst({ params }: { params: { slug: st
               className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm rounded-md p-8 mb-8 m-auto"
             />
             <h1 className="text-4xl font-bold mb-4 font-funneldisplay">
-              Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to CrabsHQ
+              Tired of <b>{filteredContent.product.name}</b>? <br /> Say hi to Trooper
             </h1>
             <p className="text-lg sm:text-xl text-slate-600">
               {filteredContent.product.description}
             </p>
-            <Link href="https://app.crabshq.com" className="text-white bg-slate-900 rounded-md w-fit p-2 mt-4 px-4 mt-2 block m-auto">
+            <Link href="https://app.trooper.so" className="text-white bg-slate-900 rounded-md w-fit p-2 mt-4 px-4 mt-2 block m-auto">
               Build sites using AI
             </Link>
           </div>

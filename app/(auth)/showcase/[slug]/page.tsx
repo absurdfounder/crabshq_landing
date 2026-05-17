@@ -69,7 +69,7 @@ export async function generateMetadata(
         title: 'Wonder- Error Loading Content',
         description: 'Unable to load template content',
         alternates: {
-          canonical: `https://crabshq.com/showcase/${slug}`,
+          canonical: `https://trooper.so/showcase/${slug}`,
         },
       };
     }
@@ -78,10 +78,10 @@ export async function generateMetadata(
 
     if (!filteredContent) {
       return {
-        title: 'CrabsHQ vs Unknown Template',
-        description: 'Compare CrabsHQ  to an unknown template',
+        title: 'Trooper vs Unknown Template',
+        description: 'Compare Trooper  to an unknown template',
         alternates: {
-          canonical: `https://crabshq.com/showcase/${slug}`,
+          canonical: `https://trooper.so/showcase/${slug}`,
         },
       };
     }
@@ -93,7 +93,7 @@ export async function generateMetadata(
         images: [{ url: filteredContent.proof.screenshot }],
       },
       alternates: {
-        canonical: `https://crabshq.com/showcase/${slug}`,
+        canonical: `https://trooper.so/showcase/${slug}`,
       },
     };
   } catch (error) {
@@ -102,7 +102,7 @@ export async function generateMetadata(
       title: 'Wonder- Error',
       description: 'An error occurred while loading the content',
       alternates: {
-        canonical: `https://crabshq.com/showcase/${params.slug}`,
+        canonical: `https://trooper.so/showcase/${params.slug}`,
       },
     };
   }

@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI PR Team - Public Relations & Media Management | Crabs HQ",
+    title: "AI PR Team - Public Relations & Media Management | Trooper",
     description:
-        "Deploy an AI-powered PR team with Crabs HQ. Automate press releases, media outreach, reputation management, and crisis communication to control your narrative.",
+        "Deploy an AI-powered PR team with Trooper. Automate press releases, media outreach, reputation management, and crisis communication to control your narrative.",
     alternates: {
-        canonical: "https://crabshq.com/teams/pr",
+        canonical: "https://trooper.so/teams/pr",
     },
     openGraph: {
-        title: "AI PR Team - Public Relations & Media Management | Crabs HQ",
+        title: "AI PR Team - Public Relations & Media Management | Trooper",
         description:
-            "Deploy an AI-powered PR team with Crabs HQ. Automate press releases, media outreach, and reputation management.",
+            "Deploy an AI-powered PR team with Trooper. Automate press releases, media outreach, and reputation management.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI PR Team - Public Relations & Media",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI PR Team - Public Relations & Media Management | Crabs HQ",
+        title: "AI PR Team - Public Relations & Media Management | Trooper",
         description:
-            "Deploy an AI-powered PR team with Crabs HQ. Automate press releases and media outreach.",
+            "Deploy an AI-powered PR team with Trooper. Automate press releases and media outreach.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI PR Team - Public Relations & Media",
             },
         ],
@@ -75,7 +75,7 @@ export default function PRTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function PRTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional PR requires constant relationship building and quick responses. Crabs HQ's AI PR team operates 24/7, monitoring mentions, crafting messages, reaching out to media, and managing your reputation across all channels.
+                                Traditional PR requires constant relationship building and quick responses. Trooper's AI PR team operates 24/7, monitoring mentions, crafting messages, reaching out to media, and managing your reputation across all channels.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI PR team can write press releases, pitch stories to journalists, monitor brand mentions, respond to media inquiries, manage crisis communications, track coverage, and build media relationships. All while maintaining your brand voice and messaging consistency.

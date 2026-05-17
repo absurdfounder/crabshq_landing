@@ -17,7 +17,7 @@ export default function HowtoHelpdesk() {
                 </span>
               </h2>
               <p className="text-lg sm:text-xl text-slate-600">
-                CrabsHQ automatically keeps your help center up to date by listening to your team communicate about your product. Here's how it works…
+                Trooper automatically keeps your help center up to date by listening to your team communicate about your product. Here's how it works…
               </p>
             </div>
 
@@ -42,7 +42,7 @@ export default function HowtoHelpdesk() {
                         Your content <span className="font-serif font-normal text-red-600">lives inside Notion</span>
                       </h3>
                       <p className="text-sm sm:text-base text-slate-700 mt-4">
-                        Your work stays in a place you control and love, while CrabsHQ handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.
+                        Your work stays in a place you control and love, while Trooper handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.
                       </p>
                     </div>
                     <div className="w-full px-4 pt-6 md:w-3/5 rounded-md mr-4"
@@ -99,7 +99,7 @@ export default function HowtoHelpdesk() {
                         Membership for <span className="font-serif font-normal text-red-600">paid subscribers.</span>
                       </h3>
                       <p className="text-sm sm:text-base text-slate-700 mt-4">
-                        Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside CrabsHQ  without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.
+                        Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside Trooper  without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.
                       </p>
                     </div>
                     <div className="w-full px-4 pt-6 md:w-3/5 rounded-md mr-4"
@@ -127,7 +127,7 @@ export default function HowtoHelpdesk() {
                         In-built <span className="font-serif font-normal text-red-600">analytics</span>
                       </h3>
                       <p className="text-sm sm:text-base text-slate-700 mt-4">
-                        See your page views, visitors, referrers, clicks, and much more for all of your websites. CrabsHQ provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.
+                        See your page views, visitors, referrers, clicks, and much more for all of your websites. Trooper provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.
                       </p>
                     </div>
                     <div className="w-full px-4 pt-6 md:w-3/5 rounded-md mr-4"
@@ -183,7 +183,7 @@ export default function HowtoHelpdesk() {
                         Integrates with <span className="font-serif font-normal text-red-600">your existing apps</span>
                       </h3>
                       <p className="text-sm sm:text-base text-slate-700 mt-4">
-                        CrabsHQ integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Crabs HQ? We got you covered.
+                        Trooper integrates with the tools you already use. Connect to Slack for notifications, embed your live chat widget from Intercom, Hubspot, Crisp and more. Need your app connected to Trooper? We got you covered.
                       </p>
                     </div>
                     <div className="w-full px-4 pt-6 md:w-3/5 rounded-md mr-4"
@@ -227,7 +227,7 @@ export default function HowtoHelpdesk() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-xl mx-auto px-4">
               <Link
-                href="https://app.crabshq.com"
+                href="https://app.trooper.so"
                 className="w-full sm:w-auto px-6 py-3 text-lg sm:text-xl bg-red-700 text-black rounded-lg hover:bg-red-700 transition-colors duration-300 text-center"
               >
                 Start from 98% Ready

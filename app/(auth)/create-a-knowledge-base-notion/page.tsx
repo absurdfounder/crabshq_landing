@@ -24,14 +24,14 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a knowledge base with Notion (no-code and free)",
     description:
-        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free CrabsHQ  knowledge base website in a minute!",
+        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free Trooper  knowledge base website in a minute!",
     alternates: {
-        canonical: "https://crabshq.com/create-a-knowledge-base-notion",
+        canonical: "https://trooper.so/create-a-knowledge-base-notion",
     },
     openGraph: {
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/CrabsHQ_socialshare.png",
+                url: "https://dazzling-cat.netlify.app/Trooper_socialshare.png",
                 width: 1200,
                 height: 630,
                 alt: "Get a knowledge base with Notion",
@@ -42,7 +42,7 @@ export const metadata = {
         card: "summary_large_image",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/CrabsHQ_socialshare.png",
+                url: "https://dazzling-cat.netlify.app/Trooper_socialshare.png",
                 alt: "Get a knowledge base with Notion",
             },
         ],

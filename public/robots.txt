@@ -1,5 +1,5 @@
-# Robots.txt for CrabsHQ
-# https://crabshq.com
+# Robots.txt for Trooper
+# https://trooper.so
 
 User-agent: *
 Disallow: /private
@@ -43,4 +43,4 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://crabshq.com/sitemap.xml
+Sitemap: https://trooper.so/sitemap.xml

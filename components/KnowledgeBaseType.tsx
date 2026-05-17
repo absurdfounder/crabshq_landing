@@ -51,10 +51,10 @@ export default function Marketplace_Type() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
           <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">
-              Unique your knowledge base concept? <span className=" block font-normal text-red-600">CrabsHQ can support it.</span>
+              Unique your knowledge base concept? <span className=" block font-normal text-red-600">Trooper can support it.</span>
             </h1>
             <p className="text-xl text-slate-600">
-              CrabsHQ  is designed for all types from content curation to
+              Trooper  is designed for all types from content curation to
               content creation. Build company blogs, helpdesks, company wiki,
               documentations, and marketplaces.
             </p>

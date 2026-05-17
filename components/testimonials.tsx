@@ -20,7 +20,7 @@ const testimonials: Testimonial[] = [
     handle: "@swire",
     avatar: "https://framerusercontent.com/images/688Eh9PtIW8FyDbcf5H3QvtePBA.jpeg",
     content:
-      "If you're a Coach or a Creator, and you'd like to build better websites quickly, check out @Crabs_HQ",
+      "If you're a Coach or a Creator, and you'd like to build better websites quickly, check out @trooper_so",
     additionalContent: "I switched from Squarespace & I'm not looking back 🙌",
     platform: "twitter",
     category: ["All", "Blog", "Directory"]
@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [
     name: "Dan Rowden",
     handle: "@dr",
     avatar: "https://framerusercontent.com/images/ZPFWVz5iXLUOm3QgC66kg4NxQ30.jpeg",
-    content: "Wow @Crabs_HQ is amazing ✨",
+    content: "Wow @trooper_so is amazing ✨",
     platform: "twitter",
     category: ["All", "Product Docs", "Directory"]
   },
@@ -38,7 +38,7 @@ const testimonials: Testimonial[] = [
     handle: "@EvansNifty",
     avatar: "https://framerusercontent.com/images/64FW2f03YxmX7qiS7QezpeGu4.png",
     content:
-      "A HUGGGGEEEE shout out to @Crabs_HQ for putting me onto them—my course landing pages have never looked better.",
+      "A HUGGGGEEEE shout out to @trooper_so for putting me onto them—my course landing pages have never looked better.",
     platform: "twitter",
     category: ["All", "Helpdesk", "Blog"]
   },
@@ -49,7 +49,7 @@ const testimonials: Testimonial[] = [
     content:
       "First I downgraded my old site builder to the free plan. Then I stopped using it entirely.",
     additionalContent:
-      "What am I using now?\n\nThis thing called CrabsHQ (crabshq.com) 🎉\n\nAfter trying it for half an hour I upgraded to a paid plan—and I really really like it.",
+      "What am I using now?\n\nThis thing called Trooper (trooper.so) 🎉\n\nAfter trying it for half an hour I upgraded to a paid plan—and I really really like it.",
     platform: "linkedin",
     category: ["All", "Product Docs", "Marketplace"]
   },
@@ -57,14 +57,14 @@ const testimonials: Testimonial[] = [
     name: "Annie Hwang",
     avatar: "https://framerusercontent.com/images/Y9stNCmCgju1PW4P2VKfoBK4Q.jpeg",
     content:
-      "The customization in CrabsHQ is awesome. My product pages always look super fun and match Jemi's brand.",
+      "The customization in Trooper is awesome. My product pages always look super fun and match Jemi's brand.",
     category: ["All", "Product Docs", "Blog"]
   },
   {
     name: "Ben Barrett-Forrest",
     avatar: "https://framerusercontent.com/images/VA5C0bceopw0oYN50h8gv6aP4.jpeg",
     content:
-      "I was up and running with CrabsHQ in literally 2 minutes. I love how simple it is to launch landing pages. Would highly recommend!",
+      "I was up and running with Trooper in literally 2 minutes. I love how simple it is to launch landing pages. Would highly recommend!",
     category: ["All", "Helpdesk", "Directory"]
   },
   {
@@ -72,7 +72,7 @@ const testimonials: Testimonial[] = [
     handle: "@HainingMax",
     avatar: "https://framerusercontent.com/images/N4NgdRImFNTAYSobmVTKVyb4vys.png",
     content:
-      "@Crabs_HQ\n\nLike Webflow, but better.\n\nPerfect for...\n- Sharing course previews\n- Product demos\n- Creating sales funnels\n- Teaching your audience",
+      "@trooper_so\n\nLike Webflow, but better.\n\nPerfect for...\n- Sharing course previews\n- Product demos\n- Creating sales funnels\n- Teaching your audience",
     platform: "twitter",
     category: ["All", "Product Docs", "Marketplace"]
   },
@@ -81,7 +81,7 @@ const testimonials: Testimonial[] = [
     handle: "@mikefutia",
     avatar: "https://framerusercontent.com/images/CgcgsYZhqHDIikpyOTQoutkLPM.png",
     content:
-      "The best new tool for building:\n\n- Course websites\n- Webinar pages\n- 1-on-1 booking sites\n- Or ANY type of landing page\n\nIs crabshq.com\n\nIt blows everything else out of the water.",
+      "The best new tool for building:\n\n- Course websites\n- Webinar pages\n- 1-on-1 booking sites\n- Or ANY type of landing page\n\nIs trooper.so\n\nIt blows everything else out of the water.",
     platform: "twitter",
     category: ["All", "Blog", "Directory"]
   },
@@ -89,7 +89,7 @@ const testimonials: Testimonial[] = [
     name: "Raffaele Gaito",
     avatar: "https://framerusercontent.com/images/D6HX35QUEaWpRufse6kuiDm3fo.png",
     content:
-      "I love Wonder, it's a platform that has incredibly sped up my site creation speed. If I'm growing quickly on YouTube, I owe it also to CrabsHQ.",
+      "I love Wonder, it's a platform that has incredibly sped up my site creation speed. If I'm growing quickly on YouTube, I owe it also to Trooper.",
     category: ["All", "Helpdesk", "Marketplace"]
   },
   {
@@ -97,7 +97,7 @@ const testimonials: Testimonial[] = [
     handle: "@tomcritchlow",
     avatar: "https://framerusercontent.com/images/Qh9VsRKfvO9HwGpy24f2XjHjY.jpeg",
     content:
-      "Wrapping up day 1 of site building for my new course and just so much <3 for @Crabs_HQ\n\n- Impeccable and speedy support (even on a Sunday!)\n- Great templates (recognizing my brand's vibe instantly!)\n- Putting professional websites within reach (in browser!)",
+      "Wrapping up day 1 of site building for my new course and just so much <3 for @trooper_so\n\n- Impeccable and speedy support (even on a Sunday!)\n- Great templates (recognizing my brand's vibe instantly!)\n- Putting professional websites within reach (in browser!)",
     platform: "twitter",
     category: ["All", "Product Docs", "Helpdesk"]
   },
@@ -106,7 +106,7 @@ const testimonials: Testimonial[] = [
     handle: "martin-cregut",
     avatar: "https://framerusercontent.com/images/MkF6kIsOTqaahIQbedhHEcGmM.jpeg",
     content:
-      "CrabsHQ c'est Webflow en 100x plus intuitif, 100x plus beau et 100x plus vaste.",
+      "Trooper c'est Webflow en 100x plus intuitif, 100x plus beau et 100x plus vaste.",
     platform: "linkedin",
     category: ["All", "Blog", "Marketplace"]
   },
@@ -115,7 +115,7 @@ const testimonials: Testimonial[] = [
     handle: "@justinmoorefam",
     avatar: "https://framerusercontent.com/images/r5BRfhG49vqh8JZSzSVI8EnJ2k.jpg",
     content:
-      "I just re-launched my entire course site on @Crabs_HQ and holy cow their multi-layout views and custom CSS are soooo sick 🤩",
+      "I just re-launched my entire course site on @trooper_so and holy cow their multi-layout views and custom CSS are soooo sick 🤩",
     platform: "twitter",
     category: ["All", "Directory", "Marketplace"]
   },
@@ -124,7 +124,7 @@ const testimonials: Testimonial[] = [
     handle: "@simondela",
     avatar: "https://framerusercontent.com/images/tjmtGfBi6yjVmhqy5ZLuzQTm6E.png",
     content:
-      "One more vote for @Crabs_HQ! Have been using other builders for 3 years now and CrabsHQ just kicks them out of the market imo.",
+      "One more vote for @trooper_so! Have been using other builders for 3 years now and Trooper just kicks them out of the market imo.",
     platform: "twitter",
     category: ["All", "Helpdesk", "Product Docs"]
   },

@@ -1,10 +1,10 @@
-# Crabs HQ — Complete Reference
+# Trooper — Complete Reference
 
 > AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.
 
 ## Company Overview
 
-Crabs HQ is an AI workforce platform that transforms how teams work by deploying autonomous AI employees powered by OpenClaw technology. Unlike simple chatbots, CrabsHQ AI agents perform real work: making GitHub commits, sending emails, browsing the web, managing files, and executing complex multi-step workflows.
+Trooper is an AI workforce platform that transforms how teams work by deploying autonomous AI employees powered by OpenClaw technology. Unlike simple chatbots, Trooper AI agents perform real work: making GitHub commits, sending emails, browsing the web, managing files, and executing complex multi-step workflows.
 
 The platform evolved from ClawdBot (a single AI assistant) into a full multi-agent workforce system (MoltBot evolution), enabling teams to scale their AI capabilities across multiple specialized agents.
 
@@ -69,7 +69,7 @@ The OpenClaw Skills ecosystem provides installable capabilities:
 - Manual install: copy to ~/.openclaw/skills/ (global) or <project>/skills/ (workspace)
 - Categories: Coding, Browser, Data, DevOps, Testing, Documentation, Security, Design, and more
 - Community-contributed and officially maintained skills
-- Full catalog: https://crabshq.com/integration
+- Full catalog: https://trooper.so/integration
 
 ### 8. Multi-Agent Collaboration
 - Multiple AI agents working on the same project
@@ -86,12 +86,12 @@ The OpenClaw Skills ecosystem provides installable capabilities:
 
 ## Pricing
 
-Available at: https://crabshq.com/pricing
+Available at: https://trooper.so/pricing
 Subscription-based model starting at $7/month.
 
 ## Skills Catalog
 
-Browse and search 3,000+ OpenClaw skills at: https://crabshq.com/integration
+Browse and search 3,000+ OpenClaw skills at: https://trooper.so/integration
 
 ### Skill Categories
 - Coding Agents & IDEs
@@ -121,11 +121,11 @@ Each skill includes:
 
 ## Integration Partners
 
-CrabsHQ integrates with popular tools and platforms. Browse all integrations at: https://crabshq.com/integration
+Trooper integrates with popular tools and platforms. Browse all integrations at: https://trooper.so/integration
 
 ## Getting Started
 
-1. Sign up at https://app.crabshq.com
+1. Sign up at https://app.trooper.so
 2. Connect your GitHub repositories
 3. Deploy your first AI agent
 4. Install relevant skills from the catalog
@@ -133,27 +133,27 @@ CrabsHQ integrates with popular tools and platforms. Browse all integrations at:
 
 ## Contact & Support
 
-- Website: https://crabshq.com
-- Twitter: @Crabs_HQ
+- Website: https://trooper.so
+- Twitter: @trooper_so
 - Support: Available via in-app chat (Channel.io)
 
 ## All Pages
 
-- Home: https://crabshq.com
-- Pricing: https://crabshq.com/pricing
-- Skills Catalog: https://crabshq.com/integration
-- AI Workforce: https://crabshq.com/features/ai-workforce
-- GitHub Integration: https://crabshq.com/features/github-integration
-- Task Execution: https://crabshq.com/features/task-execution
-- Persistent Memory: https://crabshq.com/features/persistent-memory
-- Browser Control: https://crabshq.com/features/browser-control
-- System Access: https://crabshq.com/features/system-access
-- Email Automation: https://crabshq.com/features/email-automation
-- Skills & Plugins: https://crabshq.com/features/skills-plugins
-- Multi-Agent Collaboration: https://crabshq.com/features/multi-agent-collaboration
-- OpenClaw Powered: https://crabshq.com/features/openclaw-powered
-- Chat Interfaces: https://crabshq.com/features/chat-interfaces
-- Affiliate Program: https://crabshq.com/affiliate
-- Privacy Policy: https://crabshq.com/privacy-policy
-- Terms of Service: https://crabshq.com/terms-of-service
-- Contact: https://crabshq.com/contact
+- Home: https://trooper.so
+- Pricing: https://trooper.so/pricing
+- Skills Catalog: https://trooper.so/integration
+- AI Workforce: https://trooper.so/features/ai-workforce
+- GitHub Integration: https://trooper.so/features/github-integration
+- Task Execution: https://trooper.so/features/task-execution
+- Persistent Memory: https://trooper.so/features/persistent-memory
+- Browser Control: https://trooper.so/features/browser-control
+- System Access: https://trooper.so/features/system-access
+- Email Automation: https://trooper.so/features/email-automation
+- Skills & Plugins: https://trooper.so/features/skills-plugins
+- Multi-Agent Collaboration: https://trooper.so/features/multi-agent-collaboration
+- OpenClaw Powered: https://trooper.so/features/openclaw-powered
+- Chat Interfaces: https://trooper.so/features/chat-interfaces
+- Affiliate Program: https://trooper.so/affiliate
+- Privacy Policy: https://trooper.so/privacy-policy
+- Terms of Service: https://trooper.so/terms-of-service
+- Contact: https://trooper.so/contact

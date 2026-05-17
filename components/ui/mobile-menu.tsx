@@ -145,7 +145,7 @@ export default function MobileMenu() {
             <nav className="p-4 space-y-1">
               {/* Affiliate */}
               <Link
-                href="https://crabshq.lemonsqueezy.com/affiliates"
+                href="https://trooper.lemonsqueezy.com/affiliates"
                 onClick={handleClose}
                 className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
               >
@@ -217,7 +217,7 @@ export default function MobileMenu() {
 
               {/* Login */}
               <Link
-                href="https://app.crabshq.com"
+                href="https://app.trooper.so"
                 onClick={handleClose}
                 className="flex items-center px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
               >
@@ -229,7 +229,7 @@ export default function MobileMenu() {
           {/* Footer CTA */}
           <div className="p-4 border-t border-slate-200">
             <Link
-              href="https://app.crabshq.com"
+              href="https://app.trooper.so"
               target="_blank"
               onClick={handleClose}
               className="flex items-center justify-center w-full px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all duration-300 font-medium group"

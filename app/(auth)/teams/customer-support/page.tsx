@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Customer Support Team - 24/7 Support & Customer Success | Crabs HQ",
+    title: "AI Customer Support Team - 24/7 Support & Customer Success | Trooper",
     description:
-        "Deploy an AI-powered customer support team with Crabs HQ. Provide 24/7 support, resolve tickets, manage escalations, and deliver exceptional customer experiences at scale.",
+        "Deploy an AI-powered customer support team with Trooper. Provide 24/7 support, resolve tickets, manage escalations, and deliver exceptional customer experiences at scale.",
     alternates: {
-        canonical: "https://crabshq.com/teams/customer-support",
+        canonical: "https://trooper.so/teams/customer-support",
     },
     openGraph: {
-        title: "AI Customer Support Team - 24/7 Support & Customer Success | Crabs HQ",
+        title: "AI Customer Support Team - 24/7 Support & Customer Success | Trooper",
         description:
-            "Deploy an AI-powered customer support team with Crabs HQ. Provide 24/7 support, resolve tickets, and deliver exceptional customer experiences.",
+            "Deploy an AI-powered customer support team with Trooper. Provide 24/7 support, resolve tickets, and deliver exceptional customer experiences.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Customer Support Team - 24/7 Support",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Customer Support Team - 24/7 Support & Customer Success | Crabs HQ",
+        title: "AI Customer Support Team - 24/7 Support & Customer Success | Trooper",
         description:
-            "Deploy an AI-powered customer support team with Crabs HQ. Provide 24/7 support and resolve tickets instantly.",
+            "Deploy an AI-powered customer support team with Trooper. Provide 24/7 support and resolve tickets instantly.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Customer Support Team - 24/7 Support",
             },
         ],
@@ -75,7 +75,7 @@ export default function CustomerSupportTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function CustomerSupportTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional support teams are limited by shifts, time zones, and capacity constraints. Crabs HQ's AI customer support team operates 24/7, resolving issues instantly while maintaining empathy and personalization.
+                                Traditional support teams are limited by shifts, time zones, and capacity constraints. Trooper's AI customer support team operates 24/7, resolving issues instantly while maintaining empathy and personalization.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI support team can triage tickets, resolve common issues, draft personalized responses, escalate complex cases, update help documentation, track satisfaction metrics, and identify recurring problems. All while providing consistent, high-quality support.

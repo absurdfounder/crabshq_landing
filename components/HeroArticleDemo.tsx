@@ -171,7 +171,7 @@ function TypingIndicator({ name }: { name: string }) {
 type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
 type Task = (typeof PHASE1_TASKS)[number];
 
-export default function CrabsHQDemo() {
+export default function TrooperDemo() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [inputText, setInputText] = useState("");
@@ -253,7 +253,7 @@ export default function CrabsHQDemo() {
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#f0efed", borderRadius: 7, padding: "4px 18px", fontSize: 11.5, color: "#78716c", border: "1px solid #e7e5e4", maxWidth: 280, width: "100%", justifyContent: "center" }}>
               <Lock size={10} strokeWidth={2.5} color="#78716c" />
-              app.crabshq.com
+              app.trooper.so
             </div>
           </div>
           <div style={{ display: "flex", gap: 5 }}>
@@ -269,7 +269,7 @@ export default function CrabsHQDemo() {
         {/* App Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 18px", background: "white", borderBottom: "1px solid #e5e7eb" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="https://dazzling-cat.netlify.app/crabhq1.png" alt="Crabs HQ" style={{ height: 30, objectFit: "contain" }} />
+            <img src="https://dazzling-cat.netlify.app/crabhq1.png" alt="Trooper" style={{ height: 30, objectFit: "contain" }} />
             <span style={{ fontSize: 11, fontWeight: 600, color: "#78716c", background: "#f5f5f4", padding: "3px 10px", borderRadius: 7, border: "1px solid #e7e5e4", display: "flex", alignItems: "center", gap: 4, marginLeft: 4 }}>
               <LayoutGrid size={11} strokeWidth={2} /> Wonder
             </span>

@@ -33,7 +33,7 @@ export default function FeaturesBlocks() {
           Get discovered by <b>Users</b> and <b>AI assistants</b>           
           </h2>
           <p className="text-xl text-slate-600">
-            CrabsHQ optimizes your content so it ranks on Google, surfaces in ChatGPT, and gets referenced by AI assistants — automatically.
+            Trooper optimizes your content so it ranks on Google, surfaces in ChatGPT, and gets referenced by AI assistants — automatically.
           </p>
         </div>
       </div>

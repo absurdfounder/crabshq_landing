@@ -24,9 +24,9 @@ import HowToProductDocs from "@/components/HowToProductDocs";
 export const metadata = {
     title: "Get a documentation with Notion (no-code and free)",
     description:
-        "Build a documentation in Notion, with our Notion documentation maker. Go live in under a minute.  Build your free CrabsHQ  documentation website in a minute!",
+        "Build a documentation in Notion, with our Notion documentation maker. Go live in under a minute.  Build your free Trooper  documentation website in a minute!",
     alternates: {
-        canonical: "https://crabshq.com/create-a-documentation-notion",
+        canonical: "https://trooper.so/create-a-documentation-notion",
     },
     openGraph: {
         images: [

@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Crabs HQ",
+    title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Trooper",
     description:
         "Extend your AI employees with skills and plugins from ClawHub or build your own. Connect to any API, tool, or service through the OpenClaw skill ecosystem.",
     alternates: {
-        canonical: "https://crabshq.com/features/skills-plugins",
+        canonical: "https://trooper.so/features/skills-plugins",
     },
     openGraph: {
-        title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Crabs HQ",
+        title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Trooper",
         description:
             "Extend your AI employees with skills and plugins from ClawHub or build your own. Connect to any API, tool, or service.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Skills & Plugins - Extend AI with Custom Capabilities",
+                alt: "Trooper Skills & Plugins - Extend AI with Custom Capabilities",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Crabs HQ",
+        title: "Skills & Plugins - Extend AI Employees with Custom Capabilities | Trooper",
         description:
             "Extend AI employees with skills from ClawHub or build custom plugins. Connect to any API or service.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Skills & Plugins - Extend AI with Custom Capabilities",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Skills & Plugins - Extend AI with Custom Capabilities",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function SkillsPluginsPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">or custom skills</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            AI employees are only as capable as the tools they can use. Crabs HQ connects to the ClawHub skill marketplace and supports custom plugins, so your AI workforce can interact with any API, service, or internal tool your business relies on.
+                                            AI employees are only as capable as the tools they can use. Trooper connects to the ClawHub skill marketplace and supports custom plugins, so your AI workforce can interact with any API, service, or internal tool your business relies on.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function SkillsPluginsPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Crabs HQ is built on the OpenClaw framework, which means AI employees can be equipped with skills from the ClawHub marketplace. Skills are modular capabilities that give AI employees the ability to interact with specific services: GitHub, Gmail, Notion, Stripe, Jira, and hundreds more.
+                                Trooper is built on the OpenClaw framework, which means AI employees can be equipped with skills from the ClawHub marketplace. Skills are modular capabilities that give AI employees the ability to interact with specific services: GitHub, Gmail, Notion, Stripe, Jira, and hundreds more.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 If a skill does not exist for your use case, you can build your own. The OpenClaw skill format is straightforward: define what the skill does, what inputs it needs, and how it connects to your API or service. Your custom skills become available to every AI employee in your organization.

@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Crabs HQ",
+    title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Trooper",
     description:
         "AI employees with full system access. Execute scripts, manage files, run shell commands, and interact with databases and APIs on your private OpenClaw server.",
     alternates: {
-        canonical: "https://crabshq.com/features/system-access",
+        canonical: "https://trooper.so/features/system-access",
     },
     openGraph: {
-        title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Crabs HQ",
+        title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Trooper",
         description:
             "AI employees with full system access. Execute scripts, manage files, run shell commands, and interact with databases on your private OpenClaw server.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ System Access - Execute Scripts and Manage Files",
+                alt: "Trooper System Access - Execute Scripts and Manage Files",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Crabs HQ",
+        title: "Full System Access - Execute Scripts, Manage Files & Run Commands | Trooper",
         description:
             "AI employees with full system access. Execute scripts, manage files, and run commands on your private OpenClaw server.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ System Access - Execute Scripts and Manage Files",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper System Access - Execute Scripts and Manage Files",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function SystemAccessPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">manage files, run commands</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Crabs HQ AI employees operate on a private OpenClaw server with full system access. They run shell commands, execute scripts in any language, manage files and directories, query databases, and interact with your infrastructure directly.
+                                            Trooper AI employees operate on a private OpenClaw server with full system access. They run shell commands, execute scripts in any language, manage files and directories, query databases, and interact with your infrastructure directly.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function SystemAccessPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Every Crabs HQ AI organization runs on its own private OpenClaw server. This gives your AI employees unrestricted access to the tools they need: shell commands, file systems, package managers, databases, and any CLI tool you use in your workflow.
+                                Every Trooper AI organization runs on its own private OpenClaw server. This gives your AI employees unrestricted access to the tools they need: shell commands, file systems, package managers, databases, and any CLI tool you use in your workflow.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 AI employees can write and execute Python scripts, run Node.js programs, query PostgreSQL databases, process CSV files, generate reports, and automate DevOps tasks. They have the same capabilities as a developer sitting at a terminal, but they work around the clock.

@@ -17,24 +17,24 @@ type FAQCategories = {
 const faqs: FAQCategories = {
   General: [
     {
-      question: "What is Crabs HQ?",
-      answer: "Crabs HQ is an AI workforce platform powered by OpenClaw. You deploy teams of AI employees — agents that autonomously write code, manage GitHub repos, browse the web, send emails, run shell commands, and execute multi-step workflows using your own API keys.",
+      question: "What is Trooper?",
+      answer: "Trooper is an AI workforce platform powered by OpenClaw. You deploy teams of AI employees — agents that autonomously write code, manage GitHub repos, browse the web, send emails, run shell commands, and execute multi-step workflows using your own API keys.",
     },
     {
-      question: "How is Crabs HQ different from ChatGPT or Claude?",
-      answer: "ChatGPT and Claude are single-model chat interfaces. Crabs HQ gives you an entire AI workforce — multiple specialized agents that collaborate, share persistent memory, make real GitHub commits, control browsers, send emails, and run 24/7 on their own Always-on Virtual PC. It's not a chatbot, it's a team.",
+      question: "How is Trooper different from ChatGPT or Claude?",
+      answer: "ChatGPT and Claude are single-model chat interfaces. Trooper gives you an entire AI workforce — multiple specialized agents that collaborate, share persistent memory, make real GitHub commits, control browsers, send emails, and run 24/7 on their own Always-on Virtual PC. It's not a chatbot, it's a team.",
     },
     {
       question: "What is OpenClaw?",
-      answer: "OpenClaw is the open-source AI execution engine powering Crabs HQ. It handles agent orchestration, persistent memory, multi-agent collaboration, skill execution, and task management. CrabsHQ gives you a polished UI and managed infrastructure on top of OpenClaw.",
+      answer: "OpenClaw is the open-source AI execution engine powering Trooper. It handles agent orchestration, persistent memory, multi-agent collaboration, skill execution, and task management. Trooper gives you a polished UI and managed infrastructure on top of OpenClaw.",
     },
     {
-      question: "What AI models does Crabs HQ support?",
+      question: "What AI models does Trooper support?",
       answer: "All major models. OpenAI (GPT-4, GPT-4o, o1), Anthropic (Claude 4, Sonnet, Haiku), Google (Gemini), and any other provider with an API. You bring your own keys and switch models anytime. It also supports Claude Code and Codex subscriptions.",
     },
     {
-      question: "Do I need technical knowledge to use Crabs HQ?",
-      answer: "No. You assign tasks in plain language via chat. Crabs HQ handles the execution — writing code, running commands, browsing the web, sending emails. The cloud plan manages all infrastructure for you. Power users can self-host for full control.",
+      question: "Do I need technical knowledge to use Trooper?",
+      answer: "No. You assign tasks in plain language via chat. Trooper handles the execution — writing code, running commands, browsing the web, sending emails. The cloud plan manages all infrastructure for you. Power users can self-host for full control.",
     },
     {
       question: "What can the AI agents actually do?",
@@ -44,7 +44,7 @@ const faqs: FAQCategories = {
   "AI Features": [
     {
       question: "What is the Always-on Virtual PC?",
-      answer: "Every Crabs HQ workspace includes a persistent virtual computer that runs 24/7. Your agents use it to execute code, run scripts, browse the web, and manage files — even when you're not online. It's like giving your AI employees their own dedicated workstation.",
+      answer: "Every Trooper workspace includes a persistent virtual computer that runs 24/7. Your agents use it to execute code, run scripts, browse the web, and manage files — even when you're not online. It's like giving your AI employees their own dedicated workstation.",
     },
     {
       question: "How does multi-agent orchestration work?",
@@ -86,19 +86,19 @@ const faqs: FAQCategories = {
   Pricing: [
     {
       question: "Do I need my own API keys?",
-      answer: "Yes. Crabs HQ follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers. This means no markup on AI usage — you pay providers directly at their rates.",
+      answer: "Yes. Trooper follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers. This means no markup on AI usage — you pay providers directly at their rates.",
     },
     {
       question: "What is the difference between Solo, Cloud, and Enterprise?",
       answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features and a license for 1 org. Cloud is $99/mo with team seats, multi-org support, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
     },
     {
-      question: "Does CrabsHQ Cloud include hosting?",
-      answer: "Yes. With CrabsHQ Cloud, we host and manage the workspace, Always-on Virtual PC, and runtime. Your team gets a dedicated environment without managing any infrastructure.",
+      question: "Does Trooper Cloud include hosting?",
+      answer: "Yes. With Trooper Cloud, we host and manage the workspace, Always-on Virtual PC, and runtime. Your team gets a dedicated environment without managing any infrastructure.",
     },
     {
-      question: "Can I self-host Crabs HQ?",
-      answer: "Yes. Enterprise customers can deploy Crabs HQ on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
+      question: "Can I self-host Trooper?",
+      answer: "Yes. Enterprise customers can deploy Trooper on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
     },
     {
       question: "Can I upgrade later from the lifetime deal?",
@@ -106,13 +106,13 @@ const faqs: FAQCategories = {
     },
     {
       question: "Are there discounts for startups or nonprofits?",
-      answer: "Yes. We offer special discounts for students, startups, and nonprofits. Contact support@crabshq.com with proof of eligibility.",
+      answer: "Yes. We offer special discounts for students, startups, and nonprofits. Contact support@trooper.so with proof of eligibility.",
     },
   ],
   Technical: [
     {
       question: "Do I need to manage any infrastructure?",
-      answer: "No. CrabsHQ Cloud handles all hosting, compute, and runtime. You connect your API keys and start deploying agents. Enterprise customers can self-host on their own infrastructure if needed.",
+      answer: "No. Trooper Cloud handles all hosting, compute, and runtime. You connect your API keys and start deploying agents. Enterprise customers can self-host on their own infrastructure if needed.",
     },
     {
       question: "Is my data secure?",
@@ -187,7 +187,7 @@ const FAQ: React.FC = () => {
           <p className="text-base font-normal text-slate-600 mt-4 sm:text-lg">
             Have a different question and can't find the answer you're looking for? Reach out to us by
             <a 
-              href="mailto:vaibhav@crabshq.com" 
+              href="mailto:vaibhav@trooper.so" 
               className="text-red-800 hover:text-red-500 hover:underline px-2"
               target="_blank" rel="noopener"  
               

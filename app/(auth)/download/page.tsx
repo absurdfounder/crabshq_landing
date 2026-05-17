@@ -2,19 +2,19 @@ import { Metadata } from "next";
 import DownloadClient from "./DownloadClient";
 
 export const metadata: Metadata = {
-  title: "Download Crabs HQ – Mac, Windows, iOS, Android",
+  title: "Download Trooper – Mac, Windows, iOS, Android",
   description:
-    "Download the Crabs HQ app for your platform. Available on Mac, Windows, iOS, and Android. Deploy AI agents anywhere.",
+    "Download the Trooper app for your platform. Available on Mac, Windows, iOS, and Android. Deploy AI agents anywhere.",
   alternates: {
-    canonical: "https://crabshq.com/download",
+    canonical: "https://trooper.so/download",
   },
   openGraph: {
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+        url: "https://dazzling-cat.netlify.app/trooper_social.png",
         width: 1200,
         height: 630,
-        alt: "Download Crabs HQ",
+        alt: "Download Trooper",
       },
     ],
   },

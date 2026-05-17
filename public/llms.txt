@@ -1,10 +1,10 @@
-# Crabs HQ
+# Trooper
 
 > AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.
 
 ## About
 
-Crabs HQ is an AI workforce platform built on OpenClaw technology. It enables teams to deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks. From the creators of ClawdBot and MoltBot.
+Trooper is an AI workforce platform built on OpenClaw technology. It enables teams to deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks. From the creators of ClawdBot and MoltBot.
 
 ## Core Features
 
@@ -21,24 +21,24 @@ Crabs HQ is an AI workforce platform built on OpenClaw technology. It enables te
 
 ## Skills Catalog
 
-Browse 3,000+ OpenClaw skills at: https://crabshq.com/integration
+Browse 3,000+ OpenClaw skills at: https://trooper.so/integration
 Skills are installable via: npx clawhub@latest install <skill-name>
 Categories include: Coding Agents & IDEs, Browser Automation, Data & Analytics, DevOps, Testing, Documentation, and more.
 
 ## Links
 
-- Website: https://crabshq.com
-- Skills Catalog: https://crabshq.com/integration
-- Pricing: https://crabshq.com/pricing
-- GitHub Integration: https://crabshq.com/features/github-integration
-- AI Workforce: https://crabshq.com/features/ai-workforce
-- Task Execution: https://crabshq.com/features/task-execution
-- Browser Control: https://crabshq.com/features/browser-control
-- Skills & Plugins: https://crabshq.com/features/skills-plugins
-- Email Automation: https://crabshq.com/features/email-automation
-- Persistent Memory: https://crabshq.com/features/persistent-memory
-- System Access: https://crabshq.com/features/system-access
-- Multi-Agent: https://crabshq.com/features/multi-agent-collaboration
-- OpenClaw Powered: https://crabshq.com/features/openclaw-powered
-- Chat Interfaces: https://crabshq.com/features/chat-interfaces
-- Full Details: https://crabshq.com/llms-full.txt
+- Website: https://trooper.so
+- Skills Catalog: https://trooper.so/integration
+- Pricing: https://trooper.so/pricing
+- GitHub Integration: https://trooper.so/features/github-integration
+- AI Workforce: https://trooper.so/features/ai-workforce
+- Task Execution: https://trooper.so/features/task-execution
+- Browser Control: https://trooper.so/features/browser-control
+- Skills & Plugins: https://trooper.so/features/skills-plugins
+- Email Automation: https://trooper.so/features/email-automation
+- Persistent Memory: https://trooper.so/features/persistent-memory
+- System Access: https://trooper.so/features/system-access
+- Multi-Agent: https://trooper.so/features/multi-agent-collaboration
+- OpenClaw Powered: https://trooper.so/features/openclaw-powered
+- Chat Interfaces: https://trooper.so/features/chat-interfaces
+- Full Details: https://trooper.so/llms-full.txt

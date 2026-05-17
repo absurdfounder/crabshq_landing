@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Research Team - Market Research & Data Analysis | Crabs HQ",
+    title: "AI Research Team - Market Research & Data Analysis | Trooper",
     description:
-        "Deploy an AI-powered research team with Crabs HQ. Automate market research, competitive analysis, customer insights, and data analysis to inform strategic decisions.",
+        "Deploy an AI-powered research team with Trooper. Automate market research, competitive analysis, customer insights, and data analysis to inform strategic decisions.",
     alternates: {
-        canonical: "https://crabshq.com/teams/research",
+        canonical: "https://trooper.so/teams/research",
     },
     openGraph: {
-        title: "AI Research Team - Market Research & Data Analysis | Crabs HQ",
+        title: "AI Research Team - Market Research & Data Analysis | Trooper",
         description:
-            "Deploy an AI-powered research team with Crabs HQ. Automate market research, competitive analysis, and data analysis.",
+            "Deploy an AI-powered research team with Trooper. Automate market research, competitive analysis, and data analysis.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Research Team - Market Research & Analysis",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Research Team - Market Research & Data Analysis | Crabs HQ",
+        title: "AI Research Team - Market Research & Data Analysis | Trooper",
         description:
-            "Deploy an AI-powered research team with Crabs HQ. Automate market research and competitive analysis.",
+            "Deploy an AI-powered research team with Trooper. Automate market research and competitive analysis.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Research Team - Market Research & Analysis",
             },
         ],
@@ -75,7 +75,7 @@ export default function ResearchTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function ResearchTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional research is time-consuming and expensive. Crabs HQ's AI research team conducts comprehensive research continuously, analyzing vast amounts of data, identifying patterns, and delivering actionable insights.
+                                Traditional research is time-consuming and expensive. Trooper's AI research team conducts comprehensive research continuously, analyzing vast amounts of data, identifying patterns, and delivering actionable insights.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI research team can conduct market research, analyze competitors, gather customer feedback, process survey data, identify trends, synthesize findings, and generate reports. All while maintaining research quality and methodology.

@@ -123,7 +123,7 @@ export default function Newsletter() {
                   <div className="flex flex-col sm:flex-row gap-3 max-w-xs mx-auto sm:max-w-none lg:mx-0 lg:gap-2">
                     {/* --- UPDATED CTA Button --- */}
                     <Link
-                      href="https://app.crabshq.com"
+                      href="https://app.trooper.so"
                       className="flex items-center justify-center py-2.5 px-4 rounded-lg font-medium text-sm sm:text-base md:text-lg text-white bg-red-600 hover:bg-red-700 w-full sm:w-auto whitespace-nowrap"
                     >
                       Get started for free
@@ -131,7 +131,7 @@ export default function Newsletter() {
                     {/* --- END OF UPDATE --- */}
 
                     {/* Original button commented out for reference */}
-                    {/* <Link href="https://app.crabshq.com" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
+                    {/* <Link href="https://app.trooper.so" className="btn text-dark text-2xl bg-red-300 hover:bg-red-700 hover:text-red-100 w-full mb-4 sm:w-auto sm:mb-0 flex items-center justify-center" >Create a free account</Link> */}
 
                     {/* Original Subscribe button (commented out in user code) */}
                     {/* <button type="submit" className="btn text-white bg-red-600 hover:bg-red-700 shadow" href="#0">Subscribe</button> */}

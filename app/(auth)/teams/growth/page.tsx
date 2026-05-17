@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Growth Team - User Acquisition & Retention | Crabs HQ",
+    title: "AI Growth Team - User Acquisition & Retention | Trooper",
     description:
-        "Deploy an AI-powered growth team with Crabs HQ. Automate user acquisition, retention strategies, growth experiments, and data-driven optimization to accelerate growth.",
+        "Deploy an AI-powered growth team with Trooper. Automate user acquisition, retention strategies, growth experiments, and data-driven optimization to accelerate growth.",
     alternates: {
-        canonical: "https://crabshq.com/teams/growth",
+        canonical: "https://trooper.so/teams/growth",
     },
     openGraph: {
-        title: "AI Growth Team - User Acquisition & Retention | Crabs HQ",
+        title: "AI Growth Team - User Acquisition & Retention | Trooper",
         description:
-            "Deploy an AI-powered growth team with Crabs HQ. Automate user acquisition, retention strategies, and growth experiments.",
+            "Deploy an AI-powered growth team with Trooper. Automate user acquisition, retention strategies, and growth experiments.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Growth Team - User Acquisition & Retention",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Growth Team - User Acquisition & Retention | Crabs HQ",
+        title: "AI Growth Team - User Acquisition & Retention | Trooper",
         description:
-            "Deploy an AI-powered growth team with Crabs HQ. Automate user acquisition and retention strategies.",
+            "Deploy an AI-powered growth team with Trooper. Automate user acquisition and retention strategies.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Growth Team - User Acquisition & Retention",
             },
         ],
@@ -75,7 +75,7 @@ export default function GrowthTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function GrowthTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional growth teams are limited by bandwidth and manual experimentation. Crabs HQ's AI growth team runs continuous experiments, analyzes data in real-time, and optimizes every stage of your funnel simultaneously.
+                                Traditional growth teams are limited by bandwidth and manual experimentation. Trooper's AI growth team runs continuous experiments, analyzes data in real-time, and optimizes every stage of your funnel simultaneously.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI growth team can design experiments, implement A/B tests, analyze user behavior, optimize conversion funnels, create retention campaigns, identify growth opportunities, and scale winning strategies. All while learning from data and improving over time.

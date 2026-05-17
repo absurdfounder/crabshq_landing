@@ -167,7 +167,7 @@ export default function MultiCompany() {
             Many companies.
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
-            Crabs HQ supports multiple businesses in one install. Run one AI company or run fifty.
+            Trooper supports multiple businesses in one install. Run one AI company or run fifty.
             Complete data isolation between companies. One control plane for your entire portfolio.
           </p>
         </div>

@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Task Execution - End-to-End AI Task Completion | Crabs HQ",
+    title: "Task Execution - End-to-End AI Task Completion | Trooper",
     description:
-        "AI employees that complete tasks from start to finish. No more copy-pasting suggestions. Crabs HQ AI takes action, executes scripts, updates files, and delivers results autonomously.",
+        "AI employees that complete tasks from start to finish. No more copy-pasting suggestions. Trooper AI takes action, executes scripts, updates files, and delivers results autonomously.",
     alternates: {
-        canonical: "https://crabshq.com/features/task-execution",
+        canonical: "https://trooper.so/features/task-execution",
     },
     openGraph: {
-        title: "Task Execution - End-to-End AI Task Completion | Crabs HQ",
+        title: "Task Execution - End-to-End AI Task Completion | Trooper",
         description:
-            "AI employees that complete tasks from start to finish. No more copy-pasting suggestions. Crabs HQ AI takes action and delivers results autonomously.",
+            "AI employees that complete tasks from start to finish. No more copy-pasting suggestions. Trooper AI takes action and delivers results autonomously.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Task Execution - End-to-End AI Task Completion",
+                alt: "Trooper Task Execution - End-to-End AI Task Completion",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Task Execution - End-to-End AI Task Completion | Crabs HQ",
+        title: "Task Execution - End-to-End AI Task Completion | Trooper",
         description:
-            "AI employees that complete tasks from start to finish. Crabs HQ AI takes action and delivers results autonomously.",
+            "AI employees that complete tasks from start to finish. Trooper AI takes action and delivers results autonomously.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Task Execution - End-to-End AI Task Completion",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Task Execution - End-to-End AI Task Completion",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function TaskExecutionPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">not just answers</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Most AI tools give you suggestions. Crabs HQ AI employees take action. They plan tasks, execute multi-step workflows, update files, run commands, send communications, and deliver finished results without constant human input.
+                                            Most AI tools give you suggestions. Trooper AI employees take action. They plan tasks, execute multi-step workflows, update files, run commands, send communications, and deliver finished results without constant human input.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function TaskExecutionPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                The gap between AI-generated advice and actual task completion is enormous. Crabs HQ bridges that gap entirely. When you assign a task to an AI employee, it plans the steps, gathers the necessary context, uses the right tools, and executes every step from beginning to end.
+                                The gap between AI-generated advice and actual task completion is enormous. Trooper bridges that gap entirely. When you assign a task to an AI employee, it plans the steps, gathers the necessary context, uses the right tools, and executes every step from beginning to end.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Need a bug fixed? Your AI employee reads the issue, checks out the code, understands the context from previous work, implements the fix, runs the test suite, and submits a pull request. Need a research report? It browses the web, extracts data, compiles findings, and delivers a formatted document.

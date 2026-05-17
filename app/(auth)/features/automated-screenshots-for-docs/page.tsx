@@ -8,9 +8,9 @@ import HeroArticleDemo from "@/components/HeroArticleDemo";
 export const metadata = {
     title: "Automated Screenshots - Screenshots that stay current | Wonder",
     description:
-        "Automated screenshots that stay current. CrabsHQ automatically updates screenshots in your documentation when your product changes.",
+        "Automated screenshots that stay current. Trooper automatically updates screenshots in your documentation when your product changes.",
     alternates: {
-        canonical: "https://crabshq.com/features/automated-screenshots-for-docs",
+        canonical: "https://trooper.so/features/automated-screenshots-for-docs",
     },
     openGraph: {
         images: [
@@ -65,11 +65,11 @@ export default function AutomatedScreenshotsPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">stay current</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Never worry about outdated screenshots again. CrabsHQ automatically captures and updates screenshots in your documentation when your product changes, keeping your help center accurate.
+                                            Never worry about outdated screenshots again. Trooper automatically captures and updates screenshots in your documentation when your product changes, keeping your help center accurate.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>

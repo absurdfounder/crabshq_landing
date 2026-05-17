@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Crabs HQ",
+    title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Trooper",
     description:
         "AI employees that work directly in your GitHub repos. Autonomous commits, pull requests, code reviews, issue management, and CI/CD pipeline monitoring powered by OpenClaw.",
     alternates: {
-        canonical: "https://crabshq.com/features/github-integration",
+        canonical: "https://trooper.so/features/github-integration",
     },
     openGraph: {
-        title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Crabs HQ",
+        title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Trooper",
         description:
             "AI employees that work directly in your GitHub repos. Autonomous commits, pull requests, code reviews, and issue management powered by OpenClaw.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ GitHub Integration - Autonomous Commits and PRs",
+                alt: "Trooper GitHub Integration - Autonomous Commits and PRs",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Crabs HQ",
+        title: "GitHub Integration - Autonomous Commits, PRs & Code Reviews | Trooper",
         description:
             "AI employees that work directly in your GitHub repos. Autonomous commits, pull requests, and code reviews powered by OpenClaw.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ GitHub Integration - Autonomous Commits and PRs",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper GitHub Integration - Autonomous Commits and PRs",
             },
         ],
     },
@@ -75,7 +75,7 @@ export default function GitHubIntegrationPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function GitHubIntegrationPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Crabs HQ AI employees integrate directly with GitHub through the OpenClaw runtime. This is not another code suggestion tool that waits for you to copy-paste. Your AI employees autonomously create branches, write code, commit changes, open pull requests, and respond to review comments.
+                                Trooper AI employees integrate directly with GitHub through the OpenClaw runtime. This is not another code suggestion tool that waits for you to copy-paste. Your AI employees autonomously create branches, write code, commit changes, open pull requests, and respond to review comments.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 When an issue is filed, an AI employee can pick it up, understand the codebase context from persistent memory, implement the fix, run tests, and submit a PR for human review. The entire workflow happens inside GitHub using your existing branch protection rules and CI/CD pipelines.

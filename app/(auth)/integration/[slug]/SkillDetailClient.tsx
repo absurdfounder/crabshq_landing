@@ -131,11 +131,11 @@ export default function SkillDetailClient({
       {/* Collapsible content sections */}
       <div className="mt-6">
         <CollapsibleSection title="Overview" defaultOpen={true}>
-          <p>{skillDescription || `${skillName} is an OpenClaw skill that extends AI agent capabilities. It can be installed globally or per-workspace and is compatible with all OpenClaw-powered agents on CrabsHQ.`}</p>
+          <p>{skillDescription || `${skillName} is an OpenClaw skill that extends AI agent capabilities. It can be installed globally or per-workspace and is compatible with all OpenClaw-powered agents on Trooper.`}</p>
         </CollapsibleSection>
 
         <CollapsibleSection title="How this skill works">
-          <p>When installed, this skill becomes available to your AI agents on CrabsHQ. The agent can invoke it when relevant tasks are detected based on trigger phrases and context. Skills operate within the agent&apos;s sandbox and follow the permissions and access levels configured in your workspace.</p>
+          <p>When installed, this skill becomes available to your AI agents on Trooper. The agent can invoke it when relevant tasks are detected based on trigger phrases and context. Skills operate within the agent&apos;s sandbox and follow the permissions and access levels configured in your workspace.</p>
           <ul className="list-disc pl-5 mt-3 space-y-1">
             <li>Automatically activated when matching triggers are detected</li>
             <li>Runs within the agent&apos;s execution sandbox</li>
@@ -175,7 +175,7 @@ export default function SkillDetailClient({
             </div>
             <div>
               <p className="font-medium text-slate-700">Is this skill compatible with all agents?</p>
-              <p className="mt-1">This skill works with any OpenClaw-compatible agent on CrabsHQ, including ClawdBot and MoltBot-based agents.</p>
+              <p className="mt-1">This skill works with any OpenClaw-compatible agent on Trooper, including ClawdBot and MoltBot-based agents.</p>
             </div>
           </div>
         </CollapsibleSection>

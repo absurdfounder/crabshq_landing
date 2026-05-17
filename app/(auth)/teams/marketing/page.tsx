@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Crabs HQ",
+    title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Trooper",
     description:
-        "Deploy an AI-powered marketing team with Crabs HQ. Automate content creation, campaign management, social media, SEO, and analytics to scale your marketing efforts.",
+        "Deploy an AI-powered marketing team with Trooper. Automate content creation, campaign management, social media, SEO, and analytics to scale your marketing efforts.",
     alternates: {
-        canonical: "https://crabshq.com/teams/marketing",
+        canonical: "https://trooper.so/teams/marketing",
     },
     openGraph: {
-        title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Crabs HQ",
+        title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Trooper",
         description:
-            "Deploy an AI-powered marketing team with Crabs HQ. Automate content creation, campaign management, social media, SEO, and analytics to scale your marketing efforts.",
+            "Deploy an AI-powered marketing team with Trooper. Automate content creation, campaign management, social media, SEO, and analytics to scale your marketing efforts.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Marketing Team - Automated Marketing Operations",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Crabs HQ",
+        title: "AI Marketing Team - Automated Marketing Campaigns & Strategy | Trooper",
         description:
-            "Deploy an AI-powered marketing team with Crabs HQ. Automate content creation, campaign management, social media, SEO, and analytics.",
+            "Deploy an AI-powered marketing team with Trooper. Automate content creation, campaign management, social media, SEO, and analytics.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Marketing Team - Automated Marketing Operations",
             },
         ],
@@ -75,7 +75,7 @@ export default function MarketingTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function MarketingTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional marketing teams are expensive, slow, and limited by working hours. Crabs HQ's AI marketing team operates 24/7, creating content, analyzing data, optimizing campaigns, and engaging with audiences across all your channels simultaneously.
+                                Traditional marketing teams are expensive, slow, and limited by working hours. Trooper's AI marketing team operates 24/7, creating content, analyzing data, optimizing campaigns, and engaging with audiences across all your channels simultaneously.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI marketing team can write blog posts, design social media campaigns, conduct competitor research, optimize SEO, manage email campaigns, analyze performance metrics, and adjust strategies in real-time. All while maintaining your brand voice and following your strategic guidelines.

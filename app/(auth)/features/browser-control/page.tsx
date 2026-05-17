@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Browser Control - AI That Navigates the Web Autonomously | Crabs HQ",
+    title: "Browser Control - AI That Navigates the Web Autonomously | Trooper",
     description:
         "AI employees that browse the web, fill forms, extract data, and interact with web apps. Full browser automation powered by OpenClaw for research, monitoring, and data collection.",
     alternates: {
-        canonical: "https://crabshq.com/features/browser-control",
+        canonical: "https://trooper.so/features/browser-control",
     },
     openGraph: {
-        title: "Browser Control - AI That Navigates the Web Autonomously | Crabs HQ",
+        title: "Browser Control - AI That Navigates the Web Autonomously | Trooper",
         description:
             "AI employees that browse the web, fill forms, extract data, and interact with web apps. Full browser automation powered by OpenClaw.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Browser Control - AI Web Navigation and Data Extraction",
+                alt: "Trooper Browser Control - AI Web Navigation and Data Extraction",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Browser Control - AI That Navigates the Web Autonomously | Crabs HQ",
+        title: "Browser Control - AI That Navigates the Web Autonomously | Trooper",
         description:
             "AI employees that browse the web, fill forms, extract data, and interact with web apps autonomously.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Browser Control - AI Web Navigation and Data Extraction",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Browser Control - AI Web Navigation and Data Extraction",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function BrowserControlPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">fill forms, extract data</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Crabs HQ AI employees can control a full browser session. They navigate websites, fill out forms, take screenshots, extract structured data, and interact with web applications just like a human would.
+                                            Trooper AI employees can control a full browser session. They navigate websites, fill out forms, take screenshots, extract structured data, and interact with web applications just like a human would.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function BrowserControlPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Many business tasks require interacting with websites that do not have APIs. Checking competitor pricing, filling out vendor forms, extracting data from dashboards, or monitoring web applications. Crabs HQ AI employees handle all of this through full browser control.
+                                Many business tasks require interacting with websites that do not have APIs. Checking competitor pricing, filling out vendor forms, extracting data from dashboards, or monitoring web applications. Trooper AI employees handle all of this through full browser control.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Using the OpenClaw runtime, AI employees launch headless browser sessions where they can click buttons, type into fields, scroll pages, take screenshots, and navigate between sites. They understand page structure and can adapt when layouts change, making them reliable for recurring web-based tasks.

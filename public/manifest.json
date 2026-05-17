@@ -1,7 +1,7 @@
 {
-  "name": "CrabsHQ - Notion to Blog, Helpdesk & Directory Sites",
-  "short_name": "Wonder",
-  "description": "Create superfast websites with Notion as your CMS.",
+  "name": "Trooper - AI Workforce Powered by OpenClaw",
+  "short_name": "Trooper",
+  "description": "Build AI workforce teams with OpenClaw AI. Multiple AI employees execute tasks autonomously.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -9,8 +9,18 @@
   "icons": [
     {
       "src": "/favicon.ico",
-      "sizes": "any",
+      "sizes": "48x48",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }

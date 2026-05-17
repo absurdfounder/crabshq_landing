@@ -4,12 +4,12 @@ import logonew_black from '../../public/images/logonew-black.png';
 
 export default function Logo() {
   return (
-    <Link href="/" className="block" aria-label="Crabs HQ">
+    <Link href="/" className="block" aria-label="Trooper">
       {/* Use the Image component for optimized images */}
       <Image
         src={logonew_black} 
         unoptimized
-        alt="Logo" 
+        alt="Trooper" 
         width={200}
         height={200}
         className="block" 

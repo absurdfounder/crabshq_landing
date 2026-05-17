@@ -15,7 +15,7 @@ const problems = [
   },
   {
     without: "Folders of agent configs are disorganized and you're re-inventing task management, communication, and coordination between agents.",
-    with: "Crabs HQ gives you org charts, ticketing, delegation, and governance out of the box — so you run a company, not a pile of scripts.",
+    with: "Trooper gives you org charts, ticketing, delegation, and governance out of the box — so you run a company, not a pile of scripts.",
   },
   {
     without: "Runaway loops waste hundreds of dollars of tokens and max your quota before you even know what happened.",
@@ -27,7 +27,7 @@ const problems = [
   },
   {
     without: "You have an idea, you have to fire up Claude Code, keep a tab open, and babysit it.",
-    with: "Add a task in Crabs HQ. Your AI employee works on it until it's done. You review their work when you're ready.",
+    with: "Add a task in Trooper. Your AI employee works on it until it's done. You review their work when you're ready.",
   },
 ];
 
@@ -38,7 +38,7 @@ const ProblemsSolved = () => (
       <div className="mb-10">
         <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Problems Solved</span>
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
-          What changes with Crabs HQ.
+          What changes with Trooper.
         </h2>
       </div>
 
@@ -62,7 +62,7 @@ const ProblemsSolved = () => (
             </div>
 
             <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-4">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-emerald-600">With Crabs HQ</span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-emerald-600">With Trooper</span>
               <p className="text-sm text-slate-700 mt-1.5 leading-relaxed">{p.with}</p>
             </div>
           </motion.div>
@@ -126,10 +126,10 @@ const UnderTheHood = () => (
       <div className="mb-10">
         <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Under the Hood</span>
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
-          Why Crabs HQ is different.
+          Why Trooper is different.
         </h2>
         <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-xl">
-          Crabs HQ handles the hard orchestration details correctly.
+          Trooper handles the hard orchestration details correctly.
         </p>
       </div>
 
@@ -182,7 +182,7 @@ const UnderTheHood = () => (
   </section>
 );
 
-/* ─── What Crabs HQ is not ─── */
+/* ─── What Trooper is not ─── */
 const diffs = [
   {
     title: 'Not a chatbot.',
@@ -194,11 +194,11 @@ const diffs = [
   },
   {
     title: 'Not a workflow builder.',
-    detail: 'No drag-and-drop pipelines. Crabs HQ models companies — with org charts, goals, budgets, and governance.',
+    detail: 'No drag-and-drop pipelines. Trooper models companies — with org charts, goals, budgets, and governance.',
   },
   {
     title: 'Not a prompt manager.',
-    detail: 'Agents bring their own models and runtimes. Crabs HQ manages the organization they work in.',
+    detail: 'Agents bring their own models and runtimes. Trooper manages the organization they work in.',
   },
   {
     title: 'Not a single-agent toy.',
@@ -214,7 +214,7 @@ const Differentiation = () => (
       <div className="mb-10">
         <span className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-red-600">Differentiation</span>
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 mt-3">
-          What Crabs HQ is not.
+          What Trooper is not.
         </h2>
       </div>
 

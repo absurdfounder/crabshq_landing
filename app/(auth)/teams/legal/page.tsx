@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Legal Team - Contract Review & Compliance | Crabs HQ",
+    title: "AI Legal Team - Contract Review & Compliance | Trooper",
     description:
-        "Deploy an AI-powered legal team with Crabs HQ. Automate contract review, compliance monitoring, legal research, and risk assessment to reduce legal costs and risks.",
+        "Deploy an AI-powered legal team with Trooper. Automate contract review, compliance monitoring, legal research, and risk assessment to reduce legal costs and risks.",
     alternates: {
-        canonical: "https://crabshq.com/teams/legal",
+        canonical: "https://trooper.so/teams/legal",
     },
     openGraph: {
-        title: "AI Legal Team - Contract Review & Compliance | Crabs HQ",
+        title: "AI Legal Team - Contract Review & Compliance | Trooper",
         description:
-            "Deploy an AI-powered legal team with Crabs HQ. Automate contract review, compliance monitoring, and legal research.",
+            "Deploy an AI-powered legal team with Trooper. Automate contract review, compliance monitoring, and legal research.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Legal Team - Contract Review & Compliance",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Legal Team - Contract Review & Compliance | Crabs HQ",
+        title: "AI Legal Team - Contract Review & Compliance | Trooper",
         description:
-            "Deploy an AI-powered legal team with Crabs HQ. Automate contract review and compliance monitoring.",
+            "Deploy an AI-powered legal team with Trooper. Automate contract review and compliance monitoring.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Legal Team - Contract Review & Compliance",
             },
         ],
@@ -75,7 +75,7 @@ export default function LegalTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function LegalTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional legal work is expensive and time-consuming. Crabs HQ's AI legal team handles routine legal tasks, contract review, and compliance monitoring at a fraction of the cost while maintaining high accuracy.
+                                Traditional legal work is expensive and time-consuming. Trooper's AI legal team handles routine legal tasks, contract review, and compliance monitoring at a fraction of the cost while maintaining high accuracy.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI legal team can review contracts, identify risks, ensure compliance, conduct legal research, draft standard documents, monitor regulatory changes, and flag issues for human review. All while maintaining strict confidentiality and accuracy.

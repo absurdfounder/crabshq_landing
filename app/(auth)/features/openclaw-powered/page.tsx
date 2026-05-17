@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "OpenClaw Runtime - Private AI Server for Your Organization | Crabs HQ",
+    title: "OpenClaw Runtime - Private AI Server for Your Organization | Trooper",
     description:
-        "Built on the proven OpenClaw framework. Every Crabs HQ organization runs on a dedicated private server with isolated data, full system access, and the complete OpenClaw ecosystem.",
+        "Built on the proven OpenClaw framework. Every Trooper organization runs on a dedicated private server with isolated data, full system access, and the complete OpenClaw ecosystem.",
     alternates: {
-        canonical: "https://crabshq.com/features/openclaw-powered",
+        canonical: "https://trooper.so/features/openclaw-powered",
     },
     openGraph: {
-        title: "OpenClaw Runtime - Private AI Server for Your Organization | Crabs HQ",
+        title: "OpenClaw Runtime - Private AI Server for Your Organization | Trooper",
         description:
             "Built on the proven OpenClaw framework. Every organization gets a dedicated private server with isolated data and full system access.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ OpenClaw Runtime - Private AI Server",
+                alt: "Trooper OpenClaw Runtime - Private AI Server",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "OpenClaw Runtime - Private AI Server for Your Organization | Crabs HQ",
+        title: "OpenClaw Runtime - Private AI Server for Your Organization | Trooper",
         description:
             "Built on the proven OpenClaw framework. Every organization gets a dedicated private server with full access.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ OpenClaw Runtime - Private AI Server",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper OpenClaw Runtime - Private AI Server",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function OpenClawPoweredPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">OpenClaw framework</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Crabs HQ deploys an OpenClaw backend on a private server for each organization. Your company data stays siloed and secure while giving your AI employees full, untampered access to the OpenClaw runtime with a polished user interface.
+                                            Trooper deploys an OpenClaw backend on a private server for each organization. Your company data stays siloed and secure while giving your AI employees full, untampered access to the OpenClaw runtime with a polished user interface.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,13 +99,13 @@ export default function OpenClawPoweredPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                OpenClaw is an open-source AI agent framework that powers autonomous AI employees. It handles persistent memory, skill execution, tool usage, and multi-agent coordination. Crabs HQ takes this framework and deploys it as a managed service with dedicated infrastructure for each organization.
+                                OpenClaw is an open-source AI agent framework that powers autonomous AI employees. It handles persistent memory, skill execution, tool usage, and multi-agent coordination. Trooper takes this framework and deploys it as a managed service with dedicated infrastructure for each organization.
                             </p>
                             <p className="text-slate-600 mb-4">
-                                Instead of self-hosting OpenClaw and managing servers, databases, and updates yourself, Crabs HQ handles the infrastructure. Each organization gets its own isolated OpenClaw instance running on a dedicated server. Your data never mixes with other customers. Your AI employees have full access to every OpenClaw capability.
+                                Instead of self-hosting OpenClaw and managing servers, databases, and updates yourself, Trooper handles the infrastructure. Each organization gets its own isolated OpenClaw instance running on a dedicated server. Your data never mixes with other customers. Your AI employees have full access to every OpenClaw capability.
                             </p>
                             <p className="text-slate-600 mb-4">
-                                The Crabs HQ interface provides a clean UI on top of OpenClaw. Manage your AI employees, assign tasks, configure skills, review outputs, and monitor performance through an intuitive dashboard. From ClawdBot to MoltBot to full AI organizations, the OpenClaw evolution continues with Crabs HQ.
+                                The Trooper interface provides a clean UI on top of OpenClaw. Manage your AI employees, assign tasks, configure skills, review outputs, and monitor performance through an intuitive dashboard. From ClawdBot to MoltBot to full AI organizations, the OpenClaw evolution continues with Trooper.
                             </p>
                         </div>
                     </div>
@@ -117,7 +117,7 @@ export default function OpenClawPoweredPage() {
                         </div>
                         <div className="p-6 rounded-lg border border-neutral-200">
                             <h3 className="font-semibold text-slate-900 mb-2">Fully Managed Infrastructure</h3>
-                            <p className="text-sm text-slate-600">No server management, no DevOps overhead. Crabs HQ handles hosting, updates, scaling, and monitoring of your OpenClaw runtime.</p>
+                            <p className="text-sm text-slate-600">No server management, no DevOps overhead. Trooper handles hosting, updates, scaling, and monitoring of your OpenClaw runtime.</p>
                         </div>
                         <div className="p-6 rounded-lg border border-neutral-200">
                             <h3 className="font-semibold text-slate-900 mb-2">Full OpenClaw Access</h3>

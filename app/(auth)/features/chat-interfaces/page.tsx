@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Crabs HQ",
+    title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Trooper",
     description:
         "Interact with your AI employees from any chat platform. WhatsApp, Telegram, Discord, Slack, Signal, and more. Assign tasks, get updates, and manage your AI workforce from wherever you already communicate.",
     alternates: {
-        canonical: "https://crabshq.com/features/chat-interfaces",
+        canonical: "https://trooper.so/features/chat-interfaces",
     },
     openGraph: {
-        title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Crabs HQ",
+        title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Trooper",
         description:
             "Interact with your AI employees from any chat platform. Assign tasks and get updates from WhatsApp, Telegram, Discord, Slack, and Signal.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Chat Interfaces - WhatsApp, Telegram, Discord, Slack",
+                alt: "Trooper Chat Interfaces - WhatsApp, Telegram, Discord, Slack",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Crabs HQ",
+        title: "Chat Anywhere - WhatsApp, Telegram, Discord, Slack, Signal | Trooper",
         description:
             "Interact with your AI employees from WhatsApp, Telegram, Discord, Slack, and Signal.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Chat Interfaces - WhatsApp, Telegram, Discord, Slack",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Chat Interfaces - WhatsApp, Telegram, Discord, Slack",
             },
         ],
     },
@@ -75,7 +75,7 @@ export default function ChatInterfacesPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function ChatInterfacesPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                You should not have to switch to a new dashboard every time you want to talk to your AI employees. Crabs HQ connects to the messaging platforms you already use every day. Send a message on WhatsApp, and your AI employee starts working on the task. Get a Telegram notification when the work is done.
+                                You should not have to switch to a new dashboard every time you want to talk to your AI employees. Trooper connects to the messaging platforms you already use every day. Send a message on WhatsApp, and your AI employee starts working on the task. Get a Telegram notification when the work is done.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 This works across WhatsApp, Telegram, Discord, Slack, and Signal. Each platform supports full two-way communication with your AI employees. You can assign new tasks, check on progress, ask clarifying questions, approve outputs, and receive completion notifications, all from the same chat interface you use for everything else.

@@ -176,12 +176,12 @@ const plans: Plan[] = [
     ],
     cta: {
       text: 'Get lifetime deal',
-      href: 'https://app.crabshq.com',
+      href: 'https://app.trooper.so',
     },
     highlight: false,
   },
   {
-    name: 'CrabsHQ Cloud',
+    name: 'Trooper Cloud',
     eyebrow: 'Hosted by us',
     price: '$99',
     cadence: '/ month',
@@ -196,7 +196,7 @@ const plans: Plan[] = [
     ],
     cta: {
       text: 'Start with cloud',
-      href: 'https://app.crabshq.com',
+      href: 'https://app.trooper.so',
     },
     highlight: true,
   },
@@ -207,7 +207,7 @@ const plans: Plan[] = [
     cadence: '',
     perSeat: 'Volume pricing from ~$4/seat/month',
     description:
-      'For companies that want Crabs HQ on their own infrastructure, with full control and custom pricing.',
+      'For companies that want Trooper on their own infrastructure, with full control and custom pricing.',
     badge: 'Self-host',
     note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
     sections: [
@@ -216,7 +216,7 @@ const plans: Plan[] = [
     ],
     cta: {
       text: 'Talk to sales',
-      href: 'https://cal.com/crabshq/setup-call',
+      href: 'https://cal.com/trooper/setup-call',
     },
     highlight: false,
   },
@@ -238,7 +238,7 @@ export default function SimplePricing() {
           </h1>
           <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
             Deploy AI employees that get real work done.
-            CrabsHQ gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
+            Trooper gives your team dedicated AI coworkers on their own private server — no shared infra, no vendor lock-in.
           </p>
         </div>
 

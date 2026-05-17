@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Operations Team - Process Automation & Optimization | Crabs HQ",
+    title: "AI Operations Team - Process Automation & Optimization | Trooper",
     description:
-        "Deploy an AI-powered operations team with Crabs HQ. Automate workflows, optimize processes, manage resources, and streamline operations to maximize efficiency.",
+        "Deploy an AI-powered operations team with Trooper. Automate workflows, optimize processes, manage resources, and streamline operations to maximize efficiency.",
     alternates: {
-        canonical: "https://crabshq.com/teams/operations",
+        canonical: "https://trooper.so/teams/operations",
     },
     openGraph: {
-        title: "AI Operations Team - Process Automation & Optimization | Crabs HQ",
+        title: "AI Operations Team - Process Automation & Optimization | Trooper",
         description:
-            "Deploy an AI-powered operations team with Crabs HQ. Automate workflows, optimize processes, and streamline operations.",
+            "Deploy an AI-powered operations team with Trooper. Automate workflows, optimize processes, and streamline operations.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Operations Team - Process Automation",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Operations Team - Process Automation & Optimization | Crabs HQ",
+        title: "AI Operations Team - Process Automation & Optimization | Trooper",
         description:
-            "Deploy an AI-powered operations team with Crabs HQ. Automate workflows and optimize processes.",
+            "Deploy an AI-powered operations team with Trooper. Automate workflows and optimize processes.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Operations Team - Process Automation",
             },
         ],
@@ -75,7 +75,7 @@ export default function OperationsTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function OperationsTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional operations teams struggle with manual processes, data silos, and scaling challenges. Crabs HQ's AI operations team automates workflows, optimizes resources, and identifies inefficiencies in real-time.
+                                Traditional operations teams struggle with manual processes, data silos, and scaling challenges. Trooper's AI operations team automates workflows, optimizes resources, and identifies inefficiencies in real-time.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI operations team can manage project coordination, automate data entry, optimize resource allocation, monitor KPIs, generate reports, streamline approvals, and identify process improvements. All while ensuring smooth day-to-day operations.

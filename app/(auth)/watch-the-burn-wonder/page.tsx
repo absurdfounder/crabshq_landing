@@ -14,7 +14,7 @@ import BlogType from "@/components/BlogType";
 import Testimonials from "@/components/testimonials";
 import Header from "@/components/ui/header";
 import TokenPage from "@/components/TokenPage";
-import CrabsHQDashboard from "@/components/watchburn";
+import TrooperDashboard from "@/components/watchburn";
 
 
 import Aos from "aos";
@@ -24,9 +24,9 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a blog with Notion (no-code and free)",
     description:
-        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute.  Build your free CrabsHQ  blog website in a minute!",
+        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute.  Build your free Trooper  blog website in a minute!",
     alternates: {
-        canonical: "https://crabshq.com/create-a-blog-notion",
+        canonical: "https://trooper.so/create-a-blog-notion",
     },
     openGraph: {
         images: [
@@ -93,14 +93,14 @@ export default function PageDetail() {
                                                 watch the  <img src="https://media1.giphy.com/media/26BRt5hkD6hLzTl3q/200w.gif?cid=6c09b952dvny52hb3olq7nti3a99q5xto0e8m088nulfadxs&ep=v1_stickers_search&rid=200w.gif&ct=s" className='w-16' />  <span className="text-3xl sm:text-4xl md:text-7xl gradient-text-accent"> burn</span>
                                             </h1>
                                             <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                                CrabsHQ token is <b>burned with every action</b> signup, website creation, or every when they get traffic on their website, scarecity rises as CrabsHQ grows.
+                                                Trooper token is <b>burned with every action</b> signup, website creation, or every when they get traffic on their website, scarecity rises as Trooper grows.
                                             </p>
                                             <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                                 <div className="mt-3 sm:mt-0">
                                                     <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                         <strong className="mr-1">Verify BURN on SolScan</strong>
                                                     </Link>
-                                                    <p className="mt-3 text-sm text-slate-700"><strong>16720</strong> $CrabsHQ burned 60 mins ago.</p>
+                                                    <p className="mt-3 text-sm text-slate-700"><strong>16720</strong> $Trooper burned 60 mins ago.</p>
                                                 </div>
                                             </div>
 
@@ -114,7 +114,7 @@ export default function PageDetail() {
                                 </div>
                             </div>
 
-                            <CrabsHQDashboard />
+                            <TrooperDashboard />
 
 
 

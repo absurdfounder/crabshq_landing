@@ -102,7 +102,7 @@ export default function GetStartedSection() {
                 Your data, your control
               </h2>
               <p className="mt-6 text-base text-slate-700">
-                Run CrabsHQ on your own infrastructure. Your keys, your data, fully isolated — no shared infrastructure, no vendor lock-in.
+                Run Trooper on your own infrastructure. Your keys, your data, fully isolated — no shared infrastructure, no vendor lock-in.
               </p>
             </div>
             <div className="pb-20">

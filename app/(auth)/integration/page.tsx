@@ -4,20 +4,20 @@ import { _loadSkills } from '@/app/utils/helper';
 import IntegrationClient from './IntegrationClient';
 
 export const metadata = {
-  title: 'OpenClaw Skills | Crabs HQ',
+  title: 'OpenClaw Skills | Trooper',
   description: 'Extend your AI workforce with 3,000+ OpenClaw skills. Connect GitHub, Gmail, Slack, Notion, AWS, Docker, Shopify, and hundreds of other tools to your AI employees.',
   alternates: {
-    canonical: "https://crabshq.com/integration",
+    canonical: "https://trooper.so/integration",
   },
   openGraph: {
-    title: 'OpenClaw Skills | Crabs HQ',
+    title: 'OpenClaw Skills | Trooper',
     description: 'Extend your AI workforce with 3,000+ OpenClaw skills.',
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/CrabsHQintegrations_socialshare.png",
+        url: "https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png",
         width: 1200,
         height: 630,
-        alt: "Crabs HQ OpenClaw Skills",
+        alt: "Trooper OpenClaw Skills",
       },
     ],
   },
@@ -25,8 +25,8 @@ export const metadata = {
     card: "summary_large_image",
     images: [
       {
-        url: "https://dazzling-cat.netlify.app/CrabsHQintegrations_socialshare.png",
-        alt: "Crabs HQ OpenClaw Skills",
+        url: "https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png",
+        alt: "Trooper OpenClaw Skills",
       },
     ],
   },

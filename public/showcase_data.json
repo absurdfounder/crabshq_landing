@@ -23,7 +23,7 @@
           "content": "Create a powerful blockchain grants platform with comprehensive features including analytics, content management, membership systems, and AI support. Built for SEO with user engagement features like upvotes, bookmarks, and personalized recommendations. Seamlessly sync with Notion and customize with flexible component sections."
         },
         "howItWorks": {
-          "content": "Users can browse, upvote, and bookmark grants while logged in. Staff can suggest personalized listings to users. Features include: Analytics dashboard, Forms builder, Memberships & Paywall, CrabsHQ  AI support, Custom script integration, Component-based sections (carousel, testimonials, pricing), Branding options, Notion sync, and Custom domain setup."
+          "content": "Users can browse, upvote, and bookmark grants while logged in. Staff can suggest personalized listings to users. Features include: Analytics dashboard, Forms builder, Memberships & Paywall, Trooper  AI support, Custom script integration, Component-based sections (carousel, testimonials, pricing), Branding options, Notion sync, and Custom domain setup."
         },
         "configuration": {
           "content": "1. Set up your branding and domain\n2. Configure membership tiers and paywalls\n3. Customize sections using the component creator\n4. Enable AI features and staff suggestions\n5. Set up Notion sync for content\n6. Add custom scripts and iframe embeds\n7. Configure analytics tracking\n8. Customize forms and user engagement features"
@@ -39,7 +39,7 @@
           "logo": "https://dazzling-cat.netlify.app/template_images/airdrop.work.png",
           "name": "Crypto Airdrop Aggregator",
           "type": "Marketplace",
-          "provider": "CrabsHQ",
+          "provider": "Trooper",
           "description": "Latest crypto airdrop guides hand-picked platform by us and the community.",
           "callToCopy": {
             "text": "Deploy Template",
@@ -683,7 +683,7 @@
           "description": "Product Hunt styled template.",
           "callToCopy": {
             "text": "Deploy Template",
-            "link": "https://app.crabshq.com/install-arcade-CrabsHQ"
+            "link": "https://app.trooper.so/install-arcade-Trooper"
           },
           "viewDemo": {
             "text": "View Demo",

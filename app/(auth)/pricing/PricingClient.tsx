@@ -52,7 +52,7 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
                             Get started in minutes - your dedicated server is ready to go. No credit card friction, just sign up and deploy.
                         </p>
                         <Link
-                            href="https://app.crabshq.com"
+                            href="https://app.trooper.so"
                             className="bg-red-600 text-white text-lg w-fit py-3 px-6 rounded-lg block hover:bg-red-700 transition-colors shadow-lg font-medium"
                             onClick={() => onClose()}
                         >
@@ -163,7 +163,7 @@ const comparisonCategories: ComparisonCategory[] = [
         iconColor: "text-indigo-500",
         rows: [
             { feature: "Self-hosted", solo: false, cloud: false, enterprise: true },
-            { feature: "Cloud-hosted by CrabsHQ", solo: false, cloud: true, enterprise: false },
+            { feature: "Cloud-hosted by Trooper", solo: false, cloud: true, enterprise: false },
             { feature: "White-label & custom domain", solo: false, cloud: false, enterprise: true },
             { feature: "Custom seat volume pricing", solo: false, cloud: false, enterprise: true },
             { feature: "Dedicated onboarding & migration", solo: false, cloud: false, enterprise: true },
@@ -191,18 +191,18 @@ const faqs: Record<string, FAQItem[]> = {
     Pricing: [
         {
             question: "Do I need my own API keys?",
-            answer: "Yes. Crabs HQ follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately — no markup, you pay providers directly at their rates.",
+            answer: "Yes. Trooper follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately — no markup, you pay providers directly at their rates.",
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
             answer: "Solo is a one-time $79 lifetime deal for individual founders with all core AI features and a license for 1 org. Cloud is $99/mo with 5 team seats, multi-org support, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
         },
         {
-            question: "Does CrabsHQ Cloud include hosting?",
-            answer: "Yes. With CrabsHQ Cloud, we host and manage the workspace, Always-on Virtual PC, and runtime. Your team gets a dedicated environment without managing any infrastructure.",
+            question: "Does Trooper Cloud include hosting?",
+            answer: "Yes. With Trooper Cloud, we host and manage the workspace, Always-on Virtual PC, and runtime. Your team gets a dedicated environment without managing any infrastructure.",
         },
         {
-            question: "Can I self-host Crabs HQ?",
+            question: "Can I self-host Trooper?",
             answer: "Yes. Enterprise customers deploy on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
         },
         {
@@ -211,7 +211,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "Are there discounts for startups or nonprofits?",
-            answer: "Yes. We offer special discounts for students, startups, and nonprofits. Contact support@crabshq.com with proof of eligibility.",
+            answer: "Yes. We offer special discounts for students, startups, and nonprofits. Contact support@trooper.so with proof of eligibility.",
         },
         {
             question: "Can I cancel or switch plans anytime?",
@@ -245,7 +245,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is OpenClaw?",
-            answer: "OpenClaw is the open-source AI execution engine powering Crabs HQ. It handles agent orchestration, persistent memory, multi-agent collaboration, skill execution, and task management. CrabsHQ provides a polished UI and managed infrastructure on top of it.",
+            answer: "OpenClaw is the open-source AI execution engine powering Trooper. It handles agent orchestration, persistent memory, multi-agent collaboration, skill execution, and task management. Trooper provides a polished UI and managed infrastructure on top of it.",
         },
     ],
 };
@@ -296,7 +296,7 @@ const FAQSection: React.FC = () => {
                     <p className="text-slate-600 max-w-2xl">
                         Have a different question? Reach out to our support team by
                         <a
-                            href="mailto:vaibhav@crabshq.com"
+                            href="mailto:vaibhav@trooper.so"
                             className="text-red-600 hover:text-red-700 hover:underline px-2"
                         >
                             sending us an email
@@ -388,7 +388,7 @@ const Pricing: React.FC = () => {
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-4 py-4">
                                 <div className="font-medium text-slate-600">Features</div>
                                 <div className="text-center font-medium text-slate-600">Solo Founder</div>
-                                <div className="text-center font-medium text-slate-900">CrabsHQ Cloud</div>
+                                <div className="text-center font-medium text-slate-900">Trooper Cloud</div>
                                 <div className="text-center font-medium text-slate-600">Enterprise</div>
                             </div>
                         </div>
@@ -442,7 +442,7 @@ const Pricing: React.FC = () => {
                                     <div />
                                     <div className="flex justify-center px-4">
                                         <Link
-                                            href="https://app.crabshq.com"
+                                            href="https://app.trooper.so"
                                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
                                         >
                                             Get lifetime deal
@@ -450,7 +450,7 @@ const Pricing: React.FC = () => {
                                     </div>
                                     <div className="flex justify-center px-4">
                                         <Link
-                                            href="https://app.crabshq.com"
+                                            href="https://app.trooper.so"
                                             className="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
                                         >
                                             Start with cloud
@@ -458,7 +458,7 @@ const Pricing: React.FC = () => {
                                     </div>
                                     <div className="flex justify-center px-4">
                                         <Link
-                                            href="https://cal.com/crabshq/setup-call"
+                                            href="https://cal.com/trooper/setup-call"
                                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
                                         >
                                             Talk to sales

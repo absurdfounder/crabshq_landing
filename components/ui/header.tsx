@@ -112,7 +112,7 @@ export default function Header() {
               <Link href="/" className="shrink-0 mr-2 sm:mr-4 relative group">
                 <Image
                   src={Logo}
-                  alt="Logo"
+                  alt="Trooper"
                   width={260}
                   height={200}
                   className="relative w-44 h-auto sm:w-52 md:w-56 lg:w-48"
@@ -451,7 +451,7 @@ export default function Header() {
 
                 <li>
                   <Link
-                    href="https://app.crabshq.com"
+                    href="https://app.trooper.so"
                     target='_blank'
                     className="btn-sm text-black border border-gray-200 bg-white hover:bg-slate-800 hover:text-white ml-2 flex items-center justify-between px-3 py-1.5 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base"
                     onMouseEnter={() => setIsBookHovered(true)}
@@ -467,7 +467,7 @@ export default function Header() {
 
                 <li>
                   <Link
-                    href="https://app.crabshq.com"
+                    href="https://app.trooper.so"
                     target='_blank'
                     className="btn-sm text-white bg-red-600 hover:bg-red-700 ml-2 flex items-center justify-between px-4 py-2 rounded-md transition duration-150 ease-in-out group overflow-hidden relative text-base font-semibold"
                     onMouseEnter={() => setIsHovered(true)}

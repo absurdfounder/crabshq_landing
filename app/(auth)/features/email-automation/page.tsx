@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Email & Communication Automation - Gmail, Slack, Discord | Crabs HQ",
+    title: "Email & Communication Automation - Gmail, Slack, Discord | Trooper",
     description:
         "AI employees that manage email, Slack, and Discord autonomously. Draft replies, send updates, triage inboxes, and handle team communication across all your channels.",
     alternates: {
-        canonical: "https://crabshq.com/features/email-automation",
+        canonical: "https://trooper.so/features/email-automation",
     },
     openGraph: {
-        title: "Email & Communication Automation - Gmail, Slack, Discord | Crabs HQ",
+        title: "Email & Communication Automation - Gmail, Slack, Discord | Trooper",
         description:
             "AI employees that manage email, Slack, and Discord autonomously. Draft replies, send updates, and triage inboxes across all your channels.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Email Automation - Gmail, Slack, Discord Integration",
+                alt: "Trooper Email Automation - Gmail, Slack, Discord Integration",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Email & Communication Automation - Gmail, Slack, Discord | Crabs HQ",
+        title: "Email & Communication Automation - Gmail, Slack, Discord | Trooper",
         description:
             "AI employees that manage email, Slack, and Discord autonomously. Draft replies, send updates, and triage inboxes.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Email Automation - Gmail, Slack, Discord Integration",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Email Automation - Gmail, Slack, Discord Integration",
             },
         ],
     },
@@ -75,7 +75,7 @@ export default function EmailAutomationPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function EmailAutomationPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Teams spend hours every day managing email inboxes, responding in Slack channels, and monitoring Discord servers. Crabs HQ AI employees take over these communication tasks so your team can focus on the work that actually moves your business forward.
+                                Teams spend hours every day managing email inboxes, responding in Slack channels, and monitoring Discord servers. Trooper AI employees take over these communication tasks so your team can focus on the work that actually moves your business forward.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Connect your Gmail account and AI employees can read incoming emails, categorize them by urgency and topic, draft context-aware replies using persistent memory, and send responses on your behalf. They follow your tone, reference past conversations, and handle routine correspondence end-to-end.

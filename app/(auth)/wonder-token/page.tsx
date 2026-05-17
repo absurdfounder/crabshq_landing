@@ -23,9 +23,9 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a blog with Notion (no-code and free)",
     description:
-        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute.  Build your free CrabsHQ  blog website in a minute!",
+        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute.  Build your free Trooper  blog website in a minute!",
         alternates: {
-            canonical: "https://crabshq.com/create-a-blog-notion",
+            canonical: "https://trooper.so/create-a-blog-notion",
           },
     openGraph: {
         images: [
@@ -98,7 +98,7 @@ export default function PageDetail() {
                                            without limits.
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            CrabsHQ token powers the <b>vibe coding</b> narrative with an easy to use platform on built on top of AI platforms and Notion.
+                                            Trooper token powers the <b>vibe coding</b> narrative with an easy to use platform on built on top of AI platforms and Notion.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">

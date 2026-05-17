@@ -166,7 +166,7 @@ const ExpandableSection = ({ id, title, icon: Icon, children, isOpen, onToggle, 
 );
 
 // --- MAIN DASHBOARD COMPONENT ---
-const CrabsHQDashboard = () => {
+const TrooperDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeSection, setActiveSection] = useState('overview');
   const [loading, setLoading] = useState(false);
@@ -243,7 +243,7 @@ const fetchTokenPrice = async (solPriceUSD) => {
   }
   
   try {
-    // Third fallback: Try to get price from CoinGecko if CrabsHQ is listed
+    // Third fallback: Try to get price from CoinGecko if Trooper is listed
     const cgResponse = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=wonder-sites&vs_currencies=usd`);
     const cgData = await cgResponse.json();
     
@@ -466,7 +466,7 @@ const fetchAllData = async () => {
 
   // Navigation setup
   const navItems = [
-    { id: 'overview', label: '✨ Crabs HQ', emoji: '✨' },
+    { id: 'overview', label: '✨ Trooper', emoji: '✨' },
     { id: 'solana', label: '💜 Solana Eco', emoji: '💜' },
   ];
 
@@ -512,7 +512,7 @@ const fetchAllData = async () => {
           useCORS: true,
         });
         const link = document.createElement('a');
-        link.download = 'crabshq-dashboard-snapshot.png';
+        link.download = 'trooper-dashboard-snapshot.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       } catch (error) {
@@ -579,7 +579,7 @@ const fetchAllData = async () => {
 
       {/* Main Content */}
       <main className='space-y-8'>
-        {/* CrabsHQ Overview Section */}
+        {/* Trooper Overview Section */}
         <motion.section
           id="overview"
           className="max-w-screen-xl mx-auto px-4"
@@ -593,7 +593,7 @@ const fetchAllData = async () => {
               <Zap className="w-6 h-6 mr-2.5 text-yellow-500" />Real-Time Burn
             </h3>
             <p className="text-sm text-slate-500 mb-5">
-              CrabsHQ Tokens are burned with every platform action - signups, website creation, and traffic. 
+              Trooper Tokens are burned with every platform action - signups, website creation, and traffic. 
               This creates scarcity as the platform grows, reflecting directly in the token's value.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -618,7 +618,7 @@ const fetchAllData = async () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 my-4">
             <StatCard item={{ 
               icon: TrendingUp, 
-              label: '$CrabsHQ Price', 
+              label: '$Trooper Price', 
               value: `$${tokenData.wonderPrice.toFixed(6)}`, 
               iconColorClass:'text-red-600', 
               bgColorClass:'bg-red-50/70', 
@@ -657,7 +657,7 @@ const fetchAllData = async () => {
               <CalendarDays className="w-6 h-6 mr-2.5 text-sky-500" /> Monthly Auto-Burn
             </h3>
             <p className="text-sm text-slate-500 mb-5">
-              Auto-Burn adjusts based on CrabsHQ price and blocks produced per month, following a monthly schedule.
+              Auto-Burn adjusts based on Trooper price and blocks produced per month, following a monthly schedule.
             </p>
             <div className="space-y-5">
               {WONDERQuarterlyBurns.map(burn => (
@@ -738,19 +738,19 @@ const fetchAllData = async () => {
              isOpen={expandedWONDERSection === 'what-is-WONDER'} 
              onToggle={setExpandedWONDERSection}
            >
-             CrabsHQ powers the Crabs HQ ecosystem and is the native token of our platform. 
+             Trooper powers the Trooper ecosystem and is the native token of our platform. 
              It's used for website creation, platform fees, and gets burned with every user action, 
              creating a deflationary mechanism that benefits all holders.
            </ExpandableSection>
            
            <ExpandableSection
              id="how-burn-works" 
-             title="How does CrabsHQ Burn work?" 
+             title="How does Trooper Burn work?" 
              icon={ShieldCheck}
              isOpen={expandedWONDERSection === 'how-burn-works'} 
              onToggle={setExpandedWONDERSection}
            >
-             CrabsHQ uses a real-time burn mechanism where tokens are permanently removed from circulation 
+             Trooper uses a real-time burn mechanism where tokens are permanently removed from circulation 
              with every platform action - user signups, website creation, and traffic generation. 
              This creates natural scarcity as the platform grows, directly benefiting token holders 
              through reduced supply and increased value.
@@ -769,7 +769,7 @@ const fetchAllData = async () => {
          <SectionTitle 
            emoji="💜" 
            title={<><span className="text-purple-600">Solana</span> Ecosystem</>} 
-           subtitle="Key real-time metrics from the Solana network powering CrabsHQ." 
+           subtitle="Key real-time metrics from the Solana network powering Trooper." 
          />
          
          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 my-4">
@@ -817,7 +817,7 @@ const fetchAllData = async () => {
              <Activity className="w-6 h-6 mr-2.5 text-purple-500" />Network Performance
            </h3>
            <p className="text-sm text-slate-500 mb-5">
-             Real-time performance metrics from the Solana network that powers CrabsHQ transactions.
+             Real-time performance metrics from the Solana network that powers Trooper transactions.
            </p>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -893,4 +893,4 @@ const fetchAllData = async () => {
  );
 };
 
-export default CrabsHQDashboard;
+export default TrooperDashboard;

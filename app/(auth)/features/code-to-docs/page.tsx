@@ -8,9 +8,9 @@ import HeroArticleDemo from "@/components/HeroArticleDemo";
 export const metadata = {
     title: "Code to Help Docs - Sync docs with your code | Wonder",
     description:
-        "Sync your documentation with your codebase automatically. CrabsHQ generates docs from your code and keeps them in sync.",
+        "Sync your documentation with your codebase automatically. Trooper generates docs from your code and keeps them in sync.",
     alternates: {
-        canonical: "https://crabshq.com/features/code-to-docs",
+        canonical: "https://trooper.so/features/code-to-docs",
     },
     openGraph: {
         images: [
@@ -65,11 +65,11 @@ export default function CodeToDocsPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">your code</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Keep your documentation in sync with your codebase automatically. CrabsHQ generates help docs from your code and updates them whenever you deploy changes.
+                                            Keep your documentation in sync with your codebase automatically. Trooper generates help docs from your code and updates them whenever you deploy changes.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>

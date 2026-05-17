@@ -23,9 +23,9 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a Marketplace with Notion (no-code and free)",
     description:
-        "Build a marketplace in Notion, with our Notion marketplace maker. Go live in under a minute.  Build your free CrabsHQ  marketplace website in a minute!",
+        "Build a marketplace in Notion, with our Notion marketplace maker. Go live in under a minute.  Build your free Trooper  marketplace website in a minute!",
     alternates: {
-        canonical: "https://crabshq.com/create-a-company-wiki-notion",
+        canonical: "https://trooper.so/create-a-company-wiki-notion",
     },
     openGraph: {
         images: [

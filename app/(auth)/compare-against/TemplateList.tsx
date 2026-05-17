@@ -173,7 +173,7 @@ const TemplateLibrary = ({ initialSelectedType = 'all' }: TemplateLibraryProps) 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Browse through examples of live Notion websites, built with CrabsHQ.
+            Browse through examples of live Notion websites, built with Trooper.
           </motion.p>
         </div>
 

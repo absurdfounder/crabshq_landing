@@ -73,7 +73,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
   `;
 
   return (
-    <PlausibleProvider domain="crabshq.com">
+    <PlausibleProvider domain="trooper.so">
 
       {/* Google Analytics */}
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />

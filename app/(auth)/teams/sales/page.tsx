@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Sales Team - Automated Lead Generation & Deal Closing | Crabs HQ",
+    title: "AI Sales Team - Automated Lead Generation & Deal Closing | Trooper",
     description:
-        "Deploy an AI-powered sales team with Crabs HQ. Automate prospecting, lead qualification, outreach, follow-ups, and deal management to scale your revenue.",
+        "Deploy an AI-powered sales team with Trooper. Automate prospecting, lead qualification, outreach, follow-ups, and deal management to scale your revenue.",
     alternates: {
-        canonical: "https://crabshq.com/teams/sales",
+        canonical: "https://trooper.so/teams/sales",
     },
     openGraph: {
-        title: "AI Sales Team - Automated Lead Generation & Deal Closing | Crabs HQ",
+        title: "AI Sales Team - Automated Lead Generation & Deal Closing | Trooper",
         description:
-            "Deploy an AI-powered sales team with Crabs HQ. Automate prospecting, lead qualification, outreach, follow-ups, and deal management to scale your revenue.",
+            "Deploy an AI-powered sales team with Trooper. Automate prospecting, lead qualification, outreach, follow-ups, and deal management to scale your revenue.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Sales Team - Automated Sales Operations",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Sales Team - Automated Lead Generation & Deal Closing | Crabs HQ",
+        title: "AI Sales Team - Automated Lead Generation & Deal Closing | Trooper",
         description:
-            "Deploy an AI-powered sales team with Crabs HQ. Automate prospecting, lead qualification, outreach, and deal management.",
+            "Deploy an AI-powered sales team with Trooper. Automate prospecting, lead qualification, outreach, and deal management.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Sales Team - Automated Sales Operations",
             },
         ],
@@ -75,7 +75,7 @@ export default function SalesTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function SalesTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional sales teams are expensive to hire, train, and scale. Crabs HQ's AI sales team operates 24/7, handling prospecting, qualification, personalized outreach, and follow-ups across multiple channels simultaneously.
+                                Traditional sales teams are expensive to hire, train, and scale. Trooper's AI sales team operates 24/7, handling prospecting, qualification, personalized outreach, and follow-ups across multiple channels simultaneously.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI sales team can research prospects, enrich lead data, craft personalized messages, schedule meetings, update CRM records, analyze deal stages, and coordinate with account executives. All while learning from successful patterns and continuously improving conversion rates.

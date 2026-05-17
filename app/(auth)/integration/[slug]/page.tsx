@@ -81,21 +81,21 @@ export async function generateMetadata(
 
   if (integration) {
     return {
-      title: `Integrate ${integration.product.name} with CrabsHQ`,
-      description: `Connect CrabsHQ to ${integration.product.name}: ${integration.product.description}`,
+      title: `Integrate ${integration.product.name} with Trooper`,
+      description: `Connect Trooper to ${integration.product.name}: ${integration.product.description}`,
       openGraph: {
-        title: `${integration.product.name} Integration | CrabsHQ`,
-        description: `Connect CrabsHQ to ${integration.product.name}: ${integration.product.description}`,
+        title: `${integration.product.name} Integration | Trooper`,
+        description: `Connect Trooper to ${integration.product.name}: ${integration.product.description}`,
         images: [{ url: integration.proof.screenshot }],
         type: 'article',
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${integration.product.name} Integration | CrabsHQ`,
+        title: `${integration.product.name} Integration | Trooper`,
         description: integration.product.description,
       },
       alternates: {
-        canonical: `https://crabshq.com/integration/${slug}`,
+        canonical: `https://trooper.so/integration/${slug}`,
       },
     };
   }
@@ -106,8 +106,8 @@ export async function generateMetadata(
 
   if (skill) {
     return {
-      title: `${skill.name} Skill — OpenClaw | CrabsHQ`,
-      description: `${skill.description}. Install with: ${skill.install_command}. Browse ${skill.category} skills and 3,000+ more on CrabsHQ.`,
+      title: `${skill.name} Skill — OpenClaw | Trooper`,
+      description: `${skill.description}. Install with: ${skill.install_command}. Browse ${skill.category} skills and 3,000+ more on Trooper.`,
       openGraph: {
         title: `${skill.name} — OpenClaw Skill`,
         description: `${skill.description}. Category: ${skill.category}. Install: ${skill.install_command}`,
@@ -116,11 +116,11 @@ export async function generateMetadata(
       },
       twitter: {
         card: 'summary',
-        title: `${skill.name} — OpenClaw Skill | CrabsHQ`,
+        title: `${skill.name} — OpenClaw Skill | Trooper`,
         description: skill.description,
       },
       alternates: {
-        canonical: `https://crabshq.com/integration/${slug}`,
+        canonical: `https://trooper.so/integration/${slug}`,
       },
       other: {
         'robots': 'index, follow, max-snippet:-1',
@@ -129,10 +129,10 @@ export async function generateMetadata(
   }
 
   return {
-    title: 'Skill | CrabsHQ',
-    description: 'Explore OpenClaw skills on CrabsHQ',
+    title: 'Skill | Trooper',
+    description: 'Explore OpenClaw skills on Trooper',
     alternates: {
-      canonical: `https://crabshq.com/integration/${slug}`,
+      canonical: `https://trooper.so/integration/${slug}`,
     },
   };
 }
@@ -146,16 +146,16 @@ function SkillStructuredData({ skill, relatedSkills }: { skill: Skill; relatedSk
     "description": skill.description,
     "codeRepository": skill.link,
     "programmingLanguage": "OpenClaw Skill",
-    "runtimePlatform": "CrabsHQ",
-    "url": `https://crabshq.com/integration/${skill.id}`,
+    "runtimePlatform": "Trooper",
+    "url": `https://trooper.so/integration/${skill.id}`,
     "author": {
       "@type": "Organization",
       "name": "OpenClaw Community"
     },
     "isPartOf": {
       "@type": "SoftwareApplication",
-      "name": "CrabsHQ",
-      "url": "https://crabshq.com"
+      "name": "Trooper",
+      "url": "https://trooper.so"
     }
   };
 
@@ -167,25 +167,25 @@ function SkillStructuredData({ skill, relatedSkills }: { skill: Skill; relatedSk
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://crabshq.com"
+        "item": "https://trooper.so"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Skills",
-        "item": "https://crabshq.com/integration"
+        "item": "https://trooper.so/integration"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": skill.category,
-        "item": `https://crabshq.com/integration?category=${encodeURIComponent(skill.category)}`
+        "item": `https://trooper.so/integration?category=${encodeURIComponent(skill.category)}`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": skill.name,
-        "item": `https://crabshq.com/integration/${skill.id}`
+        "item": `https://trooper.so/integration/${skill.id}`
       }
     ]
   };
@@ -194,7 +194,7 @@ function SkillStructuredData({ skill, relatedSkills }: { skill: Skill; relatedSk
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": `How to install ${skill.name} OpenClaw skill`,
-    "description": `Install the ${skill.name} skill on CrabsHQ to extend your AI agent capabilities.`,
+    "description": `Install the ${skill.name} skill on Trooper to extend your AI agent capabilities.`,
     "step": [
       {
         "@type": "HowToStep",
@@ -234,7 +234,7 @@ function SkillStructuredData({ skill, relatedSkills }: { skill: Skill; relatedSk
         "name": `What category is ${skill.name} in?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${skill.name} belongs to the "${skill.category}" category. You can browse more skills in this category on the CrabsHQ skills catalog.`
+          "text": `${skill.name} belongs to the "${skill.category}" category. You can browse more skills in this category on the Trooper skills catalog.`
         }
       }
     ]
@@ -572,7 +572,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     {skill.install_command}
                   </code>
                   <a
-                    href="https://crabshq.com/features/skills-plugins"
+                    href="https://trooper.so/features/skills-plugins"
                     className="text-xs text-slate-400 hover:text-slate-300 font-mono"
                   >
                     Learn more about skills &rarr;

@@ -41,7 +41,7 @@ const platforms: PlatformInfo[] = [
     label: "macOS",
     icon: <SiApple className="h-6 w-6" />,
     description: "For macOS 12 Monterey and later. Universal binary for Intel and Apple Silicon.",
-    href: "https://app.crabshq.com/download/mac",
+    href: "https://app.trooper.so/download/mac",
     buttonText: "Download for Mac",
   },
   {
@@ -49,7 +49,7 @@ const platforms: PlatformInfo[] = [
     label: "Windows",
     icon: <SiWindows className="h-5 w-5" />,
     description: "For Windows 10 and later. 64-bit installer.",
-    href: "https://app.crabshq.com/download/windows",
+    href: "https://app.trooper.so/download/windows",
     buttonText: "Download for Windows",
   },
   {
@@ -57,7 +57,7 @@ const platforms: PlatformInfo[] = [
     label: "iOS",
     icon: <Smartphone className="h-6 w-6" />,
     description: "For iPhone and iPad. Requires iOS 16 or later.",
-    href: "https://apps.apple.com/app/crabshq",
+    href: "https://apps.apple.com/app/trooper",
     buttonText: "Download on App Store",
   },
   {
@@ -65,7 +65,7 @@ const platforms: PlatformInfo[] = [
     label: "Android",
     icon: <Smartphone className="h-6 w-6" />,
     description: "For Android phones and tablets. Requires Android 10 or later.",
-    href: "https://play.google.com/store/apps/details?id=com.crabshq.app",
+    href: "https://play.google.com/store/apps/details?id=com.trooper.app",
     buttonText: "Get it on Google Play",
   },
 ];
@@ -105,7 +105,7 @@ export default function DownloadClient() {
             transition={{ duration: 0.4 }}
           >
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight text-slate-900 leading-tight">
-              Download Crabs HQ
+              Download Trooper
             </h1>
             <p className="mt-4 text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
               Your AI workforce, on every device. Deploy agents from your desktop or manage them on the go.
@@ -203,10 +203,10 @@ export default function DownloadClient() {
           >
             Or use{" "}
             <Link
-              href="https://app.crabshq.com"
+              href="https://app.trooper.so"
               className="text-red-600 hover:text-red-700 hover:underline font-medium"
             >
-              app.crabshq.com
+              app.trooper.so
             </Link>{" "}
             in your browser — no download needed.
           </motion.div>

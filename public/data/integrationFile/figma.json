@@ -1,9 +1,9 @@
 {
   "title": "Introducing Arcade",
-  "subtitle": "By Crabs HQ",
+  "subtitle": "By Trooper",
   "description": "Embed interactive product demos in your documentation and turn all users into power users.",
   "image": "https://framerusercontent.com/images/FS1of0gxF0A6UP7GmCpIBKQM.png",
-  "link": "https://app.crabshq.com/integrations/arcade",
+  "link": "https://app.trooper.so/integrations/arcade",
   "secondaryImage": "https://framerusercontent.com/images/JwSD9igebl5YjP1p0XBssmuRU4.png",
   "sections": [
     {
@@ -12,11 +12,11 @@
     },
     {
       "type": "paragraph",
-      "text": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allows you to embed Arcade interactive demos into your CrabsHQ documentation."
+      "text": "Arcade lets you create interactive product demos in minutes and turn all users into power users. Let users experience your product through interactive, guided demos. No more pausing and rewinding, users can progress at their own pace. This integration allows you to embed Arcade interactive demos into your Trooper documentation."
     },
     {
       "type":"paragraph",
-      "text":"Arcade is a powerful tool for creating interactive product demos. It allows you to Get a series of interactive steps that guide users through your product. You can embed these interactive demos directly into your CrabsHQ documentation, making it easy for users to learn how to use your product."
+      "text":"Arcade is a powerful tool for creating interactive product demos. It allows you to Get a series of interactive steps that guide users through your product. You can embed these interactive demos directly into your Trooper documentation, making it easy for users to learn how to use your product."
     }
     ,
     {
@@ -30,19 +30,19 @@
     },
     {
       "type": "paragraph",
-      "text": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the CrabsHQ editor. The app will turn the link into an Arcade embed showing your recorded demo."
+      "text": "Embedding an Arcade flow in your documentation is simple - just paste an Arcade flow link into the Trooper editor. The app will turn the link into an Arcade embed showing your recorded demo."
     },
     {
       "type": "list",
       "items": [
-        "Simple integration with Crabs HQ",
+        "Simple integration with Trooper",
         "User-friendly interactive demos",
         "Customizable demo flows"
       ]
     },
     {
       "type": "link",
-      "href": "https://app.crabshq.com/more-info",
+      "href": "https://app.trooper.so/more-info",
       "text": "Find out more here"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "type": "paragraph",
-      "text": "To Create a free account with Arcade, you'll need to create an account and record your first demo. Once you've recorded your demo, you can embed it into your CrabsHQ documentation."
+      "text": "To Create a free account with Arcade, you'll need to create an account and record your first demo. Once you've recorded your demo, you can embed it into your Trooper documentation."
     },
     
     {
@@ -78,7 +78,7 @@
     },
     {
       "type": "iframe",
-      "src": "https://app.crabshq.com/interactive-demo"
+      "src": "https://app.trooper.so/interactive-demo"
     },
     {
       "type": "heading",

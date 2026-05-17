@@ -18,7 +18,7 @@ const ProductHuntBadge = () => (
     <a href="https://www.producthunt.com/posts/wonder-1999?utm_source=badge-top-post-badge&amp;utm_medium=badge&amp;utm_souce=badge-wonder-2"
       target="_blank"
       className="group justify-center grid mb-4 sm:mb-6 md:mb-8 w-full"
-      title="View Crabs HQ on Product Hunt">
+      title="View Trooper on Product Hunt">
       <Image
         src="https://dazzling-cat.netlify.app/producthunt.svg"
         width={192}
@@ -146,7 +146,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 mb-2 items-stretch justify-start px-0">
                 <Link
-                  href="https://app.crabshq.com?ref=herolanding"
+                  href="https://app.trooper.so?ref=herolanding"
                   className="flex items-center justify-start py-3 sm:py-3 px-6 sm:px-6 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors w-full sm:w-auto relative text-sm sm:text-base min-h-[48px] sm:min-h-auto"
                 >
                   <span>Get Started for free</span>

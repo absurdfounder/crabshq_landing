@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Finance Team - Financial Planning & Analysis | Crabs HQ",
+    title: "AI Finance Team - Financial Planning & Analysis | Trooper",
     description:
-        "Deploy an AI-powered finance team with Crabs HQ. Automate bookkeeping, financial reporting, forecasting, budgeting, and expense management to optimize financial operations.",
+        "Deploy an AI-powered finance team with Trooper. Automate bookkeeping, financial reporting, forecasting, budgeting, and expense management to optimize financial operations.",
     alternates: {
-        canonical: "https://crabshq.com/teams/finance",
+        canonical: "https://trooper.so/teams/finance",
     },
     openGraph: {
-        title: "AI Finance Team - Financial Planning & Analysis | Crabs HQ",
+        title: "AI Finance Team - Financial Planning & Analysis | Trooper",
         description:
-            "Deploy an AI-powered finance team with Crabs HQ. Automate bookkeeping, financial reporting, forecasting, and budgeting.",
+            "Deploy an AI-powered finance team with Trooper. Automate bookkeeping, financial reporting, forecasting, and budgeting.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Finance Team - Financial Planning",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Finance Team - Financial Planning & Analysis | Crabs HQ",
+        title: "AI Finance Team - Financial Planning & Analysis | Trooper",
         description:
-            "Deploy an AI-powered finance team with Crabs HQ. Automate bookkeeping, reporting, and forecasting.",
+            "Deploy an AI-powered finance team with Trooper. Automate bookkeeping, reporting, and forecasting.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Finance Team - Financial Planning",
             },
         ],
@@ -75,7 +75,7 @@ export default function FinanceTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function FinanceTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional finance teams spend countless hours on data entry, reconciliation, and report generation. Crabs HQ's AI finance team automates these tasks while providing real-time insights and accurate forecasts.
+                                Traditional finance teams spend countless hours on data entry, reconciliation, and report generation. Trooper's AI finance team automates these tasks while providing real-time insights and accurate forecasts.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI finance team can process transactions, reconcile accounts, generate financial statements, track budgets, forecast cash flow, analyze spending patterns, and flag anomalies. All while maintaining accuracy and compliance.

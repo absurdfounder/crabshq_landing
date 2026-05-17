@@ -3,15 +3,15 @@ import Image from 'next/image'
 import Header from '@/components/ui/header';
 
 export const metadata = {
-    title: 'Migrate to CrabsHQ',
-    description: 'Migrate your helpdesk, blog, or even marketplace to CrabsHQ. Start living a hassle free life just SET and FORGET.',
+    title: 'Migrate to Trooper',
+    description: 'Migrate your helpdesk, blog, or even marketplace to Trooper. Start living a hassle free life just SET and FORGET.',
     alternates: {
-        canonical: "https://crabshq.com/migrating-to-wonder-sites",
+        canonical: "https://trooper.so/migrating-to-wonder-sites",
       },
     openGraph: {
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/CrabsHQmigration_socialshare.png",
+                url: "https://dazzling-cat.netlify.app/Troopermigration_socialshare.png",
                 width: 1200,
                 height: 630,
                 alt: "Get a Marketplace with Notion",
@@ -22,7 +22,7 @@ export const metadata = {
         card: "summary_large_image",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/CrabsHQmigration_socialshare.png",
+                url: "https://dazzling-cat.netlify.app/Troopermigration_socialshare.png",
                 alt: "Get a Marketplace with Notion",
             },
         ],
@@ -85,7 +85,7 @@ export default function PageDetail() {
                                     Migrate from 100+ Knowledge base platforms or other websites.
                                 </h2>
                                 <p className="mt-6 text-slate-600 sm:text-lg sm:leading-8">
-                                    Migrate your articles from pretty much any knowledge base platform to CrabsHQ. Our experts will make sure it’s a hassle-free and quick transition.
+                                    Migrate your articles from pretty much any knowledge base platform to Trooper. Our experts will make sure it’s a hassle-free and quick transition.
                                 </p>
                             </div>
                         </div>

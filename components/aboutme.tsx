@@ -24,7 +24,7 @@ export default function AboutMe() {
           <div className="w-full md:w-2/3 md:pl-8 prose prose-sm sm:prose text-slate-600 prose-indigo">
             <p className="my-2">
               Hey 👋 <br className="block sm:hidden" />
-              I'm Vaibhav, the founder of Crabs HQ.
+              I'm Vaibhav, the founder of Trooper.
             </p>
             <p className="my-2">
               There are already a couple of website builders and knowledge base
@@ -45,7 +45,7 @@ export default function AboutMe() {
               <br />
               <br />
               Since I couldn't find the right solution –{" "}
-              <strong className="text-slate-900">I built Crabs HQ</strong>.
+              <strong className="text-slate-900">I built Trooper</strong>.
               Sure, you can publish your Notion page on its own but it might
               come across as unprofessional. The messy Notion URL, distracting
               links pointing to Notion and the lack of customizability are just
@@ -53,7 +53,7 @@ export default function AboutMe() {
             </p>
             <p className="my-2">
               <strong className="text-slate-900">
-                CrabsHQ  is solving all of this. It is for businesses who need
+                Trooper  is solving all of this. It is for businesses who need
                 an easy way to Get a reliable knowledge site powered by
                 Notion.{" "}
               </strong>

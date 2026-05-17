@@ -6,34 +6,34 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "Multi-Agent Collaboration - AI Teams Working Together | Crabs HQ",
+    title: "Multi-Agent Collaboration - AI Teams Working Together | Trooper",
     description:
         "Multiple AI employees collaborating on complex tasks. Automatic task splitting, parallel execution, shared memory, and coordinated progress across your AI workforce.",
     alternates: {
-        canonical: "https://crabshq.com/features/multi-agent-collaboration",
+        canonical: "https://trooper.so/features/multi-agent-collaboration",
     },
     openGraph: {
-        title: "Multi-Agent Collaboration - AI Teams Working Together | Crabs HQ",
+        title: "Multi-Agent Collaboration - AI Teams Working Together | Trooper",
         description:
             "Multiple AI employees collaborating on complex tasks. Automatic task splitting, parallel execution, and coordinated progress.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
-                alt: "Crabs HQ Multi-Agent Collaboration - AI Teams Working Together",
+                alt: "Trooper Multi-Agent Collaboration - AI Teams Working Together",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Multi-Agent Collaboration - AI Teams Working Together | Crabs HQ",
+        title: "Multi-Agent Collaboration - AI Teams Working Together | Trooper",
         description:
             "Multiple AI employees collaborating on complex tasks with shared memory and coordinated progress.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
-                alt: "Crabs HQ Multi-Agent Collaboration - AI Teams Working Together",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
+                alt: "Trooper Multi-Agent Collaboration - AI Teams Working Together",
             },
         ],
     },
@@ -71,11 +71,11 @@ export default function MultiAgentCollaborationPage() {
                                             <span className="text-3xl sm:text-4xl md:text-5xl gradient-text-accent mx-4">on complex tasks</span>
                                         </h1>
                                         <p className="max-w-md mx-auto mt-3 text-base text-slate-500 sm:mb-0 sm:text-lg md:mt-5 md:text-lg md:max-w-2xl">
-                                            Complex projects require teamwork. Crabs HQ automatically splits large tasks across multiple AI employees who work in parallel, share progress through organizational memory, and coordinate to deliver unified results.
+                                            Complex projects require teamwork. Trooper automatically splits large tasks across multiple AI employees who work in parallel, share progress through organizational memory, and coordinate to deliver unified results.
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function MultiAgentCollaborationPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Most AI platforms give you a single agent that handles everything sequentially. Crabs HQ is built around multi-agent collaboration from the ground up. When a task is too complex for one AI employee, the system automatically divides it among team members based on their roles and skills.
+                                Most AI platforms give you a single agent that handles everything sequentially. Trooper is built around multi-agent collaboration from the ground up. When a task is too complex for one AI employee, the system automatically divides it among team members based on their roles and skills.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Consider a product launch: one AI employee researches competitors and writes positioning copy, another prepares the GitHub repository and documentation, a third drafts announcement emails and social posts, and a fourth monitors channels for questions after launch. They all work simultaneously, sharing progress through organizational memory.

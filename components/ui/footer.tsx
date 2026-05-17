@@ -34,7 +34,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Image
                 src={Logo}
-                alt="Crabs HQ"
+                alt="Trooper"
                 width={169}
                 className="rounded-lg w-32 sm:w-40 md:w-auto"
               />
@@ -62,7 +62,7 @@ export default function Footer() {
                   className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://www.linkedin.com/company/crabshq"
+                  href="https://www.linkedin.com/company/trooper"
                 >
                   <Linkedin className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
                   <span>LinkedIn</span>
@@ -73,7 +73,7 @@ export default function Footer() {
                   className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://www.youtube.com/@crabshq"
+                  href="https://www.youtube.com/@trooper"
                 >
                   <Youtube className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
                   <span>YouTube</span>
@@ -187,7 +187,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="mailto:support@crabshq.com"
+                      href="mailto:support@trooper.so"
                     >
                       <span className="break-words">Contact us</span>
                     </Link>
@@ -244,7 +244,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.crabshq.com/changelog"
+                      href="https://app.trooper.so/changelog"
                     >
                       <span className="break-words">Changelog</span>
                     </Link>
@@ -260,7 +260,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.crabshq.com"
+                      href="https://app.trooper.so"
                     >
                       <span className="break-words">Dashboard</span>
                     </Link>
@@ -283,7 +283,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.crabshq.com/blog"
+                      href="https://app.trooper.so/blog"
                     >
                       <span className="break-words">Blog</span>
                     </Link>
@@ -291,7 +291,7 @@ export default function Footer() {
                   <li>
                     <Link
                       className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.crabshq.com/changelog"
+                      href="https://app.trooper.so/changelog"
                     >
                       <span className="break-words">Changelog</span>
                     </Link>

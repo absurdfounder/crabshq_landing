@@ -6,19 +6,19 @@ import Testimonials from "@/components/testimonials";
 import HeroArticleDemo from "@/components/HeroArticleDemo";
 
 export const metadata = {
-    title: "AI Security Team - Security Audits & Threat Detection | Crabs HQ",
+    title: "AI Security Team - Security Audits & Threat Detection | Trooper",
     description:
-        "Deploy an AI-powered security team with Crabs HQ. Automate security audits, threat detection, vulnerability scanning, and incident response to protect your systems 24/7.",
+        "Deploy an AI-powered security team with Trooper. Automate security audits, threat detection, vulnerability scanning, and incident response to protect your systems 24/7.",
     alternates: {
-        canonical: "https://crabshq.com/teams/security",
+        canonical: "https://trooper.so/teams/security",
     },
     openGraph: {
-        title: "AI Security Team - Security Audits & Threat Detection | Crabs HQ",
+        title: "AI Security Team - Security Audits & Threat Detection | Trooper",
         description:
-            "Deploy an AI-powered security team with Crabs HQ. Automate security audits, threat detection, and incident response.",
+            "Deploy an AI-powered security team with Trooper. Automate security audits, threat detection, and incident response.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 width: 1200,
                 height: 630,
                 alt: "AI Security Team - Security & Threat Detection",
@@ -27,12 +27,12 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "AI Security Team - Security Audits & Threat Detection | Crabs HQ",
+        title: "AI Security Team - Security Audits & Threat Detection | Trooper",
         description:
-            "Deploy an AI-powered security team with Crabs HQ. Automate security audits and threat detection.",
+            "Deploy an AI-powered security team with Trooper. Automate security audits and threat detection.",
         images: [
             {
-                url: "https://dazzling-cat.netlify.app/crabshq_social.png",
+                url: "https://dazzling-cat.netlify.app/trooper_social.png",
                 alt: "AI Security Team - Security & Threat Detection",
             },
         ],
@@ -75,7 +75,7 @@ export default function SecurityTeamPage() {
                                         </p>
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
-                                                <Link href="https://app.crabshq.com" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
+                                                <Link href="https://app.trooper.so" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-red-700 sm:w-auto">
                                                     <strong className="mr-1">Get Started →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
@@ -99,7 +99,7 @@ export default function SecurityTeamPage() {
                         </h2>
                         <div className="prose prose-slate prose-lg">
                             <p className="text-slate-600 mb-4">
-                                Traditional security teams can't monitor systems 24/7 and struggle to keep up with evolving threats. Crabs HQ's AI security team operates continuously, detecting threats, scanning for vulnerabilities, and responding to incidents in real-time.
+                                Traditional security teams can't monitor systems 24/7 and struggle to keep up with evolving threats. Trooper's AI security team operates continuously, detecting threats, scanning for vulnerabilities, and responding to incidents in real-time.
                             </p>
                             <p className="text-slate-600 mb-4">
                                 Your AI security team can conduct security audits, scan for vulnerabilities, monitor logs, detect anomalies, analyze threats, implement patches, respond to incidents, and maintain security documentation. All while staying current with the latest threats and best practices.

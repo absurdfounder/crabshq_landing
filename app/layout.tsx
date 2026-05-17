@@ -35,23 +35,23 @@ export const viewport = {
 }
 
 export const metadata = {
-  metadataBase: new URL('https://crabshq.com'),
-  title: 'Crabs HQ: AI Workforce Powered by OpenClaw | GitHub Integration',
+  metadataBase: new URL('https://trooper.so'),
+  title: 'Trooper: AI Workforce Powered by OpenClaw | GitHub Integration',
   description: 'Build AI workforce teams with OpenClaw AI. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs. From the creators of ClawdBot and MoltBot.',
   alternates: {
-    canonical: 'https://crabshq.com',
+    canonical: 'https://trooper.so',
   },
   openGraph: {
-    title: 'Crabs HQ: AI Workforce Platform Built on OpenClaw GitHub',
+    title: 'Trooper: AI Workforce Platform Built on OpenClaw GitHub',
     description: 'Deploy AI workforce teams powered by OpenClaw AI. ClawdBot evolution for teams—GitHub commits, autonomous execution, persistent memory. Real work, not just answers.',
-    url: 'https://crabshq.com',
-    siteName: 'Crabs HQ',
+    url: 'https://trooper.so',
+    siteName: 'Trooper',
     images: [
       {
-        url: 'https://dazzling-cat.netlify.app/crabshq_social.png',
+        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
         width: 1200,
         height: 630,
-        alt: 'Crabs HQ - AI Workforce Powered by OpenClaw AI and ClawdBot',
+        alt: 'Trooper - AI Workforce Powered by OpenClaw AI and ClawdBot',
       },
     ],
     locale: 'en_US',
@@ -59,18 +59,21 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Crabs HQ: OpenClaw AI Workforce for Teams | GitHub OpenClaw',
+    title: 'Trooper: OpenClaw AI Workforce for Teams | GitHub OpenClaw',
     description: 'Scale your ClawdBot into a full AI workforce. Multiple OpenClaw AI employees working together—GitHub integration, autonomous execution, MoltBot evolution.',
     images: [
       {
-        url: 'https://dazzling-cat.netlify.app/crabshq_social.png',
-        alt: 'Crabs HQ - OpenClaw GitHub AI Workforce Platform',
+        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
+        alt: 'Trooper - OpenClaw GitHub AI Workforce Platform',
       },
     ],
-    site: '@Crabs_HQ',
+    site: '@trooper_so',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+    ],
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
@@ -101,14 +104,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const canonicalUrl = 'https://crabshq.com'
+  const canonicalUrl = 'https://trooper.so'
   return (
     <html lang="en">
       <head>
         <link rel="canonical" href={canonicalUrl} />
         {/* LLM Indexing - llms.txt standard */}
-        <link rel="alternate" type="text/plain" href="https://crabshq.com/llms.txt" title="LLM-readable summary" />
-        <link rel="alternate" type="text/plain" href="https://crabshq.com/llms-full.txt" title="LLM-readable full reference" />
+        <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
+        <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
         {/* Google Translate Script */}
         <Script 
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" 

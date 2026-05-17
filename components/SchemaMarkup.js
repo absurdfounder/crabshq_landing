@@ -5,12 +5,12 @@ const SchemaMarkup = () => {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Crabs HQ",
-    "url": "https://crabshq.com/",
+    "name": "Trooper",
+    "url": "https://trooper.so/",
     "description": "AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://crabshq.com/integration?search={search_term_string}",
+      "target": "https://trooper.so/integration?search={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -18,28 +18,28 @@ const SchemaMarkup = () => {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Crabs HQ",
-    "url": "https://crabshq.com",
-    "logo": "https://dazzling-cat.netlify.app/crabshq_social.png",
-    "description": "Crabs HQ builds AI workforce teams powered by OpenClaw. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs.",
+    "name": "Trooper",
+    "url": "https://trooper.so",
+    "logo": "https://dazzling-cat.netlify.app/trooper_social.png",
+    "description": "Trooper builds AI workforce teams powered by OpenClaw. Multiple AI employees execute tasks autonomously using GitHub, Gmail, browsers, and APIs.",
     "sameAs": [
-      "https://twitter.com/Crabs_HQ"
+      "https://twitter.com/trooper_so"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer support",
-      "url": "https://crabshq.com/contact"
+      "url": "https://trooper.so/contact"
     }
   };
 
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Crabs HQ",
+    "name": "Trooper",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "description": "AI workforce platform powered by OpenClaw. Deploy multiple AI employees that make GitHub commits, send emails, browse the web, and execute complex multi-step tasks autonomously.",
-    "url": "https://crabshq.com",
+    "url": "https://trooper.so",
     "featureList": [
       "AI Workforce Teams",
       "GitHub Integration with real commits",
@@ -62,7 +62,7 @@ const SchemaMarkup = () => {
       "price": "7.00",
       "priceCurrency": "USD",
       "availability": "https://schema.org/InStock",
-      "url": "https://crabshq.com/pricing",
+      "url": "https://trooper.so/pricing",
       "priceValidUntil": "2026-12-31",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -84,10 +84,10 @@ const SchemaMarkup = () => {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is Crabs HQ?",
+        "name": "What is Trooper?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Crabs HQ is an AI workforce platform powered by OpenClaw technology. It lets you deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks."
+          "text": "Trooper is an AI workforce platform powered by OpenClaw technology. It lets you deploy multiple AI employees (agents) that work autonomously — making GitHub commits, sending emails, browsing the web, and executing complex multi-step tasks."
         }
       },
       {
@@ -103,7 +103,7 @@ const SchemaMarkup = () => {
         "name": "How does GitHub integration work?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "CrabsHQ AI agents connect directly to your GitHub repositories. They can make real commits, create pull requests, review code, manage branches, and resolve merge conflicts — all autonomously."
+          "text": "Trooper AI agents connect directly to your GitHub repositories. They can make real commits, create pull requests, review code, manage branches, and resolve merge conflicts — all autonomously."
         }
       },
       {
@@ -111,7 +111,7 @@ const SchemaMarkup = () => {
         "name": "Can multiple AI agents work together?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, CrabsHQ supports multi-agent collaboration. Multiple AI agents can work on the same project, communicate with each other, delegate tasks, and orchestrate complex workflows together."
+          "text": "Yes, Trooper supports multi-agent collaboration. Multiple AI agents can work on the same project, communicate with each other, delegate tasks, and orchestrate complex workflows together."
         }
       }
     ]
@@ -125,25 +125,25 @@ const SchemaMarkup = () => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://crabshq.com"
+        "item": "https://trooper.so"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Skills Catalog",
-        "item": "https://crabshq.com/integration"
+        "item": "https://trooper.so/integration"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Pricing",
-        "item": "https://crabshq.com/pricing"
+        "item": "https://trooper.so/pricing"
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": "Features",
-        "item": "https://crabshq.com/features/ai-workforce"
+        "item": "https://trooper.so/features/ai-workforce"
       }
     ]
   };

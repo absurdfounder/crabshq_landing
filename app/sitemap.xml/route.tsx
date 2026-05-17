@@ -3,7 +3,7 @@ import { type NextRequest } from 'next/server';
 import { _loadFromJson, _loadFromJsonComparison, _loadSkills } from "../utils/helper";
 import type { Skill } from "../utils/helper";
 
-const URL = "https://crabshq.com";
+const URL = "https://trooper.so";
 
 interface IntegrationOrTemplate {
   id: string;

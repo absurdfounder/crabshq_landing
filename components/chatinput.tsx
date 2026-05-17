@@ -136,14 +136,14 @@ export default function ChatInput() {
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               onClick={() => setIsAnimating(false)}
-              placeholder={isAnimating ? "" : "Ask CrabsHQ  to create a ..."}
+              placeholder={isAnimating ? "" : "Ask Trooper  to create a ..."}
               className="w-full p-5 text-lg text-slate-700 outline-none resize-none min-h-[100px] placeholder:text-slate-400 font-lato border-transparent focus:outline-none focus:ring-0 focus:border-transparent opacity-75 hover:opacity-100 focus:opacity-100"
               rows={3}
             />
 
             {isAnimating && (
               <div className="absolute top-0 left-0 w-full h-full pointer-events-none p-5 flex items-start text-lg text-slate-400 font-lato">
-                Ask CrabsHQ  to create <span className="ml-2">{displayedPhrase}</span>
+                Ask Trooper  to create <span className="ml-2">{displayedPhrase}</span>
                 <span className={`${cursorVisible ? "opacity-100" : "opacity-0"} transition-opacity text-red-500`}>|</span>
               </div>
             )}
@@ -296,7 +296,7 @@ export default function ChatInput() {
             </p>
             <a
               type="button"
-              href="https://app.crabshq.com"
+              href="https://app.trooper.so"
               className="w-full bg-white hover:bg-gray-100 text-slate-900 py-3 rounded block text-center"
             >
               Sign up for free
