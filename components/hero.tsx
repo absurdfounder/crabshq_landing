@@ -186,7 +186,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
             {/* Right: interactive article demo.
                 Negative side margins make the grid reach the inner edge of the bordered max-w-7xl container. */}
-            <div className="flex-1 w-full mt-10 lg:mt-0 -mx-3 sm:-mx-4 md:-mx-6">
+            <div className="flex-1 mt-10 lg:mt-0 -mx-3 sm:-mx-4 md:-mx-6">
               <HeroArticleDemo />
             </div>
           </div>
