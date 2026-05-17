@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import {
   MessageCircle, Send, AtSign, RotateCcw, Pause, Play, Lock, Bell,
   Users, Bot, Hash, Paperclip, Smile, LayoutGrid,
-  Clock, MessageSquare, Zap, Activity
+  Clock, MessageSquare, Activity
 } from "lucide-react";
 
 /* ─── Data ─── */
@@ -88,7 +88,7 @@ function AvatarStack({ names, size = 18, max = 2 }: { names: string[]; size?: nu
 }
 
 function TaskTag({ text }: { text: string }) {
-  return <span style={{ fontSize: 10.5, fontWeight: 500, color: "#525252", background: "#f5f5f5", border: "1px solid #e5e5e5", padding: "1px 8px", borderRadius: 5, lineHeight: "18px", whiteSpace: "nowrap" }}>{text}</span>;
+  return <span style={{ fontSize: 10, fontWeight: 500, color: "#525252", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "1px 6px", borderRadius: 2, lineHeight: "16px", whiteSpace: "nowrap", fontFamily: "ui-monospace, SFMono-Regular, monospace", textTransform: "lowercase", letterSpacing: 0.2 }}>{text}</span>;
 }
 
 /* ─── Compact Task Card ─── */
@@ -96,33 +96,30 @@ function TaskCard({ task, index }: { task: (typeof PHASE1_TASKS)[number]; index:
   return (
     <div style={{
       background: "white", borderRadius: 2, border: "1px solid #e2e8f0",
-      padding: "10px 12px", marginBottom: 6,
+      padding: "9px 10px", marginBottom: 6,
       animation: `cardIn 0.4s ease ${index * 80}ms both`,
     }}>
       {/* Title */}
-      <div style={{ fontSize: 12.5, fontWeight: 600, color: "#1a1a1a", lineHeight: 1.35, marginBottom: 2 }}>{task.title}</div>
-      <div style={{ fontSize: 10, color: "#b5b5b5", marginBottom: 6 }}>{task.status}</div>
+      <div style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.4, marginBottom: 6 }}>{task.title}</div>
 
       {/* Tags */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginBottom: 8 }}>
         {task.tags.slice(0, 2).map(t => <TaskTag key={t} text={t} />)}
-        {task.tags.length > 2 && <span style={{ fontSize: 10, color: "#b5b5b5", padding: "1px 5px", background: "#f5f5f5", borderRadius: 5, border: "1px solid #e5e5e5" }}>+1</span>}
+        {task.tags.length > 2 && <span style={{ fontSize: 10, color: "#94a3b8", padding: "1px 5px", background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>+1</span>}
       </div>
 
-      {/* Watchers row + avatar */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      {/* Watchers row + author */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 6, borderTop: "1px solid #f1f5f9" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <span style={{ fontSize: 10, color: "#b5b5b5" }}>{task.watchers.length} watching</span>
-          <AvatarStack names={task.watchers} size={18} max={2} />
+          <AvatarStack names={task.watchers} size={16} max={3} />
+          <span style={{ fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+            {task.watchers.length} watching
+          </span>
         </div>
-        <Av name={task.by} size={24} />
-      </div>
-
-      {/* Footer */}
-      <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 6, paddingTop: 6, borderTop: "1px solid #f5f5f5", fontSize: 10, color: "#d4d4d4" }}>
-        <MessageSquare size={11} strokeWidth={1.5} color="#ccc" />
-        <span style={{ color: "#b5b5b5" }}>{task.comments}</span>
-        <span>by {task.by} · {task.time}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <MessageSquare size={10} strokeWidth={2} color="#cbd5e1" />
+          <span style={{ fontSize: 9, color: "#94a3b8", fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{task.comments}</span>
+        </div>
       </div>
     </div>
   );
@@ -130,10 +127,10 @@ function TaskCard({ task, index }: { task: (typeof PHASE1_TASKS)[number]; index:
 
 /* ─── Column ─── */
 const COL_META = {
-  inbox: { label: "Inbox", bg: "#f5f5f5", accent: "#737373" },
-  assigned: { label: "Assigned", bg: "#fef3c7", accent: "#d97706" },
-  progress: { label: "In Progress", bg: "#dbeafe", accent: "#2563eb" },
-  review: { label: "Review", bg: "#f3e8ff", accent: "#9333ea" },
+  inbox: { label: "Inbox", accent: "#94a3b8" },
+  assigned: { label: "Assigned", accent: "#d97706" },
+  progress: { label: "In Progress", accent: "#2563eb" },
+  review: { label: "Review", accent: "#9333ea" },
 };
 
 function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks: Task[] }) {
@@ -141,9 +138,9 @@ function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks:
   const m = COL_META[colKey];
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", marginBottom: 8, background: m.bg, borderRadius: 2 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: m.accent === "#737373" ? "#525252" : m.accent }}>{m.label}</span>
-        <span style={{ fontSize: 11, fontWeight: 800, color: m.accent, background: m.accent + "18", padding: "0 7px", borderRadius: 2, lineHeight: "20px" }}>{tasks.length}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 4px 10px", marginBottom: 6, borderTop: `2px solid ${m.accent}` }}>
+        <span style={{ fontSize: 10, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{m.label}</span>
+        <span style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8", marginLeft: "auto", fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.5 }}>{tasks.length}</span>
       </div>
       <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 2 }}>
         {tasks.map((t, i) => <TaskCard key={t.id} task={t} index={i} />)}
@@ -222,12 +219,13 @@ export default function TrooperDemo() {
   tasks.forEach((t: Task) => { if (cols[t.col as keyof typeof COL_META]) cols[t.col as keyof typeof COL_META].push(t); });
 
   return (
-    <div className="Trooper-demo" style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 70%{box-shadow:0 0 0 8px rgba(239,68,68,0)} 100%{box-shadow:0 0 0 0 rgba(239,68,68,0)} }
+        @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(16,185,129,.35)} 70%{box-shadow:0 0 0 10px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)} }
+        @keyframes agentPulse { 0%{transform:scale(1);opacity:.6} 70%{transform:scale(2);opacity:0} 100%{transform:scale(1);opacity:0} }
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
         .typing-dot { width:3.5px; height:3.5px; border-radius:50%; background:#a3a3a3; animation:dotBounce 1.2s infinite ease-in-out; }
         .Trooper-scrollbar::-webkit-scrollbar{width:3px}
@@ -241,7 +239,23 @@ export default function TrooperDemo() {
         }
       `}</style>
 
-      <div style={{ borderRadius: 0, overflow: "hidden", border: "1px solid #e2e8f0", background: "#fafaf9" }}>
+      <div
+        style={{
+          position: "relative",
+          padding: "32px 20px",
+          backgroundColor: "#f8fafc",
+          backgroundImage:
+            "linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.55)), url('/images/hero-bg-pixel.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          imageRendering: "pixelated",
+          borderTop: "1px solid #e2e8f0",
+          borderBottom: "1px solid #e2e8f0",
+        }}
+      >
+
+      <div style={{ position: "relative", margin: "0 auto", maxWidth: 1200, borderRadius: 0, overflow: "hidden", border: "1px solid #cbd5e1", background: "#fafaf9", boxShadow: "0 24px 48px -16px rgba(15,23,42,0.28), 0 8px 16px -8px rgba(15,23,42,0.14)" }}>
 
         {/* macOS bar */}
         <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: "#fafaf9", borderBottom: "1px solid #e7e5e4", gap: 12 }}>
@@ -267,26 +281,38 @@ export default function TrooperDemo() {
         </div>
 
         {/* App Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 18px", background: "white", borderBottom: "1px solid #e5e7eb" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="/images/logonew-black.png" alt="Trooper" style={{ height: 30, objectFit: "contain" }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: "#78716c", background: "#f5f5f4", padding: "3px 10px", borderRadius: 2, border: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: 4, marginLeft: 4 }}>
-              <LayoutGrid size={11} strokeWidth={2} /> Wonder
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", background: "white", borderBottom: "1px solid #e2e8f0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <img
+                src="/images/trooper-character.png"
+                alt=""
+                style={{ height: 26, width: "auto", imageRendering: "pixelated" }}
+              />
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", background: "white", padding: "4px 10px", borderRadius: 2, border: "1px solid #cbd5e1", display: "flex", alignItems: "center", gap: 5, marginLeft: 4, textTransform: "uppercase", letterSpacing: 0.6, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+              <LayoutGrid size={11} strokeWidth={2.25} /> Wonder
             </span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ display: "flex", gap: 16 }}>
-              <div style={{ textAlign: "center" }}><div style={{ fontSize: 17, fontWeight: 800, color: "#171717" }}>19</div><div style={{ fontSize: 8, fontWeight: 600, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Active</div></div>
-              <div style={{ textAlign: "center" }}><div style={{ fontSize: 17, fontWeight: 800, color: "#171717" }}>10</div><div style={{ fontSize: 8, fontWeight: 600, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Queued</div></div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ display: "flex", gap: 0, border: "1px solid #e2e8f0", borderRadius: 2, background: "white" }}>
+              <div style={{ textAlign: "center", padding: "4px 10px", borderRight: "1px solid #e2e8f0" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", lineHeight: 1.1, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>19</div>
+                <div style={{ fontSize: 8, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace", marginTop: 1 }}>Active</div>
+              </div>
+              <div style={{ textAlign: "center", padding: "4px 10px" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", lineHeight: 1.1, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>10</div>
+                <div style={{ fontSize: 8, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace", marginTop: 1 }}>Queued</div>
+              </div>
             </div>
-            <button style={{ display: "flex", alignItems: "center", gap: 5, background: "#ef4444", color: "white", padding: "5px 14px", borderRadius: 2, border: "none", fontSize: 12, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite" }}>
-              <Bell size={12} strokeWidth={2.5} /> Attention
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#10b981", color: "white", padding: "6px 11px", borderRadius: 2, border: "none", fontSize: 10, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace", lineHeight: 1 }}>
+              <Bell size={11} strokeWidth={2.5} /> Attention
             </button>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#a3a3a3", fontWeight: 500 }}>
-              <Zap size={12} strokeWidth={2} />
-              <Clock size={12} strokeWidth={2} />
-              <span>14:57</span>
-              <span style={{ fontSize: 9, color: "#d4d4d4" }}>MON, FEB 9</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, color: "#64748b", fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace", textTransform: "uppercase", letterSpacing: 0.7, padding: "4px 8px", border: "1px solid #e2e8f0", borderRadius: 2, background: "white" }}>
+              <Clock size={10} strokeWidth={2} color="#94a3b8" />
+              <span style={{ color: "#0f172a" }}>14:57</span>
+              <span style={{ color: "#cbd5e1" }}>·</span>
+              <span style={{ color: "#94a3b8" }}>Mon Feb 9</span>
             </div>
           </div>
         </div>
@@ -295,59 +321,71 @@ export default function TrooperDemo() {
         <div className="Trooper-container" style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
 
           {/* LEFT SIDEBAR */}
-          <div className="Trooper-sidebar Trooper-scrollbar" style={{ width: 185, minWidth: 185, borderRight: "1px solid #e5e7eb", background: "white", overflowY: "auto", padding: "10px 0" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "0 12px", marginBottom: 8 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
-              <span style={{ fontSize: 10, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Team</span>
-              <span style={{ fontSize: 9, color: "#d4d4d4", display: "flex", alignItems: "center", gap: 2 }}>
-                2 <Users size={9} strokeWidth={2} /> · 19 <Bot size={9} strokeWidth={2} />
+          <div className="Trooper-sidebar Trooper-scrollbar" style={{ width: 190, minWidth: 190, borderRight: "1px solid #e2e8f0", background: "white", overflowY: "auto", padding: "10px 0" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px", marginBottom: 8 }}>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <span style={{ color: "#cbd5e1" }}>[01]</span> Team
+              </span>
+              <span style={{ fontSize: 9, color: "#cbd5e1", fontFamily: "ui-monospace, SFMono-Regular, monospace", display: "flex", alignItems: "center", gap: 4 }}>
+                <Users size={9} strokeWidth={2} /> 2
+                <Bot size={9} strokeWidth={2} /> 19
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 8px 10px", padding: "6px 8px", background: "#f5f5f5", borderRadius: 2, border: "1px solid #e2e8f0", cursor: "pointer" }}>
-              <LayoutGrid size={14} strokeWidth={1.5} color="#737373" />
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#171717" }}>All Tasks</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 8px 10px", padding: "6px 8px", background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", cursor: "pointer" }}>
+              <LayoutGrid size={13} strokeWidth={1.5} color="#64748b" />
+              <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>All Tasks</span>
+              <span style={{ marginLeft: "auto", fontSize: 9, fontWeight: 600, color: "#94a3b8", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>29</span>
             </div>
 
             <div style={{ padding: "0 12px", marginBottom: 4 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Humans</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <span style={{ color: "#cbd5e1" }}>[02]</span> Humans
+              </span>
             </div>
             {HUMANS.map(h => (
-              <div key={h.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 12px" }}>
+              <div key={h.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 12px" }}>
                 <div style={{ position: "relative" }}>
-                  <img src={h.img} alt={h.name} style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", bottom: -1, right: -1, width: 8, height: 8, borderRadius: "50%", background: "#22c55e", border: "1.5px solid white" }} />
+                  <img src={h.img} alt={h.name} style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", bottom: -1, right: -1, width: 8, height: 8, borderRadius: "50%", background: "#10b981", border: "1.5px solid white" }} />
                 </div>
-                <div>
+                <div style={{ minWidth: 0, flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: "#171717" }}>{h.name}</span>
-                    <span style={{ fontSize: 8, fontWeight: 800, color: "#2563eb", background: "#dbeafe", padding: "0.5px 5px", borderRadius: 3 }}>HUMAN</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>{h.name}</span>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: "#475569", background: "#f1f5f9", border: "1px solid #e2e8f0", padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4 }}>YOU</span>
                   </div>
-                  <div style={{ fontSize: 10, color: "#a3a3a3" }}>{h.role}</div>
+                  <div style={{ fontSize: 9.5, color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{h.role}</div>
                 </div>
               </div>
             ))}
 
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px", margin: "10px 0 4px" }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>AI Agents</span>
-              <span style={{ fontSize: 9, fontWeight: 800, color: "#ef4444" }}>19 ACTIVE</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px", margin: "12px 0 4px" }}>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <span style={{ color: "#cbd5e1" }}>[03]</span> AI Agents
+              </span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#059669", display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <span style={{ position: "relative", width: 5, height: 5 }}>
+                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#10b981", opacity: 0.5, animation: "agentPulse 1.6s infinite" }} />
+                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#10b981" }} />
+                </span>
+                19 ACTIVE
+              </span>
             </div>
             {AGENTS.map(a => {
               const isActive = activeAgents.has(a.name);
-              const bc = a.badge === "LEAD" ? "#f59e0b" : "#a855f7";
+              const isLead = a.badge === "LEAD";
               return (
-                <div key={a.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 12px", background: isActive ? "#fef2f2" : "transparent", transition: "background 0.3s" }}>
+                <div key={a.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 12px", paddingLeft: isActive ? 10 : 12, background: isActive ? "#ecfdf5" : "transparent", borderLeft: isActive ? "2px solid #10b981" : "2px solid transparent", transition: "background 0.3s, border-color 0.3s, padding 0.3s" }}>
                   <div style={{ position: "relative" }}>
-                    <img src={a.img} alt={a.name} style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} />
-                    <div style={{ position: "absolute", bottom: -1, right: -1, width: 7, height: 7, borderRadius: "50%", background: isActive ? "#22c55e" : "#d4d4d4", border: "1.5px solid white", transition: "background 0.3s" }} />
+                    <img src={a.img} alt={a.name} style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover", filter: isActive ? "none" : "saturate(0.85)" }} />
+                    <div style={{ position: "absolute", bottom: -1, right: -1, width: 7, height: 7, borderRadius: "50%", background: isActive ? "#10b981" : "#cbd5e1", border: "1.5px solid white", transition: "background 0.3s" }} />
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: "#171717" }}>{a.name}</span>
-                      <span style={{ fontSize: 7.5, fontWeight: 800, color: bc, background: bc + "20", padding: "0.5px 4px", borderRadius: 3, textTransform: "uppercase", letterSpacing: 0.3 }}>{a.badge}</span>
-                      <span style={{ fontSize: 10 }}>{a.emoji}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>{a.name}</span>
+                      <span style={{ fontSize: 7.5, fontWeight: 700, color: isLead ? "#059669" : "#64748b", background: isLead ? "#ecfdf5" : "#f1f5f9", border: `1px solid ${isLead ? "#a7f3d0" : "#e2e8f0"}`, padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4 }}>{a.badge}</span>
                     </div>
-                    <div style={{ fontSize: 9.5, color: "#a3a3a3", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{a.role}</div>
+                    <div style={{ fontSize: 9.5, color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{a.role}</div>
                   </div>
                 </div>
               );
@@ -365,17 +403,17 @@ export default function TrooperDemo() {
 
           {/* RIGHT CHAT */}
           <div className="Trooper-chat" style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #e5e7eb", gap: 16 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#ef4444", borderBottom: "2px solid #ef4444", paddingBottom: 3, display: "flex", alignItems: "center", gap: 4 }}>
-                <MessageCircle size={13} strokeWidth={2} /> Team Chat
+            <div style={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e2e8f0", gap: 18, paddingLeft: 14, paddingRight: 14 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "10px 0 8px", borderBottom: "2px solid #10b981", marginBottom: -1, fontSize: 10, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <MessageCircle size={11} strokeWidth={2.25} color="#10b981" /> Team Chat
               </span>
-              <span style={{ fontSize: 12, fontWeight: 500, color: "#a3a3a3", cursor: "pointer", display: "flex", alignItems: "center", gap: 3 }}>
-                <Activity size={13} strokeWidth={1.5} /> Activity
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "10px 0 8px", fontSize: 10, fontWeight: 600, color: "#94a3b8", cursor: "pointer", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                <Activity size={11} strokeWidth={1.5} /> Activity
               </span>
             </div>
 
-            <div style={{ padding: "6px 14px", borderBottom: "1px solid #f5f5f5", fontSize: 9, color: "#b5b5b5", textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}>
-              TYPE <AtSign size={9} strokeWidth={2.5} /> TO MENTION
+            <div style={{ padding: "6px 14px", borderBottom: "1px solid #f1f5f9", fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 600, display: "flex", alignItems: "center", gap: 4, fontFamily: "ui-monospace, SFMono-Regular, monospace", background: "#f8fafc" }}>
+              Type <AtSign size={9} strokeWidth={2.5} /> to mention
             </div>
 
             {mentionTab && (
@@ -388,21 +426,25 @@ export default function TrooperDemo() {
             <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
               {messages.map((msg, i) => (
                 <div key={i} style={{ marginBottom: 12, animation: "fadeIn 0.3s ease both" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
                     <Av name={msg.sender} size={22} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: msg.isHuman ? "#171717" : "#dc2626" }}>{msg.sender}</span>
-                    <span style={{ fontSize: 10, color: "#b5b5b5" }}>{msg.role}</span>
-                    <span style={{ fontSize: 9, color: "#d4d4d4", marginLeft: "auto" }}>{msg.time}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{msg.sender}</span>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: msg.isHuman ? "#475569" : "#059669", background: msg.isHuman ? "#f1f5f9" : "#ecfdf5", border: `1px solid ${msg.isHuman ? "#e2e8f0" : "#a7f3d0"}`, padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4, textTransform: "uppercase" }}>
+                      {msg.isHuman ? "Human" : "Agent"}
+                    </span>
+                    <span style={{ fontSize: 10, color: "#94a3b8" }}>{msg.role}</span>
+                    <span style={{ fontSize: 9, color: "#cbd5e1", marginLeft: "auto", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{msg.time}</span>
                   </div>
-                  <div style={{ marginLeft: 28, fontSize: 12.5, lineHeight: 1.55, color: "#374151" }}>
+                  <div style={{ marginLeft: 28, fontSize: 12, lineHeight: 1.55, color: "#334155" }}>
                     {msg.text.split(/(@\w+)/g).map((part: string, j: number) =>
-                      part.startsWith("@") ? <span key={j} style={{ color: "#2563eb", fontWeight: 600, background: "#dbeafe", padding: "1px 4px", borderRadius: 4, fontSize: 11.5 }}>{part}</span> : <span key={j}>{part}</span>
+                      part.startsWith("@") ? <span key={j} style={{ color: "#059669", fontWeight: 600, background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "0 4px", borderRadius: 2, fontSize: 11.5 }}>{part}</span> : <span key={j}>{part}</span>
                     )}
                   </div>
                   {msg.reaction && (
-                    <div style={{ marginLeft: 28, marginTop: 4 }}>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: "#fefce8", border: "1px solid #fde68a", padding: "1px 7px", borderRadius: 7 }}>
-                        {msg.reaction.emoji} {msg.reaction.count}
+                    <div style={{ marginLeft: 28, marginTop: 5 }}>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: "white", border: "1px solid #e2e8f0", padding: "1px 7px", borderRadius: 2 }}>
+                        <span>{msg.reaction.emoji}</span>
+                        <span style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace", fontSize: 10, color: "#64748b", fontWeight: 600 }}>{msg.reaction.count}</span>
                       </span>
                     </div>
                   )}
@@ -412,39 +454,42 @@ export default function TrooperDemo() {
             </div>
 
             {/* Input */}
-            <div style={{ padding: "8px 12px", borderTop: "1px solid #e5e7eb" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f5f5f5", borderRadius: 2, border: "1px solid #e2e8f0", padding: "8px 12px" }}>
-                <div style={{ flex: 1, fontSize: 12, color: inputText ? "#171717" : "#a3a3a3", minHeight: 16, fontWeight: inputText ? 500 : 400, lineHeight: 1.4, wordBreak: "break-word" }}>
+            <div style={{ padding: "8px 12px", borderTop: "1px solid #e2e8f0", background: "white" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", padding: "8px 10px" }}>
+                <div style={{ flex: 1, fontSize: 12, color: inputText ? "#0f172a" : "#94a3b8", minHeight: 16, fontWeight: inputText ? 500 : 400, lineHeight: 1.4, wordBreak: "break-word" }}>
                   {inputText ? (
                     <>
                       {inputText.split(/(@\w+)/g).map((part, i) =>
-                        part.startsWith("@") ? <span key={i} style={{ color: "#2563eb", fontWeight: 600, background: "#dbeafe", padding: "0 2px", borderRadius: 3 }}>{part}</span> : <span key={i}>{part}</span>
+                        part.startsWith("@") ? <span key={i} style={{ color: "#059669", fontWeight: 600, background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "0 3px", borderRadius: 2 }}>{part}</span> : <span key={i}>{part}</span>
                       )}
-                      <span style={{ display: "inline-block", width: 1.5, height: 14, background: "#171717", marginLeft: 0.5, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
+                      <span style={{ display: "inline-block", width: 1.5, height: 14, background: "#0f172a", marginLeft: 0.5, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
                     </>
                   ) : "Message as Vaibhav..."}
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
-                  <Paperclip size={14} strokeWidth={1.5} color="#b5b5b5" />
-                  <Smile size={14} strokeWidth={1.5} color="#b5b5b5" />
-                  <div style={{ width: 28, height: 28, borderRadius: 2, background: inputText ? "#ef4444" : "#e5e5e5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
-                    <Send size={13} strokeWidth={2} color={inputText ? "white" : "#b5b5b5"} />
+                <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                  <Paperclip size={13} strokeWidth={1.5} color="#cbd5e1" />
+                  <Smile size={13} strokeWidth={1.5} color="#cbd5e1" />
+                  <div style={{ width: 26, height: 26, borderRadius: 2, background: inputText ? "#10b981" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
+                    <Send size={12} strokeWidth={2} color={inputText ? "white" : "#94a3b8"} />
                   </div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 5 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <Av name="Vaibhav" size={16} border={false} />
-                  <span style={{ fontSize: 10, color: "#a3a3a3" }}>Chatting as <strong style={{ color: "#525252" }}>Vaibhav</strong></span>
+                  <Av name="Vaibhav" size={14} border={false} />
+                  <span style={{ fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.6, fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
+                    Chatting as <span style={{ color: "#475569" }}>Vaibhav</span>
+                  </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                  <Hash size={10} strokeWidth={1.5} color="#d4d4d4" />
-                  <span style={{ fontSize: 9, color: "#d4d4d4" }}>Press @ to mention</span>
+                  <Hash size={10} strokeWidth={1.5} color="#cbd5e1" />
+                  <span style={{ fontSize: 9, color: "#cbd5e1", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>Press @ to mention</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

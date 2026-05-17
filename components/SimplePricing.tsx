@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import { motion } from 'framer-motion';
 import PixelButton from './ui/PixelButton';
 import {
@@ -41,49 +40,6 @@ import {
   CheckCircle,
   Building2,
 } from 'lucide-react';
-
-interface FlippingButtonLinkProps {
-  href: string;
-  initialText: string;
-  hoverText: string;
-  className?: string;
-}
-
-const FlippingButtonLink: React.FC<FlippingButtonLinkProps> = ({
-  href,
-  initialText,
-  hoverText,
-  className = '',
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const baseClasses =
-    'flex items-center justify-center py-3 px-4 rounded-sm font-medium text-sm md:text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full relative overflow-hidden';
-
-  return (
-    <Link
-      href={href}
-      className={`${baseClasses} ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <span
-        className={`transition-transform duration-300 ${
-          isHovered ? '-translate-y-8 opacity-0' : 'translate-y-0 opacity-100'
-        }`}
-      >
-        {initialText}
-      </span>
-      <span
-        className={`absolute transition-transform duration-300 ${
-          isHovered ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-        }`}
-      >
-        {hoverText}
-      </span>
-    </Link>
-  );
-};
 
 type Feature = {
   icon: LucideIcon;
@@ -168,6 +124,7 @@ const plans: Plan[] = [
     eyebrow: 'Lifetime deal',
     price: '$79',
     cadence: 'one-time payment',
+    perSeat: 'Pay once · use forever · no subscription',
     description:
       'For solo founders who want full control. Self-host on your own machine, pay once, use forever.',
     badge: 'Lifetime Access',
@@ -203,7 +160,7 @@ const plans: Plan[] = [
   },
   {
     name: 'Enterprise',
-    eyebrow: 'Self-host / private deployment',
+    eyebrow: 'Private deployment',
     price: 'Custom',
     cadence: '',
     perSeat: 'Volume pricing from ~$4/seat/month',
@@ -247,123 +204,283 @@ export default function SimplePricing() {
           </p>
         </div>
 
-        {/* Shared-border pricing row */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 border border-slate-200 bg-white">
-          {plans.map((plan, idx) => {
-            const isLast = idx === plans.length - 1;
-            return (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-                viewport={{ once: true }}
-                className={[
-                  'relative flex flex-col bg-white p-6 md:p-8',
-                  // Hairlines: bottom on mobile (drop on last), right on desktop (drop on last)
-                  !isLast ? 'border-b border-slate-200 lg:border-b-0' : '',
-                  !isLast ? 'lg:border-r lg:border-slate-200' : '',
-                  // Featured accent: top brand bar
-                  plan.highlight ? 'border-t-2 border-t-emerald-500 -mt-px lg:-mt-0.5' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    {plan.eyebrow && (
-                      <div
-                        className={`font-mono text-[11px] uppercase tracking-[0.15em] ${
-                          plan.highlight ? 'text-emerald-600' : 'text-slate-500'
-                        }`}
-                      >
-                        {plan.eyebrow}
-                      </div>
-                    )}
-                    <h3 className="mt-2 text-2xl font-semibold text-slate-900">{plan.name}</h3>
-                  </div>
+        {/* Desktop: row-based grid so every plan-row is the height of the tallest cell.
+            Mobile: stacked cards. */}
+        <div className="mt-8 hidden border border-slate-200 bg-white lg:block">
+          <DesktopPricingGrid plans={plans} />
+        </div>
 
-                  {plan.badge && (
-                    <div
-                      className={`rounded-sm px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.1em] ${
-                        plan.highlight
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : plan.badge === 'Lifetime Access'
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : 'bg-slate-100 text-slate-600 border border-slate-200'
-                      }`}
-                    >
-                      {plan.badge}
-                    </div>
-                  )}
-                </div>
-
-                <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
-
-                <div className="mt-6 flex items-end gap-2">
-                  <div className="text-4xl font-semibold tracking-tight text-slate-900">
-                    {plan.price}
-                  </div>
-                  <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
-                </div>
-
-                {plan.perSeat && (
-                  <p className="mt-2 text-sm font-medium text-emerald-600">{plan.perSeat}</p>
-                )}
-
-                {plan.note && (
-                  <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
-                )}
-
-                <div className="mt-6">
-                  {plan.highlight ? (
-                    <PixelButton
-                      href={plan.cta.href}
-                      external={plan.cta.href.startsWith('http')}
-                      size="md"
-                      tone="brand"
-                    >
-                      {plan.cta.text}
-                    </PixelButton>
-                  ) : (
-                    <FlippingButtonLink
-                      href={plan.cta.href}
-                      initialText={plan.cta.text}
-                      hoverText="Let's go"
-                      className="bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-500"
-                    />
-                  )}
-                </div>
-
-                {/* Feature sections */}
-                <div className="mt-8">
-                  {plan.sections.map((section, sIdx) => (
-                    <div key={sIdx}>
-                      {section.inheritsFrom ? (
-                        <div className="mt-5 flex items-center gap-2 bg-slate-50 px-3 py-2.5 border border-slate-200">
-                          <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <span className="text-sm font-medium text-slate-600">
-                            {section.inheritsFrom}
-                          </span>
-                        </div>
-                      ) : (
-                        <ul className="space-y-2">
-                          {section.features.map((feature) => (
-                            <li key={feature.label} className="flex items-center gap-2">
-                              <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
-                              <span className="text-sm text-slate-700">{feature.label}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
+        <div className="mt-8 border border-slate-200 bg-white lg:hidden">
+          {plans.map((plan, idx) => (
+            <MobilePricingCard
+              key={plan.name}
+              plan={plan}
+              idx={idx}
+              isLast={idx === plans.length - 1}
+            />
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function planNumber(idx: number) {
+  return `[${String(idx + 1).padStart(2, '0')}]`;
+}
+
+function PlanBadge({ plan }: { plan: Plan }) {
+  if (!plan.badge) return null;
+  const tone = plan.highlight
+    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    : plan.badge === 'Lifetime Access'
+    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    : 'bg-slate-100 text-slate-600 border-slate-200';
+  return (
+    <span
+      className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] ${tone}`}
+    >
+      {plan.badge}
+    </span>
+  );
+}
+
+function PlanFeatures({ plan }: { plan: Plan }) {
+  return (
+    <>
+      {plan.sections.map((section, sIdx) => (
+        <div key={sIdx}>
+          {section.inheritsFrom ? (
+            <div className="mt-5 flex items-center gap-2 border border-slate-200 bg-slate-50 px-3 py-2.5">
+              <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
+              <span className="text-sm font-medium text-slate-600">{section.inheritsFrom}</span>
+            </div>
+          ) : (
+            <ul className="space-y-2">
+              {section.features.map((feature) => (
+                <li key={feature.label} className="flex items-center gap-2">
+                  <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
+                  <span className="text-sm text-slate-700">{feature.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </>
+  );
+}
+
+/**
+ * Desktop pricing grid.
+ *
+ * We render every plan's content in 5 explicit rows (header, description,
+ * price, CTA, features). Because each row is a CSS-grid row, its height is
+ * driven by the tallest cell across the 3 plans — that guarantees
+ * eyebrows/names, descriptions, prices, and CTAs are all baseline-aligned.
+ */
+function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      viewport={{ once: true }}
+      className="grid grid-cols-3 grid-rows-[auto_auto_auto_auto_1fr]"
+    >
+      {/* Row 1 — header (eyebrow + badge + name).
+          No border-b so it flows into the description row. */}
+      {plans.map((plan, idx) => {
+        const isLast = idx === plans.length - 1;
+        return (
+          <div
+            key={`h-${plan.name}`}
+            className={[
+              'flex flex-col bg-white px-6 pt-6 pb-3 md:px-8 md:pt-8',
+              !isLast ? 'border-r border-slate-200' : '',
+              plan.highlight ? 'border-t-2 border-t-emerald-500 -mt-px' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <div className="flex items-start justify-between gap-3">
+              {plan.eyebrow ? (
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                  <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
+                </span>
+              ) : (
+                <span />
+              )}
+              <PlanBadge plan={plan} />
+            </div>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
+              {plan.name}
+            </h3>
+          </div>
+        );
+      })}
+
+      {/* Row 2 — description. No border-b. */}
+      {plans.map((plan, idx) => {
+        const isLast = idx === plans.length - 1;
+        return (
+          <div
+            key={`d-${plan.name}`}
+            className={[
+              'bg-white px-6 py-3 md:px-8',
+              !isLast ? 'border-r border-slate-200' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <p className="text-sm leading-6 text-slate-500">{plan.description}</p>
+          </div>
+        );
+      })}
+
+      {/* Row 3 — price + per-seat + note. Border-b separates top half from CTA. */}
+      {plans.map((plan, idx) => {
+        const isLast = idx === plans.length - 1;
+        return (
+          <div
+            key={`p-${plan.name}`}
+            className={[
+              'flex flex-col bg-white px-6 pt-3 pb-6 md:px-8 md:pb-8',
+              !isLast ? 'border-r border-slate-200' : '',
+              'border-b border-slate-200',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <div className="flex items-end gap-2">
+              <div className="text-4xl font-semibold tracking-tight text-slate-900">
+                {plan.price}
+              </div>
+              {plan.cadence && (
+                <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
+              )}
+            </div>
+            {plan.perSeat ? (
+              <p className="mt-2 text-sm font-medium text-emerald-600">{plan.perSeat}</p>
+            ) : (
+              <p className="mt-2 text-sm font-medium text-transparent">—</p>
+            )}
+            {plan.note ? (
+              <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
+            ) : (
+              <p className="mt-3 text-xs leading-5 text-transparent">—</p>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Row 4 — CTA */}
+      {plans.map((plan, idx) => {
+        const isLast = idx === plans.length - 1;
+        return (
+          <div
+            key={`c-${plan.name}`}
+            className={[
+              'flex items-center bg-white px-6 py-5 md:px-8',
+              !isLast ? 'border-r border-slate-200' : '',
+              'border-b border-slate-200',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <PixelButton
+              href={plan.cta.href}
+              external={plan.cta.href.startsWith('http')}
+              size="md"
+              tone={plan.highlight ? 'brand' : 'dark'}
+              className="w-full"
+            >
+              {plan.cta.text}
+            </PixelButton>
+          </div>
+        );
+      })}
+
+      {/* Row 5 — features */}
+      {plans.map((plan, idx) => {
+        const isLast = idx === plans.length - 1;
+        return (
+          <div
+            key={`f-${plan.name}`}
+            className={[
+              'bg-white px-6 py-6 md:px-8',
+              !isLast ? 'border-r border-slate-200' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <PlanFeatures plan={plan} />
+          </div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
+function MobilePricingCard({
+  plan,
+  idx,
+  isLast,
+}: {
+  plan: Plan;
+  idx: number;
+  isLast: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      viewport={{ once: true }}
+      className={[
+        'relative flex flex-col bg-white',
+        !isLast ? 'border-b border-slate-200' : '',
+        plan.highlight ? 'border-t-2 border-t-emerald-500 -mt-px' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div className="border-b border-slate-200 px-6 pt-6 pb-6">
+        <div className="flex items-start justify-between gap-3">
+          {plan.eyebrow && (
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+              <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
+            </span>
+          )}
+          <PlanBadge plan={plan} />
+        </div>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">{plan.name}</h3>
+        <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
+        <div className="mt-5 flex items-end gap-2">
+          <div className="text-4xl font-semibold tracking-tight text-slate-900">{plan.price}</div>
+          {plan.cadence && <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>}
+        </div>
+        {plan.perSeat && (
+          <p className="mt-2 text-sm font-medium text-emerald-600">{plan.perSeat}</p>
+        )}
+        {plan.note && <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>}
+      </div>
+
+      <div className="border-b border-slate-200 px-6 py-5">
+        <PixelButton
+          href={plan.cta.href}
+          external={plan.cta.href.startsWith('http')}
+          size="md"
+          tone={plan.highlight ? 'brand' : 'dark'}
+          className="w-full"
+        >
+          {plan.cta.text}
+        </PixelButton>
+      </div>
+
+      <div className="px-6 py-6">
+        <PlanFeatures plan={plan} />
+      </div>
+    </motion.div>
   );
 }

@@ -39,6 +39,38 @@ const PROVIDER_DOMAINS: Record<string, string> = {
   CODEX: 'openai.com',
   OpenClaw: 'openclaw.ai',
   OPENCLAW: 'openclaw.ai',
+  OpenAI: 'openai.com',
+  OPENAI: 'openai.com',
+  OpenCode: 'opencode.ai',
+  OPENCODE: 'opencode.ai',
+  Gemini: 'gemini.google.com',
+  GEMINI: 'gemini.google.com',
+  Llama: 'llama.com',
+  LLAMA: 'llama.com',
+  Mistral: 'mistral.ai',
+  MISTRAL: 'mistral.ai',
+  DeepSeek: 'deepseek.com',
+  DEEPSEEK: 'deepseek.com',
+  Aider: 'aider.chat',
+  AIDER: 'aider.chat',
+  Cline: 'cline.bot',
+  CLINE: 'cline.bot',
+  Continue: 'continue.dev',
+  CONTINUE: 'continue.dev',
+  Codeium: 'codeium.com',
+  CODEIUM: 'codeium.com',
+  Windsurf: 'windsurf.com',
+  WINDSURF: 'windsurf.com',
+  v0: 'v0.dev',
+  V0: 'v0.dev',
+  Bolt: 'bolt.new',
+  BOLT: 'bolt.new',
+  Replit: 'replit.com',
+  REPLIT: 'replit.com',
+  Perplexity: 'perplexity.ai',
+  PERPLEXITY: 'perplexity.ai',
+  Grok: 'x.ai',
+  GROK: 'x.ai',
 };
 
 /* ─── Inline OpenClaw favicon with Trooper-character fallback ─── */
@@ -551,173 +583,241 @@ const TicketVisual = () => {
   );
 };
 
-/* ─── Visual 8: Goal Alignment — vertical thread of cards on a slate line ─── */
-const GoalVisual = () => {
-  const levels = [
-    { label: 'Mission', value: 'Build the #1 AI workforce platform' },
-    { label: 'Project', value: 'Ship team collaboration features' },
-    { label: 'Agent goal', value: 'Implement real-time sync engine' },
-    { label: 'Task', value: 'Write WebSocket handler for document updates' },
-  ];
+/* ─── Visual 8: Goal Alignment — nested container model.
+       Each goal level visually CONTAINS the next, so the task literally lives
+       inside the agent goal, project, and mission. ─── */
+const GoalVisual = () => (
+  <div className="flex flex-col h-full p-5 sm:p-6 justify-center bg-white">
+    {/* L1 · Mission */}
+    <div className="relative border border-slate-300 bg-white pt-5 px-4 pb-4">
+      <div className="absolute -top-2 left-3 bg-white px-1.5 flex items-center gap-1.5">
+        <div className="w-3 h-3 overflow-hidden p-0.5 bg-emerald-50">
+          <TrooperChar />
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+          <span className="text-slate-400">[01]</span> Mission · Trooper Inc.
+        </span>
+      </div>
+      <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+        Build the #1 AI workforce platform.
+      </p>
 
-  return (
-    <div className="flex flex-col justify-center h-full p-6 sm:p-8">
-      <div className="relative pl-6">
-        {/* 2px vertical thread line */}
-        <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-slate-300" aria-hidden="true" />
-        <div className="space-y-3">
-          {levels.map((lv) => {
-            const isTask = lv.label === 'Task';
-            return (
-              <div key={lv.label} className="relative">
-                {/* Hairline elbow into the card */}
-                <div className="absolute -left-6 top-5 w-6 h-px bg-slate-300" aria-hidden="true" />
-                <div
-                  className={`relative rounded-sm border p-3.5 ${
-                    isTask ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-200'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`font-mono text-[10px] uppercase tracking-[0.18em] ${
-                        isTask ? 'text-emerald-700' : 'text-slate-400'
-                      }`}
-                    >
-                      {lv.label}
-                    </span>
-                    {isTask && (
-                      <span className="font-mono text-[9px] uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm bg-emerald-600 text-white">
-                        Work happens here
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    className={`text-[13px] sm:text-sm mt-1 font-medium ${
-                      isTask ? 'text-emerald-900' : 'text-slate-900'
-                    }`}
-                  >
-                    {lv.value}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+      {/* L2 · Project */}
+      <div className="relative border border-slate-300 bg-slate-50 pt-5 px-4 pb-4">
+        <div className="absolute -top-2 left-3 bg-slate-50 px-1.5 flex items-center gap-1.5">
+          <span className="w-2 h-2 bg-slate-400" aria-hidden="true" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+            <span className="text-slate-400">[02]</span> Project · Q4 2026
+          </span>
+        </div>
+        <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+          Ship team collaboration features.
+        </p>
+
+        {/* L3 · Agent goal */}
+        <div className="relative border border-slate-300 bg-white pt-5 px-4 pb-4">
+          <div className="absolute -top-2 left-3 bg-white px-1.5 flex items-center gap-1.5">
+            <FaviconChip provider="Cursor" size={11} />
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+              <span className="text-slate-400">[03]</span> Agent goal · CTO
+            </span>
+          </div>
+          <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+            Implement real-time sync engine.
+          </p>
+
+          {/* L4 · Task — emerald spotlight */}
+          <div className="relative border-2 border-emerald-500 bg-emerald-50 pt-5 px-4 pb-4 shadow-[0_0_0_4px_rgba(16,185,129,0.10)]">
+            <div className="absolute -top-2 left-3 bg-emerald-50 px-1.5 flex items-center gap-1.5">
+              <FaviconChip provider="Claude" size={11} />
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">
+                <span className="text-emerald-500">[04]</span> Task · Work happens here
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="relative flex h-2 w-2 mt-1.5 flex-shrink-0">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <p className="text-[13px] text-emerald-900 font-semibold leading-snug">
+                Write WebSocket handler for document updates.
+              </p>
+            </div>
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-emerald-700/80">
+                ClaudeCoder · 2m elapsed
+              </span>
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-emerald-700">
+                <span className="tabular-nums">+127</span>
+                <span className="text-emerald-500">·</span>
+                <span className="tabular-nums">−34</span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  );
-};
 
-/* ─── Visual 9: Bring Your Own Agent — org chart with mixed providers ─── */
+    <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
+      Goals contain projects · projects contain goals · goals contain tasks
+    </p>
+  </div>
+);
+
+/* ─── Visual 9: Bring Your Own Agent — clean roster + favicon-rich provider grid ─── */
 const BYOAVisual = () => {
-  const managers = [
-    { name: 'CMO', provider: 'OpenClaw', active: true },
-    { name: 'CTO', provider: 'Cursor', active: false },
-    { name: 'COO', provider: 'Claude', active: false },
+  const yourTeam = [
+    { role: 'CEO', provider: 'Trooper', isYou: true },
+    { role: 'CMO', provider: 'OpenClaw', recommended: true },
+    { role: 'CTO', provider: 'Cursor' },
+    { role: 'COO', provider: 'Claude' },
+    { role: 'Eng', provider: 'Codex' },
+    { role: 'Eng', provider: 'Claude' },
   ];
-  const engineers = [
-    { name: 'CodexCoder', role: 'Engineer', provider: 'Codex' },
-    { name: 'ClaudeCoder', role: 'Engineer', provider: 'Claude' },
+
+  // Grouped roughly: hosted LLMs, coding agents/CLIs, IDE assistants.
+  const providers = [
+    'Claude',
+    'OpenAI',
+    'Cursor',
+    'OpenCode',
+    'Gemini',
+    'Codex',
+    'OpenClaw',
+    'DeepSeek',
+    'Mistral',
+    'Llama',
+    'Grok',
+    'Perplexity',
+    'Aider',
+    'Cline',
+    'Continue',
+    'Codeium',
+    'Windsurf',
+    'v0',
+    'Bolt',
+    'Replit',
   ];
 
   return (
-    <div className="flex flex-col p-6 sm:p-8 h-full">
-      <div className="flex flex-col items-center pt-6 sm:pt-8">
-        {/* CEO */}
-        <div className="bg-white rounded-sm border border-slate-200 px-5 py-3.5 text-center">
-          <p className="font-semibold text-[13px] text-slate-900">CEO</p>
-          <div className="flex items-center justify-center gap-1.5 mt-1">
-            <FaviconChip provider="Claude" size={12} />
-            <span className="text-[11px] text-slate-400">Claude</span>
+    <div className="flex flex-col h-full p-5 sm:p-6 bg-white">
+      {/* Window chrome */}
+      <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
+        <div className="flex items-center gap-2">
+          <div className="w-3.5 h-3.5 overflow-hidden p-0.5 bg-emerald-50 border border-emerald-100">
+            <TrooperChar />
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-600">
+            trooper · agents
+          </span>
+        </div>
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+          </span>
+          6 agents · 5 providers
+        </span>
+      </div>
+
+      {/* Your team — compact roster row */}
+      <div className="border border-slate-200 bg-white">
+        <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+            Your team
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 tabular-nums">
+            6 hired
+          </span>
+        </div>
+        <div className="grid grid-cols-3 sm:grid-cols-6 divide-x divide-slate-100">
+          {yourTeam.map((m, i) => (
+            <div
+              key={`${m.role}-${i}`}
+              className={`relative flex flex-col items-center justify-center gap-1 py-3 px-1 ${
+                m.recommended ? 'bg-emerald-50/60' : ''
+              }`}
+            >
+              {m.recommended && (
+                <span className="absolute top-1 right-1 font-mono text-[9px] text-emerald-600">
+                  ★
+                </span>
+              )}
+              <div className="w-6 h-6 border border-slate-200 bg-white flex items-center justify-center">
+                {m.isYou ? (
+                  <div className="w-4 h-4 overflow-hidden p-0.5">
+                    <TrooperChar />
+                  </div>
+                ) : (
+                  <FaviconChip provider={m.provider} size={14} />
+                )}
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-700">
+                {m.role}
+              </span>
+              <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400 truncate w-full text-center px-1">
+                {m.isYou ? 'You' : m.provider}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Available providers — big favicon grid */}
+      <div className="mt-4 flex-1 flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+            Plug in any agent
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 tabular-nums">
+            {providers.length}+ supported
+          </span>
+        </div>
+
+        <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5 flex-1">
+          {providers.map((p) => (
+            <div
+              key={p}
+              className="border border-slate-200 bg-white flex items-center gap-1.5 px-2 py-2 min-w-0"
+              title={p}
+            >
+              <FaviconChip provider={p} size={12} />
+              <span className="font-mono text-[10px] uppercase tracking-[0.10em] text-slate-700 truncate">
+                {p}
+              </span>
+            </div>
+          ))}
+          {/* + Add yours */}
+          <div className="border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-500 hover:text-slate-700 transition-colors">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em]">+ Yours</span>
           </div>
         </div>
 
-        {/* Connector CEO → Managers */}
-        <div className="relative w-full max-w-[400px] h-8">
-          <div className="absolute left-1/2 top-0 w-px h-3 bg-slate-300 -translate-x-1/2" />
-          <div className="absolute top-3 left-[16%] right-[16%] h-px bg-slate-300" />
-          <div className="absolute top-3 left-[16%] w-px h-5 bg-slate-300" />
-          <div className="absolute top-3 left-1/2 w-px h-5 bg-slate-300 -translate-x-1/2" />
-          <div className="absolute top-3 right-[16%] w-px h-5 bg-slate-300" />
-        </div>
-
-        {/* Managers */}
-        <div className="flex gap-3 sm:gap-5">
-          {managers.map((m, i) => (
-            <div
-              key={i}
-              className={`relative rounded-sm border px-5 py-3.5 text-center ${
-                m.active ? 'border-slate-200 bg-white border-t-2 border-t-emerald-500' : 'border-slate-200 bg-white'
-              }`}
-            >
-              <div className="flex items-center justify-center gap-1.5">
-                <p className="font-semibold text-[12px] text-slate-900">{m.name}</p>
-                {m.active && (
-                  <span className="inline-flex items-center px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-sm">Recommended</span>
-                )}
-              </div>
-              <div className="flex items-center justify-center gap-1.5 mt-1">
-                <FaviconChip provider={m.provider} size={12} />
-                <span className="text-[10px] text-slate-400">{m.provider}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTO sub-tree connector (extra breathing room before engineers) */}
-        <div className="relative w-full max-w-[200px] h-10">
-          <div className="absolute left-1/2 top-0 w-px h-4 bg-slate-300 -translate-x-1/2" />
-          <div className="absolute top-4 left-[25%] right-[25%] h-px bg-slate-300" />
-          <div className="absolute top-4 left-[25%] w-px h-6 bg-slate-300" />
-          <div className="absolute top-4 right-[25%] w-px h-6 bg-slate-300" />
-        </div>
-
-        {/* Engineers */}
-        <div className="flex gap-3">
-          {engineers.map((e, i) => (
-            <div key={i} className="rounded-sm border border-slate-200 bg-white px-5 py-3.5 text-center">
-              <div className="flex items-center justify-center mb-1">
-                <FaviconChip provider={e.provider} size={14} />
-              </div>
-              <p className="font-semibold text-[11px] text-slate-900">{e.name}</p>
-              <p className="text-[10px] text-slate-400">{e.role}</p>
-              <div className="flex items-center justify-center gap-1.5 mt-1">
-                <FaviconChip provider={e.provider} size={12} />
-                <span className="text-[10px] text-slate-400">{e.provider}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Runtime agents — anchored to bottom of card */}
-      <div className="mt-auto pt-8">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Runtime agents</p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-          {['OPENCLAW', 'CLAUDE', 'CODEX', 'CURSOR', 'BASH', 'HTTP'].map((a) => (
-            <div key={a} className="border border-slate-200 px-3 py-2 rounded-sm bg-white flex items-center justify-center gap-1.5">
-              <FaviconChip provider={a} size={12} />
-              <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-700">{a}</span>
-            </div>
-          ))}
-        </div>
+        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
+          If it can receive a heartbeat · it&apos;s hired
+        </p>
       </div>
     </div>
   );
 };
 
-/* ─── Pixel-art bleed wrapper that frames each visual as a clean white card on a pixel scene ─── */
+/* ─── Pixel-art framed wrapper.
+       Uses the shared pixel-art scene as a subtle backdrop, softened with a
+       translucent white wash so the inner card remains the focal point. ─── */
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
   <div
-    className="p-8 sm:p-12 lg:p-14 relative h-full flex flex-col"
+    className="relative h-full flex flex-col p-4 sm:p-6"
     style={{
-      backgroundImage: `linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.55)), url('/images/feature-bg-pixel.png')`,
+      backgroundColor: '#f8fafc',
+      backgroundImage:
+        "linear-gradient(rgba(248, 250, 252, 0.62), rgba(248, 250, 252, 0.62)), url('/images/hero-bg-pixel.png')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       imageRendering: 'pixelated',
     }}
   >
-    <div className="border border-slate-200 bg-white overflow-hidden shadow-[0_1px_0_rgba(0,0,0,0.04)] flex-1 flex flex-col">
+    <div className="relative flex-1 flex flex-col border border-slate-300 bg-white overflow-hidden shadow-[0_12px_28px_-12px_rgba(15,23,42,0.18),0_4px_10px_-4px_rgba(15,23,42,0.08)]">
       {children}
     </div>
   </div>

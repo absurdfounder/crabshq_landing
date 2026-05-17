@@ -104,14 +104,16 @@ export default function Header() {
             <TranslateButton />
           </div>
 
-          <Link
+          <PixelButton
             href="https://app.trooper.so"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 lg:inline-flex"
+            external
+            size="sm"
+            variant="outline"
+            tone="dark"
+            className="hidden lg:inline-flex"
           >
             Sign in
-          </Link>
+          </PixelButton>
 
           <PixelButton
             href="https://app.trooper.so"
@@ -119,7 +121,7 @@ export default function Header() {
             size="sm"
             tone="brand"
             className="hidden lg:inline-flex"
-            icon={<ArrowRight className="h-3.5 w-3.5" />}
+            icon={<ArrowRight className="h-3 w-3" strokeWidth={2.5} />}
           >
             Get started
           </PixelButton>

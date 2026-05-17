@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import TrooperLogo from '@/components/ui/TrooperLogo'
-import PixelButton from '@/components/ui/PixelButton'
-import Link from 'next/link'
+import TrooperLogo from '@/components/ui/TrooperLogo';
+import PixelButton from '@/components/ui/PixelButton';
+import Link from 'next/link';
 import {
   Twitter,
   Linkedin,
@@ -16,385 +16,312 @@ import {
   Mail,
   Puzzle,
   Network,
-  Sparkles,
-  MessageCircle,
   Zap,
-  BookOpen,
-  Pen,
-  Bell,
-} from 'lucide-react'
+} from 'lucide-react';
+
+type LinkItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+  icon?: React.ReactNode;
+};
+
+type CellGroup = {
+  heading: string;
+  links: LinkItem[];
+};
+
+type FooterColumn = {
+  number: string;
+  eyebrow: string;
+  groups: CellGroup[];
+};
+
+const featureColumn: FooterColumn = {
+  number: '02',
+  eyebrow: 'Features',
+  groups: [
+    {
+      heading: 'Features',
+      links: [
+        { label: 'AI Workforce', href: '/features/ai-workforce', icon: <Users className="h-3.5 w-3.5 text-emerald-500" /> },
+        { label: 'GitHub Integration', href: '/features/github-integration', icon: <Github className="h-3.5 w-3.5 text-orange-500" /> },
+        { label: 'Task Execution', href: '/features/task-execution', icon: <CheckCircle className="h-3.5 w-3.5 text-yellow-500" /> },
+        { label: 'Persistent Memory', href: '/features/persistent-memory', icon: <Brain className="h-3.5 w-3.5 text-green-500" /> },
+        { label: 'Browser Control', href: '/features/browser-control', icon: <Globe className="h-3.5 w-3.5 text-emerald-500" /> },
+        { label: 'System Access', href: '/features/system-access', icon: <Terminal className="h-3.5 w-3.5 text-indigo-500" /> },
+        { label: 'Email & Communication', href: '/features/email-automation', icon: <Mail className="h-3.5 w-3.5 text-violet-500" /> },
+        { label: 'Skills & Plugins', href: '/features/skills-plugins', icon: <Puzzle className="h-3.5 w-3.5 text-pink-500" /> },
+        { label: 'Multi-Agent Teams', href: '/features/multi-agent-collaboration', icon: <Network className="h-3.5 w-3.5 text-cyan-500" /> },
+        { label: 'Integrations', href: '/integration', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
+      ],
+    },
+    {
+      heading: 'Get help',
+      links: [
+        { label: 'Contact us', href: 'mailto:support@trooper.so' },
+        { label: 'Privacy policy', href: '/privacy' },
+        { label: 'Terms of service', href: '/terms' },
+      ],
+    },
+  ],
+};
+
+const productColumn: FooterColumn = {
+  number: '03',
+  eyebrow: 'Product',
+  groups: [
+    {
+      heading: 'Product',
+      links: [
+        { label: 'How it works', href: '/' },
+        { label: 'Integrations', href: '/integration' },
+        { label: 'Pricing', href: '/pricing' },
+        { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
+        { label: 'Download', href: '/download' },
+        { label: 'Dashboard', href: 'https://app.trooper.so', external: true },
+      ],
+    },
+    {
+      heading: 'Resources',
+      links: [
+        { label: 'Documentation', href: 'https://docs.openclaw.ai', external: true },
+        { label: 'Blog', href: 'https://app.trooper.so/blog', external: true },
+        { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
+      ],
+    },
+  ],
+};
+
+const ecosystemColumn: FooterColumn = {
+  number: '04',
+  eyebrow: 'OpenClaw Ecosystem',
+  groups: [
+    {
+      heading: 'OpenClaw Ecosystem',
+      links: [
+        { label: 'OpenClaw AI', href: 'https://openclaw.ai', external: true },
+        { label: 'GitHub OpenClaw', href: 'https://github.com/openclaw/openclaw', external: true },
+        { label: 'ClawHub Skills', href: 'https://clawhub.com', external: true },
+        { label: 'Discord Community', href: 'https://discord.com/invite/clawd', external: true },
+        { label: 'OpenClaw Docs', href: 'https://docs.openclaw.ai', external: true },
+      ],
+    },
+  ],
+};
+
+function CellHeader({ number, eyebrow }: { number: string; eyebrow: string }) {
+  return (
+    <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+      <span className="text-slate-400">[{number}]</span> {eyebrow}
+    </div>
+  );
+}
+
+function LinkList({ links }: { links: LinkItem[] }) {
+  return (
+    <ul className="space-y-1.5">
+      {links.map((l) => {
+        const className =
+          'group flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900';
+        const content = (
+          <>
+            {l.icon ? <span className="shrink-0">{l.icon}</span> : null}
+            <span>{l.label}</span>
+          </>
+        );
+        if (l.external) {
+          return (
+            <li key={l.label}>
+              <a
+                className={className}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {content}
+              </a>
+            </li>
+          );
+        }
+        return (
+          <li key={l.label}>
+            <Link className={className} href={l.href}>
+              {content}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function FooterColumnCell({
+  column,
+  borderRight,
+}: {
+  column: FooterColumn;
+  borderRight: boolean;
+}) {
+  return (
+    <div
+      className={[
+        'flex flex-col gap-6 px-6 py-8 md:px-8 md:py-10',
+        borderRight ? 'lg:border-r lg:border-slate-200' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <CellHeader number={column.number} eyebrow={column.eyebrow} />
+      {column.groups.map((group, gIdx) => (
+        <div
+          key={group.heading}
+          className={gIdx > 0 ? 'border-t border-slate-100 pt-5' : ''}
+        >
+          {column.groups.length > 1 && (
+            <div className="mb-3 text-sm font-semibold text-slate-900">{group.heading}</div>
+          )}
+          <LinkList links={group.links} />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Footer() {
+  const linkColumns = [featureColumn, productColumn, ecosystemColumn];
   return (
     <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto max-w-7xl border-l border-r border-slate-200 px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12">
-        <div className="flex flex-col gap-6 sm:gap-8 md:flex-row md:gap-0">
-          {/* Brand Section */}
-          <div className="w-full md:w-64 md:pr-8">
-            <div className="flex items-center gap-2">
-              <TrooperLogo
-                characterClassName="h-8 w-auto sm:h-9 [image-rendering:pixelated]"
-                textClassName="text-lg sm:text-xl"
-              />
-            </div>
-            <p className="mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed">
-              AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks autonomously across GitHub, email, browsers, and your entire tech stack.
+      <div className="mx-auto max-w-7xl border-l border-r border-slate-200">
+        {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Brand cell */}
+          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-200 border-b border-slate-200 sm:col-span-2 lg:col-span-1 lg:border-b-0">
+            <CellHeader number="01" eyebrow="Trooper" />
+            <TrooperLogo
+              characterClassName="h-8 w-auto sm:h-9 [image-rendering:pixelated]"
+              textClassName="text-lg sm:text-xl"
+            />
+            <p className="text-sm leading-relaxed text-slate-600">
+              AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks
+              autonomously across GitHub, email, browsers, and your entire tech stack.
             </p>
-            <p className="text-sm text-slate-600 mb-4">
-              Built by <a className="text-emerald-600 hover:underline" href="https://twitter.com/absurdfounder" target="_blank" rel="noopener noreferrer">@absurdfounder</a>.
+            <p className="text-sm text-slate-600">
+              Built by{' '}
+              <a
+                className="text-emerald-600 hover:underline"
+                href="https://twitter.com/absurdfounder"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @absurdfounder
+              </a>
+              .
             </p>
-            <ul className="mt-3 space-y-1">
+            <ul className="mt-auto space-y-1.5 pt-2">
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
+                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://twitter.com/absurdfounder"
                 >
-                  <Twitter className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
+                  <Twitter className="h-3.5 w-3.5 text-slate-400" />
                   <span>Twitter (X)</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
+                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.linkedin.com/company/trooper"
                 >
-                  <Linkedin className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
+                  <Linkedin className="h-3.5 w-3.5 text-slate-400" />
                   <span>LinkedIn</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
+                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.youtube.com/@trooper"
                 >
-                  <Youtube className="h-3 w-3 sm:h-4 sm:w-4 text-neutral-500 flex-shrink-0" />
+                  <Youtube className="h-3.5 w-3.5 text-slate-400" />
                   <span>YouTube</span>
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Links Grid — thin vertical dividers between columns on sm+/md+ */}
-          <div className="grid flex-1 grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-0 md:grid-cols-3 md:border-l md:border-slate-200">
-            {/* Features Column */}
-            <div className="space-y-6 sm:space-y-8 md:pl-8 md:pr-6">
-              <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">Features</span>
-                <ul className="mt-2 sm:mt-3 space-y-1">
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/ai-workforce"
-                    >
-                      <Users className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-500 flex-shrink-0" />
-                      <span className="break-words">AI Workforce</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/github-integration"
-                    >
-                      <Github className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500 flex-shrink-0" />
-                      <span className="break-words">GitHub Integration</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/task-execution"
-                    >
-                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
-                      <span className="break-words">Task Execution</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/persistent-memory"
-                    >
-                      <Brain className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                      <span className="break-words">Persistent Memory</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/browser-control"
-                    >
-                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-500 flex-shrink-0" />
-                      <span className="break-words">Browser Control</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/system-access"
-                    >
-                      <Terminal className="h-3 w-3 sm:h-4 sm:w-4 text-indigo-500 flex-shrink-0" />
-                      <span className="break-words">System Access</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/email-automation"
-                    >
-                      <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-violet-500 flex-shrink-0" />
-                      <span className="break-words">Email & Communication</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/skills-plugins"
-                    >
-                      <Puzzle className="h-3 w-3 sm:h-4 sm:w-4 text-pink-500 flex-shrink-0" />
-                      <span className="break-words">Skills & Plugins</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/features/multi-agent-collaboration"
-                    >
-                      <Network className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-500 flex-shrink-0" />
-                      <span className="break-words">Multi-Agent Teams</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/integration"
-                    >
-                      <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 flex-shrink-0" />
-                      <span className="break-words">Integrations</span>
-                    </Link>
-                  </li>
-                </ul>
+          {/* Link cells */}
+          {linkColumns.map((col, idx) => {
+            const isLast = idx === linkColumns.length - 1;
+            const isMobileLast = idx === linkColumns.length - 1;
+            return (
+              <div
+                key={col.number}
+                className={[
+                  // shared hairlines for the 2-col tablet layout
+                  !isMobileLast ? 'border-b border-slate-200 sm:border-b lg:border-b-0' : '',
+                  // tablet: alternating right border for the link cells
+                  idx % 2 === 0 ? 'sm:border-r sm:border-slate-200 lg:border-r-0' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                <FooterColumnCell column={col} borderRight={!isLast} />
               </div>
-              <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">Get help</span>
-                <ul className="mt-2 sm:mt-3 space-y-1">
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="mailto:support@trooper.so"
-                    >
-                      <span className="break-words">Contact us</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/privacy"
-                    >
-                      <span className="break-words">Privacy policy</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/terms"
-                    >
-                      <span className="break-words">Terms of service</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            );
+          })}
+        </div>
 
-            {/* Product Column */}
-            <div className="space-y-6 sm:space-y-8 sm:pl-6 sm:border-l sm:border-slate-200 md:pr-6">
-              <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">Product</span>
-                <ul className="mt-2 sm:mt-3 space-y-1">
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/"
-                    >
-                      <span className="break-words">How it works</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/integration"
-                    >
-                      <span className="break-words">Integrations</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/pricing"
-                    >
-                      <span className="break-words">Pricing</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.trooper.so/changelog"
-                    >
-                      <span className="break-words">Changelog</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="/download"
-                    >
-                      <span className="break-words">Download</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.trooper.so"
-                    >
-                      <span className="break-words">Dashboard</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">Resources</span>
-                <ul className="mt-2 sm:mt-3 space-y-1">
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://docs.openclaw.ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">Documentation</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.trooper.so/blog"
-                    >
-                      <span className="break-words">Blog</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://app.trooper.so/changelog"
-                    >
-                      <span className="break-words">Changelog</span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* OpenClaw & Community Column */}
-            <div className="space-y-6 sm:space-y-8 sm:col-span-2 sm:pt-6 sm:border-t sm:border-slate-200 md:col-span-1 md:pt-0 md:border-t-0 md:pl-6 md:border-l md:border-slate-200">
-              <div>
-                <span className="text-xs sm:text-sm font-semibold text-neutral-800">OpenClaw Ecosystem</span>
-                <ul className="mt-2 sm:mt-3 space-y-1">
-                  <li>
-                    <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://openclaw.ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">OpenClaw AI</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://github.com/openclaw/openclaw"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">GitHub OpenClaw</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://clawhub.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">ClawHub Skills</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://discord.com/invite/clawd"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">Discord Community</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="flex items-center gap-2 text-xs sm:text-sm text-neutral-700 transition-colors hover:text-neutral-900"
-                      href="https://docs.openclaw.ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="break-words">OpenClaw Docs</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        {/* Bottom bar */}
+        <div className="flex flex-col gap-4 border-t border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 md:text-sm">
+            <span>© Boring Sites LLC. All rights reserved.</span>
+            <Link href="/privacy" className="hover:text-slate-900">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-slate-900">
+              Terms
+            </Link>
           </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between py-6 md:py-8 px-4 sm:px-6 md:px-8 border-t border-l border-r border-slate-200 max-w-7xl mx-auto">
-        <div className="text-xs md:text-sm text-slate-700 mb-4 md:mb-0 order-2 md:order-1 flex flex-wrap gap-4">
-          © Boring Sites LLC. All rights reserved.{' '}
-          <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
-          <Link href="/terms" className="hover:text-slate-900">Terms</Link>
-        </div>
-        <ul className="flex flex-wrap mb-4 md:mb-0 order-1 md:order-2 gap-3 items-center">
-
-          <li>
+          <div className="flex flex-wrap items-center gap-3">
             <PixelButton
               href="https://github.com/absurdfounder"
               external
               size="sm"
               variant="outline"
               tone="dark"
-              ariaLabel="Track my commits on Github"
+              ariaLabel="Track my commits on GitHub"
               icon={<Github className="h-3.5 w-3.5" strokeWidth={2} />}
             >
               <span className="hidden md:inline">Track my commits</span>
+              <span className="md:hidden">Commits</span>
             </PixelButton>
-          </li>
-          <li>
             <a
               href="https://openclaw.ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex justify-center items-center text-slate-600 hover:text-slate-900 bg-white hover:bg-white-100 rounded-md shadow transition duration-150 ease-in-out border px-3 py-1 md:px-4 md:py-1 text-sm"
+              className="inline-flex items-center gap-2 border border-slate-200 bg-white px-3 py-2 text-xs font-mono uppercase tracking-[0.12em] text-slate-600 transition-colors hover:text-slate-900 md:text-[11px]"
             >
-              <span className="hidden md:inline">Powered by <b className="px-2">🦞 OpenClaw</b></span>
-              <span className="md:hidden">🦞 OpenClaw</span>
+              <span className="text-slate-400">Powered by</span>
+              <img
+                src="https://openclaw.ai/favicon.ico"
+                alt="OpenClaw"
+                className="h-3.5 w-3.5 rounded-sm"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              <span className="font-semibold text-slate-700">OpenClaw</span>
             </a>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </footer>
-  )
+  );
 }
