@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image' // Import the Image component from Next.js
-import logonew_black from '../../public/images/logonew-black.png';
+import trooperLogo from '../../public/images/trooper-logo.png';
 
 export default function Logo() {
   return (
     <Link href="/" className="block" aria-label="Trooper">
       {/* Use the Image component for optimized images */}
       <Image
-        src={logonew_black} 
+        src={trooperLogo} 
         unoptimized
         alt="Trooper" 
         width={200}

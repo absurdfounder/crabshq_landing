@@ -40,7 +40,7 @@ import {
   Radio,
   Rocket
 } from 'lucide-react';
-import Logo from '@/public/images/logonew-black.png';
+import Logo from '@/public/images/trooper-logo.png';
 import MobileMenu from './mobile-menu';
 import TabletMenu from './tablet-menu';
 import TranslateButton from './TranslateButton';

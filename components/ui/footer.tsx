@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Logo from '@/public/images/logonew-black.png'
+import Logo from '@/public/images/trooper-logo.png'
 import Link from 'next/link'
 import {
   Twitter,
@@ -36,7 +36,7 @@ export default function Footer() {
                 src={Logo}
                 alt="Trooper"
                 width={169}
-                className="rounded-lg w-32 sm:w-40 md:w-auto"
+                className="w-32 sm:w-40 md:w-auto h-auto"
               />
             </div>
             <p className="mt-2 text-xs sm:text-sm text-neutral-600 leading-relaxed">

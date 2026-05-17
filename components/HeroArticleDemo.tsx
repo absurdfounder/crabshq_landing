@@ -145,7 +145,7 @@ function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks:
         <span style={{ fontSize: 12, fontWeight: 700, color: m.accent === "#737373" ? "#525252" : m.accent }}>{m.label}</span>
         <span style={{ fontSize: 11, fontWeight: 800, color: m.accent, background: m.accent + "18", padding: "0 7px", borderRadius: 8, lineHeight: "20px" }}>{tasks.length}</span>
       </div>
-      <div className="crabs-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 2 }}>
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 2 }}>
         {tasks.map((t, i) => <TaskCard key={t.id} task={t} index={i} />)}
       </div>
     </div>
@@ -222,7 +222,7 @@ export default function TrooperDemo() {
   tasks.forEach((t: Task) => { if (cols[t.col as keyof typeof COL_META]) cols[t.col as keyof typeof COL_META].push(t); });
 
   return (
-    <div className="crabs-demo" style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div className="Trooper-demo" style={{ width: "100%", maxWidth: 1280, margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
@@ -230,14 +230,14 @@ export default function TrooperDemo() {
         @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 70%{box-shadow:0 0 0 8px rgba(239,68,68,0)} 100%{box-shadow:0 0 0 0 rgba(239,68,68,0)} }
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
         .typing-dot { width:3.5px; height:3.5px; border-radius:50%; background:#a3a3a3; animation:dotBounce 1.2s infinite ease-in-out; }
-        .crabs-scrollbar::-webkit-scrollbar{width:3px}
-        .crabs-scrollbar::-webkit-scrollbar-track{background:transparent}
-        .crabs-scrollbar::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
+        .Trooper-scrollbar::-webkit-scrollbar{width:3px}
+        .Trooper-scrollbar::-webkit-scrollbar-track{background:transparent}
+        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
         *{box-sizing:border-box}
         
         /* Hide on mobile and tablet */
         @media (max-width: 1024px) {
-          .crabs-demo { display: none !important; }
+          .Trooper-demo { display: none !important; }
         }
       `}</style>
 
@@ -292,10 +292,10 @@ export default function TrooperDemo() {
         </div>
 
         {/* ── 3-Panel ── */}
-        <div className="crabs-container" style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
+        <div className="Trooper-container" style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
 
           {/* LEFT SIDEBAR */}
-          <div className="crabs-sidebar crabs-scrollbar" style={{ width: 185, minWidth: 185, borderRight: "1px solid #e5e7eb", background: "white", overflowY: "auto", padding: "10px 0" }}>
+          <div className="Trooper-sidebar Trooper-scrollbar" style={{ width: 185, minWidth: 185, borderRight: "1px solid #e5e7eb", background: "white", overflowY: "auto", padding: "10px 0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "0 12px", marginBottom: 8 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
               <span style={{ fontSize: 10, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: 1 }}>Team</span>
@@ -355,7 +355,7 @@ export default function TrooperDemo() {
           </div>
 
           {/* CENTER KANBAN */}
-          <div className="crabs-kanban" style={{ flex: 1, overflow: "hidden", padding: "10px 12px", display: "flex", flexDirection: "column" }}>
+          <div className="Trooper-kanban" style={{ flex: 1, overflow: "hidden", padding: "10px 12px", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", gap: 8, flex: 1, overflow: "hidden" }}>
               {["inbox", "assigned", "progress", "review"].map(k => (
                 <KanbanColumn key={k} colKey={k as keyof typeof COL_META} tasks={cols[k as keyof typeof COL_META]} />
@@ -364,7 +364,7 @@ export default function TrooperDemo() {
           </div>
 
           {/* RIGHT CHAT */}
-          <div className="crabs-chat" style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
+          <div className="Trooper-chat" style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #e5e7eb", gap: 16 }}>
               <span style={{ fontSize: 12, fontWeight: 700, color: "#ef4444", borderBottom: "2px solid #ef4444", paddingBottom: 3, display: "flex", alignItems: "center", gap: 4 }}>
                 <MessageCircle size={13} strokeWidth={2} /> Team Chat
@@ -385,7 +385,7 @@ export default function TrooperDemo() {
               </div>
             )}
 
-            <div ref={chatRef} className="crabs-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
+            <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
               {messages.map((msg, i) => (
                 <div key={i} style={{ marginBottom: 12, animation: "fadeIn 0.3s ease both" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>

@@ -232,7 +232,7 @@ export default function SimplePricing() {
               <span className="inline-flex items-center justify-center gap-2">
                 <span>Deploy</span>
                 <img src="/favicon.ico" alt="logo" className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-md align-middle" />
-                <span>Crabs at your company</span>
+                <span>Trooper at your company</span>
               </span>
             </span>
           </h1>

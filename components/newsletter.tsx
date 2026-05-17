@@ -102,7 +102,7 @@ export default function Newsletter() {
                 width={600}
                 height={600}
                 className="block"
-                src="https://dazzling-cat.netlify.app/crabsperson.png" />
+                src="https://dazzling-cat.netlify.app/Trooperperson.png" />
             </div>
 
             <div className="relative flex flex-col lg:flex-row justify-between items-center">

@@ -43,7 +43,7 @@ const FlowLine = ({ className = '' }: { className?: string }) => (
   </svg>
 );
 
-/* ─── Visual 1: AI Org — Org chart with crabs ─── */
+/* ─── Visual 1: AI Org — Org chart with Trooper ─── */
 const OrgVisual = () => (
   <div className="h-full flex flex-col items-center justify-center p-6 sm:p-8">
     {/* CEO / Founder */}

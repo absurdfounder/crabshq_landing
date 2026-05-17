@@ -69,7 +69,7 @@ export default function GetStartedSection() {
         <section className="overflow-hidden">
           <div className="pr-0 lg:pr-8">
             <div className="pt-12 pb-12 sm:pt-20">
-              <span className="font-silkscreen text-lg text-red-600">Crabs Cloud</span>
+              <span className="font-silkscreen text-lg text-red-600">Trooper Cloud</span>
               <h2 className="mt-4 font-funneldisplay text-balance text-neutral-800 text-3xl lg:text-4xl">
                 Get started in minutes
               </h2>
