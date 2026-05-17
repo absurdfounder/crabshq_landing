@@ -8,7 +8,7 @@ const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 /* ─── Trooper pixel character (replaces 🦀 in avatars) ─── */
 const TrooperChar = ({ className = "" }: { className?: string }) => (
   <img
-    src="/images/trooper-character.png"
+    src="/images/crabshq-character.svg"
     alt="Trooper"
     className={`w-full h-full object-contain [image-rendering:pixelated] ${className}`}
   />
@@ -83,7 +83,7 @@ const OpenClawFavicon = ({ size = 14, className = "" }: { size?: number; classNa
     loading="lazy"
     onError={(e) => {
       const t = e.target as HTMLImageElement;
-      t.src = '/images/trooper-character.png';
+      t.src = '/images/crabshq-character.svg';
       t.style.imageRendering = 'pixelated';
       t.classList.remove('rounded-sm');
     }}

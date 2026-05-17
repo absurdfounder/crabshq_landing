@@ -285,7 +285,7 @@ export default function TrooperDemo() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
               <img
-                src="/images/trooper-character.png"
+                src="/images/crabshq-character.svg"
                 alt=""
                 style={{ height: 26, width: "auto", imageRendering: "pixelated" }}
               />

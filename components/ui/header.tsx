@@ -61,7 +61,7 @@ export default function Header() {
           asLink
           priority
           className="shrink-0"
-          characterClassName="h-7 w-auto sm:h-8 [image-rendering:pixelated]"
+          characterClassName="h-9 w-auto sm:h-10 [image-rendering:pixelated]"
           textClassName="text-base sm:text-lg"
         />
 
