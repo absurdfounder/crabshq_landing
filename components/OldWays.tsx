@@ -810,7 +810,7 @@ const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
     style={{
       backgroundColor: '#f8fafc',
       backgroundImage:
-        "linear-gradient(rgba(248, 250, 252, 0.62), rgba(248, 250, 252, 0.62)), url('/images/hero-bg-pixel.png')",
+        "linear-gradient(rgb(16 185 129 / 53%), rgb(16 185 129 / 40%)), url(/images/hero-bg-pixel.png)",
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
