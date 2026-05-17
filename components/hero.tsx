@@ -123,7 +123,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
     <section className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 border-l border-r border-slate-200">
 
-        <div className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+        <div className="pt-24 sm:pt-28 md:pt-32 pb-0 sm:pb-0 md:pb-0">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Left: text content */}
