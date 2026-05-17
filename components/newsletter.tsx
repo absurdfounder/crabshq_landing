@@ -103,7 +103,7 @@ export default function Newsletter() {
               {/* CTA content */}
               <div className="text-center lg:text-left lg:max-w-xl">
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 my-2 leading-tight">
-                  Try the <span style={{ color: '#f9551f' }}>alien tech</span> in your company.
+                  Try these <span style={{ color: '#10b981' }}>alien tech</span> in your company.
                 </h3>
                 {/* Original rotating text logic (kept for reference) */}
                 {/* <h3 className="text-slate-100 my-2">Build <span className="text-emerald-400">{words[index]}</span> Sites</h3> */}
