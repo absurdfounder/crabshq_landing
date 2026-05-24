@@ -13,7 +13,7 @@ type TrooperLogoProps = {
 
 export default function TrooperLogo({
   className = '',
-  characterClassName = 'h-9 w-9 sm:h-10 sm:w-10 object-contain',
+  characterClassName = 'h-11 w-11 sm:h-12 sm:w-12 object-contain',
   textClassName = 'text-xl sm:text-2xl',
   asLink = false,
   priority = false,

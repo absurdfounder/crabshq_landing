@@ -199,7 +199,7 @@ export default function Footer() {
           <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-200 border-b border-slate-200 sm:col-span-2 lg:col-span-1 lg:border-b-0">
             <CellHeader number="01" eyebrow="Trooper" />
             <TrooperLogo
-              characterClassName="h-8 w-8 sm:h-9 sm:w-9 object-contain"
+              characterClassName="h-10 w-10 sm:h-11 sm:w-11 object-contain"
               textClassName="text-lg sm:text-xl"
             />
             <p className="text-sm leading-relaxed text-slate-600">

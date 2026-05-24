@@ -190,9 +190,9 @@ export default function SimplePricing() {
               <span className="inline-flex items-center gap-2">
                 <span>Deploy</span>
                 <img
-                  src="/favicon.ico"
-                  alt="logo"
-                  className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-sm align-middle"
+                  src="/images/trooper-logomark.png"
+                  alt="Trooper"
+                  className="inline-block w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain align-middle"
                 />
                 <span>Trooper at your company</span>
               </span>
