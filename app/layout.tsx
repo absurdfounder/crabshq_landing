@@ -68,9 +68,9 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '48x48' },
       { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/images/trooper-logomark.png', sizes: '1024x1024', type: 'image/png' },
     ],
     apple: '/apple-touch-icon.png',
   },

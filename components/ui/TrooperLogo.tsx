@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-const characterSrc = '/images/crabshq-character.svg'
+const characterSrc = '/images/trooper-logomark.png'
 
 type TrooperLogoProps = {
   className?: string
@@ -13,7 +13,7 @@ type TrooperLogoProps = {
 
 export default function TrooperLogo({
   className = '',
-  characterClassName = 'h-9 w-auto sm:h-10 [image-rendering:pixelated]',
+  characterClassName = 'h-9 w-9 sm:h-10 sm:w-10 object-contain',
   textClassName = 'text-xl sm:text-2xl',
   asLink = false,
   priority = false,
@@ -23,8 +23,8 @@ export default function TrooperLogo({
       <Image
         src={characterSrc}
         alt=""
-        width={542}
-        height={499}
+        width={1024}
+        height={1024}
         className={characterClassName}
         priority={priority}
         unoptimized
