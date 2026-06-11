@@ -6,7 +6,7 @@ import Newsletter from "@/components/newsletter"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {  
   const pathname = usePathname()
-  const hideNewsletter = pathname === '/wonder-auth'
+  const hideNewsletter = pathname === '/wonder-auth' || pathname === '/download'
   
   return (
     <>

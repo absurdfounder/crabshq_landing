@@ -1,77 +1,77 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Download, ChevronDown } from 'lucide-react';
+import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
-import SectionShell from '@/components/ui/SectionShell';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
-import { ArrowRight } from 'lucide-react';
 
 type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'unknown';
 
-interface PlatformInfo {
+type PlatformCard = {
   key: Platform;
   label: string;
-  icon: React.ReactNode;
-  description: string;
+  subtitle: string;
+  requirements: string;
   href: string;
-  buttonText: string;
-}
+  cta: string;
+  icon: React.ReactNode;
+  group: 'desktop' | 'mobile';
+};
 
 const SiWindows = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
     <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
   </svg>
 );
 
 const SiApple = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
   </svg>
 );
 
-const Smartphone = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <rect x="5" y="2" width="14" height="20" rx="2" />
-    <line x1="12" y1="18" x2="12" y2="18" />
-  </svg>
-);
-
-const platforms: PlatformInfo[] = [
+const platforms: PlatformCard[] = [
   {
     key: 'mac',
     label: 'macOS',
-    icon: <SiApple className="h-6 w-6" />,
-    description: 'For macOS 12 Monterey and later. Universal binary for Intel and Apple Silicon.',
+    subtitle: 'Mac app',
+    requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
     href: 'https://app.trooper.so/download/mac',
-    buttonText: 'Download for Mac',
+    cta: 'Download for Mac',
+    icon: <SiApple className="h-7 w-7" />,
+    group: 'desktop',
   },
   {
     key: 'windows',
     label: 'Windows',
-    icon: <SiWindows className="h-5 w-5" />,
-    description: 'For Windows 10 and later. 64-bit installer.',
+    subtitle: 'Desktop app',
+    requirements: 'Windows 10+ · 64-bit installer',
     href: 'https://app.trooper.so/download/windows',
-    buttonText: 'Download for Windows',
+    cta: 'Download for Windows',
+    icon: <SiWindows className="h-6 w-6" />,
+    group: 'desktop',
   },
   {
     key: 'ios',
     label: 'iOS',
-    icon: <Smartphone className="h-6 w-6" />,
-    description: 'For iPhone and iPad. Requires iOS 16 or later.',
+    subtitle: 'iPhone & iPad',
+    requirements: 'iOS 16 or later',
     href: 'https://apps.apple.com/app/trooper',
-    buttonText: 'Download on App Store',
+    cta: 'App Store',
+    icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'mobile',
   },
   {
     key: 'android',
     label: 'Android',
-    icon: <Smartphone className="h-6 w-6" />,
-    description: 'For Android phones and tablets. Requires Android 10 or later.',
+    subtitle: 'Phone & tablet',
+    requirements: 'Android 10 or later',
     href: 'https://play.google.com/store/apps/details?id=com.trooper.app',
-    buttonText: 'Get it on Google Play',
+    cta: 'Google Play',
+    icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'mobile',
   },
 ];
 
@@ -90,6 +90,102 @@ function detectPlatform(): Platform {
   return 'unknown';
 }
 
+function PlatformTile({
+  platform,
+  detected,
+}: {
+  platform: PlatformCard;
+  detected: Platform;
+}) {
+  const isRecommended = detected === platform.key;
+
+  return (
+    <div
+      className={[
+        'flex flex-col h-full p-6 sm:p-7 bg-white transition-colors',
+        isRecommended ? 'ring-2 ring-trooper ring-inset bg-trooper-50/30' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex h-12 w-12 items-center justify-center border border-slate-200 bg-slate-50 text-slate-700">
+          {platform.icon}
+        </div>
+        {isRecommended && (
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-trooper-700 bg-white border border-trooper-100 px-2 py-0.5">
+            Your device
+          </span>
+        )}
+      </div>
+
+      <div className="mt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+          {platform.subtitle}
+        </p>
+        <h3 className="mt-1 font-funneldisplay text-xl tracking-tight text-slate-900">
+          {platform.label}
+        </h3>
+        <p className="mt-2 text-sm text-slate-500 leading-relaxed">{platform.requirements}</p>
+      </div>
+
+      <div className="mt-auto pt-6 border-t border-slate-100">
+        <PixelButton
+          href={platform.href}
+          external
+          size="md"
+          tone={isRecommended ? 'brand' : 'dark'}
+          variant={isRecommended ? 'solid' : 'outline'}
+          icon={<Download className="h-3.5 w-3.5" />}
+          className="w-full justify-center"
+        >
+          {platform.cta}
+        </PixelButton>
+      </div>
+    </div>
+  );
+}
+
+function PlatformGroup({
+  title,
+  icon,
+  items,
+  detected,
+  className = '',
+}: {
+  title: string;
+  icon: React.ReactNode;
+  items: PlatformCard[];
+  detected: Platform;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <div className="flex items-center gap-2 px-4 sm:px-6 py-3 border-b border-slate-200 bg-slate-50/80">
+        <span className="text-slate-500">{icon}</span>
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">
+          {title}
+        </span>
+      </div>
+      <div className="grid sm:grid-cols-2">
+        {items.map((p, i) => (
+          <div
+            key={p.key}
+            className={[
+              i % 2 === 0 ? 'sm:border-r sm:border-slate-200' : '',
+              i < items.length - 1 ? 'border-b border-slate-200 sm:border-b-0' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <PlatformTile platform={p} detected={detected} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function DownloadClient() {
   const [detected, setDetected] = useState<Platform>('unknown');
 
@@ -97,129 +193,123 @@ export default function DownloadClient() {
     setDetected(detectPlatform());
   }, []);
 
-  const primary = platforms.find((p) => p.key === detected) || platforms[0];
-  const others = platforms.filter((p) => p.key !== primary.key);
+  const desktop = platforms.filter((p) => p.group === 'desktop');
+  const mobile = platforms.filter((p) => p.group === 'mobile');
+  const recommended = platforms.find((p) => p.key === detected);
 
   return (
     <div className="bg-white min-h-screen">
       <Header />
 
-      <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
-        <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 text-center">
-          <PixelMissionTag index="01" label="Field deploy" className="mb-4" />
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-            <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight text-slate-900">
-              Download Trooper
-            </h1>
-            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-xl mx-auto">
-              Your AI workforce on every device. Deploy agents from desktop or manage them on the go.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <div className="max-w-7xl mx-auto border-l border-r border-slate-200">
+        {/* Hero */}
+        <section className="dashboard-landscape-bg border-b border-slate-200">
+          <div className="bg-white/90 backdrop-blur-[2px]">
+            <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
+              <PixelMissionTag index="01" label="Field deploy" className="mb-4" />
 
-      <SectionShell eyebrow="Platforms" eyebrowNumber="02" bgClass="bg-slate-50">
-        <div className="py-12 md:py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-            >
-              <div className="mx-auto max-w-md border border-slate-200 bg-white p-8 shadow-sm">
-                <div className="flex items-center justify-center gap-3 text-slate-800">
-                  {primary.icon}
-                  <span className="text-lg font-semibold">{primary.label}</span>
-                  {detected !== 'unknown' && (
-                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
-                      Detected
-                    </span>
-                  )}
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.75rem] tracking-tight text-slate-900 leading-tight">
+                    Download Trooper
+                  </h1>
+                  <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                    Command your AI workforce from desktop or mobile. Same org, same agents, same memory — everywhere you work.
+                  </p>
                 </div>
-                <p className="mt-3 text-sm text-slate-500 text-center">{primary.description}</p>
-                <div className="mt-6 flex justify-center">
-                  <PixelButton
-                    href={primary.href}
-                    external
-                    size="lg"
-                    tone="brand"
-                    icon={<Download className="h-4 w-4" />}
-                  >
-                    {primary.buttonText}
-                  </PixelButton>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35, delay: 0.1 }}
-              className="mt-8 flex items-center justify-center gap-6 flex-wrap"
-            >
-              {platforms.map((p) => (
-                <Link
-                  key={p.key}
-                  href={p.href}
-                  className={`flex flex-col items-center gap-1.5 px-4 py-3 transition-colors ${
-                    p.key === primary.key
-                      ? 'text-slate-900'
-                      : 'text-slate-400 hover:text-slate-700'
-                  }`}
-                >
-                  {p.icon}
-                  <span className="text-xs font-medium font-mono uppercase tracking-wide">{p.label}</span>
-                </Link>
-              ))}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.15 }}
-              className="mt-12"
-            >
-              <div className="flex items-center justify-center gap-2 text-sm text-slate-400 mb-6">
-                <ChevronDown className="h-4 w-4" />
-                <span>Also available on</span>
+                {recommended && (
+                  <div className="shrink-0 lg:text-right">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400 mb-2">
+                      Recommended for you
+                    </p>
+                    <PixelButton
+                      href={recommended.href}
+                      external
+                      size="lg"
+                      tone="brand"
+                      icon={<Download className="h-4 w-4" />}
+                    >
+                      {recommended.cta}
+                    </PixelButton>
+                  </div>
+                )}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                {others.map((p) => (
-                  <Link
-                    key={p.key}
-                    href={p.href}
-                    className="flex items-center gap-3 border border-slate-200 bg-white px-4 py-4 hover:border-trooper-100 transition-colors"
-                  >
-                    <div className="text-slate-600">{p.icon}</div>
-                    <div className="text-left">
-                      <div className="text-sm font-medium text-slate-800">{p.label}</div>
-                      <div className="text-xs text-slate-400">{p.buttonText}</div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35, delay: 0.2 }}
-              className="mt-12 text-center"
-            >
-              <p className="text-sm text-slate-500 mb-4">No install required</p>
-              <PixelButton
-                href="https://app.trooper.so"
-                external
-                variant="outline"
-                tone="dark"
-                icon={<ArrowRight className="h-4 w-4" />}
-              >
-                Open app.trooper.so
-              </PixelButton>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </SectionShell>
+        </section>
+
+        {/* Platform grid */}
+        <section>
+          <div className="px-4 sm:px-6 lg:px-8 py-3 border-b border-slate-200">
+            <span className="type-eyebrow-num">
+              <span className="text-slate-400">[02]</span>&nbsp;All platforms
+            </span>
+          </div>
+
+          <div className="border-b border-slate-200">
+            <PlatformGroup
+              title="Desktop"
+              icon={<Monitor className="h-4 w-4" strokeWidth={2} />}
+              items={desktop}
+              detected={detected}
+            />
+          </div>
+
+          <PlatformGroup
+            title="Mobile"
+            icon={<Smartphone className="h-4 w-4" strokeWidth={2} />}
+            items={mobile}
+            detected={detected}
+          />
+        </section>
+
+        {/* Web fallback */}
+        <section className="border-t border-slate-200 bg-slate-50">
+          <div className="px-4 sm:px-6 lg:px-8 py-10 md:py-12">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border border-slate-200 bg-white p-6 sm:p-8">
+              <div className="flex gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-slate-200 bg-slate-50 text-trooper">
+                  <Globe className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <h2 className="font-funneldisplay text-xl tracking-tight text-slate-900">
+                    Use in the browser
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-600 leading-relaxed max-w-md">
+                    No install required. Open{' '}
+                    <Link href="https://app.trooper.so" className="text-trooper-700 font-medium hover:underline">
+                      app.trooper.so
+                    </Link>{' '}
+                    on any device to deploy agents instantly.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+                <PixelButton
+                  href="https://app.trooper.so"
+                  external
+                  size="lg"
+                  tone="brand"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                >
+                  Open web app
+                </PixelButton>
+                <PixelButton
+                  href="https://app.trooper.so/download/mac"
+                  external
+                  size="lg"
+                  variant="outline"
+                  tone="dark"
+                  icon={<Download className="h-4 w-4" />}
+                >
+                  Download Mac
+                </PixelButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
