@@ -8,6 +8,7 @@ import Image from 'next/image';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
+import { PixelMissionTag } from './PixelAtmosphere';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -132,9 +133,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 </div>
 
                 <div className="mb-4">
-                  <span className="type-eyebrow-num">
-                    <span className="text-slate-400">[01]</span>&nbsp;Hero
-                  </span>
+                  <PixelMissionTag index="01" label="Mission briefing" />
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
@@ -184,7 +183,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
             {/* Right: interactive article demo.
                 Negative side margins make the grid reach the inner edge of the bordered max-w-7xl container. */}
-            <div className="flex-1 mt-10 lg:mt-0 -mx-3 sm:-mx-4 md:-mx-6">
+            <div className="relative flex-1 mt-10 lg:mt-0 -mx-3 sm:-mx-4 md:-mx-6 pixel-scanlines">
               <HeroArticleDemo />
             </div>
           </div>

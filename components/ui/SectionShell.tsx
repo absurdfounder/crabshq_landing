@@ -49,7 +49,7 @@ export default function SectionShell({
       <div className={frameClasses}>
         {eyebrow && (
           <div className="px-4 sm:px-6 lg:px-8 pt-5 sm:pt-6 -mb-2 sm:-mb-3">
-            <span className="type-eyebrow-num">
+            <span className="type-eyebrow-num pixel-flicker-text">
               {eyebrowNumber && (
                 <span className="text-slate-400">[{eyebrowNumber}]</span>
               )}

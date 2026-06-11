@@ -31,8 +31,8 @@ const tags = [
 ];
 
 const Tag = ({ label, Icon }: { label: string; Icon: LucideIcon }) => (
-  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-slate-200 bg-white text-slate-600 text-xs font-medium whitespace-nowrap flex-shrink-0 hover:border-slate-400 hover:text-slate-800 hover:bg-slate-50 transition-all duration-200">
-    <Icon className="w-3.5 h-3.5" />
+  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-trooper-100/80 bg-trooper-50/70 text-trooper-700 text-[11px] font-mono font-semibold uppercase tracking-[0.12em] whitespace-nowrap flex-shrink-0 hover:border-trooper hover:bg-trooper-50 transition-colors duration-200 pixel-flicker-slow [clip-path:polygon(3px_0,100%_0,100%_calc(100%-3px),calc(100%-3px)_100%,0_100%,0_3px)]">
+    <Icon className="w-3.5 h-3.5 text-trooper" strokeWidth={2} />
     <span>{label}</span>
   </div>
 );

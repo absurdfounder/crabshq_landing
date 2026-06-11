@@ -66,17 +66,17 @@ export default function Home() {
   return (
     <>
       <FloatingScrollIndicator />
-      <div
-        style={{
-          backgroundImage: "linear-gradient(rgb(254 254 255), rgb(255 255 255 / 74%), rgb(255 255 255 / 48%)), url(https://dazzling-cat.netlify.app/backgroundgreysketch.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        <Header />
-        <Hero />
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 pixel-camo-wash opacity-50" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/88 via-white/76 to-white/92" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 pixel-flicker-grid opacity-60" aria-hidden />
+        <div className="relative z-10">
+          <Header />
+          <Hero />
+        </div>
       </div>
+
+      <div className="pixel-divider" aria-hidden />
 
       <SectionShell eyebrow="Trusted By" eyebrowNumber="02" bgClass="bg-trooper-50/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10 md:pb-14">
@@ -107,9 +107,13 @@ export default function Home() {
         </div>
       </SectionShell>
 
+      <div className="pixel-divider" aria-hidden />
+
       <SectionShell eyebrow="Workforce" eyebrowNumber="03" bgClass="bg-slate-50">
         <OldWays />
       </SectionShell>
+
+      <div className="pixel-divider" aria-hidden />
 
       <SectionShell eyebrow="How It Works" eyebrowNumber="04" bgClass="bg-white">
         <Positioning />
