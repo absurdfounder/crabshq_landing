@@ -1,28 +1,28 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode, type RefObject } from "react";
 import {
-  Send, RotateCcw, Pause, Play, Lock, Bell,
-  Hash, LayoutGrid, Activity, Home, ListTodo, Plus, Search,
+  RotateCcw, Pause, Play, Lock, Bell, Hash, LayoutGrid, Activity, Home, ListTodo, Plus, Search,
   Target, HardDrive, Brain, Users, Laptop, Settings, Shapes, Clock,
   ChevronDown, Columns3, List, MessageCircle, MessageSquarePlus, ArrowUp,
+  MessagesSquare, ArrowLeftRight, SlidersHorizontal, Mic, Heart,
 } from "lucide-react";
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
+import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
 ];
 
-const AGENTS = [
-  { name: "Jordan", role: "Chief of Staff", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-jordan" },
-  { name: "Aria", role: "Growth & Marketing", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-aria" },
-  { name: "Leo", role: "Operations & Finance", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-leo" },
-  { name: "Ren", role: "Product Builder", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-ren" },
-];
-
 const ALL_PEOPLE = Object.fromEntries(
-  [...HUMANS, ...AGENTS].map(p => [p.name, p])
+  [...HUMANS, ...DEMO_AGENTS].map(p => [p.name, p])
 );
+
+const DEMO_CHANNELS = [
+  { id: 'general', name: 'general', preview: 'Jordan: on it — matching tasks…', time: '14:54', system: false },
+  { id: 'launch', name: 'product-launch', preview: 'Vaibhav: hey @Jordan we just launched…', time: '14:52', system: false },
+  { id: 'ops', name: 'ops', preview: 'Leo: API integration review ready', time: '1h', system: false },
+];
 
 const PHASE1_TASKS = [
   { id: 1, title: "SEO Optimization for Wonder", col: "inbox" as DemoColumnId, tags: ["seo", "visibility"], watchers: ["Vaibhav", "Jordan"], comments: 2 },
@@ -61,6 +61,10 @@ const CHAT_SCRIPT = [
 
 type Task = (typeof PHASE1_TASKS)[number];
 type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
+type SidebarTab = 'menu' | 'channels';
+type DemoPageId = 'home' | 'tasks' | 'goals' | 'routines' | 'files' | 'agents' | 'devices' | 'memory' | 'skills' | 'settings';
+
+const SPLIT_PAGES: DemoPageId[] = ['tasks'];
 
 function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const p = ALL_PEOPLE[name as keyof typeof ALL_PEOPLE];
@@ -68,27 +72,48 @@ function Av({ name, size = 28, border = true }: { name: string; size?: number; b
   return <img src={src} alt={name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: border ? `1.5px solid ${C.card}` : "none", flexShrink: 0, display: "block" }} />;
 }
 
-function AvatarStack({ names, size = 18, max = 2 }: { names: string[]; size?: number; max?: number }) {
-  const shown = names.slice(0, max);
-  const extra = names.length - max;
+function renderMentionParts(text: string, chip = false) {
+  return text.split(/(@\w+)/g).map((part, i) => {
+    if (!part.startsWith("@")) return <span key={i}>{part}</span>;
+    const name = part.slice(1);
+    return (
+      <span key={i} style={{
+        display: "inline-flex", alignItems: "center", gap: chip ? 4 : 0,
+        color: C.brand, fontWeight: 600,
+        background: chip ? C.brandLight : "transparent",
+        border: chip ? `1px solid ${C.brandSoft}` : "none",
+        padding: chip ? "1px 6px 1px 4px" : 0,
+        borderRadius: chip ? 6 : 0,
+        marginRight: chip ? 4 : 0,
+        verticalAlign: chip ? "middle" : undefined,
+        fontSize: chip ? 13 : undefined,
+      }}>
+        {chip ? <Av name={name} size={16} border={false} /> : null}
+        {part}
+      </span>
+    );
+  });
+}
+
+function ComposerTag({ children, icon: Icon }: { children: ReactNode; icon?: typeof ArrowLeftRight }) {
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      {shown.map((n, i) => <div key={n} style={{ marginLeft: i > 0 ? -5 : 0, zIndex: max - i, position: "relative" }}><Av name={n} size={size} /></div>)}
-      {extra > 0 && <span style={{ marginLeft: -4, width: size, height: size, borderRadius: "50%", background: C.bg, border: `1.5px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, fontWeight: 700, color: C.textMuted, zIndex: 0 }}>+{extra}</span>}
-    </div>
+    <button type="button" style={{
+      display: "inline-flex", alignItems: "center", gap: 4, height: 28, padding: "0 8px",
+      borderRadius: 8, border: `1px solid ${C.border}`, background: C.card,
+      fontSize: 11, fontWeight: 500, color: C.textMuted, cursor: "default", whiteSpace: "nowrap",
+    }}>
+      {Icon ? <Icon size={12} strokeWidth={1.75} /> : null}
+      {children}
+      <ChevronDown size={11} strokeWidth={2} color={C.textSubtle} />
+    </button>
   );
 }
 
 function DemoTaskCard({ task, index }: { task: Task; index: number }) {
   return (
     <div style={{
-      background: C.card,
-      borderRadius: 10,
-      border: `1px solid ${C.border}`,
-      padding: "10px 11px",
-      marginBottom: 6,
-      boxShadow: "0 1px 2px rgba(28,25,23,0.04)",
-      animation: `cardIn 0.4s ease ${index * 80}ms both`,
+      background: C.card, borderRadius: 10, border: `1px solid ${C.border}`, padding: "10px 11px", marginBottom: 6,
+      boxShadow: "0 1px 2px rgba(28,25,23,0.04)", animation: `cardIn 0.4s ease ${index * 80}ms both`,
     }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.45, marginBottom: 8 }}>{task.title}</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
@@ -97,7 +122,11 @@ function DemoTaskCard({ task, index }: { task: Task; index: number }) {
         ))}
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <AvatarStack names={task.watchers} size={16} max={3} />
+        <div style={{ display: "flex" }}>
+          {task.watchers.slice(0, 3).map((n, i) => (
+            <div key={n} style={{ marginLeft: i > 0 ? -5 : 0 }}><Av name={n} size={16} /></div>
+          ))}
+        </div>
         {task.comments > 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: 3, color: C.textSubtle }}>
             <MessageCircle size={11} strokeWidth={1.75} />
@@ -115,28 +144,17 @@ function DemoKanbanColumn({ colKey, tasks }: { colKey: DemoColumnId; tasks: Task
     <div style={{ width: 210, minWidth: 210, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "8px 12px", borderRadius: 8, marginBottom: 4,
-        background: col.headerBg, color: col.headerText,
+        padding: "8px 12px", borderRadius: 8, marginBottom: 4, background: col.headerBg, color: col.headerText,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
           <span style={{ fontSize: 16, lineHeight: 1 }}>{col.emoji}</span>
           <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>{col.label}</span>
         </div>
-        <span style={{
-          fontSize: 11, fontWeight: 600, padding: "2px 6px", borderRadius: 999,
-          background: "rgba(255,255,255,0.6)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06)",
-        }}>{tasks.length}</span>
+        <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 6px", borderRadius: 999, background: "rgba(255,255,255,0.6)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06)" }}>{tasks.length}</span>
       </div>
-      <div className="Trooper-scrollbar" style={{
-        flex: 1, overflowY: "auto", borderRadius: 8, padding: 8,
-        background: col.bodyBg, border: "1px solid transparent",
-      }}>
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", borderRadius: 8, padding: 8, background: col.bodyBg }}>
         {tasks.length === 0 ? (
-          <div style={{
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            borderRadius: 8, border: `1px dashed ${C.border}`, background: "rgba(255,255,255,0.8)",
-            padding: "16px 10px", textAlign: "center",
-          }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: 8, border: `1px dashed ${C.border}`, background: "rgba(255,255,255,0.8)", padding: "16px 10px", textAlign: "center" }}>
             <p style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, margin: 0 }}>Nothing here yet</p>
             <p style={{ fontSize: 10, color: C.textSubtle, margin: "4px 0 0", lineHeight: 1.4 }}>Drop a task here or add one with +</p>
           </div>
@@ -148,25 +166,16 @@ function DemoKanbanColumn({ colKey, tasks }: { colKey: DemoColumnId; tasks: Task
 
 function DemoSidebarRail() {
   return (
-    <div style={{
-      width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg,
-      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0",
-    }}>
+    <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
         <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", imageRendering: "pixelated" }} />
         <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
-        <div style={{
-          width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
-          background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 4,
-        }}>
+        <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 4 }}>
           <img src="/images/trooper-logomark.png" alt="" style={{ width: 28, height: 28, objectFit: "contain", imageRendering: "pixelated" }} />
         </div>
-        <div style={{
-          width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
-          background: "rgba(245,245,244,0.7)", color: C.textSubtle,
-        }}>
+        <button type="button" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "default" }}>
           <Plus size={16} strokeWidth={1.5} />
-        </div>
+        </button>
       </div>
       <div style={{ width: 40, height: 40, borderRadius: 16, overflow: "hidden", boxShadow: "0 1px 3px rgba(28,25,23,0.06)" }}>
         <Av name="Vaibhav" size={40} border={false} />
@@ -177,35 +186,72 @@ function DemoSidebarRail() {
 
 const MENU_NAV = {
   core: [
-    { label: "Home", icon: Home, id: "home" },
-    { label: "Tasks", icon: ListTodo, id: "tasks" },
-    { label: "Goals", icon: Target, id: "goals" },
-    { label: "Routines", icon: Clock, id: "routines" },
-    { label: "Files", icon: HardDrive, id: "files" },
+    { label: "Home", icon: Home, id: "home" as DemoPageId },
+    { label: "Tasks", icon: ListTodo, id: "tasks" as DemoPageId },
+    { label: "Goals", icon: Target, id: "goals" as DemoPageId },
+    { label: "Routines", icon: Clock, id: "routines" as DemoPageId },
+    { label: "Files", icon: HardDrive, id: "files" as DemoPageId },
   ],
   team: [
-    { label: "Agents", icon: Users, id: "agents" },
-    { label: "Devices", icon: Laptop, id: "devices" },
-    { label: "Memory", icon: Brain, id: "memory" },
+    { label: "Agents", icon: Users, id: "agents" as DemoPageId },
+    { label: "Devices", icon: Laptop, id: "devices" as DemoPageId },
+    { label: "Memory", icon: Brain, id: "memory" as DemoPageId },
   ],
   advanced: [
-    { label: "Skills & Plugins", icon: Shapes, id: "skills" },
-    { label: "Settings", icon: Settings, id: "settings" },
+    { label: "Skills & Plugins", icon: Shapes, id: "skills" as DemoPageId },
+    { label: "Settings", icon: Settings, id: "settings" as DemoPageId },
   ],
 };
 
-function DemoSidebarNav({ activePage }: { activePage: string }) {
+function DemoSidebarNav({
+  sidebarTab, setSidebarTab, activePage, onNavigate, activeChannel, onSelectChannel, onUserInteract,
+}: {
+  sidebarTab: SidebarTab;
+  setSidebarTab: (t: SidebarTab) => void;
+  activePage: DemoPageId;
+  onNavigate: (id: DemoPageId) => void;
+  activeChannel: string;
+  onSelectChannel: (id: string) => void;
+  onUserInteract: () => void;
+}) {
   const sectionLabel = { fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "0 4px 6px" } as const;
+  const tabBtn = (tab: SidebarTab, icon: typeof LayoutGrid, label: string) => {
+    const active = sidebarTab === tab;
+    return (
+      <button
+        type="button"
+        onClick={() => { onUserInteract(); setSidebarTab(tab); }}
+        style={{
+          display: "inline-flex", alignItems: "center", gap: 6, height: 32, padding: active ? "0 10px" : 0,
+          width: active ? "auto" : 32, borderRadius: 16, border: "none", cursor: "pointer",
+          background: active ? C.card : "transparent",
+          boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
+          fontSize: 14, fontWeight: 600, color: active ? C.text : C.textMuted,
+          justifyContent: "center",
+        }}
+        aria-pressed={active}
+      >
+        {icon === LayoutGrid ? <LayoutGrid size={16} strokeWidth={1.35} /> : <MessagesSquare size={16} strokeWidth={1.35} />}
+        {active ? label : null}
+      </button>
+    );
+  };
 
-  const navRow = (item: { label: string; icon: typeof Home; id: string }, tone: "primary" | "advanced" = "primary") => {
+  const navRow = (item: { label: string; icon: typeof Home; id: DemoPageId }, tone: "primary" | "advanced" = "primary") => {
     const Icon = item.icon;
     const active = activePage === item.id;
     return (
-      <div key={item.id} style={{
-        display: "flex", alignItems: "center", gap: 12, padding: "8px 12px", borderRadius: 16, marginBottom: 2,
-        background: active ? C.card : "transparent",
-        boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
-      }}>
+      <button
+        key={item.id}
+        type="button"
+        onClick={() => { onUserInteract(); onNavigate(item.id); }}
+        style={{
+          display: "flex", alignItems: "center", gap: 12, padding: "8px 12px", borderRadius: 16, marginBottom: 2,
+          width: "100%", border: "none", cursor: "pointer", textAlign: "left",
+          background: active ? C.card : "transparent",
+          boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
+        }}
+      >
         <div style={{
           width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
           background: active ? C.brandLight : tone === "advanced" ? C.brandLight : "rgba(237,235,233,0.8)",
@@ -214,90 +260,244 @@ function DemoSidebarNav({ activePage }: { activePage: string }) {
           <Icon size={16} strokeWidth={1.35} />
         </div>
         <span style={{ fontSize: 14, fontWeight: active ? 600 : tone === "advanced" ? 400 : 500, color: active ? C.text : tone === "advanced" ? C.textMuted : "#44403c" }}>{item.label}</span>
-      </div>
+      </button>
+    );
+  };
+
+  const channelRow = (ch: typeof DEMO_CHANNELS[number]) => {
+    const active = activeChannel === ch.id;
+    return (
+      <button
+        key={ch.id}
+        type="button"
+        onClick={() => { onUserInteract(); onSelectChannel(ch.id); onNavigate('tasks'); }}
+        style={{
+          display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 16, marginBottom: 4,
+          width: "100%", border: "none", cursor: "pointer", textAlign: "left",
+          background: active ? C.card : "transparent",
+          boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
+        }}
+      >
+        <div style={{ width: 36, height: 36, borderRadius: 16, background: C.brandLight, display: "flex", alignItems: "center", justifyContent: "center", color: C.textMuted, flexShrink: 0 }}>
+          {ch.system ? <Heart size={16} strokeWidth={1.75} color={C.brand} fill="currentColor" fillOpacity={0.2} /> : <Hash size={16} strokeWidth={1.35} />}
+        </div>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+            <span style={{ fontSize: 14, fontWeight: active ? 600 : 500, color: active ? C.text : C.textMuted }}>{ch.name}</span>
+            <span style={{ fontSize: 10, color: C.textSubtle, flexShrink: 0 }}>{ch.time}</span>
+          </div>
+          <div style={{ fontSize: 11, color: C.textSubtle, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: 2 }}>{ch.preview}</div>
+        </div>
+      </button>
     );
   };
 
   return (
-    <div className="Trooper-scrollbar" style={{
-      width: 260, minWidth: 260, borderRight: `1px solid ${C.border}`, background: C.bg,
-      display: "flex", flexDirection: "column", overflow: "hidden",
-      boxShadow: "4px 0 24px rgba(28,25,23,0.05)",
-    }}>
+    <div className="Trooper-scrollbar" style={{ width: 260, minWidth: 260, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "4px 0 24px rgba(28,25,23,0.05)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "10px 12px 8px" }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 6, height: 32, padding: "0 10px",
-          borderRadius: 16, background: C.card, boxShadow: "0 1px 3px rgba(28,25,23,0.06)",
-          fontSize: 14, fontWeight: 600, color: C.text,
-        }}>
-          <LayoutGrid size={16} strokeWidth={1.35} />
-          Menu
-        </div>
-        <div style={{
-          width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
-          color: C.textMuted,
-        }}>
-          <MessageCircle size={16} strokeWidth={1.35} />
-        </div>
+        {tabBtn('menu', LayoutGrid, 'Menu')}
+        {tabBtn('channels', MessagesSquare, 'Channels')}
         <div style={{ flex: 1 }} />
-        <div style={{
-          width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
-          background: C.card, color: C.textMuted, boxShadow: "0 1px 3px rgba(28,25,23,0.06)",
-        }}>
+        <button type="button" onClick={onUserInteract} style={{ width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, color: C.textMuted, boxShadow: "0 1px 3px rgba(28,25,23,0.06)", border: "none", cursor: "default" }}>
           <Search size={16} strokeWidth={1.35} />
-        </div>
+        </button>
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "4px 8px 8px" }}>
-        <div style={{ marginBottom: 12 }}>
-          <div style={sectionLabel}>Core workspace</div>
-          {MENU_NAV.core.map(item => navRow(item))}
-        </div>
-        <div style={{ marginBottom: 12 }}>
-          <div style={sectionLabel}>Team & data</div>
-          {MENU_NAV.team.map(item => navRow(item))}
-        </div>
-        <div>
-          <div style={sectionLabel}>Advanced</div>
-          {MENU_NAV.advanced.map(item => navRow(item, "advanced"))}
-        </div>
+        {sidebarTab === 'channels' ? (
+          <>
+            <div style={sectionLabel}>Channels</div>
+            {DEMO_CHANNELS.map(channelRow)}
+            <div style={{ marginTop: 8, padding: "0 4px" }}>
+              <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "8px 4px 6px" }}>Direct messages</div>
+              {DEMO_AGENTS.slice(0, 3).map(a => (
+                <button key={a.name} type="button" onClick={() => { onUserInteract(); onNavigate('tasks'); }} style={{
+                  display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 14, marginBottom: 4,
+                  width: "100%", border: "none", cursor: "pointer", background: "transparent", textAlign: "left",
+                }}>
+                  <img src={a.img} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{a.name}</div>
+                    <div style={{ fontSize: 10, color: C.textSubtle }}>{a.role}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ marginBottom: 12 }}>
+              <div style={sectionLabel}>Core workspace</div>
+              {MENU_NAV.core.map(item => navRow(item))}
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <div style={sectionLabel}>Team & data</div>
+              {MENU_NAV.team.map(item => navRow(item))}
+            </div>
+            <div>
+              <div style={sectionLabel}>Advanced</div>
+              {MENU_NAV.advanced.map(item => navRow(item, "advanced"))}
+            </div>
+          </>
+        )}
       </div>
 
       <div style={{ padding: "8px 12px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.bg }}>
         <div style={{ display: "flex", gap: 4, marginBottom: 8, background: C.card, borderRadius: 16, padding: 4, boxShadow: "0 1px 3px rgba(28,25,23,0.06)" }}>
-          {[
-            { icon: Activity, label: "Activity" },
-            { icon: Bell, label: "Attention" },
-            { icon: Pause, label: "Pause" },
-          ].map(({ icon: Icon, label }) => (
-            <div key={label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "8px 2px", borderRadius: 12, color: C.textMuted }}>
+          {[{ icon: Activity, label: "Activity" }, { icon: Bell, label: "Attention" }, { icon: Pause, label: "Pause" }].map(({ icon: Icon, label }) => (
+            <button key={label} type="button" onClick={onUserInteract} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "8px 2px", borderRadius: 12, color: C.textMuted, border: "none", background: "transparent", cursor: "default" }}>
               <Icon size={18} strokeWidth={1.5} />
-              <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: -0.2 }}>{label}</span>
-            </div>
+              <span style={{ fontSize: 10, fontWeight: 500 }}>{label}</span>
+            </button>
           ))}
         </div>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 10, height: 44, padding: "0 14px",
+        <button type="button" onClick={() => { onUserInteract(); setSidebarTab('channels'); onNavigate('tasks'); }} style={{
+          display: "flex", alignItems: "center", gap: 10, height: 44, padding: "0 14px", width: "100%",
           borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
-          boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text,
+          boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text, cursor: "pointer",
         }}>
           <img src="/images/trooper-logomark.png" alt="" style={{ width: 20, height: 20, objectFit: "contain", imageRendering: "pixelated" }} />
           New chat
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DemoChatPane({
+  messages, inputText, mentionTab, agentTyping, activeChannel, composerPlaceholder, chatRef,
+}: {
+  messages: Message[];
+  inputText: string;
+  mentionTab: string;
+  agentTyping: boolean;
+  activeChannel: string;
+  composerPlaceholder: string;
+  chatRef: RefObject<HTMLDivElement>;
+}) {
+  const channelName = DEMO_CHANNELS.find(c => c.id === activeChannel)?.name || 'general';
+
+  return (
+    <div style={{ width: "42%", minWidth: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: C.card }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+          <button type="button" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "default", fontSize: 14, fontWeight: 600, color: "#525252" }}>
+            <Hash size={14} strokeWidth={1.75} color="#a3a3a3" />
+            {channelName}
+            <ChevronDown size={14} strokeWidth={2} color="#a3a3a3" />
+          </button>
+          <button type="button" style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px", borderRadius: 8, border: `1px solid rgba(231,229,228,0.8)`, background: C.card, fontSize: 12, fontWeight: 500, color: "#525252", boxShadow: "0 1px 2px rgba(28,25,23,0.04)" }}>
+            <MessageSquarePlus size={14} strokeWidth={1.75} />
+            New session
+          </button>
+        </div>
+      </div>
+
+      {mentionTab && (
+        <div style={{ padding: "5px 16px", borderBottom: `1px solid ${C.borderWarm}`, background: C.bg, fontSize: 11, color: C.textMuted, display: "flex", alignItems: "center", gap: 5 }}>
+          <Av name="Vaibhav" size={16} border={false} />
+          <span>{mentionTab}</span>
+        </div>
+      )}
+
+      <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
+        {messages.map((msg, i) => (
+          <div key={i} style={{ marginBottom: 16, animation: "fadeIn 0.3s ease both" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+              <Av name={msg.sender} size={24} />
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{msg.sender}</span>
+              {!msg.isHuman && (
+                <span style={{ fontSize: 9, fontWeight: 600, color: C.text, background: C.brandLight, padding: "2px 6px", borderRadius: 4, height: 16, display: "inline-flex", alignItems: "center" }}>Manager</span>
+              )}
+              <span style={{ fontSize: 12, color: C.textSubtle }}>— {msg.role}</span>
+              <span style={{ fontSize: 11, color: "#d6d3d1", marginLeft: "auto" }}>{msg.time}</span>
+            </div>
+            <div style={{ marginLeft: 32, fontSize: 14, lineHeight: 1.55, color: C.textMuted }}>{renderMentionParts(msg.text)}</div>
+            {msg.reaction && (
+              <div style={{ marginLeft: 32, marginTop: 6 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: C.card, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>
+                  <span>{msg.reaction.emoji}</span>
+                  <span style={{ fontSize: 10, color: C.textSubtle, fontWeight: 600 }}>{msg.reaction.count}</span>
+                </span>
+              </div>
+            )}
+          </div>
+        ))}
+        {agentTyping && (
+          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0" }}>
+            <Av name="Jordan" size={20} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: C.textSubtle }}>Jordan is typing</span>
+          </div>
+        )}
+      </div>
+
+      <div style={{ padding: "10px 16px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.card }}>
+        <div style={{ borderRadius: 16, border: `1px solid ${C.border}`, background: C.card, boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06)" }}>
+          <div style={{ minHeight: 52, padding: "12px 14px", fontSize: 14, color: inputText ? C.text : C.textSubtle, lineHeight: 1.5 }}>
+            {inputText ? (
+              <>
+                {renderMentionParts(inputText, true)}
+                <span style={{ display: "inline-block", width: 1.5, height: 16, background: C.text, marginLeft: 1, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
+              </>
+            ) : composerPlaceholder}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "6px 10px 8px", borderTop: `1px solid ${C.borderWarm}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", minWidth: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle, border: `1px solid ${C.border}`, background: C.card }}>
+                <Plus size={16} strokeWidth={1.75} />
+              </div>
+              <ComposerTag>
+                <img src="/images/trooper-logomark.png" alt="" style={{ width: 14, height: 14, objectFit: "contain", imageRendering: "pixelated" }} />
+                Trooper Auto
+              </ComposerTag>
+              <ComposerTag>Auto</ComposerTag>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+                <Mic size={16} strokeWidth={1.75} />
+              </div>
+              <div style={{
+                width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                background: inputText ? C.brand : "rgba(28,25,23,0.09)", color: inputText ? "white" : C.textSubtle,
+              }}>
+                <ArrowUp size={14} strokeWidth={2.25} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 8, overflowX: "auto" }}>
+          <ComposerTag icon={ArrowLeftRight}>All Devices</ComposerTag>
+          <ComposerTag icon={SlidersHorizontal}>Smart Approve</ComposerTag>
         </div>
       </div>
     </div>
   );
 }
 
-function TypingIndicator({ name }: { name: string }) {
+function DemoBoardPane({ tasks }: { tasks: Task[] }) {
+  const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
+  tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
+
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", animation: "fadeIn 0.25s ease both" }}>
-      <Av name={name} size={20} />
-      <span style={{ fontSize: 11, fontWeight: 600, color: C.textSubtle }}>{name} is typing</span>
-      <div style={{ display: "flex", gap: 2.5, alignItems: "center" }}>
-        <div className="typing-dot" style={{ animationDelay: "0ms" }} />
-        <div className="typing-dot" style={{ animationDelay: "150ms" }} />
-        <div className="typing-dot" style={{ animationDelay: "300ms" }} />
+    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", background: C.card, padding: "10px 12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexShrink: 0 }}>
+        <div style={{ display: "inline-flex", height: 32, alignItems: "center", borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, padding: 1, boxShadow: "0 1px 2px rgba(28,25,23,0.04)" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, background: "rgba(231,229,228,0.9)", fontSize: 11, fontWeight: 500, color: C.text }}>
+            <Columns3 size={14} strokeWidth={1.5} /> Columns
+          </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, fontSize: 11, fontWeight: 500, color: C.textMuted }}>
+            <List size={14} strokeWidth={1.5} /> List
+          </div>
+        </div>
+        <div style={{ flex: 1 }} />
+        <button type="button" style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid rgba(28,25,23,0.9)", background: "#1c1917", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Plus size={14} strokeWidth={2} />
+        </button>
+      </div>
+      <div className="Trooper-scrollbar" style={{ display: "flex", gap: 10, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
+        {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
+          <DemoKanbanColumn key={k} colKey={k} tasks={cols[k]} />
+        ))}
       </div>
     </div>
   );
@@ -309,12 +509,16 @@ export default function TrooperDemo() {
   const [inputText, setInputText] = useState("");
   const [mentionTab, setMentionTab] = useState("");
   const [agentTyping, setAgentTyping] = useState(false);
-  const [activePage, setActivePage] = useState("tasks");
+  const [activePage, setActivePage] = useState<DemoPageId>("tasks");
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>("channels");
+  const [activeChannel, setActiveChannel] = useState("general");
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const chatRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typeRef = useRef<NodeJS.Timeout | null>(null);
+
+  const pauseDemo = useCallback(() => setIsRunning(false), []);
 
   useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [messages, inputText, agentTyping]);
 
@@ -326,24 +530,25 @@ export default function TrooperDemo() {
   const processStep = useCallback((idx: number) => {
     if (idx >= CHAT_SCRIPT.length) {
       timerRef.current = setTimeout(() => {
-        setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false); setActivePage("tasks"); setScriptIndex(0);
+        setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
+        setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general"); setScriptIndex(0); setIsRunning(true);
       }, 5000);
       return;
     }
     const s = CHAT_SCRIPT[idx];
     timerRef.current = setTimeout(() => {
-      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setScriptIndex(idx + 1); return; }
+      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); setScriptIndex(idx + 1); return; }
       if (s.type === "typing") {
         setMentionTab(""); let ci = 0; setInputText("");
         typeRef.current = setInterval(() => { ci++; setInputText((s.text || "").slice(0, ci)); if (ci >= (s.text || "").length) { if (typeRef.current) clearInterval(typeRef.current); typeRef.current = null; setScriptIndex(idx + 1); } }, 28);
         return;
       }
       if (s.type === "send") { setInputText(""); setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: true, time: "14:52" }]); setScriptIndex(idx + 1); return; }
-      if (s.type === "nick_typing") { setAgentTyping(true); setScriptIndex(idx + 1); return; }
+      if (s.type === "nick_typing") { setAgentTyping(true); setActivePage("tasks"); setScriptIndex(idx + 1); return; }
       if (s.type === "response") {
         setAgentTyping(false);
         setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: false, time: s.time || "" }]);
-        if (s.text?.includes("on the board")) setActivePage("tasks");
+        setActivePage("tasks");
         setScriptIndex(idx + 1);
         return;
       }
@@ -357,13 +562,12 @@ export default function TrooperDemo() {
   const restart = () => {
     cleanUp();
     setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
-    setActivePage("tasks"); setScriptIndex(0); setIsRunning(true);
+    setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general");
+    setScriptIndex(0); setIsRunning(true);
   };
 
-  const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
-  tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
-
   const composerPlaceholder = inputText ? "" : (messages.length > 0 ? "Send follow-up" : "Do anything with AI…");
+  const showSplit = SPLIT_PAGES.includes(activePage);
 
   return (
     <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 14 }}>
@@ -372,7 +576,6 @@ export default function TrooperDemo() {
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
-        .typing-dot { width:3.5px; height:3.5px; border-radius:50%; background:${C.textSubtle}; animation:dotBounce 1.2s infinite ease-in-out; }
         .Trooper-scrollbar::-webkit-scrollbar{width:4px;height:4px}
         .Trooper-scrollbar::-webkit-scrollbar-track{background:transparent}
         .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.border};border-radius:4px}
@@ -391,7 +594,6 @@ export default function TrooperDemo() {
           border: `1px solid ${C.border}`, background: C.bg,
           boxShadow: "0 24px 48px -16px rgba(28,25,23,0.18), 0 8px 16px -8px rgba(28,25,23,0.08)",
         }}>
-          {/* Browser chrome */}
           <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: C.cardWarm, borderBottom: `1px solid ${C.border}`, gap: 12 }}>
             <div style={{ display: "flex", gap: 7 }}>
               <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f57" }} />
@@ -414,131 +616,36 @@ export default function TrooperDemo() {
             </div>
           </div>
 
-          {/* App shell — matches AgentSidebar + ChatPanel + KanbanBoard split */}
           <div style={{ display: "flex", height: 540, background: C.bg }}>
             <DemoSidebarRail />
-            <DemoSidebarNav activePage={activePage} />
+            <DemoSidebarNav
+              sidebarTab={sidebarTab}
+              setSidebarTab={setSidebarTab}
+              activePage={activePage}
+              onNavigate={setActivePage}
+              activeChannel={activeChannel}
+              onSelectChannel={setActiveChannel}
+              onUserInteract={pauseDemo}
+            />
 
-            {/* Chat pane */}
-            <div style={{ width: "42%", minWidth: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
-              <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: C.card }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                  <button type="button" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "default", fontSize: 14, fontWeight: 600, color: "#525252" }}>
-                    <Hash size={14} strokeWidth={1.75} color="#a3a3a3" />
-                    general
-                    <ChevronDown size={14} strokeWidth={2} color="#a3a3a3" />
-                  </button>
-                  <button type="button" style={{
-                    display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px",
-                    borderRadius: 8, border: `1px solid rgba(231,229,228,0.8)`, background: C.card,
-                    fontSize: 12, fontWeight: 500, color: "#525252", boxShadow: "0 1px 2px rgba(28,25,23,0.04)",
-                  }}>
-                    <MessageSquarePlus size={14} strokeWidth={1.75} />
-                    New session
-                  </button>
-                </div>
+            {showSplit ? (
+              <>
+                <DemoChatPane
+                  messages={messages}
+                  inputText={inputText}
+                  mentionTab={mentionTab}
+                  agentTyping={agentTyping}
+                  activeChannel={activeChannel}
+                  composerPlaceholder={composerPlaceholder}
+                  chatRef={chatRef}
+                />
+                <DemoBoardPane tasks={tasks} />
+              </>
+            ) : (
+              <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+                <DemoMainPage pageId={activePage} />
               </div>
-
-              {mentionTab && (
-                <div style={{ padding: "5px 16px", borderBottom: `1px solid ${C.borderWarm}`, background: C.bg, fontSize: 11, color: C.textMuted, display: "flex", alignItems: "center", gap: 5 }}>
-                  <Av name="Vaibhav" size={16} border={false} />
-                  <span>{mentionTab}</span>
-                </div>
-              )}
-
-              <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
-                {messages.map((msg, i) => (
-                  <div key={i} style={{ marginBottom: 16, animation: "fadeIn 0.3s ease both" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
-                      <Av name={msg.sender} size={24} />
-                      <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{msg.sender}</span>
-                      {!msg.isHuman && (
-                        <span style={{ fontSize: 9, fontWeight: 600, color: C.text, background: C.brandLight, padding: "2px 6px", borderRadius: 4, height: 16, display: "inline-flex", alignItems: "center" }}>Manager</span>
-                      )}
-                      <span style={{ fontSize: 12, color: C.textSubtle }}>— {msg.role}</span>
-                      <span style={{ fontSize: 11, color: "#d6d3d1", marginLeft: "auto" }}>{msg.time}</span>
-                    </div>
-                    <div style={{ marginLeft: 32, fontSize: 14, lineHeight: 1.55, color: C.textMuted }}>
-                      {msg.text.split(/(@\w+)/g).map((part: string, j: number) =>
-                        part.startsWith("@") ? <span key={j} style={{ color: C.brand, fontWeight: 600 }}>{part}</span> : <span key={j}>{part}</span>
-                      )}
-                    </div>
-                    {msg.reaction && (
-                      <div style={{ marginLeft: 32, marginTop: 6 }}>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: C.card, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>
-                          <span>{msg.reaction.emoji}</span>
-                          <span style={{ fontSize: 10, color: C.textSubtle, fontWeight: 600 }}>{msg.reaction.count}</span>
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {agentTyping && <TypingIndicator name="Jordan" />}
-              </div>
-
-              {/* Composer — matches SharedComposer shape */}
-              <div style={{ padding: "10px 16px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.card }}>
-                <div style={{
-                  borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
-                  boxShadow: "0 1px 2px rgba(28,25,23,0.04)", overflow: "hidden",
-                }}>
-                  <div style={{ minHeight: 52, padding: "12px 14px", fontSize: 14, color: inputText ? C.text : C.textSubtle }}>
-                    {inputText ? (
-                      <>
-                        {inputText.split(/(@\w+)/g).map((part, i) =>
-                          part.startsWith("@") ? <span key={i} style={{ color: C.brand, fontWeight: 600 }}>{part}</span> : <span key={i}>{part}</span>
-                        )}
-                        <span style={{ display: "inline-block", width: 1.5, height: 16, background: C.text, marginLeft: 1, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
-                      </>
-                    ) : composerPlaceholder}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 10px 8px", borderTop: `1px solid ${C.borderWarm}` }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
-                        <Plus size={16} strokeWidth={1.75} />
-                      </div>
-                      <span style={{ fontSize: 11, fontWeight: 500, color: C.textSubtle, padding: "4px 8px", borderRadius: 8, background: C.bg }}>Trooper Auto</span>
-                    </div>
-                    <div style={{
-                      width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                      background: inputText ? C.text : C.bg, border: inputText ? "none" : `1px solid ${C.border}`,
-                    }}>
-                      <ArrowUp size={14} strokeWidth={2.5} color={inputText ? "white" : C.textSubtle} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Board pane */}
-            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", background: C.card, padding: "10px 12px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexShrink: 0 }}>
-                <div style={{ display: "inline-flex", height: 32, alignItems: "center", borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, padding: 1, boxShadow: "0 1px 2px rgba(28,25,23,0.04)" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, background: "rgba(231,229,228,0.9)", fontSize: 11, fontWeight: 500, color: C.text }}>
-                    <Columns3 size={14} strokeWidth={1.5} />
-                    Columns
-                  </div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, fontSize: 11, fontWeight: 500, color: C.textMuted }}>
-                    <List size={14} strokeWidth={1.5} />
-                    List
-                  </div>
-                </div>
-                <div style={{ flex: 1 }} />
-                <button type="button" style={{
-                  width: 32, height: 32, borderRadius: 8, border: "1px solid rgba(28,25,23,0.9)",
-                  background: "#1c1917", color: "white", display: "flex", alignItems: "center", justifyContent: "center",
-                  boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
-                }}>
-                  <Plus size={14} strokeWidth={2} />
-                </button>
-              </div>
-
-              <div className="Trooper-scrollbar" style={{ display: "flex", gap: 10, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
-                {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
-                  <DemoKanbanColumn key={k} colKey={k} tasks={cols[k]} />
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
