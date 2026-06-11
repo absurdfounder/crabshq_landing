@@ -50,7 +50,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-40 w-full border-b border-slate-200 bg-white transition-all duration-200 ${
+      className={`fixed top-0 z-40 w-full border-b border-slate-200 bg-white army-header-stripe transition-all duration-200 ${
         scrolled ? 'shadow-sm' : ''
       }`}
     >

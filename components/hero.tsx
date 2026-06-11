@@ -127,7 +127,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Copy — solid panel so text never sits on pixel art */}
             <div className="px-3 sm:px-4 md:px-6">
-              <div className="border border-slate-200 bg-white px-5 sm:px-8 py-8 sm:py-10 shadow-[0_1px_3px_rgba(15,23,42,0.05)] border-l-[3px] border-l-trooper">
+              <div className="army-briefing-panel px-5 sm:px-8 py-8 sm:py-10">
                 <div className="hidden">
                   <ProductHuntBadge />
                 </div>
@@ -178,8 +178,11 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               </div>
             </div>
 
-            {/* Marquee — light strip between copy and demo */}
-            <div className="px-3 sm:px-4 md:px-6 mt-6 bg-trooper-50/40 border-y border-slate-200/80 py-1">
+            {/* Marquee — field capabilities strip */}
+            <div className="px-3 sm:px-4 md:px-6 mt-6 bg-trooper-50/50 border-y border-trooper-100/80 py-2">
+              <p className="px-1 mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-trooper-700/80">
+                Field capabilities
+              </p>
               <HeroMarquee />
             </div>
 

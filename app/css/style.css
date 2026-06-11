@@ -144,6 +144,43 @@
   background: rgba(0, 122, 90, 0.25);
 }
 
+/* Solid readable panel — mission briefing docs, never on camo */
+.army-briefing-panel {
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid #007a5a;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  clip-path: polygon(
+    6px 0, 100% 0, 100% calc(100% - 6px),
+    calc(100% - 6px) 100%, 0 100%, 0 6px
+  );
+}
+
+/* Page canvas — warm khaki field, not generic SaaS grey */
+.army-page-canvas {
+  background-color: #f4f6f0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgba(123, 160, 68, 0.04) 23px,
+      rgba(123, 160, 68, 0.04) 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 23px,
+      rgba(0, 122, 90, 0.03) 23px,
+      rgba(0, 122, 90, 0.03) 24px
+    );
+}
+
+/* Header ops stripe */
+.army-header-stripe {
+  box-shadow: inset 0 3px 0 0 #7ba044;
+}
+
 .army-pixel-tick {
   width: 4px;
   height: 4px;
@@ -229,7 +266,7 @@ html[data-menu-open='true'] .ch-plugin {
   }
 
   .type-label {
-    @apply font-brand text-xs lowercase tracking-tight text-emerald-600 sm:text-sm;
+    @apply font-brand text-xs lowercase tracking-tight text-trooper-700 sm:text-sm;
   }
 
   .type-code {
@@ -237,7 +274,7 @@ html[data-menu-open='true'] .ch-plugin {
   }
 
   .type-eyebrow {
-    @apply font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-emerald-600;
+    @apply font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-trooper-700;
   }
 
   /* Numbered grid-style eyebrow used by SectionShell: [02] WORKFORCE */

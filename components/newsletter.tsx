@@ -8,7 +8,7 @@ export default function Newsletter() {
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="pb-12 md:pb-16 pt-2">
-          <div className="border border-slate-200 bg-white px-6 sm:px-10 py-10 sm:py-12 border-l-[3px] border-l-trooper shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="army-briefing-panel px-6 sm:px-10 py-10 sm:py-12">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
               <div className="max-w-xl">
                 <h3 className="text-2xl sm:text-3xl md:text-[2rem] font-funneldisplay tracking-tight text-slate-900 leading-tight">
