@@ -3,6 +3,7 @@
 import TrooperLogo from '@/components/ui/TrooperLogo';
 import PixelButton from '@/components/ui/PixelButton';
 import Link from 'next/link';
+import { getFaviconUrl } from '@/lib/favicon';
 import {
   Twitter,
   Linkedin,
@@ -309,12 +310,12 @@ export default function Footer() {
             >
               <span className="text-slate-400">Powered by</span>
               <img
-                src="https://openclaw.ai/favicon.ico"
+                src={getFaviconUrl('openclaw.ai', 32)}
                 alt="OpenClaw"
                 className="h-3.5 w-3.5 rounded-sm"
                 loading="lazy"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
+                  (e.target as HTMLImageElement).src = '/images/trooper-logomark.png';
                 }}
               />
               <span className="font-semibold text-slate-700">OpenClaw</span>

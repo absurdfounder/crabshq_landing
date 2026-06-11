@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { Terminal, Globe } from "lucide-react";
+import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
+import { getFaviconUrl } from "@/lib/favicon";
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -15,17 +16,64 @@ const TrooperChar = ({ className = "" }: { className?: string }) => (
 );
 
 /* ─── Favicon helper ─── */
-const Fav = ({ domain, size = 28 }: { domain: string; size?: number }) => (
-  <div className="border border-dashed border-slate-300 rounded-sm p-2.5 flex items-center justify-center bg-white">
+const FaviconImg = ({
+  domain,
+  size,
+  alt,
+  className = '',
+  fallbackSrc,
+}: {
+  domain: string;
+  size: number;
+  alt?: string;
+  className?: string;
+  fallbackSrc?: string;
+}) => {
+  const [failed, setFailed] = useState(false);
+  const label = (alt || domain.split('.')[0] || '?').slice(0, 2).toUpperCase();
+
+  if (failed && fallbackSrc) {
+    return (
+      <img
+        src={fallbackSrc}
+        alt={alt || domain}
+        width={size}
+        height={size}
+        className={className}
+        style={{ width: size, height: size, objectFit: 'contain' }}
+      />
+    );
+  }
+
+  if (failed) {
+    return (
+      <span
+        className={`inline-flex items-center justify-center rounded-sm bg-stone-100 text-stone-500 font-bold flex-shrink-0 ${className}`}
+        style={{ width: size, height: size, fontSize: Math.max(8, size * 0.38) }}
+        aria-hidden
+      >
+        {label}
+      </span>
+    );
+  }
+
+  return (
     <img
-      src={`https://${domain}/favicon.ico`}
-      alt={domain.split('.')[0]}
+      src={getFaviconUrl(domain, Math.max(32, size * 2))}
+      alt={alt || domain}
       width={size}
       height={size}
-      className="rounded-sm"
+      className={`rounded-sm flex-shrink-0 ${className}`}
+      style={{ width: size, height: size }}
       loading="lazy"
-      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+      onError={() => setFailed(true)}
     />
+  );
+};
+
+const Fav = ({ domain, size = 28 }: { domain: string; size?: number }) => (
+  <div className="border border-dashed border-slate-300 rounded-sm p-2.5 flex items-center justify-center bg-white min-h-[44px] min-w-[44px]">
+    <FaviconImg domain={domain} size={size} alt={domain.split('.')[0]} />
   </div>
 );
 
@@ -71,27 +119,36 @@ const PROVIDER_DOMAINS: Record<string, string> = {
   PERPLEXITY: 'perplexity.ai',
   Grok: 'x.ai',
   GROK: 'x.ai',
+  Trooper: 'trooper.so',
+  TROOPER: 'trooper.so',
 };
 
 /* ─── Inline OpenClaw favicon with Trooper-character fallback ─── */
 const OpenClawFavicon = ({ size = 14, className = "" }: { size?: number; className?: string }) => (
-  <img
-    src="https://openclaw.ai/favicon.ico"
+  <FaviconImg
+    domain="openclaw.ai"
+    size={size}
     alt="OpenClaw"
-    style={{ width: size, height: size }}
-    className={`inline-block rounded-sm flex-shrink-0 ${className}`}
-    loading="lazy"
-    onError={(e) => {
-      const t = e.target as HTMLImageElement;
-      t.src = '/images/trooper-logomark.png';
-      t.classList.remove('rounded-sm');
-    }}
+    className={`inline-block ${className}`}
+    fallbackSrc="/images/trooper-logomark.png"
   />
 );
 
 const FaviconChip = ({ provider, size = 14 }: { provider: string; size?: number }) => {
   if (provider === 'OpenClaw' || provider === 'OPENCLAW') {
     return <OpenClawFavicon size={size} />;
+  }
+  if (provider === 'Trooper' || provider === 'TROOPER') {
+    return (
+      <img
+        src="/images/trooper-logomark.png"
+        alt="Trooper"
+        width={size}
+        height={size}
+        className="inline-block flex-shrink-0"
+        style={{ width: size, height: size, objectFit: 'contain', imageRendering: 'pixelated' }}
+      />
+    );
   }
   if (provider === 'BASH') {
     return <Terminal size={size} strokeWidth={1.75} className="inline-block text-slate-500 flex-shrink-0" />;
@@ -100,15 +157,22 @@ const FaviconChip = ({ provider, size = 14 }: { provider: string; size?: number 
     return <Globe size={size} strokeWidth={1.75} className="inline-block text-slate-500 flex-shrink-0" />;
   }
   const domain = PROVIDER_DOMAINS[provider];
-  if (!domain) return null;
+  if (!domain) {
+    return (
+      <span
+        className="inline-flex items-center justify-center rounded-sm bg-stone-100 text-stone-500 font-bold flex-shrink-0"
+        style={{ width: size, height: size, fontSize: Math.max(7, size * 0.38) }}
+      >
+        {provider.slice(0, 2).toUpperCase()}
+      </span>
+    );
+  }
   return (
-    <img
-      src={`https://${domain}/favicon.ico`}
+    <FaviconImg
+      domain={domain}
+      size={size}
       alt={provider}
-      style={{ width: size, height: size }}
-      className="inline-block rounded-sm flex-shrink-0"
-      loading="lazy"
-      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+      className="inline-block"
     />
   );
 };
@@ -231,16 +295,31 @@ const VignetteChrome = ({ label, children }: { label: string; children: React.Re
   </div>
 );
 
-const ToolRow = ({ label, detail, done }: { label: string; detail: string; done?: boolean }) => (
-  <div className="flex items-center gap-2 py-1">
-    <div className="w-5 h-5 rounded-md border border-stone-200 bg-white flex items-center justify-center flex-shrink-0">
-      <Terminal size={11} strokeWidth={1.75} className="text-stone-400" />
+const toolIconFor = (label: string) => {
+  const t = label.toLowerCase();
+  if (t.includes('search')) return Search;
+  if (t.includes('patch') || t.includes('write')) return FileEdit;
+  if (t.includes('read') || t.includes('file')) return FileText;
+  if (t.includes('git')) return GitCommit;
+  if (t.includes('exec') || t.includes('run') || t.includes('deploy')) return Terminal;
+  return Wrench;
+};
+
+const ToolRow = ({ label, detail, done }: { label: string; detail: string; done?: boolean }) => {
+  const Icon = toolIconFor(label);
+  return (
+    <div className="flex items-center gap-2 py-1">
+      <div className="w-5 h-5 rounded-md border border-stone-200 bg-white flex items-center justify-center flex-shrink-0">
+        <Icon size={11} strokeWidth={1.75} className="text-stone-500" />
+      </div>
+      <span className="text-[11px] font-semibold text-stone-800">{label}</span>
+      <span className="text-[10px] font-mono text-stone-400 truncate flex-1">{detail}</span>
+      {done
+        ? <Check size={13} strokeWidth={2.5} className="text-emerald-500 flex-shrink-0" />
+        : <Loader2 size={13} strokeWidth={2.5} className="text-[#007A5A] animate-spin flex-shrink-0" />}
     </div>
-    <span className="text-[11px] font-semibold text-stone-800">{label}</span>
-    <span className="text-[10px] font-mono text-stone-400 truncate flex-1">{detail}</span>
-    <span className={`w-3.5 h-3.5 rounded-full flex-shrink-0 ${done ? 'bg-emerald-500' : 'bg-[#007A5A] animate-pulse'}`} />
-  </div>
-);
+  );
+};
 
 /* ─── Visual 3: Action — cropped task thread with live tool runs ─── */
 const ActionVisual = () => (
@@ -270,7 +349,7 @@ const ActionVisual = () => (
       </div>
 
       <div className="mt-3 flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50/80 px-3 py-2">
-        <FileTextIcon />
+        <FileText size={14} strokeWidth={1.75} className="text-stone-400 flex-shrink-0" />
         <span className="text-[11px] font-medium text-stone-700 truncate">index.html</span>
         <span className="text-[10px] text-[#007A5A] font-medium ml-auto flex-shrink-0">Artifact</span>
       </div>
@@ -280,13 +359,6 @@ const ActionVisual = () => (
       <span className="text-[10px] text-stone-400">Update meta tags…</span>
     </div>
   </VignetteChrome>
-);
-
-const FileTextIcon = () => (
-  <svg className="w-3.5 h-3.5 text-stone-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-  </svg>
 );
 
 /* ─── Visual 4: Memory — focused "what I recalled" card ─── */

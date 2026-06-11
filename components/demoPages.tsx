@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { TROOPER_DEMO as C } from './demoTheme';
+import { getFaviconUrl } from '@/lib/favicon';
 
 /* ─── Shared tokens (mirrors Trooper index.css + PageLayout) ─── */
 const card: CSSProperties = {
@@ -429,13 +430,13 @@ export function DemoMemoryPage() {
 
 /* ─── Skills ─── */
 export function DemoSkillsPage() {
-  const skills = [
-    { name: 'Web browsing', connected: true },
-    { name: 'GitHub', connected: true },
-    { name: 'Gmail', connected: true },
-    { name: 'Notion', connected: false },
-    { name: 'Slack', connected: true },
-    { name: 'Product Hunt', connected: false },
+  const skills: { name: string; domain: string; connected: boolean }[] = [
+    { name: 'Web browsing', domain: 'google.com', connected: true },
+    { name: 'GitHub', domain: 'github.com', connected: true },
+    { name: 'Gmail', domain: 'gmail.com', connected: true },
+    { name: 'Notion', domain: 'notion.so', connected: false },
+    { name: 'Slack', domain: 'slack.com', connected: true },
+    { name: 'Product Hunt', domain: 'producthunt.com', connected: false },
   ];
   return (
     <DemoPageLayout>
@@ -457,8 +458,14 @@ export function DemoSkillsPage() {
         {skills.map(s => (
           <div key={s.name} style={{ ...card, padding: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F5F5F4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Shapes size={16} color={C.textMuted} />
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F5F5F4', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                <img
+                  src={getFaviconUrl(s.domain, 64)}
+                  alt=""
+                  width={20}
+                  height={20}
+                  style={{ width: 20, height: 20, borderRadius: 4, objectFit: 'contain' }}
+                />
               </div>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{s.name}</div>
             </div>
