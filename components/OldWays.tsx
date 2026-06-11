@@ -3,8 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
+import { TROOPER_DEMO as T } from './demoTheme';
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
+
+/** Gantt + accent palette — warm forest/olive from logo, not Tailwind emerald */
+const GANTT = {
+  light: '#E8F3EE',
+  mid: '#DEEAD0',
+  strong: '#C5D9B0',
+  active: '#A8C47A',
+  forest: T.brand,
+  olive: T.olive,
+} as const;
 
 /* ─── Trooper pixel character (replaces 🦀 in avatars) ─── */
 const TrooperChar = ({ className = "" }: { className?: string }) => (
@@ -263,12 +274,12 @@ const IntegrationsVisual = () => {
 
       <div className="mt-4 flex items-center gap-2.5 flex-wrap">
         <span className="font-mono text-xl font-bold text-slate-400 leading-none tabular-nums">3k</span>
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-emerald-50 border border-emerald-200">
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-trooper-50 border border-trooper-100">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-trooper" />
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">Live</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">Live</span>
         </span>
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
           Integrations via browser and native APIs
@@ -315,7 +326,7 @@ const ToolRow = ({ label, detail, done }: { label: string; detail: string; done?
       <span className="text-[11px] font-semibold text-stone-800">{label}</span>
       <span className="text-[10px] font-mono text-stone-400 truncate flex-1">{detail}</span>
       {done
-        ? <Check size={13} strokeWidth={2.5} className="text-emerald-500 flex-shrink-0" />
+        ? <Check size={13} strokeWidth={2.5} className="text-trooper flex-shrink-0" />
         : <Loader2 size={13} strokeWidth={2.5} className="text-[#007A5A] animate-spin flex-shrink-0" />}
     </div>
   );
@@ -416,14 +427,14 @@ const weekDates = [
 const totalCols = 20;
 
 const ganttTasks = [
-  { label: 'Research & analysis', startCol: 0, span: 4, color: '#d1fae5' },
-  { label: 'Blog series (8 posts)', startCol: 2, span: 7, color: '#a7f3d0' },
-  { label: 'Landing page v2', startCol: 5, span: 5, color: '#6ee7b7' },
-  { label: 'Email sequences', startCol: 8, span: 6, color: '#d1fae5' },
-  { label: 'Social media calendar', startCol: 3, span: 10, color: '#a7f3d0' },
-  { label: 'SEO audit & fixes', startCol: 11, span: 4, color: '#a7f3d0' },
-  { label: 'A/B test creatives', startCol: 13, span: 5, color: '#6ee7b7' },
-  { label: 'Analytics dashboard', startCol: 16, span: 4, color: '#d1fae5' },
+  { label: 'Research & analysis', startCol: 0, span: 4, color: GANTT.light },
+  { label: 'Blog series (8 posts)', startCol: 2, span: 7, color: GANTT.mid },
+  { label: 'Landing page v2', startCol: 5, span: 5, color: GANTT.strong },
+  { label: 'Email sequences', startCol: 8, span: 6, color: GANTT.light },
+  { label: 'Social media calendar', startCol: 3, span: 10, color: GANTT.mid },
+  { label: 'SEO audit & fixes', startCol: 11, span: 4, color: GANTT.mid },
+  { label: 'A/B test creatives', startCol: 13, span: 5, color: GANTT.active },
+  { label: 'Analytics dashboard', startCol: 16, span: 4, color: GANTT.light },
 ];
 
 const CollabVisual = () => {
@@ -480,7 +491,7 @@ const CollabVisual = () => {
                     transitionDelay: `${300 + i * 80}ms`,
                   }}
                 >
-                  <span className="text-[9px] font-medium text-emerald-900/70 whitespace-nowrap truncate">{task.label}</span>
+                  <span className="text-[9px] font-medium text-trooper-700/80 whitespace-nowrap truncate">{task.label}</span>
                 </div>
               </div>
             ))}
@@ -488,15 +499,15 @@ const CollabVisual = () => {
 
           {/* Today marker */}
           <div className="absolute top-0 bottom-0 z-10" style={{ left: `${(14 / totalCols) * 100}%` }}>
-            <div className="w-px h-full bg-emerald-400/60" />
-            <div className="absolute -top-px -left-[2.5px] w-[6px] h-[6px] rounded-full bg-emerald-500" />
+            <div className="w-px h-full bg-trooper-olive/60" />
+            <div className="absolute -top-px -left-[2.5px] w-[6px] h-[6px] rounded-full bg-trooper" />
           </div>
 
           {/* Message bubbles */}
           <div className="absolute z-20" style={{ bottom: '80px', left: '1%', width: 'clamp(200px, 38%, 320px)' }}>
             <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
               <div className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-transparent border border-emerald-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
+                <div className="w-5 h-5 rounded-full bg-transparent border border-trooper-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
                   <TrooperChar />
                 </div>
                 <div>
@@ -514,7 +525,7 @@ const CollabVisual = () => {
           <div className="absolute z-20" style={{ bottom: '80px', right: '1%', width: 'clamp(180px, 30%, 280px)' }}>
             <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
               <div className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-transparent border border-emerald-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
+                <div className="w-5 h-5 rounded-full bg-transparent border border-trooper-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
                   <TrooperChar />
                 </div>
                 <div>
@@ -555,9 +566,9 @@ const OpenClawVisual = () => (
       <div className="border border-dashed border-slate-300 rounded-sm overflow-hidden bg-white/60 backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-trooper/70" />
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-trooper/70" />
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 flex items-center gap-1.5">
             <OpenClawFavicon size={11} />
@@ -566,18 +577,18 @@ const OpenClawVisual = () => (
         </div>
         <div className="bg-slate-950 py-4 font-mono text-[12px] leading-[1.7]">
           {[
-            { ln: 1, content: <><span className="text-emerald-500 select-none">$</span> <span className="text-slate-200">openclaw deploy </span><span className="text-amber-400">--org</span><span className="text-slate-200"> acme-corp</span></> },
+            { ln: 1, content: <><span className="text-trooper select-none">$</span> <span className="text-slate-200">openclaw deploy </span><span className="text-amber-400">--org</span><span className="text-slate-200"> acme-corp</span></> },
             { ln: 2 },
             { ln: 3, content: <span className="text-slate-400">→ Provisioning private server...</span> },
             { ln: 4, content: <span className="text-slate-400">→ Mounting encrypted volume...</span> },
             { ln: 5, content: <span className="text-slate-400">→ Loading 4 AI employees...</span> },
             { ln: 6 },
-            { ln: 7, content: <span className="text-emerald-400 font-semibold">✓ Runtime ready</span>, highlight: true },
+            { ln: 7, content: <span className="text-trooper-olive font-semibold">✓ Runtime ready</span>, highlight: true },
             { ln: 8, content: <span className="text-slate-500">  https://acme.openclaw.run</span> },
           ].map((row) => (
             <div
               key={row.ln}
-              className={`flex items-baseline ${row.highlight ? 'bg-emerald-500/10 border-l-2 border-emerald-500' : 'border-l-2 border-transparent'}`}
+              className={`flex items-baseline ${row.highlight ? 'bg-trooper/10 border-l-2 border-trooper' : 'border-l-2 border-transparent'}`}
             >
               <span className="text-slate-700 select-none tabular-nums w-10 text-right pr-3 flex-shrink-0">
                 {row.ln}
@@ -593,7 +604,7 @@ const OpenClawVisual = () => (
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg>} text="Data siloed per org" />
           <div className="flex items-center gap-2">
             <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>} text="Private server" />
-            <span className="inline-flex items-center px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-sm">Recommended</span>
+            <span className="inline-flex items-center px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-trooper-700 bg-trooper-50 border border-trooper-100 rounded-sm">Recommended</span>
           </div>
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/></svg>} text="Full API access" />
         </div>
@@ -639,11 +650,11 @@ const TicketVisual = () => {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500 ring-2 ring-white" />
                     </span>
                   ) : (
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 ring-2 ring-white" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-trooper ring-2 ring-white" />
                   )}
                   <span className="font-mono text-[11px] text-stone-700">{t.fn}</span>
                 </div>
-                <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${t.running ? 'text-amber-600' : 'text-emerald-600'}`}>{t.status}</span>
+                <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${t.running ? 'text-amber-600' : 'text-trooper'}`}>{t.status}</span>
               </div>
             ))}
           </div>
@@ -700,30 +711,30 @@ const GoalVisual = () => (
             Implement real-time sync engine.
           </p>
 
-          {/* L4 · Task — emerald spotlight */}
-          <div className="relative border-2 border-emerald-500 bg-emerald-50 pt-5 px-4 pb-4 shadow-[0_0_0_4px_rgba(16,185,129,0.10)]">
-            <div className="absolute -top-2 left-3 bg-emerald-50 px-1.5 flex items-center gap-1.5">
+          {/* L4 · Task — brand spotlight */}
+          <div className="relative border-2 border-trooper bg-trooper-50 pt-5 px-4 pb-4 shadow-[0_0_0_4px_rgba(0,122,90,0.12)]">
+            <div className="absolute -top-2 left-3 bg-trooper-50 px-1.5 flex items-center gap-1.5">
               <FaviconChip provider="Claude" size={11} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">
-                <span className="text-emerald-500">[04]</span> Task · Work happens here
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">
+                <span className="text-trooper">[04]</span> Task · Work happens here
               </span>
             </div>
             <div className="flex items-start gap-2">
               <span className="relative flex h-2 w-2 mt-1.5 flex-shrink-0">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-trooper" />
               </span>
-              <p className="text-[13px] text-emerald-900 font-semibold leading-snug">
+              <p className="text-[13px] text-trooper-700 font-semibold leading-snug">
                 Write WebSocket handler for document updates.
               </p>
             </div>
             <div className="mt-2 flex items-center justify-between gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-emerald-700/80">
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-700/80">
                 ClaudeCoder · 2m elapsed
               </span>
-              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-emerald-700">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-trooper-700">
                 <span className="tabular-nums">+127</span>
-                <span className="text-emerald-500">·</span>
+                <span className="text-trooper">·</span>
                 <span className="tabular-nums">−34</span>
               </span>
             </div>
@@ -778,17 +789,17 @@ const BYOAVisual = () => {
       {/* Window chrome */}
       <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
         <div className="flex items-center gap-2">
-          <div className="w-3.5 h-3.5 overflow-hidden p-0.5 bg-transparent border border-emerald-100">
+          <div className="w-3.5 h-3.5 overflow-hidden p-0.5 bg-transparent border border-trooper-100">
             <TrooperChar />
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-600">
             trooper · agents
           </span>
         </div>
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-trooper" />
           </span>
           6 agents · 5 providers
         </span>
@@ -809,11 +820,11 @@ const BYOAVisual = () => {
             <div
               key={`${m.role}-${i}`}
               className={`relative flex flex-col items-center justify-center gap-1 py-3 px-1 ${
-                m.recommended ? 'bg-emerald-50/60' : ''
+                m.recommended ? 'bg-trooper-50/60' : ''
               }`}
             >
               {m.recommended && (
-                <span className="absolute top-1 right-1 font-mono text-[9px] text-emerald-600">
+                <span className="absolute top-1 right-1 font-mono text-[9px] text-trooper">
                   ★
                 </span>
               )}
@@ -884,7 +895,7 @@ const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
     style={{
       backgroundColor: '#f8fafc',
       backgroundImage:
-        "linear-gradient(rgb(16 185 129 / 53%), rgb(16 185 129 / 40%)), url(/images/hero-bg-pixel.png)",
+        `linear-gradient(rgba(123, 160, 68, 0.34), rgba(0, 122, 90, 0.26)), url(/images/hero-bg-pixel.png)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -979,7 +990,7 @@ export default function OldWays() {
                   }}
                 >
                   {index === 8 && (
-                    <span className="absolute top-4 right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-sm">
+                    <span className="absolute top-4 right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
                       FLAGSHIP
                     </span>
                   )}

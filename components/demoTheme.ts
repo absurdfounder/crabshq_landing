@@ -49,8 +49,8 @@ export const KANBAN_COLUMNS = {
     id: 'done',
     label: 'COMPLETED',
     emoji: '🎉',
-    headerBg: '#ECFDF5',
-    headerText: '#065F46',
+    headerBg: '#E8F3EE',
+    headerText: '#006048',
     bodyBg: 'rgba(245,245,244,0.65)',
   },
 } as const;
