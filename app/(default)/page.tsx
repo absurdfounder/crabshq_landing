@@ -66,14 +66,9 @@ export default function Home() {
   return (
     <>
       <FloatingScrollIndicator />
-      <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 pixel-camo-wash opacity-50" aria-hidden />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/88 via-white/76 to-white/92" aria-hidden />
-        <div className="pointer-events-none absolute inset-0 pixel-flicker-grid opacity-60" aria-hidden />
-        <div className="relative z-10">
-          <Header />
-          <Hero />
-        </div>
+      <div className="bg-white">
+        <Header />
+        <Hero />
       </div>
 
       <div className="pixel-divider" aria-hidden />

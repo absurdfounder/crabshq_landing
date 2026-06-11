@@ -69,7 +69,7 @@ const Features = React.memo(() => {
   return (
     <ul className="mt-1 space-y-2.5 max-w-xl">
       {features.map((feature, index) => (
-        <li key={index} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
+        <li key={index} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
           <Check className="w-4 h-4 text-trooper flex-shrink-0 mt-0.5" strokeWidth={2.25} />
           <span>{feature.name}</span>
         </li>
@@ -125,9 +125,9 @@ export default function Hero({ onCategorySelect }: HeroProps) {
         <div className="pt-24 sm:pt-28 md:pt-32 pb-0 sm:pb-0 md:pb-0">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
-            {/* Left: text content */}
-            <div className="flex-1 lg:max-w-full text-left p-4 space-y-6">
-              <div className="px-2 sm:px-4 md:px-6 lg:px-0">
+            {/* Copy — solid panel so text never sits on pixel art */}
+            <div className="px-3 sm:px-4 md:px-6">
+              <div className="border border-slate-200 bg-white px-5 sm:px-8 py-8 sm:py-10 shadow-[0_1px_3px_rgba(15,23,42,0.05)] border-l-[3px] border-l-trooper">
                 <div className="hidden">
                   <ProductHuntBadge />
                 </div>
@@ -136,54 +136,55 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   <PixelMissionTag index="01" label="Mission briefing" />
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl max-w-3xl lg:max-w-none mb-2 leading-tight font-funneldisplay tracking-tight text-slate-700 font-normal">
+                <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
                   <span className="block reveal reveal__usp">
                     Hire AI employees. Set goals.{' '}
-                    <span className="text-slate-900">Your company runs itself.</span>
+                    <span className="text-slate-950">Your company runs itself.</span>
                   </span>
                 </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span className="font-medium text-trooper">OpenClaw</span>.</p>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
+                  AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by{' '}
+                  <span className="font-semibold text-trooper-700">OpenClaw</span>.
+                </p>
 
-              </div>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
+                  <PixelButton
+                    href="https://app.trooper.so?ref=herolanding"
+                    external
+                    size="lg"
+                    tone="brand"
+                    icon={<ArrowRight className="h-4 w-4" />}
+                  >
+                    Get Started for free
+                  </PixelButton>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mt-4 sm:mt-6 mb-2 items-start justify-start px-0">
-                <PixelButton
-                  href="https://app.trooper.so?ref=herolanding"
-                  external
-                  size="lg"
-                  tone="brand"
-                  icon={<ArrowRight className="h-4 w-4" />}
-                >
-                  Get Started for free
-                </PixelButton>
+                  <PixelButton
+                    size="lg"
+                    variant="outline"
+                    tone="dark"
+                    icon={<ArrowRight className="h-4 w-4" />}
+                    data-cal-namespace="setup-call"
+                    data-cal-link="set-meeting/setup-call"
+                    data-cal-config='{"layout":"month_view"}'
+                  >
+                    Book a Demo
+                  </PixelButton>
+                </div>
 
-                <PixelButton
-                  size="lg"
-                  variant="outline"
-                  tone="dark"
-                  icon={<ArrowRight className="h-4 w-4" />}
-                  data-cal-namespace="setup-call"
-                  data-cal-link="set-meeting/setup-call"
-                  data-cal-config='{"layout":"month_view"}'
-                >
-                  Book a Demo
-                </PixelButton>
-              </div>
-
-              {/* Features - Works with (align left on desktop) */}
-              <div className="flex justify-start mt-6">
-                <Features />
+                <div className="mt-6 pt-6 border-t border-slate-100">
+                  <Features />
+                </div>
               </div>
             </div>
 
-            {/* Marquee Strip */}
-            <HeroMarquee />
+            {/* Marquee — light strip between copy and demo */}
+            <div className="px-3 sm:px-4 md:px-6 mt-6 bg-trooper-50/40 border-y border-slate-200/80 py-1">
+              <HeroMarquee />
+            </div>
 
-            {/* Right: interactive article demo.
-                Negative side margins make the grid reach the inner edge of the bordered max-w-7xl container. */}
-            <div className="relative flex-1 mt-10 lg:mt-0 -mx-3 sm:-mx-4 md:-mx-6 pixel-scanlines">
+            {/* Demo — pixel forest lives here only */}
+            <div className="relative flex-1 mt-0 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden">
               <HeroArticleDemo />
             </div>
           </div>

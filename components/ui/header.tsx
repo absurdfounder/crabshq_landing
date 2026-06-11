@@ -50,10 +50,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-40 w-full border-b transition-all duration-200 ${
-        scrolled
-          ? 'border-trooper-100 bg-white/92 shadow-sm backdrop-blur-md'
-          : 'border-slate-200 bg-white/80 backdrop-blur-sm'
+      className={`fixed top-0 z-40 w-full border-b border-slate-200 bg-white transition-all duration-200 ${
+        scrolled ? 'shadow-sm' : ''
       }`}
     >
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 border-l border-r border-slate-200 px-4 sm:h-16 sm:px-6">

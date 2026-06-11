@@ -50,7 +50,7 @@ export function PixelMissionTag({
   className?: string;
 }) {
   return (
-    <span className={`army-mission-tag pixel-flicker-text ${className}`}>
+    <span className={`army-mission-tag ${className}`}>
       <span className="text-slate-400">[{index}]</span>
       <span className="army-mission-tag__sep" aria-hidden />
       {label}
