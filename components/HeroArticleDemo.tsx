@@ -11,8 +11,8 @@ import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoThem
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import {
-  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, type DemoModalMessage,
-  type DemoSubtask, type DemoToolLog, type TaskExecStep,
+  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT,
+  type DemoFeedItem, type DemoSubtask, type TaskExecStep,
 } from './demoTaskExecution';
 
 const HUMANS = [
@@ -524,8 +524,7 @@ export default function TrooperDemo() {
   const [isRunning, setIsRunning] = useState(true);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(INITIAL_SUBTASKS);
-  const [modalToolLogs, setModalToolLogs] = useState<DemoToolLog[]>([]);
-  const [modalMessages, setModalMessages] = useState<DemoModalMessage[]>([]);
+  const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -539,8 +538,7 @@ export default function TrooperDemo() {
   const resetTaskModal = useCallback(() => {
     setTaskModalOpen(false);
     setModalSubtasks(INITIAL_SUBTASKS.map(s => ({ ...s, status: 'pending' as const })));
-    setModalToolLogs([]);
-    setModalMessages([]);
+    setModalFeed([]);
     setModalDelivery(null);
     setHighlightedTaskId(null);
     modalMsgCounter.current = 0;
@@ -577,14 +575,14 @@ export default function TrooperDemo() {
         setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
         break;
       case 'tool':
-        setModalToolLogs(p => [...p, { ...step.log, status: 'running' }]);
+        setModalFeed(p => [...p, { kind: 'tool', ...step.log, status: 'running' }]);
         break;
       case 'toolDone':
-        setModalToolLogs(p => p.map(l => l.id === step.id ? { ...l, status: 'done' as const } : l));
+        setModalFeed(p => p.map(item => item.kind === 'tool' && item.id === step.id ? { ...item, status: 'done' as const } : item));
         break;
       case 'modalMsg': {
         modalMsgCounter.current += 1;
-        setModalMessages(p => [...p, { id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: '14:57' }]);
+        setModalFeed(p => [...p, { kind: 'message', id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: '14:57' }]);
         break;
       }
       case 'deliver':
@@ -737,8 +735,7 @@ export default function TrooperDemo() {
               taskTitle={spotlightTask?.title || 'SEO Optimization for Wonder'}
               assignee="Aria"
               subtasks={modalSubtasks}
-              toolLogs={modalToolLogs}
-              messages={modalMessages}
+              feed={modalFeed}
               delivery={modalDelivery}
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
               onClose={() => { pauseDemo(); setTaskModalOpen(false); }}

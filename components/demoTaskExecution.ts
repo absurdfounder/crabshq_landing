@@ -25,6 +25,10 @@ export type DemoModalMessage = {
   time: string;
 };
 
+export type DemoFeedItem =
+  | { kind: 'message'; id: string; sender: string; text: string; time: string }
+  | ({ kind: 'tool' } & DemoToolLog);
+
 export const SPOTLIGHT_TASK_ID = 1;
 
 export const INITIAL_SUBTASKS: DemoSubtask[] = [
