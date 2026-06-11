@@ -71,6 +71,62 @@ type DemoPageId = 'home' | 'tasks' | 'goals' | 'routines' | 'files' | 'agents' |
 
 const SPLIT_PAGES: DemoPageId[] = ['tasks'];
 
+/** Design canvas — scaled to fit hero width so the full app (4 kanban cols + chat) is visible */
+const DEMO_CANVAS_W = 1360;
+const DEMO_APP_H = 680;
+const DEMO_CHROME_H = 44;
+const DEMO_CANVAS_H = DEMO_APP_H + DEMO_CHROME_H;
+const DEMO_SIDEBAR_W = 236;
+const DEMO_CHAT_W = 392;
+const DEMO_KANBAN_COL_W = 162;
+
+function DemoScaleFrame({ children }: { children: ReactNode }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      setScale(w >= DEMO_CANVAS_W ? 1 : Math.max(0.72, w / DEMO_CANVAS_W));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener('resize', update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  const scaledW = DEMO_CANVAS_W * scale;
+  const scaledH = DEMO_CANVAS_H * scale;
+
+  return (
+    <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
+      <div style={{ height: scaledH, display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <div style={{ width: scaledW, height: scaledH, position: 'relative', flexShrink: 0 }}>
+          <div
+            style={{
+              width: DEMO_CANVAS_W,
+              height: DEMO_CANVAS_H,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const p = ALL_PEOPLE[name as keyof typeof ALL_PEOPLE];
   const src = p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
@@ -149,7 +205,7 @@ function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number;
 function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoColumnId; tasks: Task[]; highlightedTaskId?: number | null }) {
   const col = KANBAN_COLUMNS[colKey];
   return (
-    <div style={{ width: 210, minWidth: 210, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
+    <div style={{ width: DEMO_KANBAN_COL_W, minWidth: DEMO_KANBAN_COL_W, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "8px 12px", borderRadius: 8, marginBottom: 4, background: col.headerBg, color: col.headerText,
@@ -301,7 +357,7 @@ function DemoSidebarNav({
   };
 
   return (
-    <div className="Trooper-scrollbar" style={{ width: 260, minWidth: 260, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "4px 0 24px rgba(28,25,23,0.05)" }}>
+    <div className="Trooper-scrollbar" style={{ width: DEMO_SIDEBAR_W, minWidth: DEMO_SIDEBAR_W, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "4px 0 24px rgba(28,25,23,0.05)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "10px 12px 8px" }}>
         {tabBtn('menu', LayoutGrid, 'Menu')}
         {tabBtn('channels', MessagesSquare, 'Channels')}
@@ -386,7 +442,7 @@ function DemoChatPane({
   const channelName = DEMO_CHANNELS.find(c => c.id === activeChannel)?.name || 'general';
 
   return (
-    <div style={{ width: "42%", minWidth: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
+    <div style={{ width: DEMO_CHAT_W, minWidth: DEMO_CHAT_W, flexShrink: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
       <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: C.card }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
           <button type="button" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "default", fontSize: 14, fontWeight: 600, color: "#525252" }}>
@@ -658,7 +714,7 @@ export default function TrooperDemo() {
   const showSplit = SPLIT_PAGES.includes(activePage);
 
   return (
-    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 14 }}>
+    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
@@ -666,25 +722,26 @@ export default function TrooperDemo() {
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .demo-spin { animation: spin 1s linear infinite; }
-        .Trooper-scrollbar::-webkit-scrollbar{width:4px;height:4px}
-        .Trooper-scrollbar::-webkit-scrollbar-track{background:transparent}
-        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.border};border-radius:4px}
+        .Trooper-scrollbar::-webkit-scrollbar{width:5px;height:5px}
+        .Trooper-scrollbar::-webkit-scrollbar-track{background:rgba(231,229,228,0.35);border-radius:4px}
+        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.textSubtle};border-radius:4px}
         *{box-sizing:border-box}
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
       <div style={{
-        position: "relative", padding: "32px 20px", backgroundColor: C.bg,
+        position: "relative", padding: "20px 12px 24px", backgroundColor: C.bg,
         backgroundImage: `linear-gradient(rgba(123, 160, 68, 0.22), rgba(0, 122, 90, 0.16)), url(/images/hero-bg-pixel.png)`,
         backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat",
         imageRendering: "pixelated", borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`,
       }}>
+        <DemoScaleFrame>
         <div style={{
-          position: "relative", margin: "0 auto", maxWidth: 1280, borderRadius: C.radius, overflow: "hidden",
+          position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
           border: `1px solid ${C.border}`, background: C.bg,
           boxShadow: "0 24px 48px -16px rgba(28,25,23,0.18), 0 8px 16px -8px rgba(28,25,23,0.08)",
         }}>
-          <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: C.cardWarm, borderBottom: `1px solid ${C.border}`, gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", height: DEMO_CHROME_H, padding: "0 16px", background: C.cardWarm, borderBottom: `1px solid ${C.border}`, gap: 12 }}>
             <div style={{ display: "flex", gap: 7 }}>
               <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f57" }} />
               <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#febc2e" }} />
@@ -706,7 +763,7 @@ export default function TrooperDemo() {
             </div>
           </div>
 
-          <div style={{ position: "relative", display: "flex", height: 540, background: C.bg }}>
+          <div style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
             <DemoSidebarRail />
             <DemoSidebarNav
               sidebarTab={sidebarTab}
@@ -754,6 +811,7 @@ export default function TrooperDemo() {
             />
           </div>
         </div>
+        </DemoScaleFrame>
       </div>
     </div>
   );
