@@ -522,24 +522,6 @@ const CollabVisual = () => {
             </div>
           </div>
 
-          <div className="absolute z-20" style={{ bottom: '80px', right: '1%', width: 'clamp(180px, 30%, 280px)' }}>
-            <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
-              <div className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-transparent border border-trooper-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
-                  <TrooperChar />
-                </div>
-                <div>
-                  <div className="flex items-center gap-1">
-                    <span className="font-medium text-[10px] text-slate-800">Trooper AI</span>
-                    <span className="text-[8px] px-1 bg-slate-100 text-slate-500 rounded">APP</span>
-                    <span className="text-[9px] text-slate-400">1m ago</span>
-                  </div>
-                  <p className="text-[10px] text-slate-500 mt-0.5 leading-relaxed">Launch assets 80% ready. A/B variant B winning by 12%.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Avatar stack */}
           <div className="absolute z-20 flex flex-col items-center gap-1" style={{ bottom: '16px', right: '4%' }}>
             <div className="flex -space-x-2">
@@ -895,7 +877,7 @@ const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
     style={{
       backgroundColor: '#f8fafc',
       backgroundImage:
-        `linear-gradient(rgba(123, 160, 68, 0.34), rgba(0, 122, 90, 0.26)), url(/images/hero-bg-pixel.png)`,
+        `linear-gradient(rgba(123, 160, 68, 0.22), rgba(0, 122, 90, 0.14)), url(/images/hero-bg-pixel.png)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -951,7 +933,7 @@ export default function OldWays() {
         if (!card) { transforms.push({ scale: 1, opacity: 1, y: 0 }); return; }
         const cardsOnTop = Math.max(0, activeCardIndex - index);
         if (cardsOnTop > 0) {
-          transforms.push({ scale: Math.max(0.7, 1 - 0.06 * cardsOnTop), opacity: Math.max(0, 1 - 0.25 * cardsOnTop), y: -20 * cardsOnTop });
+          transforms.push({ scale: Math.max(0.88, 1 - 0.03 * cardsOnTop), opacity: Math.max(0.35, 1 - 0.15 * cardsOnTop), y: -12 * cardsOnTop });
         } else {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
         }
@@ -969,6 +951,14 @@ export default function OldWays() {
   return (
     <section className="bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="mb-12 md:mb-14 max-w-2xl">
+          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
+            Your AI workforce, explained.
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
+            Nine things Trooper does that single chatbots can&apos;t — org charts, real system access, traced tickets, and memory that lasts.
+          </p>
+        </div>
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
@@ -985,7 +975,7 @@ export default function OldWays() {
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
                     transformOrigin: 'center top',
-                    filter: t.scale < 1 ? `blur(${(1 - t.scale) * 15}px)` : 'none',
+                    filter: t.scale < 1 ? `blur(${(1 - t.scale) * 6}px)` : 'none',
                     transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
                   }}
                 >
@@ -1003,9 +993,6 @@ export default function OldWays() {
                         {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-4 leading-relaxed">{card.description}</p>
-                      <p className="mt-auto pt-6 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                        Learn more →
-                      </p>
                     </div>
                     <div className="w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col">
                       <PixelFramedVisual>

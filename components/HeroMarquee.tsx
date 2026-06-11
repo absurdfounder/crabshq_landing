@@ -38,7 +38,7 @@ const Tag = ({ label, Icon }: { label: string; Icon: LucideIcon }) => (
 );
 
 export default function HeroMarquee() {
-  const allTags = [...tags, ...tags, ...tags];
+  const allTags = [...tags, ...tags];
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function HeroMarquee() {
       >
         <div
           className="flex gap-2.5 w-fit"
-          style={{ animation: 'heroMarqueeScroll 45s linear infinite' }}
+          style={{ animation: 'heroMarqueeScroll 60s linear infinite' }}
         >
           {allTags.map((tag, i) => (
             <Tag key={`${tag.label}-${i}`} label={tag.label} Icon={tag.icon} />

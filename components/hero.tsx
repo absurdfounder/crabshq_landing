@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Github, Sparkles, FileImage, Smile } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
 import HeroArticleDemo from './HeroArticleDemo';
@@ -66,12 +66,10 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <ul className="flex flex-col border border-slate-200 p-4 sm:p-5 divide-y divide-slate-200">
+    <ul className="mt-1 space-y-2.5 max-w-xl">
       {features.map((feature, index) => (
-        <li key={index} className="flex items-start gap-3 py-2.5 text-sm text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
-          <span className="font-mono text-[11px] text-slate-400 tracking-[0.18em] pt-0.5 flex-shrink-0">
-            {String(index + 1).padStart(2, '0')}
-          </span>
+        <li key={index} className="flex items-start gap-2.5 text-sm text-slate-600 leading-relaxed">
+          <Check className="w-4 h-4 text-trooper flex-shrink-0 mt-0.5" strokeWidth={2.25} />
           <span>{feature.name}</span>
         </li>
       ))}

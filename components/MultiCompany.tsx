@@ -189,7 +189,7 @@ export default function MultiCompany() {
   };
 
   return (
-    <section className="bg-white">
+    <section className="bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="mb-10">
           <h2 className="font-funneldisplay text-3xl sm:text-4xl md:text-[42px] tracking-tight text-slate-900 leading-tight">
@@ -221,7 +221,7 @@ export default function MultiCompany() {
               <div className="mb-3">{c.icon}</div>
               <h3 className="text-sm font-semibold text-slate-900 leading-snug">{c.name}</h3>
               <p className="text-[12px] text-slate-400 mt-1">{c.agents} agents</p>
-              <p className="text-[11px] font-mono uppercase tracking-[0.15em] text-emerald-600 mt-2">
+              <p className="text-[11px] font-mono uppercase tracking-[0.15em] text-trooper mt-2">
                 Active
               </p>
             </div>
@@ -252,6 +252,17 @@ export default function MultiCompany() {
             )}
             {hovered === 3 && (
               <MiniOrgChart key="add" orgChart={addCompanyPlaceholder.orgChart} />
+            )}
+            {hovered === null && (
+              <motion.div
+                key="hint"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center justify-center h-[180px] rounded-sm border border-dashed border-slate-200 bg-white/60"
+              >
+                <p className="text-sm text-slate-400">Hover a workspace to preview its org chart</p>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
