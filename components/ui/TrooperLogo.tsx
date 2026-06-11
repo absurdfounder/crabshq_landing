@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 const characterSrc = '/images/trooper-logomark.png'
@@ -20,14 +19,14 @@ export default function TrooperLogo({
 }: TrooperLogoProps) {
   const content = (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <Image
+      <img
         src={characterSrc}
         alt=""
         width={1024}
         height={1024}
-        className={characterClassName}
-        priority={priority}
-        unoptimized
+        className={`bg-transparent ${characterClassName}`}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
         aria-hidden
       />
       <span

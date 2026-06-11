@@ -192,7 +192,7 @@ export default function SimplePricing() {
                 <img
                   src="/images/trooper-logomark.png"
                   alt="Trooper"
-                  className="inline-block w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain align-middle"
+                  className="inline-block w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain align-middle bg-transparent"
                 />
                 <span>Trooper at your company</span>
               </span>

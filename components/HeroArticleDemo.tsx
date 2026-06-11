@@ -287,7 +287,7 @@ export default function TrooperDemo() {
               <img
                 src="/images/trooper-logomark.png"
                 alt=""
-                style={{ height: 26, width: "auto", imageRendering: "pixelated" }}
+                className="h-[26px] w-auto object-contain bg-transparent"
               />
             </span>
             <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", background: "white", padding: "4px 10px", borderRadius: 2, border: "1px solid #cbd5e1", display: "flex", alignItems: "center", gap: 5, marginLeft: 4, textTransform: "uppercase", letterSpacing: 0.6, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
