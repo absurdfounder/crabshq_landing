@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe } from "lucide-react";
+import { FeatureShowcaseDemo } from './FeatureShowcaseDemo';
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -824,15 +825,15 @@ const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
 
 /* ─── Card visuals ─── */
 const cardVisuals = [
-  <OrgVisual key="org" />,
-  <IntegrationsVisual key="int" />,
-  <ActionVisual key="act" />,
-  <MemoryVisual key="mem" />,
-  <CollabVisual key="col" />,
+  <FeatureShowcaseDemo key="org" variant="agents" />,
+  <FeatureShowcaseDemo key="int" variant="skills" />,
+  <FeatureShowcaseDemo key="act" variant="task-modal-action" />,
+  <FeatureShowcaseDemo key="mem" variant="memory" />,
+  <FeatureShowcaseDemo key="col" variant="routines" />,
   <OpenClawVisual key="oc" />,
-  <TicketVisual key="ticket" />,
-  <GoalVisual key="goal" />,
-  <BYOAVisual key="byoa" />,
+  <FeatureShowcaseDemo key="ticket" variant="task-modal-ticket" />,
+  <FeatureShowcaseDemo key="goal" variant="goals" />,
+  <FeatureShowcaseDemo key="byoa" variant="agents" />,
 ];
 
 /* ─── Main ─── */
