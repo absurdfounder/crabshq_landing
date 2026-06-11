@@ -11,8 +11,8 @@ import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoThem
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import {
-  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT,
-  type DemoFeedItem, type DemoSubtask, type TaskExecStep,
+  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, DEMO_ARTIFACTS,
+  type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep,
 } from './demoTaskExecution';
 
 const HUMANS = [
@@ -525,6 +525,7 @@ export default function TrooperDemo() {
   const [taskModalOpen, setTaskModalOpen] = useState(false);
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(INITIAL_SUBTASKS);
   const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
+  const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(null);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -539,6 +540,7 @@ export default function TrooperDemo() {
     setTaskModalOpen(false);
     setModalSubtasks(INITIAL_SUBTASKS.map(s => ({ ...s, status: 'pending' as const })));
     setModalFeed([]);
+    setModalArtifact(null);
     setModalDelivery(null);
     setHighlightedTaskId(null);
     modalMsgCounter.current = 0;
@@ -582,11 +584,16 @@ export default function TrooperDemo() {
         break;
       case 'modalMsg': {
         modalMsgCounter.current += 1;
-        setModalFeed(p => [...p, { kind: 'message', id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: '14:57' }]);
+        const t = step.time || `14:${57 + modalMsgCounter.current}`;
+        setModalFeed(p => [...p, { kind: 'message', id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: t }]);
         break;
       }
+      case 'openArtifact':
+        setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
+        break;
       case 'deliver':
         setModalDelivery(step.name);
+        setModalArtifact(DEMO_ARTIFACTS['seo-launch-report.md'] || null);
         break;
       case 'closeTaskModal':
         setTaskModalOpen(false);
@@ -736,9 +743,14 @@ export default function TrooperDemo() {
               assignee="Aria"
               subtasks={modalSubtasks}
               feed={modalFeed}
+              artifact={modalArtifact}
               delivery={modalDelivery}
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
               onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
+              onSelectArtifact={(name) => {
+                const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);
+                if (key) setModalArtifact(DEMO_ARTIFACTS[key]);
+              }}
             />
           </div>
         </div>
