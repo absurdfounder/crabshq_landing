@@ -8,6 +8,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        trooper: {
+          DEFAULT: '#007A5A',
+          50: '#E8F3EE',
+          100: '#D4E8DF',
+          600: '#007A5A',
+          700: '#006048',
+          olive: '#7BA044',
+        },
         gray: {
           100: '#FBFBFB',
           200: '#EAEAEA',

@@ -102,8 +102,8 @@ type ToneStyles = {
 function resolveTone(variant: Variant, tone: Tone): ToneStyles {
   if (variant === 'solid' && tone === 'brand') {
     return {
-      fill: 'bg-emerald-500',
-      text: 'text-slate-900',
+      fill: 'bg-trooper hover:bg-trooper-700',
+      text: 'text-white',
       outlineBorder: 'border-slate-900',
       outlineBg: 'bg-transparent',
       outlineHover: 'hover:bg-slate-50',
@@ -141,7 +141,7 @@ function buildShellClass(className?: string, disabled?: boolean) {
   return [
     'group relative inline-flex items-stretch select-none',
     wantsFullWidth ? '' : 'w-fit',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trooper focus-visible:ring-offset-2 focus-visible:ring-offset-white',
     'active:translate-x-px active:translate-y-px',
     disabled ? 'pointer-events-none opacity-60' : '',
     className,

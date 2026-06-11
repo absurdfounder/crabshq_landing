@@ -2,78 +2,74 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
-  MessageCircle, Send, AtSign, RotateCcw, Pause, Play, Lock, Bell,
-  Users, Bot, Hash, Paperclip, Smile, LayoutGrid,
-  Clock, MessageSquare, Activity
+  Send, RotateCcw, Pause, Play, Lock, Bell,
+  Hash, Paperclip, LayoutGrid,
+  Clock, MessageSquare, Activity, Home, ListTodo, Plus,
+  Target, HardDrive, Brain, Users, Laptop, Settings, Shapes,
 } from "lucide-react";
+import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 
 /* ─── Data ─── */
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
-  { name: "Ryan", role: "Product Manager", img: "https://i.pravatar.cc/150?u=human-timmy" },
 ];
 
 const AGENTS = [
-  { name: "Coulson", role: "Expand Game Cate…", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-coulson", emoji: "🔥" },
-  { name: "Maria", role: "Product Manager", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-maria", emoji: "🧠" },
-  { name: "Nick", role: "Chief of Staff", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-nick", emoji: "⚡" },
-  { name: "Hill", role: "Operations Manager", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-hill", emoji: "📋" },
-  { name: "Shuri", role: "Product Analyst", badge: "SPC", img: "https://i.pravatar.cc/150?u=agent-shuri", emoji: "🧪" },
-  { name: "Fury", role: "Customer Researcher", badge: "SPC", img: "https://i.pravatar.cc/150?u=agent-fury", emoji: "🔍" },
-  { name: "Banner", role: "Data Scientist", badge: "SPC", img: "https://i.pravatar.cc/150?u=agent-banner", emoji: "📊" },
-  { name: "Monica", role: "Business Intelligence", badge: "SPC", img: "https://i.pravatar.cc/150?u=agent-monica", emoji: "💡" },
-  { name: "Vision", role: "Engineering", badge: "SPC", img: "https://i.pravatar.cc/150?u=agent-vision", emoji: "👁️" },
+  { name: "Jordan", role: "Chief of Staff", badge: "LEAD", img: "https://i.pravatar.cc/150?u=agent-jordan", emoji: "⚡" },
+  { name: "Aria", role: "Growth & Marketing", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-aria", emoji: "📣" },
+  { name: "Leo", role: "Operations & Finance", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-leo", emoji: "📊" },
+  { name: "Ren", role: "Product Builder", badge: "MEMBER", img: "https://i.pravatar.cc/150?u=agent-ren", emoji: "🛠️" },
 ];
 
 const ALL_PEOPLE = Object.fromEntries(
   [...HUMANS, ...AGENTS,
+    { name: "Vision", img: "https://i.pravatar.cc/150?u=agent-vision" },
     { name: "Wanda", img: "https://i.pravatar.cc/150?u=agent-wanda" },
-    { name: "Loki", img: "https://i.pravatar.cc/150?u=agent-loki" },
-    { name: "Quill", img: "https://i.pravatar.cc/150?u=agent-quill" },
-    { name: "Friday", img: "https://i.pravatar.cc/150?u=agent-friday" },
   ].map(p => [p.name, p])
 );
 
 const PHASE1_TASKS = [
-  { id: 1, title: "SEO Optimization for Wonder", col: "inbox", status: "Inbox", tags: ["seo", "visibility"], watchers: ["Vaibhav", "Ryan"], comments: 2, by: "Vision", time: "just now" },
-  { id: 2, title: "Create and Distribute Branded Swag", col: "inbox", status: "Inbox", tags: ["branding", "merchandise"], watchers: ["Maria", "Nick"], comments: 1, by: "Wanda", time: "just now" },
-  { id: 3, title: "Write blog post on AI trends", col: "assigned", status: "Assigned", tags: ["content", "research"], watchers: ["Shuri"], comments: 0, by: "Vision", time: "just now" },
-  { id: 4, title: "Improve Website User Experience", col: "assigned", status: "Assigned", tags: ["ux", "ui"], watchers: ["Banner", "Monica"], comments: 0, by: "Wanda", time: "just now" },
-  { id: 5, title: "Update Website with New Game Releases", col: "progress", status: "In Progress", tags: ["website", "content"], watchers: ["Vaibhav", "Ryan"], comments: 0, by: "Loki", time: "just now" },
-  { id: 6, title: "Expand Game Categories and Tags", col: "progress", status: "In Progress", tags: ["game", "categories"], watchers: ["Vaibhav", "Ryan"], comments: 2, by: "Coulson", time: "just now" },
+  { id: 1, title: "SEO Optimization for Wonder", col: "inbox" as DemoColumnId, tags: ["seo", "visibility"], watchers: ["Vaibhav", "Jordan"], comments: 2 },
+  { id: 2, title: "Create and Distribute Branded Swag", col: "inbox" as DemoColumnId, tags: ["branding", "merchandise"], watchers: ["Aria", "Jordan"], comments: 1 },
+  { id: 3, title: "Write blog post on AI trends", col: "inbox" as DemoColumnId, tags: ["content", "research"], watchers: ["Ren"], comments: 0 },
+  { id: 4, title: "Improve Website User Experience", col: "in_progress" as DemoColumnId, tags: ["ux", "ui"], watchers: ["Ren", "Leo"], comments: 0 },
+  { id: 5, title: "Update Website with New Game Releases", col: "in_progress" as DemoColumnId, tags: ["website", "content"], watchers: ["Vaibhav"], comments: 0 },
+  { id: 6, title: "Expand Game Categories and Tags", col: "in_progress" as DemoColumnId, tags: ["game", "categories"], watchers: ["Vaibhav", "Jordan"], comments: 2 },
 ];
 
 const PHASE2_TASKS = [
-  { id: 7, title: "Develop Social Media Strategy", col: "progress", status: "In Progress", tags: ["social", "media"], watchers: ["Vaibhav", "Ryan"], comments: 0, by: "Quill", time: "just now" },
-  { id: 8, title: "Design landing page mockup", col: "review", status: "Review", tags: ["design", "ui"], watchers: ["Maria", "Nick", "Hill"], comments: 2, by: "Wanda", time: "just now" },
-  { id: 9, title: "API integration review", col: "review", status: "Review", tags: ["dev", "docs"], watchers: ["Shuri", "Banner"], comments: 2, by: "Friday", time: "just now" },
-  { id: 10, title: "Capture Website Screenshots", col: "review", status: "Review", tags: ["website", "visual"], watchers: ["Monica", "Vision", "Fury", "Banner", "Hill"], comments: 10, by: "Maria", time: "just now" },
+  { id: 7, title: "Develop Social Media Strategy", col: "in_progress" as DemoColumnId, tags: ["social", "media"], watchers: ["Aria"], comments: 0 },
+  { id: 8, title: "Design landing page mockup", col: "review" as DemoColumnId, tags: ["design", "ui"], watchers: ["Ren", "Jordan"], comments: 2 },
+  { id: 9, title: "API integration review", col: "review" as DemoColumnId, tags: ["dev", "docs"], watchers: ["Leo"], comments: 2 },
+  { id: 10, title: "Capture Website Screenshots", col: "done" as DemoColumnId, tags: ["website", "visual"], watchers: ["Jordan", "Aria"], comments: 10 },
 ];
 
 const CHAT_SCRIPT = [
-  { type: "mention_tab", text: "Vaibhav: @Nick hey...", delay: 150 },
-  { type: "typing", text: "hey @Nick we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 200 },
-  { type: "send", sender: "Vaibhav", role: "Founder", text: "hey @Nick we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 300 },
+  { type: "mention_tab", text: "Vaibhav: @Jordan hey...", delay: 150 },
+  { type: "typing", text: "hey @Jordan we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 200 },
+  { type: "send", sender: "Vaibhav", role: "Founder", text: "hey @Jordan we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 300 },
   { type: "nick_typing", delay: 800 },
-  { type: "response", sender: "Nick", role: "Chief of Staff", text: "congrats on the launch! 🎉 let me pull together everything we need — checking our playbook, past launches, and support tickets now...", time: "14:52", delay: 1400 },
+  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "congrats on the launch! 🎉 let me pull together everything we need — checking our playbook, past launches, and support tickets now...", time: "14:52", delay: 1400 },
   { type: "nick_typing", delay: 1200 },
-  { type: "response", sender: "Nick", role: "Chief of Staff", text: "alright, I've created 6 tasks based on what worked for our last 3 launches. SEO, content, UX improvements, website updates — the works. They're on the board now!", time: "14:53", delay: 300 },
+  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "alright, I've created 6 tasks based on what worked for our last 3 launches. SEO, content, UX improvements, website updates — the works. They're on the board now!", time: "14:53", delay: 300 },
   { type: "addTasks", phase: 1, delay: 600 },
   { type: "reaction", emoji: "🔥", count: 2, delay: 500 },
   { type: "typing", text: "this is amazing. can you assign them to whoever's best?", delay: 800 },
   { type: "send", sender: "Vaibhav", role: "Founder", text: "this is amazing. can you assign them to whoever's best? don't need to check with me", delay: 300 },
   { type: "nick_typing", delay: 800 },
-  { type: "response", sender: "Nick", role: "Chief of Staff", text: "on it — matching tasks by each agent's skillset and past performance. Coulson's got SEO, Vision's on content, Wanda's handling UX & design...", time: "14:54", delay: 1200 },
+  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "on it — matching tasks by each agent's skillset and past performance. Aria's on social, Ren's on UX & design, Leo's handling ops...", time: "14:54", delay: 1200 },
   { type: "addTasks", phase: 2, delay: 500 },
-  { type: "response", sender: "Nick", role: "Chief of Staff", text: "done! all 10 tasks assigned and the team's already working. I'll flag anything that needs your attention. go enjoy launch day 🪖💪", time: "14:55", delay: 1400 },
+  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "done! all 10 tasks assigned and the team's already working. I'll flag anything that needs your attention. go enjoy launch day 🪖💪", time: "14:55", delay: 1400 },
   { type: "reaction", emoji: "👍", count: 3, delay: 600 },
 ];
 
-/* ─── Helpers ─── */
+type Task = (typeof PHASE1_TASKS)[number];
+type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
+
 function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const p = ALL_PEOPLE[name as keyof typeof ALL_PEOPLE];
   const src = p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
-  return <img src={src} alt={name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: border ? "1.5px solid white" : "none", boxShadow: border ? "0 0 0 0.5px rgba(0,0,0,0.08)" : "none", flexShrink: 0, display: "block" }} />;
+  return <img src={src} alt={name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: border ? `1.5px solid ${C.card}` : "none", boxShadow: border ? "0 0 0 0.5px rgba(28,25,23,0.06)" : "none", flexShrink: 0, display: "block" }} />;
 }
 
 function AvatarStack({ names, size = 18, max = 2 }: { names: string[]; size?: number; max?: number }) {
@@ -82,79 +78,62 @@ function AvatarStack({ names, size = 18, max = 2 }: { names: string[]; size?: nu
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {shown.map((n, i) => <div key={n} style={{ marginLeft: i > 0 ? -5 : 0, zIndex: max - i, position: "relative" }}><Av name={n} size={size} /></div>)}
-      {extra > 0 && <span style={{ marginLeft: -4, width: size, height: size, borderRadius: "50%", background: "#f3f4f6", border: "1.5px solid white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, fontWeight: 700, color: "#6b7280", zIndex: 0 }}>+{extra}</span>}
+      {extra > 0 && <span style={{ marginLeft: -4, width: size, height: size, borderRadius: "50%", background: C.bg, border: `1.5px solid ${C.card}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, fontWeight: 700, color: C.textMuted, zIndex: 0 }}>+{extra}</span>}
     </div>
   );
 }
 
 function TaskTag({ text }: { text: string }) {
-  return <span style={{ fontSize: 10, fontWeight: 500, color: "#525252", background: "#f8fafc", border: "1px solid #e2e8f0", padding: "1px 6px", borderRadius: 2, lineHeight: "16px", whiteSpace: "nowrap", fontFamily: "ui-monospace, SFMono-Regular, monospace", textTransform: "lowercase", letterSpacing: 0.2 }}>{text}</span>;
+  return <span style={{ fontSize: 10, fontWeight: 500, color: C.textMuted, background: C.bg, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999, lineHeight: "14px", whiteSpace: "nowrap" }}>{text}</span>;
 }
 
-/* ─── Compact Task Card ─── */
-function TaskCard({ task, index }: { task: (typeof PHASE1_TASKS)[number]; index: number }) {
+function TaskCard({ task, index }: { task: Task; index: number }) {
   return (
     <div style={{
-      background: "white", borderRadius: 2, border: "1px solid #e2e8f0",
-      padding: "9px 10px", marginBottom: 6,
+      background: C.card,
+      borderRadius: C.radiusSm,
+      border: `1px solid ${C.border}`,
+      padding: "10px 11px",
+      marginBottom: 8,
+      boxShadow: "0 1px 2px rgba(28,25,23,0.04)",
       animation: `cardIn 0.4s ease ${index * 80}ms both`,
     }}>
-      {/* Title */}
-      <div style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", lineHeight: 1.4, marginBottom: 6 }}>{task.title}</div>
-
-      {/* Tags */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginBottom: 8 }}>
+      <div style={{ fontSize: 12, fontWeight: 600, color: C.text, lineHeight: 1.45, marginBottom: 8 }}>{task.title}</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
         {task.tags.slice(0, 2).map(t => <TaskTag key={t} text={t} />)}
-        {task.tags.length > 2 && <span style={{ fontSize: 10, color: "#94a3b8", padding: "1px 5px", background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>+1</span>}
       </div>
-
-      {/* Watchers row + author */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 6, borderTop: "1px solid #f1f5f9" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <AvatarStack names={task.watchers} size={16} max={3} />
-          <span style={{ fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-            {task.watchers.length} watching
-          </span>
-        </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 6, borderTop: `1px solid ${C.borderWarm}` }}>
+        <AvatarStack names={task.watchers} size={16} max={3} />
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          <MessageSquare size={10} strokeWidth={2} color="#cbd5e1" />
-          <span style={{ fontSize: 9, color: "#94a3b8", fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{task.comments}</span>
+          <MessageSquare size={10} strokeWidth={2} color={C.textSubtle} />
+          <span style={{ fontSize: 10, color: C.textSubtle, fontWeight: 600 }}>{task.comments}</span>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── Column ─── */
-const COL_META = {
-  inbox: { label: "Inbox", accent: "#94a3b8" },
-  assigned: { label: "Assigned", accent: "#d97706" },
-  progress: { label: "In Progress", accent: "#2563eb" },
-  review: { label: "Review", accent: "#9333ea" },
-};
-
-function KanbanColumn({ colKey, tasks }: { colKey: keyof typeof COL_META; tasks: Task[] }) {
-
-  const m = COL_META[colKey];
+function KanbanColumn({ colKey, tasks }: { colKey: DemoColumnId; tasks: Task[] }) {
+  const m = KANBAN_COLUMNS[colKey];
   return (
-    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 4px 10px", marginBottom: 6, borderTop: `2px solid ${m.accent}` }}>
-        <span style={{ fontSize: 10, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{m.label}</span>
-        <span style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8", marginLeft: "auto", fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.5 }}>{tasks.length}</span>
+    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", background: C.bg, borderRadius: C.radiusSm, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", background: m.headerBg, borderBottom: `1px solid ${C.border}` }}>
+        <span style={{ fontSize: 12 }}>{m.emoji}</span>
+        <span style={{ fontSize: 10, fontWeight: 700, color: m.headerText, textTransform: "uppercase", letterSpacing: 0.6 }}>{m.label}</span>
+        <span style={{ fontSize: 10, fontWeight: 600, color: C.textSubtle, marginLeft: "auto" }}>{tasks.length}</span>
       </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", paddingRight: 2 }}>
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: 8 }}>
         {tasks.map((t, i) => <TaskCard key={t.id} task={t} index={i} />)}
       </div>
     </div>
   );
 }
 
-/* ─── Typing dots ─── */
 function TypingIndicator({ name }: { name: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", animation: "fadeIn 0.25s ease both" }}>
       <Av name={name} size={20} />
-      <span style={{ fontSize: 11, fontWeight: 600, color: "#a3a3a3" }}>{name} is typing</span>
+      <span style={{ fontSize: 11, fontWeight: 600, color: C.textSubtle }}>{name} is typing</span>
       <div style={{ display: "flex", gap: 2.5, alignItems: "center" }}>
         <div className="typing-dot" style={{ animationDelay: "0ms" }} />
         <div className="typing-dot" style={{ animationDelay: "150ms" }} />
@@ -164,9 +143,141 @@ function TypingIndicator({ name }: { name: string }) {
   );
 }
 
-/* ═══════════ Main ═══════════ */
-type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
-type Task = (typeof PHASE1_TASKS)[number];
+function DemoSidebarRail() {
+  return (
+    <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
+        <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain" }} />
+        <div style={{ width: 28, height: 1, background: C.border }} />
+        <div style={{
+          width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
+          background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", fontSize: 16, fontWeight: 800, color: "#7C3AED",
+        }}>W</div>
+        <div style={{
+          width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
+          background: `${C.brandLight}`, color: C.textSubtle,
+        }}>
+          <Plus size={16} strokeWidth={1.5} />
+        </div>
+      </div>
+      <div style={{ width: 40, height: 40, borderRadius: 16, overflow: "hidden", boxShadow: "0 1px 3px rgba(28,25,23,0.06)" }}>
+        <Av name="Vaibhav" size={40} border={false} />
+      </div>
+    </div>
+  );
+}
+
+const MENU_NAV = {
+  core: [
+    { label: "Home", icon: Home, active: true },
+    { label: "Tasks", icon: ListTodo, active: false },
+    { label: "Goals", icon: Target, active: false },
+    { label: "Routines", icon: Clock, active: false },
+    { label: "Files", icon: HardDrive, active: false },
+  ],
+  team: [
+    { label: "Agents", icon: Users, active: false },
+    { label: "Devices", icon: Laptop, active: false },
+    { label: "Memory", icon: Brain, active: false },
+  ],
+  advanced: [
+    { label: "Skills & Plugins", icon: Shapes, active: false },
+    { label: "Settings", icon: Settings, active: false },
+  ],
+};
+
+function DemoSidebarNav({ sidebarTab }: { sidebarTab: 'menu' | 'chats' }) {
+  const sectionLabel = { fontSize: 10, fontWeight: 600, color: C.textSubtle, textTransform: "uppercase" as const, letterSpacing: 0.6, padding: "0 4px 6px" };
+  const navRow = (item: { label: string; icon: typeof Home; active: boolean }) => {
+    const Icon = item.icon;
+    return (
+      <div key={item.label} style={{
+        display: "flex", alignItems: "center", gap: 10, padding: "7px 10px", borderRadius: 12, marginBottom: 2,
+        background: item.active ? C.card : "transparent",
+        color: item.active ? C.text : C.textMuted,
+        boxShadow: item.active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
+      }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
+          background: item.active ? C.brandLight : C.bg,
+          color: item.active ? C.brand : C.textSubtle,
+        }}>
+          <Icon size={15} strokeWidth={item.active ? 2 : 1.75} />
+        </div>
+        <span style={{ fontSize: 12, fontWeight: item.active ? 600 : 500 }}>{item.label}</span>
+      </div>
+    );
+  };
+
+  return (
+    <div className="Trooper-scrollbar" style={{ width: 260, minWidth: 260, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "4px 0 24px rgba(28,25,23,0.05)" }}>
+      <div style={{ display: "flex", gap: 4, padding: "10px 12px 8px" }}>
+        {(['menu', 'chats'] as const).map((tab) => (
+          <span key={tab} style={{
+            flex: 1, textAlign: "center", fontSize: 11, fontWeight: 700, padding: "6px 0", borderRadius: 8,
+            background: sidebarTab === tab ? C.card : "transparent",
+            color: sidebarTab === tab ? C.text : C.textSubtle,
+            boxShadow: sidebarTab === tab ? "0 1px 2px rgba(28,25,23,0.06)" : "none",
+            textTransform: "capitalize",
+          }}>
+            {tab === 'menu' ? 'Menu' : 'Chats'}
+          </span>
+        ))}
+      </div>
+
+      <div style={{ flex: 1, overflowY: "auto", padding: "4px 8px 8px" }}>
+        {sidebarTab === 'chats' ? (
+          <>
+            <div style={{ padding: "4px 4px 8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", borderRadius: 12, background: C.brandLight, color: C.brand, fontSize: 12, fontWeight: 600 }}>
+                <Hash size={14} strokeWidth={2} />
+                general
+              </div>
+            </div>
+            <div style={{ padding: "0 4px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", borderRadius: 12, border: `1px dashed ${C.border}`, color: C.textSubtle, fontSize: 11, fontWeight: 600 }}>
+                <Plus size={13} strokeWidth={2} /> New chat
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ marginBottom: 12 }}>
+              <div style={sectionLabel}>Core workspace</div>
+              {MENU_NAV.core.map(navRow)}
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <div style={sectionLabel}>Team & data</div>
+              {MENU_NAV.team.map(navRow)}
+            </div>
+            <div>
+              <div style={sectionLabel}>Advanced</div>
+              {MENU_NAV.advanced.map(navRow)}
+            </div>
+          </>
+        )}
+      </div>
+
+      <div style={{ padding: "8px 10px 10px", borderTop: `1px solid ${C.borderWarm}`, background: C.bg }}>
+        <div style={{ display: "flex", gap: 4, marginBottom: 8, background: C.card, borderRadius: 14, padding: 4, boxShadow: "0 1px 3px rgba(28,25,23,0.06)" }}>
+          {[
+            { icon: Activity, label: "Activity" },
+            { icon: Bell, label: "Attention" },
+            { icon: Pause, label: "Pause" },
+          ].map(({ icon: Icon, label }) => (
+            <div key={label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "6px 2px", borderRadius: 10, color: C.textMuted }}>
+              <Icon size={16} strokeWidth={1.5} />
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: -0.2 }}>{label}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "8px 10px", borderRadius: 12, background: C.brand, color: "white", fontSize: 11, fontWeight: 700 }}>
+          <Plus size={13} strokeWidth={2.5} /> New chat
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function TrooperDemo() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -174,14 +285,16 @@ export default function TrooperDemo() {
   const [inputText, setInputText] = useState("");
   const [activeAgents, setActiveAgents] = useState<Set<string>>(new Set());
   const [mentionTab, setMentionTab] = useState("");
-  const [nickTyping, setNickTyping] = useState(false);
+  const [agentTyping, setAgentTyping] = useState(false);
+  const [workspaceTab, setWorkspaceTab] = useState<'messages' | 'board'>('messages');
+  const [sidebarTab, setSidebarTab] = useState<'menu' | 'chats'>('chats');
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const chatRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typeRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [messages, inputText, nickTyping]);
+  useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [messages, inputText, agentTyping]);
 
   const cleanUp = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -191,305 +304,208 @@ export default function TrooperDemo() {
   const processStep = useCallback((idx: number) => {
     if (idx >= CHAT_SCRIPT.length) {
       timerRef.current = setTimeout(() => {
-        setMessages([]); setTasks([]); setInputText(""); setActiveAgents(new Set()); setMentionTab(""); setNickTyping(false); setScriptIndex(0);
+        setMessages([]); setTasks([]); setInputText(""); setActiveAgents(new Set()); setMentionTab(""); setAgentTyping(false); setScriptIndex(0);
       }, 5000);
       return;
     }
     const s = CHAT_SCRIPT[idx];
     timerRef.current = setTimeout(() => {
-      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setScriptIndex(idx + 1); return; }
+      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab('chats'); setScriptIndex(idx + 1); return; }
       if (s.type === "typing") {
         setMentionTab(""); let ci = 0; setInputText("");
         typeRef.current = setInterval(() => { ci++; setInputText((s.text || "").slice(0, ci)); if (ci >= (s.text || "").length) { if (typeRef.current) clearInterval(typeRef.current); typeRef.current = null; setScriptIndex(idx + 1); } }, 28);
         return;
       }
       if (s.type === "send") { setInputText(""); setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: true, time: "14:52" }]); setScriptIndex(idx + 1); return; }
-      if (s.type === "nick_typing") { setNickTyping(true); setActiveAgents(p => new Set([...Array.from(p), "Nick"])); setScriptIndex(idx + 1); return; }
-      if (s.type === "response") { setNickTyping(false); setActiveAgents(p => new Set([...Array.from(p), s.sender || ""])); setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: false, time: s.time || "" }]); setScriptIndex(idx + 1); return; }
+      if (s.type === "nick_typing") { setAgentTyping(true); setActiveAgents(p => new Set([...Array.from(p), "Jordan"])); setScriptIndex(idx + 1); return; }
+      if (s.type === "response") {
+        setAgentTyping(false);
+        setActiveAgents(p => new Set([...Array.from(p), s.sender || ""]));
+        setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: false, time: s.time || "" }]);
+        if (s.text?.includes("on the board")) setWorkspaceTab('board');
+        setScriptIndex(idx + 1);
+        return;
+      }
       if (s.type === "reaction") { setMessages(p => { const c = [...p]; if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } }; return c; }); setScriptIndex(idx + 1); return; }
-      if (s.type === "addTasks") { setTasks(p => [...p, ...(s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS)] as Task[]); setScriptIndex(idx + 1); return; }
+      if (s.type === "addTasks") { setTasks(p => [...p, ...(s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS)]); setWorkspaceTab('board'); setScriptIndex(idx + 1); return; }
     }, s.delay);
   }, []);
 
   useEffect(() => { if (!isRunning) return; processStep(scriptIndex); return cleanUp; }, [scriptIndex, isRunning, processStep, cleanUp]);
 
-  const restart = () => { cleanUp(); setMessages([]); setTasks([]); setInputText(""); setActiveAgents(new Set()); setMentionTab(""); setNickTyping(false); setScriptIndex(0); setIsRunning(true); };
+  const restart = () => { cleanUp(); setMessages([]); setTasks([]); setInputText(""); setActiveAgents(new Set()); setMentionTab(""); setAgentTyping(false); setWorkspaceTab('messages'); setSidebarTab('chats'); setScriptIndex(0); setIsRunning(true); };
 
-  const cols: { [key in keyof typeof COL_META]: Task[] } = { inbox: [], assigned: [], progress: [], review: [] };
-  tasks.forEach((t: Task) => { if (cols[t.col as keyof typeof COL_META]) cols[t.col as keyof typeof COL_META].push(t); });
+  const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
+  tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
 
   return (
-    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(16,185,129,.35)} 70%{box-shadow:0 0 0 10px rgba(16,185,129,0)} 100%{box-shadow:0 0 0 0 rgba(16,185,129,0)} }
-        @keyframes agentPulse { 0%{transform:scale(1);opacity:.6} 70%{transform:scale(2);opacity:0} 100%{transform:scale(1);opacity:0} }
+        @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(0,122,90,.35)} 70%{box-shadow:0 0 0 10px rgba(0,122,90,0)} 100%{box-shadow:0 0 0 0 rgba(0,122,90,0)} }
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
-        .typing-dot { width:3.5px; height:3.5px; border-radius:50%; background:#a3a3a3; animation:dotBounce 1.2s infinite ease-in-out; }
-        .Trooper-scrollbar::-webkit-scrollbar{width:3px}
+        .typing-dot { width:3.5px; height:3.5px; border-radius:50%; background:${C.textSubtle}; animation:dotBounce 1.2s infinite ease-in-out; }
+        .Trooper-scrollbar::-webkit-scrollbar{width:4px}
         .Trooper-scrollbar::-webkit-scrollbar-track{background:transparent}
-        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
+        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.border};border-radius:4px}
         *{box-sizing:border-box}
-        
-        /* Hide on mobile and tablet */
-        @media (max-width: 1024px) {
-          .Trooper-demo { display: none !important; }
-        }
+        @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div
-        style={{
-          position: "relative",
-          padding: "32px 20px",
-          backgroundColor: "#f8fafc",
-          backgroundImage:
-            "linear-gradient(rgb(16 185 129 / 53%), rgb(16 185 129 / 40%)), url(/images/hero-bg-pixel.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          imageRendering: "pixelated",
-          borderTop: "1px solid #e2e8f0",
-          borderBottom: "1px solid #e2e8f0",
-        }}
-      >
+      <div style={{
+        position: "relative",
+        padding: "32px 20px",
+        backgroundColor: C.bg,
+        backgroundImage: `linear-gradient(rgba(123, 160, 68, 0.28), rgba(0, 122, 90, 0.22)), url(/images/hero-bg-pixel.png)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        imageRendering: "pixelated",
+        borderTop: `1px solid ${C.border}`,
+        borderBottom: `1px solid ${C.border}`,
+      }}>
+        <div style={{ position: "relative", margin: "0 auto", maxWidth: 1200, borderRadius: C.radius, overflow: "hidden", border: `1px solid ${C.border}`, background: C.bg, boxShadow: "0 24px 48px -16px rgba(28,25,23,0.18), 0 8px 16px -8px rgba(28,25,23,0.08)" }}>
 
-      <div style={{ position: "relative", margin: "0 auto", maxWidth: 1200, borderRadius: 0, overflow: "hidden", border: "1px solid #cbd5e1", background: "#fafaf9", boxShadow: "0 24px 48px -16px rgba(15,23,42,0.28), 0 8px 16px -8px rgba(15,23,42,0.14)" }}>
-
-        {/* macOS bar */}
-        <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: "#fafaf9", borderBottom: "1px solid #e7e5e4", gap: 12 }}>
-          <div style={{ display: "flex", gap: 7 }}>
-            <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f57" }} />
-            <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#febc2e" }} />
-            <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#28c840" }} />
-          </div>
-          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 5, background: "#f0efed", borderRadius: 2, padding: "4px 18px", fontSize: 11.5, color: "#78716c", border: "1px solid #e2e8f0", maxWidth: 280, width: "100%", justifyContent: "center" }}>
-              <Lock size={10} strokeWidth={2.5} color="#78716c" />
-              app.trooper.so
+          {/* Browser chrome */}
+          <div style={{ display: "flex", alignItems: "center", padding: "9px 16px", background: C.cardWarm, borderBottom: `1px solid ${C.border}`, gap: 12 }}>
+            <div style={{ display: "flex", gap: 7 }}>
+              <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f57" }} />
+              <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#febc2e" }} />
+              <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#28c840" }} />
             </div>
-          </div>
-          <div style={{ display: "flex", gap: 5 }}>
-            <button onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 2, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
-              {isRunning ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
-            </button>
-            <button onClick={restart} style={{ width: 26, height: 26, borderRadius: 2, border: "1px solid #e2e8f0", background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#78716c" }}>
-              <RotateCcw size={12} strokeWidth={2} />
-            </button>
-          </div>
-        </div>
-
-        {/* App Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", background: "white", borderBottom: "1px solid #e2e8f0" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <img
-                src="/images/trooper-logomark.png"
-                alt=""
-                className="h-[26px] w-auto object-contain bg-transparent"
-              />
-            </span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#0f172a", background: "white", padding: "4px 10px", borderRadius: 2, border: "1px solid #cbd5e1", display: "flex", alignItems: "center", gap: 5, marginLeft: 4, textTransform: "uppercase", letterSpacing: 0.6, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-              <LayoutGrid size={11} strokeWidth={2.25} /> Wonder
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ display: "flex", gap: 0, border: "1px solid #e2e8f0", borderRadius: 2, background: "white" }}>
-              <div style={{ textAlign: "center", padding: "4px 10px", borderRight: "1px solid #e2e8f0" }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", lineHeight: 1.1, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>19</div>
-                <div style={{ fontSize: 8, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace", marginTop: 1 }}>Active</div>
-              </div>
-              <div style={{ textAlign: "center", padding: "4px 10px" }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", lineHeight: 1.1, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>10</div>
-                <div style={{ fontSize: 8, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.8, fontFamily: "ui-monospace, SFMono-Regular, monospace", marginTop: 1 }}>Queued</div>
+            <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 5, background: C.bg, borderRadius: 999, padding: "4px 16px", fontSize: 11.5, color: C.textSubtle, border: `1px solid ${C.border}`, maxWidth: 280, width: "100%", justifyContent: "center" }}>
+                <Lock size={10} strokeWidth={2.5} />
+                app.trooper.so
               </div>
             </div>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#10b981", color: "white", padding: "6px 11px", borderRadius: 2, border: "none", fontSize: 10, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace", lineHeight: 1 }}>
-              <Bell size={11} strokeWidth={2.5} /> Attention
-            </button>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, color: "#64748b", fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace", textTransform: "uppercase", letterSpacing: 0.7, padding: "4px 8px", border: "1px solid #e2e8f0", borderRadius: 2, background: "white" }}>
-              <Clock size={10} strokeWidth={2} color="#94a3b8" />
-              <span style={{ color: "#0f172a" }}>14:57</span>
-              <span style={{ color: "#cbd5e1" }}>·</span>
-              <span style={{ color: "#94a3b8" }}>Mon Feb 9</span>
+            <div style={{ display: "flex", gap: 5 }}>
+              <button type="button" onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+                {isRunning ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
+              </button>
+              <button type="button" onClick={restart} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+                <RotateCcw size={12} strokeWidth={2} />
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* ── 3-Panel ── */}
-        <div className="Trooper-container" style={{ display: "flex", height: 520, background: "#f5f5f4" }}>
-
-          {/* LEFT SIDEBAR */}
-          <div className="Trooper-sidebar Trooper-scrollbar" style={{ width: 190, minWidth: 190, borderRight: "1px solid #e2e8f0", background: "white", overflowY: "auto", padding: "10px 0" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px", marginBottom: 8 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <span style={{ color: "#cbd5e1" }}>[01]</span> Team
+          {/* Workspace header */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 14px", background: C.card, borderBottom: `1px solid ${C.border}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.text, background: C.bg, padding: "5px 10px", borderRadius: 999, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 5 }}>
+                <LayoutGrid size={12} strokeWidth={2} /> Wonder
               </span>
-              <span style={{ fontSize: 9, color: "#cbd5e1", fontFamily: "ui-monospace, SFMono-Regular, monospace", display: "flex", alignItems: "center", gap: 4 }}>
-                <Users size={9} strokeWidth={2} /> 2
-                <Bot size={9} strokeWidth={2} /> 19
-              </span>
+              <div style={{ display: "flex", gap: 4, background: C.bg, borderRadius: 10, padding: 3, border: `1px solid ${C.border}` }}>
+                {(['messages', 'board'] as const).map((tab) => (
+                  <button key={tab} type="button" onClick={() => setWorkspaceTab(tab)} style={{
+                    border: "none", cursor: "pointer", borderRadius: 8, padding: "5px 12px", fontSize: 11, fontWeight: 600,
+                    background: workspaceTab === tab ? C.card : "transparent",
+                    color: workspaceTab === tab ? C.text : C.textSubtle,
+                    boxShadow: workspaceTab === tab ? "0 1px 2px rgba(28,25,23,0.06)" : "none",
+                  }}>
+                    {tab === 'messages' ? 'Messages' : 'Board'}
+                  </button>
+                ))}
+              </div>
             </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 8px 10px", padding: "6px 8px", background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", cursor: "pointer" }}>
-              <LayoutGrid size={13} strokeWidth={1.5} color="#64748b" />
-              <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>All Tasks</span>
-              <span style={{ marginLeft: "auto", fontSize: 9, fontWeight: 600, color: "#94a3b8", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>29</span>
-            </div>
-
-            <div style={{ padding: "0 12px", marginBottom: 4 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <span style={{ color: "#cbd5e1" }}>[02]</span> Humans
-              </span>
-            </div>
-            {HUMANS.map(h => (
-              <div key={h.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 12px" }}>
-                <div style={{ position: "relative" }}>
-                  <img src={h.img} alt={h.name} style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", bottom: -1, right: -1, width: 8, height: 8, borderRadius: "50%", background: "#10b981", border: "1.5px solid white" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ display: "flex", gap: 0, border: `1px solid ${C.border}`, borderRadius: 8, background: C.card, overflow: "hidden" }}>
+                <div style={{ textAlign: "center", padding: "4px 10px", borderRight: `1px solid ${C.border}` }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.text, lineHeight: 1.1 }}>{Math.max(activeAgents.size, 1)}</div>
+                  <div style={{ fontSize: 8, fontWeight: 700, color: C.textSubtle, textTransform: "uppercase", letterSpacing: 0.6, marginTop: 1 }}>Active</div>
                 </div>
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>{h.name}</span>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: "#475569", background: "#f1f5f9", border: "1px solid #e2e8f0", padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4 }}>YOU</span>
-                  </div>
-                  <div style={{ fontSize: 9.5, color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{h.role}</div>
+                <div style={{ textAlign: "center", padding: "4px 10px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.text, lineHeight: 1.1 }}>{tasks.length}</div>
+                  <div style={{ fontSize: 8, fontWeight: 700, color: C.textSubtle, textTransform: "uppercase", letterSpacing: 0.6, marginTop: 1 }}>Tasks</div>
                 </div>
               </div>
-            ))}
-
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 12px", margin: "12px 0 4px" }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 1.2, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <span style={{ color: "#cbd5e1" }}>[03]</span> AI Agents
-              </span>
-              <span style={{ fontSize: 9, fontWeight: 700, color: "#059669", display: "inline-flex", alignItems: "center", gap: 4, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <span style={{ position: "relative", width: 5, height: 5 }}>
-                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#10b981", opacity: 0.5, animation: "agentPulse 1.6s infinite" }} />
-                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#10b981" }} />
-                </span>
-                19 ACTIVE
-              </span>
+              <button type="button" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: C.brand, color: "white", padding: "6px 11px", borderRadius: 999, border: "none", fontSize: 10, fontWeight: 700, cursor: "pointer", animation: "pulseRing 2s infinite", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                <Bell size={11} strokeWidth={2.5} /> Attention
+              </button>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, color: C.textSubtle, fontWeight: 600, padding: "4px 8px", border: `1px solid ${C.border}`, borderRadius: 8, background: C.card }}>
+                <Clock size={10} strokeWidth={2} />
+                <span style={{ color: C.text }}>14:57</span>
+              </div>
             </div>
-            {AGENTS.map(a => {
-              const isActive = activeAgents.has(a.name);
-              const isLead = a.badge === "LEAD";
-              return (
-                <div key={a.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 12px", paddingLeft: isActive ? 10 : 12, background: isActive ? "#ecfdf5" : "transparent", borderLeft: isActive ? "2px solid #10b981" : "2px solid transparent", transition: "background 0.3s, border-color 0.3s, padding 0.3s" }}>
-                  <div style={{ position: "relative" }}>
-                    <img src={a.img} alt={a.name} style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover", filter: isActive ? "none" : "saturate(0.85)" }} />
-                    <div style={{ position: "absolute", bottom: -1, right: -1, width: 7, height: 7, borderRadius: "50%", background: isActive ? "#10b981" : "#cbd5e1", border: "1.5px solid white", transition: "background 0.3s" }} />
-                  </div>
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <span style={{ fontSize: 11, fontWeight: 600, color: "#0f172a" }}>{a.name}</span>
-                      <span style={{ fontSize: 7.5, fontWeight: 700, color: isLead ? "#059669" : "#64748b", background: isLead ? "#ecfdf5" : "#f1f5f9", border: `1px solid ${isLead ? "#a7f3d0" : "#e2e8f0"}`, padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4 }}>{a.badge}</span>
+          </div>
+
+          {/* App shell: rail | nav | workspace */}
+          <div style={{ display: "flex", height: 520, background: C.bg }}>
+            <DemoSidebarRail />
+            <DemoSidebarNav sidebarTab={sidebarTab} />
+
+            {/* Chat pane */}
+            <div style={{ width: workspaceTab === 'board' ? '42%' : '58%', minWidth: 0, borderRight: `1px solid ${C.border}`, background: C.cardWarm, display: "flex", flexDirection: "column", transition: "width 0.25s ease" }}>
+              <div style={{ padding: "8px 12px", borderBottom: `1px solid ${C.border}`, fontSize: 11, fontWeight: 700, color: C.text, display: "flex", alignItems: "center", gap: 6 }}>
+                <Hash size={12} strokeWidth={2.2} color={C.textSubtle} /> general
+              </div>
+              {mentionTab && (
+                <div style={{ padding: "5px 12px", borderBottom: `1px solid ${C.borderWarm}`, background: C.bg, fontSize: 11, color: C.textMuted, display: "flex", alignItems: "center", gap: 5 }}>
+                  <Av name="Vaibhav" size={16} border={false} />
+                  <span>{mentionTab}</span>
+                </div>
+              )}
+              <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
+                {messages.map((msg, i) => (
+                  <div key={i} style={{ marginBottom: 12, animation: "fadeIn 0.3s ease both" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                      <Av name={msg.sender} size={22} />
+                      <span style={{ fontSize: 12, fontWeight: 700, color: C.text }}>{msg.sender}</span>
+                      <span style={{ fontSize: 8, fontWeight: 700, color: msg.isHuman ? C.textMuted : C.brand, background: msg.isHuman ? C.bg : C.brandLight, border: `1px solid ${msg.isHuman ? C.border : C.brandSoft}`, padding: "1px 6px", borderRadius: 999, textTransform: "uppercase" }}>
+                        {msg.isHuman ? "Human" : "Agent"}
+                      </span>
+                      <span style={{ fontSize: 10, color: C.textSubtle }}>{msg.role}</span>
+                      <span style={{ fontSize: 9, color: C.border, marginLeft: "auto" }}>{msg.time}</span>
                     </div>
-                    <div style={{ fontSize: 9.5, color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{a.role}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* CENTER KANBAN */}
-          <div className="Trooper-kanban" style={{ flex: 1, overflow: "hidden", padding: "10px 12px", display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", gap: 8, flex: 1, overflow: "hidden" }}>
-              {["inbox", "assigned", "progress", "review"].map(k => (
-                <KanbanColumn key={k} colKey={k as keyof typeof COL_META} tasks={cols[k as keyof typeof COL_META]} />
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT CHAT */}
-          <div className="Trooper-chat" style={{ width: 300, minWidth: 300, borderLeft: "1px solid #e5e7eb", background: "white", display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e2e8f0", gap: 18, paddingLeft: 14, paddingRight: 14 }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "10px 0 8px", borderBottom: "2px solid #10b981", marginBottom: -1, fontSize: 10, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <MessageCircle size={11} strokeWidth={2.25} color="#10b981" /> Team Chat
-              </span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "10px 0 8px", fontSize: 10, fontWeight: 600, color: "#94a3b8", cursor: "pointer", textTransform: "uppercase", letterSpacing: 0.7, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                <Activity size={11} strokeWidth={1.5} /> Activity
-              </span>
-            </div>
-
-            <div style={{ padding: "6px 14px", borderBottom: "1px solid #f1f5f9", fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 600, display: "flex", alignItems: "center", gap: 4, fontFamily: "ui-monospace, SFMono-Regular, monospace", background: "#f8fafc" }}>
-              Type <AtSign size={9} strokeWidth={2.5} /> to mention
-            </div>
-
-            {mentionTab && (
-              <div style={{ padding: "5px 14px", borderBottom: "1px solid #f0f0f0", background: "#fafafa", fontSize: 11, color: "#737373", display: "flex", alignItems: "center", gap: 5, animation: "fadeIn 0.25s ease both" }}>
-                <Av name="Vaibhav" size={16} border={false} />
-                <span style={{ color: "#a3a3a3" }}>{mentionTab}</span>
-              </div>
-            )}
-
-            <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
-              {messages.map((msg, i) => (
-                <div key={i} style={{ marginBottom: 12, animation: "fadeIn 0.3s ease both" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                    <Av name={msg.sender} size={22} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{msg.sender}</span>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: msg.isHuman ? "#475569" : "#059669", background: msg.isHuman ? "#f1f5f9" : "#ecfdf5", border: `1px solid ${msg.isHuman ? "#e2e8f0" : "#a7f3d0"}`, padding: "0 4px", borderRadius: 2, fontFamily: "ui-monospace, SFMono-Regular, monospace", letterSpacing: 0.4, textTransform: "uppercase" }}>
-                      {msg.isHuman ? "Human" : "Agent"}
-                    </span>
-                    <span style={{ fontSize: 10, color: "#94a3b8" }}>{msg.role}</span>
-                    <span style={{ fontSize: 9, color: "#cbd5e1", marginLeft: "auto", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>{msg.time}</span>
-                  </div>
-                  <div style={{ marginLeft: 28, fontSize: 12, lineHeight: 1.55, color: "#334155" }}>
-                    {msg.text.split(/(@\w+)/g).map((part: string, j: number) =>
-                      part.startsWith("@") ? <span key={j} style={{ color: "#059669", fontWeight: 600, background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "0 4px", borderRadius: 2, fontSize: 11.5 }}>{part}</span> : <span key={j}>{part}</span>
+                    <div style={{ marginLeft: 28, fontSize: 12, lineHeight: 1.55, color: C.textMuted }}>
+                      {msg.text.split(/(@\w+)/g).map((part: string, j: number) =>
+                        part.startsWith("@") ? <span key={j} style={{ color: C.brand, fontWeight: 600, background: C.brandLight, border: `1px solid ${C.brandSoft}`, padding: "0 4px", borderRadius: 6, fontSize: 11.5 }}>{part}</span> : <span key={j}>{part}</span>
+                      )}
+                    </div>
+                    {msg.reaction && (
+                      <div style={{ marginLeft: 28, marginTop: 5 }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: C.card, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>
+                          <span>{msg.reaction.emoji}</span>
+                          <span style={{ fontSize: 10, color: C.textSubtle, fontWeight: 600 }}>{msg.reaction.count}</span>
+                        </span>
+                      </div>
                     )}
                   </div>
-                  {msg.reaction && (
-                    <div style={{ marginLeft: 28, marginTop: 5 }}>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: "white", border: "1px solid #e2e8f0", padding: "1px 7px", borderRadius: 2 }}>
-                        <span>{msg.reaction.emoji}</span>
-                        <span style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace", fontSize: 10, color: "#64748b", fontWeight: 600 }}>{msg.reaction.count}</span>
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-              {nickTyping && <TypingIndicator name="Nick" />}
-            </div>
-
-            {/* Input */}
-            <div style={{ padding: "8px 12px", borderTop: "1px solid #e2e8f0", background: "white" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f8fafc", borderRadius: 2, border: "1px solid #e2e8f0", padding: "8px 10px" }}>
-                <div style={{ flex: 1, fontSize: 12, color: inputText ? "#0f172a" : "#94a3b8", minHeight: 16, fontWeight: inputText ? 500 : 400, lineHeight: 1.4, wordBreak: "break-word" }}>
-                  {inputText ? (
-                    <>
-                      {inputText.split(/(@\w+)/g).map((part, i) =>
-                        part.startsWith("@") ? <span key={i} style={{ color: "#059669", fontWeight: 600, background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "0 3px", borderRadius: 2 }}>{part}</span> : <span key={i}>{part}</span>
-                      )}
-                      <span style={{ display: "inline-block", width: 1.5, height: 14, background: "#0f172a", marginLeft: 0.5, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
-                    </>
-                  ) : "Message as Vaibhav..."}
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                  <Paperclip size={13} strokeWidth={1.5} color="#cbd5e1" />
-                  <Smile size={13} strokeWidth={1.5} color="#cbd5e1" />
-                  <div style={{ width: 26, height: 26, borderRadius: 2, background: inputText ? "#10b981" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}>
-                    <Send size={12} strokeWidth={2} color={inputText ? "white" : "#94a3b8"} />
+                ))}
+                {agentTyping && <TypingIndicator name="Jordan" />}
+              </div>
+              <div style={{ padding: "8px 10px", borderTop: `1px solid ${C.border}`, background: C.card }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, background: C.card, borderRadius: C.radiusSm, border: `1px solid ${C.border}`, padding: "8px 10px" }}>
+                  <div style={{ flex: 1, fontSize: 12, color: inputText ? C.text : C.textSubtle, minHeight: 16, lineHeight: 1.4 }}>
+                    {inputText ? (
+                      <>
+                        {inputText.split(/(@\w+)/g).map((part, i) =>
+                          part.startsWith("@") ? <span key={i} style={{ color: C.brand, fontWeight: 600, background: C.brandLight, padding: "0 3px", borderRadius: 4 }}>{part}</span> : <span key={i}>{part}</span>
+                        )}
+                        <span style={{ display: "inline-block", width: 1.5, height: 14, background: C.text, marginLeft: 0.5, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
+                      </>
+                    ) : "Message as Vaibhav…"}
+                  </div>
+                  <Paperclip size={13} strokeWidth={1.5} color={C.textSubtle} />
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: inputText ? C.text : C.bg, display: "flex", alignItems: "center", justifyContent: "center", border: inputText ? "none" : `1px solid ${C.border}` }}>
+                    <Send size={12} strokeWidth={2} color={inputText ? "white" : C.textSubtle} />
                   </div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <Av name="Vaibhav" size={14} border={false} />
-                  <span style={{ fontSize: 9, color: "#94a3b8", textTransform: "uppercase", letterSpacing: 0.6, fontWeight: 600, fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>
-                    Chatting as <span style={{ color: "#475569" }}>Vaibhav</span>
-                  </span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                  <Hash size={10} strokeWidth={1.5} color="#cbd5e1" />
-                  <span style={{ fontSize: 9, color: "#cbd5e1", fontFamily: "ui-monospace, SFMono-Regular, monospace" }}>Press @ to mention</span>
-                </div>
+            </div>
+
+            {/* Board pane */}
+            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", background: C.bg, padding: 10 }}>
+              <div style={{ display: "flex", gap: 8, flex: 1, overflow: "hidden", opacity: workspaceTab === 'board' || tasks.length > 0 ? 1 : 0.45 }}>
+                {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
+                  <KanbanColumn key={k} colKey={k} tasks={cols[k]} />
+                ))}
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

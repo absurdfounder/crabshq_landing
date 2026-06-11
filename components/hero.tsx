@@ -146,7 +146,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   </span>
                 </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span className="font-medium text-emerald-600">OpenClaw</span>.</p>
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3">AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by <span className="font-medium text-trooper">OpenClaw</span>.</p>
 
               </div>
 
