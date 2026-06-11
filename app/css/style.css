@@ -145,9 +145,15 @@
 }
 
 
-/* Header ops stripe */
-.army-header-stripe {
-  box-shadow: inset 0 3px 0 0 #7ba044;
+/* Landscape painting behind hero dashboard mockup */
+.dashboard-landscape-bg {
+  background-color: #d6d3c9;
+  background-image:
+    linear-gradient(rgba(248, 250, 246, 0.12), rgba(238, 242, 232, 0.22)),
+    url(/images/hero-landscape-bg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .army-status-badge {

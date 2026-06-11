@@ -729,7 +729,7 @@ export default function TrooperDemo() {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="pixel-camo-wash" style={{
+      <div className="dashboard-landscape-bg" style={{
         position: "relative", padding: "20px 12px 24px",
         borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`,
       }}>

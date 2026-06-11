@@ -1,19 +1,16 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Monitor,
-  Apple,
-  Smartphone,
-  Download,
-  ChevronDown,
-} from "lucide-react";
-import Header from "@/components/ui/header";
-import SectionShell from "@/components/ui/SectionShell";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Download, ChevronDown } from 'lucide-react';
+import Header from '@/components/ui/header';
+import SectionShell from '@/components/ui/SectionShell';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
+import PixelButton from '@/components/ui/PixelButton';
+import { ArrowRight } from 'lucide-react';
 
-type Platform = "mac" | "windows" | "ios" | "android" | "unknown";
+type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'unknown';
 
 interface PlatformInfo {
   key: Platform;
@@ -36,55 +33,65 @@ const SiApple = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const Smartphone = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <rect x="5" y="2" width="14" height="20" rx="2" />
+    <line x1="12" y1="18" x2="12" y2="18" />
+  </svg>
+);
+
 const platforms: PlatformInfo[] = [
   {
-    key: "mac",
-    label: "macOS",
+    key: 'mac',
+    label: 'macOS',
     icon: <SiApple className="h-6 w-6" />,
-    description: "For macOS 12 Monterey and later. Universal binary for Intel and Apple Silicon.",
-    href: "https://app.trooper.so/download/mac",
-    buttonText: "Download for Mac",
+    description: 'For macOS 12 Monterey and later. Universal binary for Intel and Apple Silicon.',
+    href: 'https://app.trooper.so/download/mac',
+    buttonText: 'Download for Mac',
   },
   {
-    key: "windows",
-    label: "Windows",
+    key: 'windows',
+    label: 'Windows',
     icon: <SiWindows className="h-5 w-5" />,
-    description: "For Windows 10 and later. 64-bit installer.",
-    href: "https://app.trooper.so/download/windows",
-    buttonText: "Download for Windows",
+    description: 'For Windows 10 and later. 64-bit installer.',
+    href: 'https://app.trooper.so/download/windows',
+    buttonText: 'Download for Windows',
   },
   {
-    key: "ios",
-    label: "iOS",
+    key: 'ios',
+    label: 'iOS',
     icon: <Smartphone className="h-6 w-6" />,
-    description: "For iPhone and iPad. Requires iOS 16 or later.",
-    href: "https://apps.apple.com/app/trooper",
-    buttonText: "Download on App Store",
+    description: 'For iPhone and iPad. Requires iOS 16 or later.',
+    href: 'https://apps.apple.com/app/trooper',
+    buttonText: 'Download on App Store',
   },
   {
-    key: "android",
-    label: "Android",
+    key: 'android',
+    label: 'Android',
     icon: <Smartphone className="h-6 w-6" />,
-    description: "For Android phones and tablets. Requires Android 10 or later.",
-    href: "https://play.google.com/store/apps/details?id=com.trooper.app",
-    buttonText: "Get it on Google Play",
+    description: 'For Android phones and tablets. Requires Android 10 or later.',
+    href: 'https://play.google.com/store/apps/details?id=com.trooper.app',
+    buttonText: 'Get it on Google Play',
   },
 ];
 
 function detectPlatform(): Platform {
-  if (typeof navigator === "undefined") return "unknown";
+  if (typeof navigator === 'undefined') return 'unknown';
   const ua = navigator.userAgent.toLowerCase();
-  const platform = (navigator as any).userAgentData?.platform?.toLowerCase() || navigator.platform?.toLowerCase() || "";
+  const platform =
+    (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform?.toLowerCase() ||
+    navigator.platform?.toLowerCase() ||
+    '';
 
-  if (/iphone|ipad|ipod/.test(ua)) return "ios";
-  if (/android/.test(ua)) return "android";
-  if (/mac/.test(platform) || /macintosh/.test(ua)) return "mac";
-  if (/win/.test(platform) || /windows/.test(ua)) return "windows";
-  return "unknown";
+  if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+  if (/android/.test(ua)) return 'android';
+  if (/mac/.test(platform) || /macintosh/.test(ua)) return 'mac';
+  if (/win/.test(platform) || /windows/.test(ua)) return 'windows';
+  return 'unknown';
 }
 
 export default function DownloadClient() {
-  const [detected, setDetected] = useState<Platform>("unknown");
+  const [detected, setDetected] = useState<Platform>('unknown');
 
   useEffect(() => {
     setDetected(detectPlatform());
@@ -97,123 +104,121 @@ export default function DownloadClient() {
     <div className="bg-white min-h-screen">
       <Header />
 
-      <SectionShell eyebrow="DOWNLOAD" eyebrowNumber="01" bgClass="bg-white">
-      <div className="pt-24 pb-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-          {/* Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight text-slate-900 leading-tight">
+      <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
+        <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 text-center">
+          <PixelMissionTag index="01" label="Field deploy" className="mb-4" />
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+            <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight text-slate-900">
               Download Trooper
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-slate-500 max-w-xl mx-auto">
-              Your AI workforce, on every device. Deploy agents from your desktop or manage them on the go.
+            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-xl mx-auto">
+              Your AI workforce on every device. Deploy agents from desktop or manage them on the go.
             </p>
           </motion.div>
+        </div>
+      </section>
 
-          {/* Primary download */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="mt-12"
-          >
-            <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-              <div className="flex items-center justify-center gap-3 text-slate-800">
-                {primary.icon}
-                <span className="text-lg font-semibold">{primary.label}</span>
-                {detected !== "unknown" && (
-                  <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-xs font-medium text-emerald-700">
-                    Detected
-                  </span>
-                )}
+      <SectionShell eyebrow="Platforms" eyebrowNumber="02" bgClass="bg-slate-50">
+        <div className="py-12 md:py-16">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.05 }}
+            >
+              <div className="mx-auto max-w-md border border-slate-200 bg-white p-8 shadow-sm">
+                <div className="flex items-center justify-center gap-3 text-slate-800">
+                  {primary.icon}
+                  <span className="text-lg font-semibold">{primary.label}</span>
+                  {detected !== 'unknown' && (
+                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
+                      Detected
+                    </span>
+                  )}
+                </div>
+                <p className="mt-3 text-sm text-slate-500 text-center">{primary.description}</p>
+                <div className="mt-6 flex justify-center">
+                  <PixelButton
+                    href={primary.href}
+                    external
+                    size="lg"
+                    tone="brand"
+                    icon={<Download className="h-4 w-4" />}
+                  >
+                    {primary.buttonText}
+                  </PixelButton>
+                </div>
               </div>
+            </motion.div>
 
-              <p className="mt-3 text-sm text-slate-500">{primary.description}</p>
-
-              <Link
-                href={primary.href}
-                className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 text-base font-medium text-white hover:bg-slate-800 transition-colors w-full"
-              >
-                <Download className="h-5 w-5" />
-                {primary.buttonText}
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Platform icons row */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="mt-8 flex items-center justify-center gap-6"
-          >
-            {platforms.map((p) => (
-              <Link
-                key={p.key}
-                href={p.href}
-                className={`flex flex-col items-center gap-1.5 rounded-xl px-4 py-3 transition-colors ${
-                  p.key === primary.key
-                    ? "bg-slate-100 text-slate-900"
-                    : "text-slate-400 hover:text-slate-700 hover:bg-slate-50"
-                }`}
-              >
-                {p.icon}
-                <span className="text-xs font-medium">{p.label}</span>
-              </Link>
-            ))}
-          </motion.div>
-
-          {/* Other platforms */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.25 }}
-            className="mt-12"
-          >
-            <div className="flex items-center justify-center gap-2 text-sm text-slate-400 mb-6">
-              <ChevronDown className="h-4 w-4" />
-              <span>Also available on</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              {others.map((p) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35, delay: 0.1 }}
+              className="mt-8 flex items-center justify-center gap-6 flex-wrap"
+            >
+              {platforms.map((p) => (
                 <Link
                   key={p.key}
                   href={p.href}
-                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-4 hover:border-slate-300 hover:shadow-sm transition-all"
+                  className={`flex flex-col items-center gap-1.5 px-4 py-3 transition-colors ${
+                    p.key === primary.key
+                      ? 'text-slate-900'
+                      : 'text-slate-400 hover:text-slate-700'
+                  }`}
                 >
-                  <div className="text-slate-600">{p.icon}</div>
-                  <div className="text-left">
-                    <div className="text-sm font-medium text-slate-800">{p.label}</div>
-                    <div className="text-xs text-slate-400">{p.buttonText}</div>
-                  </div>
+                  {p.icon}
+                  <span className="text-xs font-medium font-mono uppercase tracking-wide">{p.label}</span>
                 </Link>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Web app fallback */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.35 }}
-            className="mt-12 text-sm text-slate-400"
-          >
-            Or use{" "}
-            <Link
-              href="https://app.trooper.so"
-              className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium"
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.15 }}
+              className="mt-12"
             >
-              app.trooper.so
-            </Link>{" "}
-            in your browser — no download needed.
-          </motion.div>
+              <div className="flex items-center justify-center gap-2 text-sm text-slate-400 mb-6">
+                <ChevronDown className="h-4 w-4" />
+                <span>Also available on</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                {others.map((p) => (
+                  <Link
+                    key={p.key}
+                    href={p.href}
+                    className="flex items-center gap-3 border border-slate-200 bg-white px-4 py-4 hover:border-trooper-100 transition-colors"
+                  >
+                    <div className="text-slate-600">{p.icon}</div>
+                    <div className="text-left">
+                      <div className="text-sm font-medium text-slate-800">{p.label}</div>
+                      <div className="text-xs text-slate-400">{p.buttonText}</div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35, delay: 0.2 }}
+              className="mt-12 text-center"
+            >
+              <p className="text-sm text-slate-500 mb-4">No install required</p>
+              <PixelButton
+                href="https://app.trooper.so"
+                external
+                variant="outline"
+                tone="dark"
+                icon={<ArrowRight className="h-4 w-4" />}
+              >
+                Open app.trooper.so
+              </PixelButton>
+            </motion.div>
+          </div>
         </div>
-      </div>
       </SectionShell>
     </div>
   );
