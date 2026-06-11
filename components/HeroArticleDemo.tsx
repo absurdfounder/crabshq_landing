@@ -9,6 +9,11 @@ import {
 } from "lucide-react";
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
+import { DemoTaskModal } from './demoTaskModal';
+import {
+  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, type DemoModalMessage,
+  type DemoSubtask, type DemoToolLog, type TaskExecStep,
+} from './demoTaskExecution';
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
@@ -109,11 +114,14 @@ function ComposerTag({ children, icon: Icon }: { children: ReactNode; icon?: typ
   );
 }
 
-function DemoTaskCard({ task, index }: { task: Task; index: number }) {
+function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number; highlighted?: boolean }) {
   return (
     <div style={{
-      background: C.card, borderRadius: 10, border: `1px solid ${C.border}`, padding: "10px 11px", marginBottom: 6,
-      boxShadow: "0 1px 2px rgba(28,25,23,0.04)", animation: `cardIn 0.4s ease ${index * 80}ms both`,
+      background: C.card, borderRadius: 10,
+      border: highlighted ? `2px solid ${C.brand}` : `1px solid ${C.border}`,
+      padding: "10px 11px", marginBottom: 6,
+      boxShadow: highlighted ? `0 0 0 3px rgba(0,122,90,0.12), 0 1px 2px rgba(28,25,23,0.04)` : "0 1px 2px rgba(28,25,23,0.04)",
+      animation: `cardIn 0.4s ease ${index * 80}ms both`,
     }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.45, marginBottom: 8 }}>{task.title}</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
@@ -138,7 +146,7 @@ function DemoTaskCard({ task, index }: { task: Task; index: number }) {
   );
 }
 
-function DemoKanbanColumn({ colKey, tasks }: { colKey: DemoColumnId; tasks: Task[] }) {
+function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoColumnId; tasks: Task[]; highlightedTaskId?: number | null }) {
   const col = KANBAN_COLUMNS[colKey];
   return (
     <div style={{ width: 210, minWidth: 210, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
@@ -158,7 +166,7 @@ function DemoKanbanColumn({ colKey, tasks }: { colKey: DemoColumnId; tasks: Task
             <p style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, margin: 0 }}>Nothing here yet</p>
             <p style={{ fontSize: 10, color: C.textSubtle, margin: "4px 0 0", lineHeight: 1.4 }}>Drop a task here or add one with +</p>
           </div>
-        ) : tasks.map((t, i) => <DemoTaskCard key={t.id} task={t} index={i} />)}
+        ) : tasks.map((t, i) => <DemoTaskCard key={t.id} task={t} index={i} highlighted={highlightedTaskId === t.id} />)}
       </div>
     </div>
   );
@@ -474,7 +482,7 @@ function DemoChatPane({
   );
 }
 
-function DemoBoardPane({ tasks }: { tasks: Task[] }) {
+function DemoBoardPane({ tasks, highlightedTaskId }: { tasks: Task[]; highlightedTaskId?: number | null }) {
   const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
   tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
 
@@ -496,7 +504,7 @@ function DemoBoardPane({ tasks }: { tasks: Task[] }) {
       </div>
       <div className="Trooper-scrollbar" style={{ display: "flex", gap: 10, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
         {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
-          <DemoKanbanColumn key={k} colKey={k} tasks={cols[k]} />
+          <DemoKanbanColumn key={k} colKey={k} tasks={cols[k]} highlightedTaskId={highlightedTaskId} />
         ))}
       </div>
     </div>
@@ -514,9 +522,36 @@ export default function TrooperDemo() {
   const [activeChannel, setActiveChannel] = useState("general");
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
+  const [taskModalOpen, setTaskModalOpen] = useState(false);
+  const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(INITIAL_SUBTASKS);
+  const [modalToolLogs, setModalToolLogs] = useState<DemoToolLog[]>([]);
+  const [modalMessages, setModalMessages] = useState<DemoModalMessage[]>([]);
+  const [modalDelivery, setModalDelivery] = useState<string | null>(null);
+  const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typeRef = useRef<NodeJS.Timeout | null>(null);
+  const modalMsgCounter = useRef(0);
+
+  const totalScriptLength = CHAT_SCRIPT.length + TASK_EXEC_SCRIPT.length;
+  const spotlightTask = tasks.find(t => t.id === SPOTLIGHT_TASK_ID);
+
+  const resetTaskModal = useCallback(() => {
+    setTaskModalOpen(false);
+    setModalSubtasks(INITIAL_SUBTASKS.map(s => ({ ...s, status: 'pending' as const })));
+    setModalToolLogs([]);
+    setModalMessages([]);
+    setModalDelivery(null);
+    setHighlightedTaskId(null);
+    modalMsgCounter.current = 0;
+  }, []);
+
+  const resetDemo = useCallback(() => {
+    setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
+    setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general");
+    resetTaskModal();
+    setScriptIndex(0);
+  }, [resetTaskModal]);
 
   const pauseDemo = useCallback(() => setIsRunning(false), []);
 
@@ -527,14 +562,63 @@ export default function TrooperDemo() {
     if (typeRef.current) clearInterval(typeRef.current);
   }, []);
 
+  const applyTaskExecStep = useCallback((step: TaskExecStep) => {
+    switch (step.type) {
+      case 'moveTask':
+        setTasks(p => p.map(t => t.id === step.taskId ? { ...t, col: step.col } : t));
+        setHighlightedTaskId(step.taskId);
+        break;
+      case 'openTaskModal':
+        setTaskModalOpen(true);
+        setHighlightedTaskId(step.taskId);
+        setActivePage('tasks');
+        break;
+      case 'subtask':
+        setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
+        break;
+      case 'tool':
+        setModalToolLogs(p => [...p, { ...step.log, status: 'running' }]);
+        break;
+      case 'toolDone':
+        setModalToolLogs(p => p.map(l => l.id === step.id ? { ...l, status: 'done' as const } : l));
+        break;
+      case 'modalMsg': {
+        modalMsgCounter.current += 1;
+        setModalMessages(p => [...p, { id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: '14:57' }]);
+        break;
+      }
+      case 'deliver':
+        setModalDelivery(step.name);
+        break;
+      case 'closeTaskModal':
+        setTaskModalOpen(false);
+        break;
+      case 'chatMsg':
+        setMessages(p => [...p, { sender: step.sender, role: step.role, text: step.text, isHuman: false, time: step.time }]);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
   const processStep = useCallback((idx: number) => {
-    if (idx >= CHAT_SCRIPT.length) {
+    if (idx >= totalScriptLength) {
       timerRef.current = setTimeout(() => {
-        setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
-        setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general"); setScriptIndex(0); setIsRunning(true);
+        resetDemo();
+        setIsRunning(true);
       }, 5000);
       return;
     }
+
+    if (idx >= CHAT_SCRIPT.length) {
+      const execStep = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
+      timerRef.current = setTimeout(() => {
+        applyTaskExecStep(execStep);
+        setScriptIndex(idx + 1);
+      }, execStep.delay);
+      return;
+    }
+
     const s = CHAT_SCRIPT[idx];
     timerRef.current = setTimeout(() => {
       if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); setScriptIndex(idx + 1); return; }
@@ -555,15 +639,14 @@ export default function TrooperDemo() {
       if (s.type === "reaction") { setMessages(p => { const c = [...p]; if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } }; return c; }); setScriptIndex(idx + 1); return; }
       if (s.type === "addTasks") { setTasks(p => [...p, ...(s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS)]); setActivePage("tasks"); setScriptIndex(idx + 1); return; }
     }, s.delay);
-  }, []);
+  }, [applyTaskExecStep, resetDemo, totalScriptLength]);
 
   useEffect(() => { if (!isRunning) return; processStep(scriptIndex); return cleanUp; }, [scriptIndex, isRunning, processStep, cleanUp]);
 
   const restart = () => {
     cleanUp();
-    setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
-    setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general");
-    setScriptIndex(0); setIsRunning(true);
+    resetDemo();
+    setIsRunning(true);
   };
 
   const composerPlaceholder = inputText ? "" : (messages.length > 0 ? "Send follow-up" : "Do anything with AI…");
@@ -576,6 +659,8 @@ export default function TrooperDemo() {
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .demo-spin { animation: spin 1s linear infinite; }
         .Trooper-scrollbar::-webkit-scrollbar{width:4px;height:4px}
         .Trooper-scrollbar::-webkit-scrollbar-track{background:transparent}
         .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.border};border-radius:4px}
@@ -616,7 +701,7 @@ export default function TrooperDemo() {
             </div>
           </div>
 
-          <div style={{ display: "flex", height: 540, background: C.bg }}>
+          <div style={{ position: "relative", display: "flex", height: 540, background: C.bg }}>
             <DemoSidebarRail />
             <DemoSidebarNav
               sidebarTab={sidebarTab}
@@ -639,13 +724,25 @@ export default function TrooperDemo() {
                   composerPlaceholder={composerPlaceholder}
                   chatRef={chatRef}
                 />
-                <DemoBoardPane tasks={tasks} />
+                <DemoBoardPane tasks={tasks} highlightedTaskId={highlightedTaskId} />
               </>
             ) : (
               <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
                 <DemoMainPage pageId={activePage} />
               </div>
             )}
+
+            <DemoTaskModal
+              open={taskModalOpen}
+              taskTitle={spotlightTask?.title || 'SEO Optimization for Wonder'}
+              assignee="Aria"
+              subtasks={modalSubtasks}
+              toolLogs={modalToolLogs}
+              messages={modalMessages}
+              delivery={modalDelivery}
+              statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
+              onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
+            />
           </div>
         </div>
       </div>
