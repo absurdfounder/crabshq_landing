@@ -6,7 +6,7 @@ import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import { PixelMissionTag } from './PixelAtmosphere';
 
-const sectionXPadding = "px-4 sm:px-6 lg:px-8";
+const sectionXPadding = "px-4 sm:px-5 md:px-0 lg:px-2";
 
 /** Gantt + accent palette — warm forest/olive from logo, not Tailwind emerald */
 const GANTT = {
@@ -84,7 +84,7 @@ const FaviconImg = ({
 };
 
 const Fav = ({ domain, size = 28 }: { domain: string; size?: number }) => (
-  <div className="border border-dashed border-slate-300 rounded-sm p-2.5 flex items-center justify-center bg-white min-h-[44px] min-w-[44px]">
+  <div className="border border-dashed border-slate-300 rounded-sm p-1.5 sm:p-2.5 flex items-center justify-center bg-white min-h-[34px] min-w-[34px] sm:min-h-[44px] sm:min-w-[44px]">
     <FaviconImg domain={domain} size={size} alt={domain.split('.')[0]} />
   </div>
 );
@@ -207,13 +207,13 @@ const FlowLine = ({ className = '' }: { className?: string }) => (
 
 /* ─── Visual 1: AI Org — Org chart with Trooper ─── */
 const OrgVisual = () => (
-  <div className="flex flex-col items-center justify-center h-full p-5">
+  <div className="flex flex-col items-center justify-center h-full p-3 sm:p-5">
     {/* CEO / Founder */}
     <div className="flex flex-col items-center">
       <div className="w-14 h-14 rounded-full border-2 border-white overflow-hidden bg-transparent flex items-center justify-center -mb-4 relative z-10 p-1.5">
         <TrooperChar />
       </div>
-      <div className="bg-white rounded-sm border border-slate-200 px-6 py-4 text-center min-w-[180px]">
+      <div className="bg-white rounded-sm border border-slate-200 px-4 sm:px-6 py-3 sm:py-4 text-center min-w-0 w-full max-w-[220px] sm:max-w-none sm:min-w-[180px]">
         <p className="font-semibold text-[14px] text-slate-900 mt-1">Trooper Prime</p>
         <p className="text-[12px] text-slate-400">CEO, Founder</p>
       </div>
@@ -231,16 +231,16 @@ const OrgVisual = () => (
     </div>
 
     {/* Managers row */}
-    <div className="flex gap-6 sm:gap-10">
+    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-10 w-full max-w-[420px]">
       {[
         { name: 'Research Trooper', role: 'Head of Research', count: 24 },
         { name: 'Dev Trooper', role: 'Head of Engineering', count: 18 },
       ].map((mgr, i) => (
-        <div key={i} className="flex flex-col items-center">
+        <div key={i} className="flex flex-col items-center w-full sm:w-auto">
           <div className="w-11 h-11 rounded-full border-2 border-white overflow-hidden bg-transparent flex items-center justify-center -mb-3 relative z-10 p-1">
             <TrooperChar />
           </div>
-          <div className="bg-white rounded-sm border border-slate-200 px-5 py-3 text-center min-w-[150px]">
+          <div className="bg-white rounded-sm border border-slate-200 px-4 sm:px-5 py-3 text-center min-w-0 w-full max-w-[220px] sm:max-w-none sm:min-w-[150px]">
             <p className="font-semibold text-[13px] text-slate-900 mt-0.5">{mgr.name}</p>
             <p className="text-[11px] text-slate-400">{mgr.role}</p>
           </div>
@@ -262,19 +262,19 @@ const IntegrationsVisual = () => {
   const row2 = ['notion.so', 'atlassian.com', 'dropbox.com', 'asana.com', 'gmail.com', 'github.com'];
 
   return (
-    <div className="flex flex-col justify-center h-full p-5 sm:p-6">
-      <div className="border border-dashed border-slate-300 rounded-sm p-4 bg-white/60">
-        <div className="grid grid-cols-6 gap-2 mb-2">
-          {row1.map((d) => <Fav key={d} domain={d} />)}
+    <div className="flex flex-col justify-center h-full p-3 sm:p-5 md:p-6">
+      <div className="border border-dashed border-slate-300 rounded-sm p-2.5 sm:p-4 bg-white/60">
+        <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+          {row1.map((d) => <Fav key={d} domain={d} size={22} />)}
         </div>
-        <div className="grid grid-cols-6 gap-2">
-          {row2.map((d) => <Fav key={d} domain={d} />)}
+        <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2">
+          {row2.map((d) => <Fav key={d} domain={d} size={22} />)}
         </div>
-        <p className="text-center text-[12px] text-slate-400 font-mono mt-4 tracking-wide">Over 3000 integrations</p>
+        <p className="text-center text-[11px] sm:text-[12px] text-slate-400 font-mono mt-3 sm:mt-4 tracking-wide">Over 3000 integrations</p>
       </div>
 
-      <div className="mt-4 flex items-center gap-2.5 flex-wrap">
-        <span className="font-mono text-xl font-bold text-slate-400 leading-none tabular-nums">3k</span>
+      <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-2.5 flex-wrap">
+        <span className="font-mono text-lg sm:text-xl font-bold text-slate-400 leading-none tabular-nums">3k</span>
         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-trooper-50 border border-trooper-100">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
@@ -282,7 +282,7 @@ const IntegrationsVisual = () => {
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">Live</span>
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.18em] text-slate-500 leading-snug">
           Integrations via browser and native APIs
         </span>
       </div>
@@ -292,7 +292,7 @@ const IntegrationsVisual = () => {
 
 /* ─── Cropped app vignette chrome (not a full dashboard) ─── */
 const VignetteChrome = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="flex flex-col h-full justify-center p-5 sm:p-6">
+  <div className="flex flex-col h-full justify-center p-3 sm:p-5 md:p-6">
     <div className="rounded-xl border border-stone-200 bg-white shadow-[0_8px_24px_-8px_rgba(28,25,23,0.12)] overflow-hidden">
       <div className="flex items-center gap-2.5 px-3.5 py-2 border-b border-stone-100 bg-[#FDFCFB]">
         <div className="flex gap-1.5">
@@ -383,8 +383,8 @@ const MemoryVisual = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full p-5 sm:p-6">
-      <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 min-h-0">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">
           <span className="w-1.5 h-1.5 rounded-sm bg-slate-400" />
           Recalled from memory
@@ -449,8 +449,8 @@ const CollabVisual = () => {
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[460px] h-full flex flex-col p-5 overflow-x-auto">
-      <div className="min-w-[600px] flex-1 flex flex-col">
+    <div ref={ref} className="min-h-[300px] sm:min-h-[460px] h-full flex flex-col p-3 sm:p-5 overflow-hidden">
+      <div className="w-full flex-1 flex flex-col min-w-0">
         {/* Week headers */}
         <div className="grid grid-cols-5 mb-0.5">
           {weeks.map((w) => (
@@ -505,8 +505,8 @@ const CollabVisual = () => {
           </div>
 
           {/* Message bubbles */}
-          <div className="absolute z-20" style={{ bottom: '80px', left: '1%', width: 'clamp(200px, 38%, 320px)' }}>
-            <div className="border border-slate-200 rounded-sm p-2.5 bg-white/90 backdrop-blur-sm">
+          <div className="absolute z-20 left-0 right-0 sm:left-auto sm:right-auto" style={{ bottom: '72px', width: '100%', maxWidth: '100%' }}>
+            <div className="mx-1 sm:mx-0 sm:absolute border border-slate-200 rounded-sm p-2 sm:p-2.5 bg-white/95 backdrop-blur-sm" style={{ width: 'clamp(180px, 92%, 320px)' }}>
               <div className="flex items-start gap-2">
                 <div className="w-5 h-5 rounded-full bg-transparent border border-trooper-100 flex items-center justify-center flex-shrink-0 p-0.5 overflow-hidden">
                   <TrooperChar />
@@ -524,7 +524,7 @@ const CollabVisual = () => {
           </div>
 
           {/* Avatar stack */}
-          <div className="absolute z-20 flex flex-col items-center gap-1" style={{ bottom: '16px', right: '4%' }}>
+          <div className="absolute z-20 flex flex-col items-center gap-1 right-1 sm:right-[4%]" style={{ bottom: '12px' }}>
             <div className="flex -space-x-2">
               <div className="w-7 h-7 rounded-full border-2 border-white bg-transparent flex items-center justify-center overflow-hidden p-1">
                 <TrooperChar />
@@ -543,7 +543,7 @@ const CollabVisual = () => {
 
 /* ─── Visual 6: OpenClaw Runtime ─── */
 const OpenClawVisual = () => (
-  <div className="relative flex flex-col h-full justify-between p-6 sm:p-8 overflow-hidden">
+  <div className="relative flex flex-col h-full justify-between p-4 sm:p-6 md:p-8 overflow-hidden min-h-0">
     <FlowLine className="inset-0 opacity-40" />
     <div className="relative z-10 space-y-6">
       <div className="border border-dashed border-slate-300 rounded-sm overflow-hidden bg-white/60 backdrop-blur-sm">
@@ -655,7 +655,7 @@ const TicketVisual = () => {
        Each goal level visually CONTAINS the next, so the task literally lives
        inside the agent goal, project, and mission. ─── */
 const GoalVisual = () => (
-  <div className="flex flex-col h-full p-5 sm:p-6 justify-center bg-white">
+  <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 justify-center bg-white min-h-0">
     {/* L1 · Mission */}
     <div className="relative border border-slate-300 bg-white pt-5 px-4 pb-4">
       <div className="absolute -top-2 left-3 bg-white px-1.5 flex items-center gap-1.5">
@@ -768,7 +768,7 @@ const BYOAVisual = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full p-5 sm:p-6 bg-white">
+    <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 bg-white min-h-0">
       {/* Window chrome */}
       <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
         <div className="flex items-center gap-2">
@@ -802,7 +802,7 @@ const BYOAVisual = () => {
           {yourTeam.map((m, i) => (
             <div
               key={`${m.role}-${i}`}
-              className={`relative flex flex-col items-center justify-center gap-1 py-3 px-1 ${
+              className={`relative flex flex-col items-center justify-center gap-1 py-2.5 sm:py-3 px-0.5 sm:px-1 ${
                 m.recommended ? 'bg-trooper-50/60' : ''
               }`}
             >
@@ -842,7 +842,7 @@ const BYOAVisual = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-5 gap-1.5 flex-1">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-1.5 flex-1">
           {providers.map((p) => (
             <div
               key={p}
@@ -873,8 +873,8 @@ const BYOAVisual = () => {
        Uses the shared pixel-art scene as a subtle backdrop, softened with a
        translucent white wash so the inner card remains the focal point. ─── */
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative h-full flex flex-col p-4 sm:p-6 bg-slate-100/80">
-    <div className="relative flex-1 flex flex-col border border-slate-200 bg-white overflow-hidden shadow-sm">
+  <div className="relative h-full flex flex-col p-2 sm:p-4 lg:p-6 bg-slate-50/70 sm:bg-slate-100/80">
+    <div className="relative flex-1 flex flex-col border border-slate-200 bg-white overflow-hidden shadow-sm min-h-0">
       {children}
     </div>
   </div>
@@ -912,8 +912,15 @@ export default function OldWays() {
 
   useEffect(() => {
     const calculateTransforms = () => {
+      const isMobile = window.innerWidth < 1024;
       const stickyTop = window.innerHeight * 0.15;
       const transforms: { scale: number; opacity: number; y: number }[] = [];
+
+      if (isMobile) {
+        setCardTransforms(cards.map(() => ({ scale: 1, opacity: 1, y: 0 })));
+        return;
+      }
+
       let activeCardIndex = 0;
       cardRefs.current.forEach((card, index) => {
         if (!card) return;
@@ -940,8 +947,8 @@ export default function OldWays() {
 
   return (
     <section className="bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div className="mb-12 md:mb-14 max-w-2xl">
+      <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
+        <div className="mb-8 sm:mb-12 md:mb-14 max-w-2xl">
           <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
             Nine deploy orders for your AI unit.
           </h2>
@@ -956,11 +963,11 @@ export default function OldWays() {
               <div
                 key={index}
                 ref={(el) => { cardRefs.current[index] = el; }}
-                className="lg:sticky mb-6 lg:mb-8"
-                style={{ top: 'calc(15vh)', zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
+                className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
+                style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="relative bg-white border border-slate-200 overflow-hidden transition-[filter] duration-200 min-h-[520px] flex flex-col"
+                  className="relative bg-white border border-slate-200 overflow-hidden transition-[filter] duration-200 min-h-0 lg:min-h-[520px] flex flex-col"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
@@ -970,22 +977,22 @@ export default function OldWays() {
                   }}
                 >
                   {index === 8 && (
-                    <span className="absolute top-4 right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
+                    <span className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
                       Flagship
                     </span>
                   )}
-                  <div className="grid md:flex items-stretch flex-1">
-                    <div className={`${sectionXPadding} pt-8 sm:pt-10 pb-8 sm:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                  <div className="grid md:flex items-stretch flex-1 min-h-0">
+                    <div className={`${sectionXPadding} pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
                       <PixelMissionTag
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
                       />
-                      <h3 className="font-funneldisplay text-xl sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
+                      <h3 className="font-funneldisplay text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
                         {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
                       </h3>
-                      <p className="text-sm text-slate-500 mt-4 leading-relaxed">{card.description}</p>
+                      <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
                     </div>
-                    <div className="w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col">
+                    <div className="w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
                       <PixelFramedVisual>
                         {cardVisuals[index]}
                       </PixelFramedVisual>

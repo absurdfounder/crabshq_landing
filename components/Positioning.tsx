@@ -27,7 +27,7 @@ const pad = (n: number) => String(n + 1).padStart(2, '0');
 
 const ProblemsSolved = () => (
   <section className="bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <div className="max-w-7xl mx-auto px-0 py-16 md:py-24">
       <div className="mb-10">
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
           Before and after Trooper.
@@ -122,7 +122,7 @@ const CAPABILITY_TAGS = [
 
 const UnderTheHood = () => (
   <section className="bg-slate-50">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <div className="max-w-7xl mx-auto px-0 py-16 md:py-24">
       <div className="mb-10">
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
           Built for command, not chat.

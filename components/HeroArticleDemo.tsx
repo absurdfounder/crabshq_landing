@@ -10,8 +10,9 @@ import {
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
+import { DemoFavicon } from './DemoFavicon';
 import {
-  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, DEMO_ARTIFACTS,
+  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, DEMO_ARTIFACTS, DEMO_ORG,
   type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep,
 } from './demoTaskExecution';
 
@@ -234,8 +235,8 @@ function DemoSidebarRail() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
         <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", imageRendering: "pixelated" }} />
         <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
-        <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 4 }}>
-          <img src="/images/trooper-logomark.png" alt="" style={{ width: 28, height: 28, objectFit: "contain", imageRendering: "pixelated" }} />
+        <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
+          <DemoFavicon domain={DEMO_ORG.domain} size={24} rounded="md" alt={DEMO_ORG.name} />
         </div>
         <button type="button" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "default" }}>
           <Plus size={16} strokeWidth={1.5} />
@@ -420,7 +421,7 @@ function DemoSidebarNav({
           borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
           boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text, cursor: "pointer",
         }}>
-          <img src="/images/trooper-logomark.png" alt="" style={{ width: 20, height: 20, objectFit: "contain", imageRendering: "pixelated" }} />
+          <DemoFavicon domain={DEMO_ORG.domain} size={20} rounded="md" alt={DEMO_ORG.name} />
           New chat
         </button>
       </div>
@@ -511,8 +512,8 @@ function DemoChatPane({
                 <Plus size={16} strokeWidth={1.75} />
               </div>
               <ComposerTag>
-                <img src="/images/trooper-logomark.png" alt="" style={{ width: 14, height: 14, objectFit: "contain", imageRendering: "pixelated" }} />
-                Trooper Auto
+                <DemoFavicon domain={DEMO_ORG.domain} size={14} rounded="sm" alt={DEMO_ORG.name} />
+                {DEMO_ORG.name}
               </ComposerTag>
               <ComposerTag>Auto</ComposerTag>
             </div>
@@ -641,7 +642,14 @@ export default function TrooperDemo() {
       case 'modalMsg': {
         modalMsgCounter.current += 1;
         const t = step.time || `14:${57 + modalMsgCounter.current}`;
-        setModalFeed(p => [...p, { kind: 'message', id: `m${modalMsgCounter.current}`, sender: step.sender, text: step.text, time: t }]);
+        setModalFeed(p => [...p, {
+          kind: 'message',
+          id: `m${modalMsgCounter.current}`,
+          sender: step.sender,
+          text: step.text,
+          time: t,
+          tags: step.tags,
+        }]);
         break;
       }
       case 'openArtifact':

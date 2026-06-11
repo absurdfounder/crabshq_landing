@@ -72,7 +72,7 @@ export default function Home() {
       </div>
 
       <SectionShell eyebrow="Allied Units" eyebrowNumber="02" bgClass="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10 md:pb-14">
+        <div className="max-w-7xl mx-auto px-0 pt-4 pb-10 md:pb-14">
           <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 bg-white overflow-hidden">
             {trustedLogos.map((logo, i) => (
               <div

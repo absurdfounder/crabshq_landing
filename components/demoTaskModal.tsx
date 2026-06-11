@@ -3,11 +3,13 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import {
   X, Check, Loader2, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
-  ChevronUp, Layers, Download, ArrowUp, ListTodo,
+  ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag,
 } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
-import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoToolLog } from './demoTaskExecution';
-import { getToolIconName } from './demoTaskExecution';
+import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } from './demoTaskExecution';
+import { getToolIconName, SPOTLIGHT_TASK_TAGS, DEMO_ORG } from './demoTaskExecution';
+import { DemoFavicon } from './DemoFavicon';
+import { getToolFaviconDomain } from '@/lib/demoToolFavicon';
 
 const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Vaibhav: { img: 'https://avatars.githubusercontent.com/u/25829699?v=4' },
@@ -36,9 +38,46 @@ function Av({ name, size = 24 }: { name: string; size?: number }) {
   return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />;
 }
 
+const TAG_COLORS: Record<DemoTag['type'], { bg: string; border: string; color: string }> = {
+  channel: { bg: '#F5F5F4', border: '#E7E5E4', color: '#57534E' },
+  goal: { bg: '#ECFDF5', border: '#A7F3D0', color: '#065F46' },
+  site: { bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
+  topic: { bg: '#EFF6FF', border: '#BFDBFE', color: '#1E40AF' },
+};
+
+export function DemoTagBadge({ tag, size = 'sm' }: { tag: DemoTag; size?: 'sm' | 'xs' }) {
+  const palette = TAG_COLORS[tag.type];
+  const compact = size === 'xs';
+  const iconSize = compact ? 10 : 11;
+  const padY = compact ? 1 : 2;
+  const padX = compact ? 5 : 7;
+  const fontSize = compact ? 9 : 10;
+
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', gap: compact ? 3 : 4,
+      padding: `${padY}px ${padX}px`, borderRadius: 999,
+      background: palette.bg, border: `1px solid ${palette.border}`,
+      color: palette.color, fontSize, fontWeight: 600, lineHeight: 1.2,
+      whiteSpace: 'nowrap', flexShrink: 0,
+    }}>
+      {tag.type === 'site' && tag.domain ? (
+        <DemoFavicon domain={tag.domain} size={iconSize + 2} rounded="sm" />
+      ) : tag.type === 'channel' ? (
+        <Hash size={iconSize} strokeWidth={2.25} />
+      ) : tag.type === 'goal' ? (
+        <Target size={iconSize} strokeWidth={2.25} />
+      ) : (
+        <Tag size={iconSize} strokeWidth={2.25} />
+      )}
+      {tag.type === 'channel' ? `#${tag.label}` : tag.label}
+    </span>
+  );
+}
+
 type Turn = {
   agent: string;
-  message?: { text: string; time: string };
+  message?: { text: string; time: string; tags?: DemoTag[] };
   tools: DemoToolLog[];
 };
 
@@ -46,7 +85,11 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
   const turns: Turn[] = [];
   for (const item of feed) {
     if (item.kind === 'message') {
-      turns.push({ agent: item.sender, message: { text: item.text, time: item.time }, tools: [] });
+      turns.push({
+        agent: item.sender,
+        message: { text: item.text, time: item.time, tags: item.tags },
+        tools: [],
+      });
       continue;
     }
     const last = turns[turns.length - 1];
@@ -61,38 +104,48 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
 
 function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean }) {
   const running = log.status === 'running';
+  const faviconDomain = getToolFaviconDomain(log);
+
   return (
-    <div style={{ display: 'flex', gap: 8, minHeight: 28 }}>
-      {/* Rail */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 16, flexShrink: 0 }}>
-        <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />
+    <div style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 32 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 18, flexShrink: 0, paddingTop: 2 }}>
+        <div style={{ width: 1, flex: 1, background: C.border, minHeight: 6 }} />
         <div style={{
-          width: 20, height: 20, borderRadius: 6, flexShrink: 0,
+          width: 22, height: 22, borderRadius: 6, flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: C.card, border: `1px solid ${C.border}`,
+          background: C.card, border: `1px solid ${C.border}`, overflow: 'hidden',
         }}>
-          <ToolIcon tool={log.tool} />
-        </div>
-        {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />}
-      </div>
-      {/* Content */}
-      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 0 : 6, paddingTop: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{log.label}</span>
-          {log.detail && (
-            <span style={{
-              fontSize: 11, color: C.textSubtle, fontFamily: 'ui-monospace, monospace',
-              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200,
-            }}>
-              {log.detail}
-            </span>
+          {faviconDomain ? (
+            <DemoFavicon domain={faviconDomain} size={14} rounded="sm" />
+          ) : (
+            <ToolIcon tool={log.tool} />
           )}
-          <span style={{ marginLeft: 'auto', flexShrink: 0 }}>
-            {running
-              ? <Loader2 size={13} strokeWidth={2.5} className="demo-spin" color={C.brand} />
-              : <Check size={13} strokeWidth={2.5} color="#10B981" />}
-          </span>
         </div>
+        {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 6 }} />}
+      </div>
+      <div style={{
+        flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8,
+        paddingBottom: isLast ? 2 : 8, paddingTop: 2,
+      }}>
+        <span style={{
+          fontSize: 11.5, fontWeight: 600, color: C.text, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          flexShrink: 0, lineHeight: 1.2,
+        }}>
+          {log.label}
+        </span>
+        {log.detail && (
+          <span style={{
+            fontSize: 11, color: C.textSubtle, lineHeight: 1.2,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0,
+          }}>
+            {log.detail}
+          </span>
+        )}
+        <span style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', height: 18 }}>
+          {running
+            ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
+            : <Check size={14} strokeWidth={2.5} color="#10B981" />}
+        </span>
       </div>
     </div>
   );
@@ -101,7 +154,7 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
 function ToolTimeline({ tools }: { tools: DemoToolLog[] }) {
   if (tools.length === 0) return null;
   return (
-    <div style={{ marginTop: 6, marginLeft: 2, animation: 'fadeIn 0.2s ease both' }}>
+    <div style={{ marginTop: 8, marginLeft: 0, animation: 'fadeIn 0.2s ease both' }}>
       {tools.map((log, i) => (
         <ToolTimelineRow key={log.id} log={log} isLast={i === tools.length - 1} />
       ))}
@@ -112,8 +165,8 @@ function ToolTimeline({ tools }: { tools: DemoToolLog[] }) {
 function AgentTurn({ turn }: { turn: Turn }) {
   const person = ALL_PEOPLE[turn.agent];
   return (
-    <div style={{ marginBottom: 18, animation: 'fadeIn 0.25s ease both' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+    <div style={{ marginBottom: 20, animation: 'fadeIn 0.25s ease both' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
         <Av name={turn.agent} size={28} />
         <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{turn.agent}</span>
         {person?.title && (
@@ -127,7 +180,16 @@ function AgentTurn({ turn }: { turn: Turn }) {
       </div>
       <div style={{ paddingLeft: 36 }}>
         {turn.message && (
-          <p style={{ fontSize: 13, lineHeight: 1.7, color: C.text, margin: '0 0 2px' }}>{turn.message.text}</p>
+          <>
+            <p style={{ fontSize: 13, lineHeight: 1.65, color: C.text, margin: '0 0 6px' }}>{turn.message.text}</p>
+            {turn.message.tags && turn.message.tags.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 4 }}>
+                {turn.message.tags.map(tag => (
+                  <DemoTagBadge key={`${tag.type}-${tag.label}`} tag={tag} size="xs" />
+                ))}
+              </div>
+            )}
+          </>
         )}
         <ToolTimeline tools={turn.tools} />
       </div>
@@ -280,13 +342,15 @@ function ArtifactPanel({ artifact }: { artifact: DemoArtifact | null }) {
   );
 }
 
-function LiveRunStrip({ agent, toolLabel }: { agent: string; toolLabel?: string }) {
+function LiveRunStrip({ agent, toolLabel, toolLog }: { agent: string; toolLabel?: string; toolLog?: DemoToolLog }) {
+  const faviconDomain = toolLog ? getToolFaviconDomain(toolLog) : null;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', animation: 'fadeIn 0.2s ease both' }}>
       <Av name={agent} size={24} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
+        {faviconDomain && <DemoFavicon domain={faviconDomain} size={16} rounded="sm" />}
         <Loader2 size={14} className="demo-spin" color={C.brand} />
-        <span style={{ fontSize: 12, color: C.textMuted }}>
+        <span style={{ fontSize: 12, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {toolLabel ? `Running ${toolLabel}…` : 'Thinking…'}
         </span>
       </div>
@@ -366,11 +430,13 @@ export function DemoTaskModal({
           <div style={{ flex: '0 0 54%', minWidth: 0, display: 'flex', flexDirection: 'column', borderRight: `1px solid ${C.border}` }}>
             <div ref={threadRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
               <div style={{ padding: '14px 18px 8px', maxWidth: 480, margin: '0 auto' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
                   <span style={{ fontSize: 9, fontWeight: 700, color: statusColor, background: statusBg, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: 0.4 }}>
                     {statusLabel}
                   </span>
-                  <span style={{ fontSize: 9, fontWeight: 600, color: C.textMuted, background: C.bg, padding: '2px 7px', borderRadius: 999 }}>#product-launch</span>
+                  {SPOTLIGHT_TASK_TAGS.map(tag => (
+                    <DemoTagBadge key={`${tag.type}-${tag.label}`} tag={tag} size="xs" />
+                  ))}
                 </div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, color: C.text, margin: '0 0 8px', lineHeight: 1.3, letterSpacing: '-0.02em', paddingRight: 28 }}>
                   {taskTitle}
@@ -400,7 +466,7 @@ export function DemoTaskModal({
 
                 {hasRunningTool && (
                   <div style={{ paddingLeft: 4 }}>
-                    <LiveRunStrip agent={runningAgent} toolLabel={runningTool?.label} />
+                    <LiveRunStrip agent={runningAgent} toolLabel={runningTool?.label} toolLog={runningTool} />
                   </div>
                 )}
 
@@ -419,7 +485,11 @@ export function DemoTaskModal({
                   borderRadius: 12, border: `1px solid ${C.border}`, background: C.card,
                   padding: '8px 10px 6px',
                 }}>
-                  <div style={{ fontSize: 12, color: C.textSubtle, minHeight: 28, padding: '2px 4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
+                    <DemoTagBadge tag={{ label: DEMO_ORG.name.toLowerCase(), type: 'site', domain: DEMO_ORG.domain }} size="xs" />
+                    <DemoTagBadge tag={{ label: 'product-launch', type: 'channel' }} size="xs" />
+                  </div>
+                  <div style={{ fontSize: 12, color: C.textSubtle, minHeight: 24, padding: '2px 4px' }}>
                     Do anything with AI…
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

@@ -190,7 +190,7 @@ export default function MultiCompany() {
 
   return (
     <section className="bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-0 py-16 md:py-24">
         <div className="mb-10">
           <h2 className="font-funneldisplay text-3xl sm:text-4xl md:text-[42px] tracking-tight text-slate-900 leading-tight">
             One theater.

@@ -304,6 +304,14 @@ html[data-menu-open='true'] .ch-plugin {
   .type-eyebrow-num.pixel-flicker-text {
     animation: pixelFlicker 8s steps(1) infinite;
   }
+
+  @media (max-width: 640px) {
+    .type-eyebrow-num {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      padding: 0.25rem 0.45rem;
+    }
+  }
 }
 
 /*custom css for the website here*/
