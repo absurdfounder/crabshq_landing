@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
 
 /* ─── Problems Solved ─── */
 const problems = [
@@ -29,8 +30,9 @@ const ProblemsSolved = () => (
   <section className="bg-white">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="mb-10">
+        <PixelMissionTag index="04" label="Situation report" className="mb-4" />
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
-          What changes with Trooper.
+          Before and after Trooper.
         </h2>
       </div>
 
@@ -58,7 +60,7 @@ const ProblemsSolved = () => (
               <div className="flex items-center gap-2">
                 <span className="md:hidden font-mono text-base text-slate-300">{pad(i)}</span>
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                  Without
+                  Hostile terrain
                 </span>
               </div>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">{p.without}</p>
@@ -70,7 +72,7 @@ const ProblemsSolved = () => (
 
             <div className="p-5 md:p-6 bg-white border-t border-slate-200 md:border-t-0">
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper">
-                With Trooper
+                Trooper ops
               </span>
               <p className="text-sm text-slate-700 mt-2 leading-relaxed">{p.with}</p>
             </div>
@@ -124,11 +126,12 @@ const UnderTheHood = () => (
   <section className="bg-slate-50">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="mb-10">
+        <PixelMissionTag index="04" label="Systems brief" className="mb-4" />
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
-          Why Trooper is different.
+          Built for command, not chat.
         </h2>
         <p className="text-slate-500 text-sm sm:text-base mt-3 max-w-xl">
-          Trooper handles the hard orchestration details correctly.
+          Trooper handles orchestration the way an ops team expects — persistent state, traced decisions, enforced limits.
         </p>
       </div>
 
@@ -177,13 +180,13 @@ const UnderTheHood = () => (
 
       <div className="mt-10 pt-8 border-t border-slate-200">
         <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-3">
-          Native capabilities
+          Authorized capabilities
         </p>
         <div className="flex flex-wrap gap-2">
           {CAPABILITY_TAGS.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center rounded-full border border-trooper-100 bg-trooper-50/60 px-3 py-1 text-[12px] font-medium text-slate-700"
+              className="army-ops-tag text-[11px] text-trooper-700"
             >
               {tag}
             </span>

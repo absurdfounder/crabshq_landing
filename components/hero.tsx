@@ -56,14 +56,14 @@ const NotionIcon = () => (
 const Features = React.memo(() => {
   const features = [
     {
-      name: "Not a chatbot. Agents have jobs, not chat windows.",
+      name: 'Not a chatbot. Agents have roles, ranks, and objectives.',
     },
     {
-      name: "Not a prompt tool. This is an AI workforce with org charts, memory, and goals.",
+      name: 'Not a prompt tool. A full AI unit with org charts, memory, and mission alignment.',
     },
     {
-      name: "You're the board. Agents can't act without your approval.",
-    }
+      name: "You're command. Agents can't act without your authorization.",
+    },
   ];
 
   return (
@@ -138,13 +138,13 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
                 <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
                   <span className="block reveal reveal__usp">
-                    Hire AI employees. Set goals.{' '}
+                    Deploy AI employees. Set objectives.{' '}
                     <span className="text-slate-950">Your company runs itself.</span>
                   </span>
                 </h1>
 
                 <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
-                  AI coworkers that write code, make commits, browse the web, send emails, and get real work done — not just answer questions. You stay in control as the board of directors. Powered by{' '}
+                  AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
                   <span className="font-semibold text-trooper-700">OpenClaw</span>.
                 </p>
 
@@ -186,8 +186,8 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               <HeroMarquee />
             </div>
 
-            {/* Demo — pixel forest lives here only */}
-            <div className="relative flex-1 mt-0 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden">
+            {/* Demo — camo field + scanlines live here only */}
+            <div className="relative flex-1 mt-0 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden pixel-scanlines">
               <HeroArticleDemo />
             </div>
           </div>

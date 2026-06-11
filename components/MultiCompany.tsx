@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Smartphone, TrendingUp, Video, Plus } from 'lucide-react';
+import { ArmyStatusBadge, PixelMissionTag } from '@/components/PixelAtmosphere';
 
 type OrgNode = {
   icon: string;
@@ -192,14 +193,14 @@ export default function MultiCompany() {
     <section className="bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="mb-10">
+          <PixelMissionTag index="05" label="Theater map" className="mb-4" />
           <h2 className="font-funneldisplay text-3xl sm:text-4xl md:text-[42px] tracking-tight text-slate-900 leading-tight">
-            One deployment.
+            One theater.
             <br />
-            Many companies.
+            Many units.
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-4 max-w-lg leading-relaxed">
-            Trooper supports multiple businesses in one install. Run one AI company or run fifty.
-            Complete data isolation between companies. One control plane for your entire portfolio.
+            Run one AI company or fifty. Each unit is fully isolated — separate data, agents, and audit trails under one command plane.
           </p>
         </div>
 
@@ -220,10 +221,10 @@ export default function MultiCompany() {
             >
               <div className="mb-3">{c.icon}</div>
               <h3 className="text-sm font-semibold text-slate-900 leading-snug">{c.name}</h3>
-              <p className="text-[12px] text-slate-400 mt-1">{c.agents} agents</p>
-              <p className="text-[11px] font-mono uppercase tracking-[0.15em] text-trooper mt-2">
-                Active
-              </p>
+              <p className="text-[12px] text-slate-400 mt-1">{c.agents} agents deployed</p>
+              <div className="mt-2">
+                <ArmyStatusBadge label="Deployed" />
+              </div>
             </div>
           ))}
 
@@ -261,7 +262,9 @@ export default function MultiCompany() {
                 exit={{ opacity: 0 }}
                 className="flex items-center justify-center h-[180px] rounded-sm border border-dashed border-slate-200 bg-white/60"
               >
-                <p className="text-sm text-slate-400">Hover a workspace to preview its org chart</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-slate-400">
+                  Select a command post to preview org chart
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

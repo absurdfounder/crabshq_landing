@@ -126,7 +126,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
       </main>
 
       <SectionShell
-        eyebrow="Get Started"
+        eyebrow="Deploy Orders"
         eyebrowNumber="08"
         bgClass="bg-white"
         noBorderBottom={false}

@@ -15,7 +15,7 @@ export default function Newsletter() {
                   Try Trooper now.
                 </h3>
                 <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
-                  Deploy AI employees that write code, manage tasks, and connect to 3,000+ tools — without the overhead of hiring.
+                  Stand up AI units that write code, manage tasks, and connect to 3,000+ tools — without the overhead of hiring.
                 </p>
               </div>
 

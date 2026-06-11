@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import PixelButton from './ui/PixelButton';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import {
   Bot,
   MessageSquare,
@@ -49,30 +50,30 @@ type Feature = {
 
 // Solo features - the base that every plan gets
 const soloFeatures: Feature[] = [
-  { icon: Bot, label: 'Unlimited Agents', color: 'text-emerald-500' },
-  { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-orange-500' },
-  { icon: Monitor, label: 'Unlimited Devices', color: 'text-yellow-500' },
-  { icon: Sparkles, label: 'All AI Models', color: 'text-emerald-500' },
-  { icon: Terminal, label: 'Claude Code & Codex', color: 'text-indigo-500' },
-  { icon: Brain, label: 'Adaptive Memory', color: 'text-green-500' },
+  { icon: Bot, label: 'Unlimited Agents', color: 'text-trooper' },
+  { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-trooper-olive' },
+  { icon: Monitor, label: 'Unlimited Devices', color: 'text-slate-600' },
+  { icon: Sparkles, label: 'All AI Models', color: 'text-trooper' },
+  { icon: Terminal, label: 'Claude Code & Codex', color: 'text-trooper-700' },
+  { icon: Brain, label: 'Adaptive Memory', color: 'text-trooper-olive' },
   { icon: Eye, label: 'Context Awareness', color: 'text-cyan-500' },
   { icon: History, label: 'System Memory', color: 'text-violet-500' },
   { icon: ShieldCheck, label: 'Data Encryption', color: 'text-blue-500' },
   { icon: Puzzle, label: '3,000+ OpenClaw Skills', color: 'text-pink-500' },
-  { icon: Globe, label: 'Browser Automation', color: 'text-emerald-500' },
+  { icon: Globe, label: 'Browser Automation', color: 'text-trooper' },
   { icon: Smartphone, label: 'Mac, Windows, iOS, Android', color: 'text-slate-500' },
   { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
   { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
   { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
   { icon: Building2, label: 'License for 1 org', color: 'text-slate-600' },
-  { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-emerald-500' },
+  { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-trooper' },
 ];
 
 // Cloud-only additions - team/collab features
 const cloudFeatures: Feature[] = [
   { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
-  { icon: Users, label: '5 team seats included', color: 'text-emerald-500' },
-  { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-emerald-500' },
+  { icon: Users, label: '5 team seats included', color: 'text-trooper' },
+  { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-trooper-700' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
   { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-orange-500' },
   { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
@@ -88,7 +89,7 @@ const enterpriseFeatures: Feature[] = [
   { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-indigo-500' },
   { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-blue-500' },
   { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-green-500' },
-  { icon: DollarSign, label: 'Custom seat volume pricing', color: 'text-emerald-500' },
+  { icon: DollarSign, label: 'Custom seat volume pricing', color: 'text-trooper-700' },
   { icon: Palette, label: 'White-label and custom domain', color: 'text-pink-500' },
   { icon: UserPlus, label: 'Dedicated onboarding and migration', color: 'text-orange-500' },
   { icon: FileCheck, label: 'Security reviews and custom agreements', color: 'text-cyan-500' },
@@ -185,22 +186,22 @@ export default function SimplePricing() {
     <section className="relative bg-white py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-start mb-10 sm:mb-12">
+          <PixelMissionTag index="06" label="Supply lines" className="mb-4" />
           <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight mb-4 sm:mb-6 leading-tight">
             <span className="text-slate-800 block mb-2">
-              <span className="inline-flex items-center gap-2">
+              <span className="inline-flex items-center gap-2 flex-wrap">
                 <span>Deploy</span>
                 <img
                   src="/images/trooper-logomark.png"
                   alt="Trooper"
-                  className="inline-block w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain align-middle bg-transparent"
+                  className="inline-block w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain align-middle bg-transparent pixel-render"
                 />
-                <span>Trooper at your company</span>
+                <span>to your company</span>
               </span>
             </span>
           </h1>
           <p className="text-sm sm:text-base text-slate-600 max-w-2xl">
-            Deploy AI employees that get real work done. Trooper gives your team dedicated AI
-            coworkers on their own private server — no shared infra, no vendor lock-in.
+            Choose your deployment model. Every plan runs AI employees on a private server — your keys, your infra, your command.
           </p>
         </div>
 

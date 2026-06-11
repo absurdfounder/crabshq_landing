@@ -729,11 +729,9 @@ export default function TrooperDemo() {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div style={{
-        position: "relative", padding: "20px 12px 24px", backgroundColor: C.bg,
-        backgroundImage: `linear-gradient(rgba(123, 160, 68, 0.22), rgba(0, 122, 90, 0.16)), url(/images/hero-bg-pixel.png)`,
-        backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat",
-        imageRendering: "pixelated", borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`,
+      <div className="pixel-camo-wash" style={{
+        position: "relative", padding: "20px 12px 24px",
+        borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`,
       }}>
         <DemoScaleFrame>
         <div style={{

@@ -39,6 +39,21 @@ export function PixelAtmosphere({
   );
 }
 
+/** Live ops status — `● DEPLOYED` */
+export function ArmyStatusBadge({
+  label = 'Deployed',
+  className = '',
+}: {
+  label?: string;
+  className?: string;
+}) {
+  return (
+    <span className={`army-status-badge ${className}`}>
+      <span className="army-status-badge__dot" aria-hidden />
+      {label}
+    </span>
+  );
+}
 /** Inline mission tag — `[05] WEEKS-LONG RUNS` army briefing style */
 export function PixelMissionTag({
   index,

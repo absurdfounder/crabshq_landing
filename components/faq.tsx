@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
 
 interface FAQ {
   question: string;
@@ -209,18 +210,19 @@ const FAQ: React.FC = () => {
   return (
     <div className="px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-16 sm:pb-24 max-w-7xl mx-auto">
       <div className="max-w-2xl">
+        <PixelMissionTag index="07" label="Q&A dossier" className="mb-4" />
         <h2 className="font-funneldisplay text-3xl sm:text-4xl tracking-tight text-slate-900">
-          Frequently Asked Questions
+          Intel brief.
         </h2>
         <p className="text-sm sm:text-base text-slate-600 mt-3">
-          Have a different question and can&apos;t find the answer you&apos;re looking for? Reach out by{' '}
+          Missing intel? Transmit your question to{' '}
           <a
             href="mailto:vaibhav@trooper.so"
-            className="text-emerald-700 hover:text-emerald-500 hover:underline"
+            className="text-trooper-700 hover:text-trooper hover:underline"
             target="_blank"
             rel="noopener"
           >
-            sending us an email
+            vaibhav@trooper.so
           </a>
           .
         </p>
@@ -234,7 +236,7 @@ const FAQ: React.FC = () => {
             onClick={() => setActiveTab(tab)}
             className={`-mb-px pb-3 font-mono text-[12px] uppercase tracking-[0.15em] transition-colors ${
               activeTab === tab
-                ? 'text-slate-900 border-b-2 border-emerald-600'
+                ? 'text-slate-900 border-b-2 border-trooper'
                 : 'text-slate-500 hover:text-slate-800 border-b-2 border-transparent'
             }`}
           >
