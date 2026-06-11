@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe } from "lucide-react";
-import { FeatureShowcaseDemo } from './FeatureShowcaseDemo';
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -215,53 +214,79 @@ const IntegrationsVisual = () => {
   );
 };
 
-/* ─── Visual 3: Action — single resolved-incident card ─── */
-const ActionVisual = () => (
-  <div className="flex flex-col h-full p-5 sm:p-6">
-    <div className="flex items-center gap-3 mb-3">
-      <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-emerald-50 text-emerald-700 border border-emerald-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-        Incident Resolved
-      </span>
-      <span className="font-mono text-[11px] text-slate-400">2 min ago</span>
-    </div>
-
-    <h4 className="font-semibold text-base sm:text-lg text-slate-900 leading-snug mb-5">
-      Stripe webhook timeout &mdash; resolved
-    </h4>
-
-    <div className="flex-1 grid grid-cols-2 border border-slate-200 rounded-sm bg-white overflow-hidden">
-      <div className="p-4 border-r border-slate-200">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Root cause</p>
-        <p className="text-[13px] text-slate-700 leading-relaxed">
-          <code className="font-mono text-[11px] bg-slate-100 px-1 py-0.5 rounded-sm">/api/webhooks/stripe</code> timed out at 10s during a marketing burst.
-        </p>
-        <p className="text-[13px] text-slate-500 leading-relaxed mt-2">
-          3 failed checkouts. Webhook retries exhausted.
-        </p>
+/* ─── Cropped app vignette chrome (not a full dashboard) ─── */
+const VignetteChrome = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="flex flex-col h-full justify-center p-5 sm:p-6">
+    <div className="rounded-xl border border-stone-200 bg-white shadow-[0_8px_24px_-8px_rgba(28,25,23,0.12)] overflow-hidden">
+      <div className="flex items-center gap-2.5 px-3.5 py-2 border-b border-stone-100 bg-[#FDFCFB]">
+        <div className="flex gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-[#ff5f57]" />
+          <span className="w-2 h-2 rounded-full bg-[#febc2e]" />
+          <span className="w-2 h-2 rounded-full bg-[#28c840]" />
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-stone-400">{label}</span>
       </div>
-      <div className="p-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-2">Fix applied</p>
-        <ul className="space-y-1.5 text-[13px] text-slate-700 leading-relaxed">
-          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Increased timeout <span className="font-mono text-[11px] text-slate-500">10s → 30s</span></span></li>
-          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Added retry queue for failed events</span></li>
-          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Filed <span className="font-mono text-[12px] text-blue-600">ENG-1847</span></span></li>
-          <li className="flex gap-2"><span className="text-emerald-500 flex-shrink-0">•</span><span>Posted to <span className="text-blue-600">#engineering</span></span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div className="mt-4 flex items-center gap-3">
-      <div className="flex -space-x-1.5">
-        {['linear.app', 'vercel.com', 'slack.com', 'stripe.com'].map((d) => (
-          <div key={d} className="w-6 h-6 rounded-sm border border-slate-200 bg-white flex items-center justify-center">
-            <img src={`https://${d}/favicon.ico`} alt="" className="w-3.5 h-3.5" />
-          </div>
-        ))}
-      </div>
-      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Used 4 tools to resolve</span>
+      {children}
     </div>
   </div>
+);
+
+const ToolRow = ({ label, detail, done }: { label: string; detail: string; done?: boolean }) => (
+  <div className="flex items-center gap-2 py-1">
+    <div className="w-5 h-5 rounded-md border border-stone-200 bg-white flex items-center justify-center flex-shrink-0">
+      <Terminal size={11} strokeWidth={1.75} className="text-stone-400" />
+    </div>
+    <span className="text-[11px] font-semibold text-stone-800">{label}</span>
+    <span className="text-[10px] font-mono text-stone-400 truncate flex-1">{detail}</span>
+    <span className={`w-3.5 h-3.5 rounded-full flex-shrink-0 ${done ? 'bg-emerald-500' : 'bg-[#007A5A] animate-pulse'}`} />
+  </div>
+);
+
+/* ─── Visual 3: Action — cropped task thread with live tool runs ─── */
+const ActionVisual = () => (
+  <VignetteChrome label="trooper · task">
+    <div className="px-4 pt-3.5 pb-3">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-[9px] font-bold uppercase tracking-wide text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">In progress</span>
+        <span className="text-[10px] text-stone-400">#product-launch</span>
+      </div>
+      <h4 className="text-[15px] font-semibold text-stone-900 leading-snug mb-3">SEO Optimization for Wonder</h4>
+
+      <div className="flex gap-2.5">
+        <img src="https://i.pravatar.cc/150?u=agent-ren" alt="" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-[13px] font-semibold text-stone-900">Ren</span>
+            <span className="text-[10px] text-stone-400">14:57</span>
+          </div>
+          <p className="text-[12px] text-stone-600 leading-relaxed mb-2">
+            Updating homepage meta, OG tags, and sitemap for launch day.
+          </p>
+          <div className="pl-0.5 space-y-0.5 border-l border-stone-100 ml-1">
+            <ToolRow label="read_file" detail="/workspace/wonder/index.html" done />
+            <ToolRow label="apply_patch" detail="title, description, og:image" />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50/80 px-3 py-2">
+        <FileTextIcon />
+        <span className="text-[11px] font-medium text-stone-700 truncate">index.html</span>
+        <span className="text-[10px] text-[#007A5A] font-medium ml-auto flex-shrink-0">Artifact</span>
+      </div>
+    </div>
+    <div className="px-4 py-2 border-t border-stone-100 bg-[#FAF9F6] flex items-center justify-between">
+      <span className="text-[11px] font-medium text-stone-500">3/6 subtasks</span>
+      <span className="text-[10px] text-stone-400">Update meta tags…</span>
+    </div>
+  </VignetteChrome>
+);
+
+const FileTextIcon = () => (
+  <svg className="w-3.5 h-3.5 text-stone-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+  </svg>
 );
 
 /* ─── Visual 4: Memory — focused "what I recalled" card ─── */
@@ -519,67 +544,44 @@ const TicketVisual = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full p-5 sm:p-6">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span className="font-mono text-[12px] text-slate-400 tabular-nums flex-shrink-0">#1042</span>
-          <span className="font-semibold text-sm sm:text-base text-slate-900 truncate">Deploy updated pricing page</span>
+    <VignetteChrome label="trooper · ticket #1042">
+      <div className="px-4 pt-3 pb-2">
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <h4 className="font-semibold text-[14px] text-stone-900 leading-snug">Deploy updated pricing page</h4>
+          <img src="https://i.pravatar.cc/150?u=agent-leo" alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-stone-200 flex-shrink-0" />
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded-sm bg-amber-50 text-amber-700 border border-amber-200">In Progress</span>
-          <img src="https://i.pravatar.cc/150?u=cto-agent" alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-slate-200" />
-        </div>
-      </div>
 
-      {/* Metadata row */}
-      <div className="flex items-center gap-3 mb-5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] px-1.5 py-0.5 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">CTO</span>
-        <div className="flex items-center gap-1.5">
-          <div className="flex -space-x-1.5">
-            {['watcher-1', 'watcher-2'].map((id) => (
-              <img key={id} src={`https://i.pravatar.cc/150?u=${id}`} alt="" className="w-4 h-4 rounded-full object-cover ring-1 ring-white" />
+        <div className="rounded-lg border border-stone-100 bg-[#FAF9F6] overflow-hidden">
+          <div className="flex items-center justify-between px-3 py-1.5 border-b border-stone-100">
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-stone-400">Live trace</span>
+            <span className="font-mono text-[9px] text-stone-400 tabular-nums">{steps.length} steps</span>
+          </div>
+          <div className="relative px-3 py-2">
+            <div className="absolute left-[15px] top-3 bottom-3 w-px bg-stone-200" aria-hidden="true" />
+            {steps.map((t, idx) => (
+              <div key={t.fn} className={`relative flex items-center justify-between py-2 ${idx < steps.length - 1 ? 'border-b border-stone-100' : ''}`}>
+                <div className="flex items-center gap-2.5 relative z-10">
+                  {t.running ? (
+                    <span className="relative flex items-center justify-center w-2 h-2">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500 ring-2 ring-white" />
+                    </span>
+                  ) : (
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 ring-2 ring-white" />
+                  )}
+                  <span className="font-mono text-[11px] text-stone-700">{t.fn}</span>
+                </div>
+                <span className={`font-mono text-[9px] uppercase tracking-[0.14em] ${t.running ? 'text-amber-600' : 'text-emerald-600'}`}>{t.status}</span>
+              </div>
             ))}
           </div>
-          <span className="text-[11px] text-slate-400">+ 2 more watchers</span>
-        </div>
-        <span className="font-mono text-[11px] text-slate-400 ml-auto">Updated 1m ago</span>
-      </div>
-
-      {/* Focal point: vertical trace timeline */}
-      <div className="border border-slate-200 rounded-sm bg-white flex-1 flex flex-col">
-        <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100">
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Live trace</span>
-          <span className="font-mono text-[10px] text-slate-400 tabular-nums">{steps.length} steps</span>
-        </div>
-        <div className="relative px-4 py-3 flex-1">
-          {/* Connecting line behind dots */}
-          <div className="absolute left-[24px] top-5 bottom-5 w-px bg-slate-200" aria-hidden="true" />
-          {steps.map((t, idx) => (
-            <div key={t.fn} className={`relative flex items-center justify-between py-2.5 ${idx < steps.length - 1 ? 'border-b border-slate-100' : ''}`}>
-              <div className="flex items-center gap-3 relative z-10">
-                {t.running ? (
-                  <span className="relative flex items-center justify-center w-2.5 h-2.5">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500 ring-[3px] ring-white" />
-                  </span>
-                ) : (
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-[3px] ring-white" />
-                )}
-                <span className="font-mono text-[12px] text-slate-700">{t.fn}</span>
-              </div>
-              <span className={`font-mono text-[10px] uppercase tracking-[0.16em] ${t.running ? 'text-amber-600' : 'text-emerald-600'}`}>{t.status}</span>
-            </div>
-          ))}
         </div>
       </div>
-
-      {/* Audit log strip */}
-      <div className="mt-3 flex items-center justify-between pt-3 border-t border-slate-200">
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400">Audit log</span>
-        <a className="font-mono text-[11px] text-emerald-600 hover:underline cursor-pointer">View 47 events →</a>
+      <div className="px-4 py-2 border-t border-stone-100 bg-[#FAF9F6] flex items-center justify-between">
+        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-stone-400">Audit log</span>
+        <span className="font-mono text-[10px] text-[#007A5A]">47 events →</span>
       </div>
-    </div>
+    </VignetteChrome>
   );
 };
 
@@ -825,15 +827,15 @@ const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
 
 /* ─── Card visuals ─── */
 const cardVisuals = [
-  <FeatureShowcaseDemo key="org" variant="agents" />,
-  <FeatureShowcaseDemo key="int" variant="skills" />,
-  <FeatureShowcaseDemo key="act" variant="task-modal-action" />,
-  <FeatureShowcaseDemo key="mem" variant="memory" />,
-  <FeatureShowcaseDemo key="col" variant="routines" />,
+  <OrgVisual key="org" />,
+  <IntegrationsVisual key="int" />,
+  <ActionVisual key="act" />,
+  <MemoryVisual key="mem" />,
+  <CollabVisual key="col" />,
   <OpenClawVisual key="oc" />,
-  <FeatureShowcaseDemo key="ticket" variant="task-modal-ticket" />,
-  <FeatureShowcaseDemo key="goal" variant="goals" />,
-  <FeatureShowcaseDemo key="byoa" variant="agents" />,
+  <TicketVisual key="ticket" />,
+  <GoalVisual key="goal" />,
+  <BYOAVisual key="byoa" />,
 ];
 
 /* ─── Main ─── */
