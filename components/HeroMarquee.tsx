@@ -44,7 +44,7 @@ export default function HeroMarquee() {
 
   return (
     <div
-      className="w-full overflow-hidden my-2"
+      className="w-full overflow-hidden"
       style={{
         maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',

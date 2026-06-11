@@ -71,11 +71,9 @@ export default function Home() {
         <Hero />
       </div>
 
-      <div className="pixel-divider" aria-hidden />
-
-      <SectionShell eyebrow="Allied Units" eyebrowNumber="02" bgClass="bg-trooper-50/30">
+      <SectionShell eyebrow="Allied Units" eyebrowNumber="02" bgClass="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-10 md:pb-14">
-          <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200/80 bg-white/80 backdrop-blur-sm rounded-sm overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 bg-white overflow-hidden">
             {trustedLogos.map((logo, i) => (
               <div
                 key={logo.alt}
@@ -102,13 +100,9 @@ export default function Home() {
         </div>
       </SectionShell>
 
-      <div className="pixel-divider" aria-hidden />
-
       <SectionShell eyebrow="Field Manual" eyebrowNumber="03" bgClass="bg-slate-50">
         <OldWays />
       </SectionShell>
-
-      <div className="pixel-divider" aria-hidden />
 
       <SectionShell eyebrow="Battle Plan" eyebrowNumber="04" bgClass="bg-white">
         <Positioning />

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 
 interface FAQ {
   question: string;
@@ -210,7 +209,6 @@ const FAQ: React.FC = () => {
   return (
     <div className="px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-16 sm:pb-24 max-w-7xl mx-auto">
       <div className="max-w-2xl">
-        <PixelMissionTag index="07" label="Q&A dossier" className="mb-4" />
         <h2 className="font-funneldisplay text-3xl sm:text-4xl tracking-tight text-slate-900">
           Intel brief.
         </h2>

@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import PixelButton from './ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import {
   Bot,
   MessageSquare,
@@ -186,7 +185,6 @@ export default function SimplePricing() {
     <section className="relative bg-white py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-start mb-10 sm:mb-12">
-          <PixelMissionTag index="06" label="Supply lines" className="mb-4" />
           <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-5xl tracking-tight mb-4 sm:mb-6 leading-tight">
             <span className="text-slate-800 block mb-2">
               <span className="inline-flex items-center gap-2 flex-wrap">

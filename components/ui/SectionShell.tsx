@@ -1,5 +1,4 @@
 import React from 'react';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 
 interface SectionShellProps {
   id?: string;
@@ -49,11 +48,14 @@ export default function SectionShell({
     <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
         {eyebrow && (
-          <div className="px-4 sm:px-6 lg:px-8 pt-5 sm:pt-6 -mb-2 sm:-mb-3">
-            <PixelMissionTag
-              index={eyebrowNumber ?? '00'}
-              label={eyebrow}
-            />
+          <div className="px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-2">
+            <span className="type-eyebrow-num">
+              {eyebrowNumber && (
+                <span className="text-slate-400">[{eyebrowNumber}]</span>
+              )}
+              {eyebrowNumber && <span>&nbsp;</span>}
+              {eyebrow}
+            </span>
           </div>
         )}
         {children}

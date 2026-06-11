@@ -125,69 +125,63 @@ export default function Hero({ onCategorySelect }: HeroProps) {
         <div className="pt-24 sm:pt-28 md:pt-32 pb-0 sm:pb-0 md:pb-0">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
-            {/* Copy — solid panel so text never sits on pixel art */}
-            <div className="px-3 sm:px-4 md:px-6">
-              <div className="army-briefing-panel px-5 sm:px-8 py-8 sm:py-10">
-                <div className="hidden">
-                  <ProductHuntBadge />
-                </div>
+            {/* Copy — open layout, no nested box */}
+            <div className="px-4 sm:px-6 lg:px-8 pb-6">
+              <div className="hidden">
+                <ProductHuntBadge />
+              </div>
 
-                <div className="mb-4">
-                  <PixelMissionTag index="01" label="Mission briefing" />
-                </div>
+              <div className="mb-4">
+                <PixelMissionTag index="01" label="Mission briefing" />
+              </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
-                  <span className="block reveal reveal__usp">
-                    Deploy AI employees. Set objectives.{' '}
-                    <span className="text-slate-950">Your company runs itself.</span>
-                  </span>
-                </h1>
+              <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
+                <span className="block reveal reveal__usp">
+                  Deploy AI employees. Set objectives.{' '}
+                  <span className="text-slate-950">Your company runs itself.</span>
+                </span>
+              </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
-                  AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
-                  <span className="font-semibold text-trooper-700">OpenClaw</span>.
-                </p>
+              <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
+                AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
+                <span className="font-semibold text-trooper-700">OpenClaw</span>.
+              </p>
 
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
-                  <PixelButton
-                    href="https://app.trooper.so?ref=herolanding"
-                    external
-                    size="lg"
-                    tone="brand"
-                    icon={<ArrowRight className="h-4 w-4" />}
-                  >
-                    Get Started for free
-                  </PixelButton>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
+                <PixelButton
+                  href="https://app.trooper.so?ref=herolanding"
+                  external
+                  size="lg"
+                  tone="brand"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                >
+                  Get Started for free
+                </PixelButton>
 
-                  <PixelButton
-                    size="lg"
-                    variant="outline"
-                    tone="dark"
-                    icon={<ArrowRight className="h-4 w-4" />}
-                    data-cal-namespace="setup-call"
-                    data-cal-link="set-meeting/setup-call"
-                    data-cal-config='{"layout":"month_view"}'
-                  >
-                    Book a Demo
-                  </PixelButton>
-                </div>
+                <PixelButton
+                  size="lg"
+                  variant="outline"
+                  tone="dark"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                  data-cal-namespace="setup-call"
+                  data-cal-link="set-meeting/setup-call"
+                  data-cal-config='{"layout":"month_view"}'
+                >
+                  Book a Demo
+                </PixelButton>
+              </div>
 
-                <div className="mt-6 pt-6 border-t border-slate-100">
-                  <Features />
-                </div>
+              <div className="mt-6">
+                <Features />
+              </div>
+
+              <div className="mt-8">
+                <HeroMarquee />
               </div>
             </div>
 
-            {/* Marquee — field capabilities strip */}
-            <div className="px-3 sm:px-4 md:px-6 mt-6 bg-trooper-50/50 border-y border-trooper-100/80 py-2">
-              <p className="px-1 mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-trooper-700/80">
-                Field capabilities
-              </p>
-              <HeroMarquee />
-            </div>
-
-            {/* Demo — camo field + scanlines live here only */}
-            <div className="relative flex-1 mt-0 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden pixel-scanlines">
+            {/* Demo — soft olive tint behind mockup only */}
+            <div className="relative flex-1 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden">
               <HeroArticleDemo />
             </div>
           </div>

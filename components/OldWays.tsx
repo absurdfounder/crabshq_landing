@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
-import { PixelMissionTag, ArmyStatusBadge } from './PixelAtmosphere';
+import { PixelMissionTag } from './PixelAtmosphere';
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -873,9 +873,8 @@ const BYOAVisual = () => {
        Uses the shared pixel-art scene as a subtle backdrop, softened with a
        translucent white wash so the inner card remains the focal point. ─── */
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative h-full flex flex-col p-4 sm:p-6 pixel-camo-wash pixel-scanlines">
-    <div className="pixel-flicker-grid absolute inset-0 z-[1]" aria-hidden />
-    <div className="relative z-[2] flex-1 flex flex-col border border-trooper-100 bg-white overflow-hidden shadow-[0_12px_28px_-12px_rgba(15,23,42,0.18),0_4px_10px_-4px_rgba(15,23,42,0.08)] pixel-flicker-slow [clip-path:polygon(6px_0,100%_0,100%_calc(100%-6px),calc(100%-6px)_100%,0_100%,0_6px)]">
+  <div className="relative h-full flex flex-col p-4 sm:p-6 bg-slate-100/80">
+    <div className="relative flex-1 flex flex-col border border-slate-200 bg-white overflow-hidden shadow-sm">
       {children}
     </div>
   </div>
@@ -943,7 +942,6 @@ export default function OldWays() {
     <section className="bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="mb-12 md:mb-14 max-w-2xl">
-          <PixelMissionTag index="03" label="Field manual" className="mb-4" />
           <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
             Nine deploy orders for your AI unit.
           </h2>
@@ -962,7 +960,7 @@ export default function OldWays() {
                 style={{ top: 'calc(15vh)', zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="relative bg-white border border-slate-200 border-l-[3px] border-l-trooper overflow-hidden transition-[filter] duration-200 min-h-[520px] flex flex-col"
+                  className="relative bg-white border border-slate-200 overflow-hidden transition-[filter] duration-200 min-h-[520px] flex flex-col"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
@@ -971,14 +969,11 @@ export default function OldWays() {
                     transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
                   }}
                 >
-                  <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-                    <ArmyStatusBadge label="Deployed" />
-                    {index === 8 && (
-                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 [clip-path:polygon(3px_0,100%_0,100%_calc(100%-3px),calc(100%-3px)_100%,0_100%,0_3px)]">
-                        Flagship
-                      </span>
-                    )}
-                  </div>
+                  {index === 8 && (
+                    <span className="absolute top-4 right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
+                      Flagship
+                    </span>
+                  )}
                   <div className="grid md:flex items-stretch flex-1">
                     <div className={`${sectionXPadding} pt-8 sm:pt-10 pb-8 sm:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
                       <PixelMissionTag
