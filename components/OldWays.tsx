@@ -655,63 +655,63 @@ const TicketVisual = () => {
        Each goal level visually CONTAINS the next, so the task literally lives
        inside the agent goal, project, and mission. ─── */
 const GoalVisual = () => (
-  <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 justify-center bg-white min-h-0">
+  <div className="flex flex-col h-full p-4 sm:p-6 md:p-8 justify-center bg-white min-h-0">
     {/* L1 · Mission */}
-    <div className="relative border border-slate-300 bg-white pt-5 px-4 pb-4">
-      <div className="absolute -top-2 left-3 bg-white px-1.5 flex items-center gap-1.5">
+    <div className="relative border border-slate-200 bg-white pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
+      <div className="absolute -top-3 left-4 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
         <div className="w-3 h-3 overflow-hidden p-0.5 bg-transparent">
           <TrooperChar />
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
           <span className="text-slate-400">[01]</span> Mission · Trooper Inc.
         </span>
       </div>
-      <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+      <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
         Build the #1 AI workforce platform.
       </p>
 
       {/* L2 · Project */}
-      <div className="relative border border-slate-300 bg-slate-50 pt-5 px-4 pb-4">
-        <div className="absolute -top-2 left-3 bg-slate-50 px-1.5 flex items-center gap-1.5">
+      <div className="relative border border-slate-200 bg-slate-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
+        <div className="absolute -top-3 left-4 sm:left-5 bg-slate-50 px-2 py-0.5 flex items-center gap-1.5">
           <span className="w-2 h-2 bg-slate-400" aria-hidden="true" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
             <span className="text-slate-400">[02]</span> Project · Q4 2026
           </span>
         </div>
-        <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+        <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
           Ship team collaboration features.
         </p>
 
         {/* L3 · Agent goal */}
-        <div className="relative border border-slate-300 bg-white pt-5 px-4 pb-4">
-          <div className="absolute -top-2 left-3 bg-white px-1.5 flex items-center gap-1.5">
+        <div className="relative border border-slate-200 bg-white pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
+          <div className="absolute -top-3 left-4 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
             <FaviconChip provider="Cursor" size={11} />
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
               <span className="text-slate-400">[03]</span> Agent goal · CTO
             </span>
           </div>
-          <p className="text-[13px] text-slate-900 font-medium leading-snug mb-3">
+          <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
             Implement real-time sync engine.
           </p>
 
           {/* L4 · Task — brand spotlight */}
-          <div className="relative border-2 border-trooper bg-trooper-50 pt-5 px-4 pb-4 shadow-[0_0_0_4px_rgba(0,122,90,0.12)]">
-            <div className="absolute -top-2 left-3 bg-trooper-50 px-1.5 flex items-center gap-1.5">
+          <div className="relative border border-trooper bg-trooper-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6 shadow-[0_0_0_3px_rgba(0,122,90,0.08)]">
+            <div className="absolute -top-3 left-4 sm:left-5 bg-trooper-50 px-2 py-0.5 flex items-center gap-1.5">
               <FaviconChip provider="Claude" size={11} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">
+              <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-trooper-700">
                 <span className="text-trooper">[04]</span> Task · Work happens here
               </span>
             </div>
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2.5">
               <span className="relative flex h-2 w-2 mt-1.5 flex-shrink-0">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-trooper" />
               </span>
-              <p className="text-[13px] text-trooper-700 font-semibold leading-snug">
+              <p className="text-[13px] text-trooper-700 font-semibold leading-relaxed">
                 Write WebSocket handler for document updates.
               </p>
             </div>
-            <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="mt-3 sm:mt-4 flex items-center justify-between gap-3">
               <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-700/80">
                 ClaudeCoder · 2m elapsed
               </span>
@@ -726,7 +726,7 @@ const GoalVisual = () => (
       </div>
     </div>
 
-    <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
+    <p className="mt-6 sm:mt-8 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
       Goals contain projects · projects contain goals · goals contain tasks
     </p>
   </div>
