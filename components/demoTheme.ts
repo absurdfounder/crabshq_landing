@@ -1,7 +1,7 @@
 /** Trooper app chrome — aligned with src/index.css + KanbanBoard.jsx */
 export const TROOPER_DEMO = {
-  brand: '#007A5A',
-  brandHover: '#006048',
+  brand: '#3f6b00',
+  brandHover: '#325600',
   brandLight: '#F5F5F4',
   brandSoft: '#E7E5E4',
   bg: '#FAF9F6',
@@ -13,7 +13,7 @@ export const TROOPER_DEMO = {
   textMuted: '#57534E',
   textSubtle: '#78716C',
   /** Helmet olive — pixel hero wash */
-  olive: '#7BA044',
+  olive: '#6d9220',
   radius: 12,
   radiusLg: 16,
   radiusSm: 8,
@@ -49,8 +49,8 @@ export const KANBAN_COLUMNS = {
     id: 'done',
     label: 'COMPLETED',
     emoji: '🎉',
-    headerBg: '#E8F3EE',
-    headerText: '#006048',
+    headerBg: '#f0f5e6',
+    headerText: '#325600',
     bodyBg: 'rgba(245,245,244,0.65)',
   },
 } as const;

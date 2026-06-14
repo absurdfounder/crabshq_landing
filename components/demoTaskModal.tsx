@@ -40,7 +40,7 @@ function Av({ name, size = 24 }: { name: string; size?: number }) {
 
 const TAG_COLORS: Record<DemoTag['type'], { bg: string; border: string; color: string }> = {
   channel: { bg: '#F5F5F4', border: '#E7E5E4', color: '#57534E' },
-  goal: { bg: '#ECFDF5', border: '#A7F3D0', color: '#065F46' },
+  goal: { bg: '#f0f5e6', border: '#c4d9a0', color: '#284800' },
   site: { bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
   topic: { bg: '#EFF6FF', border: '#BFDBFE', color: '#1E40AF' },
 };
@@ -144,7 +144,7 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
         <span style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', height: 18 }}>
           {running
             ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
-            : <Check size={14} strokeWidth={2.5} color="#10B981" />}
+            : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
         </span>
       </div>
     </div>
@@ -205,7 +205,7 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
       style={{
         display: 'flex', width: '100%', maxWidth: 360, textAlign: 'left', cursor: 'pointer',
         borderRadius: 10, border: `1px solid ${active ? C.brand : C.border}`,
-        background: active ? '#F0FDF9' : C.card,
+        background: active ? '#f0f5e6' : C.card,
         padding: '10px 12px', marginTop: 6, animation: 'fadeIn 0.25s ease both',
       }}
     >
@@ -273,7 +273,7 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
             return (
               <div key={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
                 <div style={{ marginTop: 2, flexShrink: 0 }}>
-                  {isDone ? <Check size={14} strokeWidth={2.5} color="#15803D" />
+                  {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
                     : isRunning ? <Loader2 size={14} className="demo-spin" color="#B45309" />
                       : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
                 </div>
@@ -393,8 +393,8 @@ export function DemoTaskModal({
   }, [feed, delivery, artifact]);
 
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
-  const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#ECFDF5' : '#FFFBEB';
-  const statusColor = statusCol === 'review' ? '#78350F' : statusCol === 'done' ? '#065F46' : '#B45309';
+  const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#f0f5e6' : '#FFFBEB';
+  const statusColor = statusCol === 'review' ? '#78350F' : statusCol === 'done' ? '#284800' : '#B45309';
 
   if (!open) return null;
 

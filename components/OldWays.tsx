@@ -10,10 +10,10 @@ const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
 /** Gantt + accent palette — warm forest/olive from logo, not Tailwind emerald */
 const GANTT = {
-  light: '#E8F3EE',
-  mid: '#DEEAD0',
-  strong: '#C5D9B0',
-  active: '#A8C47A',
+  light: '#f0f5e6',
+  mid: '#ddebc8',
+  strong: '#c4d9a0',
+  active: '#9db866',
   forest: T.brand,
   olive: T.olive,
 } as const;
@@ -328,7 +328,7 @@ const ToolRow = ({ label, detail, done }: { label: string; detail: string; done?
       <span className="text-[10px] font-mono text-stone-400 truncate flex-1">{detail}</span>
       {done
         ? <Check size={13} strokeWidth={2.5} className="text-trooper flex-shrink-0" />
-        : <Loader2 size={13} strokeWidth={2.5} className="text-[#007A5A] animate-spin flex-shrink-0" />}
+        : <Loader2 size={13} strokeWidth={2.5} className="text-[#3f6b00] animate-spin flex-shrink-0" />}
     </div>
   );
 };
@@ -363,7 +363,7 @@ const ActionVisual = () => (
       <div className="mt-3 flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50/80 px-3 py-2">
         <FileText size={14} strokeWidth={1.75} className="text-stone-400 flex-shrink-0" />
         <span className="text-[11px] font-medium text-stone-700 truncate">index.html</span>
-        <span className="text-[10px] text-[#007A5A] font-medium ml-auto flex-shrink-0">Artifact</span>
+        <span className="text-[10px] text-[#3f6b00] font-medium ml-auto flex-shrink-0">Artifact</span>
       </div>
     </div>
     <div className="px-4 py-2 border-t border-stone-100 bg-[#FAF9F6] flex items-center justify-between">
@@ -645,7 +645,7 @@ const TicketVisual = () => {
       </div>
       <div className="px-4 py-2 border-t border-stone-100 bg-[#FAF9F6] flex items-center justify-between">
         <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-stone-400">Audit log</span>
-        <span className="font-mono text-[10px] text-[#007A5A]">47 events →</span>
+        <span className="font-mono text-[10px] text-[#3f6b00]">47 events →</span>
       </div>
     </VignetteChrome>
   );
@@ -695,7 +695,7 @@ const GoalVisual = () => (
           </p>
 
           {/* L4 · Task — brand spotlight */}
-          <div className="relative border border-trooper bg-trooper-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6 shadow-[0_0_0_3px_rgba(0,122,90,0.08)]">
+          <div className="relative border border-trooper bg-trooper-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6 shadow-[0_0_0_3px_rgba(63,107,0,0.08)]">
             <div className="absolute -top-3 left-4 sm:left-5 bg-trooper-50 px-2 py-0.5 flex items-center gap-1.5">
               <FaviconChip provider="Claude" size={11} />
               <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-trooper-700">

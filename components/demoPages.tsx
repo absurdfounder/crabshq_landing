@@ -217,7 +217,7 @@ export function DemoHomePage() {
                 </div>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 500, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.name}</div>
-                  <div style={{ fontSize: 11, color: '#059669', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                  <div style={{ fontSize: 11, color: '#3f6b00', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                     <Wifi size={11} /> Online
                   </div>
                 </div>
@@ -300,7 +300,7 @@ export function DemoGoalsPage() {
   return (
     <DemoPageLayout>
       <DemoPageHeader title="Goals" description="North-star outcomes your agents work toward." actions={<Btn primary icon={Plus}>New goal</Btn>} />
-      <StatsStrip items={[{ label: 'Active', value: 2, accent: '#059669' }, { label: 'Achieved', value: 1 }, { label: 'Total', value: 3 }]} />
+      <StatsStrip items={[{ label: 'Active', value: 2, accent: '#3f6b00' }, { label: 'Achieved', value: 1 }, { label: 'Total', value: 3 }]} />
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         {['All', 'Active', 'Achieved'].map((f, i) => (
           <span key={f} style={{
@@ -313,7 +313,7 @@ export function DemoGoalsPage() {
         {goals.map(g => (
           <div key={g.title} style={{ ...card, padding: 16 }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
-              <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 999, background: g.status === 'Active' ? '#ECFDF5' : '#F5F5F4', color: g.status === 'Active' ? '#047857' : C.textMuted, textTransform: 'uppercase' }}>{g.status}</span>
+              <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 999, background: g.status === 'Active' ? '#f0f5e6' : '#F5F5F4', color: g.status === 'Active' ? '#325600' : C.textMuted, textTransform: 'uppercase' }}>{g.status}</span>
               <span style={{ fontSize: 10, fontWeight: 500, padding: '2px 8px', borderRadius: 999, background: '#F5F5F4', color: C.textMuted }}>{g.priority}</span>
             </div>
             <div style={{ fontSize: 15, fontWeight: 500, color: C.text, marginBottom: 10 }}>{g.title}</div>
@@ -341,19 +341,19 @@ export function DemoDevicesPage() {
         description="Cloud computer and connected devices in this workspace."
         actions={<><button type="button" style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><RefreshCw size={16} color={C.textSubtle} /></button><Btn primary icon={Plus}>Add device</Btn></>}
       />
-      <StatsStrip items={[{ label: 'Total', value: 2 }, { label: 'Online', value: 2, accent: '#047857' }]} />
+      <StatsStrip items={[{ label: 'Total', value: 2 }, { label: 'Online', value: 2, accent: '#325600' }]} />
 
       {/* Cloud computer card */}
       <div style={{ ...card, padding: 16, marginBottom: 16, border: `1px solid ${C.border}` }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 12, background: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: '#f0f5e6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <HardDrive size={20} color={C.brand} />
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Cloud Computer</div>
-            <div style={{ fontSize: 12, color: '#059669', marginTop: 2 }}>Running · VPS</div>
+            <div style={{ fontSize: 12, color: '#3f6b00', marginTop: 2 }}>Running · VPS</div>
           </div>
-          <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: '#ECFDF5', color: '#047857', border: '1px solid #A7F3D0' }}>Online</span>
+          <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: '#f0f5e6', color: '#325600', border: '1px solid #c4d9a0' }}>Online</span>
         </div>
       </div>
 
@@ -370,7 +370,7 @@ export function DemoDevicesPage() {
               <div style={{ fontSize: 14, fontWeight: 500, color: C.text }}>{d.name}</div>
               <div style={{ fontSize: 11, color: C.textSubtle, marginTop: 2 }}>{d.specs}</div>
             </div>
-            <span style={{ fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 999, background: '#ECFDF5', color: '#047857' }}>{d.status}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 999, background: '#f0f5e6', color: '#325600' }}>{d.status}</span>
             <ChevronDown size={14} color={C.textSubtle} />
           </div>
         ))}
@@ -471,7 +471,7 @@ export function DemoSkillsPage() {
             </div>
             <span style={{
               fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.4,
-              color: s.connected ? '#047857' : C.textSubtle,
+              color: s.connected ? '#325600' : C.textSubtle,
             }}>{s.connected ? 'Connected' : 'Not connected'}</span>
           </div>
         ))}
@@ -593,7 +593,7 @@ export function DemoRoutinesPage() {
           }}>{t}</span>
         ))}
       </div>
-      <StatsStrip items={[{ label: 'Active', value: 2, accent: '#047857' }, { label: 'Paused', value: 1 }, { label: 'Runs today', value: 2 }]} />
+      <StatsStrip items={[{ label: 'Active', value: 2, accent: '#325600' }, { label: 'Paused', value: 1 }, { label: 'Runs today', value: 2 }]} />
       <div style={{ display: 'grid', gap: 10 }}>
         {routines.map(r => (
           <div key={r.name} style={{ ...card, padding: 16, display: 'flex', gap: 14, alignItems: 'center' }}>
@@ -607,9 +607,9 @@ export function DemoRoutinesPage() {
             </div>
             <span style={{
               fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 4,
-              background: r.status === 'Active' ? '#ECFDF5' : '#FFFBEB',
-              color: r.status === 'Active' ? '#047857' : '#B45309',
-              border: r.status === 'Active' ? '1px solid #A7F3D0' : '1px solid #FDE68A',
+              background: r.status === 'Active' ? '#f0f5e6' : '#FFFBEB',
+              color: r.status === 'Active' ? '#325600' : '#B45309',
+              border: r.status === 'Active' ? '1px solid #c4d9a0' : '1px solid #FDE68A',
             }}>{r.status}</span>
           </div>
         ))}

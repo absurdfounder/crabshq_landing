@@ -1,3 +1,18 @@
+/** Trooper brand green #3f6b00 and derived shades */
+const brandGreen = {
+  DEFAULT: '#3f6b00',
+  50: '#f0f5e6',
+  100: '#ddebc8',
+  200: '#c4d9a0',
+  300: '#9db866',
+  400: '#7aa824',
+  500: '#3f6b00',
+  600: '#385f00',
+  700: '#325600',
+  800: '#284800',
+  900: '#1f3800',
+};
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,18 +24,13 @@ module.exports = {
     extend: {
       colors: {
         trooper: {
-          DEFAULT: '#007A5A',
-          50: '#E8F3EE',
-          100: '#D4E8DF',
-          200: '#B8D4C8',
-          300: '#8FBF9E',
-          600: '#007A5A',
-          700: '#006048',
-          olive: '#7BA044',
-          'olive-light': '#DEEAD0',
-          'olive-mid': '#C5D9B0',
-          'olive-strong': '#A8C47A',
+          ...brandGreen,
+          olive: '#6d9220',
+          'olive-light': '#ddebc8',
+          'olive-mid': '#c4d9a0',
+          'olive-strong': '#9db866',
         },
+        emerald: { ...brandGreen },
         gray: {
           100: '#FBFBFB',
           200: '#EAEAEA',
@@ -43,17 +53,7 @@ module.exports = {
           800: '#0059C2',
           900: '#004391',
         },
-        teal: {
-          100: '#E6FFFA',
-          200: '#B2F5EA',
-          300: '#81E6D9',
-          400: '#4FD1C5',
-          500: '#3ABAB4',
-          600: '#319795',
-          700: '#2C7A7B',
-          800: '#285E61',
-          900: '#234E52',
-        },
+        teal: { ...brandGreen },
       },
       boxShadow: {
         xs: '0 0 0 1px rgba(0, 0, 0, 0.16)',
