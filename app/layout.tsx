@@ -68,11 +68,13 @@ export const metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.png', sizes: '96x96', type: 'image/png' },
       { url: '/favicon.ico', sizes: '48x48' },
       { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
       { url: '/images/trooper-logomark.png', sizes: '1024x1024', type: 'image/png' },
     ],
     apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.png',
   },
   manifest: '/manifest.json',
   themeColor: '#ffffff',
@@ -106,6 +108,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96" />
+        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
         <link rel="canonical" href={canonicalUrl} />
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
