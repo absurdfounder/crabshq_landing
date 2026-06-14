@@ -121,7 +121,7 @@ const CAPABILITY_TAGS = [
 ];
 
 const UnderTheHood = () => (
-  <section className="bg-slate-50">
+  <section className="bg-white">
     <div className="max-w-7xl mx-auto px-0 py-16 md:py-24">
       <div className="mb-10">
         <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900">
