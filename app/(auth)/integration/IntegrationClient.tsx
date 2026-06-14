@@ -160,15 +160,21 @@ function SkillCard({ skill }: { skill: Skill }) {
 
 interface IntegrationClientProps {
   skills: Skill[]
+  initialCategory?: string
 }
 
-export default function IntegrationClient({ skills }: IntegrationClientProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All')
-
+export default function IntegrationClient({ skills, initialCategory }: IntegrationClientProps) {
   const categories = useMemo(() => {
     const cats = Array.from(new Set(skills.map(s => s.category)))
     return ['All', ...cats.sort()]
   }, [skills])
+
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+    if (initialCategory && categories.includes(initialCategory)) {
+      return initialCategory
+    }
+    return 'All'
+  })
 
   const filteredSkills = useMemo(() => {
     if (selectedCategory === 'All') return skills
@@ -186,39 +192,58 @@ export default function IntegrationClient({ skills }: IntegrationClientProps) {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header Section */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-900">{skills.length.toLocaleString()}</span> skills available
-          </p>
-        </div>
+      <div className="mb-6 sm:mb-8">
+        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
+          <span className="font-semibold text-slate-900 tabular-nums">{skills.length.toLocaleString()}</span>{' '}
+          skills available
+        </p>
       </div>
 
       {/* Category Filters */}
-      <div className="flex flex-wrap gap-2 mb-10">
-        {categories.map(cat => {
-          const isActive = selectedCategory === cat
-          const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
-          return (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
-                isActive
-                  ? 'bg-black text-white border-black shadow-sm'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm'
-              }`}
-            >
-              <CategoryIcon className="w-4 h-4" />
-              {cat}
-              <span className={`text-xs px-1.5 py-0.5 rounded ${
-                isActive ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'
-              }`}>
-                {skillCountByCategory[cat] || 0}
-              </span>
-            </button>
-          )
-        })}
+      <div className="mb-10 sm:mb-12">
+        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-3 sm:mb-4">
+          Filter by category
+        </p>
+        <div className="-mx-4 sm:mx-0">
+          <div
+            className="overflow-x-auto px-4 sm:px-0 pb-1 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            role="group"
+            aria-label="Skill category filters"
+          >
+            <div className="flex flex-nowrap sm:flex-wrap gap-x-2.5 gap-y-3 sm:gap-x-3 sm:gap-y-3 min-w-0 sm:min-w-full">
+              {categories.map(cat => {
+                const isActive = selectedCategory === cat
+                const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
+                const count = skillCountByCategory[cat] || 0
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat)}
+                    aria-pressed={isActive}
+                    className={`inline-flex items-center gap-2.5 shrink-0 px-3.5 py-2 min-h-[36px] rounded-sm text-sm font-medium transition-colors duration-150 border ${
+                      isActive
+                        ? 'bg-slate-900 text-white border-slate-900'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <CategoryIcon className="w-3.5 h-3.5 flex-shrink-0 opacity-80" aria-hidden />
+                    <span className="whitespace-nowrap leading-none">{cat}</span>
+                    <span
+                      className={`font-mono text-[11px] tabular-nums leading-none px-1.5 py-0.5 rounded-sm flex-shrink-0 ${
+                        isActive
+                          ? 'bg-slate-700/70 text-slate-300'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200/80'
+                      }`}
+                    >
+                      {count.toLocaleString()}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Skills Grid */}

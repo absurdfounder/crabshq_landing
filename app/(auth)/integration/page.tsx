@@ -37,8 +37,14 @@ export const metadata = {
   },
 };
 
-const Integration = async () => {
+const Integration = async ({
+  searchParams,
+}: {
+  searchParams?: { category?: string }
+}) => {
   const skills = await _loadSkills();
+  const initialCategory =
+    typeof searchParams?.category === 'string' ? searchParams.category : undefined;
 
   return (
     <div className="bg-white">
@@ -68,7 +74,7 @@ const Integration = async () => {
 
       <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
-          <IntegrationClient skills={skills} />
+          <IntegrationClient skills={skills} initialCategory={initialCategory} />
         </div>
       </SectionShell>
     </div>
