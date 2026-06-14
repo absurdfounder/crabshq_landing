@@ -138,7 +138,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
                 <span className="block reveal reveal__usp">
                   Build the company.{' '}
-                  <span className="text-slate-950">Let Trooper run it.</span>
+                  <span className="font-bold text-slate-950">Let Trooper run it.</span>
                 </span>
               </h1>
 
