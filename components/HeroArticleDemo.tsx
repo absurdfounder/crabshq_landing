@@ -236,7 +236,7 @@ function DemoSidebarRail() {
         <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", imageRendering: "pixelated" }} />
         <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
         <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
-          <DemoFavicon domain={DEMO_ORG.domain} size={24} rounded="md" alt={DEMO_ORG.name} />
+          <DemoFavicon src={DEMO_ORG.icon} size={24} rounded="md" alt={DEMO_ORG.name} />
         </div>
         <button type="button" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "default" }}>
           <Plus size={16} strokeWidth={1.5} />
@@ -421,7 +421,7 @@ function DemoSidebarNav({
           borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
           boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text, cursor: "pointer",
         }}>
-          <DemoFavicon domain={DEMO_ORG.domain} size={20} rounded="md" alt={DEMO_ORG.name} />
+          <DemoFavicon src={DEMO_ORG.icon} size={20} rounded="md" alt={DEMO_ORG.name} />
           New chat
         </button>
       </div>
@@ -512,7 +512,7 @@ function DemoChatPane({
                 <Plus size={16} strokeWidth={1.75} />
               </div>
               <ComposerTag>
-                <DemoFavicon domain={DEMO_ORG.domain} size={14} rounded="sm" alt={DEMO_ORG.name} />
+                <DemoFavicon src={DEMO_ORG.icon} size={14} rounded="sm" alt={DEMO_ORG.name} />
                 {DEMO_ORG.name}
               </ComposerTag>
               <ComposerTag>Auto</ComposerTag>
@@ -763,7 +763,7 @@ export default function TrooperDemo() {
               <button type="button" onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
                 {isRunning ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
               </button>
-              <button type="button" onClick={restart} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+              <button type="button" onClick={restart} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.brandSoft}`, background: C.brandLight, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.brand }}>
                 <RotateCcw size={12} strokeWidth={2} />
               </button>
             </div>

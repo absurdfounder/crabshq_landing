@@ -5,22 +5,25 @@ import { getFaviconUrl } from '@/lib/favicon';
 
 export function DemoFavicon({
   domain,
+  src,
   size = 16,
   alt,
   className = '',
   rounded = 'md',
 }: {
-  domain: string;
+  domain?: string;
+  src?: string;
   size?: number;
   alt?: string;
   className?: string;
   rounded?: 'full' | 'md' | 'sm' | 'none';
 }) {
   const [failed, setFailed] = useState(false);
-  const label = (alt || domain.split('.')[0] || '?').slice(0, 2).toUpperCase();
+  const resolvedSrc = src || (domain ? getFaviconUrl(domain, Math.max(size * 2, 32)) : '');
+  const label = (alt || domain?.split('.')[0] || '?').slice(0, 2).toUpperCase();
   const radius = rounded === 'full' ? '9999px' : rounded === 'md' ? '6px' : rounded === 'sm' ? '4px' : '0';
 
-  if (failed) {
+  if (failed || !resolvedSrc) {
     return (
       <span
         className={className}
@@ -46,8 +49,8 @@ export function DemoFavicon({
 
   return (
     <img
-      src={getFaviconUrl(domain, Math.max(size * 2, 32))}
-      alt={alt || domain}
+      src={resolvedSrc}
+      alt={alt || domain || ''}
       width={size}
       height={size}
       className={className}

@@ -6,7 +6,7 @@ import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import { PixelMissionTag } from './PixelAtmosphere';
 
-const sectionXPadding = "px-4 sm:px-5 md:px-0 lg:px-2";
+const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
 /** Gantt + accent palette — warm forest/olive from logo, not Tailwind emerald */
 const GANTT = {

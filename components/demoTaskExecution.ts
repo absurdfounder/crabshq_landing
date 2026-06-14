@@ -45,7 +45,12 @@ export const SPOTLIGHT_TASK_TAGS: DemoTag[] = [
   { label: 'launch-day', type: 'goal' },
 ];
 
-export const DEMO_ORG = { name: 'Wonder', domain: 'wonder.gg' } as const;
+export const DEMO_ORG = {
+  name: 'Wonder',
+  domain: 'wonder.gg',
+  /** Trooper workspace branding — avoid broken wonder.gg Google favicon in the hero mockup. */
+  icon: '/images/trooper-logomark.png',
+} as const;
 
 export type DemoArtifact = {
   name: string;
