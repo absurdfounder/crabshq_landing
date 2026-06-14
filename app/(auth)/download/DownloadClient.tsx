@@ -2,82 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  Clipboard,
-  Copy,
-  Download,
-  Globe,
-  Laptop,
-  Monitor,
-  Smartphone,
-  Terminal,
-} from 'lucide-react';
+import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 
-type Platform = 'mac' | 'ios' | 'android' | 'web' | 'unknown';
+type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'unknown';
 
-type DownloadItem = {
+type PlatformCard = {
+  key: Platform;
   label: string;
-  detail: string;
+  subtitle: string;
+  requirements: string;
   href: string;
-  enabled?: boolean;
+  cta: string;
+  icon: React.ReactNode;
+  group: 'desktop' | 'mobile';
 };
 
-const LOCAL_HOST_INSTALLER =
-  'curl -fsSL https://raw.githubusercontent.com/absurdfounder/trooper-bridge/main/setup-local-mac-host.sh | bash';
-
-const pairedCommandExample = [
-  'ORG_ID=...',
-  'API_URL=https://app.trooper.so',
-  'GATEWAY_TOKEN=...',
-  'BRIDGE_AUTH_TOKEN=...',
-  LOCAL_HOST_INSTALLER,
-].join(' \\\n  ');
-
-const macDownloads: DownloadItem[] = [
-  {
-    label: 'Mac Universal',
-    detail: 'Apple Silicon and Intel',
-    href: 'https://app.trooper.so/download/mac',
-  },
-  {
-    label: 'Run on this Mac',
-    detail: 'Generate a paired local host command',
-    href: 'https://app.trooper.so/settings/server',
-  },
-];
-
-const mobileDownloads: DownloadItem[] = [
-  {
-    label: 'iPhone and iPad',
-    detail: 'Open Trooper on iOS',
-    href: 'https://app.trooper.so',
-  },
-  {
-    label: 'Android',
-    detail: 'Open Trooper on Android',
-    href: 'https://app.trooper.so',
-  },
-];
-
-function detectPlatform(): Platform {
-  if (typeof navigator === 'undefined') return 'unknown';
-  const ua = navigator.userAgent.toLowerCase();
-  const platform =
-    (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform?.toLowerCase()
-    || navigator.platform?.toLowerCase()
-    || '';
-
-  if (/iphone|ipad|ipod/.test(ua)) return 'ios';
-  if (/android/.test(ua)) return 'android';
-  if (/mac/.test(platform) || /macintosh/.test(ua)) return 'mac';
-  return 'web';
-}
+const SiWindows = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+  </svg>
+);
 
 const SiApple = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -85,228 +32,157 @@ const SiApple = ({ className }: { className?: string }) => (
   </svg>
 );
 
-function DeviceShell({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`rounded-[2rem] border border-white/15 bg-[#090906] p-3 shadow-2xl shadow-black/40 ${className}`}>
-      <div className="overflow-hidden rounded-[1.45rem] border border-white/10 bg-[#0f0e0a]">
-        <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-300/80" />
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-        </div>
-        {children}
-      </div>
-    </div>
-  );
+const platforms: PlatformCard[] = [
+  {
+    key: 'mac',
+    label: 'macOS',
+    subtitle: 'Mac app',
+    requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
+    href: 'https://app.trooper.so/download/mac',
+    cta: 'Download for Mac',
+    icon: <SiApple className="h-7 w-7" />,
+    group: 'desktop',
+  },
+  {
+    key: 'windows',
+    label: 'Windows',
+    subtitle: 'Desktop app',
+    requirements: 'Windows 10+ · 64-bit installer',
+    href: 'https://app.trooper.so/download/windows',
+    cta: 'Download for Windows',
+    icon: <SiWindows className="h-6 w-6" />,
+    group: 'desktop',
+  },
+  {
+    key: 'ios',
+    label: 'iOS',
+    subtitle: 'iPhone & iPad',
+    requirements: 'iOS 16 or later',
+    href: 'https://apps.apple.com/app/trooper',
+    cta: 'App Store',
+    icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'mobile',
+  },
+  {
+    key: 'android',
+    label: 'Android',
+    subtitle: 'Phone & tablet',
+    requirements: 'Android 10 or later',
+    href: 'https://play.google.com/store/apps/details?id=com.trooper.app',
+    cta: 'Google Play',
+    icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'mobile',
+  },
+];
+
+function detectPlatform(): Platform {
+  if (typeof navigator === 'undefined') return 'unknown';
+  const ua = navigator.userAgent.toLowerCase();
+  const platform =
+    (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform?.toLowerCase() ||
+    navigator.platform?.toLowerCase() ||
+    '';
+
+  if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+  if (/android/.test(ua)) return 'android';
+  if (/mac/.test(platform) || /macintosh/.test(ua)) return 'mac';
+  if (/win/.test(platform) || /windows/.test(ua)) return 'windows';
+  return 'unknown';
 }
 
-function AgentPreview() {
-  return (
-    <DeviceShell>
-      <div className="grid min-h-[260px] grid-cols-1 sm:min-h-[280px] sm:grid-cols-[0.9fr_1.1fr]">
-        <div className="border-b border-white/10 bg-[#15130f] p-4 sm:border-b-0 sm:border-r">
-          <div className="mb-4 h-7 rounded bg-white/10" />
-          <div className="space-y-2">
-            <div className="h-2.5 w-5/6 rounded bg-white/25" />
-            <div className="h-2.5 w-2/3 rounded bg-white/10" />
-            <div className="h-2.5 w-4/5 rounded bg-white/10" />
-          </div>
-          <div className="mt-8 rounded-lg border border-white/10 bg-black/30 p-3">
-            <div className="mb-2 h-16 rounded bg-white/10" />
-            <div className="h-2 w-4/5 rounded bg-white/20" />
-          </div>
-        </div>
-        <div className="p-4 font-mono text-[11px] leading-relaxed text-emerald-200/80">
-          <p className="text-white/70">Trooper</p>
-          <p className="mt-4 text-white">Build a launch checklist</p>
-          <p className="mt-5 text-white/50">Explored 18 files, 4 services</p>
-          <p className="mt-3 text-emerald-300">Done. Drafted the deploy plan.</p>
-          <div className="mt-10 rounded border border-white/10 bg-white/[0.03] px-3 py-2 text-white/40">
-            Ask a follow-up...
-          </div>
-        </div>
-      </div>
-    </DeviceShell>
-  );
-}
-
-function TerminalPreview() {
-  return (
-    <DeviceShell>
-      <div className="min-h-[280px] p-8 font-mono text-sm leading-7 text-white/80">
-        <p className="text-white/40">Question</p>
-        <p className="mt-3">Where should this workspace run?</p>
-        <p className="mt-5 text-emerald-300">[x] Cloud Computer</p>
-        <p className="text-white/45">[ ] This Mac</p>
-        <div className="mt-7 border border-white/10 bg-black/20 px-4 py-3 text-white/40">
-          Add a follow-up
-        </div>
-        <p className="mt-5 text-emerald-300">Plan mode ready</p>
-        <p className="text-white/40">/ commands · @ files · ! shell</p>
-      </div>
-    </DeviceShell>
-  );
-}
-
-function PhonePreview() {
-  return (
-    <div className="mx-auto flex h-[310px] max-w-[250px] flex-col rounded-[2.2rem] border-[10px] border-[#15140f] bg-[#0f0e0a] shadow-2xl shadow-black/40">
-      <div className="mx-auto mt-3 h-7 w-24 rounded-full bg-black" />
-      <div className="flex-1 px-5 py-6">
-        <div className="mb-5 flex items-center justify-between text-white/45">
-          <span className="h-5 w-5 rounded bg-white/15" />
-          <span className="h-5 w-5 rounded bg-white/15" />
-        </div>
-        <div className="mt-10 text-center">
-          <div className="mx-auto h-10 w-10 rounded-full bg-emerald-300/20" />
-          <p className="mt-5 text-lg font-semibold text-white">Trooper on web</p>
-          <p className="mt-2 text-sm leading-relaxed text-white/45">
-            Start sessions from your phone, then continue anywhere.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SurfaceCard({
-  title,
-  description,
-  preview,
-  action,
+function PlatformTile({
+  platform,
+  detected,
 }: {
-  title: string;
-  description: string;
-  preview: React.ReactNode;
-  action: React.ReactNode;
+  platform: PlatformCard;
+  detected: Platform;
 }) {
+  const isRecommended = detected === platform.key;
+
   return (
-    <div className="flex min-h-[520px] flex-col overflow-hidden rounded border border-white/8 bg-[#171610] p-4 sm:p-6">
-      <div className="flex-1">{preview}</div>
-      <div className="mt-7">
-        <h2 className="font-funneldisplay text-2xl tracking-tight text-white">{title}</h2>
-        <p className="mt-3 text-lg leading-relaxed text-white/50">{description}</p>
+    <div
+      className={[
+        'flex flex-col h-full p-6 sm:p-7 bg-white transition-colors',
+        isRecommended ? 'ring-2 ring-trooper ring-inset bg-trooper-50/30' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex h-12 w-12 items-center justify-center border border-slate-200 bg-slate-50 text-slate-700">
+          {platform.icon}
+        </div>
+        {isRecommended && (
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-trooper-700 bg-white border border-trooper-100 px-2 py-0.5">
+            Your device
+          </span>
+        )}
       </div>
-      <div className="mt-8">{action}</div>
+
+      <div className="mt-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+          {platform.subtitle}
+        </p>
+        <h3 className="mt-1 font-funneldisplay text-xl tracking-tight text-slate-900">
+          {platform.label}
+        </h3>
+        <p className="mt-2 text-sm text-slate-500 leading-relaxed">{platform.requirements}</p>
+      </div>
+
+      <div className="mt-auto pt-6 border-t border-slate-100">
+        <PixelButton
+          href={platform.href}
+          external
+          size="md"
+          tone={isRecommended ? 'brand' : 'dark'}
+          variant={isRecommended ? 'solid' : 'outline'}
+          icon={<Download className="h-3.5 w-3.5" />}
+          className="w-full justify-center"
+        >
+          {platform.cta}
+        </PixelButton>
+      </div>
     </div>
   );
 }
 
-function DownloadRow({ item }: { item: DownloadItem }) {
-  return (
-    <Link
-      href={item.href}
-      className="group flex items-center justify-between gap-4 border-t border-white/10 py-5 text-white/80 transition hover:text-white"
-    >
-      <div>
-        <p className="text-lg">{item.label}</p>
-        <p className="mt-1 text-sm text-white/40">{item.detail}</p>
-      </div>
-      <Download className="h-5 w-5 text-white/55 transition group-hover:text-white" />
-    </Link>
-  );
-}
-
-function DownloadPanel({
+function PlatformGroup({
   title,
   icon,
   items,
+  detected,
+  className = '',
 }: {
   title: string;
   icon: React.ReactNode;
-  items: DownloadItem[];
+  items: PlatformCard[];
+  detected: Platform;
+  className?: string;
 }) {
   return (
-    <div className="rounded border border-white/8 bg-[#171610] p-6 sm:p-7">
-      <div className="mb-8 flex items-center gap-3 text-white">
-        {icon}
-        <h3 className="font-funneldisplay text-2xl">{title}</h3>
+    <div className={className}>
+      <div className="flex items-center gap-2 px-4 sm:px-6 py-3 border-b border-slate-200 bg-slate-50/80">
+        <span className="text-slate-500">{icon}</span>
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">
+          {title}
+        </span>
       </div>
-      {items.map((item) => (
-        <DownloadRow item={item} key={item.label} />
-      ))}
+      <div className="grid sm:grid-cols-2">
+        {items.map((p, i) => (
+          <div
+            key={p.key}
+            className={[
+              i % 2 === 0 ? 'sm:border-r sm:border-slate-200' : '',
+              i < items.length - 1 ? 'border-b border-slate-200 sm:border-b-0' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <PlatformTile platform={p} detected={detected} />
+          </div>
+        ))}
+      </div>
     </div>
-  );
-}
-
-function CopyCommandButton({ command }: { command: string }) {
-  const [copied, setCopied] = useState(false);
-
-  async function handleCopy() {
-    try {
-      await navigator.clipboard?.writeText(command);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setCopied(false);
-    }
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-black transition hover:bg-emerald-100"
-      aria-label="Copy install command"
-    >
-      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-    </button>
-  );
-}
-
-function VersionSection() {
-  const [open, setOpen] = useState(true);
-
-  return (
-    <section className="border-t border-white/10 py-16">
-      <div className="mb-10 flex items-center justify-between gap-6">
-        <div>
-          <p className="text-3xl text-white">
-            1.0 <span className="ml-2 rounded-full border border-white/30 px-3 py-1 align-middle text-sm text-white/65">Latest</span>
-          </p>
-          <p className="mt-3 text-white/45">The first Trooper launch channel for Mac, web, and local host pairing.</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          className="text-white/75 transition hover:text-white"
-          aria-label={open ? 'Collapse latest downloads' : 'Expand latest downloads'}
-        >
-          {open ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {open ? (
-        <div className="grid gap-4 lg:grid-cols-3">
-          <DownloadPanel
-            title="macOS"
-            icon={<SiApple className="h-6 w-6" />}
-            items={macDownloads}
-          />
-          <DownloadPanel
-            title="Local host"
-            icon={<Terminal className="h-6 w-6" />}
-            items={[
-              {
-                label: 'Generate paired command',
-                detail: 'Required for secure org connection',
-                href: 'https://app.trooper.so/settings/server',
-              },
-              {
-                label: 'View installer script',
-                detail: 'Underlying Mac helper installer',
-                href: 'https://raw.githubusercontent.com/absurdfounder/trooper-bridge/main/setup-local-mac-host.sh',
-              },
-            ]}
-          />
-          <DownloadPanel
-            title="Mobile and web"
-            icon={<Smartphone className="h-6 w-6" />}
-            items={mobileDownloads}
-          />
-        </div>
-      ) : null}
-    </section>
   );
 }
 
@@ -317,134 +193,123 @@ export default function DownloadClient() {
     setDetected(detectPlatform());
   }, []);
 
-  const recommendedHref = detected === 'mac'
-    ? 'https://app.trooper.so/download/mac'
-    : 'https://app.trooper.so';
-  const recommendedLabel = detected === 'mac' ? 'Download for macOS' : 'Open Trooper';
+  const desktop = platforms.filter((p) => p.group === 'desktop');
+  const mobile = platforms.filter((p) => p.group === 'mobile');
+  const recommended = platforms.find((p) => p.key === detected);
 
   return (
-    <div className="min-h-screen bg-[#100f0a] text-white">
+    <div className="bg-white min-h-screen">
       <Header />
 
-      <main className="mx-auto max-w-[1760px] px-5 pb-20 pt-28 sm:px-8 lg:px-12 xl:px-20">
-        <section className="pb-16 pt-20">
-          <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.22em] text-emerald-300/80">Download Trooper</p>
-              <h1 className="mt-5 font-funneldisplay text-4xl tracking-tight text-white sm:text-5xl">
-                Use Trooper everywhere you work
-              </h1>
-              <p className="mt-3 max-w-3xl text-2xl leading-snug text-white/50">
-                One command center for agents across desktop, terminal, browser, and mobile.
-              </p>
-            </div>
-            <PixelButton
-              href={recommendedHref}
-              external
-              size="lg"
-              tone="brand"
-              icon={detected === 'mac' ? <Download className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-            >
-              {recommendedLabel}
-            </PixelButton>
-          </div>
+      <div className="max-w-7xl mx-auto border-l border-r border-slate-200">
+        {/* Hero */}
+        <section className="dashboard-landscape-bg border-b border-slate-200">
+          <div className="bg-white/90 backdrop-blur-[2px]">
+            <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
+              <PixelMissionTag index="01" label="Field deploy" className="mb-4" />
 
-          <div className="grid gap-4 lg:grid-cols-3">
-            <SurfaceCard
-              title="Desktop"
-              description="Run Trooper as a Mac app when you want a focused agent workspace on your machine."
-              preview={<AgentPreview />}
-              action={
-                <Link
-                  href="https://app.trooper.so/download/mac"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-medium text-black transition hover:bg-white/90"
-                >
-                  Download for macOS
-                  <Download className="h-5 w-5" />
-                </Link>
-              }
-            />
-
-            <SurfaceCard
-              title="Terminal"
-              description="Pair a Mac as a local Trooper host when you want agents to run on your own machine."
-              preview={<TerminalPreview />}
-              action={
-                <div className="rounded bg-[#1d1b14] p-4">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <span className="font-mono text-xs uppercase tracking-[0.18em] text-white/35">Paired install command</span>
-                    <CopyCommandButton command={pairedCommandExample} />
-                  </div>
-                  <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-sm leading-6 text-white/70">
-                    <code>{pairedCommandExample}</code>
-                  </pre>
-                  <p className="mt-3 text-sm leading-relaxed text-white/40">
-                    Tokens are generated after sign in. The raw installer alone is not enough to connect an org.
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.75rem] tracking-tight text-slate-900 leading-tight">
+                    Download Trooper
+                  </h1>
+                  <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                    Command your AI workforce from desktop or mobile. Same org, same agents, same memory — everywhere you work.
                   </p>
                 </div>
-              }
-            />
 
-            <SurfaceCard
-              title="Web"
-              description="Start agents from the browser, phone, or a shared device with no install required."
-              preview={<PhonePreview />}
-              action={
-                <Link
-                  href="https://app.trooper.so"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-medium text-black transition hover:bg-white/90"
-                >
-                  Start Trooper in Web
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              }
-            />
-          </div>
-        </section>
-
-        <section className="py-12">
-          <div className="rounded border border-white/8 bg-[#171610] p-6 sm:p-8">
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-center">
-              <div>
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-300/10 text-emerald-300">
-                  <Laptop className="h-6 w-6" />
-                </div>
-                <h2 className="font-funneldisplay text-3xl tracking-tight text-white">
-                  Local Mac host setup lives inside Trooper
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-white/50">
-                  Sign in, choose <span className="text-white">Settings - AI Server - This Mac</span>, then run the paired command on the Mac that should host your agents.
-                </p>
-              </div>
-              <div className="rounded bg-[#100f0a] p-5">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="font-mono text-xs uppercase tracking-[0.18em] text-white/35">Underlying installer</span>
-                  <CopyCommandButton command={LOCAL_HOST_INSTALLER} />
-                </div>
-                <pre className="overflow-x-auto font-mono text-sm leading-6 text-emerald-200/80">
-                  <code>{LOCAL_HOST_INSTALLER}</code>
-                </pre>
-                <div className="mt-5 grid gap-3 text-sm text-white/45 sm:grid-cols-3">
-                  <div className="rounded border border-white/10 p-3">
-                    <Monitor className="mb-2 h-4 w-4 text-emerald-300" />
-                    LaunchAgent services
+                {recommended && (
+                  <div className="shrink-0 lg:text-right">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400 mb-2">
+                      Recommended for you
+                    </p>
+                    <PixelButton
+                      href={recommended.href}
+                      external
+                      size="lg"
+                      tone="brand"
+                      icon={<Download className="h-4 w-4" />}
+                    >
+                      {recommended.cta}
+                    </PixelButton>
                   </div>
-                  <div className="rounded border border-white/10 p-3">
-                    <Globe className="mb-2 h-4 w-4 text-emerald-300" />
-                    Secure tunnel ready
-                  </div>
-                  <div className="rounded border border-white/10 p-3">
-                    <Clipboard className="mb-2 h-4 w-4 text-emerald-300" />
-                    Org heartbeat
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </section>
 
-        <VersionSection />
-      </main>
+        {/* Platform grid */}
+        <section>
+          <div className="px-4 sm:px-6 lg:px-8 py-3 border-b border-slate-200">
+            <span className="type-eyebrow-num">
+              <span className="text-slate-400">[02]</span>&nbsp;All platforms
+            </span>
+          </div>
+
+          <div className="border-b border-slate-200">
+            <PlatformGroup
+              title="Desktop"
+              icon={<Monitor className="h-4 w-4" strokeWidth={2} />}
+              items={desktop}
+              detected={detected}
+            />
+          </div>
+
+          <PlatformGroup
+            title="Mobile"
+            icon={<Smartphone className="h-4 w-4" strokeWidth={2} />}
+            items={mobile}
+            detected={detected}
+          />
+        </section>
+
+        {/* Web fallback */}
+        <section className="border-t border-slate-200 bg-slate-50">
+          <div className="px-4 sm:px-6 lg:px-8 py-10 md:py-12">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border border-slate-200 bg-white p-6 sm:p-8">
+              <div className="flex gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-slate-200 bg-slate-50 text-trooper">
+                  <Globe className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <h2 className="font-funneldisplay text-xl tracking-tight text-slate-900">
+                    Use in the browser
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-600 leading-relaxed max-w-md">
+                    No install required. Open{' '}
+                    <Link href="https://app.trooper.so" className="text-trooper-700 font-medium hover:underline">
+                      app.trooper.so
+                    </Link>{' '}
+                    on any device to deploy agents instantly.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+                <PixelButton
+                  href="https://app.trooper.so"
+                  external
+                  size="lg"
+                  tone="brand"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                >
+                  Open web app
+                </PixelButton>
+                <PixelButton
+                  href="https://app.trooper.so/download/mac"
+                  external
+                  size="lg"
+                  variant="outline"
+                  tone="dark"
+                  icon={<Download className="h-4 w-4" />}
+                >
+                  Download Mac
+                </PixelButton>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
