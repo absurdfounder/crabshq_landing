@@ -1,4 +1,5 @@
 import type { DemoColumnId } from './demoTheme';
+import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 
 export type DemoSubtaskStatus = 'pending' | 'running' | 'done';
 
@@ -47,9 +48,9 @@ export const SPOTLIGHT_TASK_TAGS: DemoTag[] = [
 
 export const DEMO_ORG = {
   name: 'Wonder',
-  domain: 'wonder.gg',
-  /** Trooper workspace branding — avoid broken wonder.gg Google favicon in the hero mockup. */
-  icon: '/images/trooper-logomark.png',
+  domain: 'viralhooks.org',
+  /** viralhooks.org serves /favicon.png — copied locally for static mockup reliability. */
+  icon: VIRALHOOKS_FAVICON,
 } as const;
 
 export type DemoArtifact = {
