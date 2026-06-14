@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
+import { ArrowRight, Download, Globe, Monitor, Smartphone, Terminal } from 'lucide-react';
 import Header from '@/components/ui/header';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 
-type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'unknown';
+type Platform = 'mac' | 'local' | 'ios' | 'web' | 'unknown';
 
 type PlatformCard = {
   key: Platform;
@@ -17,14 +16,9 @@ type PlatformCard = {
   href: string;
   cta: string;
   icon: React.ReactNode;
-  group: 'desktop' | 'mobile';
+  group: 'mac' | 'anywhere';
+  action: 'download' | 'open';
 };
-
-const SiWindows = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
-  </svg>
-);
 
 const SiApple = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
@@ -39,39 +33,43 @@ const platforms: PlatformCard[] = [
     subtitle: 'Mac app',
     requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
     href: 'https://app.trooper.so/download/mac',
-    cta: 'Download for Mac',
+    cta: 'Download Mac app',
     icon: <SiApple className="h-7 w-7" />,
-    group: 'desktop',
+    group: 'mac',
+    action: 'download',
   },
   {
-    key: 'windows',
-    label: 'Windows',
-    subtitle: 'Desktop app',
-    requirements: 'Windows 10+ · 64-bit installer',
-    href: 'https://app.trooper.so/download/windows',
-    cta: 'Download for Windows',
-    icon: <SiWindows className="h-6 w-6" />,
-    group: 'desktop',
+    key: 'local',
+    label: 'Run on this Mac',
+    subtitle: 'Local host',
+    requirements: 'Run agents locally · Secure paired setup',
+    href: 'https://app.trooper.so/settings/server',
+    cta: 'Set up this Mac',
+    icon: <Terminal className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'mac',
+    action: 'open',
   },
   {
     key: 'ios',
     label: 'iOS',
-    subtitle: 'iPhone & iPad',
-    requirements: 'iOS 16 or later',
+    subtitle: 'Mobile app',
+    requirements: 'Command your agents from iPhone and iPad',
     href: 'https://apps.apple.com/app/trooper',
-    cta: 'App Store',
+    cta: 'Get the iOS app',
     icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
-    group: 'mobile',
+    group: 'anywhere',
+    action: 'download',
   },
   {
-    key: 'android',
-    label: 'Android',
-    subtitle: 'Phone & tablet',
-    requirements: 'Android 10 or later',
-    href: 'https://play.google.com/store/apps/details?id=com.trooper.app',
-    cta: 'Google Play',
-    icon: <Smartphone className="h-6 w-6" strokeWidth={1.75} />,
-    group: 'mobile',
+    key: 'web',
+    label: 'Web app',
+    subtitle: 'No install required',
+    requirements: 'Open your workspace from any modern browser',
+    href: 'https://app.trooper.so',
+    cta: 'Open Trooper',
+    icon: <Globe className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'anywhere',
+    action: 'open',
   },
 ];
 
@@ -84,10 +82,8 @@ function detectPlatform(): Platform {
     '';
 
   if (/iphone|ipad|ipod/.test(ua)) return 'ios';
-  if (/android/.test(ua)) return 'android';
   if (/mac/.test(platform) || /macintosh/.test(ua)) return 'mac';
-  if (/win/.test(platform) || /windows/.test(ua)) return 'windows';
-  return 'unknown';
+  return 'web';
 }
 
 function PlatformTile({
@@ -136,7 +132,9 @@ function PlatformTile({
           size="md"
           tone={isRecommended ? 'brand' : 'dark'}
           variant={isRecommended ? 'solid' : 'outline'}
-          icon={<Download className="h-3.5 w-3.5" />}
+          icon={platform.action === 'download'
+            ? <Download className="h-3.5 w-3.5" />
+            : <ArrowRight className="h-3.5 w-3.5" />}
           className="w-full justify-center"
         >
           {platform.cta}
@@ -193,8 +191,8 @@ export default function DownloadClient() {
     setDetected(detectPlatform());
   }, []);
 
-  const desktop = platforms.filter((p) => p.group === 'desktop');
-  const mobile = platforms.filter((p) => p.group === 'mobile');
+  const onMac = platforms.filter((p) => p.group === 'mac');
+  const anywhere = platforms.filter((p) => p.group === 'anywhere');
   const recommended = platforms.find((p) => p.key === detected);
 
   return (
@@ -206,15 +204,15 @@ export default function DownloadClient() {
         <section className="dashboard-landscape-bg border-b border-slate-200">
           <div className="bg-white/90 backdrop-blur-[2px]">
             <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
-              <PixelMissionTag index="01" label="Field deploy" className="mb-4" />
+              <PixelMissionTag index="01" label="Choose your surface" className="mb-4" />
 
               <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
                 <div className="max-w-2xl">
                   <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.75rem] tracking-tight text-slate-900 leading-tight">
-                    Download Trooper
+                    Trooper, wherever work happens
                   </h1>
                   <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-                    Command your AI workforce from desktop or mobile. Same org, same agents, same memory — everywhere you work.
+                    One command center for your AI team across Mac, local runtime, mobile, and web.
                   </p>
                 </div>
 
@@ -243,23 +241,23 @@ export default function DownloadClient() {
         <section>
           <div className="px-4 sm:px-6 lg:px-8 py-3 border-b border-slate-200">
             <span className="type-eyebrow-num">
-              <span className="text-slate-400">[02]</span>&nbsp;All platforms
+              <span className="text-slate-400">[02]</span>&nbsp;Choose how you work
             </span>
           </div>
 
           <div className="border-b border-slate-200">
             <PlatformGroup
-              title="Desktop"
+              title="On your Mac"
               icon={<Monitor className="h-4 w-4" strokeWidth={2} />}
-              items={desktop}
+              items={onMac}
               detected={detected}
             />
           </div>
 
           <PlatformGroup
-            title="Mobile"
+            title="From anywhere"
             icon={<Smartphone className="h-4 w-4" strokeWidth={2} />}
-            items={mobile}
+            items={anywhere}
             detected={detected}
           />
         </section>
@@ -274,36 +272,33 @@ export default function DownloadClient() {
                 </div>
                 <div>
                   <h2 className="font-funneldisplay text-xl tracking-tight text-slate-900">
-                    Use in the browser
+                    Need agents to run on your Mac?
                   </h2>
                   <p className="mt-1 text-sm text-slate-600 leading-relaxed max-w-md">
-                    No install required. Open{' '}
-                    <Link href="https://app.trooper.so" className="text-trooper-700 font-medium hover:underline">
-                      app.trooper.so
-                    </Link>{' '}
-                    on any device to deploy agents instantly.
+                    Sign in, choose <span className="font-medium text-slate-800">Settings → AI Server → This Mac</span>,
+                    then run the secure paired command Trooper generates for your organization.
                   </p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                 <PixelButton
-                  href="https://app.trooper.so"
+                  href="https://app.trooper.so/settings/server"
                   external
                   size="lg"
                   tone="brand"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  Open web app
+                  Set up local host
                 </PixelButton>
                 <PixelButton
-                  href="https://app.trooper.so/download/mac"
+                  href="https://app.trooper.so"
                   external
                   size="lg"
                   variant="outline"
                   tone="dark"
-                  icon={<Download className="h-4 w-4" />}
+                  icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  Download Mac
+                  Open web app
                 </PixelButton>
               </div>
             </div>

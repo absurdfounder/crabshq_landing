@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import DownloadClient from "./DownloadClient";
 
 export const metadata: Metadata = {
-  title: "Download Trooper – Mac, Windows, iOS, Android",
+  title: "Download Trooper - Mac, iOS, Local Host, and Web",
   description:
-    "Download the Trooper app for your platform. Available on Mac, Windows, iOS, and Android. Deploy AI agents anywhere.",
+    "Use Trooper on Mac, pair your Mac as a local agent host, command agents from iOS, or open your workspace on the web.",
   alternates: {
     canonical: "https://trooper.so/download",
   },
