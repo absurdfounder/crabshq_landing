@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowRight, Download, Globe, Monitor, Smartphone, Terminal } from 'lucide-react';
+import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 
-type Platform = 'mac' | 'local' | 'ios' | 'web' | 'unknown';
+type Platform = 'mac' | 'windows' | 'ios' | 'web' | 'unknown';
 
 type PlatformCard = {
   key: Platform;
@@ -16,7 +16,7 @@ type PlatformCard = {
   href: string;
   cta: string;
   icon: React.ReactNode;
-  group: 'mac' | 'anywhere';
+  group: 'desktop' | 'anywhere';
   action: 'download' | 'open';
 };
 
@@ -35,19 +35,19 @@ const platforms: PlatformCard[] = [
     href: 'https://app.trooper.so/download/mac',
     cta: 'Download Mac app',
     icon: <SiApple className="h-7 w-7" />,
-    group: 'mac',
+    group: 'desktop',
     action: 'download',
   },
   {
-    key: 'local',
-    label: 'Run on this Mac',
-    subtitle: 'Local host',
-    requirements: 'Run agents locally · Secure paired setup',
-    href: 'https://app.trooper.so/settings/server',
-    cta: 'Set up this Mac',
-    icon: <Terminal className="h-6 w-6" strokeWidth={1.75} />,
-    group: 'mac',
-    action: 'open',
+    key: 'windows',
+    label: 'Windows',
+    subtitle: 'Windows app',
+    requirements: 'Windows 10 20H2+ and Windows 11 · x64',
+    href: 'https://github.com/absurdfounder/Trooper/releases/download/windows-latest/Trooper-Windows-x64-Setup.exe',
+    cta: 'Download Windows app',
+    icon: <Monitor className="h-6 w-6" strokeWidth={1.75} />,
+    group: 'desktop',
+    action: 'download',
   },
   {
     key: 'ios',
@@ -82,6 +82,7 @@ function detectPlatform(): Platform {
     '';
 
   if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+  if (/win/.test(platform) || /windows/.test(ua)) return 'windows';
   if (/mac/.test(platform) || /macintosh/.test(ua)) return 'mac';
   return 'web';
 }
@@ -191,7 +192,7 @@ export default function DownloadClient() {
     setDetected(detectPlatform());
   }, []);
 
-  const onMac = platforms.filter((p) => p.group === 'mac');
+  const desktop = platforms.filter((p) => p.group === 'desktop');
   const anywhere = platforms.filter((p) => p.group === 'anywhere');
   const recommended = platforms.find((p) => p.key === detected);
 
@@ -212,7 +213,7 @@ export default function DownloadClient() {
                     Trooper, wherever work happens
                   </h1>
                   <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-                    One command center for your AI team across Mac, local runtime, mobile, and web.
+                    One command center for your AI team across Mac, Windows, mobile, and web.
                   </p>
                 </div>
 
@@ -247,9 +248,9 @@ export default function DownloadClient() {
 
           <div className="border-b border-slate-200">
             <PlatformGroup
-              title="On your Mac"
+              title="Desktop apps"
               icon={<Monitor className="h-4 w-4" strokeWidth={2} />}
-              items={onMac}
+              items={desktop}
               detected={detected}
             />
           </div>
@@ -272,11 +273,11 @@ export default function DownloadClient() {
                 </div>
                 <div>
                   <h2 className="font-funneldisplay text-xl tracking-tight text-slate-900">
-                    Need agents to run on your Mac?
+                    Run agents on your own computer
                   </h2>
                   <p className="mt-1 text-sm text-slate-600 leading-relaxed max-w-md">
-                    Sign in, choose <span className="font-medium text-slate-800">Settings → AI Server → This Mac</span>,
-                    then run the secure paired command Trooper generates for your organization.
+                    Sign in, choose <span className="font-medium text-slate-800">Settings → AI Server → This computer</span>,
+                    then run the secure paired command for macOS or Windows.
                   </p>
                 </div>
               </div>
