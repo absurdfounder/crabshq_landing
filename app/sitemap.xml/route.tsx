@@ -2,6 +2,9 @@
 import { type NextRequest } from 'next/server';
 import { _loadFromJson, _loadFromJsonComparison, _loadSkills } from "../utils/helper";
 import type { Skill } from "../utils/helper";
+import { allChannelPageSlugs } from '@/lib/channelContent';
+import { allTeamSlugs } from '@/lib/subpageContent';
+import { allRichTeamSlugs } from '@/lib/teamContent';
 
 const URL = "https://trooper.so";
 
@@ -49,6 +52,8 @@ const staticPages = [
   { path: '/features/multi-agent-collaboration', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/openclaw-powered', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/chat-interfaces', priority: '0.8', changefreq: 'weekly' },
+  { path: '/channels', priority: '0.8', changefreq: 'weekly' },
+  { path: '/download', priority: '0.7', changefreq: 'weekly' },
   { path: '/features/ai-documentation-agent', priority: '0.7', changefreq: 'weekly' },
   { path: '/features/ai-help-center', priority: '0.7', changefreq: 'weekly' },
   { path: '/features/automated-screenshots-for-docs', priority: '0.7', changefreq: 'weekly' },
@@ -76,12 +81,31 @@ const staticPages = [
 function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): string {
   const now = new Date().toISOString();
 
+  const teamSlugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()]));
+  const channelSlugs = allChannelPageSlugs();
+
   const staticEntries = staticPages.map(page => `
   <url>
     <loc>${URL}${page.path}</loc>
     <lastmod>${now}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
+  </url>`).join('');
+
+  const teamEntries = teamSlugs.map(slug => `
+  <url>
+    <loc>${URL}/teams/${encodeURIComponent(slug)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('');
+
+  const channelEntries = channelSlugs.map(slug => `
+  <url>
+    <loc>${URL}/channels/${encodeURIComponent(slug)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>`).join('');
 
   const dynamicEntries = integrationsOrTemplates.map(item => `
@@ -96,7 +120,7 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${dynamicEntries}
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}
 </urlset>`;
 }
 

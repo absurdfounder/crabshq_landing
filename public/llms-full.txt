@@ -82,7 +82,22 @@ The OpenClaw Skills ecosystem provides installable capabilities:
 - Conversational UI for interacting with AI workforce
 - Natural language task assignment
 - Real-time progress updates
-- Multi-channel support (web, Slack, Discord)
+- Multi-channel support (web, Slack, Discord, WhatsApp, Telegram, Signal)
+
+### 10. Messaging Channels
+Dedicated setup pages for each OpenClaw messaging channel:
+- Hub: https://trooper.so/channels
+- Slack, WhatsApp, Telegram, Discord, Signal, iMessage, Email
+
+## AI Team Pages
+
+Role-specific marketing pages for deploying Trooper units:
+- Coding (multi-agent harness): https://trooper.so/teams/coding
+- Marketing: https://trooper.so/teams/marketing
+- Sales: https://trooper.so/teams/sales
+- Legal: https://trooper.so/teams/lawyers
+- Engineering: https://trooper.so/teams/engineering
+- Operations: https://trooper.so/teams/operations
 
 ## Pricing
 
@@ -153,6 +168,8 @@ Trooper integrates with popular tools and platforms. Browse all integrations at:
 - Multi-Agent Collaboration: https://trooper.so/features/multi-agent-collaboration
 - OpenClaw Powered: https://trooper.so/features/openclaw-powered
 - Chat Interfaces: https://trooper.so/features/chat-interfaces
+- Messaging Channels: https://trooper.so/channels
+- Coding Team: https://trooper.so/teams/coding
 - Affiliate Program: https://trooper.so/affiliate
 - Privacy Policy: https://trooper.so/privacy-policy
 - Terms of Service: https://trooper.so/terms-of-service

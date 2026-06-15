@@ -12,6 +12,7 @@ import {
   Mail,
   Megaphone,
   MessageCircle,
+  MessagesSquare,
   Network,
   Palette,
   Puzzle,
@@ -49,17 +50,29 @@ export const featureNavItems: NavItem[] = [
   { href: '/features/openclaw-powered', title: 'OpenClaw Runtime', description: 'Built on the proven OpenClaw framework', icon: Sparkles, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
   { href: '/integration', title: 'Integrations', description: 'GitHub, Gmail, Notion, APIs & more', icon: Zap, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
   { href: '/features/chat-interfaces', title: 'Chat Anywhere', description: 'WhatsApp, Telegram, Discord, Slack, Signal', icon: MessageCircle, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
+  { href: '/channels', title: 'Messaging Channels', description: 'Connect Slack, WhatsApp, Telegram & more', icon: MessagesSquare, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
+]
+
+export const channelNavItems: NavItem[] = [
+  { href: '/channels/slack', title: 'Slack', description: 'Command from channels and DMs', icon: MessageCircle, iconColor: 'text-purple-500', bgColor: 'bg-purple-50' },
+  { href: '/channels/whatsapp', title: 'WhatsApp', description: 'Mobile field command via Business API', icon: MessageCircle, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
+  { href: '/channels/telegram', title: 'Telegram', description: 'Bot-based messaging', icon: MessageCircle, iconColor: 'text-sky-500', bgColor: 'bg-sky-50' },
+  { href: '/channels/discord', title: 'Discord', description: 'Server and DM integration', icon: MessageCircle, iconColor: 'text-indigo-500', bgColor: 'bg-indigo-50' },
+  { href: '/channels/signal', title: 'Signal', description: 'Encrypted messaging', icon: MessageCircle, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
+  { href: '/channels/imessage', title: 'iMessage', description: 'Mac relay bridge', icon: MessageCircle, iconColor: 'text-slate-500', bgColor: 'bg-slate-50' },
+  { href: '/channels/email', title: 'Email', description: 'IMAP/SMTP inbox command', icon: Mail, iconColor: 'text-red-500', bgColor: 'bg-red-50' },
 ]
 
 export const teamNavItems: NavItem[] = [
+  { href: '/teams/coding', title: 'Coding', description: 'Multi-agent harness & unified task board', icon: Terminal, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
   { href: '/teams/marketing', title: 'Marketing', description: 'AI-powered campaigns & strategies', icon: Megaphone, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
   { href: '/teams/sales', title: 'Sales', description: 'Intelligent lead gen & deal closing', icon: TrendingUp, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
+  { href: '/teams/lawyers', title: 'Legal', description: 'Contract review & compliance prep', icon: Scale, iconColor: 'text-indigo-500', bgColor: 'bg-indigo-50' },
   { href: '/teams/engineering', title: 'Engineering', description: 'Automated development & code reviews', icon: Code, iconColor: 'text-slate-600', bgColor: 'bg-slate-50' },
   { href: '/teams/design', title: 'Design', description: 'Creative design & brand assets', icon: Palette, iconColor: 'text-purple-500', bgColor: 'bg-purple-50' },
   { href: '/teams/customer-support', title: 'Customer Support', description: '24/7 support & customer success', icon: Headphones, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
   { href: '/teams/operations', title: 'Operations', description: 'Process automation & optimization', icon: Settings, iconColor: 'text-orange-500', bgColor: 'bg-orange-50' },
   { href: '/teams/finance', title: 'Finance', description: 'Financial planning & analysis', icon: DollarSign, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
-  { href: '/teams/legal', title: 'Legal', description: 'Contract review & compliance', icon: Scale, iconColor: 'text-indigo-500', bgColor: 'bg-indigo-50' },
   { href: '/teams/business-development', title: 'Business Development', description: 'Partnership & growth opportunities', icon: Briefcase, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
   { href: '/teams/research', title: 'Research', description: 'Market research & data analysis', icon: FlaskConical, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
   { href: '/teams/security', title: 'Security', description: 'Security audits & threat detection', icon: Shield, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },

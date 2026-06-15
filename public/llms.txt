@@ -18,6 +18,27 @@ Trooper is an AI workforce platform built on OpenClaw technology. It enables tea
 - Skills & Plugins: 3,000+ OpenClaw skills for extending agent capabilities
 - Multi-Agent Collaboration: Multiple AI agents working together
 - Chat Interfaces: Conversational UI for interacting with AI workforce
+- Messaging Channels: Slack, WhatsApp, Telegram, Discord, Signal, iMessage, Email
+
+## Messaging Channels
+
+Connect your Trooper workforce to the apps you already use:
+- Hub: https://trooper.so/channels
+- Slack: https://trooper.so/channels/slack
+- WhatsApp: https://trooper.so/channels/whatsapp
+- Telegram: https://trooper.so/channels/telegram
+- Discord: https://trooper.so/channels/discord
+- Signal: https://trooper.so/channels/signal
+- iMessage: https://trooper.so/channels/imessage
+- Email: https://trooper.so/channels/email
+
+## AI Teams
+
+- Coding: https://trooper.so/teams/coding
+- Marketing: https://trooper.so/teams/marketing
+- Sales: https://trooper.so/teams/sales
+- Legal: https://trooper.so/teams/lawyers
+- Engineering: https://trooper.so/teams/engineering
 
 ## Skills Catalog
 
@@ -41,4 +62,9 @@ Categories include: Coding Agents & IDEs, Browser Automation, Data & Analytics, 
 - Multi-Agent: https://trooper.so/features/multi-agent-collaboration
 - OpenClaw Powered: https://trooper.so/features/openclaw-powered
 - Chat Interfaces: https://trooper.so/features/chat-interfaces
+- Messaging Channels: https://trooper.so/channels
+- Coding Team: https://trooper.so/teams/coding
+- Marketing Team: https://trooper.so/teams/marketing
+- Sales Team: https://trooper.so/teams/sales
+- Legal Team: https://trooper.so/teams/lawyers
 - Full Details: https://trooper.so/llms-full.txt
