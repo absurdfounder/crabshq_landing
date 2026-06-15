@@ -404,12 +404,13 @@ export function DemoTaskModal({
       display: 'flex', flexDirection: 'column',
       background: 'rgba(28,25,23,0.4)', backdropFilter: 'blur(3px)',
       borderRadius: 10,
+      animation: 'modalBackdropIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
     }}>
       <div style={{
         position: 'relative', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column',
         margin: 8, borderRadius: 12, border: `1px solid ${C.border}`, background: C.card,
         boxShadow: '0 20px 40px -12px rgba(28,25,23,0.28)',
-        overflow: 'hidden', animation: 'cardIn 0.3s ease both',
+        overflow: 'hidden', animation: 'modalIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
       }}>
         <button
           type="button"

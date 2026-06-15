@@ -930,7 +930,7 @@ export default function OldWays() {
         if (!card) { transforms.push({ scale: 1, opacity: 1, y: 0 }); return; }
         const cardsOnTop = Math.max(0, activeCardIndex - index);
         if (cardsOnTop > 0) {
-          transforms.push({ scale: Math.max(0.88, 1 - 0.03 * cardsOnTop), opacity: Math.max(0.35, 1 - 0.15 * cardsOnTop), y: -12 * cardsOnTop });
+          transforms.push({ scale: Math.max(0.92, 1 - 0.025 * cardsOnTop), opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop), y: -8 * cardsOnTop });
         } else {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
         }
@@ -967,13 +967,12 @@ export default function OldWays() {
                 style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="relative bg-white border border-slate-200 overflow-hidden transition-[filter] duration-200 min-h-0 lg:min-h-[520px] flex flex-col"
+                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
                     transformOrigin: 'center top',
-                    filter: t.scale < 1 ? `blur(${(1 - t.scale) * 6}px)` : 'none',
-                    transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
+                    transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
                   }}
                 >
                   {index === 8 && (

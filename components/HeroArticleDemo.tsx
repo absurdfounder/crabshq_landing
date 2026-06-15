@@ -178,7 +178,9 @@ function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number;
       border: highlighted ? `2px solid ${C.brand}` : `1px solid ${C.border}`,
       padding: "10px 11px", marginBottom: 6,
       boxShadow: highlighted ? `0 0 0 3px rgba(0,122,90,0.12), 0 1px 2px rgba(28,25,23,0.04)` : "0 1px 2px rgba(28,25,23,0.04)",
-      animation: `cardIn 0.4s ease ${index * 80}ms both`,
+      animation: `cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${index * 90}ms both`,
+      transition: "border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+      transform: highlighted ? "translateY(-1px)" : "translateY(0)",
     }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.45, marginBottom: 8 }}>{task.title}</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
@@ -215,7 +217,12 @@ function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoCo
           <span style={{ fontSize: 16, lineHeight: 1 }}>{col.emoji}</span>
           <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>{col.label}</span>
         </div>
-        <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 6px", borderRadius: 999, background: "rgba(255,255,255,0.6)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06)" }}>{tasks.length}</span>
+        <span style={{
+          fontSize: 11, fontWeight: 600, padding: "2px 6px", borderRadius: 999,
+          background: "rgba(255,255,255,0.6)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06)",
+          transition: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+          display: "inline-block",
+        }}>{tasks.length}</span>
       </div>
       <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", borderRadius: 8, padding: 8, background: col.bodyBg }}>
         {tasks.length === 0 ? (
@@ -467,7 +474,7 @@ function DemoChatPane({
 
       <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
         {messages.map((msg, i) => (
-          <div key={i} style={{ marginBottom: 16, animation: "fadeIn 0.3s ease both" }}>
+          <div key={i} style={{ marginBottom: 16, animation: `msgIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
               <Av name={msg.sender} size={24} />
               <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{msg.sender}</span>
@@ -489,9 +496,23 @@ function DemoChatPane({
           </div>
         ))}
         {agentTyping && (
-          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0", animation: "fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
             <Av name="Jordan" size={20} />
             <span style={{ fontSize: 11, fontWeight: 600, color: C.textSubtle }}>Jordan is typing</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 3, marginLeft: 2 }} aria-hidden>
+              {[0, 1, 2].map((dot) => (
+                <span
+                  key={dot}
+                  style={{
+                    width: 4,
+                    height: 4,
+                    borderRadius: "50%",
+                    background: C.textSubtle,
+                    animation: `dotBounce 1.2s ease-in-out ${dot * 0.15}s infinite`,
+                  }}
+                />
+              ))}
+            </span>
           </div>
         )}
       </div>
@@ -612,7 +633,10 @@ export default function TrooperDemo() {
 
   const pauseDemo = useCallback(() => setIsRunning(false), []);
 
-  useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight; }, [messages, inputText, agentTyping]);
+  useEffect(() => {
+    if (!chatRef.current) return;
+    chatRef.current.scrollTo({ top: chatRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages, agentTyping]);
 
   const cleanUp = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -706,7 +730,17 @@ export default function TrooperDemo() {
         return;
       }
       if (s.type === "reaction") { setMessages(p => { const c = [...p]; if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } }; return c; }); setScriptIndex(idx + 1); return; }
-      if (s.type === "addTasks") { setTasks(p => [...p, ...(s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS)]); setActivePage("tasks"); setScriptIndex(idx + 1); return; }
+      if (s.type === "addTasks") {
+        const newTasks = s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS;
+        newTasks.forEach((task, taskIndex) => {
+          setTimeout(() => {
+            setTasks((p) => [...p, task]);
+          }, taskIndex * 110);
+        });
+        setActivePage("tasks");
+        setScriptIndex(idx + 1);
+        return;
+      }
     }, s.delay);
   }, [applyTaskExecStep, resetDemo, totalScriptLength]);
 
@@ -724,11 +758,14 @@ export default function TrooperDemo() {
   return (
     <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
       <style>{`
-        @keyframes cardIn { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform: translateY(0) scale(1); } }
+        @keyframes cardIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-3px);opacity:1} }
+        @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.35} 40%{transform:translateY(-4px);opacity:1} }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes modalIn { from { opacity:0; transform: scale(0.985); } to { opacity:1; transform: scale(1); } }
+        @keyframes modalBackdropIn { from { opacity:0; } to { opacity:1; } }
         .demo-spin { animation: spin 1s linear infinite; }
         .Trooper-scrollbar::-webkit-scrollbar{width:5px;height:5px}
         .Trooper-scrollbar::-webkit-scrollbar-track{background:rgba(231,229,228,0.35);border-radius:4px}
