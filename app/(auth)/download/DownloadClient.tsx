@@ -43,7 +43,7 @@ const platforms: PlatformCard[] = [
     label: 'Windows',
     subtitle: 'Windows app',
     requirements: 'Windows 10 20H2+ and Windows 11 · x64',
-    href: 'https://github.com/absurdfounder/Trooper/releases/download/windows-latest/Trooper-Windows-x64-Setup.exe',
+    href: 'https://github.com/absurdfounder/trooper_landing/releases/download/windows-latest/Trooper-Windows-x64-Setup.exe',
     cta: 'Download Windows app',
     icon: <Monitor className="h-6 w-6" strokeWidth={1.75} />,
     group: 'desktop',
