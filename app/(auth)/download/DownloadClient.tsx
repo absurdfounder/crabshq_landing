@@ -32,7 +32,7 @@ const platforms: PlatformCard[] = [
     label: 'macOS',
     subtitle: 'Mac app',
     requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
-    href: 'https://app.trooper.so/download/mac',
+    href: 'https://github.com/absurdfounder/trooper_landing/releases/download/macos-latest/Trooper.dmg',
     cta: 'Download Mac app',
     icon: <SiApple className="h-7 w-7" />,
     group: 'desktop',
