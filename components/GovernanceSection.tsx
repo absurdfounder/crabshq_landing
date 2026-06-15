@@ -2,7 +2,13 @@
 
 import { motion } from 'framer-motion';
 
-const actions = ['Pause.', 'Resume.', 'Override.', 'Reassign.', 'Terminate.'];
+const actions = [
+  { label: 'Pause.', colorClass: 'text-amber-600' },
+  { label: 'Resume.', colorClass: 'text-trooper' },
+  { label: 'Override.', colorClass: 'text-slate-900' },
+  { label: 'Reassign.', colorClass: 'text-blue-600' },
+  { label: 'Terminate.', colorClass: 'text-red-700' },
+] as const;
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function GovernanceSection() {
@@ -55,14 +61,14 @@ export default function GovernanceSection() {
           <p className="governance-actions flex flex-col gap-1 sm:gap-2">
             {actions.map((action) => (
               <motion.span
-                key={action}
+                key={action.label}
                 variants={{
                   hidden: { opacity: 0, y: 14 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
                 }}
-                className="governance-action-line font-funneldisplay text-2xl sm:text-3xl md:text-4xl text-slate-900 tracking-tight"
+                className={`governance-action-line font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight ${action.colorClass}`}
               >
-                {action}
+                {action.label}
               </motion.span>
             ))}
           </p>
