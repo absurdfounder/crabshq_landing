@@ -1,4 +1,6 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
+import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import {
   allChannelSlugs,
   getChannelBySlug,
@@ -19,6 +21,8 @@ export type ChannelPageContent = {
   benefits: SubpageBenefit[];
   setupTitle: string;
   setupSteps: string[];
+  demoId: DemoScenarioId;
+  featureSections?: MarketingFeatureSection[];
   meta: {
     title: string;
     description: string;
@@ -34,6 +38,8 @@ type BuildArgs = {
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
   setupTitle?: string;
+  demoId: DemoScenarioId;
+  featureSections?: MarketingFeatureSection[];
 };
 
 function buildChannelPage(args: BuildArgs): ChannelPageContent | undefined {
@@ -52,6 +58,8 @@ function buildChannelPage(args: BuildArgs): ChannelPageContent | undefined {
     benefits: args.benefits,
     setupTitle: args.setupTitle ?? `Connect ${catalog.name}`,
     setupSteps: catalog.steps,
+    demoId: args.demoId,
+    featureSections: args.featureSections,
     meta: {
       title: `${catalog.name} Channel | Trooper`,
       description: args.description,
@@ -79,6 +87,16 @@ const channelPages: Record<string, ChannelPageContent> = {};
 
 const slack = buildChannelPage({
   slug: 'slack',
+  demoId: 'slack',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'Slack thread → traced ticket',
+      intro: 'Every assignment becomes a ticket with full context — chat stays fast, ops stays auditable.',
+      visual: 'slack-routing',
+    },
+  ],
   titleAccent: 'without leaving your workspace',
   description:
     'Assign tasks, get status updates, and approve agent actions from Slack channels and DMs. Your Trooper workforce meets your team where they already coordinate.',
@@ -107,6 +125,16 @@ if (slack) channelPages.slack = slack;
 
 const whatsapp = buildChannelPage({
   slug: 'whatsapp',
+  demoId: 'whatsapp',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'WhatsApp message → field ticket',
+      intro: 'Support and command from your pocket — agents execute on your server while you approve from mobile.',
+      visual: 'whatsapp-routing',
+    },
+  ],
   titleAccent: 'from your pocket',
   description:
     'Run your AI workforce from WhatsApp. Assign missions on the go, approve spend, and get field reports — all through the Business API on your private OpenClaw server.',
@@ -135,6 +163,16 @@ if (whatsapp) channelPages.whatsapp = whatsapp;
 
 const telegram = buildChannelPage({
   slug: 'telegram',
+  demoId: 'messaging',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'Any channel → one task board',
+      intro: 'DMs from Telegram, Discord, Signal, or iMessage all route to the same traced workforce.',
+      visual: 'messaging-routing',
+    },
+  ],
   titleAccent: 'via your bot',
   description:
     'Connect a Telegram bot to Trooper and command your AI workforce from any device. Fast setup, global reach, full ticket tracing.',
@@ -150,6 +188,16 @@ if (telegram) channelPages.telegram = telegram;
 
 const discord = buildChannelPage({
   slug: 'discord',
+  demoId: 'messaging',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'Server message → ticket',
+      intro: 'Community channels and DMs become first-class missions on your Trooper board.',
+      visual: 'messaging-routing',
+    },
+  ],
   titleAccent: 'in your server',
   description:
     'Deploy Trooper inside Discord servers and DMs. Perfect for community teams, gaming orgs, and dev squads who live in voice and text channels.',
@@ -165,6 +213,16 @@ if (discord) channelPages.discord = discord;
 
 const signal = buildChannelPage({
   slug: 'signal',
+  demoId: 'messaging',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'Encrypted DM → traced ops',
+      intro: 'Signal keeps messages private while Trooper handles execution on your runtime.',
+      visual: 'messaging-routing',
+    },
+  ],
   titleAccent: 'with end-to-end encryption',
   description:
     'Command Trooper over Signal for private, encrypted ops communication. Ideal for security-conscious teams and personal command lines.',
@@ -180,6 +238,16 @@ if (signal) channelPages.signal = signal;
 
 const imessage = buildChannelPage({
   slug: 'imessage',
+  demoId: 'messaging',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'iMessage → your workforce',
+      intro: 'Bridge Apple messaging to Trooper tickets without adding another app.',
+      visual: 'messaging-routing',
+    },
+  ],
   titleAccent: 'through your Mac relay',
   description:
     'Bridge iMessage to Trooper via a Mac relay. Command your workforce from the messaging app you already use with friends, family, and clients.',
@@ -195,6 +263,16 @@ if (imessage) channelPages.imessage = imessage;
 
 const email = buildChannelPage({
   slug: 'email',
+  demoId: 'email',
+  featureSections: [
+    {
+      eyebrow: 'Routing',
+      eyebrowNumber: '03',
+      title: 'Inbox → structured ticket',
+      intro: 'RFPs, support threads, and follow-ups parsed into missions with research and draft workflows.',
+      visual: 'email-routing',
+    },
+  ],
   titleAccent: 'via IMAP and SMTP',
   description:
     'Send and receive email through Trooper agents. Inbox triage, drafted replies, scheduled follow-ups — all traced as tickets.',

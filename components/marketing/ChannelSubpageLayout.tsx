@@ -1,12 +1,17 @@
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
-import HeroArticleDemo from '@/components/HeroArticleDemo';
+import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
+import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSections';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { ChannelPageContent } from '@/lib/channelContent';
 import { ArrowRight } from 'lucide-react';
 
 export default function ChannelSubpageLayout({ content }: { content: ChannelPageContent }) {
+  const setupEyebrowNumber = content.featureSections?.length
+    ? String(3 + content.featureSections.length).padStart(2, '0')
+    : '03';
+
   return (
     <>
       <div className="bg-white">
@@ -51,7 +56,7 @@ export default function ChannelSubpageLayout({ content }: { content: ChannelPage
             </div>
           </div>
 
-          <HeroArticleDemo />
+          <MarketingHeroDemo scenarioId={content.demoId} />
         </section>
       </div>
 
@@ -81,7 +86,11 @@ export default function ChannelSubpageLayout({ content }: { content: ChannelPage
         </section>
       </SectionShell>
 
-      <SectionShell eyebrow="Setup" eyebrowNumber="03" bgClass="bg-slate-50">
+      {content.featureSections && content.featureSections.length > 0 && (
+        <MarketingFeatureSections sections={content.featureSections} />
+      )}
+
+      <SectionShell eyebrow="Setup" eyebrowNumber={setupEyebrowNumber} bgClass="bg-slate-50">
         <section className="py-12 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-10">

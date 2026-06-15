@@ -1,12 +1,17 @@
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
-import HeroArticleDemo from '@/components/HeroArticleDemo';
+import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
+import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSections';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { TeamPageContent } from '@/lib/teamContent';
 import { ArrowRight } from 'lucide-react';
 
 export default function TeamSubpageLayout({ content }: { content: TeamPageContent }) {
+  const extraEyebrowNumber = content.featureSections?.length
+    ? String(3 + content.featureSections.length).padStart(2, '0')
+    : (content.extraSection?.eyebrowNumber ?? '03');
+
   return (
     <>
       <div className="bg-white">
@@ -52,7 +57,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
             </div>
           </div>
 
-          <HeroArticleDemo />
+          <MarketingHeroDemo scenarioId={content.demoId} />
         </section>
       </div>
 
@@ -82,10 +87,14 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
         </section>
       </SectionShell>
 
+      {content.featureSections && content.featureSections.length > 0 && (
+        <MarketingFeatureSections sections={content.featureSections} />
+      )}
+
       {content.extraSection && (
         <SectionShell
           eyebrow={content.extraSection.eyebrow}
-          eyebrowNumber={content.extraSection.eyebrowNumber}
+          eyebrowNumber={extraEyebrowNumber}
           bgClass="bg-slate-50"
         >
           <section className="py-12 md:py-20">

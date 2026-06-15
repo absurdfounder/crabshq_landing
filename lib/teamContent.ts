@@ -1,4 +1,6 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
+import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -25,6 +27,8 @@ export type TeamPageContent = {
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
+  demoId: DemoScenarioId;
+  featureSections?: MarketingFeatureSection[];
   meta: {
     title: string;
     description: string;
@@ -42,6 +46,8 @@ type BuildArgs = {
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
+  demoId: DemoScenarioId;
+  featureSections?: MarketingFeatureSection[];
 };
 
 function buildTeamPage(args: BuildArgs): TeamPageContent {
@@ -59,6 +65,25 @@ function buildTeamPage(args: BuildArgs): TeamPageContent {
 const teamPages: Record<string, TeamPageContent> = {
   coding: buildTeamPage({
     slug: 'coding',
+    demoId: 'coding',
+    featureSections: [
+      {
+        eyebrow: 'Harness',
+        eyebrowNumber: '03',
+        title: 'Multi-agent coding harness',
+        intro: 'Run Claude Code, Codex, and Cursor side-by-side — each agent on its own task with live diffs and activity logs.',
+        bullets: ['Parallel patch missions with traced tool calls', 'Your subscriptions — Trooper routes and enforces permissions'],
+        visual: 'coding-harness',
+      },
+      {
+        eyebrow: 'Board',
+        eyebrowNumber: '04',
+        title: 'One board for every coding agent',
+        intro: 'In progress, backlog, and done — pick the right soldier for the job, not the right browser tab.',
+        visual: 'coding-board',
+        reverse: true,
+      },
+    ],
     title: 'Trooper for Coding',
     titleAccent: 'your keys, our harness',
     description:
@@ -85,7 +110,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Field ops',
-      eyebrowNumber: '03',
+      eyebrowNumber: '05',
       title: 'How Trooper runs your code unit',
       intro: 'From invoice parsers to release notes — agents execute full workflows, not single prompts.',
       useCases: [
@@ -111,6 +136,16 @@ const teamPages: Record<string, TeamPageContent> = {
 
   marketing: buildTeamPage({
     slug: 'marketing',
+    demoId: 'marketing',
+    featureSections: [
+      {
+        eyebrow: 'Pipeline',
+        eyebrowNumber: '03',
+        title: 'Campaign pipeline on one board',
+        intro: 'Brief, SEO recon, drafts, review, and schedule — each step a traced subtask with agent handoffs.',
+        visual: 'campaign-pipeline',
+      },
+    ],
     title: 'Trooper for Marketing',
     titleAccent: 'campaigns on mission',
     description:
@@ -137,7 +172,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Campaign ops',
-      eyebrowNumber: '03',
+      eyebrowNumber: '04',
       title: 'Marketing missions Trooper runs',
       useCases: [
         {
@@ -162,6 +197,16 @@ const teamPages: Record<string, TeamPageContent> = {
 
   sales: buildTeamPage({
     slug: 'sales',
+    demoId: 'sales',
+    featureSections: [
+      {
+        eyebrow: 'Pipeline',
+        eyebrowNumber: '03',
+        title: 'Pipeline ops on autopilot',
+        intro: 'Inbound leads become qualified opportunities with research, outreach drafts, and CRM updates — all ticket-traced.',
+        visual: 'sales-pipeline',
+      },
+    ],
     title: 'Trooper for Sales',
     titleAccent: 'pipeline never stalls',
     description:
@@ -188,7 +233,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Revenue ops',
-      eyebrowNumber: '03',
+      eyebrowNumber: '04',
       title: 'Sales workflows on the board',
       useCases: [
         {
@@ -213,6 +258,16 @@ const teamPages: Record<string, TeamPageContent> = {
 
   lawyers: buildTeamPage({
     slug: 'lawyers',
+    demoId: 'legal',
+    featureSections: [
+      {
+        eyebrow: 'Governance',
+        eyebrowNumber: '03',
+        title: 'Human review on every external action',
+        intro: 'Agents prep redlines and summaries — counsel approves before anything leaves the firm.',
+        visual: 'legal-review',
+      },
+    ],
     title: 'Trooper for Legal Teams',
     titleAccent: 'prep, not practice of law',
     description:
@@ -239,7 +294,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Matter ops',
-      eyebrowNumber: '03',
+      eyebrowNumber: '04',
       title: 'How legal teams deploy Trooper',
       useCases: [
         {
@@ -264,6 +319,16 @@ const teamPages: Record<string, TeamPageContent> = {
 
   engineering: buildTeamPage({
     slug: 'engineering',
+    demoId: 'engineering',
+    featureSections: [
+      {
+        eyebrow: 'Incidents',
+        eyebrowNumber: '03',
+        title: 'Incident response with full trace',
+        intro: 'Triage, rollback, and postmortem — every step logged on the ticket thread.',
+        visual: 'engineering-incident',
+      },
+    ],
     title: 'Trooper for Engineering',
     titleAccent: 'that ships',
     description: 'AI engineers for code, reviews, issues, and DevOps — scoped to your repos with checkout discipline and merge gates.',
@@ -280,7 +345,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Dev ops',
-      eyebrowNumber: '03',
+      eyebrowNumber: '04',
       title: 'Engineering missions',
       useCases: [
         { title: 'Issue triage', description: 'New GitHub issues classified, labeled, and assigned with repro steps investigated.' },
@@ -292,6 +357,16 @@ const teamPages: Record<string, TeamPageContent> = {
 
   operations: buildTeamPage({
     slug: 'operations',
+    demoId: 'operations',
+    featureSections: [
+      {
+        eyebrow: 'Runbook',
+        eyebrowNumber: '03',
+        title: 'Weekly ops checklist on autopilot',
+        intro: 'Reconciliation, access reviews, backups, and budget reports — routines that run while you command.',
+        visual: 'ops-runbook',
+      },
+    ],
     title: 'Trooper for Operations',
     titleAccent: 'always on',
     description: 'Process automation, monitoring, and internal tooling — ops agents that run checklists and surface anomalies before they become incidents.',

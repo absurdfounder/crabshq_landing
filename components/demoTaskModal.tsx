@@ -7,7 +7,9 @@ import {
 } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } from './demoTaskExecution';
-import { getToolIconName, SPOTLIGHT_TASK_TAGS, DEMO_ORG } from './demoTaskExecution';
+import { getToolIconName } from './demoTaskExecution';
+import { launchScenario } from '@/lib/demoScenarios/launch';
+import type { DemoOrg } from '@/lib/demoScenarios/types';
 import { DemoFavicon } from './DemoFavicon';
 import { getToolFaviconDomain } from '@/lib/demoToolFavicon';
 
@@ -366,6 +368,8 @@ export function DemoTaskModal({
   artifact,
   delivery,
   statusCol,
+  taskTags = launchScenario.spotlightTaskTags,
+  org = launchScenario.org,
   onClose,
   onSelectArtifact,
 }: {
@@ -377,6 +381,8 @@ export function DemoTaskModal({
   artifact: DemoArtifact | null;
   delivery: string | null;
   statusCol?: 'in_progress' | 'review' | 'done';
+  taskTags?: DemoTag[];
+  org?: DemoOrg;
   onClose?: () => void;
   onSelectArtifact?: (name: string) => void;
 }) {
@@ -431,7 +437,7 @@ export function DemoTaskModal({
                   <span style={{ fontSize: 9, fontWeight: 700, color: statusColor, background: statusBg, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: 0.4 }}>
                     {statusLabel}
                   </span>
-                  {SPOTLIGHT_TASK_TAGS.map(tag => (
+                  {taskTags.map(tag => (
                     <DemoTagBadge key={`${tag.type}-${tag.label}`} tag={tag} size="xs" />
                   ))}
                 </div>
@@ -483,8 +489,10 @@ export function DemoTaskModal({
                   padding: '8px 10px 6px',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
-                    <DemoTagBadge tag={{ label: DEMO_ORG.name.toLowerCase(), type: 'site', domain: DEMO_ORG.domain }} size="xs" />
-                    <DemoTagBadge tag={{ label: 'product-launch', type: 'channel' }} size="xs" />
+                    <DemoTagBadge tag={{ label: org.name.toLowerCase(), type: 'site', domain: org.domain }} size="xs" />
+                    {taskTags[0]?.type === 'channel' && (
+                      <DemoTagBadge tag={taskTags[0]} size="xs" />
+                    )}
                   </div>
                   <div style={{ fontSize: 12, color: C.textSubtle, minHeight: 24, padding: '2px 4px' }}>
                     Do anything with AI…

@@ -1,4 +1,5 @@
 import { featureNavItems, teamNavItems } from '@/components/ui/nav-data';
+import type { DemoScenarioId } from '@/lib/demoScenarios';
 
 export type SubpageBenefit = {
   title: string;
@@ -15,6 +16,7 @@ export type SubpageContent = {
   overviewTitle: string;
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
+  demoId: DemoScenarioId;
   meta: {
     title: string;
     description: string;
@@ -34,12 +36,31 @@ type BuildArgs = {
   overviewTitle: string;
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
+  demoId?: DemoScenarioId;
+};
+
+const TEAM_DEMO_MAP: Record<string, DemoScenarioId> = {
+  marketing: 'marketing',
+  sales: 'sales',
+  engineering: 'engineering',
+  operations: 'operations',
+  legal: 'legal',
+  design: 'marketing',
+  'customer-support': 'messaging',
+  finance: 'operations',
+  'business-development': 'sales',
+  research: 'marketing',
+  security: 'engineering',
+  pr: 'marketing',
+  growth: 'marketing',
 };
 
 function buildPage(args: BuildArgs): SubpageContent {
   const base = args.kind === 'feature' ? 'features' : 'teams';
+  const demoId = args.demoId ?? (args.kind === 'team' ? TEAM_DEMO_MAP[args.slug] ?? 'launch' : 'launch');
   return {
     ...args,
+    demoId,
     meta: {
       title: `${args.title} | Trooper`,
       description: args.description,

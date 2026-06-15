@@ -12,9 +12,14 @@ import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import { DemoFavicon } from './DemoFavicon';
 import {
-  INITIAL_SUBTASKS, SPOTLIGHT_TASK_ID, TASK_EXEC_SCRIPT, DEMO_ARTIFACTS, DEMO_ORG,
   type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep,
 } from './demoTaskExecution';
+import {
+  getDemoScenario,
+  DEFAULT_DEMO_SCENARIO_ID,
+  type DemoScenarioId,
+} from '@/lib/demoScenarios';
+import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
@@ -24,48 +29,7 @@ const ALL_PEOPLE = Object.fromEntries(
   [...HUMANS, ...DEMO_AGENTS].map(p => [p.name, p])
 );
 
-const DEMO_CHANNELS = [
-  { id: 'general', name: 'general', preview: 'Jordan: on it — matching tasks…', time: '14:54', system: false },
-  { id: 'launch', name: 'product-launch', preview: 'Vaibhav: hey @Jordan we just launched…', time: '14:52', system: false },
-  { id: 'ops', name: 'ops', preview: 'Leo: API integration review ready', time: '1h', system: false },
-];
-
-const PHASE1_TASKS = [
-  { id: 1, title: "SEO Optimization for Wonder", col: "inbox" as DemoColumnId, tags: ["seo", "visibility"], watchers: ["Vaibhav", "Jordan"], comments: 2 },
-  { id: 2, title: "Create and Distribute Branded Swag", col: "inbox" as DemoColumnId, tags: ["branding", "merchandise"], watchers: ["Aria", "Jordan"], comments: 1 },
-  { id: 3, title: "Write blog post on AI trends", col: "inbox" as DemoColumnId, tags: ["content", "research"], watchers: ["Ren"], comments: 0 },
-  { id: 4, title: "Improve Website User Experience", col: "in_progress" as DemoColumnId, tags: ["ux", "ui"], watchers: ["Ren", "Leo"], comments: 0 },
-  { id: 5, title: "Update Website with New Game Releases", col: "in_progress" as DemoColumnId, tags: ["website", "content"], watchers: ["Vaibhav"], comments: 0 },
-  { id: 6, title: "Expand Game Categories and Tags", col: "in_progress" as DemoColumnId, tags: ["game", "categories"], watchers: ["Vaibhav", "Jordan"], comments: 2 },
-];
-
-const PHASE2_TASKS = [
-  { id: 7, title: "Develop Social Media Strategy", col: "in_progress" as DemoColumnId, tags: ["social", "media"], watchers: ["Aria"], comments: 0 },
-  { id: 8, title: "Design landing page mockup", col: "review" as DemoColumnId, tags: ["design", "ui"], watchers: ["Ren", "Jordan"], comments: 2 },
-  { id: 9, title: "API integration review", col: "review" as DemoColumnId, tags: ["dev", "docs"], watchers: ["Leo"], comments: 2 },
-  { id: 10, title: "Capture Website Screenshots", col: "done" as DemoColumnId, tags: ["website", "visual"], watchers: ["Jordan", "Aria"], comments: 10 },
-];
-
-const CHAT_SCRIPT = [
-  { type: "mention_tab", text: "Vaibhav: @Jordan hey...", delay: 150 },
-  { type: "typing", text: "hey @Jordan we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 200 },
-  { type: "send", sender: "Vaibhav", role: "Founder", text: "hey @Jordan we just launched Wonder on Product Hunt today 🚀 can you get the team set up for launch day?", delay: 300 },
-  { type: "nick_typing", delay: 800 },
-  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "congrats on the launch! 🎉 let me pull together everything we need — checking our playbook, past launches, and support tickets now...", time: "14:52", delay: 1400 },
-  { type: "nick_typing", delay: 1200 },
-  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "alright, I've created 6 tasks based on what worked for our last 3 launches. SEO, content, UX improvements, website updates — the works. They're on the board now!", time: "14:53", delay: 300 },
-  { type: "addTasks", phase: 1, delay: 600 },
-  { type: "reaction", emoji: "🔥", count: 2, delay: 500 },
-  { type: "typing", text: "this is amazing. can you assign them to whoever's best?", delay: 800 },
-  { type: "send", sender: "Vaibhav", role: "Founder", text: "this is amazing. can you assign them to whoever's best? don't need to check with me", delay: 300 },
-  { type: "nick_typing", delay: 800 },
-  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "on it — matching tasks by each agent's skillset and past performance. Aria's on social, Ren's on UX & design, Leo's handling ops...", time: "14:54", delay: 1200 },
-  { type: "addTasks", phase: 2, delay: 500 },
-  { type: "response", sender: "Jordan", role: "Chief of Staff", text: "done! all 10 tasks assigned and the team's already working. I'll flag anything that needs your attention. go enjoy launch day 🪖💪", time: "14:55", delay: 1400 },
-  { type: "reaction", emoji: "👍", count: 3, delay: 600 },
-];
-
-type Task = (typeof PHASE1_TASKS)[number];
+type Task = DemoKanbanTask;
 type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
 type SidebarTab = 'menu' | 'channels';
 type DemoPageId = 'home' | 'tasks' | 'goals' | 'routines' | 'files' | 'agents' | 'devices' | 'memory' | 'skills' | 'settings';
@@ -236,14 +200,14 @@ function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoCo
   );
 }
 
-function DemoSidebarRail() {
+function DemoSidebarRail({ org }: { org: DemoOrg }) {
   return (
     <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
         <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", imageRendering: "pixelated" }} />
         <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
         <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
-          <DemoFavicon src={DEMO_ORG.icon} size={24} rounded="md" alt={DEMO_ORG.name} />
+          <DemoFavicon src={org.icon} size={24} rounded="md" alt={org.name} />
         </div>
         <button type="button" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "default" }}>
           <Plus size={16} strokeWidth={1.5} />
@@ -277,6 +241,7 @@ const MENU_NAV = {
 
 function DemoSidebarNav({
   sidebarTab, setSidebarTab, activePage, onNavigate, activeChannel, onSelectChannel, onUserInteract,
+  channels, org,
 }: {
   sidebarTab: SidebarTab;
   setSidebarTab: (t: SidebarTab) => void;
@@ -285,6 +250,8 @@ function DemoSidebarNav({
   activeChannel: string;
   onSelectChannel: (id: string) => void;
   onUserInteract: () => void;
+  channels: DemoChannel[];
+  org: DemoOrg;
 }) {
   const sectionLabel = { fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "0 4px 6px" } as const;
   const tabBtn = (tab: SidebarTab, icon: typeof LayoutGrid, label: string) => {
@@ -336,7 +303,7 @@ function DemoSidebarNav({
     );
   };
 
-  const channelRow = (ch: typeof DEMO_CHANNELS[number]) => {
+  const channelRow = (ch: DemoChannel) => {
     const active = activeChannel === ch.id;
     return (
       <button
@@ -379,7 +346,7 @@ function DemoSidebarNav({
         {sidebarTab === 'channels' ? (
           <>
             <div style={sectionLabel}>Channels</div>
-            {DEMO_CHANNELS.map(channelRow)}
+            {channels.map(channelRow)}
             <div style={{ marginTop: 8, padding: "0 4px" }}>
               <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "8px 4px 6px" }}>Direct messages</div>
               {DEMO_AGENTS.slice(0, 3).map(a => (
@@ -428,7 +395,7 @@ function DemoSidebarNav({
           borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
           boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text, cursor: "pointer",
         }}>
-          <DemoFavicon src={DEMO_ORG.icon} size={20} rounded="md" alt={DEMO_ORG.name} />
+          <DemoFavicon src={org.icon} size={20} rounded="md" alt={org.name} />
           New chat
         </button>
       </div>
@@ -438,6 +405,7 @@ function DemoSidebarNav({
 
 function DemoChatPane({
   messages, inputText, mentionTab, agentTyping, activeChannel, composerPlaceholder, chatRef,
+  channels, org, channelBrand = 'trooper',
 }: {
   messages: Message[];
   inputText: string;
@@ -446,15 +414,20 @@ function DemoChatPane({
   activeChannel: string;
   composerPlaceholder: string;
   chatRef: RefObject<HTMLDivElement>;
+  channels: DemoChannel[];
+  org: DemoOrg;
+  channelBrand?: ChannelBrand;
 }) {
-  const channelName = DEMO_CHANNELS.find(c => c.id === activeChannel)?.name || 'general';
+  const channelName = channels.find(c => c.id === activeChannel)?.name || 'general';
+  const headerAccent = channelBrand === 'slack' ? '#611f69' : channelBrand === 'whatsapp' ? '#128C7E' : C.textMuted;
+  const ChannelIcon = channelBrand === 'whatsapp' ? MessageCircle : Hash;
 
   return (
     <div style={{ width: DEMO_CHAT_W, minWidth: DEMO_CHAT_W, flexShrink: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: C.card }}>
+      <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: channelBrand === 'slack' ? '#f8f5fb' : channelBrand === 'whatsapp' ? '#f0faf4' : C.card }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
           <button type="button" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "default", fontSize: 14, fontWeight: 600, color: "#525252" }}>
-            <Hash size={14} strokeWidth={1.75} color="#a3a3a3" />
+            <ChannelIcon size={14} strokeWidth={1.75} color={headerAccent} />
             {channelName}
             <ChevronDown size={14} strokeWidth={2} color="#a3a3a3" />
           </button>
@@ -533,8 +506,8 @@ function DemoChatPane({
                 <Plus size={16} strokeWidth={1.75} />
               </div>
               <ComposerTag>
-                <DemoFavicon src={DEMO_ORG.icon} size={14} rounded="sm" alt={DEMO_ORG.name} />
-                {DEMO_ORG.name}
+                <DemoFavicon src={org.icon} size={14} rounded="sm" alt={org.name} />
+                {org.name}
               </ComposerTag>
               <ComposerTag>Auto</ComposerTag>
             </div>
@@ -589,19 +562,27 @@ function DemoBoardPane({ tasks, highlightedTaskId }: { tasks: Task[]; highlighte
   );
 }
 
-export default function TrooperDemo() {
+export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: { scenarioId?: DemoScenarioId }) {
+  const scenario = getDemoScenario(scenarioId);
+  const CHAT_SCRIPT = scenario.chatScript;
+  const TASK_EXEC_SCRIPT = scenario.taskExecScript;
+  const PHASE1_TASKS = scenario.phase1Tasks;
+  const PHASE2_TASKS = scenario.phase2Tasks;
+  const DEMO_ARTIFACTS = scenario.artifacts;
+  const SPOTLIGHT_TASK_ID = scenario.spotlightTaskId;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [inputText, setInputText] = useState("");
   const [mentionTab, setMentionTab] = useState("");
   const [agentTyping, setAgentTyping] = useState(false);
   const [activePage, setActivePage] = useState<DemoPageId>("tasks");
-  const [sidebarTab, setSidebarTab] = useState<SidebarTab>("channels");
-  const [activeChannel, setActiveChannel] = useState("general");
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>(scenario.defaultSidebarTab ?? "channels");
+  const [activeChannel, setActiveChannel] = useState(scenario.defaultChannel ?? "general");
   const [scriptIndex, setScriptIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
-  const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(INITIAL_SUBTASKS);
+  const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(scenario.initialSubtasks);
   const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
   const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(null);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
@@ -616,22 +597,27 @@ export default function TrooperDemo() {
 
   const resetTaskModal = useCallback(() => {
     setTaskModalOpen(false);
-    setModalSubtasks(INITIAL_SUBTASKS.map(s => ({ ...s, status: 'pending' as const })));
+    setModalSubtasks(scenario.initialSubtasks.map(s => ({ ...s, status: 'pending' as const })));
     setModalFeed([]);
     setModalArtifact(null);
     setModalDelivery(null);
     setHighlightedTaskId(null);
     modalMsgCounter.current = 0;
-  }, []);
+  }, [scenario.initialSubtasks]);
 
   const resetDemo = useCallback(() => {
     setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
-    setActivePage("tasks"); setSidebarTab("channels"); setActiveChannel("general");
+    setActivePage("tasks"); setSidebarTab(scenario.defaultSidebarTab ?? "channels"); setActiveChannel(scenario.defaultChannel ?? "general");
     resetTaskModal();
     setScriptIndex(0);
-  }, [resetTaskModal]);
+  }, [resetTaskModal, scenario.defaultChannel, scenario.defaultSidebarTab]);
 
   const pauseDemo = useCallback(() => setIsRunning(false), []);
+
+  useEffect(() => {
+    resetDemo();
+    setIsRunning(true);
+  }, [scenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!chatRef.current) return;
@@ -679,10 +665,13 @@ export default function TrooperDemo() {
       case 'openArtifact':
         setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
         break;
-      case 'deliver':
+      case 'deliver': {
         setModalDelivery(step.name);
-        setModalArtifact(DEMO_ARTIFACTS['seo-launch-report.md'] || null);
+        const deliverKey = scenario.deliverArtifactKey
+          ?? Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === step.name);
+        if (deliverKey) setModalArtifact(DEMO_ARTIFACTS[deliverKey] || null);
         break;
+      }
       case 'closeTaskModal':
         setTaskModalOpen(false);
         break;
@@ -692,7 +681,7 @@ export default function TrooperDemo() {
       default:
         break;
     }
-  }, []);
+  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey]);
 
   const processStep = useCallback((idx: number) => {
     if (idx >= totalScriptLength) {
@@ -742,7 +731,7 @@ export default function TrooperDemo() {
         return;
       }
     }, s.delay);
-  }, [applyTaskExecStep, resetDemo, totalScriptLength]);
+  }, [applyTaskExecStep, resetDemo, totalScriptLength, CHAT_SCRIPT, TASK_EXEC_SCRIPT, PHASE1_TASKS, PHASE2_TASKS]);
 
   useEffect(() => { if (!isRunning) return; processStep(scriptIndex); return cleanUp; }, [scriptIndex, isRunning, processStep, cleanUp]);
 
@@ -810,7 +799,7 @@ export default function TrooperDemo() {
           </div>
 
           <div style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
-            <DemoSidebarRail />
+            <DemoSidebarRail org={scenario.org} />
             <DemoSidebarNav
               sidebarTab={sidebarTab}
               setSidebarTab={setSidebarTab}
@@ -819,6 +808,8 @@ export default function TrooperDemo() {
               activeChannel={activeChannel}
               onSelectChannel={setActiveChannel}
               onUserInteract={pauseDemo}
+              channels={scenario.channels}
+              org={scenario.org}
             />
 
             {showSplit ? (
@@ -831,6 +822,9 @@ export default function TrooperDemo() {
                   activeChannel={activeChannel}
                   composerPlaceholder={composerPlaceholder}
                   chatRef={chatRef}
+                  channels={scenario.channels}
+                  org={scenario.org}
+                  channelBrand={scenario.channelBrand}
                 />
                 <DemoBoardPane tasks={tasks} highlightedTaskId={highlightedTaskId} />
               </>
@@ -842,13 +836,15 @@ export default function TrooperDemo() {
 
             <DemoTaskModal
               open={taskModalOpen}
-              taskTitle={spotlightTask?.title || 'SEO Optimization for Wonder'}
-              assignee="Aria"
+              taskTitle={spotlightTask?.title || scenario.phase1Tasks[0]?.title || 'Task'}
+              assignee={scenario.spotlightAssignee}
               subtasks={modalSubtasks}
               feed={modalFeed}
               artifact={modalArtifact}
               delivery={modalDelivery}
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
+              taskTags={scenario.spotlightTaskTags}
+              org={scenario.org}
               onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
               onSelectArtifact={(name) => {
                 const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);

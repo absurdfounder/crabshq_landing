@@ -1,6 +1,6 @@
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
-import HeroArticleDemo from '@/components/HeroArticleDemo';
+import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { SubpageContent } from '@/lib/subpageContent';
@@ -52,7 +52,7 @@ export default function SubpageLayout({ content }: { content: SubpageContent }) 
             </div>
           </div>
 
-          <HeroArticleDemo />
+          <MarketingHeroDemo scenarioId={content.demoId} />
         </section>
       </div>
 
