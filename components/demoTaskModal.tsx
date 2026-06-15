@@ -76,16 +76,21 @@ export function DemoTagBadge({ tag, size = 'sm' }: { tag: DemoTag; size?: 'sm' |
 }
 
 type Turn = {
+  id: string;
   agent: string;
   message?: { text: string; time: string; tags?: DemoTag[] };
   tools: DemoToolLog[];
 };
+
+const THREAD_AVATAR = 28;
+const THREAD_GAP = 10;
 
 function buildTurns(feed: DemoFeedItem[]): Turn[] {
   const turns: Turn[] = [];
   for (const item of feed) {
     if (item.kind === 'message') {
       turns.push({
+        id: `msg-${item.id}`,
         agent: item.sender,
         message: { text: item.text, time: item.time, tags: item.tags },
         tools: [],
@@ -96,7 +101,7 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
     if (last && last.agent === item.agent) {
       last.tools.push(item);
     } else {
-      turns.push({ agent: item.agent, tools: [item] });
+      turns.push({ id: `tools-${item.id}`, agent: item.agent, tools: [item] });
     }
   }
   return turns;
@@ -107,9 +112,9 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
   const faviconDomain = getToolFaviconDomain(log);
 
   return (
-    <div style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 32 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 18, flexShrink: 0, paddingTop: 2 }}>
-        <div style={{ width: 1, flex: 1, background: C.border, minHeight: 6 }} />
+    <div className="demo-thread-tool-row" style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0 }}>
+        <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />
         <div style={{
           width: 22, height: 22, borderRadius: 6, flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -121,27 +126,30 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
             <ToolIcon tool={log.tool} />
           )}
         </div>
-        {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 6 }} />}
+        {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />}
       </div>
       <div style={{
         flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8,
-        paddingBottom: isLast ? 2 : 8, paddingTop: 2,
+        paddingBottom: isLast ? 0 : 10, paddingTop: 1,
       }}>
         <span style={{
           fontSize: 11.5, fontWeight: 600, color: C.text, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-          flexShrink: 0, lineHeight: 1.2,
+          flexShrink: 0, lineHeight: 1.3,
         }}>
           {log.label}
         </span>
         {log.detail && (
           <span style={{
-            fontSize: 11, color: C.textSubtle, lineHeight: 1.2,
+            fontSize: 11, color: C.textSubtle, lineHeight: 1.3,
             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0,
           }}>
             {log.detail}
           </span>
         )}
-        <span style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', height: 18 }}>
+        <span style={{
+          marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          width: 18, height: 18, transition: 'opacity 0.25s ease',
+        }}>
           {running
             ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
             : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
@@ -151,47 +159,54 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
   );
 }
 
-function ToolTimeline({ tools }: { tools: DemoToolLog[] }) {
-  if (tools.length === 0) return null;
-  return (
-    <div style={{ marginTop: 8, marginLeft: 0, animation: 'fadeIn 0.2s ease both' }}>
-      {tools.map((log, i) => (
-        <ToolTimelineRow key={log.id} log={log} isLast={i === tools.length - 1} />
-      ))}
-    </div>
-  );
-}
-
 function AgentTurn({ turn }: { turn: Turn }) {
   const person = ALL_PEOPLE[turn.agent];
   return (
-    <div style={{ marginBottom: 20, animation: 'fadeIn 0.25s ease both' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-        <Av name={turn.agent} size={28} />
-        <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{turn.agent}</span>
-        {person?.title && (
-          <span style={{ fontSize: 10, color: C.textSubtle, padding: '1px 6px', borderRadius: 4, background: C.bg, border: `1px solid ${C.borderWarm}` }}>
-            {person.title}
-          </span>
-        )}
-        {turn.message && (
-          <span style={{ fontSize: 10, color: C.textSubtle, marginLeft: 'auto' }}>{turn.message.time}</span>
-        )}
-      </div>
-      <div style={{ paddingLeft: 36 }}>
-        {turn.message && (
-          <>
-            <p style={{ fontSize: 13, lineHeight: 1.65, color: C.text, margin: '0 0 6px' }}>{turn.message.text}</p>
-            {turn.message.tags && turn.message.tags.length > 0 && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 4 }}>
-                {turn.message.tags.map(tag => (
-                  <DemoTagBadge key={`${tag.type}-${tag.label}`} tag={tag} size="xs" />
-                ))}
-              </div>
+    <div className="demo-thread-turn" style={{ marginBottom: 18 }}>
+      <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
+        <div style={{ flexShrink: 0, paddingTop: 1 }}>
+          <Av name={turn.agent} size={THREAD_AVATAR} />
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.tools.length ? 6 : 0,
+            minHeight: THREAD_AVATAR,
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{turn.agent}</span>
+            {person?.title && (
+              <span style={{
+                fontSize: 10, color: C.textSubtle, padding: '1px 6px', borderRadius: 4,
+                background: C.bg, border: `1px solid ${C.borderWarm}`, lineHeight: 1.3,
+              }}>
+                {person.title}
+              </span>
             )}
-          </>
-        )}
-        <ToolTimeline tools={turn.tools} />
+            {turn.message && (
+              <span style={{ fontSize: 10, color: C.textSubtle, marginLeft: 'auto', flexShrink: 0 }}>
+                {turn.message.time}
+              </span>
+            )}
+          </div>
+          {turn.message && (
+            <>
+              <p style={{ fontSize: 13, lineHeight: 1.65, color: C.text, margin: '0 0 6px' }}>{turn.message.text}</p>
+              {turn.message.tags && turn.message.tags.length > 0 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 4 }}>
+                  {turn.message.tags.map(tag => (
+                    <DemoTagBadge key={`${tag.type}-${tag.label}`} tag={tag} size="xs" />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+          {turn.tools.length > 0 && (
+            <div style={{ marginTop: turn.message ? 4 : 0 }}>
+              {turn.tools.map((log, i) => (
+                <ToolTimelineRow key={log.id} log={log} isLast={i === turn.tools.length - 1} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -206,7 +221,7 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
         display: 'flex', width: '100%', maxWidth: 360, textAlign: 'left', cursor: 'pointer',
         borderRadius: 10, border: `1px solid ${active ? C.brand : C.border}`,
         background: active ? '#f0f5e6' : C.card,
-        padding: '10px 12px', marginTop: 6, animation: 'fadeIn 0.25s ease both',
+        padding: '10px 12px', marginTop: 6,
       }}
     >
       <div style={{ display: 'flex', gap: 10, alignItems: 'center', width: '100%' }}>
@@ -342,22 +357,6 @@ function ArtifactPanel({ artifact }: { artifact: DemoArtifact | null }) {
   );
 }
 
-function LiveRunStrip({ agent, toolLabel, toolLog }: { agent: string; toolLabel?: string; toolLog?: DemoToolLog }) {
-  const faviconDomain = toolLog ? getToolFaviconDomain(toolLog) : null;
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', animation: 'fadeIn 0.2s ease both' }}>
-      <Av name={agent} size={24} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-        {faviconDomain && <DemoFavicon domain={faviconDomain} size={16} rounded="sm" />}
-        <Loader2 size={14} className="demo-spin" color={C.brand} />
-        <span style={{ fontSize: 12, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {toolLabel ? `Running ${toolLabel}…` : 'Thinking…'}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export function DemoTaskModal({
   open,
   taskTitle,
@@ -383,13 +382,10 @@ export function DemoTaskModal({
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
-  const hasRunningTool = feed.some(item => item.kind === 'tool' && item.status === 'running');
-  const runningTool = [...feed].reverse().find(item => item.kind === 'tool' && item.status === 'running') as DemoToolLog | undefined;
-  const runningAgent = runningTool?.agent || turns[turns.length - 1]?.agent || assignee;
 
   useEffect(() => {
     const el = threadRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
   }, [feed, delivery, artifact]);
 
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
@@ -447,27 +443,27 @@ export function DemoTaskModal({
                   Assigned to <strong style={{ color: C.text }}>{assignee}</strong>
                 </div>
 
-                {turns.map((turn, i) => <AgentTurn key={`${turn.agent}-${i}`} turn={turn} />)}
+                {turns.map((turn) => <AgentTurn key={turn.id} turn={turn} />)}
 
                 {delivery && (
-                  <div style={{ marginBottom: 12, animation: 'fadeIn 0.25s ease both' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                      <Av name="Jordan" size={28} />
-                      <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Jordan</span>
+                  <div className="demo-thread-turn" style={{ marginBottom: 12 }}>
+                    <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
+                      <div style={{ flexShrink: 0, paddingTop: 1 }}>
+                        <Av name="Jordan" size={THREAD_AVATAR} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{
+                          display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, minHeight: THREAD_AVATAR,
+                        }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Jordan</span>
+                        </div>
+                        <DeliveryCard
+                          name={delivery}
+                          active={artifact?.name === delivery}
+                          onClick={() => onSelectArtifact?.(delivery)}
+                        />
+                      </div>
                     </div>
-                    <div style={{ paddingLeft: 36 }}>
-                      <DeliveryCard
-                        name={delivery}
-                        active={artifact?.name === delivery}
-                        onClick={() => onSelectArtifact?.(delivery)}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {hasRunningTool && (
-                  <div style={{ paddingLeft: 4 }}>
-                    <LiveRunStrip agent={runningAgent} toolLabel={runningTool?.label} toolLog={runningTool} />
                   </div>
                 )}
 

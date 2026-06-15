@@ -4,9 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
-import { PixelMissionTag } from './PixelAtmosphere';
-
-const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
 /** Gantt + accent palette — warm forest/olive from logo, not Tailwind emerald */
 const GANTT = {
@@ -948,14 +945,6 @@ export default function OldWays() {
   return (
     <section className="bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
-        <div className="mb-8 sm:mb-12 md:mb-14 max-w-2xl">
-          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
-            Everything your AI workforce can do.
-          </h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
-            Org charts, system access, traced tickets, and memory that outlasts the mission.
-          </p>
-        </div>
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
@@ -980,18 +969,8 @@ export default function OldWays() {
                       Flagship
                     </span>
                   )}
-                  <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
-                      <PixelMissionTag
-                        index={String(index + 1).padStart(2, '0')}
-                        label={card.tag}
-                      />
-                      <h3 className="font-funneldisplay text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
-                        {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
-                      </h3>
-                      <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
-                    </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
+                  <div className="flex flex-col flex-1 min-h-0">
+                    <div className="box-border w-full flex flex-col min-h-0">
                       <PixelFramedVisual>
                         {cardVisuals[index]}
                       </PixelFramedVisual>

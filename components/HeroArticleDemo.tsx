@@ -766,6 +766,9 @@ export default function TrooperDemo() {
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes modalIn { from { opacity:0; transform: scale(0.985); } to { opacity:1; transform: scale(1); } }
         @keyframes modalBackdropIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes demoThreadEnter { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+        .demo-thread-turn { animation: demoThreadEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .demo-thread-tool-row { animation: demoThreadEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .demo-spin { animation: spin 1s linear infinite; }
         .Trooper-scrollbar::-webkit-scrollbar{width:5px;height:5px}
         .Trooper-scrollbar::-webkit-scrollbar-track{background:rgba(231,229,228,0.35);border-radius:4px}
