@@ -982,7 +982,7 @@ export default function OldWays() {
                     </span>
                   )}
                   <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
                       <PixelMissionTag
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
@@ -992,7 +992,7 @@ export default function OldWays() {
                       </h3>
                       <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
                     </div>
-                    <div className="w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
+                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
                       <PixelFramedVisual>
                         {cardVisuals[index]}
                       </PixelFramedVisual>

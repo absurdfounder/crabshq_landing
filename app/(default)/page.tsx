@@ -47,6 +47,7 @@ export const metadata = {
 
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
+import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
 import Positioning from '@/components/Positioning'
@@ -99,19 +100,23 @@ export default function Home() {
         </div>
       </SectionShell>
 
-      <SectionShell eyebrow="Battle Plan" eyebrowNumber="03" bgClass="bg-white">
+      <SectionShell eyebrow="Field Manual" eyebrowNumber="03" bgClass="bg-slate-50">
+        <OldWays />
+      </SectionShell>
+
+      <SectionShell eyebrow="Battle Plan" eyebrowNumber="04" bgClass="bg-white">
         <Positioning />
       </SectionShell>
 
-      <SectionShell eyebrow="Command Posts" eyebrowNumber="04" bgClass="bg-slate-50">
+      <SectionShell eyebrow="Command Posts" eyebrowNumber="05" bgClass="bg-slate-50">
         <MultiCompany />
       </SectionShell>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="05" bgClass="bg-white">
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="06" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="07" bgClass="bg-gray-50">
         <FAQ />
       </SectionShell>
     </>
