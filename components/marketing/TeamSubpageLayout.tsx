@@ -54,7 +54,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
                 tone="dark"
                 icon={<ArrowRight className="h-4 w-4" />}
               >
-                Book a Demo
+                Talk to founder
               </PixelButton>
             </div>
           </div>

@@ -219,7 +219,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   data-cal-link="set-meeting/setup-call"
                   data-cal-config='{"layout":"month_view"}'
                 >
-                  Book a Demo
+                  Talk to founder
                 </PixelButton>
               </div>
 
