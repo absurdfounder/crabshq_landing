@@ -116,22 +116,7 @@ const teamPages: Record<string, TeamPageContent> = {
       codingCanvasFeatureSection('06'),
     ],
     title: 'Trooper for Coding',
-    titleAccent: 'your keys, our harness',
-    heroHeadline: [
-      {
-        parts: [
-          { text: 'Your subscriptions.', tone: 'default' },
-          { text: 'Our harness', tone: 'default' },
-        ],
-        iconAfter: 0,
-      },
-      {
-        parts: [
-          { text: 'runs the work.', tone: 'brand' },
-          { text: 'You approve every merge.', tone: 'default' },
-        ],
-      },
-    ],
+    titleAccent: 'Use Codex & Claude Code together.',
     description:
       'Delegate to Claude Code, Codex, Cursor, and your own agents from one Trooper harness. Your subscriptions, your repos, one unified task board with traced diffs and PR workflows.',
     overviewTitle: 'Multi-agent coding ops',
@@ -229,7 +214,7 @@ const teamPages: Record<string, TeamPageContent> = {
       marketingCanvasFeatureSection('06'),
     ],
     title: 'Trooper for Marketing',
-    titleAccent: 'campaigns on mission',
+    titleAccent: 'Scale campaigns on mission.',
     description:
       'Deploy a marketing unit that drafts content, runs SEO recon, schedules social, and reports performance — 24/7, on-brand, under your command.',
     overviewTitle: 'Scale output without scaling headcount',
@@ -305,7 +290,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Sales',
-    titleAccent: 'pipeline never stalls',
+    titleAccent: 'Pipeline that never stalls.',
     description:
       'AI sales operators that research prospects, draft outreach, update CRM, and follow up on schedule — so reps close deals, not chase data entry.',
     overviewTitle: 'Pipeline ops on autopilot',
@@ -381,7 +366,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Legal Teams',
-    titleAccent: 'prep, not practice of law',
+    titleAccent: 'Prep work, not practice of law.',
     description:
       'AI legal operators for contract review, compliance checks, and document prep — accelerating paralegal work while counsel stays in command on every external action.',
     overviewTitle: 'Legal prep at mission speed',
@@ -459,22 +444,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Engineering',
-    titleAccent: 'that ships',
-    heroHeadline: [
-      {
-        parts: [
-          { text: 'Engineering missions.', tone: 'default' },
-          { text: 'Traced end-to-end', tone: 'default' },
-        ],
-        iconAfter: 0,
-      },
-      {
-        parts: [
-          { text: 'in Trooper.', tone: 'brand' },
-          { text: 'You stay on architecture.', tone: 'default' },
-        ],
-      },
-    ],
+    titleAccent: 'Ship faster with traced missions.',
     description: 'AI engineers for code, reviews, issues, and DevOps — scoped to your repos with checkout discipline and merge gates.',
     overviewTitle: 'Developers that never context-switch',
     overviewParagraphs: [
@@ -527,7 +497,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Operations',
-    titleAccent: 'always on',
+    titleAccent: 'Ops routines that run 24/7.',
     description: 'Process automation, monitoring, and internal tooling — ops agents that run checklists and surface anomalies before they become incidents.',
     overviewTitle: 'Ops without busywork',
     overviewParagraphs: [
@@ -572,7 +542,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Design',
-    titleAccent: 'on brand',
+    titleAccent: 'Creative that stays on brand.',
     description: 'Creative design and brand assets at scale — mockups, exports, and brand checks with full traceability.',
     overviewTitle: 'Creative ops without the handoffs',
     overviewParagraphs: [
@@ -628,7 +598,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Customer Support',
-    titleAccent: '24/7',
+    titleAccent: 'Support that never sleeps.',
     description: '24/7 support and customer success — triage, KB lookup, and reply drafts with human approval gates.',
     overviewTitle: 'Support without the queue backlog',
     overviewParagraphs: [
@@ -685,7 +655,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Finance',
-    titleAccent: 'with accuracy',
+    titleAccent: 'Close books with accuracy.',
     description: 'Financial planning and analysis — month-end close, reconciliations, and variance reports with approval gates.',
     overviewTitle: 'Numbers without manual drudgery',
     overviewParagraphs: [
@@ -741,7 +711,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Business Development',
-    titleAccent: 'that scouts',
+    titleAccent: 'Scout partners on autopilot.',
     description: 'Partnership and growth opportunities — research, outreach briefs, and CRM notes with human command.',
     overviewTitle: 'Partnerships without the research grind',
     overviewParagraphs: [
@@ -797,7 +767,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Research',
-    titleAccent: 'intel that compounds',
+    titleAccent: 'Intel that compounds.',
     description: 'Market research and data analysis — competitive intel, synthesis briefs, and structured deliverables.',
     overviewTitle: 'Research without the tab sprawl',
     overviewParagraphs: [
@@ -853,7 +823,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Security',
-    titleAccent: 'audit ready',
+    titleAccent: 'SecOps, audit-ready.',
     description: 'Security audits and threat detection — log review, vulnerability scans, and remediation with full traceability.',
     overviewTitle: 'SecOps without the alert fatigue',
     overviewParagraphs: [
@@ -909,7 +879,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for PR',
-    titleAccent: 'launch ready',
+    titleAccent: 'Launches without the scramble.',
     description: 'Public relations and media management — press releases, media lists, and announcement coordination.',
     overviewTitle: 'Comms without the last-minute scramble',
     overviewParagraphs: [
@@ -965,7 +935,7 @@ const teamPages: Record<string, TeamPageContent> = {
       canvasFeatureSection('06'),
     ],
     title: 'Trooper for Growth',
-    titleAccent: 'experiments that ship',
+    titleAccent: 'Experiments that ship.',
     description: 'User acquisition and retention — experiment cycles, funnel analysis, and rollout coordination.',
     overviewTitle: 'Growth without the spreadsheet chaos',
     overviewParagraphs: [

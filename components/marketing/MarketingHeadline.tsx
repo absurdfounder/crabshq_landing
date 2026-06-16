@@ -94,6 +94,7 @@ export default function MarketingHeadline({
           >
             {line.parts.map((part, partIndex) => (
               <span key={`part-${lineIndex}-${partIndex}`}>
+                {partIndex > 0 ? ' ' : null}
                 {renderPart(part, `text-${lineIndex}-${partIndex}`)}
                 {line.iconAfter === partIndex ? <InlineTrooperMark size={size} /> : null}
               </span>
