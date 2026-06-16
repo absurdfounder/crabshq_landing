@@ -48,7 +48,8 @@ export const featureNavItems: NavItem[] = [
   { href: '/features/skills-plugins', title: 'Skills & Plugins', description: 'Extend with community or custom skills', icon: Puzzle, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
   { href: '/features/multi-agent-collaboration', title: 'Multi-Agent Teams', description: 'AI employees collaborate on complex tasks', icon: Network, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
   { href: '/features/openclaw-powered', title: 'OpenClaw Runtime', description: 'Built on the proven OpenClaw framework', icon: Sparkles, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
-  { href: '/integration', title: 'Integrations', description: 'GitHub, Gmail, Notion, APIs & more', icon: Zap, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+  { href: '/integrations', title: 'Plugin Integrations', description: 'HubSpot, GitHub, Slack & 1,000+ plugins', icon: Zap, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+  { href: '/integration', title: 'OpenClaw Skills', description: '3,000+ community skills catalog', icon: Puzzle, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
   { href: '/features/chat-interfaces', title: 'Chat Anywhere', description: 'WhatsApp, Telegram, Discord, Slack, Signal', icon: MessageCircle, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
   { href: '/channels', title: 'Messaging Channels', description: 'Connect Slack, WhatsApp, Telegram & more', icon: MessagesSquare, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
 ]
@@ -81,6 +82,7 @@ export const teamNavItems: NavItem[] = [
 ]
 
 export const primaryNavLinks = [
+  { href: '/integrations', label: 'Integrations' },
   { href: '/integration', label: 'Skills' },
   { href: '/download', label: 'Download' },
   { href: '/pricing', label: 'Pricing' },

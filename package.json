@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "sync-plugins": "node scripts/sync-plugin-catalog.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

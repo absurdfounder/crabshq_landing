@@ -56,7 +56,8 @@ const featureColumn: FooterColumn = {
         { label: 'Messaging Channels', href: '/channels', icon: <Mail className="h-3.5 w-3.5 text-blue-500" /> },
         { label: 'Skills & Plugins', href: '/features/skills-plugins', icon: <Puzzle className="h-3.5 w-3.5 text-pink-500" /> },
         { label: 'Multi-Agent Teams', href: '/features/multi-agent-collaboration', icon: <Network className="h-3.5 w-3.5 text-cyan-500" /> },
-        { label: 'Integrations', href: '/integration', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
+        { label: 'Plugin Integrations', href: '/integrations', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
+        { label: 'OpenClaw Skills', href: '/integration', icon: <Puzzle className="h-3.5 w-3.5 text-violet-500" /> },
       ],
     },
     {
@@ -78,7 +79,8 @@ const productColumn: FooterColumn = {
       heading: 'Product',
       links: [
         { label: 'How it works', href: '/' },
-        { label: 'Integrations', href: '/integration' },
+        { label: 'Plugin Integrations', href: '/integrations' },
+        { label: 'OpenClaw Skills', href: '/integration' },
         { label: 'Pricing', href: '/pricing' },
         { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
         { label: 'Download', href: '/download' },
@@ -88,6 +90,8 @@ const productColumn: FooterColumn = {
     {
       heading: 'Resources',
       links: [
+        { label: 'Use Cases', href: '/use-cases' },
+        { label: 'Alternatives', href: '/alternatives' },
         { label: 'Documentation', href: 'https://docs.openclaw.ai', external: true },
         { label: 'Blog', href: 'https://app.trooper.so/blog', external: true },
         { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
