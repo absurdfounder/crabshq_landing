@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, type CSSProperties } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -8,17 +8,6 @@ import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const getCalApiImport = () => import('@calcom/embed-react').then((mod) => mod.getCalApi);
-
-const TROOPER_GREEN = 'rgba(63, 107, 0, 0.4)';
-const PORTRAIT_FILTER =
-  'grayscale(100%) brightness(0.92) sepia(100%) hue-rotate(244deg) saturate(85%)';
-
-const STIPPLE_OVERLAY: CSSProperties = {
-  backgroundImage: `linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%), linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%)`,
-  backgroundSize: '4px 4px',
-  backgroundPosition: '0 0, 2px 2px',
-  imageRendering: 'pixelated',
-};
 
 export default function FounderMessageSection() {
   useEffect(() => {
@@ -59,13 +48,8 @@ export default function FounderMessageSection() {
               alt="Vaibhav, founder of Trooper"
               fill
               className="object-cover object-center"
-              style={{ filter: PORTRAIT_FILTER }}
               sizes="(max-width: 768px) 14rem, 22rem"
               priority={false}
-            />
-            <div
-              className="absolute inset-0 mix-blend-multiply pointer-events-none"
-              style={STIPPLE_OVERLAY}
             />
           </div>
 
