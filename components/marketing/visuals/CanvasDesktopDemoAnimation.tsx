@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
+import { MessageSquare, StickyNote } from 'lucide-react';
 import { DemoCursorGlyph } from '@/components/DemoCursorGlyph';
 import type { CanvasWindow } from './CanvasDesktopVisual';
 
 export const CANVAS_DEMO_LOOP_MS = 14_000;
 const TITLE_BAR_Y = 15;
-const CURSOR_TIP = { x: 6, y: 4 };
+const CURSOR_SCALE = 0.68;
+const CURSOR_TIP = { x: 6 * CURSOR_SCALE, y: 4 * CURSOR_SCALE };
 
 type Point = { x: number; y: number };
 type Layout = Record<string, Point>;
@@ -93,25 +95,28 @@ function dragLayout(
   return next;
 }
 
+/** Slightly staggered — agents just dropped artifacts on the desk */
 const INITIAL: Layout = {
-  brief: { x: 14, y: 12 },
-  preview: { x: 98, y: 28 },
-  asset: { x: 40, y: 128 },
-  video: { x: 168, y: 118 },
+  brief: { x: 22, y: 16 },
+  preview: { x: 148, y: 28 },
+  asset: { x: 52, y: 132 },
+  video: { x: 196, y: 108 },
 };
 
+/** Top row snapped; bottom row still mid-arrange */
 const ORGANIZED_A: Layout = {
-  brief: { x: 6, y: 6 },
-  preview: { x: 228, y: 14 },
-  asset: { x: 40, y: 128 },
-  video: { x: 168, y: 118 },
+  brief: { x: 8, y: 8 },
+  preview: { x: 208, y: 12 },
+  asset: { x: 36, y: 140 },
+  video: { x: 196, y: 108 },
 };
 
+/** Final tidy desktop grid */
 const ORGANIZED_B: Layout = {
-  brief: { x: 6, y: 6 },
-  preview: { x: 228, y: 14 },
-  asset: { x: 18, y: 148 },
-  video: { x: 268, y: 96 },
+  brief: { x: 8, y: 8 },
+  preview: { x: 208, y: 12 },
+  asset: { x: 12, y: 148 },
+  video: { x: 268, y: 128 },
 };
 
 export function staticDemoFrame(windows: CanvasWindow[]): CanvasDemoFrame {
@@ -129,18 +134,18 @@ export function staticDemoFrame(windows: CanvasWindow[]): CanvasDemoFrame {
     postIts: asset
       ? [{
         id: 'note-asset',
-        x: assetPos.x + asset.w - 52,
-        y: assetPos.y - 8,
+        x: assetPos.x + asset.w - 78,
+        y: assetPos.y + 22,
         text: 'Headline A/B',
         opacity: 1,
-        rotate: -4,
+        rotate: 0,
       }]
       : [],
     comments: video
       ? [{
         id: 'comment-video',
-        x: videoPos.x + video.w * 0.55,
-        y: videoPos.y + video.h * 0.38,
+        x: videoPos.x + video.w - 88,
+        y: videoPos.y + 14,
         author: 'Jordan',
         text: 'Trim intro 2s',
         opacity: 1,
@@ -180,7 +185,7 @@ export function frameAt(elapsedMs: number, windows: CanvasWindow[]): CanvasDemoF
   const videoGrab = titleGrab('video', finalPositions, windows);
 
   const cursorAVisible = t >= 350 && t < 11200;
-  const cursorBVisible = t >= 1100 && t < 11200;
+  const cursorBVisible = (t >= 1100 && t < 3400) || (t >= 5800 && t < 11200);
 
   let cursorA: DemoCursor = {
     id: 'a',
@@ -269,18 +274,18 @@ export function frameAt(elapsedMs: number, windows: CanvasWindow[]): CanvasDemoF
     postIts: assetWin && postItOpacity * overlayFade > 0.02
       ? [{
         id: 'note-asset',
-        x: assetPos.x + assetWin.w - 52,
-        y: assetPos.y - 8,
+        x: assetPos.x + assetWin.w - 78,
+        y: assetPos.y + 22,
         text: 'Headline A/B',
         opacity: postItOpacity * overlayFade,
-        rotate: -4,
+        rotate: 0,
       }]
       : [],
     comments: videoWin && commentOpacity * overlayFade > 0.02
       ? [{
         id: 'comment-video',
-        x: videoPos.x + videoWin.w * 0.55,
-        y: videoPos.y + videoWin.h * 0.38,
+        x: videoPos.x + videoWin.w - 88,
+        y: videoPos.y + 14,
         author: 'Jordan',
         text: 'Trim intro 2s',
         opacity: commentOpacity * overlayFade,
@@ -298,18 +303,23 @@ export function DemoPostItNote({ note }: { note: DemoPostIt }) {
         left: note.x,
         top: note.y,
         zIndex: 45,
-        width: 58,
-        padding: '5px 6px',
-        borderRadius: 2,
-        background: 'linear-gradient(145deg, #fef08a 0%, #fde047 100%)',
-        boxShadow: '0 6px 16px rgba(28,25,23,0.18), inset 0 -1px 0 rgba(0,0,0,0.06)',
-        transform: `rotate(${note.rotate}deg)`,
+        maxWidth: 76,
+        padding: '5px 7px',
+        borderRadius: 8,
+        border: '1px solid #e7e5e4',
+        background: '#fff',
+        boxShadow: '0 8px 20px -6px rgba(28,25,23,0.18)',
+        transform: note.rotate ? `rotate(${note.rotate}deg)` : undefined,
         opacity: note.opacity,
         pointerEvents: 'none',
         transition: 'opacity 0.35s ease',
       }}
     >
-      <p className="text-[8px] font-semibold italic leading-tight text-amber-950/90">{note.text}</p>
+      <div className="mb-0.5 flex items-center gap-1">
+        <StickyNote size={8} strokeWidth={2} className="text-[#3f6b00]" />
+        <span className="text-[7px] font-semibold text-stone-500">Review note</span>
+      </div>
+      <p className="text-[7px] leading-snug text-stone-700">{note.text}</p>
     </div>
   );
 }
@@ -323,39 +333,22 @@ export function DemoCommentPin({ comment }: { comment: DemoComment }) {
         left: comment.x,
         top: comment.y,
         zIndex: 46,
+        maxWidth: 84,
         opacity: comment.opacity,
         pointerEvents: 'none',
         transition: 'opacity 0.35s ease',
+        borderRadius: 8,
+        border: '1px solid #e7e5e4',
+        background: '#fff',
+        boxShadow: '0 8px 22px -8px rgba(28,25,23,0.2)',
+        padding: '5px 7px',
       }}
     >
-      <span
-        style={{
-          display: 'block',
-          width: 10,
-          height: 10,
-          borderRadius: '50%',
-          background: '#3f6b00',
-          border: '2px solid #fff',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          left: 12,
-          top: -6,
-          minWidth: 72,
-          maxWidth: 96,
-          padding: '4px 6px',
-          borderRadius: 8,
-          border: '1px solid #e7e5e4',
-          background: '#fff',
-          boxShadow: '0 8px 20px rgba(28,25,23,0.14)',
-        }}
-      >
-        <p className="text-[7px] font-semibold text-[#3f6b00]">{comment.author}</p>
-        <p className="text-[7px] leading-snug text-stone-600">{comment.text}</p>
+      <div className="mb-0.5 flex items-center gap-1">
+        <MessageSquare size={8} strokeWidth={2} className="text-[#3f6b00]" />
+        <span className="text-[7px] font-semibold text-stone-500">{comment.author}</span>
       </div>
+      <p className="text-[7px] leading-snug text-stone-700">{comment.text}</p>
     </div>
   );
 }
@@ -374,9 +367,10 @@ export function DemoCursorsLayer({ cursors }: { cursors: DemoCursor[] }) {
               top: c.y,
               zIndex: c.grabbing ? 55 : 50,
               pointerEvents: 'none',
+              opacity: c.grabbing ? 1 : 0.92,
             }}
           >
-            <DemoCursorGlyph clicking={c.clicking} scale={0.85} />
+            <DemoCursorGlyph clicking={c.clicking} scale={CURSOR_SCALE} softShadow />
           </div>
         ) : null
       ))}

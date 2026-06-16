@@ -8,12 +8,19 @@ export type DemoCursorState = {
   y: number;
   visible: boolean;
   clicking: boolean;
+  dragging: boolean;
 };
 
 export const DEMO_CURSOR_SLIDE_MS = 720;
 const CLICK_MS = 320;
 
-const INITIAL: DemoCursorState = { x: 32, y: 120, visible: false, clicking: false };
+const INITIAL: DemoCursorState = { x: 32, y: 120, visible: false, clicking: false, dragging: false };
+
+export type CursorGoOptions = {
+  click?: boolean;
+  /** Animate a text-selection drag from this selector to the target selector */
+  dragFrom?: string;
+};
 
 export function useDemoCursor(canvasRef: RefObject<HTMLElement | null>) {
   const [cursor, setCursor] = useState<DemoCursorState>(INITIAL);
@@ -21,29 +28,48 @@ export function useDemoCursor(canvasRef: RefObject<HTMLElement | null>) {
 
   const pulseClick = useCallback(() => {
     if (clickTimer.current) clearTimeout(clickTimer.current);
-    setCursor((c) => ({ ...c, clicking: true }));
+    setCursor((c) => ({ ...c, clicking: true, dragging: false }));
     clickTimer.current = setTimeout(() => {
       setCursor((c) => ({ ...c, clicking: false }));
     }, CLICK_MS);
   }, []);
 
-  const resolveTarget = useCallback((selector: string): { x: number; y: number } | null => {
+  const resolveTarget = useCallback((selector: string, anchor: 'start' | 'center' | 'end' = 'center'): { x: number; y: number } | null => {
     const root = canvasRef.current;
     if (!root) return null;
     const el = root.querySelector(selector);
     if (!el) return null;
     const rootRect = root.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
+    const yRatio = anchor === 'start' ? 0.28 : anchor === 'end' ? 0.72 : 0.42;
+    const xRatio = anchor === 'start' ? 0.18 : anchor === 'end' ? 0.82 : 0.52;
     return {
-      x: rect.left - rootRect.left + rect.width * 0.52,
-      y: rect.top - rootRect.top + rect.height * 0.42,
+      x: rect.left - rootRect.left + rect.width * xRatio,
+      y: rect.top - rootRect.top + rect.height * yRatio,
     };
   }, [canvasRef]);
 
-  const goTo = useCallback((selector: string, options?: { click?: boolean }) => {
+  const goTo = useCallback((selector: string, options?: CursorGoOptions) => {
+    if (options?.dragFrom) {
+      const from = resolveTarget(options.dragFrom, 'start');
+      const to = resolveTarget(selector, 'end');
+      if (!from || !to) return;
+      setCursor((c) => ({ ...c, x: from.x, y: from.y, visible: true, clicking: true, dragging: false }));
+      setTimeout(() => {
+        setCursor((c) => ({ ...c, clicking: false, dragging: true }));
+        setTimeout(() => {
+          setCursor((c) => ({ ...c, x: to.x, y: to.y, dragging: true }));
+          setTimeout(() => {
+            setCursor((c) => ({ ...c, dragging: false }));
+          }, DEMO_CURSOR_SLIDE_MS);
+        }, 90);
+      }, DEMO_CURSOR_SLIDE_MS);
+      return;
+    }
+
     const pt = resolveTarget(selector);
     if (!pt) return;
-    setCursor((c) => ({ ...c, x: pt.x, y: pt.y, visible: true, clicking: false }));
+    setCursor((c) => ({ ...c, x: pt.x, y: pt.y, visible: true, clicking: false, dragging: false }));
     if (options?.click) {
       setTimeout(() => pulseClick(), DEMO_CURSOR_SLIDE_MS);
     }
@@ -58,7 +84,7 @@ export function useDemoCursor(canvasRef: RefObject<HTMLElement | null>) {
 }
 
 export function DemoClickCursor({ state }: { state: DemoCursorState }) {
-  const { x, y, visible, clicking } = state;
+  const { x, y, visible, clicking, dragging } = state;
 
   return (
     <div
@@ -70,10 +96,12 @@ export function DemoClickCursor({ state }: { state: DemoCursorState }) {
         zIndex: 200,
         pointerEvents: 'none',
         opacity: visible ? 1 : 0,
-        transition: `left ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), top ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease`,
+        transition: dragging
+          ? `left ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), top ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease`
+          : `left ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), top ${DEMO_CURSOR_SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease`,
       }}
     >
-      <DemoCursorGlyph clicking={clicking} />
+      <DemoCursorGlyph clicking={clicking || dragging} />
     </div>
   );
 }

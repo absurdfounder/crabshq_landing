@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { FileText, Download, Layers, Play, Film, Eye, Code, Globe, GitCompare, FileCode, ChevronDown, ChevronRight, MessageSquarePlus } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoArtifactKind } from './demoTaskExecution';
-import { DemoReviewOverlay } from './DemoReviewOverlay';
+import { DemoReviewComposer, DemoSelectableLine } from './DemoReviewOverlay';
+import type { ArtifactReviewState } from '@/lib/demoArtifactReview';
 import {
   parseDemoDiff,
   displayDiffPath,
@@ -332,40 +333,162 @@ function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
   );
 }
 
-function MarkdownPreview({ content }: { content: string }) {
+function TerminalPreview({
+  content,
+  review,
+}: {
+  content: string;
+  review?: ArtifactReviewState | null;
+}) {
+  const lines = content.split('\n');
+  const selectedLines = review && review.phase !== 'idle' ? review.selectedLines : [];
+  const selectedSet = new Set(selectedLines);
+  const showComposer = review?.phase === 'composing';
+
   return (
-    <div style={{ padding: 16, fontSize: 12, lineHeight: 1.65, color: C.text }}>
-      {content.split('\n').map((line, i) => {
-        if (line.startsWith('# ')) return <h1 key={i} style={{ fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{line.slice(2)}</h1>;
-        if (line.startsWith('## ')) return <h2 key={i} style={{ fontSize: 13, fontWeight: 700, margin: '12px 0 6px', color: C.textMuted }}>{line.slice(3)}</h2>;
-        if (line.startsWith('- ')) return <li key={i} style={{ marginLeft: 16, marginBottom: 4, color: C.textMuted }}>{line.slice(2)}</li>;
+    <div
+      data-demo-target="modal-artifact-content"
+      style={{
+        background: '#1c1917',
+        minHeight: 240,
+        padding: '12px 14px',
+        fontFamily: 'ui-monospace, Menlo, monospace',
+        fontSize: 11,
+        lineHeight: 1.55,
+        position: 'relative',
+      }}
+    >
+      {lines.map((line, i) => (
+        <DemoSelectableLine
+          key={i}
+          line={line}
+          index={i}
+          selected={selectedSet.has(i)}
+          selectedLines={selectedLines}
+          lineColor={
+            line.includes('PASS') || line.includes('passed') || line.includes('✓')
+              ? '#86efac'
+              : line.startsWith('$')
+                ? '#fafaf9'
+                : '#a8a29e'
+          }
+        />
+      ))}
+      {showComposer && review?.draftText && (
+        <DemoReviewComposer draftText={review.draftText} />
+      )}
+    </div>
+  );
+}
+
+function CodePreview({
+  content,
+  review,
+}: {
+  content: string;
+  review?: ArtifactReviewState | null;
+}) {
+  const lines = content.split('\n');
+  const selectedLines = review && review.phase !== 'idle' ? review.selectedLines : [];
+  const selectedSet = new Set(selectedLines);
+  const showComposer = review?.phase === 'composing';
+
+  return (
+    <div data-demo-target="modal-artifact-content" style={{ position: 'relative' }}>
+      <pre
+        style={{
+          margin: 0,
+          fontSize: 11.5,
+          lineHeight: 1.6,
+          color: C.text,
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          whiteSpace: 'pre-wrap',
+        }}
+      >
+        {lines.map((line, i) => (
+          <DemoSelectableLine
+            key={i}
+            line={line}
+            index={i}
+            selected={selectedSet.has(i)}
+            selectedLines={selectedLines}
+            lineColor={C.text}
+          />
+        ))}
+      </pre>
+      {showComposer && review?.draftText && (
+        <DemoReviewComposer draftText={review.draftText} />
+      )}
+    </div>
+  );
+}
+
+function MarkdownPreview({
+  content,
+  review,
+}: {
+  content: string;
+  review?: ArtifactReviewState | null;
+}) {
+  const lines = content.split('\n');
+  const selectedLines = review && review.phase !== 'idle' ? review.selectedLines : [];
+  const selectedSet = new Set(selectedLines);
+  const showComposer = review?.phase === 'composing';
+
+  return (
+    <div data-demo-target="modal-artifact-content" style={{ padding: 16, fontSize: 12, lineHeight: 1.65, color: C.text, position: 'relative' }}>
+      {lines.map((line, i) => {
+        const selected = selectedSet.has(i);
+        const wrap = (node: ReactNode) => (
+          <div key={i} style={selected ? { margin: '0 -8px', padding: '0 8px' } : undefined}>
+            {selected ? (
+              <DemoSelectableLine
+                line={typeof node === 'string' ? node : line}
+                index={i}
+                selected
+                selectedLines={selectedLines}
+                lineColor={C.textMuted}
+              />
+            ) : node}
+          </div>
+        );
+
+        if (line.startsWith('# ')) return wrap(<h1 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{line.slice(2)}</h1>);
+        if (line.startsWith('## ')) return wrap(<h2 style={{ fontSize: 13, fontWeight: 700, margin: '12px 0 6px', color: C.textMuted }}>{line.slice(3)}</h2>);
+        if (line.startsWith('- ')) {
+          if (selected) {
+            return (
+              <DemoSelectableLine
+                key={i}
+                line={line}
+                index={i}
+                selected
+                selectedLines={selectedLines}
+                lineColor={C.textMuted}
+              />
+            );
+          }
+          return <li key={i} style={{ marginLeft: 16, marginBottom: 4, color: C.textMuted }}>{line.slice(2)}</li>;
+        }
         if (!line.trim()) return <div key={i} style={{ height: 6 }} />;
+        if (selected) {
+          return (
+            <DemoSelectableLine
+              key={i}
+              line={line}
+              index={i}
+              selected
+              selectedLines={selectedLines}
+              lineColor={C.textMuted}
+            />
+          );
+        }
         return <p key={i} style={{ margin: '0 0 6px', color: C.textMuted }}>{line}</p>;
       })}
+      {showComposer && review?.draftText && (
+        <DemoReviewComposer draftText={review.draftText} />
+      )}
     </div>
-  );
-}
-
-function TerminalPreview({ content }: { content: string }) {
-  return (
-    <div style={{ background: '#1c1917', minHeight: 240, padding: '12px 14px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 11, lineHeight: 1.55 }}>
-      {content.split('\n').map((line, i) => (
-        <div key={i} style={{ color: line.includes('PASS') || line.includes('passed') || line.includes('✓') ? '#86efac' : line.startsWith('$') ? '#fafaf9' : '#a8a29e' }}>
-          {line}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CodePreview({ content }: { content: string }) {
-  return (
-    <pre style={{
-      margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.text,
-      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', whiteSpace: 'pre-wrap',
-    }}>
-      {content}
-    </pre>
   );
 }
 
@@ -373,20 +496,24 @@ function ArtifactBody({
   artifact,
   tab,
   compact,
+  review,
 }: {
   artifact: DemoArtifact;
   tab: ArtifactTab;
   compact?: boolean;
+  review?: ArtifactReviewState | null;
 }) {
   const kind = inferKind(artifact);
 
   if (kind === 'diff') {
-    if (tab === 'code') return <CodePreview content={artifact.content} />;
+    if (tab === 'code' || (review && review.phase !== 'idle')) {
+      return <CodePreview content={artifact.content} review={review} />;
+    }
     return <UnifiedDiffPreview content={artifact.content} compact={compact} />;
   }
 
   if (kind === 'html') {
-    if (tab === 'code') return <CodePreview content={artifact.content} />;
+    if (tab === 'code') return <CodePreview content={artifact.content} review={review} />;
     if (tab === 'browser' || tab === 'preview') {
       return <HtmlPreview artifact={artifact} mode={tab === 'browser' ? 'browser' : 'preview'} compact={compact} />;
     }
@@ -395,10 +522,12 @@ function ArtifactBody({
   switch (kind) {
     case 'image': return <ImagePreview artifact={artifact} />;
     case 'video': return <VideoPreview artifact={artifact} />;
-    case 'markdown': return <MarkdownPreview content={artifact.content} />;
+    case 'markdown': return <MarkdownPreview content={artifact.content} review={review} />;
     default:
-      if (artifact.ext === 'log' || artifact.name.endsWith('.log')) return <TerminalPreview content={artifact.content} />;
-      return <CodePreview content={artifact.content} />;
+      if (artifact.ext === 'log' || artifact.name.endsWith('.log')) {
+        return <TerminalPreview content={artifact.content} review={review} />;
+      }
+      return <CodePreview content={artifact.content} review={review} />;
   }
 }
 
@@ -439,13 +568,13 @@ export function DemoArtifactTilePreview({ artifact }: { artifact: DemoArtifact }
 export function DemoArtifactPanel({
   artifact,
   compact,
-  highlight,
-  reviewComment,
+  review,
+  hasSavedReview,
 }: {
   artifact: DemoArtifact | null;
   compact?: boolean;
-  highlight?: boolean;
-  reviewComment?: string | null;
+  review?: ArtifactReviewState | null;
+  hasSavedReview?: boolean;
 }) {
   const kind = artifact ? inferKind(artifact) : 'code';
   const tabs = artifact ? availableTabs(artifact, kind) : [];
@@ -533,9 +662,9 @@ export function DemoArtifactPanel({
           data-demo-target="modal-artifact-comment-btn"
           style={{
             display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6,
-            border: `1px solid ${reviewComment ? C.brand : C.border}`,
-            background: reviewComment ? '#f0f5e6' : C.card,
-            fontSize: 10, color: reviewComment ? '#284800' : C.textMuted, cursor: 'pointer',
+            border: `1px solid ${hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? C.brand : C.border}`,
+            background: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? '#f0f5e6' : C.card,
+            fontSize: 10, color: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? '#284800' : C.textMuted, cursor: 'pointer',
           }}
         >
           <MessageSquarePlus size={11} strokeWidth={1.75} /> Comment
@@ -545,8 +674,7 @@ export function DemoArtifactPanel({
         </button>
       </div>
       <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: noPad ? 0 : 14, position: 'relative' }}>
-        <ArtifactBody artifact={artifact} tab={effectiveTab} />
-        <DemoReviewOverlay comment={reviewComment} showHighlight={highlight} />
+        <ArtifactBody artifact={artifact} tab={effectiveTab} review={review} />
       </div>
     </div>
   );

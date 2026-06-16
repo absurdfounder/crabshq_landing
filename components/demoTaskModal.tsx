@@ -10,6 +10,7 @@ import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } fr
 import { getToolIconName } from './demoTaskExecution';
 import { launchScenario } from '@/lib/demoScenarios/launch';
 import type { DemoOrg } from '@/lib/demoScenarios/types';
+import type { ArtifactReviewState } from '@/lib/demoArtifactReview';
 import { DemoFavicon } from './DemoFavicon';
 import { getToolIconMeta } from '@/lib/demoToolFavicon';
 import { getProviderDomain } from '@/lib/demoProviders';
@@ -379,10 +380,10 @@ export function DemoTaskModal({
   org = launchScenario.org,
   onClose,
   onSelectArtifact,
-  artifactHighlight,
-  artifactReviewComment,
+  artifactReview,
+  hasSavedArtifactReview,
+  canvasReview,
   canvasTileComments,
-  canvasHighlightNames,
 }: {
   open: boolean;
   taskTitle: string;
@@ -399,10 +400,10 @@ export function DemoTaskModal({
   org?: DemoOrg;
   onClose?: () => void;
   onSelectArtifact?: (name: string) => void;
-  artifactHighlight?: boolean;
-  artifactReviewComment?: string | null;
+  artifactReview?: ArtifactReviewState | null;
+  hasSavedArtifactReview?: boolean;
+  canvasReview?: (ArtifactReviewState & { artifactName: string }) | null;
   canvasTileComments?: Record<string, string>;
-  canvasHighlightNames?: string[];
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
@@ -571,13 +572,13 @@ export function DemoTaskModal({
                 activeName={artifact?.name}
                 onSelect={(a) => onSelectArtifact?.(a.name)}
                 tileComments={canvasTileComments}
-                highlightNames={canvasHighlightNames}
+                canvasReview={canvasReview}
               />
             ) : (
               <DemoArtifactPanel
                 artifact={artifact}
-                highlight={artifactHighlight}
-                reviewComment={artifactReviewComment}
+                review={artifactReview}
+                hasSavedReview={hasSavedArtifactReview}
               />
             )}
           </div>

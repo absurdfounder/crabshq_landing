@@ -5,7 +5,8 @@ import { Layers, MessageSquarePlus } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact } from './demoTaskExecution';
 import { DemoArtifactTilePreview } from './DemoArtifactPanel';
-import { DemoReviewOverlay } from './DemoReviewOverlay';
+import { DemoCanvasReviewLayer } from './DemoReviewOverlay';
+import type { ArtifactReviewState } from '@/lib/demoArtifactReview';
 
 const STAGE_W = 720;
 const STAGE_H = 420;
@@ -13,6 +14,8 @@ const DEFAULT_W = 300;
 const DEFAULT_H = 210;
 
 type TilePos = { x: number; y: number; w: number; h: number };
+
+type CanvasReviewState = ArtifactReviewState & { artifactName: string };
 
 function defaultPos(i: number): TilePos {
   return {
@@ -28,13 +31,13 @@ export function DemoCanvasView({
   activeName,
   onSelect,
   tileComments = {},
-  highlightNames = [],
+  canvasReview,
 }: {
   artifacts: DemoArtifact[];
   activeName?: string | null;
   onSelect?: (artifact: DemoArtifact) => void;
   tileComments?: Record<string, string>;
-  highlightNames?: string[];
+  canvasReview?: CanvasReviewState | null;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const positionsRef = useRef<Record<string, TilePos>>({});
@@ -158,7 +161,10 @@ export function DemoCanvasView({
             const active = activeKey === key || activeName === artifact.name;
             const dragging = drag?.key === key;
             const comment = tileComments[key];
-            const showHighlight = highlightNames.includes(key) || Boolean(comment);
+            const isReviewTile = canvasReview?.artifactName === key;
+            const reviewActive = isReviewTile && canvasReview.phase !== 'idle';
+            const selectedLines = reviewActive ? canvasReview.selectedLines : [];
+            const showHighlight = reviewActive || Boolean(comment);
 
             return (
               <div
@@ -228,8 +234,34 @@ export function DemoCanvasView({
                   </button>
                 </div>
                 <div style={{ height: pos.h - 34, overflow: 'hidden', pointerEvents: 'none', position: 'relative' }}>
-                  <DemoArtifactTilePreview artifact={artifact} />
-                  <DemoReviewOverlay comment={comment} showHighlight={showHighlight} compact />
+                  {!reviewActive && <DemoArtifactTilePreview artifact={artifact} />}
+                  {reviewActive && (
+                    <>
+                      <DemoArtifactTilePreview artifact={artifact} />
+                      <DemoCanvasReviewLayer
+                        content={artifact.content}
+                        selectedLines={selectedLines}
+                        showComposer={canvasReview.phase === 'composing'}
+                        draftText={canvasReview.draftText}
+                      />
+                      {selectedLines[0] !== undefined && (
+                        <span
+                          aria-hidden
+                          data-demo-target="canvas-tile-review-start"
+                          data-artifact-name={artifact.name}
+                          style={{ position: 'absolute', left: 8, bottom: 48, width: 1, height: 1 }}
+                        />
+                      )}
+                      {selectedLines.length > 0 && (
+                        <span
+                          aria-hidden
+                          data-demo-target="canvas-tile-review-end"
+                          data-artifact-name={artifact.name}
+                          style={{ position: 'absolute', left: '70%', bottom: canvasReview.phase === 'composing' ? 72 : 20, width: 1, height: 1 }}
+                        />
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             );

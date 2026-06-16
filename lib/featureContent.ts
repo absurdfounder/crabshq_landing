@@ -35,7 +35,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Product Hunt, press wire, and social cuts run as traced missions — one org, shared memory, human command.',
       visual: 'launch-ops',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Memory',
+      eyebrowNumber: '04',
+      title: 'Org context across every agent',
+      intro: 'Brand voice, ICP, and prior campaign learnings load automatically — no re-briefing each mission.',
+      visual: 'messaging-routing',
+    },
+    {
+      eyebrow: 'Channels',
+      eyebrowNumber: '05',
+      title: 'Slack threads stay linked',
+      intro: 'Channel handoffs preserve context and tool traces when work moves from chat to the board.',
+      visual: 'slack-routing',
+    },
+    canvasFeatureSection('06'),
   ],
   'github-integration': [
     {
@@ -47,7 +61,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Agents open PRs, run tests, and attach diffs — not suggestions in chat.',
       visual: 'coding-harness',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Diffs',
+      eyebrowNumber: '04',
+      title: 'Unified diffs and green CI',
+      intro: 'Parser patches, test output, and PR bodies visible together on the ticket Canvas.',
+      visual: 'coding-board',
+    },
+    {
+      eyebrow: 'Incidents',
+      eyebrowNumber: '05',
+      title: 'Rollback with full terminal trace',
+      intro: 'Failed deploys triaged with log review and verification steps logged on the mission thread.',
+      visual: 'engineering-incident',
+    },
+    canvasFeatureSection('06'),
   ],
   'task-execution': [
     {
@@ -57,7 +85,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Full thread with tool traces, subtasks, and deliverables — sales outreach shown end-to-end.',
       visual: 'sales-pipeline',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Inbox',
+      eyebrowNumber: '04',
+      title: 'Email becomes a structured ticket',
+      intro: 'Inbound requests parsed into missions with research, drafts, and approval gates before send.',
+      visual: 'email-routing',
+    },
+    {
+      eyebrow: 'Runbook',
+      eyebrowNumber: '05',
+      title: 'Recurring tasks on schedule',
+      intro: 'Cron-driven checklists with step-by-step logging — ops routines that run while you command.',
+      visual: 'ops-runbook',
+    },
+    canvasFeatureSection('06'),
   ],
   'persistent-memory': [
     {
@@ -67,7 +109,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Deck updates, channel threads, and prior decisions load automatically on the next mission.',
       visual: 'messaging-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Slack',
+      eyebrowNumber: '04',
+      title: 'Channel history on the ticket',
+      intro: 'Slack threads linked to missions preserve decisions and handoffs across agent sessions.',
+      visual: 'slack-routing',
+    },
+    {
+      eyebrow: 'Email',
+      eyebrowNumber: '05',
+      title: 'Inbox threads compound over time',
+      intro: 'Prior email context and RFP history load on follow-up missions — no starting from zero.',
+      visual: 'email-routing',
+    },
+    canvasFeatureSection('06'),
   ],
   'browser-control': [
     {
@@ -79,7 +135,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Real browser sessions with SERP captures and structured research output on traced tickets.',
       visual: 'browser-serp',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Research',
+      eyebrowNumber: '04',
+      title: 'Structured intel from the web',
+      intro: 'Multi-source notes merged into comparison matrices and exec briefs on traced tickets.',
+      visual: 'research-intel',
+    },
+    {
+      eyebrow: 'Launch',
+      eyebrowNumber: '05',
+      title: 'Competitive page captures',
+      intro: 'Landing and pricing pages archived with citations for GTM and product review.',
+      visual: 'launch-ops',
+    },
+    canvasFeatureSection('06'),
   ],
   'system-access': [
     {
@@ -89,7 +159,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Incident response with terminal traces, log review, and rollback verification.',
       visual: 'engineering-incident',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Runbook',
+      eyebrowNumber: '04',
+      title: 'Scheduled health checks',
+      intro: 'Recurring VPS routines with step logging — backups, disk checks, and service restarts on cron.',
+      visual: 'ops-runbook',
+    },
+    {
+      eyebrow: 'Audit',
+      eyebrowNumber: '05',
+      title: 'Log review on your runtime',
+      intro: 'Production log patrols surface anomalies with severity tiers before they become incidents.',
+      visual: 'security-audit',
+    },
+    canvasFeatureSection('06'),
   ],
   'email-automation': [
     {
@@ -99,7 +183,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Email parsed into tickets with research, drafts, and approval gates before send.',
       visual: 'email-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Pipeline',
+      eyebrowNumber: '04',
+      title: 'Outbound prep from inbound mail',
+      intro: 'RFPs become qualified opportunities with research, outreach drafts, and CRM updates traced.',
+      visual: 'sales-pipeline',
+    },
+    {
+      eyebrow: 'Governance',
+      eyebrowNumber: '05',
+      title: 'Human review before send',
+      intro: 'Reply and proposal drafts held for approval — sensitive comms never ship without command.',
+      visual: 'legal-review',
+    },
+    canvasFeatureSection('06'),
   ],
   'skills-plugins': [
     {
@@ -110,7 +208,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Notion, Figma, HubSpot, and more — tool rows show Composio logos on every traced step.',
       visual: 'campaign-pipeline',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Design',
+      eyebrowNumber: '04',
+      title: 'Figma frames via Composio',
+      intro: 'Frame exports, asset bundles, and brand checklists wired through traced skill calls.',
+      visual: 'design-pipeline',
+    },
+    {
+      eyebrow: 'Support',
+      eyebrowNumber: '05',
+      title: 'Zendesk and KB skills',
+      intro: 'Ticket triage, article lookup, and reply drafts with tool logos on every step.',
+      visual: 'support-queue',
+    },
+    canvasFeatureSection('06'),
   ],
   'multi-agent-collaboration': [
     {
@@ -129,6 +241,15 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Parser diff, CI log, and PR body visible together — handoffs without copy-paste.',
       visual: 'coding-board',
     },
+    {
+      eyebrow: 'Coordination',
+      eyebrowNumber: '05',
+      tag: 'MULTI-AGENT',
+      title: 'Launch missions in parallel',
+      intro: 'Press, social, and product assets run as coordinated subtasks — one org, shared memory.',
+      visual: 'launch-ops',
+    },
+    canvasFeatureSection('06'),
   ],
   'openclaw-powered': [
     {
@@ -139,7 +260,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Org-scale launch ops on a dedicated OpenClaw runtime with full audit trails.',
       visual: 'launch-ops',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Shell',
+      eyebrowNumber: '04',
+      title: 'Terminal access on your VPS',
+      intro: 'Incident response with kubectl, log tail, and rollback verification on the private runtime.',
+      visual: 'engineering-incident',
+    },
+    {
+      eyebrow: 'Cron',
+      eyebrowNumber: '05',
+      title: 'Org routines on schedule',
+      intro: 'Background checklists and patrol missions run 24/7 with full audit trails.',
+      visual: 'ops-runbook',
+    },
+    canvasFeatureSection('06'),
   ],
   'chat-interfaces': [
     {
@@ -149,7 +284,21 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Channel messages become tickets with preserved context and tool traces.',
       visual: 'slack-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'WhatsApp',
+      eyebrowNumber: '04',
+      title: 'Mobile messages to missions',
+      intro: 'WhatsApp threads parsed into structured tickets with the same traceability as Slack.',
+      visual: 'whatsapp-routing',
+    },
+    {
+      eyebrow: 'Memory',
+      eyebrowNumber: '05',
+      title: 'Cross-channel context persists',
+      intro: 'Prior channel decisions and handoffs load on the next mission — chat history compounds.',
+      visual: 'messaging-routing',
+    },
+    canvasFeatureSection('06'),
   ],
 };
 
@@ -161,7 +310,21 @@ const DEFAULT_FEATURE_SECTIONS: MarketingFeatureSection[] = [
     intro: 'Multi-step work with tool traces, subtasks, and deliverables — not chat-only answers.',
     visual: 'sales-pipeline',
   },
-  canvasFeatureSection('04'),
+  {
+    eyebrow: 'Inbox',
+    eyebrowNumber: '04',
+    title: 'Email to structured mission',
+    intro: 'Inbound requests parsed into tickets with research and approval gates.',
+    visual: 'email-routing',
+  },
+  {
+    eyebrow: 'Channels',
+    eyebrowNumber: '05',
+    title: 'Slack context on the board',
+    intro: 'Channel threads linked to missions preserve handoffs across sessions.',
+    visual: 'slack-routing',
+  },
+  canvasFeatureSection('06'),
 ];
 
 function buildRichFeature(slug: string): FeaturePageContent | undefined {

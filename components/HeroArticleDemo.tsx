@@ -21,7 +21,15 @@ import {
 } from '@/lib/demoScenarios';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
 import { DemoClickCursor, useDemoCursor } from './DemoClickCursor';
+import {
+  EMPTY_ARTIFACT_REVIEW,
+  defaultArtifactReviewComment,
+  getArtifactReviewLines,
+  type ArtifactReviewState,
+} from '@/lib/demoArtifactReview';
 import { animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep } from '@/lib/demoCursorActions';
+
+type CanvasReviewState = ArtifactReviewState & { artifactName: string };
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
@@ -599,10 +607,13 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [modalCanvasKeys, setModalCanvasKeys] = useState<string[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
-  const [artifactHighlight, setArtifactHighlight] = useState(false);
-  const [artifactReviewComment, setArtifactReviewComment] = useState<string | null>(null);
+  const [artifactReview, setArtifactReview] = useState<ArtifactReviewState>(EMPTY_ARTIFACT_REVIEW);
+  const [hasSavedArtifactReview, setHasSavedArtifactReview] = useState(false);
+  const [canvasReview, setCanvasReview] = useState<CanvasReviewState | null>(null);
   const [canvasTileComments, setCanvasTileComments] = useState<Record<string, string>>({});
-  const [canvasHighlightNames, setCanvasHighlightNames] = useState<string[]>([]);
+  const modalArtifactRef = useRef<DemoArtifact | null>(null);
+  const artifactReviewRef = useRef<ArtifactReviewState>(EMPTY_ARTIFACT_REVIEW);
+  const canvasReviewRef = useRef<CanvasReviewState | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -613,6 +624,18 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const modalCanvasArtifacts = modalCanvasKeys
     .map(k => DEMO_ARTIFACTS[k])
     .filter(Boolean) as DemoArtifact[];
+
+  useEffect(() => {
+    modalArtifactRef.current = modalArtifact;
+  }, [modalArtifact]);
+
+  useEffect(() => {
+    artifactReviewRef.current = artifactReview;
+  }, [artifactReview]);
+
+  useEffect(() => {
+    canvasReviewRef.current = canvasReview;
+  }, [canvasReview]);
 
   const totalScriptLength = CHAT_SCRIPT.length + TASK_EXEC_SCRIPT.length;
   const spotlightTask = tasks.find(t => t.id === SPOTLIGHT_TASK_ID);
@@ -626,10 +649,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setModalCanvasKeys([]);
     setModalDelivery(null);
     setHighlightedTaskId(null);
-    setArtifactHighlight(false);
-    setArtifactReviewComment(null);
+    setArtifactReview(EMPTY_ARTIFACT_REVIEW);
+    setHasSavedArtifactReview(false);
+    setCanvasReview(null);
     setCanvasTileComments({});
-    setCanvasHighlightNames([]);
     modalMsgCounter.current = 0;
   }, [scenario.initialSubtasks]);
 
@@ -670,10 +693,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         setActivePage('tasks');
         setModalWorkspaceMode('ide');
         setModalCanvasKeys([]);
-        setArtifactHighlight(false);
-        setArtifactReviewComment(null);
+        setArtifactReview(EMPTY_ARTIFACT_REVIEW);
+        setHasSavedArtifactReview(false);
+        setCanvasReview(null);
         setCanvasTileComments({});
-        setCanvasHighlightNames([]);
         break;
       case 'subtask':
         setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
@@ -700,10 +723,69 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
       case 'openArtifact': {
         setModalWorkspaceMode('ide');
         setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
-        setArtifactHighlight(true);
-        setArtifactReviewComment('Check this section before approval');
+        setArtifactReview(EMPTY_ARTIFACT_REVIEW);
+        setHasSavedArtifactReview(false);
+        setCanvasReview(null);
         setCanvasTileComments({});
-        setCanvasHighlightNames([]);
+        break;
+      }
+      case 'artifactReviewSelect': {
+        const art = step.key ? DEMO_ARTIFACTS[step.key] ?? null : modalArtifactRef.current;
+        if (!art) break;
+        const selectedLines = getArtifactReviewLines(art.content, art.name);
+        const next = { phase: 'selecting' as const, selectedLines, draftText: '' };
+        if (step.key) {
+          setCanvasReview({ artifactName: art.name, ...next });
+        } else {
+          setArtifactReview(next);
+        }
+        break;
+      }
+      case 'artifactReviewCompose': {
+        const art = step.key ? DEMO_ARTIFACTS[step.key] ?? null : modalArtifactRef.current;
+        const draftText = step.text ?? (art ? defaultArtifactReviewComment(art.content, art.name) : '');
+        if (step.key && art) {
+          setCanvasReview((prev) => ({
+            artifactName: art.name,
+            phase: 'composing',
+            selectedLines: prev?.selectedLines.length ? prev.selectedLines : getArtifactReviewLines(art.content, art.name),
+            draftText,
+          }));
+        } else {
+          setArtifactReview((prev) => ({
+            phase: 'composing',
+            selectedLines: prev.selectedLines.length ? prev.selectedLines : (art ? getArtifactReviewLines(art.content, art.name) : []),
+            draftText,
+          }));
+        }
+        break;
+      }
+      case 'artifactReviewSave': {
+        const art = step.key ? DEMO_ARTIFACTS[step.key] ?? null : modalArtifactRef.current;
+        const commentText = step.text
+          ?? (step.key ? canvasReviewRef.current?.draftText : artifactReviewRef.current.draftText)
+          ?? (art ? defaultArtifactReviewComment(art.content, art.name) : '');
+        modalMsgCounter.current += 1;
+        const t = `14:${57 + modalMsgCounter.current}`;
+        const threadText = art
+          ? `${commentText} — on ${art.name}`
+          : commentText;
+        setModalFeed((p) => [...p, {
+          kind: 'message',
+          id: `m${modalMsgCounter.current}`,
+          sender: step.sender,
+          text: threadText,
+          time: t,
+        }]);
+        if (art) {
+          setCanvasTileComments((prev) => ({ ...prev, [art.name]: commentText }));
+        }
+        if (step.key) {
+          setCanvasReview((prev) => (prev ? { ...prev, phase: 'saved' } : null));
+        } else {
+          setArtifactReview((prev) => ({ ...prev, phase: 'saved' }));
+          setHasSavedArtifactReview(true);
+        }
         break;
       }
       case 'setWorkspaceMode':
@@ -713,19 +795,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         setModalCanvasKeys(step.keys);
         setModalWorkspaceMode('canvas');
         if (step.keys[0]) setModalArtifact(DEMO_ARTIFACTS[step.keys[0]] || null);
-        const comments: Record<string, string> = {};
-        const highlights: string[] = [];
-        step.keys.forEach((k) => {
-          const art = DEMO_ARTIFACTS[k];
-          if (art) {
-            highlights.push(art.name);
-            comments[art.name] = 'Add review note before share';
-          }
-        });
-        setCanvasTileComments(comments);
-        setCanvasHighlightNames(highlights);
-        setArtifactHighlight(false);
-        setArtifactReviewComment(null);
+        setArtifactReview(EMPTY_ARTIFACT_REVIEW);
+        setHasSavedArtifactReview(false);
+        setCanvasReview(null);
+        setCanvasTileComments({});
         break;
       }
       case 'deliver': {
@@ -735,8 +808,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         if (deliverKey) {
           setModalArtifact(DEMO_ARTIFACTS[deliverKey] || null);
           setModalWorkspaceMode('ide');
-          setArtifactHighlight(true);
-          setArtifactReviewComment('Final deliverable — approve before send');
+          setArtifactReview(EMPTY_ARTIFACT_REVIEW);
+          setHasSavedArtifactReview(false);
         }
         break;
       }
@@ -930,10 +1003,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
               taskTags={scenario.spotlightTaskTags}
               org={scenario.org}
-              artifactHighlight={artifactHighlight}
-              artifactReviewComment={artifactReviewComment}
+              artifactReview={artifactReview}
+              hasSavedArtifactReview={hasSavedArtifactReview}
+              canvasReview={canvasReview}
               canvasTileComments={canvasTileComments}
-              canvasHighlightNames={canvasHighlightNames}
               onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
               onSelectArtifact={(name) => {
                 const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);

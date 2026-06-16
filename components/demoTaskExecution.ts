@@ -72,6 +72,9 @@ export type TaskExecStep =
   | { type: 'toolDone'; id: string; delay: number }
   | { type: 'modalMsg'; sender: string; text: string; time?: string; tags?: DemoTag[]; delay: number }
   | { type: 'openArtifact'; key: string; delay: number }
+  | { type: 'artifactReviewSelect'; key?: string; delay: number }
+  | { type: 'artifactReviewCompose'; key?: string; text?: string; delay: number }
+  | { type: 'artifactReviewSave'; sender: string; key?: string; text?: string; delay: number }
   | { type: 'setWorkspaceMode'; mode: DemoWorkspaceMode; delay: number }
   | { type: 'openCanvas'; keys: string[]; delay: number }
   | { type: 'deliver'; name: string; delay: number }

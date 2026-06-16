@@ -4,6 +4,8 @@ import {
   Check, Loader2, FileText, Terminal, Hash, Play,
 } from 'lucide-react';
 import { DemoFavicon } from '@/components/DemoFavicon';
+import { DemoBrowserFrame } from '@/components/DemoBrowserChrome';
+import { assetPath, DEMO_MEDIA } from '@/lib/demoScenarioAssets/helpers';
 import { VignetteChrome, ProviderChip, TrooperMark } from './shared';
 import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 
@@ -72,14 +74,84 @@ function MiniDiffTile() {
   );
 }
 
-function MiniBrowserTile({ url }: { url: string }) {
+function MiniBrowserTile({ url, src, faviconDomain }: { url: string; src?: string; faviconDomain?: string }) {
   return (
-    <div className="flex h-full flex-col bg-white">
-      <div className="flex items-center gap-1 border-b border-stone-200 bg-gradient-to-b from-[#ececec] to-[#dedede] px-1.5 py-0.5">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57] shadow-[6px_0_0_#febc2e,12px_0_0_#28c840]" />
-        <span className="ml-3 flex-1 truncate rounded border border-stone-300/80 bg-white px-1 py-px text-center font-medium text-stone-500">{url}</span>
+    <DemoBrowserFrame
+      src={src}
+      addressUrl={url}
+      faviconDomain={faviconDomain}
+      compact
+      title={url}
+    />
+  );
+}
+
+function MiniMarkdownBrief() {
+  const lines = [
+    { t: 'heading', text: 'Q2 Campaign Brief' },
+    { t: 'muted', text: 'Theme · parser reliability story' },
+    { t: 'body', text: 'Deliverables shipped' },
+    { t: 'bullet', text: '· Pillar landing page (live preview)' },
+    { t: 'bullet', text: '· LinkedIn carousel — 3 slides' },
+    { t: 'bullet', text: '· 30s social video cut + transcript' },
+    { t: 'status', text: 'Awaiting brand review' },
+  ];
+  return (
+    <div className="h-full overflow-hidden bg-white p-2 text-[7px] leading-snug">
+      {lines.map((line, i) => (
+        <div
+          key={i}
+          className={
+            line.t === 'heading' ? 'mb-0.5 font-semibold text-stone-800'
+              : line.t === 'muted' ? 'mb-1 text-stone-400'
+                : line.t === 'bullet' ? 'truncate text-stone-600'
+                  : line.t === 'status' ? 'mt-1 font-medium text-[#3f6b00]'
+                    : 'text-stone-600'
+          }
+        >
+          {line.text}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MiniCarouselTile() {
+  return (
+    <div className="relative h-full overflow-hidden bg-gradient-to-br from-stone-100 to-white">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={DEMO_MEDIA.linkedinCarousel}
+        alt="LinkedIn carousel slide 1"
+        className="h-full w-full object-cover"
+      />
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-900/75 to-transparent px-2 pb-1.5 pt-4">
+        <p className="text-[7px] font-semibold text-white">Slide 1 of 3</p>
+        <p className="text-[6px] text-stone-300">LinkedIn carousel</p>
       </div>
-      <div className="flex-1 bg-gradient-to-b from-[#f0f5e6] to-white" />
+    </div>
+  );
+}
+
+function MiniVideoTile() {
+  return (
+    <div className="relative h-full overflow-hidden bg-stone-900">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={DEMO_MEDIA.socialVideoPoster}
+        alt="Social video poster"
+        className="absolute inset-0 h-full w-full object-cover opacity-90"
+      />
+      <div className="absolute inset-0 bg-stone-950/20" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/40 bg-white/15 backdrop-blur-sm">
+          <Play size={11} className="ml-0.5 text-white" fill="white" />
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-stone-950/60 px-2 py-1">
+        <span className="font-mono text-[6px] text-stone-300">00:00 / 00:30</span>
+        <span className="text-[6px] font-medium text-stone-400">social-cut.mp4</span>
+      </div>
     </div>
   );
 }
@@ -122,50 +194,47 @@ export function CodingBoardVisual() {
 }
 
 export function CanvasBoardVisual() {
+  const campaignSrc = assetPath('marketing', 'campaign.html');
   return (
     <CanvasDesktopVisual
       animated
       windows={[
         {
           id: 'brief',
-          title: 'campaign-brief.md',
-          x: 14,
-          y: 12,
-          w: 188,
-          h: 112,
-          body: <div className="p-2 text-[9px] leading-snug text-stone-600">Q2 campaign pack · 4 deliverables ready for review</div>,
+          title: 'content/q2-campaign-brief.md',
+          x: 22,
+          y: 16,
+          w: 168,
+          h: 120,
+          body: <MiniMarkdownBrief />,
         },
         {
           id: 'preview',
           title: 'landing/campaign.html',
-          x: 98,
+          x: 148,
           y: 28,
-          w: 196,
-          h: 104,
-          body: <MiniBrowserTile url="northstar.io/q2" />,
+          w: 200,
+          h: 118,
+          body: <MiniBrowserTile url="northstar.io/q2" src={campaignSrc} faviconDomain="northstar.io" />,
         },
         {
           id: 'asset',
-          title: 'creative/carousel.png',
-          x: 40,
-          y: 128,
-          w: 176,
-          h: 100,
-          body: <div className="h-full bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">LinkedIn carousel</div>,
+          title: 'creative/linkedin-carousel.png',
+          x: 52,
+          y: 132,
+          w: 164,
+          h: 108,
+          body: <MiniCarouselTile />,
         },
         {
           id: 'video',
           title: 'video/social-cut.mp4',
-          x: 168,
-          y: 118,
-          w: 168,
-          h: 96,
+          x: 196,
+          y: 108,
+          w: 176,
+          h: 112,
           accent: true,
-          body: (
-            <div className="flex h-full items-center justify-center bg-stone-900">
-              <Play size={14} className="text-white" fill="white" />
-            </div>
-          ),
+          body: <MiniVideoTile />,
         },
       ]}
     />
@@ -197,7 +266,7 @@ export function CampaignPipelineVisual() {
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="rounded border border-stone-200 overflow-hidden h-14">
-            <MiniBrowserTile url="northstar.io/q2" />
+            <MiniBrowserTile url="northstar.io/q2" src={assetPath('marketing', 'campaign.html')} faviconDomain="northstar.io" />
           </div>
           <div className="rounded border border-stone-200 overflow-hidden bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">Carousel PNG</div>
           <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 flex items-center justify-center p-2">
@@ -606,7 +675,7 @@ export function BrowserSerpVisual() {
     <VignetteChrome label="trooper · browser_navigate">
       <div className="p-3 min-h-[280px] bg-[#FAF9F6]">
         <div className="rounded-lg border border-stone-200 overflow-hidden mb-3 h-32">
-          <MiniBrowserTile url="google.com/search?q=..." />
+          <MiniBrowserTile url="google.com/search?q=..." src={undefined} />
         </div>
         <ToolRow label="browser_navigate" detail="SERP snapshot captured" done />
         <ToolRow label="browser_snapshot" detail="competitor pricing extracted" done />

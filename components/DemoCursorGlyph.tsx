@@ -4,9 +4,11 @@
 export function DemoCursorGlyph({
   clicking = false,
   scale = 1,
+  softShadow = false,
 }: {
   clicking?: boolean;
   scale?: number;
+  softShadow?: boolean;
 }) {
   const w = 26 * scale;
   const h = 30 * scale;
@@ -25,7 +27,12 @@ export function DemoCursorGlyph({
         height={h}
         viewBox="0 0 26 30"
         fill="none"
-        style={{ display: 'block', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.28))' }}
+        style={{
+          display: 'block',
+          filter: softShadow
+            ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.16))'
+            : 'drop-shadow(0 2px 6px rgba(0,0,0,0.28))',
+        }}
       >
         <path
           d="M6 4 L6 24 L11 19 L14.5 26.5 L17.5 25 L14 18 L20.5 17 Z"

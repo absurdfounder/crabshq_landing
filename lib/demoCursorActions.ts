@@ -1,14 +1,17 @@
 import type { ChatScriptStep } from '@/lib/demoScenarios/types';
 import type { TaskExecStep } from '@/components/demoTaskExecution';
 import { DEMO_CURSOR_SLIDE_MS } from '@/components/DemoClickCursor';
+import type { CursorGoOptions } from '@/components/DemoClickCursor';
 
-export type CursorGoFn = (selector: string, opts?: { click?: boolean }) => void;
+export type CursorGoFn = (selector: string, opts?: CursorGoOptions) => void;
 
 export type CursorContext = {
   /** Resolved display name for openArtifact / active file */
   artifactName?: string;
   /** Canvas tile names after openCanvas */
   canvasArtifactNames?: string[];
+  /** Named artifact for canvas-anchored review steps */
+  reviewArtifactName?: string;
 };
 
 const SEQUENCE_GAP = DEMO_CURSOR_SLIDE_MS + 100;
@@ -21,11 +24,22 @@ function canvasTileSelector(name: string): string {
   return `[data-demo-target="canvas-tile"][data-artifact-name="${escapeAttr(name)}"]`;
 }
 
-function runSequence(go: CursorGoFn, steps: Array<{ selector: string; click?: boolean }>) {
+function runSequence(go: CursorGoFn, steps: Array<{ selector: string; click?: boolean; dragFrom?: string }>) {
   steps.forEach((step, i) => {
-    setTimeout(() => go(step.selector, { click: step.click }), i * SEQUENCE_GAP);
+    setTimeout(() => go(step.selector, { click: step.click, dragFrom: step.dragFrom }), i * SEQUENCE_GAP);
   });
 }
+
+const ARTIFACT_REVIEW_SEQUENCE = [
+  { selector: '[data-demo-target="modal-artifact-content"]' },
+  {
+    selector: '[data-demo-target="artifact-review-line-end"]',
+    dragFrom: '[data-demo-target="artifact-review-line-start"]',
+  },
+  { selector: '[data-demo-target="modal-artifact-review-composer"]' },
+  { selector: '[data-demo-target="modal-artifact-review-save"]', click: true },
+  { selector: '[data-demo-target="modal-thread"]' },
+] as const;
 
 export function animateChatStepCursor(step: ChatScriptStep, go: CursorGoFn) {
   switch (step.type) {
@@ -71,10 +85,35 @@ export function animateExecStepCursor(step: TaskExecStep, go: CursorGoFn, ctx: C
       go('[data-demo-target="modal-thread"]');
       break;
     case 'openArtifact':
+      go('[data-demo-target="modal-artifact-panel"]');
+      break;
+    case 'artifactReviewSelect':
+      if (ctx.reviewArtifactName) {
+        const name = escapeAttr(ctx.reviewArtifactName);
+        runSequence(go, [
+          { selector: `[data-demo-target="canvas-tile"][data-artifact-name="${name}"]` },
+          {
+            selector: `[data-demo-target="canvas-tile-review-end"][data-artifact-name="${name}"]`,
+            dragFrom: `[data-demo-target="canvas-tile-review-start"][data-artifact-name="${name}"]`,
+          },
+        ]);
+      } else {
+        runSequence(go, [
+          { selector: ARTIFACT_REVIEW_SEQUENCE[0].selector },
+          {
+            selector: ARTIFACT_REVIEW_SEQUENCE[1].selector,
+            dragFrom: ARTIFACT_REVIEW_SEQUENCE[1].dragFrom,
+          },
+        ]);
+      }
+      break;
+    case 'artifactReviewCompose':
+      go('[data-demo-target="modal-artifact-review-composer"]');
+      break;
+    case 'artifactReviewSave':
       runSequence(go, [
-        { selector: '[data-demo-target="modal-workspace-ide"]', click: true },
-        { selector: '[data-demo-target="modal-artifact-panel"]' },
-        { selector: '[data-demo-target="modal-artifact-comment-btn"]', click: true },
+        { selector: '[data-demo-target="modal-artifact-review-save"]', click: true },
+        { selector: '[data-demo-target="modal-thread"]' },
       ]);
       break;
     case 'setWorkspaceMode':
@@ -96,7 +135,10 @@ export function animateExecStepCursor(step: TaskExecStep, go: CursorGoFn, ctx: C
         ...(tileName
           ? [
               { selector: canvasTileSelector(tileName) },
-              { selector: `[data-demo-target="canvas-comment-btn"][data-artifact-name="${escapeAttr(tileName)}"]`, click: true },
+              {
+                selector: `[data-demo-target="canvas-tile-review-end"][data-artifact-name="${escapeAttr(tileName)}"]`,
+                dragFrom: `[data-demo-target="canvas-tile-review-start"][data-artifact-name="${escapeAttr(tileName)}"]`,
+              },
             ]
           : [{ selector: '[data-demo-target="canvas-stage"]' }]),
       ]);
@@ -121,6 +163,8 @@ export function execStepCursorAfterApply(step: TaskExecStep): boolean {
   return (
     step.type === 'deliver'
     || step.type === 'openArtifact'
+    || step.type === 'artifactReviewSelect'
+    || step.type === 'artifactReviewCompose'
     || step.type === 'openCanvas'
     || step.type === 'tool'
     || step.type === 'toolDone'
@@ -133,6 +177,12 @@ export function cursorContextForStep(
   step: TaskExecStep,
   artifacts: Record<string, { name: string }>,
 ): CursorContext {
+  if (step.type === 'artifactReviewSelect' || step.type === 'artifactReviewCompose' || step.type === 'artifactReviewSave') {
+    if (step.key) {
+      const art = artifacts[step.key];
+      return { reviewArtifactName: art?.name };
+    }
+  }
   if (step.type === 'openArtifact') {
     const art = artifacts[step.key];
     return { artifactName: art?.name };
