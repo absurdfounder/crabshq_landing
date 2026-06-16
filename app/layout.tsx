@@ -1,4 +1,3 @@
-// app/layout.tsx or layout.js (depending on your setup)
 import './css/style.css'
 
 import { Inter, Roboto_Mono } from 'next/font/google'
@@ -7,6 +6,9 @@ import Script from 'next/script'
 
 import Banner from '@/components/banner'
 import SchemaMarkup from '@/components/SchemaMarkup'
+import { ogImageMeta } from '@/lib/og/url'
+
+const homeOg = ogImageMeta('home', 'Trooper - AI Workforce Powered by OpenClaw AI and ClawdBot')
 
 /** Body — paragraphs, nav, UI */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
@@ -43,14 +45,7 @@ export const metadata = {
     description: 'Deploy AI workforce teams powered by OpenClaw AI. ClawdBot evolution for teams—GitHub commits, autonomous execution, persistent memory. Real work, not just answers.',
     url: 'https://trooper.so',
     siteName: 'Trooper',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
-        width: 1200,
-        height: 630,
-        alt: 'Trooper - AI Workforce Powered by OpenClaw AI and ClawdBot',
-      },
-    ],
+    images: homeOg.openGraph!.images,
     locale: 'en_US',
     type: 'website',
   },
@@ -58,12 +53,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Trooper: OpenClaw AI Workforce for Teams | GitHub OpenClaw',
     description: 'Scale your ClawdBot into a full AI workforce. Multiple OpenClaw AI employees working together—GitHub integration, autonomous execution, MoltBot evolution.',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
-        alt: 'Trooper - OpenClaw GitHub AI Workforce Platform',
-      },
-    ],
+    images: homeOg.twitter!.images,
     site: '@trooper_so',
   },
   icons: {

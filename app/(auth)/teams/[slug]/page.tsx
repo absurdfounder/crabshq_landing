@@ -2,15 +2,14 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import SubpageLayout from '@/components/marketing/SubpageLayout';
 import TeamSubpageLayout from '@/components/marketing/TeamSubpageLayout';
+import { ogImageMeta } from '@/lib/og/url';
 import {
   allTeamSlugs,
   getTeamPage,
-  subpageSocialImage,
 } from '@/lib/subpageContent';
 import {
   getTeamPageContent,
   allRichTeamSlugs,
-  teamSocialImage,
 } from '@/lib/teamContent';
 
 type Props = { params: { slug: string } };
@@ -23,6 +22,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const rich = getTeamPageContent(params.slug);
   if (rich) {
+    const og = ogImageMeta('team', rich.title, params.slug);
     return {
       title: rich.meta.title,
       description: rich.meta.description,
@@ -31,19 +31,19 @@ export function generateMetadata({ params }: Props): Metadata {
         title: rich.meta.title,
         description: rich.meta.description,
         url: rich.meta.canonical,
-        images: [{ url: teamSocialImage, width: 1200, height: 630, alt: rich.title }],
+        ...og.openGraph,
       },
       twitter: {
-        card: 'summary_large_image',
         title: rich.meta.title,
         description: rich.meta.description,
-        images: [{ url: teamSocialImage, alt: rich.title }],
+        ...og.twitter,
       },
     };
   }
 
   const page = getTeamPage(params.slug);
   if (!page) return {};
+  const og = ogImageMeta('team', page.title, params.slug);
   return {
     title: page.meta.title,
     description: page.meta.description,
@@ -52,13 +52,12 @@ export function generateMetadata({ params }: Props): Metadata {
       title: page.meta.title,
       description: page.meta.description,
       url: page.meta.canonical,
-      images: [{ url: subpageSocialImage, width: 1200, height: 630, alt: page.title }],
+      ...og.openGraph,
     },
     twitter: {
-      card: 'summary_large_image',
       title: page.meta.title,
       description: page.meta.description,
-      images: [{ url: subpageSocialImage, alt: page.title }],
+      ...og.twitter,
     },
   };
 }

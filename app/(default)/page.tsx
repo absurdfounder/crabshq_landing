@@ -1,3 +1,7 @@
+import { ogImageMeta } from '@/lib/og/url';
+
+const homeOg = ogImageMeta('home', 'Trooper - OpenClaw AI Workforce Platform with GitHub Integration');
+
 export const metadata = {
   metadataBase: new URL('https://trooper.so'),
   title: 'Trooper: AI Workforce Powered by OpenClaw | GitHub Integration',
@@ -10,14 +14,7 @@ export const metadata = {
     description: 'Deploy AI workforce teams powered by OpenClaw AI. ClawdBot evolution for teams—GitHub commits, autonomous execution, persistent memory.',
     url: 'https://trooper.so',
     siteName: 'Trooper',
-    images: [
-      {
-        url: "https://dazzling-cat.netlify.app/trooper_social.png",
-        width: 1200,
-        height: 630,
-        alt: "Trooper - OpenClaw AI Workforce Platform with GitHub Integration",
-      },
-    ],
+    images: homeOg.openGraph!.images,
     locale: 'en_US',
     type: 'website',
   },
@@ -26,12 +23,7 @@ export const metadata = {
     title: 'Trooper: OpenClaw AI Workforce for Teams',
     description: 'Scale your ClawdBot into a full AI workforce. Multiple OpenClaw AI employees working together—GitHub integration, autonomous execution.',
     site: '@trooper_so',
-    images: [
-      {
-        url: "https://dazzling-cat.netlify.app/trooper_social.png",
-        alt: "Trooper - OpenClaw GitHub AI Workforce Platform",
-      },
-    ],
+    images: homeOg.twitter!.images,
   },
   keywords: [
     'openclaw ai',

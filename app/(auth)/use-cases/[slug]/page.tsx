@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import UseCaseSubpageLayout from '@/components/marketing/UseCaseSubpageLayout';
+import { ogImageMeta } from '@/lib/og/url';
 import {
   allUseCaseSlugs,
   getUseCasePage,
-  useCaseSocialImage,
 } from '@/lib/useCaseContent';
 
 type Props = { params: { slug: string } };
@@ -16,6 +16,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const page = getUseCasePage(params.slug);
   if (!page) return {};
+  const og = ogImageMeta('use-case', page.title, params.slug);
   return {
     title: page.meta.title,
     description: page.meta.description,
@@ -24,13 +25,12 @@ export function generateMetadata({ params }: Props): Metadata {
       title: page.meta.title,
       description: page.meta.description,
       url: page.meta.canonical,
-      images: [{ url: useCaseSocialImage, width: 1200, height: 630, alt: page.title }],
+      ...og.openGraph,
     },
     twitter: {
-      card: 'summary_large_image',
       title: page.meta.title,
       description: page.meta.description,
-      images: [{ url: useCaseSocialImage, alt: page.title }],
+      ...og.twitter,
     },
   };
 }
