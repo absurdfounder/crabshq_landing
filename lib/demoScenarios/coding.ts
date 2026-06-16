@@ -188,6 +188,7 @@ export const codingScenario: DemoScenario = {
     { type: 'modalMsg', sender: 'Leo', text: 'Codex applying parser patch — filtering empty CSV rows.', tags: [{ label: 'parser', type: 'topic' }], delay: 400 },
     { type: 'tool', log: { id: 't2', tool: 'apply_patch', label: 'apply_patch', detail: 'src/parser.ts — filter empty rows', agent: 'Leo', provider: 'Codex' }, delay: 580 },
     { type: 'toolDone', id: 't2', delay: 420 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 0 },
     { type: 'openArtifact', key: 'src/parser.ts.diff', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 260 },

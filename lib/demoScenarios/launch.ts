@@ -20,6 +20,8 @@ const ARTIFACTS = {
     ext: 'html',
     kind: 'html',
     src: assetPath('launch', 'serp-snapshot.html'),
+    browserUrl: 'https://wonder.gg',
+    faviconDomain: 'wonder.gg',
     content: '',
   }),
   'index-preview.html': a({
@@ -27,6 +29,8 @@ const ARTIFACTS = {
     ext: 'html',
     kind: 'html',
     src: assetPath('launch', 'index-preview.html'),
+    browserUrl: 'https://wonder.gg',
+    faviconDomain: 'wonder.gg',
     content: '',
   }),
   'seo/launch-keywords.md': a({
@@ -156,6 +160,7 @@ export const launchScenario: DemoScenario = {
     { type: 'modalMsg', sender: 'Ren', text: 'Updating homepage meta + hero copy for launch day.', tags: [{ label: 'wonder', type: 'site', domain: 'wonder.gg' }, { label: 'visibility', type: 'topic' }], delay: 450 },
     { type: 'tool', log: { id: 't4', tool: 'apply_patch', label: 'apply_patch', detail: 'index.html — title, description, og:tags', agent: 'Ren', faviconDomain: 'wonder.gg', provider: 'Claude Code' }, delay: 550 },
     { type: 'toolDone', id: 't4', delay: 400 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 0 },
     { type: 'openArtifact', key: 'index.html.diff', delay: 300 },
     { type: 'tool', log: { id: 't5', tool: 'write_file', label: 'write_file', detail: 'index-preview.html', agent: 'Ren', provider: 'Claude Code' }, delay: 500 },
     { type: 'toolDone', id: 't5', delay: 350 },

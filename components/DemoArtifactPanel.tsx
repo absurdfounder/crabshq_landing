@@ -1,8 +1,19 @@
 'use client';
 
-import { FileText, Download, Layers, Play, Film } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { FileText, Download, Layers, Play, Film, Eye, Code, Globe, GitCompare, FileCode, ChevronDown, ChevronRight } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoArtifactKind } from './demoTaskExecution';
+import {
+  parseDemoDiff,
+  displayDiffPath,
+  diffFileBasename,
+  diffFileFolder,
+  type DiffFile,
+} from '@/lib/demoDiffPreview';
+import { DemoBrowserFrame } from './DemoBrowserChrome';
+
+type ArtifactTab = 'browser' | 'preview' | 'diff' | 'code' | 'ide';
 
 function inferKind(artifact: DemoArtifact): DemoArtifactKind {
   if (artifact.kind) return artifact.kind;
@@ -16,57 +27,213 @@ function inferKind(artifact: DemoArtifact): DemoArtifactKind {
   return 'code';
 }
 
-function DiffPreview({ content }: { content: string }) {
+function defaultTab(artifact: DemoArtifact, kind: DemoArtifactKind): ArtifactTab {
+  if (kind === 'diff') return 'diff';
+  if (kind === 'html' && artifact.browserUrl) return 'browser';
+  if (kind === 'html') return 'preview';
+  return 'ide';
+}
+
+function availableTabs(artifact: DemoArtifact, kind: DemoArtifactKind): ArtifactTab[] {
+  if (kind === 'diff') return ['diff', 'code'];
+  if (kind === 'html') {
+    if (artifact.browserUrl) return ['browser', 'preview', 'code'];
+    return ['preview', 'code'];
+  }
+  return ['ide'];
+}
+
+function tabLabel(tab: ArtifactTab): string {
+  switch (tab) {
+    case 'browser': return 'Browser';
+    case 'preview': return 'Preview';
+    case 'diff': return 'Diff';
+    case 'code': return 'Code';
+    default: return 'IDE';
+  }
+}
+
+function tabIcon(tab: ArtifactTab) {
+  switch (tab) {
+    case 'browser': return Globe;
+    case 'preview': return Eye;
+    case 'diff': return GitCompare;
+    case 'code': return Code;
+    default: return Layers;
+  }
+}
+
+function DiffStatsBadges({ additions, deletions, compact }: { additions: number; deletions: number; compact?: boolean }) {
+  const fs = compact ? 9 : 10;
   return (
-    <div style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', fontSize: 11, lineHeight: 1.55 }}>
-      {content.split('\n').map((line, i) => {
-        const add = line.startsWith('+') && !line.startsWith('+++');
-        const del = line.startsWith('-') && !line.startsWith('---');
-        return (
-          <div
-            key={i}
-            style={{
-              padding: '1px 8px',
-              background: add ? 'rgba(63,107,0,0.08)' : del ? 'rgba(220,38,38,0.06)' : 'transparent',
-              color: add ? '#325600' : del ? '#991B1B' : C.textMuted,
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            {line || ' '}
-          </div>
-        );
-      })}
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+      {additions > 0 && (
+        <span style={{
+          borderRadius: 4, background: '#ecfdf5', color: '#047857',
+          padding: compact ? '1px 4px' : '2px 6px', fontSize: fs, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
+        }}>
+          +{additions}
+        </span>
+      )}
+      {deletions > 0 && (
+        <span style={{
+          borderRadius: 4, background: '#fef2f2', color: '#dc2626',
+          padding: compact ? '1px 4px' : '2px 6px', fontSize: fs, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
+        }}>
+          −{deletions}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function DiffFileHeader({ file, expanded, onToggle, compact }: {
+  file: DiffFile;
+  expanded: boolean;
+  onToggle: () => void;
+  compact?: boolean;
+}) {
+  const path = displayDiffPath(file);
+  const basename = diffFileBasename(path);
+  const folder = diffFileFolder(path);
+
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      style={{
+        display: 'flex', alignItems: 'flex-start', gap: compact ? 6 : 10,
+        width: '100%', padding: compact ? '6px 8px' : '8px 12px', border: 'none', cursor: 'pointer',
+        background: 'transparent', textAlign: 'left',
+      }}
+    >
+      <span style={{ marginTop: 3, color: '#a8a29e', flexShrink: 0 }}>
+        {expanded ? <ChevronDown size={compact ? 10 : 12} /> : <ChevronRight size={compact ? 10 : 12} />}
+      </span>
+      <span style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        width: compact ? 24 : 32, height: compact ? 24 : 32, borderRadius: 8,
+        background: '#fafaf9', border: `1px solid ${C.border}`, flexShrink: 0,
+      }}>
+        <FileCode size={compact ? 12 : 14} color="#a8a29e" strokeWidth={1.75} />
+      </span>
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+          fontSize: compact ? 9 : 11, fontWeight: 600, color: C.text, lineHeight: 1.35,
+          wordBreak: 'break-all',
+        }}>
+          {basename}
+        </div>
+        {folder && !compact && (
+          <div style={{ fontSize: 10, color: C.textSubtle, marginTop: 2, wordBreak: 'break-all' }}>{folder}</div>
+        )}
+      </span>
+      <DiffStatsBadges additions={file.additions} deletions={file.deletions} compact={compact} />
+    </button>
+  );
+}
+
+function DiffFileBody({ file, compact }: { file: DiffFile; compact?: boolean }) {
+  const fs = compact ? 8.5 : 11;
+  const lh = compact ? 1.45 : 1.55;
+
+  return (
+    <div style={{ overflowX: 'auto', borderTop: `1px solid ${C.border}`, background: '#fff' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: fs, lineHeight: lh }}>
+        <colgroup>
+          <col style={{ width: compact ? 28 : 40 }} />
+          <col style={{ width: compact ? 28 : 40 }} />
+          <col style={{ width: compact ? 14 : 20 }} />
+          <col />
+        </colgroup>
+        <tbody>
+          {file.hunks.flatMap((hunk, hi) =>
+            hunk.lines.map((line, li) => {
+              if (line.type === 'header') {
+                return (
+                  <tr key={`${hi}-${li}`}>
+                    <td colSpan={4} style={{ padding: compact ? '2px 6px' : '4px 12px', background: '#fafaf9', color: C.textSubtle, fontSize: compact ? 8 : 10 }}>
+                      {line.content}
+                    </td>
+                  </tr>
+                );
+              }
+              const rowBg = line.type === 'addition' ? 'rgba(16,185,129,0.08)' : line.type === 'deletion' ? 'rgba(239,68,68,0.06)' : 'transparent';
+              const markerColor = line.type === 'addition' ? '#047857' : line.type === 'deletion' ? '#dc2626' : 'transparent';
+              const marker = line.type === 'addition' ? '+' : line.type === 'deletion' ? '−' : ' ';
+              return (
+                <tr key={`${hi}-${li}`} style={{ background: rowBg }}>
+                  <td style={{ padding: compact ? '0 4px' : '0 8px', textAlign: 'right', color: C.textSubtle, fontSize: compact ? 7.5 : 10, borderRight: `1px solid ${C.border}`, userSelect: 'none' }}>
+                    {line.type !== 'addition' ? line.oldLine : ''}
+                  </td>
+                  <td style={{ padding: compact ? '0 4px' : '0 8px', textAlign: 'right', color: C.textSubtle, fontSize: compact ? 7.5 : 10, borderRight: `1px solid ${C.border}`, userSelect: 'none' }}>
+                    {line.type !== 'deletion' ? line.newLine : ''}
+                  </td>
+                  <td style={{ textAlign: 'center', fontWeight: 600, color: markerColor, userSelect: 'none' }}>{marker}</td>
+                  <td style={{ padding: compact ? '0 4px 0 2px' : '1px 12px 1px 4px', color: C.text, whiteSpace: 'pre', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {line.content || ' '}
+                  </td>
+                </tr>
+              );
+            }),
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-function HtmlPreview({ artifact }: { artifact: DemoArtifact }) {
-  const src = artifact.src;
+function DiffFileSection({ file, defaultExpanded, compact }: { file: DiffFile; defaultExpanded?: boolean; compact?: boolean }) {
+  const [expanded, setExpanded] = useState(defaultExpanded ?? !compact);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px',
-        borderBottom: `1px solid ${C.border}`, background: '#F5F5F4', fontSize: 10, color: C.textSubtle,
-      }}>
-        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#28c840' }} />
-        Live preview
-      </div>
-      {src ? (
-        <iframe
-          title="Artifact preview"
-          src={src}
-          sandbox="allow-same-origin"
-          style={{ flex: 1, width: '100%', border: 'none', background: '#fff', minHeight: 240 }}
-        />
-      ) : (
-        <iframe
-          title="Artifact preview"
-          srcDoc={artifact.content}
-          sandbox="allow-same-origin"
-          style={{ flex: 1, width: '100%', border: 'none', background: '#fff', minHeight: 240 }}
-        />
-      )}
+    <div style={{
+      overflow: 'hidden', borderRadius: compact ? 6 : 10, background: '#fff',
+      border: `1px solid ${C.border}`, boxShadow: compact ? 'none' : '0 1px 2px rgba(0,0,0,0.02)',
+    }}>
+      <DiffFileHeader file={file} expanded={expanded} onToggle={() => setExpanded(v => !v)} compact={compact} />
+      {expanded && <DiffFileBody file={file} compact={compact} />}
     </div>
+  );
+}
+
+function UnifiedDiffPreview({ content, compact }: { content: string; compact?: boolean }) {
+  const files = useMemo(() => parseDemoDiff(content), [content]);
+  if (!files.length) return null;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 4 : 6, padding: compact ? 4 : 10 }}>
+      {files.map((file, i) => (
+        <DiffFileSection key={`${displayDiffPath(file)}-${i}`} file={file} defaultExpanded={i === 0} compact={compact} />
+      ))}
+    </div>
+  );
+}
+
+function HtmlPreview({ artifact, mode, compact }: { artifact: DemoArtifact; mode: 'browser' | 'preview'; compact?: boolean }) {
+  const src = artifact.src;
+  const browserUrl = artifact.browserUrl;
+
+  if (mode === 'browser' && (browserUrl || src)) {
+    return (
+      <DemoBrowserFrame
+        src={src || undefined}
+        addressUrl={browserUrl}
+        faviconDomain={artifact.faviconDomain}
+        compact={compact}
+        title={artifact.name}
+      />
+    );
+  }
+
+  return (
+    <DemoBrowserFrame
+      srcDoc={artifact.content || undefined}
+      src={!artifact.content && src ? src : undefined}
+      addressUrl={browserUrl || artifact.name}
+      faviconDomain={artifact.faviconDomain}
+      compact={compact}
+      title={artifact.name}
+    />
   );
 }
 
@@ -190,28 +357,96 @@ function TerminalPreview({ content }: { content: string }) {
   );
 }
 
-function ArtifactBody({ artifact }: { artifact: DemoArtifact }) {
+function CodePreview({ content }: { content: string }) {
+  return (
+    <pre style={{
+      margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.text,
+      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', whiteSpace: 'pre-wrap',
+    }}>
+      {content}
+    </pre>
+  );
+}
+
+function ArtifactBody({
+  artifact,
+  tab,
+  compact,
+}: {
+  artifact: DemoArtifact;
+  tab: ArtifactTab;
+  compact?: boolean;
+}) {
   const kind = inferKind(artifact);
+
+  if (kind === 'diff') {
+    if (tab === 'code') return <CodePreview content={artifact.content} />;
+    return <UnifiedDiffPreview content={artifact.content} compact={compact} />;
+  }
+
+  if (kind === 'html') {
+    if (tab === 'code') return <CodePreview content={artifact.content} />;
+    if (tab === 'browser' || tab === 'preview') {
+      return <HtmlPreview artifact={artifact} mode={tab === 'browser' ? 'browser' : 'preview'} compact={compact} />;
+    }
+  }
+
   switch (kind) {
-    case 'html': return <HtmlPreview artifact={artifact} />;
     case 'image': return <ImagePreview artifact={artifact} />;
     case 'video': return <VideoPreview artifact={artifact} />;
-    case 'diff': return <DiffPreview content={artifact.content} />;
     case 'markdown': return <MarkdownPreview content={artifact.content} />;
     default:
       if (artifact.ext === 'log' || artifact.name.endsWith('.log')) return <TerminalPreview content={artifact.content} />;
-      return (
-        <pre style={{
-          margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.text,
-          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', whiteSpace: 'pre-wrap',
-        }}>
-          {artifact.content}
-        </pre>
-      );
+      return <CodePreview content={artifact.content} />;
   }
 }
 
+/** Compact tile preview for canvas — legible at small scale without scaling the full panel */
+export function DemoArtifactTilePreview({ artifact }: { artifact: DemoArtifact }) {
+  const kind = inferKind(artifact);
+  if (kind === 'diff') {
+    return <UnifiedDiffPreview content={artifact.content} compact />;
+  }
+  if (kind === 'html') {
+    return <HtmlPreview artifact={artifact} mode={artifact.browserUrl ? 'browser' : 'preview'} compact />;
+  }
+  if (kind === 'markdown') {
+    return (
+      <div style={{ padding: 8, fontSize: 9, lineHeight: 1.45, color: C.textMuted }}>
+        {artifact.content.split('\n').slice(0, 6).map((line, i) => (
+          <div key={i} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{line.replace(/^#+\s*/, '')}</div>
+        ))}
+      </div>
+    );
+  }
+  if (artifact.ext === 'log' || artifact.name.endsWith('.log')) {
+    return (
+      <div style={{ background: '#1c1917', height: '100%', padding: '6px 8px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 8, lineHeight: 1.45 }}>
+        {artifact.content.split('\n').slice(0, 8).map((line, i) => (
+          <div key={i} style={{ color: line.includes('✓') || line.includes('passed') ? '#86efac' : '#a8a29e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{line}</div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <pre style={{ margin: 0, padding: 8, fontSize: 8, lineHeight: 1.45, color: C.textMuted, fontFamily: 'ui-monospace, Menlo, monospace', overflow: 'hidden' }}>
+      {artifact.content.slice(0, 200)}
+    </pre>
+  );
+}
+
 export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifact | null; compact?: boolean }) {
+  const kind = artifact ? inferKind(artifact) : 'code';
+  const tabs = artifact ? availableTabs(artifact, kind) : [];
+  const resolvedDefault = artifact ? defaultTab(artifact, kind) : 'ide';
+  const [activeTab, setActiveTab] = useState<ArtifactTab>(resolvedDefault);
+
+  useEffect(() => {
+    if (artifact) setActiveTab(defaultTab(artifact, inferKind(artifact)));
+  }, [artifact?.name]);
+
+  const effectiveTab = tabs.includes(activeTab) ? activeTab : resolvedDefault;
+
   if (!artifact) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center', background: C.card }}>
@@ -226,16 +461,15 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
     );
   }
 
-  const kind = inferKind(artifact);
-  const tabLabel = kind === 'html' ? 'Preview' : kind === 'image' ? 'Image' : kind === 'video' ? 'Video' : kind === 'diff' ? 'Diff' : 'IDE';
-
   if (compact) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
-        <ArtifactBody artifact={artifact} />
+        <DemoArtifactTilePreview artifact={artifact} />
       </div>
     );
   }
+
+  const noPad = kind === 'html' || kind === 'image' || kind === 'video' || kind === 'diff' || artifact.ext === 'log';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
@@ -243,14 +477,39 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px',
         borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
       }}>
-        <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
-          <span style={{
-            display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
-            fontSize: 11, fontWeight: 600, background: C.card, color: C.text,
-          }}>
-            <Layers size={12} strokeWidth={1.75} /> {tabLabel}
-          </span>
-        </div>
+        {tabs.length > 1 ? (
+          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+            {tabs.map((tab) => {
+              const Icon = tabIcon(tab);
+              const active = effectiveTab === tab;
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
+                    fontSize: 11, fontWeight: 600, border: 'none', cursor: 'pointer',
+                    background: active ? C.card : 'transparent',
+                    color: active ? C.text : C.textSubtle,
+                    boxShadow: active ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  }}
+                >
+                  <Icon size={12} strokeWidth={1.75} /> {tabLabel(tab)}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+            <span style={{
+              display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
+              fontSize: 11, fontWeight: 600, background: C.card, color: C.text,
+            }}>
+              <Layers size={12} strokeWidth={1.75} /> {tabLabel(effectiveTab)}
+            </span>
+          </div>
+        )}
         <span style={{ flex: 1, fontSize: 11, fontWeight: 500, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {artifact.name}
         </span>
@@ -258,8 +517,8 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
           <Download size={11} strokeWidth={1.75} /> Download
         </button>
       </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: kind === 'html' || kind === 'image' || kind === 'video' || kind === 'diff' || artifact.ext === 'log' ? 0 : 14 }}>
-        <ArtifactBody artifact={artifact} />
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: noPad ? 0 : 14 }}>
+        <ArtifactBody artifact={artifact} tab={effectiveTab} />
       </div>
     </div>
   );

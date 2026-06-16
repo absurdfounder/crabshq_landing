@@ -55,6 +55,35 @@ export function CodingHarnessVisual() {
 }
 
 /* ─── Coding: Canvas — diff, CI log, PR bundle (draggable) ─── */
+function MiniDiffTile() {
+  return (
+    <div className="flex h-full flex-col bg-white text-[7px] leading-tight">
+      <div className="flex items-center gap-1 border-b border-stone-100 px-1.5 py-1 bg-stone-50">
+        <span className="font-mono font-semibold text-stone-700 truncate flex-1">parser.ts</span>
+        <span className="rounded bg-emerald-50 px-1 text-emerald-700 font-semibold">+3</span>
+        <span className="rounded bg-red-50 px-1 text-red-600 font-semibold">−1</span>
+      </div>
+      <div className="font-mono overflow-hidden">
+        <div className="flex bg-red-50/60"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">12</span><span className="w-3 text-red-500 text-center">−</span><span className="truncate text-red-800/80">.map(line =&gt; line.trim());</span></div>
+        <div className="flex bg-emerald-50/70"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">13</span><span className="w-3 text-emerald-600 text-center">+</span><span className="truncate text-emerald-800">.filter(Boolean);</span></div>
+        <div className="flex"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">14</span><span className="w-3 text-transparent"> </span><span className="truncate text-stone-500">return rows.map(parseRow);</span></div>
+      </div>
+    </div>
+  );
+}
+
+function MiniBrowserTile({ url }: { url: string }) {
+  return (
+    <div className="flex h-full flex-col bg-white">
+      <div className="flex items-center gap-1 border-b border-stone-200 bg-gradient-to-b from-[#ececec] to-[#dedede] px-1.5 py-0.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57] shadow-[6px_0_0_#febc2e,12px_0_0_#28c840]" />
+        <span className="ml-3 flex-1 truncate rounded border border-stone-300/80 bg-white px-1 py-px text-center font-medium text-stone-500">{url}</span>
+      </div>
+      <div className="flex-1 bg-gradient-to-b from-[#f0f5e6] to-white" />
+    </div>
+  );
+}
+
 export function CodingBoardVisual() {
   return (
     <CanvasDesktopVisual
@@ -66,12 +95,7 @@ export function CodingBoardVisual() {
           y: 10,
           w: 190,
           h: 118,
-          body: (
-            <div className="bg-stone-900 p-2 font-mono text-[8px] leading-relaxed">
-              <div className="text-red-400/80">- .map(line =&gt; line.trim());</div>
-              <div className="text-green-400/90">+ .filter(Boolean);</div>
-            </div>
-          ),
+          body: <MiniDiffTile />,
         },
         {
           id: 'ci',
@@ -117,7 +141,7 @@ export function CanvasBoardVisual() {
           y: 28,
           w: 196,
           h: 104,
-          body: <div className="flex h-full items-center justify-center bg-stone-900 text-[8px] text-stone-400">Live HTML preview</div>,
+          body: <MiniBrowserTile url="northstar.io/q2" />,
         },
         {
           id: 'asset',
@@ -171,7 +195,9 @@ export function CampaignPipelineVisual() {
           ))}
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 text-[8px] text-stone-400 p-2">Landing preview</div>
+          <div className="rounded border border-stone-200 overflow-hidden h-14">
+            <MiniBrowserTile url="northstar.io/q2" />
+          </div>
           <div className="rounded border border-stone-200 overflow-hidden bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">Carousel PNG</div>
           <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 flex items-center justify-center p-2">
             <Play size={12} className="text-white" fill="white" />

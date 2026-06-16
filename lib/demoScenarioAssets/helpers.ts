@@ -6,6 +6,8 @@ type ArtifactInput = {
   ext?: string;
   content?: string;
   src?: string;
+  browserUrl?: string;
+  faviconDomain?: string;
   posterSrc?: string;
   caption?: string;
 };
@@ -19,6 +21,8 @@ export function a(input: ArtifactInput): DemoArtifact {
     kind: input.kind,
     content: input.content ?? '',
     src: input.src,
+    browserUrl: input.browserUrl,
+    faviconDomain: input.faviconDomain,
     posterSrc: input.posterSrc,
     caption: input.caption,
   };

@@ -15,6 +15,8 @@ const ARTIFACTS = {
     ext: 'html',
     kind: 'html',
     src: assetPath('marketing', 'campaign.html'),
+    browserUrl: 'https://northstar.io/q2',
+    faviconDomain: 'northstar.io',
     content: '',
   }),
   'creative/linkedin-carousel.png': a({

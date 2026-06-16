@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Layers } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact } from './demoTaskExecution';
-import { DemoArtifactPanel } from './DemoArtifactPanel';
+import { DemoArtifactTilePreview } from './DemoArtifactPanel';
 
 const STAGE_W = 720;
 const STAGE_H = 420;
@@ -202,9 +202,7 @@ export function DemoCanvasView({
                   </span>
                 </div>
                 <div style={{ height: pos.h - 34, overflow: 'hidden', pointerEvents: 'none' }}>
-                  <div style={{ transform: 'scale(0.72)', transformOrigin: 'top left', width: '138%', height: '138%' }}>
-                    <DemoArtifactPanel artifact={artifact} compact />
-                  </div>
+                  <DemoArtifactTilePreview artifact={artifact} />
                 </div>
               </div>
             );

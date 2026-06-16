@@ -51,6 +51,10 @@ export type DemoArtifact = {
   kind?: DemoArtifactKind;
   /** Checked-in asset under public/ — preferred over inline placeholders */
   src?: string;
+  /** Live page URL shown in browser chrome address bar (HTML / browser snapshots) */
+  browserUrl?: string;
+  /** Favicon domain override for browser chrome */
+  faviconDomain?: string;
   /** Video poster frame when src is not a playable file */
   posterSrc?: string;
   /** For image/video artifacts — alt or caption */
