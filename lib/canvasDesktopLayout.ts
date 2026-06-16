@@ -23,6 +23,35 @@ export function clampWindowRect(
   };
 }
 
+/** Four-quadrant desktop grid — no overlapping windows. */
+export function desktopQuadLayout(
+  ids: string[],
+  stageW: number,
+  stageH: number,
+): Record<string, DesktopRect> {
+  const margin = 14;
+  const gap = 12;
+  const cols = 2;
+  const rows = Math.max(1, Math.ceil(ids.length / cols));
+  const availW = stageW - margin * 2;
+  const availH = stageH - CANVAS_STATUS_BAR_H - margin * 2;
+  const cellW = (availW - gap * (cols - 1)) / cols;
+  const cellH = (availH - gap * (rows - 1)) / rows;
+
+  const out: Record<string, DesktopRect> = {};
+  ids.forEach((id, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    out[id] = {
+      x: Math.round(margin + col * (cellW + gap)),
+      y: Math.round(margin + row * (cellH + gap)),
+      w: Math.floor(cellW),
+      h: Math.floor(cellH),
+    };
+  });
+  return out;
+}
+
 export function scatterLayout(
   ids: string[],
   sizes: Record<string, DesktopSize>,

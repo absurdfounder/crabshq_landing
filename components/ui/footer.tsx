@@ -56,7 +56,7 @@ const featureColumn: FooterColumn = {
         { label: 'Messaging Channels', href: '/channels', icon: <Mail className="h-3.5 w-3.5 text-blue-500" /> },
         { label: 'Skills & Plugins', href: '/features/skills-plugins', icon: <Puzzle className="h-3.5 w-3.5 text-pink-500" /> },
         { label: 'Multi-Agent Teams', href: '/features/multi-agent-collaboration', icon: <Network className="h-3.5 w-3.5 text-cyan-500" /> },
-        { label: 'Plugins', href: '/plugin', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
+        { label: 'Plugin Integrations', href: '/plugin', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
         { label: 'OpenClaw Skills', href: '/integration', icon: <Puzzle className="h-3.5 w-3.5 text-violet-500" /> },
       ],
     },
@@ -79,7 +79,7 @@ const productColumn: FooterColumn = {
       heading: 'Product',
       links: [
         { label: 'How it works', href: '/' },
-        { label: 'Plugins', href: '/plugin' },
+        { label: 'Plugin Integrations', href: '/plugin' },
         { label: 'OpenClaw Skills', href: '/integration' },
         { label: 'Pricing', href: '/pricing' },
         { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },

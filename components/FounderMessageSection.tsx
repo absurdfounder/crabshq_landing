@@ -41,48 +41,48 @@ export default function FounderMessageSection() {
         transition={{ duration: 0.5, ease }}
         viewport={{ once: true, margin: '-20px' }}
       >
-        <div className="flex flex-row items-stretch">
-          <div className="relative aspect-square w-[5.5rem] shrink-0 overflow-hidden border-4 border-[#007040] border-r border-r-slate-200 bg-white sm:w-28 md:aspect-auto md:h-auto md:w-[22rem] md:border-[6px] md:self-stretch">
+        <div className="flex flex-row items-start">
+          <div className="relative aspect-[3/4] w-[5.25rem] shrink-0 overflow-hidden border-4 border-[#007040] border-r border-r-slate-200 bg-white sm:w-24 md:w-40 md:border-[5px] lg:w-48">
             <Image
               src="/images/founder-portrait.png"
               alt="Vaibhav, founder of Trooper"
               fill
               className="object-cover object-center"
-              sizes="(max-width: 640px) 88px, (max-width: 768px) 112px, 22rem"
+              sizes="(max-width: 640px) 84px, (max-width: 768px) 96px, (max-width: 1024px) 160px, 192px"
               priority={false}
             />
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-6 md:p-8 lg:p-10">
-            <p className="font-funneldisplay text-[0.95rem] leading-[1.4] tracking-tight text-slate-900 sm:text-xl md:text-[1.65rem] md:leading-[1.35]">
+          <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5 md:p-7 lg:p-9">
+            <p className="font-funneldisplay text-[0.95rem] leading-[1.45] tracking-tight text-slate-900 sm:text-lg md:text-[1.65rem] md:leading-[1.35]">
               AI agents that can browse, code, and ship are here. What&apos;s missing is the{' '}
               <span className="text-trooper font-semibold">command layer</span> — a place where you
               stay in charge while a real workforce executes.
             </p>
 
-            <div className="mt-4 sm:mt-6">
-              <p className="font-funneldisplay text-sm font-bold text-slate-900 sm:text-lg">
-                Vaibhav
-              </p>
-              <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500 sm:mt-1 sm:text-[11px] sm:tracking-[0.18em]">
-                Founder, Trooper
-              </p>
-              <a
-                href="https://twitter.com/absurdfounder"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.12em] text-trooper transition-colors hover:text-trooper-700 sm:mt-2 sm:text-[11px] sm:tracking-[0.14em]"
-              >
-                @absurdfounder
-              </a>
-            </div>
+            <div className="mt-4 flex flex-col gap-4 sm:mt-5 sm:flex-row sm:items-end sm:justify-between md:mt-6">
+              <div>
+                <p className="font-funneldisplay text-sm font-bold text-slate-900 sm:text-base md:text-lg">
+                  Vaibhav
+                </p>
+                <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500 sm:text-[11px] sm:tracking-[0.18em]">
+                  Founder, Trooper
+                </p>
+                <a
+                  href="https://twitter.com/absurdfounder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.12em] text-trooper transition-colors hover:text-trooper-700 sm:text-[11px] sm:tracking-[0.14em]"
+                >
+                  @absurdfounder
+                </a>
+              </div>
 
-            <div className="mt-auto flex justify-end pt-4 sm:pt-8 md:pt-10">
               <PixelButton
                 size="lg"
                 variant="outline"
                 tone="dark"
-                className="!px-3 !py-2 !text-xs sm:!px-5 sm:!py-3 sm:!text-sm"
+                className="shrink-0 self-end !px-3 !py-2 !text-xs sm:!px-5 sm:!py-3 sm:!text-sm"
                 icon={<ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                 data-cal-namespace="setup-call"
                 data-cal-link="set-meeting/setup-call"

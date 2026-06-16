@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import { MessageSquare, StickyNote } from 'lucide-react';
 import { DemoCursorGlyph } from '@/components/DemoCursorGlyph';
 import type { CanvasWindow } from './CanvasDesktopVisual';
+import { CANVAS_STAGE_H, CANVAS_STAGE_W } from './CanvasDesktopVisual';
 import {
+  desktopQuadLayout,
   lerpLayouts,
   lerpSizeMap,
-  scatterLayout,
   tidyGridLayout,
   wideRowLayout,
   type DesktopSize,
@@ -106,7 +107,7 @@ function buildLayouts(windows: CanvasWindow[], stageW: number, stageH: number) {
     ids,
     base,
     expanded,
-    scattered: scatterLayout(ids, base, stageW, stageH),
+    quad: desktopQuadLayout(ids, stageW, stageH),
     tidy: tidyGridLayout(ids, base, stageW, stageH),
     wide: wideRowLayout(ids, base, stageW, stageH),
     tidyExpanded: tidyGridLayout(ids, expanded, stageW, stageH),
@@ -153,35 +154,35 @@ export function staticDemoFrame(
   stageW: number,
   stageH: number,
 ): CanvasDemoFrame {
-  const { wide, base } = buildLayouts(windows, stageW, stageH);
-  const asset = windows.find((w) => w.id === 'asset');
-  const video = windows.find((w) => w.id === 'video');
-  const assetPos = wide.asset ?? { x: 12, y: 148 };
-  const videoPos = wide.video ?? { x: 268, y: 128 };
-  const assetSize = base.asset ?? { w: 178, h: 120 };
-  const videoSize = base.video ?? { w: 190, h: 124 };
+  const { quad } = buildLayouts(windows, stageW, stageH);
+  const asset = windows.find((w) => w.id === 'asset' || w.id === 'carousel');
+  const video = windows.find((w) => w.id === 'video' || w.id === 'pr');
+  const assetRect = asset ? quad[asset.id] : undefined;
+  const videoRect = video ? quad[video.id] : undefined;
 
   return {
-    positions: wide,
-    sizes: base,
+    positions: quad,
+    sizes: Object.fromEntries(
+      Object.entries(quad).map(([id, rect]) => [id, { w: rect.w, h: rect.h }]),
+    ),
     activeId: windows.find((w) => w.id === 'preview')?.id ?? windows[0]?.id ?? '',
     draggingIds: [],
     cursors: [],
-    postIts: asset
+    postIts: asset && assetRect
       ? [{
         id: 'note-asset',
-        x: assetPos.x + assetSize.w - 78,
-        y: assetPos.y + 22,
+        x: assetRect.x + assetRect.w - 78,
+        y: assetRect.y + 22,
         text: 'Headline A/B',
         opacity: 1,
         rotate: -2,
       }]
       : [],
-    comments: video
+    comments: video && videoRect
       ? [{
         id: 'comment-video',
-        x: videoPos.x + videoSize.w - 88,
-        y: videoPos.y + 14,
+        x: videoRect.x + videoRect.w - 88,
+        y: videoRect.y + 14,
         author: 'Jordan',
         text: 'Trim intro 2s',
         opacity: 1,
@@ -197,60 +198,77 @@ export function frameAt(
   stageH: number,
 ): CanvasDemoFrame {
   const t = elapsedMs % CANVAS_DEMO_LOOP_MS;
-  const { ids, base, expanded, scattered, tidy, wide } = buildLayouts(windows, stageW, stageH);
+  const { ids, quad, wide } = buildLayouts(windows, stageW, stageH);
 
-  const primaryPair = ids.slice(0, 2);
   const secondaryPair = ids.slice(2, 4);
+  const focusId = windows.find((w) => w.accent)?.id ?? windows.find((w) => w.id === 'preview')?.id ?? ids[ids.length - 1];
 
-  // Beat 1 — dual drag (first two windows)
-  const drag1 = segmentT(t, 900, 3400);
-  const positions1 = dragLayout(scattered, tidy, primaryPair, drag1);
-  const sizes1 = resizeLayout(base, expanded, primaryPair, segmentT(t, 1200, 2800));
+  // Beat 1 — expand focus window for review
+  const focusExpand = segmentT(t, 800, 2400);
+  const focusRects = quad;
+  const focusTarget = focusId && focusRects[focusId]
+    ? {
+        ...focusRects[focusId],
+        w: Math.min(focusRects[focusId].w + 48, CANVAS_STAGE_W * 0.52),
+        h: Math.min(focusRects[focusId].h + 36, CANVAS_STAGE_H * 0.55),
+        x: Math.max(12, focusRects[focusId].x - 8),
+        y: Math.max(12, focusRects[focusId].y - 6),
+      }
+    : null;
 
-  // Beat 2 — post-it on carousel / asset window
-  const postItOpacity = clamp01(segmentT(t, 3600, 4300));
+  let positions = { ...Object.fromEntries(Object.entries(quad).map(([id, r]) => [id, { x: r.x, y: r.y }])) };
+  let sizes = Object.fromEntries(Object.entries(quad).map(([id, r]) => [id, { w: r.w, h: r.h }]));
 
-  // Beat 3 — comment on video
-  const commentOpacity = clamp01(segmentT(t, 4800, 5500));
-
-  // Beat 4 — rearrange bottom row + resize preview/browser
-  const drag2 = segmentT(t, 5800, 8600);
-  const positions2 = dragLayout(tidy, wide, secondaryPair.length ? secondaryPair : ids.slice(-2), drag2);
-  const previewId = windows.find((w) => w.id === 'preview')?.id ?? primaryPair[1];
-  const resizeBeat = segmentT(t, 6200, 7600);
-  const sizes2 = previewId
-    ? resizeLayout(sizes1, expanded, [previewId], resizeBeat)
-    : sizes1;
-
-  let positions = drag2 > 0 ? { ...positions1, ...positions2 } : positions1;
-  let sizes = sizes2;
-
-  // Beat 5 — brief expansion for reading
-  const briefId = windows.find((w) => w.id === 'brief')?.id;
-  if (briefId) {
-    const readExpand = segmentT(t, 3800, 5200);
-    sizes = resizeLayout(sizes, expanded, [briefId], readExpand);
+  if (focusId && focusTarget && focusExpand > 0) {
+    positions[focusId] = {
+      x: lerp(quad[focusId]?.x ?? 0, focusTarget.x, focusExpand),
+      y: lerp(quad[focusId]?.y ?? 0, focusTarget.y, focusExpand),
+    };
+    sizes[focusId] = {
+      w: lerp(quad[focusId]?.w ?? 180, focusTarget.w, focusExpand),
+      h: lerp(quad[focusId]?.h ?? 120, focusTarget.h, focusExpand),
+    };
   }
 
-  // Beat 6 — fade overlays + reset loop
-  const fadeOut = clamp01(segmentT(t, 11800, 13200));
-  const resetT = segmentT(t, 13200, CANVAS_DEMO_LOOP_MS);
-  const finalPositions = resetT > 0
-    ? dragLayout(wide, scattered, ids, resetT)
-    : positions;
-  const finalSizes = resetT > 0
-    ? resizeLayout(sizes, base, ids, resetT)
-    : sizes;
+  // Beat 2 — subtle shuffle of secondary pair
+  const drag2 = segmentT(t, 4200, 6800);
+  if (drag2 > 0 && secondaryPair.length >= 2) {
+    const shuffled = dragLayout(
+      Object.fromEntries(secondaryPair.map((id) => [id, positions[id]])),
+      Object.fromEntries(secondaryPair.map((id) => [id, { x: wide[id]?.x ?? positions[id]?.x ?? 0, y: wide[id]?.y ?? positions[id]?.y ?? 0 }])),
+      secondaryPair,
+      drag2,
+    );
+    positions = { ...positions, ...shuffled };
+  }
 
-  const briefGrab = briefId ? titleGrab(briefId, finalPositions, finalSizes, windows) : { x: 24, y: 24 };
-  const previewGrab = titleGrab(previewId ?? primaryPair[0], finalPositions, finalSizes, windows);
-  const assetId = windows.find((w) => w.id === 'asset')?.id ?? secondaryPair[0];
-  const videoId = windows.find((w) => w.id === 'video')?.id ?? secondaryPair[1];
-  const assetGrab = assetId ? titleGrab(assetId, wide, base, windows) : briefGrab;
-  const videoGrab = videoId ? titleGrab(videoId, wide, base, windows) : previewGrab;
+  // Beat 3 — overlays
+  const postItOpacity = clamp01(segmentT(t, 2800, 3600));
+  const commentOpacity = clamp01(segmentT(t, 4000, 4800));
+
+  // Beat 4 — reset to quad
+  const resetT = segmentT(t, 12000, CANVAS_DEMO_LOOP_MS);
+  const quadPositions = Object.fromEntries(Object.entries(quad).map(([id, r]) => [id, { x: r.x, y: r.y }]));
+  const quadSizes = Object.fromEntries(Object.entries(quad).map(([id, r]) => [id, { w: r.w, h: r.h }]));
+  const finalPositions = resetT > 0 ? dragLayout(positions, quadPositions, ids, resetT) : positions;
+  const finalSizes = resetT > 0 ? resizeLayout(sizes, quadSizes, ids, resetT) : sizes;
+
+  const assetId = windows.find((w) => w.id === 'asset')?.id
+    ?? windows.find((w) => w.id === 'carousel')?.id
+    ?? secondaryPair[0];
+  const videoId = windows.find((w) => w.id === 'video')?.id
+    ?? windows.find((w) => w.id === 'pr')?.id
+    ?? secondaryPair[1];
+
+  const focusGrab = focusId ? titleGrab(focusId, finalPositions, finalSizes, windows) : { x: 24, y: 24 };
+  const assetGrab = assetId ? titleGrab(assetId, finalPositions, finalSizes, windows) : focusGrab;
+  const videoGrab = videoId ? titleGrab(videoId, finalPositions, finalSizes, windows) : focusGrab;
 
   const cursorAVisible = t >= 350 && t < 11800;
-  const cursorBVisible = (t >= 1100 && t < 3400) || (t >= 5800 && t < 11800);
+  const cursorBVisible = t >= 900 && t < 11800;
+  const fadeOut = clamp01(segmentT(t, 11800, CANVAS_DEMO_LOOP_MS - 400));
+  const cursorFade = 1 - fadeOut;
+  const overlayFade = 1 - fadeOut;
 
   let cursorA: DemoCursor = {
     id: 'a',
@@ -258,51 +276,38 @@ export function frameAt(
     y: 180,
     visible: cursorAVisible,
     clicking: t >= 780 && t < 980,
-    grabbing: undefined,
   };
   let cursorB: DemoCursor = {
     id: 'b',
     x: 420,
     y: 40,
     visible: cursorBVisible,
-    clicking: t >= 1480 && t < 1680,
-    grabbing: undefined,
+    clicking: false,
   };
 
   const draggingIds: string[] = [];
 
-  if (t >= 900 && t < 3400 && primaryPair.length >= 2) {
-    draggingIds.push(primaryPair[0], primaryPair[1]);
+  if (t >= 800 && t < 2400 && focusId) {
+    draggingIds.push(focusId);
     cursorA = {
       ...cursorA,
       ...cursorAtGrab(lerpPt(
-        titleGrab(primaryPair[0], scattered, base, windows),
-        titleGrab(primaryPair[0], tidy, expanded, windows),
-        drag1,
+        titleGrab(focusId, quadPositions, quadSizes, windows),
+        titleGrab(focusId, finalPositions, finalSizes, windows),
+        focusExpand,
       )),
-      grabbing: primaryPair[0],
-      clicking: false,
+      grabbing: focusId,
     };
-    cursorB = {
-      ...cursorB,
-      ...cursorAtGrab(lerpPt(
-        titleGrab(primaryPair[1], scattered, base, windows),
-        titleGrab(primaryPair[1], tidy, expanded, windows),
-        drag1,
-      )),
-      grabbing: primaryPair[1],
-      clicking: false,
-    };
-  } else if (t >= 3400 && t < 5800) {
-    cursorA = { ...cursorA, ...cursorAtGrab(briefGrab) };
-    cursorB = { ...cursorB, ...cursorAtGrab(previewGrab) };
-  } else if (t >= 5800 && t < 8600 && assetId && videoId) {
+  } else if (t >= 2800 && t < 4200) {
+    cursorA = { ...cursorA, ...cursorAtGrab(focusGrab) };
+    cursorB = { ...cursorB, ...cursorAtGrab(assetGrab) };
+  } else if (t >= 4200 && t < 6800 && assetId && videoId) {
     draggingIds.push(assetId, videoId);
     cursorA = {
       ...cursorA,
       ...cursorAtGrab(lerpPt(
-        titleGrab(assetId, tidy, base, windows),
-        titleGrab(assetId, wide, base, windows),
+        titleGrab(assetId, quadPositions, quadSizes, windows),
+        titleGrab(assetId, finalPositions, finalSizes, windows),
         drag2,
       )),
       grabbing: assetId,
@@ -310,52 +315,31 @@ export function frameAt(
     cursorB = {
       ...cursorB,
       ...cursorAtGrab(lerpPt(
-        titleGrab(videoId, tidy, base, windows),
-        titleGrab(videoId, wide, base, windows),
+        titleGrab(videoId, quadPositions, quadSizes, windows),
+        titleGrab(videoId, finalPositions, finalSizes, windows),
         drag2,
       )),
       grabbing: videoId,
     };
-  } else if (t >= 8600 && t < 11800) {
-    cursorA = { ...cursorA, ...cursorAtGrab(assetGrab) };
-    cursorB = { ...cursorB, ...cursorAtGrab(videoGrab) };
-  } else if (t >= 350 && t < 900 && primaryPair[0]) {
-    const approach = segmentT(t, 350, 900);
+  } else if (t >= 6800 && t < 11800) {
+    cursorA = { ...cursorA, ...cursorAtGrab(videoGrab) };
+    cursorB = { ...cursorB, ...cursorAtGrab(focusGrab) };
+  } else if (t >= 350 && t < 800 && focusId) {
     cursorA = {
       ...cursorA,
-      ...cursorAtGrab(lerpPt(
-        { x: 24, y: 180 },
-        titleGrab(primaryPair[0], scattered, base, windows),
-        approach,
-      )),
-    };
-  } else if (t >= 1100 && t < 1480 && primaryPair[1]) {
-    const approach = segmentT(t, 1100, 1480);
-    cursorB = {
-      ...cursorB,
-      ...cursorAtGrab(lerpPt(
-        { x: 420, y: 40 },
-        titleGrab(primaryPair[1], scattered, base, windows),
-        approach,
-      )),
+      ...cursorAtGrab(lerpPt({ x: 24, y: 180 }, titleGrab(focusId, quadPositions, quadSizes, windows), segmentT(t, 350, 800))),
     };
   }
 
-  const overlayFade = 1 - fadeOut;
-  const cursorFade = 1 - fadeOut;
-
-  const assetWin = assetId ? windows.find((w) => w.id === assetId) : undefined;
-  const videoWin = videoId ? windows.find((w) => w.id === videoId) : undefined;
-  const assetPos = assetId ? (finalPositions[assetId] ?? wide[assetId]) : undefined;
-  const videoPos = videoId ? (finalPositions[videoId] ?? wide[videoId]) : undefined;
-  const assetSize = assetId ? (finalSizes[assetId] ?? base[assetId]) : undefined;
-  const videoSize = videoId ? (finalSizes[videoId] ?? base[videoId]) : undefined;
+  const assetPos = assetId ? finalPositions[assetId] : undefined;
+  const videoPos = videoId ? finalPositions[videoId] : undefined;
+  const assetSize = assetId ? finalSizes[assetId] : undefined;
+  const videoSize = videoId ? finalSizes[videoId] : undefined;
 
   const activeId = draggingIds[draggingIds.length - 1]
-    ?? (t >= 4800 && videoId ? videoId
-      : t >= 3600 && assetId ? assetId
-        : t >= 900 && primaryPair[1] ? primaryPair[1]
-          : primaryPair[0] ?? windows[0]?.id ?? '');
+    ?? (t >= 4000 && videoId ? videoId
+      : t >= 2800 && assetId ? assetId
+        : focusId ?? windows[0]?.id ?? '');
 
   return {
     positions: finalPositions,
@@ -363,10 +347,10 @@ export function frameAt(
     activeId,
     draggingIds,
     cursors: [
-      { ...cursorA, visible: cursorAVisible && cursorFade > 0.05, x: cursorA.x, y: cursorA.y },
-      { ...cursorB, visible: cursorBVisible && cursorFade > 0.05, x: cursorB.x, y: cursorB.y },
+      { ...cursorA, visible: cursorAVisible && cursorFade > 0.05 },
+      { ...cursorB, visible: cursorBVisible && cursorFade > 0.05 },
     ],
-    postIts: assetWin && assetPos && assetSize && postItOpacity * overlayFade > 0.02
+    postIts: assetId && assetPos && assetSize && postItOpacity * overlayFade > 0.02
       ? [{
         id: 'note-asset',
         x: assetPos.x + assetSize.w - 78,
@@ -376,7 +360,7 @@ export function frameAt(
         rotate: -2,
       }]
       : [],
-    comments: videoWin && videoPos && videoSize && commentOpacity * overlayFade > 0.02
+    comments: videoId && videoPos && videoSize && commentOpacity * overlayFade > 0.02
       ? [{
         id: 'comment-video',
         x: videoPos.x + videoSize.w - 88,

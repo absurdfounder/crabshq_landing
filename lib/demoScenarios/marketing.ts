@@ -6,7 +6,7 @@ import type { DemoScenario } from './types';
 const VIDEO_TRANSCRIPT = `[00:00] Hook — "Stop tab-switching between agents"
 [00:05] Screen: Trooper board with kanban columns
 [00:11] Pillar page hero scroll
-[00:22] CTA — Talk to founder
+[00:22] CTA — Book a demo
 [00:30] End card — northstar.io/q2`;
 
 const ARTIFACTS = {
