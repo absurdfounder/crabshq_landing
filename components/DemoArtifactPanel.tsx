@@ -100,36 +100,50 @@ function ImagePreview({ artifact }: { artifact: DemoArtifact }) {
 }
 
 function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
-  const poster = artifact.posterSrc ?? artifact.src;
+  const poster = artifact.posterSrc;
+  const videoSrc = artifact.src && ['mp4', 'mov', 'webm'].includes(artifact.ext ?? '') ? artifact.src : null;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 16, background: '#1c1917' }}>
       <div style={{
         flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative',
         background: '#292524', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200,
       }}>
-        {poster && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={poster}
-            alt=""
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
+        {videoSrc ? (
+          <video
+            src={videoSrc}
+            poster={poster}
+            controls
+            playsInline
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
+        ) : (
+          <>
+            {poster && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={poster}
+                alt=""
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
+              />
+            )}
+            <div style={{
+              position: 'relative', zIndex: 1,
+              width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,0.15)',
+              border: '2px solid rgba(255,255,255,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Play size={22} fill="white" color="white" style={{ marginLeft: 3 }} />
+            </div>
+            <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12, zIndex: 1 }}>
+              <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.2)', overflow: 'hidden' }}>
+                <div style={{ width: '42%', height: '100%', background: C.brand, borderRadius: 999 }} />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.65)' }}>
+                <span>0:14</span><span>0:30</span>
+              </div>
+            </div>
+          </>
         )}
-        <div style={{
-          position: 'relative', zIndex: 1,
-          width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,0.15)',
-          border: '2px solid rgba(255,255,255,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Play size={22} fill="white" color="white" style={{ marginLeft: 3 }} />
-        </div>
-        <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12, zIndex: 1 }}>
-          <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.2)', overflow: 'hidden' }}>
-            <div style={{ width: '42%', height: '100%', background: C.brand, borderRadius: 999 }} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.65)' }}>
-            <span>0:14</span><span>0:30</span>
-          </div>
-        </div>
       </div>
       <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
         <Film size={14} color="#a8a29e" />

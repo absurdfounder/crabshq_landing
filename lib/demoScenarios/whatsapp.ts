@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
@@ -77,15 +78,15 @@ export const whatsappScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'WhatsApp → ticket — customer context preserved.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'message_send', label: 'whatsapp_read', detail: 'Inbound support message routed', agent: 'Jordan', faviconDomain: 'whatsapp.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't1', integration: 'whatsapp', label: 'whatsapp_read', detail: 'Inbound support message routed', agent: 'Jordan' }), delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'exec', label: 'exec', detail: 'reset billing session + verify login', agent: 'Leo' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't2', integration: 'stripe', label: 'stripe_lookup', detail: 'Reset billing session + verify login', agent: 'Leo' }), delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'tickets/whatsapp-reply.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't3', integration: 'whatsapp', label: 'whatsapp_draft', detail: 'Reply draft — pending approval', agent: 'Jordan' }), delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'deliver', name: 'tickets/whatsapp-support-881.md', delay: 450 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },

@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
@@ -86,16 +87,16 @@ export const messagingScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Message → ticket — context preserved from channel.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'message_send', label: 'channel_read', detail: 'DM routed to task #1190', agent: 'Jordan' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't1', integration: 'slack', label: 'slack_read', detail: 'DM routed to task #1190', agent: 'Jordan' }), delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
     { type: 'openArtifact', key: 'tickets/dm-summary.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'read_file', label: 'read_file', detail: 'metrics/q2-dashboard.csv', agent: 'Aria' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't2', integration: 'googlesheets', label: 'sheets_read', detail: 'metrics/q2-dashboard.csv', agent: 'Aria' }), delay: 500 },
     { type: 'toolDone', id: 't2', delay: 350 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'deck/q2-roadmap-notes.md', agent: 'Ren', provider: 'Claude Code' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't3', integration: 'figma', label: 'figma_update', detail: 'deck/q2-roadmap-notes.md — slides 3, 5, 8', agent: 'Ren', provider: 'Claude Code' }), delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'tickets/dm-routed-1190.md', delay: 450 },

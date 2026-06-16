@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
@@ -105,17 +106,17 @@ export const salesScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 2, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Acme outreach — Aria on research, Ren on draft.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'web_search', label: 'web_search', detail: 'Acme Corp Series B funding SDR hiring', agent: 'Aria', faviconDomain: 'linkedin.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't1', integration: 'linkedin', label: 'linkedin_search', detail: 'Acme Corp Series B · SDR hiring signals', agent: 'Aria' }), delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
     { type: 'openArtifact', key: 'sales/acme-research.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'write_file', label: 'write_file', detail: 'sales/acme-outreach.md', agent: 'Ren' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't2', integration: 'gmail', label: 'gmail_draft', detail: 'sales/acme-outreach.md — personalized', agent: 'Ren' }), delay: 500 },
     { type: 'toolDone', id: 't2', delay: 350 },
     { type: 'openArtifact', key: 'sales/acme-outreach.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'sales/crm-note.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't3', integration: 'hubspot', label: 'hubspot_update', detail: 'Acme Corp → Qualified · owner Jordan', agent: 'Jordan' }), delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'sales/acme-outreach.md', delay: 450 },

@@ -11,7 +11,7 @@ import { getToolIconName } from './demoTaskExecution';
 import { launchScenario } from '@/lib/demoScenarios/launch';
 import type { DemoOrg } from '@/lib/demoScenarios/types';
 import { DemoFavicon } from './DemoFavicon';
-import { getToolFaviconDomain } from '@/lib/demoToolFavicon';
+import { getToolIconMeta } from '@/lib/demoToolFavicon';
 import { getProviderDomain } from '@/lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
 import { DemoCanvasView } from './DemoCanvasView';
@@ -126,7 +126,7 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
 
 function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean }) {
   const running = log.status === 'running';
-  const faviconDomain = getToolFaviconDomain(log);
+  const iconMeta = getToolIconMeta(log);
 
   return (
     <div className="demo-thread-tool-row" style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}>
@@ -137,8 +137,10 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           background: C.card, border: `1px solid ${C.border}`, overflow: 'hidden',
         }}>
-          {faviconDomain ? (
-            <DemoFavicon domain={faviconDomain} size={14} rounded="sm" />
+          {iconMeta.logoSrc ? (
+            <DemoFavicon src={iconMeta.logoSrc} size={14} rounded="sm" alt={log.integration} />
+          ) : iconMeta.domain ? (
+            <DemoFavicon domain={iconMeta.domain} size={14} rounded="sm" />
           ) : (
             <ToolIcon tool={log.tool} />
           )}

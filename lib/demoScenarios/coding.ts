@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const PARSER_DIFF = `--- a/src/parser.ts
@@ -206,9 +207,9 @@ export const codingScenario: DemoScenario = {
     { type: 'openArtifact', key: 'logs/ci-integration.log', delay: 280 },
     { type: 'subtask', id: 's5', status: 'done', delay: 280 },
     { type: 'subtask', id: 's6', status: 'running', delay: 260 },
-    { type: 'tool', log: { id: 't6', tool: 'git_commit', label: 'git_commit', detail: 'fix(parser): skip empty invoice rows', agent: 'Leo', provider: 'Codex', faviconDomain: 'github.com' }, delay: 580 },
+    { type: 'tool', log: i({ id: 't6', integration: 'github', label: 'github_commit', detail: 'fix(parser): skip empty invoice rows', agent: 'Leo', provider: 'Codex' }), delay: 580 },
     { type: 'toolDone', id: 't6', delay: 400 },
-    { type: 'tool', log: { id: 't7', tool: 'write_file', label: 'write_file', detail: 'pull-requests/418-body.md', agent: 'Claude Code', provider: 'Claude Code' }, delay: 520 },
+    { type: 'tool', log: i({ id: 't7', integration: 'linear', label: 'linear_update', detail: 'ENG-418 → In Review · PR linked', agent: 'Claude Code', provider: 'Claude Code' }), delay: 520 },
     { type: 'toolDone', id: 't7', delay: 380 },
     { type: 'openArtifact', key: 'pull-requests/418-body.md', delay: 280 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },

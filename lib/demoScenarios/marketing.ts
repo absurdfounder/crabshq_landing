@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
-import { a, assetPath } from '@/lib/demoScenarioAssets/helpers';
+import { a, assetPath, DEMO_MEDIA } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const VIDEO_TRANSCRIPT = `[00:00] Hook — "Stop tab-switching between agents"
@@ -20,7 +21,7 @@ const ARTIFACTS = {
     name: 'creative/linkedin-carousel.png',
     ext: 'png',
     kind: 'image',
-    src: assetPath('marketing', 'carousel-1.svg'),
+    src: DEMO_MEDIA.linkedinCarousel,
     caption: 'LinkedIn carousel — slide 1 of 3 · designed in Trooper',
   }),
   'copy/email-sequence.md': a({
@@ -45,7 +46,8 @@ Calendar link + pillar page recap.`,
     name: 'video/social-cut.mp4',
     ext: 'mp4',
     kind: 'video',
-    posterSrc: assetPath('marketing', 'video-poster.svg'),
+    src: DEMO_MEDIA.socialVideo,
+    posterSrc: DEMO_MEDIA.socialVideoPoster,
     caption: '30s social cut — pillar page hero + board B-roll',
     content: VIDEO_TRANSCRIPT,
   }),
@@ -144,11 +146,11 @@ export const marketingScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Q2 campaign — landing, creative, email, and video in one traced mission.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 380 },
-    { type: 'tool', log: { id: 't1', tool: 'web_search', label: 'web_search', detail: 'ai agent ops competitor landing pages', agent: 'Aria', faviconDomain: 'google.com' }, delay: 540 },
+    { type: 'tool', log: i({ id: 't1', integration: 'figma', label: 'figma_export', detail: 'Competitor landing audit frames', agent: 'Aria' }), delay: 540 },
     { type: 'toolDone', id: 't1', delay: 400 },
     { type: 'subtask', id: 's1', status: 'done', delay: 280 },
     { type: 'subtask', id: 's2', status: 'running', delay: 260 },
-    { type: 'tool', log: { id: 't2', tool: 'write_file', label: 'write_file', detail: 'seo/keyword-map.md', agent: 'Aria' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't2', integration: 'googlesheets', label: 'sheets_update', detail: 'seo/keyword-map → Q2 tab', agent: 'Aria' }), delay: 500 },
     { type: 'toolDone', id: 't2', delay: 350 },
     { type: 'openArtifact', key: 'seo/keyword-map.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 280 },
@@ -158,7 +160,7 @@ export const marketingScenario: DemoScenario = {
     { type: 'openArtifact', key: 'landing/campaign.html', delay: 350 },
     { type: 'subtask', id: 's3', status: 'done', delay: 280 },
     { type: 'subtask', id: 's4', status: 'running', delay: 260 },
-    { type: 'tool', log: { id: 't4', tool: 'generate_image', label: 'generate_image', detail: 'creative/linkedin-carousel.png', agent: 'Ren', provider: 'Codex' }, delay: 580 },
+    { type: 'tool', log: i({ id: 't4', integration: 'linkedin', label: 'linkedin_post', detail: 'creative/linkedin-carousel.png — slide 1', agent: 'Ren', provider: 'Codex' }), delay: 580 },
     { type: 'toolDone', id: 't4', delay: 420 },
     { type: 'openArtifact', key: 'creative/linkedin-carousel.png', delay: 320 },
     { type: 'subtask', id: 's4', status: 'done', delay: 280 },
@@ -168,7 +170,7 @@ export const marketingScenario: DemoScenario = {
     { type: 'openArtifact', key: 'video/social-cut.mp4', delay: 300 },
     { type: 'subtask', id: 's5', status: 'done', delay: 280 },
     { type: 'subtask', id: 's6', status: 'running', delay: 260 },
-    { type: 'tool', log: { id: 't6', tool: 'write_file', label: 'write_file', detail: 'copy/email-sequence.md', agent: 'Aria' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't6', integration: 'gmail', label: 'gmail_draft', detail: 'copy/email-sequence.md — nurture 3-part', agent: 'Aria' }), delay: 500 },
     { type: 'toolDone', id: 't6', delay: 350 },
     { type: 'openArtifact', key: 'copy/email-sequence.md', delay: 280 },
     { type: 'subtask', id: 's6', status: 'done', delay: 280 },

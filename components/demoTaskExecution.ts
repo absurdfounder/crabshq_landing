@@ -27,6 +27,8 @@ export type DemoToolLog = {
   faviconDomain?: string;
   /** When set, tool row shows provider logo (Codex, Claude Code, OpenCode). */
   provider?: string;
+  /** Composio integration slug — shows integration logo in tool timeline. */
+  integration?: string;
 };
 
 export type DemoModalMessage = {

@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const REDLINE_DIFF = `--- a/msa-vendor-x.md
@@ -97,12 +98,12 @@ export const legalScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'MSA review — all changes traced, nothing sends without approval.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'read_file', label: 'read_file', detail: 'vendor-x-msa.pdf', agent: 'Aria' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't1', integration: 'notion', label: 'notion_read', detail: 'vendor-x-msa.pdf — key terms', agent: 'Aria' }), delay: 500 },
     { type: 'toolDone', id: 't1', delay: 350 },
     { type: 'openArtifact', key: 'legal/msa-summary.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'web_search', label: 'web_search', detail: 'standard SaaS MSA liability cap benchmarks', agent: 'Jordan', faviconDomain: 'google.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't2', integration: 'airtable', label: 'airtable_lookup', detail: 'Playbook standard vs Vendor X MSA', agent: 'Jordan' }), delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'openArtifact', key: 'legal/risk-table.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },

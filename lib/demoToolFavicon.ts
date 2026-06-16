@@ -1,5 +1,19 @@
 import type { DemoToolLog } from '@/components/demoTaskExecution';
 import { getProviderDomain } from '@/lib/demoProviders';
+import { integrationLogo } from '@/lib/demoIntegrations';
+
+export type ToolIconMeta = {
+  domain: string | null;
+  logoSrc: string | null;
+};
+
+/** Resolve favicon domain or integration logo for a tool row. */
+export function getToolIconMeta(log: Pick<DemoToolLog, 'tool' | 'detail' | 'faviconDomain' | 'provider' | 'integration'>): ToolIconMeta {
+  if (log.integration) {
+    return { domain: null, logoSrc: integrationLogo(log.integration) };
+  }
+  return { domain: getToolFaviconDomain(log), logoSrc: null };
+}
 
 /** Resolve a site favicon domain from tool name + detail string. */
 export function getToolFaviconDomain(log: Pick<DemoToolLog, 'tool' | 'detail' | 'faviconDomain' | 'provider'>): string | null {

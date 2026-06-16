@@ -27,3 +27,13 @@ export function a(input: ArtifactInput): DemoArtifact {
 export function assetPath(scenarioId: string, file: string): string {
   return `/demo-assets/${scenarioId}/${file}`;
 }
+
+/** Stable external media for demo artifacts — avoids broken local placeholders. */
+export const DEMO_MEDIA = {
+  linkedinCarousel:
+    'https://images.unsplash.com/photo-1611162616475-46b635cb6848?auto=format&fit=crop&w=960&q=80',
+  socialVideoPoster:
+    'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=960&q=80',
+  socialVideo:
+    'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+} as const;

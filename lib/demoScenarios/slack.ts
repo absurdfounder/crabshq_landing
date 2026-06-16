@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
@@ -103,18 +104,18 @@ export const slackScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Slack → ticket routing — full thread preserved.', tags: [{ label: 'sales', type: 'channel' }], delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'message_send', label: 'slack_read', detail: '#sales thread → ticket #4421', agent: 'Jordan', faviconDomain: 'slack.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't1', integration: 'slack', label: 'slack_read', detail: '#sales thread → ticket #4421', agent: 'Jordan' }), delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
     { type: 'openArtifact', key: 'tickets/slack-thread.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'web_search', label: 'web_search', detail: 'Acme Corp VP Ops Sarah Chen', agent: 'Aria', faviconDomain: 'linkedin.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't2', integration: 'linkedin', label: 'linkedin_search', detail: 'Acme Corp · Sarah Chen VP Ops', agent: 'Aria' }), delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'calendar/demo-hold.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't3', integration: 'googlecalendar', label: 'calendar_create', detail: 'Thu 2:00 PM PT · Acme demo hold', agent: 'Jordan' }), delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
-    { type: 'tool', log: { id: 't4', tool: 'write_file', label: 'write_file', detail: 'tickets/slack-reply-draft.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: i({ id: 't4', integration: 'slack', label: 'slack_draft', detail: 'Reply to #sales — pending approval', agent: 'Jordan' }), delay: 500 },
     { type: 'toolDone', id: 't4', delay: 350 },
     { type: 'deliver', name: 'tickets/slack-lead-4421.md', delay: 450 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },

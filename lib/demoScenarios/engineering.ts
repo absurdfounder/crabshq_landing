@@ -1,5 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
 import { a } from '@/lib/demoScenarioAssets/helpers';
+import { i } from '@/lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
 const LOG_EXCERPT = `$ kubectl logs deploy/api-v2 --since=15m | grep -i pool
@@ -110,15 +111,15 @@ export const engineeringScenario: DemoScenario = {
     { type: 'openTaskModal', taskId: 1, delay: 450 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Incident #442 — Leo leading triage and rollback.', delay: 400 },
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
-    { type: 'tool', log: { id: 't1', tool: 'browser_navigate', label: 'browser_navigate', detail: 'status.platform.dev/api-v2', agent: 'Leo', faviconDomain: 'platform.dev' }, delay: 520 },
+    { type: 'tool', log: i({ id: 't1', integration: 'aws', label: 'aws_status', detail: 'status.platform.dev/api-v2 metrics', agent: 'Leo' }), delay: 520 },
     { type: 'toolDone', id: 't1', delay: 380 },
-    { type: 'tool', log: { id: 't2', tool: 'exec', label: 'exec', detail: 'kubectl logs api-v2 --since=15m', agent: 'Leo', faviconDomain: 'kubernetes.io' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't2', integration: 'aws', label: 'aws_logs', detail: 'kubectl logs api-v2 —since=15m', agent: 'Leo' }), delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'openArtifact', key: 'ops/log-excerpt.log', delay: 280 },
     { type: 'openArtifact', key: 'ops/incident-timeline.md', delay: 260 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'apply_patch', label: 'apply_patch', detail: 'deploy/api-v2.yaml — rollback v2.3.1', agent: 'Leo', faviconDomain: 'github.com' }, delay: 550 },
+    { type: 'tool', log: i({ id: 't3', integration: 'github', label: 'github_deploy', detail: 'deploy/api-v2.yaml — rollback v2.3.1', agent: 'Leo' }), delay: 550 },
     { type: 'toolDone', id: 't3', delay: 400 },
     { type: 'openArtifact', key: 'ops/rollback.diff', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
