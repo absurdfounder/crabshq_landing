@@ -104,7 +104,7 @@ export default function Home() {
         <HowItWorksSteps />
       </SectionShell>
 
-      <SectionShell eyebrow="Capabilities" eyebrowNumber="04" bgClass="bg-slate-50">
+      <SectionShell bgClass="bg-slate-50">
         <OldWays />
       </SectionShell>
 

@@ -948,14 +948,6 @@ export default function OldWays() {
   return (
     <section className="bg-slate-50 relative">
       <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
-        <div className="mb-8 sm:mb-12 md:mb-14 max-w-2xl">
-          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
-            Everything your AI workforce can do.
-          </h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
-            Org charts, system access, traced tickets, and memory that outlasts the mission.
-          </p>
-        </div>
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
