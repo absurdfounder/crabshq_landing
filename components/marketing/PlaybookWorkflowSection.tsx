@@ -29,15 +29,15 @@ const defaultHeadline = [
 
 function NodeIcon({ node }: { node: PlaybookWorkflowNode }) {
   if (node.agent) {
-    return <ProviderChip provider={node.agent} size={14} />;
+    return <ProviderChip provider={node.agent} size={16} />;
   }
   if (node.iconDomain === 'trooper') {
     return (
       <img
         src="/images/trooper-logomark.png"
         alt=""
-        width={14}
-        height={14}
+        width={16}
+        height={16}
         className="pixel-render shrink-0 object-contain"
       />
     );
@@ -47,8 +47,8 @@ function NodeIcon({ node }: { node: PlaybookWorkflowNode }) {
       <img
         src={getFaviconUrl(node.iconDomain, 32)}
         alt=""
-        width={14}
-        height={14}
+        width={16}
+        height={16}
         className="shrink-0 rounded-sm"
       />
     );
@@ -62,24 +62,24 @@ function WorkflowNode({ node }: { node: PlaybookWorkflowNode }) {
 
   return (
     <div
-      className={`absolute z-10 w-[max-content] max-w-[120px] sm:max-w-[140px] -translate-x-1/2 -translate-y-1/2 ${
+      className={`absolute z-10 w-[max-content] max-w-[132px] sm:max-w-[152px] -translate-x-1/2 -translate-y-1/2 ${
         isGate ? 'border-trooper/40' : 'border-slate-200'
       }`}
       style={{ left: `${node.x}%`, top: `${node.y}%` }}
     >
       {isTrigger && (
-        <span className="mb-1 inline-flex items-center gap-1 rounded-sm border border-trooper/25 bg-trooper-50 px-1.5 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider text-trooper">
-          <Zap className="h-2.5 w-2.5" strokeWidth={2.5} />
+        <span className="mb-1 inline-flex items-center gap-1 rounded-sm border border-trooper/25 bg-trooper-50 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-trooper">
+          <Zap className="h-3 w-3" strokeWidth={2.5} />
           Trigger
         </span>
       )}
       <div
-        className={`flex items-center gap-1.5 border bg-white px-2 py-1.5 shadow-sm sm:gap-2 sm:px-2.5 sm:py-2 ${
+        className={`flex items-center gap-2 border bg-white px-2.5 py-2 shadow-sm sm:px-3 sm:py-2.5 ${
           isGate ? 'border-trooper/30 ring-1 ring-trooper/10' : 'border-slate-200'
         }`}
       >
         <NodeIcon node={node} />
-        <span className="text-[10px] font-medium leading-tight text-slate-700 sm:text-[11px]">
+        <span className="text-xs font-medium leading-snug text-slate-700 sm:text-[13px]">
           {node.label}
         </span>
       </div>
@@ -91,9 +91,10 @@ function WorkflowCanvas({ workflow }: { workflow: PlaybookWorkflow }) {
   const nodeById = Object.fromEntries(workflow.nodes.map((n) => [n.id, n]));
 
   return (
-    <div className="relative overflow-hidden border border-slate-200 bg-white">
-      <div
-        className="relative min-h-[280px] sm:min-h-[340px] lg:min-h-[380px]"
+    <div className="relative overflow-hidden border border-slate-200 bg-slate-50/70 p-2 shadow-sm sm:p-3">
+      <div className="relative overflow-hidden border border-slate-200 bg-white shadow-sm">
+        <div
+          className="relative min-h-[280px] sm:min-h-[340px] lg:min-h-[380px]"
         style={{
           backgroundImage:
             'radial-gradient(circle, rgb(148 163 184 / 0.35) 1px, transparent 1px)',
@@ -139,15 +140,16 @@ function WorkflowCanvas({ workflow }: { workflow: PlaybookWorkflow }) {
       </div>
 
       {workflow.statusBar && (
-        <div className="flex items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/80 px-3 py-2 sm:px-4 sm:py-2.5">
-          <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-slate-500">
+        <div className="flex items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/90 px-3 py-2.5 sm:px-4 sm:py-3">
+          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-[11px]">
             {workflow.statusBar.label}
           </span>
-          <span className="font-mono text-[11px] font-bold text-trooper sm:text-xs">
+          <span className="font-mono text-xs font-bold text-trooper sm:text-sm">
             {workflow.statusBar.value}
           </span>
         </div>
       )}
+      </div>
     </div>
   );
 }

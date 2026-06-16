@@ -11,6 +11,8 @@ export type MaturityStepIcon =
 export type MaturityStep = {
   label: string;
   icon?: MaturityStepIcon;
+  /** Favicon domain for integration triggers (e.g. github.com). */
+  iconDomain?: string;
   /** When true, consecutive grouped steps render inside a dashed box. */
   grouped?: boolean;
   /** Accent styling for goals / outcomes (typically L3/L4). */

@@ -28,7 +28,7 @@ export const codingPrReviewLadder: MaturityLadderContent = {
       id: 'L3',
       headline: 'New PRs are reviewed and commented automatically',
       steps: [
-        { label: 'PR opened on GitHub', icon: 'integration' },
+        { label: 'PR opened on GitHub', icon: 'integration', iconDomain: 'github.com' },
         { label: 'Runs multi-agent review harness', icon: 'agent', grouped: true },
         { label: 'Posts inline comments', icon: 'agent', grouped: true },
         { label: 'Flags merge blockers', icon: 'agent', grouped: true },
@@ -77,7 +77,7 @@ export const salesLeadQualificationLadder: MaturityLadderContent = {
       id: 'L3',
       headline: 'New leads are qualified and contacted automatically',
       steps: [
-        { label: 'Inbound lead from CRM', icon: 'integration' },
+        { label: 'Inbound lead from CRM', icon: 'integration', iconDomain: 'salesforce.com' },
         { label: 'Researches account', icon: 'agent', grouped: true },
         { label: 'Scores & routes to rep', icon: 'agent', grouped: true },
         { label: 'Sends first-touch sequence', icon: 'agent', grouped: true },
@@ -126,7 +126,7 @@ export const githubIntegrationLadder: MaturityLadderContent = {
       id: 'L3',
       headline: 'Tickets become commits, PRs, and CI traces automatically',
       steps: [
-        { label: 'Ticket moved to In Progress', icon: 'integration' },
+        { label: 'Ticket moved to In Progress', icon: 'integration', iconDomain: 'linear.app' },
         { label: 'Clones repo & applies patch', icon: 'agent', grouped: true },
         { label: 'Opens PR with diff on Canvas', icon: 'agent', grouped: true },
         { label: 'Attaches CI log to thread', icon: 'agent', grouped: true },
