@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="70%" stop-color="#292524"/>
+      <stop offset="100%" stop-color="#3f6b00"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#g)"/>
+  <rect x="48" y="40" width="544" height="280" rx="12" fill="rgba(0,0,0,0.35)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="72" y="72" fill="#9db866" font-family="ui-monospace, monospace" font-size="11">trooper · board · live</text>
+  <rect x="72" y="92" width="140" height="200" rx="8" fill="#292524" stroke="#44403c"/>
+  <rect x="228" y="92" width="140" height="200" rx="8" fill="#292524" stroke="#3f6b00"/>
+  <rect x="384" y="92" width="140" height="200" rx="8" fill="#292524" stroke="#44403c"/>
+  <text x="88" y="120" fill="#78716c" font-family="ui-monospace, monospace" font-size="9">#marketing</text>
+  <text x="244" y="120" fill="#86efac" font-family="ui-monospace, monospace" font-size="9">Campaign live</text>
+  <rect x="88" y="136" width="108" height="6" rx="3" fill="#44403c"/>
+  <rect x="88" y="136" width="72" height="6" rx="3" fill="#3f6b00"/>
+  <rect x="260" y="160" width="76" height="40" rx="6" fill="#3f6b00"/>
+  <text x="276" y="185" fill="#fafaf9" font-family="Inter, sans-serif" font-size="10" font-weight="700">Preview</text>
+  <text x="72" y="318" fill="rgba(255,255,255,0.45)" font-family="Inter, sans-serif" font-size="10">30s social cut · pillar page hero</text>
+</svg>

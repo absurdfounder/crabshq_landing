@@ -1,17 +1,57 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
-  'tickets/slack-lead-4421.md': {
+  'tickets/slack-thread.md': a({
+    name: 'tickets/slack-thread.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# Slack thread export — #sales
+
+**Sarah Chen** (VP Ops · Acme): Hey team — can we schedule a Trooper demo this week?
+
+**Jordan** (bot): Got it — creating ticket #4421 with full thread context.
+
+**Captured:** channel, participants, timestamps, attachments (0)`,
+  }),
+  'tickets/slack-lead-4421.md': a({
     name: 'tickets/slack-lead-4421.md',
     ext: 'md',
+    kind: 'markdown',
     content: `# Ticket #4421 — from Slack #sales
 
 **Source:** Slack thread in #sales
 **Request:** Schedule demo for Acme Corp — Sarah Chen, VP Ops
-**Routed to:** Aria (research) + Jordan (scheduling)`,
-  },
+**Routed to:** Aria (research) + Jordan (scheduling)
+**Status:** Calendar hold Thu 2pm · reply draft pending approval`,
+  }),
+  'tickets/slack-reply-draft.md': a({
+    name: 'tickets/slack-reply-draft.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# Reply draft — #sales
+
+Hi Sarah — Thursday 2pm PT works on our end. Calendar invite on the way.
+
+We'll cover multi-agent harness, traced tickets, and human review gates.
+
+**Gate:** Approve before Jordan posts back to Slack.`,
+  }),
+  'calendar/demo-hold.md': a({
+    name: 'calendar/demo-hold.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# Calendar hold
+
+**Event:** Trooper demo — Acme Corp
+**When:** Thursday 2:00–2:30 PM PT
+**Attendees:** Sarah Chen, Vaibhav
+**Hold expires:** 24h pending confirmation`,
+  }),
 };
+
+const CANVAS_KEYS = ['tickets/slack-thread.md', 'tickets/slack-lead-4421.md', 'tickets/slack-reply-draft.md'];
 
 export const slackScenario: DemoScenario = {
   id: 'slack',
@@ -56,6 +96,7 @@ export const slackScenario: DemoScenario = {
     { id: 's3', title: 'Hold calendar slot + draft reply', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
+  canvasArtifacts: CANVAS_KEYS,
   deliverArtifactKey: 'tickets/slack-lead-4421.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 1, col: 'in_progress', delay: 600 },
@@ -64,13 +105,20 @@ export const slackScenario: DemoScenario = {
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
     { type: 'tool', log: { id: 't1', tool: 'message_send', label: 'slack_read', detail: '#sales thread → ticket #4421', agent: 'Jordan', faviconDomain: 'slack.com' }, delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
+    { type: 'openArtifact', key: 'tickets/slack-thread.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
     { type: 'tool', log: { id: 't2', tool: 'web_search', label: 'web_search', detail: 'Acme Corp VP Ops Sarah Chen', agent: 'Aria', faviconDomain: 'linkedin.com' }, delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
+    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'calendar/demo-hold.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'toolDone', id: 't3', delay: 350 },
+    { type: 'tool', log: { id: 't4', tool: 'write_file', label: 'write_file', detail: 'tickets/slack-reply-draft.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'toolDone', id: 't4', delay: 350 },
     { type: 'deliver', name: 'tickets/slack-lead-4421.md', delay: 450 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'tickets/slack-lead-4421.md', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Ready to confirm in Slack — approve send.', time: '14:05', delay: 450 },

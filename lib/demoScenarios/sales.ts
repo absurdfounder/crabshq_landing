@@ -1,20 +1,61 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
-  'sales/acme-outreach.md': {
+  'sales/acme-research.md': a({
+    name: 'sales/acme-research.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# Account research — Acme Corp
+
+## Signals
+- Series B ($42M) — 8 months ago
+- 3 open SDR roles on LinkedIn
+- Running separate agent tools per team (fragmented ops)
+
+## Stakeholders
+- **Sarah Chen** — VP Ops (inbound lead)
+- **James Wu** — CTO (technical evaluator)
+
+## Talking points
+- Consolidate Codex + Claude Code under one traced board
+- Human review gates before customer-facing sends`,
+  }),
+  'sales/acme-outreach.md': a({
     name: 'sales/acme-outreach.md',
     ext: 'md',
+    kind: 'markdown',
     content: `# Outreach — Acme Corp
 
 Hi Sarah,
 
-Noticed your team scaling ops headcount while running multiple agent tools...
+Noticed your team scaling ops headcount while running multiple agent tools in parallel.
 
-**Personalized hook:** Recent Series B, 3 open SDR roles
-**CTA:** 15-min command layer demo`,
-  },
+**Personalized hook:** Recent Series B, 3 open SDR roles, fragmented harnesses
+**Proof:** Teams like yours ship 3.2× faster with traced tickets + review gates
+**CTA:** 15-min command layer demo — Thursday 2pm hold available
+
+— Ren · on behalf of Vaibhav`,
+  }),
+  'sales/crm-note.md': a({
+    name: 'sales/crm-note.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# CRM update — Acme Corp
+
+| Field | Value |
+|-------|-------|
+| Stage | Qualified |
+| Owner | Jordan |
+| Next step | Discovery call Thu 2pm |
+| Source | Inbound · LinkedIn |
+
+Activity logged: research complete, outreach draft pending approval.`,
+  }),
 };
+
+const CANVAS_KEYS = ['sales/acme-research.md', 'sales/acme-outreach.md', 'sales/crm-note.md'];
 
 export const salesScenario: DemoScenario = {
   id: 'sales',
@@ -31,8 +72,7 @@ export const salesScenario: DemoScenario = {
   ],
   phase2Tasks: [
     { id: 4, title: 'Schedule discovery call', col: 'in_progress', tags: ['calendar', 'meeting'], watchers: ['Jordan'], comments: 0 },
-    { id: 5, title: 'Competitive battlecard refresh', col: 'in_progress', tags: ['enablement', 'compete'], watchers: ['Aria'], comments: 1 },
-    { id: 6, title: 'Send outreach for approval', col: 'review', tags: ['approval', 'email'], watchers: ['Vaibhav'], comments: 2 },
+    { id: 5, title: 'Send outreach for approval', col: 'review', tags: ['approval', 'email'], watchers: ['Vaibhav'], comments: 2 },
   ],
   chatScript: [
     { type: 'typing', text: '@Jordan hot inbound from Acme — research, outreach, and CRM update today', delay: 200 },
@@ -58,6 +98,7 @@ export const salesScenario: DemoScenario = {
     { id: 's3', title: 'Update CRM to Qualified', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
+  canvasArtifacts: CANVAS_KEYS,
   deliverArtifactKey: 'sales/acme-outreach.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 2, col: 'in_progress', delay: 600 },
@@ -66,16 +107,19 @@ export const salesScenario: DemoScenario = {
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
     { type: 'tool', log: { id: 't1', tool: 'web_search', label: 'web_search', detail: 'Acme Corp Series B funding SDR hiring', agent: 'Aria', faviconDomain: 'linkedin.com' }, delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
+    { type: 'openArtifact', key: 'sales/acme-research.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
     { type: 'tool', log: { id: 't2', tool: 'write_file', label: 'write_file', detail: 'sales/acme-outreach.md', agent: 'Ren' }, delay: 500 },
     { type: 'toolDone', id: 't2', delay: 350 },
-    { type: 'deliver', name: 'sales/acme-outreach.md', delay: 450 },
-    { type: 'openArtifact', key: 'sales/acme-outreach.md', delay: 200 },
+    { type: 'openArtifact', key: 'sales/acme-outreach.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'message_send', label: 'message_send', detail: 'CRM stage → Qualified', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'sales/crm-note.md', agent: 'Jordan' }, delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
+    { type: 'deliver', name: 'sales/acme-outreach.md', delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Outreach ready — approve before send.', time: '15:25', delay: 450 },
     { type: 'moveTask', taskId: 2, col: 'review', delay: 400 },

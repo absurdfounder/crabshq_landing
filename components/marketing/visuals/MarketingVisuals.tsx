@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Check, Loader2, FileText, Terminal, Hash, Play, Image as ImageIcon,
+  Check, Loader2, FileText, Terminal, Hash, Play,
 } from 'lucide-react';
 import { DemoFavicon } from '@/components/DemoFavicon';
 import { VignetteChrome, ProviderChip, TrooperMark } from './shared';
@@ -20,8 +20,8 @@ function ToolRow({ label, detail, done }: { label: string; detail: string; done?
 export function CodingHarnessVisual() {
   const lanes = [
     { provider: 'Codex', agent: 'Leo', task: 'parser.ts patch', tools: ['apply_patch', 'exec tests'] },
-    { provider: 'Claude Code', agent: 'Ren', task: 'status.html', tools: ['write_file', 'preview'] },
     { provider: 'OpenCode', agent: 'Leo', task: 'etl/dedupe.ts', tools: ['apply_patch'] },
+    { provider: 'Claude Code', agent: 'Ren', task: 'parser tests', tools: ['write_file', 'exec tests'] },
   ];
 
   return (
@@ -53,40 +53,34 @@ export function CodingHarnessVisual() {
   );
 }
 
-/* ─── Coding: artifact stack — diff, page, image, video ─── */
+/* ─── Coding: Canvas — diff, CI log, PR bundle (no marketing assets) ─── */
 export function CodingBoardVisual() {
   return (
-    <VignetteChrome label="trooper · artifacts">
-      <div className="grid grid-cols-2 gap-0 min-h-[280px]">
-        <div className="border-r border-stone-100 p-3 bg-stone-900">
-          <div className="font-mono text-[9px] text-green-400 mb-2">parser.ts.diff</div>
-          <div className="font-mono text-[9px] leading-relaxed text-stone-400 space-y-0.5">
+    <VignetteChrome label="trooper · canvas">
+      <div className="relative bg-[#E7E5E4] min-h-[280px] p-4 overflow-hidden">
+        <div className="absolute left-3 top-3 w-[42%] rounded-lg border border-stone-200 bg-white shadow-lg overflow-hidden">
+          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-stone-50">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+            <span className="font-mono text-[8px] text-stone-500 truncate">parser.ts.diff</span>
+          </div>
+          <div className="bg-stone-900 p-2 font-mono text-[8px] leading-relaxed">
             <div className="text-red-400/80">- .map(line =&gt; line.trim());</div>
             <div className="text-green-400/90">+ .filter(Boolean);</div>
-            <div className="text-stone-500">  return rows.map(parseRow);</div>
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="flex-1 p-2 border-b border-stone-100 bg-gradient-to-br from-[#3f6b00] to-[#1c1917] text-white p-3">
-            <div className="text-[9px] uppercase tracking-widest opacity-70">Live preview</div>
-            <div className="text-sm font-bold mt-1">Parser hotfix</div>
-            <div className="grid grid-cols-3 gap-1 mt-3">
-              {['24 tests', '3 agents', 'PR #418'].map((s) => (
-                <div key={s} className="rounded bg-white/10 px-1.5 py-1 text-[8px] text-center">{s}</div>
-              ))}
-            </div>
+        <div className="absolute left-[28%] top-10 w-[42%] rounded-lg border border-stone-200 bg-white shadow-lg overflow-hidden">
+          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-stone-50">
+            <span className="font-mono text-[8px] text-stone-500 truncate">ci-integration.log</span>
           </div>
-          <div className="flex gap-2 p-2 bg-white">
-            <div className="flex-1 rounded border border-stone-200 p-1.5 flex flex-col items-center justify-center bg-stone-50">
-              <ImageIcon size={14} className="text-stone-400 mb-1" />
-              <span className="text-[8px] text-stone-500">OG image</span>
-            </div>
-            <div className="flex-1 rounded border border-stone-200 p-1.5 flex flex-col items-center justify-center bg-stone-900">
-              <Play size={14} className="text-white mb-1" fill="white" />
-              <span className="text-[8px] text-stone-400">32s clip</span>
-            </div>
-          </div>
+          <div className="bg-stone-900 p-2 font-mono text-[8px] text-green-400">✓ 13 passed · CI green</div>
         </div>
+        <div className="absolute left-[14%] top-[52%] w-[48%] rounded-lg border border-trooper/40 bg-white shadow-lg overflow-hidden ring-1 ring-trooper/20">
+          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-trooper-50">
+            <span className="font-mono text-[8px] text-trooper-800 truncate">PR #418-body.md</span>
+          </div>
+          <div className="p-2 text-[9px] text-stone-600 leading-snug">Parser hotfix · merge gate</div>
+        </div>
+        <div className="absolute bottom-3 right-3 rounded-full bg-trooper px-2.5 py-1 text-[9px] font-bold text-white">Canvas · 4 artifacts</div>
       </div>
     </VignetteChrome>
   );
@@ -116,9 +110,11 @@ export function CampaignPipelineVisual() {
           ))}
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2">
-          {['Landing', 'Carousel', 'Video'].map((a) => (
-            <div key={a} className="rounded border border-dashed border-stone-200 py-3 text-center text-[9px] font-mono uppercase text-stone-400">{a}</div>
-          ))}
+          <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 text-[8px] text-stone-400 p-2">Landing preview</div>
+          <div className="rounded border border-stone-200 overflow-hidden bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">Carousel PNG</div>
+          <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 flex items-center justify-center p-2">
+            <Play size={12} className="text-white" fill="white" />
+          </div>
         </div>
       </div>
     </VignetteChrome>

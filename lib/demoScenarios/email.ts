@@ -1,18 +1,61 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
-  'tickets/email-rfp-772.md': {
-    name: 'tickets/email-rfp-772.md',
+  'email/parsed-rfp.md': a({
+    name: 'email/parsed-rfp.md',
     ext: 'md',
-    content: `# Ticket #772 — Email RFP
+    kind: 'markdown',
+    content: `# Parsed email — Enterprise RFP
 
 **From:** procurement@enterprise.co
 **Subject:** RFP — AI ops platform evaluation
 **Due:** Friday EOD
-**Assigned:** Aria (research) + Jordan (response draft)`,
-  },
+
+## Requirements extracted
+- Multi-agent orchestration with audit trail
+- Human approval gates on outbound actions
+- SSO + SOC2 documentation
+- 99.9% uptime SLA`,
+  }),
+  'email/rfp-research.md': a({
+    name: 'email/rfp-research.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# RFP research — evaluator criteria
+
+## Scoring weights (inferred)
+- Security & compliance: 30%
+- Agent orchestration: 25%
+- Integration (Slack, email, Git): 20%
+- Pricing model: 15%
+- Support SLA: 10%
+
+## Trooper strengths to highlight
+- Traced tickets + Canvas artifacts
+- Human review gates (Smart Approve)
+- OpenClaw node execution layer`,
+  }),
+  'email/rfp-response-draft.md': a({
+    name: 'email/rfp-response-draft.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# RFP response draft
+
+Dear Enterprise procurement team,
+
+Thank you for including Trooper in your AI ops platform evaluation.
+
+**Executive summary:** Trooper provides a unified command layer for Codex, Claude Code, Cursor, and custom agents — with traced diffs, Canvas artifacts, and human review gates.
+
+Attached: security overview, architecture diagram, pricing sheet.
+
+**Gate:** Approve before send to procurement@enterprise.co`,
+  }),
 };
+
+const CANVAS_KEYS = ['email/parsed-rfp.md', 'email/rfp-research.md', 'email/rfp-response-draft.md'];
 
 export const emailScenario: DemoScenario = {
   id: 'email',
@@ -53,7 +96,8 @@ export const emailScenario: DemoScenario = {
     { id: 's3', title: 'Draft response email', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
-  deliverArtifactKey: 'tickets/email-rfp-772.md',
+  canvasArtifacts: CANVAS_KEYS,
+  deliverArtifactKey: 'email/rfp-response-draft.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 1, col: 'in_progress', delay: 600 },
     { type: 'openTaskModal', taskId: 1, delay: 450 },
@@ -61,14 +105,19 @@ export const emailScenario: DemoScenario = {
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
     { type: 'tool', log: { id: 't1', tool: 'read_file', label: 'email_parse', detail: 'procurement@enterprise.co — RFP body', agent: 'Jordan', faviconDomain: 'gmail.com' }, delay: 550 },
     { type: 'toolDone', id: 't1', delay: 400 },
+    { type: 'openArtifact', key: 'email/parsed-rfp.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
     { type: 'tool', log: { id: 't2', tool: 'web_search', label: 'web_search', detail: 'enterprise AI ops RFP evaluation criteria', agent: 'Aria', faviconDomain: 'google.com' }, delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
+    { type: 'openArtifact', key: 'email/rfp-research.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'deliver', name: 'tickets/email-rfp-772.md', delay: 450 },
-    { type: 'openArtifact', key: 'tickets/email-rfp-772.md', delay: 200 },
+    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'email/rfp-response-draft.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'toolDone', id: 't3', delay: 350 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
+    { type: 'deliver', name: 'email/rfp-response-draft.md', delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },
     { type: 'closeTaskModal', delay: 1800 },

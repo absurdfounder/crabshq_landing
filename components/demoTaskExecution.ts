@@ -47,9 +47,15 @@ export type DemoArtifact = {
   content: string;
   ext?: string;
   kind?: DemoArtifactKind;
+  /** Checked-in asset under public/ — preferred over inline placeholders */
+  src?: string;
+  /** Video poster frame when src is not a playable file */
+  posterSrc?: string;
   /** For image/video artifacts — alt or caption */
   caption?: string;
 };
+
+export type DemoWorkspaceMode = 'ide' | 'canvas';
 
 /** Scripted execution steps after kanban fill — drives modal + board updates */
 export type TaskExecStep =
@@ -60,6 +66,8 @@ export type TaskExecStep =
   | { type: 'toolDone'; id: string; delay: number }
   | { type: 'modalMsg'; sender: string; text: string; time?: string; tags?: DemoTag[]; delay: number }
   | { type: 'openArtifact'; key: string; delay: number }
+  | { type: 'setWorkspaceMode'; mode: DemoWorkspaceMode; delay: number }
+  | { type: 'openCanvas'; keys: string[]; delay: number }
   | { type: 'deliver'; name: string; delay: number }
   | { type: 'closeTaskModal'; delay: number }
   | { type: 'chatMsg'; sender: string; role: string; text: string; time: string; delay: number };

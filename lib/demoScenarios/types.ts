@@ -66,6 +66,8 @@ export type DemoScenario = {
   spotlightTaskTags: DemoTag[];
   spotlightAssignee: string;
   artifacts: Record<string, DemoArtifact>;
+  /** Artifact keys shown together in modal Canvas beat */
+  canvasArtifacts?: string[];
   deliverArtifactKey?: string;
   defaultChannel?: string;
   defaultSidebarTab?: 'channels' | 'menu';

@@ -1,21 +1,54 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
+const REDLINE_DIFF = `--- a/msa-vendor-x.md
++++ b/msa-vendor-x.md
+@@ -14,7 +14,7 @@
+-7.1 Liability cap shall not exceed one (1) times annual fees.
++7.1 Liability cap shall not exceed two (2) times annual fees paid in the preceding twelve months.
+@@ -22,6 +22,10 @@
+ 8.2 Vendor may use subprocessors listed in Schedule B.
++8.3 Customer receives 30-day notice before new subprocessors are engaged.
+@@ -31,7 +35,7 @@
+-9.1 Either party may terminate for convenience with 15 days notice.
++9.1 Termination for material breach requires 30-day cure period.`;
+
 const ARTIFACTS = {
-  'legal/msa-redline.md': {
-    name: 'legal/msa-redline.md',
+  'legal/msa-summary.md': a({
+    name: 'legal/msa-summary.md',
     ext: 'md',
-    content: `# MSA Redline — Vendor X
+    kind: 'markdown',
+    content: `# MSA summary — Vendor X
 
-## Changes flagged
-- **Liability cap:** Vendor proposed 1x → recommend 2x annual fees
-- **Data processing:** Add subprocessors schedule
-- **Termination:** 30-day cure period for material breach
+## Key terms extracted
+- **Term:** 36 months auto-renew
+- **Liability cap:** 1× annual fees (below playbook standard)
+- **Data processing:** Missing subprocessors schedule
+- **Termination:** 15-day convenience clause (non-standard)
 
-## Status
-Awaiting human counsel approval before counter.`,
-  },
+## Risk score: Medium-high
+Recommend counter before signature.`,
+  }),
+  'legal/msa-redline.diff': a({ name: 'legal/msa-redline.diff', ext: 'diff', kind: 'diff', content: REDLINE_DIFF }),
+  'legal/risk-table.md': a({
+    name: 'legal/risk-table.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# Playbook comparison — Vendor X MSA
+
+| Clause | Vendor draft | Playbook standard | Action |
+|--------|--------------|-------------------|--------|
+| Liability cap | 1× fees | 2× fees | Counter |
+| Subprocessors | Not listed | Schedule B required | Add schedule |
+| Termination | 15-day convenience | 30-day cure | Counter |
+| DPA | Attached | Required | Accept |
+
+**Gate:** Human counsel approval required before counter send.`,
+  }),
 };
+
+const CANVAS_KEYS = ['legal/msa-summary.md', 'legal/msa-redline.diff', 'legal/risk-table.md'];
 
 export const legalScenario: DemoScenario = {
   id: 'legal',
@@ -57,7 +90,8 @@ export const legalScenario: DemoScenario = {
     { id: 's3', title: 'Draft redline document', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
-  deliverArtifactKey: 'legal/msa-redline.md',
+  canvasArtifacts: CANVAS_KEYS,
+  deliverArtifactKey: 'legal/risk-table.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 1, col: 'in_progress', delay: 600 },
     { type: 'openTaskModal', taskId: 1, delay: 450 },
@@ -65,16 +99,20 @@ export const legalScenario: DemoScenario = {
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
     { type: 'tool', log: { id: 't1', tool: 'read_file', label: 'read_file', detail: 'vendor-x-msa.pdf', agent: 'Aria' }, delay: 500 },
     { type: 'toolDone', id: 't1', delay: 350 },
+    { type: 'openArtifact', key: 'legal/msa-summary.md', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
     { type: 'tool', log: { id: 't2', tool: 'web_search', label: 'web_search', detail: 'standard SaaS MSA liability cap benchmarks', agent: 'Jordan', faviconDomain: 'google.com' }, delay: 550 },
     { type: 'toolDone', id: 't2', delay: 400 },
+    { type: 'openArtifact', key: 'legal/risk-table.md', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'legal/msa-redline.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'tool', log: { id: 't3', tool: 'apply_patch', label: 'apply_patch', detail: 'legal/msa-redline.diff', agent: 'Jordan' }, delay: 500 },
     { type: 'toolDone', id: 't3', delay: 350 },
-    { type: 'deliver', name: 'legal/msa-redline.md', delay: 450 },
-    { type: 'openArtifact', key: 'legal/msa-redline.md', delay: 200 },
+    { type: 'openArtifact', key: 'legal/msa-redline.diff', delay: 280 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
+    { type: 'deliver', name: 'legal/risk-table.md', delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Redline ready — counsel approval required before counter.', time: '16:44', delay: 450 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },

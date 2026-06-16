@@ -1,17 +1,34 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
 const ARTIFACTS = {
-  'tickets/whatsapp-support-881.md': {
+  'tickets/whatsapp-support-881.md': a({
     name: 'tickets/whatsapp-support-881.md',
     ext: 'md',
+    kind: 'markdown',
     content: `# Ticket #881 — WhatsApp support
 
 **From:** +1 (555) 0142 — existing customer
 **Issue:** Billing portal login failing after password reset
-**Assigned:** Leo (support) + Jordan (coordination)`,
-  },
+**Assigned:** Leo (support) + Jordan (coordination)
+**Fix:** Session cache cleared · login verified at 11:45`,
+  }),
+  'tickets/whatsapp-reply.md': a({
+    name: 'tickets/whatsapp-reply.md',
+    ext: 'md',
+    kind: 'markdown',
+    content: `# WhatsApp reply draft
+
+Hi — we've reset your billing session on our side. Please try logging in again with your new password.
+
+If it still fails, reply here and we'll escalate.
+
+**Gate:** Approve before send on WhatsApp.`,
+  }),
 };
+
+const CANVAS_KEYS = ['tickets/whatsapp-support-881.md', 'tickets/whatsapp-reply.md'];
 
 export const whatsappScenario: DemoScenario = {
   id: 'whatsapp',
@@ -53,6 +70,7 @@ export const whatsappScenario: DemoScenario = {
     { id: 's3', title: 'Draft WhatsApp reply', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
+  canvasArtifacts: CANVAS_KEYS,
   deliverArtifactKey: 'tickets/whatsapp-support-881.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 1, col: 'in_progress', delay: 600 },
@@ -67,8 +85,11 @@ export const whatsappScenario: DemoScenario = {
     { type: 'toolDone', id: 't2', delay: 400 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
+    { type: 'tool', log: { id: 't3', tool: 'write_file', label: 'write_file', detail: 'tickets/whatsapp-reply.md', agent: 'Jordan' }, delay: 500 },
+    { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'deliver', name: 'tickets/whatsapp-support-881.md', delay: 450 },
-    { type: 'openArtifact', key: 'tickets/whatsapp-support-881.md', delay: 200 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },
     { type: 'closeTaskModal', delay: 1800 },

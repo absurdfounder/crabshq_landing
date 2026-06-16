@@ -12,7 +12,7 @@ import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import { DemoFavicon } from './DemoFavicon';
 import {
-  type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep,
+  type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep, type DemoWorkspaceMode,
 } from './demoTaskExecution';
 import {
   getDemoScenario,
@@ -585,12 +585,18 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(scenario.initialSubtasks);
   const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
   const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(null);
+  const [modalWorkspaceMode, setModalWorkspaceMode] = useState<DemoWorkspaceMode>('ide');
+  const [modalCanvasKeys, setModalCanvasKeys] = useState<string[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typeRef = useRef<NodeJS.Timeout | null>(null);
   const modalMsgCounter = useRef(0);
+
+  const modalCanvasArtifacts = modalCanvasKeys
+    .map(k => DEMO_ARTIFACTS[k])
+    .filter(Boolean) as DemoArtifact[];
 
   const totalScriptLength = CHAT_SCRIPT.length + TASK_EXEC_SCRIPT.length;
   const spotlightTask = tasks.find(t => t.id === SPOTLIGHT_TASK_ID);
@@ -600,6 +606,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setModalSubtasks(scenario.initialSubtasks.map(s => ({ ...s, status: 'pending' as const })));
     setModalFeed([]);
     setModalArtifact(null);
+    setModalWorkspaceMode('ide');
+    setModalCanvasKeys([]);
     setModalDelivery(null);
     setHighlightedTaskId(null);
     modalMsgCounter.current = 0;
@@ -639,6 +647,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         setTaskModalOpen(true);
         setHighlightedTaskId(step.taskId);
         setActivePage('tasks');
+        setModalWorkspaceMode('ide');
+        setModalCanvasKeys([]);
         break;
       case 'subtask':
         setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
@@ -663,7 +673,16 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         break;
       }
       case 'openArtifact':
+        setModalWorkspaceMode('ide');
         setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
+        break;
+      case 'setWorkspaceMode':
+        setModalWorkspaceMode(step.mode);
+        break;
+      case 'openCanvas':
+        setModalCanvasKeys(step.keys);
+        setModalWorkspaceMode('canvas');
+        if (step.keys[0]) setModalArtifact(DEMO_ARTIFACTS[step.keys[0]] || null);
         break;
       case 'deliver': {
         setModalDelivery(step.name);
@@ -841,6 +860,9 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               subtasks={modalSubtasks}
               feed={modalFeed}
               artifact={modalArtifact}
+              canvasArtifacts={modalCanvasArtifacts}
+              workspaceMode={modalWorkspaceMode}
+              onWorkspaceModeChange={setModalWorkspaceMode}
               delivery={modalDelivery}
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
               taskTags={scenario.spotlightTaskTags}

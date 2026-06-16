@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Download, Layers, Play, Image as ImageIcon, Film } from 'lucide-react';
+import { FileText, Download, Layers, Play, Film } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoArtifactKind } from './demoTaskExecution';
 
@@ -12,6 +12,7 @@ function inferKind(artifact: DemoArtifact): DemoArtifactKind {
   if (['mp4', 'mov', 'webm'].includes(ext)) return 'video';
   if (ext === 'md') return 'markdown';
   if (ext === 'diff') return 'diff';
+  if (ext === 'log') return 'code';
   return 'code';
 }
 
@@ -39,7 +40,8 @@ function DiffPreview({ content }: { content: string }) {
   );
 }
 
-function HtmlPreview({ content }: { content: string }) {
+function HtmlPreview({ artifact }: { artifact: DemoArtifact }) {
+  const src = artifact.src;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 280 }}>
       <div style={{
@@ -49,33 +51,42 @@ function HtmlPreview({ content }: { content: string }) {
         <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#28c840' }} />
         Live preview
       </div>
-      <iframe
-        title="Artifact preview"
-        srcDoc={content}
-        sandbox="allow-same-origin"
-        style={{ flex: 1, width: '100%', border: 'none', background: '#fff', minHeight: 240 }}
-      />
+      {src ? (
+        <iframe
+          title="Artifact preview"
+          src={src}
+          sandbox="allow-same-origin"
+          style={{ flex: 1, width: '100%', border: 'none', background: '#fff', minHeight: 240 }}
+        />
+      ) : (
+        <iframe
+          title="Artifact preview"
+          srcDoc={artifact.content}
+          sandbox="allow-same-origin"
+          style={{ flex: 1, width: '100%', border: 'none', background: '#fff', minHeight: 240 }}
+        />
+      )}
     </div>
   );
 }
 
 function ImagePreview({ artifact }: { artifact: DemoArtifact }) {
-  const isSvg = artifact.content.trim().startsWith('<svg');
+  const src = artifact.src;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 16, height: '100%', background: 'linear-gradient(135deg, #F5F5F4 0%, #FAF9F6 100%)' }}>
       <div style={{
-        width: '100%', maxWidth: 320, borderRadius: 12, overflow: 'hidden',
+        width: '100%', maxWidth: 360, borderRadius: 12, overflow: 'hidden',
         border: `1px solid ${C.border}`, background: C.card, boxShadow: '0 12px 32px -12px rgba(28,25,23,0.15)',
       }}>
-        {isSvg ? (
-          <div dangerouslySetInnerHTML={{ __html: artifact.content }} style={{ width: '100%', aspectRatio: '16/10' }} />
+        {src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt={artifact.caption ?? artifact.name}
+            style={{ width: '100%', display: 'block', aspectRatio: '16/10', objectFit: 'cover' }}
+          />
         ) : (
-          <div style={{
-            aspectRatio: '16/10', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'linear-gradient(145deg, #3f6b00 0%, #6d9220 50%, #1c1917 100%)',
-          }}>
-            <ImageIcon size={32} color="rgba(255,255,255,0.7)" strokeWidth={1.25} />
-          </div>
+          <pre style={{ margin: 0, padding: 12, fontSize: 10, color: C.textSubtle }}>{artifact.content.slice(0, 200)}</pre>
         )}
         <div style={{ padding: '10px 12px', borderTop: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: C.text }}>{artifact.name}</div>
@@ -89,25 +100,34 @@ function ImagePreview({ artifact }: { artifact: DemoArtifact }) {
 }
 
 function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
+  const poster = artifact.posterSrc ?? artifact.src;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 16, background: '#1c1917' }}>
       <div style={{
         flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative',
-        background: 'linear-gradient(160deg, #292524 0%, #1c1917 60%, #3f6b00 120%)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200,
+        background: '#292524', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200,
       }}>
+        {poster && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={poster}
+            alt=""
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
+          />
+        )}
         <div style={{
-          width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,0.12)',
-          border: '2px solid rgba(255,255,255,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          position: 'relative', zIndex: 1,
+          width: 52, height: 52, borderRadius: '50%', background: 'rgba(255,255,255,0.15)',
+          border: '2px solid rgba(255,255,255,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Play size={22} fill="white" color="white" style={{ marginLeft: 3 }} />
         </div>
-        <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12 }}>
-          <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.15)', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12, zIndex: 1 }}>
+          <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.2)', overflow: 'hidden' }}>
             <div style={{ width: '42%', height: '100%', background: C.brand, borderRadius: 999 }} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.5)' }}>
-            <span>0:14</span><span>0:32</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.65)' }}>
+            <span>0:14</span><span>0:30</span>
           </div>
         </div>
       </div>
@@ -118,12 +138,14 @@ function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
           {artifact.caption && <div style={{ fontSize: 10, color: '#a8a29e', marginTop: 2 }}>{artifact.caption}</div>}
         </div>
       </div>
-      <pre style={{
-        marginTop: 10, fontSize: 10, lineHeight: 1.5, color: '#d6d3d1', whiteSpace: 'pre-wrap',
-        fontFamily: 'ui-monospace, Menlo, monospace', maxHeight: 80, overflow: 'auto',
-      }}>
-        {artifact.content}
-      </pre>
+      {artifact.content && (
+        <pre style={{
+          marginTop: 10, fontSize: 10, lineHeight: 1.5, color: '#d6d3d1', whiteSpace: 'pre-wrap',
+          fontFamily: 'ui-monospace, Menlo, monospace', maxHeight: 80, overflow: 'auto',
+        }}>
+          {artifact.content}
+        </pre>
+      )}
     </div>
   );
 }
@@ -142,15 +164,28 @@ function MarkdownPreview({ content }: { content: string }) {
   );
 }
 
+function TerminalPreview({ content }: { content: string }) {
+  return (
+    <div style={{ background: '#1c1917', minHeight: 240, padding: '12px 14px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 11, lineHeight: 1.55 }}>
+      {content.split('\n').map((line, i) => (
+        <div key={i} style={{ color: line.includes('PASS') || line.includes('passed') || line.includes('✓') ? '#86efac' : line.startsWith('$') ? '#fafaf9' : '#a8a29e' }}>
+          {line}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ArtifactBody({ artifact }: { artifact: DemoArtifact }) {
   const kind = inferKind(artifact);
   switch (kind) {
-    case 'html': return <HtmlPreview content={artifact.content} />;
+    case 'html': return <HtmlPreview artifact={artifact} />;
     case 'image': return <ImagePreview artifact={artifact} />;
     case 'video': return <VideoPreview artifact={artifact} />;
     case 'diff': return <DiffPreview content={artifact.content} />;
     case 'markdown': return <MarkdownPreview content={artifact.content} />;
     default:
+      if (artifact.ext === 'log' || artifact.name.endsWith('.log')) return <TerminalPreview content={artifact.content} />;
       return (
         <pre style={{
           margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.text,
@@ -162,7 +197,7 @@ function ArtifactBody({ artifact }: { artifact: DemoArtifact }) {
   }
 }
 
-export function DemoArtifactPanel({ artifact }: { artifact: DemoArtifact | null }) {
+export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifact | null; compact?: boolean }) {
   if (!artifact) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center', background: C.card }}>
@@ -178,7 +213,15 @@ export function DemoArtifactPanel({ artifact }: { artifact: DemoArtifact | null 
   }
 
   const kind = inferKind(artifact);
-  const tabLabel = kind === 'html' ? 'Preview' : kind === 'image' ? 'Image' : kind === 'video' ? 'Video' : 'IDE';
+  const tabLabel = kind === 'html' ? 'Preview' : kind === 'image' ? 'Image' : kind === 'video' ? 'Video' : kind === 'diff' ? 'Diff' : 'IDE';
+
+  if (compact) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
+        <ArtifactBody artifact={artifact} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
@@ -201,7 +244,7 @@ export function DemoArtifactPanel({ artifact }: { artifact: DemoArtifact | null 
           <Download size={11} strokeWidth={1.75} /> Download
         </button>
       </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: kind === 'html' || kind === 'image' || kind === 'video' ? 0 : 14 }}>
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: kind === 'html' || kind === 'image' || kind === 'video' || kind === 'diff' || artifact.ext === 'log' ? 0 : 14 }}>
         <ArtifactBody artifact={artifact} />
       </div>
     </div>

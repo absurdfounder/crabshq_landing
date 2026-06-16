@@ -14,6 +14,8 @@ import { DemoFavicon } from './DemoFavicon';
 import { getToolFaviconDomain } from '@/lib/demoToolFavicon';
 import { getProviderDomain } from '@/lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
+import { DemoCanvasView } from './DemoCanvasView';
+import type { DemoWorkspaceMode } from './demoTaskExecution';
 
 const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Vaibhav: { img: 'https://avatars.githubusercontent.com/u/25829699?v=4' },
@@ -353,6 +355,9 @@ export function DemoTaskModal({
   subtasks,
   feed,
   artifact,
+  canvasArtifacts = [],
+  workspaceMode = 'ide',
+  onWorkspaceModeChange,
   delivery,
   statusCol,
   taskTags = launchScenario.spotlightTaskTags,
@@ -366,6 +371,9 @@ export function DemoTaskModal({
   subtasks: DemoSubtask[];
   feed: DemoFeedItem[];
   artifact: DemoArtifact | null;
+  canvasArtifacts?: DemoArtifact[];
+  workspaceMode?: DemoWorkspaceMode;
+  onWorkspaceModeChange?: (mode: DemoWorkspaceMode) => void;
   delivery: string | null;
   statusCol?: 'in_progress' | 'review' | 'done';
   taskTags?: DemoTag[];
@@ -497,9 +505,46 @@ export function DemoTaskModal({
             </div>
           </div>
 
-          {/* Right: artifact panel — always shown */}
+          {/* Right: IDE or Canvas workspace */}
           <div style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-            <DemoArtifactPanel artifact={artifact} />
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px',
+              borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
+            }}>
+              <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+                {(['ide', 'canvas'] as const).map(mode => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => onWorkspaceModeChange?.(mode)}
+                    style={{
+                      padding: '3px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                      fontSize: 11, fontWeight: 600, textTransform: 'capitalize',
+                      background: workspaceMode === mode ? C.card : 'transparent',
+                      color: workspaceMode === mode ? C.text : C.textSubtle,
+                      boxShadow: workspaceMode === mode ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                    }}
+                  >
+                    {mode === 'ide' ? 'IDE' : 'Canvas'}
+                  </button>
+                ))}
+              </div>
+              {workspaceMode === 'canvas' && canvasArtifacts.length > 0 && (
+                <span style={{ fontSize: 10, color: C.textSubtle }}>{canvasArtifacts.length} open</span>
+              )}
+            </div>
+            {workspaceMode === 'canvas' ? (
+              <DemoCanvasView
+                artifacts={canvasArtifacts}
+                activeName={artifact?.name}
+                onSelect={(a) => {
+                  onWorkspaceModeChange?.('ide');
+                  onSelectArtifact?.(a.name);
+                }}
+              />
+            ) : (
+              <DemoArtifactPanel artifact={artifact} />
+            )}
           </div>
         </div>
       </div>

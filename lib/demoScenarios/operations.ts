@@ -1,18 +1,43 @@
 import { VIRALHOOKS_FAVICON } from '@/lib/favicon';
+import { a } from '@/lib/demoScenarioAssets/helpers';
 import type { DemoScenario } from './types';
 
+const RECON_DIFF = `--- a/invoices/vendor-june.csv
++++ b/invoices/vendor-june.csv
+@@ -12,7 +12,7 @@
+ INV-1042,CloudHost,4200.00,2026-06-01
+-INV-1042,CloudHost,4200.00,2026-06-01
++INV-1042-DUP,CloudHost,4200.00,2026-06-01  ← duplicate removed
+ INV-1043,CDN Edge,890.00,2026-06-03
+@@ -28,6 +28,7 @@
+ INV-1051,Monitoring,120.00,2026-06-14
++INV-1052,Backup SaaS,340.00,2026-06-15  ← new line matched`;
+
+const BACKUP_LOG = `$ verify-backups --all-regions
+
+Region us-east-1  ✓ snapshot 2026-06-15T06:00Z verified
+Region eu-west-1  ✓ snapshot 2026-06-15T06:00Z verified
+Region ap-south-1 ✓ snapshot 2026-06-15T06:00Z verified
+
+All 3 regions PASS · retention policy OK`;
+
 const ARTIFACTS = {
-  'ops/weekly-checklist.md': {
+  'ops/weekly-checklist.md': a({
     name: 'ops/weekly-checklist.md',
     ext: 'md',
+    kind: 'markdown',
     content: `# Weekly ops checklist — W24
 
 - [x] Vendor invoice reconciliation
 - [x] Access review — dormant accounts
 - [ ] Q2 budget variance report
 - [x] Backup verification — all regions`,
-  },
+  }),
+  'ops/vendor-reconciliation.diff': a({ name: 'ops/vendor-reconciliation.diff', ext: 'diff', kind: 'diff', content: RECON_DIFF }),
+  'ops/backup-verify.log': a({ name: 'ops/backup-verify.log', ext: 'log', kind: 'code', content: BACKUP_LOG }),
 };
+
+const CANVAS_KEYS = ['ops/weekly-checklist.md', 'ops/vendor-reconciliation.diff', 'ops/backup-verify.log'];
 
 export const operationsScenario: DemoScenario = {
   id: 'operations',
@@ -54,6 +79,7 @@ export const operationsScenario: DemoScenario = {
     { id: 's3', title: 'Compile weekly summary', agent: 'Jordan', status: 'pending' },
   ],
   artifacts: ARTIFACTS,
+  canvasArtifacts: CANVAS_KEYS,
   deliverArtifactKey: 'ops/weekly-checklist.md',
   taskExecScript: [
     { type: 'moveTask', taskId: 1, col: 'in_progress', delay: 600 },
@@ -62,13 +88,19 @@ export const operationsScenario: DemoScenario = {
     { type: 'subtask', id: 's1', status: 'running', delay: 400 },
     { type: 'tool', log: { id: 't1', tool: 'read_file', label: 'read_file', detail: 'invoices/vendor-june.csv', agent: 'Jordan' }, delay: 500 },
     { type: 'toolDone', id: 't1', delay: 350 },
+    { type: 'tool', log: { id: 't2', tool: 'apply_patch', label: 'apply_patch', detail: 'vendor-june.csv — dedupe + match', agent: 'Jordan' }, delay: 520 },
+    { type: 'toolDone', id: 't2', delay: 380 },
+    { type: 'openArtifact', key: 'ops/vendor-reconciliation.diff', delay: 280 },
     { type: 'subtask', id: 's1', status: 'done', delay: 300 },
     { type: 'subtask', id: 's2', status: 'running', delay: 280 },
-    { type: 'tool', log: { id: 't2', tool: 'exec', label: 'exec', detail: 'verify-backups --all-regions', agent: 'Leo' }, delay: 550 },
-    { type: 'toolDone', id: 't2', delay: 400 },
+    { type: 'tool', log: { id: 't3', tool: 'exec', label: 'exec', detail: 'verify-backups --all-regions', agent: 'Leo' }, delay: 550 },
+    { type: 'toolDone', id: 't3', delay: 400 },
+    { type: 'openArtifact', key: 'ops/backup-verify.log', delay: 280 },
     { type: 'subtask', id: 's2', status: 'done', delay: 300 },
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
+    { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'ops/weekly-checklist.md', delay: 450 },
+    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'ops/weekly-checklist.md', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Checklist 3/4 complete — budget report awaiting approval.', time: '09:04', delay: 450 },
