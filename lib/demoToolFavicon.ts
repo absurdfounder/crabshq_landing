@@ -1,7 +1,10 @@
 import type { DemoToolLog } from '@/components/demoTaskExecution';
+import { getProviderDomain } from '@/lib/demoProviders';
 
 /** Resolve a site favicon domain from tool name + detail string. */
-export function getToolFaviconDomain(log: Pick<DemoToolLog, 'tool' | 'detail' | 'faviconDomain'>): string | null {
+export function getToolFaviconDomain(log: Pick<DemoToolLog, 'tool' | 'detail' | 'faviconDomain' | 'provider'>): string | null {
+  const providerDomain = getProviderDomain(log.provider);
+  if (providerDomain) return providerDomain;
   if (log.faviconDomain) return log.faviconDomain;
 
   const detail = log.detail ?? '';

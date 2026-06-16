@@ -5,6 +5,7 @@ const ARTIFACTS = {
   'index.html': {
     name: 'index.html',
     ext: 'html',
+    kind: 'html' as const,
     content: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,7 @@ const ARTIFACTS = {
   'seo/launch-keywords.md': {
     name: 'seo/launch-keywords.md',
     ext: 'md',
+    kind: 'markdown' as const,
     content: `# Launch keyword map
 
 ## Primary
@@ -35,6 +37,7 @@ const ARTIFACTS = {
   'seo-launch-report.md': {
     name: 'seo-launch-report.md',
     ext: 'md',
+    kind: 'markdown' as const,
     content: `# Wonder SEO Launch Report
 
 ## Executive summary

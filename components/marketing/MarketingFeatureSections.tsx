@@ -1,4 +1,7 @@
-import SectionShell from '@/components/ui/SectionShell';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelFramedVisual from '@/components/marketing/PixelFramedVisual';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import {
@@ -29,56 +32,137 @@ const VISUALS = {
   'email-routing': EmailRoutingVisual,
 } as const;
 
-function FeatureVisual({ visualId }: { visualId: MarketingFeatureSection['visual'] }) {
-  const Component = VISUALS[visualId];
-  return (
-    <PixelFramedVisual>
-      <Component />
-    </PixelFramedVisual>
-  );
-}
+const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
 
 export default function MarketingFeatureSections({ sections }: { sections: MarketingFeatureSection[] }) {
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [cardTransforms, setCardTransforms] = useState<{ scale: number; opacity: number; y: number }[]>([]);
+
+  useEffect(() => {
+    const calculateTransforms = () => {
+      const isMobile = window.innerWidth < 1024;
+      const stickyTop = window.innerHeight * 0.15;
+      const transforms: { scale: number; opacity: number; y: number }[] = [];
+
+      if (isMobile) {
+        setCardTransforms(sections.map(() => ({ scale: 1, opacity: 1, y: 0 })));
+        return;
+      }
+
+      let activeCardIndex = 0;
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return;
+        if (card.getBoundingClientRect().top <= stickyTop + 10) activeCardIndex = index;
+      });
+
+      cardRefs.current.forEach((card, index) => {
+        if (!card) {
+          transforms.push({ scale: 1, opacity: 1, y: 0 });
+          return;
+        }
+        const cardsOnTop = Math.max(0, activeCardIndex - index);
+        if (cardsOnTop > 0) {
+          transforms.push({
+            scale: Math.max(0.92, 1 - 0.025 * cardsOnTop),
+            opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop),
+            y: -8 * cardsOnTop,
+          });
+        } else {
+          transforms.push({ scale: 1, opacity: 1, y: 0 });
+        }
+      });
+      setCardTransforms(transforms);
+    };
+
+    calculateTransforms();
+    let rafId: number | undefined;
+    const handleScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(calculateTransforms);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', calculateTransforms);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', calculateTransforms);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [sections]);
+
   if (!sections.length) return null;
 
   return (
-    <>
-      {sections.map((section) => (
-        <SectionShell
-          key={section.title}
-          eyebrow={section.eyebrow}
-          eyebrowNumber={section.eyebrowNumber}
-          bgClass={section.reverse ? 'bg-slate-50' : 'bg-white'}
-        >
-          <section className="py-12 md:py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className={`grid gap-10 lg:gap-16 items-center ${section.reverse ? 'lg:grid-cols-2' : 'lg:grid-cols-2'}`}>
-                <div className={section.reverse ? 'lg:order-2' : ''}>
-                  <FeatureVisual visualId={section.visual} />
-                </div>
-                <div className={section.reverse ? 'lg:order-1' : ''}>
-                  <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-4">
-                    {section.title}
-                  </h2>
-                  {section.intro && (
-                    <p className="text-slate-600 leading-relaxed mb-4">{section.intro}</p>
-                  )}
-                  {section.bullets && section.bullets.length > 0 && (
-                    <ul className="space-y-2 text-sm text-slate-600">
-                      {section.bullets.map((b) => (
-                        <li key={b} className="flex gap-2">
-                          <span className="text-trooper mt-0.5">▸</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+    <section className="bg-slate-50 relative border-t border-slate-200">
+      <div className="max-w-7xl mx-auto px-0 py-10 sm:py-16 md:py-20">
+        <div className={`${sectionXPadding} mb-8 sm:mb-12 max-w-2xl`}>
+          <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 leading-snug">
+            How this unit runs on Trooper.
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
+            Traced tickets, live artifacts, and harnesses that match the work — not generic placeholders.
+          </p>
+        </div>
+
+        <div className="relative" style={{ perspective: '1000px' }}>
+          {sections.map((section, index) => {
+            const Visual = VISUALS[section.visual];
+            const t = cardTransforms[index] ?? { scale: 1, opacity: 1, y: 0 };
+            const tag = section.tag ?? section.eyebrow;
+
+            return (
+              <div
+                key={section.title}
+                ref={(el) => { cardRefs.current[index] = el; }}
+                className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
+                style={{ zIndex: sections.length + index }}
+              >
+                <div
+                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[480px] flex flex-col will-change-transform mx-4 sm:mx-6 lg:mx-8"
+                  style={{
+                    transform: `scale(${t.scale}) translateY(${t.y}px)`,
+                    opacity: t.opacity,
+                    transformOrigin: 'center top',
+                    transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                >
+                  <div className="grid md:flex items-stretch flex-1 min-h-0">
+                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                      <PixelMissionTag index={section.eyebrowNumber} label={tag} />
+                      <h3 className="font-funneldisplay text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
+                        {section.title}
+                        {section.titleHighlight && (
+                          <>
+                            {' '}
+                            <span className="font-normal text-slate-400">{section.titleHighlight}</span>
+                          </>
+                        )}
+                      </h3>
+                      {section.intro && (
+                        <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{section.intro}</p>
+                      )}
+                      {section.bullets && section.bullets.length > 0 && (
+                        <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                          {section.bullets.map((b) => (
+                            <li key={b} className="flex gap-2">
+                              <span className="text-trooper mt-0.5 shrink-0">▸</span>
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-[320px] md:min-h-0">
+                      <PixelFramedVisual>
+                        <Visual />
+                      </PixelFramedVisual>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </SectionShell>
-      ))}
-    </>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

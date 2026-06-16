@@ -7,6 +7,8 @@ export type DemoSubtask = {
   title: string;
   agent: string;
   status: DemoSubtaskStatus;
+  /** Harness provider — Claude Code, Codex, OpenCode, etc. */
+  provider?: string;
 };
 
 export type DemoTag = {
@@ -23,6 +25,8 @@ export type DemoToolLog = {
   agent: string;
   status: 'running' | 'done';
   faviconDomain?: string;
+  /** When set, tool row shows provider logo (Codex, Claude Code, OpenCode). */
+  provider?: string;
 };
 
 export type DemoModalMessage = {
@@ -36,10 +40,15 @@ export type DemoFeedItem =
   | { kind: 'message'; id: string; sender: string; text: string; time: string; tags?: DemoTag[] }
   | ({ kind: 'tool' } & DemoToolLog);
 
+export type DemoArtifactKind = 'code' | 'diff' | 'markdown' | 'html' | 'image' | 'video';
+
 export type DemoArtifact = {
   name: string;
   content: string;
   ext?: string;
+  kind?: DemoArtifactKind;
+  /** For image/video artifacts — alt or caption */
+  caption?: string;
 };
 
 /** Scripted execution steps after kanban fill — drives modal + board updates */

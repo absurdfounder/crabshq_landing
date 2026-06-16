@@ -12,6 +12,8 @@ import { launchScenario } from '@/lib/demoScenarios/launch';
 import type { DemoOrg } from '@/lib/demoScenarios/types';
 import { DemoFavicon } from './DemoFavicon';
 import { getToolFaviconDomain } from '@/lib/demoToolFavicon';
+import { getProviderDomain } from '@/lib/demoProviders';
+import { DemoArtifactPanel } from './DemoArtifactPanel';
 
 const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Vaibhav: { img: 'https://avatars.githubusercontent.com/u/25829699?v=4' },
@@ -20,6 +22,17 @@ const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Leo: { img: 'https://i.pravatar.cc/150?u=agent-leo', title: 'DevOps' },
   Ren: { img: 'https://i.pravatar.cc/150?u=agent-ren', title: 'Frontend' },
 };
+
+function ProviderChip({ provider, size = 14 }: { provider: string; size?: number }) {
+  const domain = getProviderDomain(provider);
+  if (domain === 'trooper.so') {
+    return (
+      <img src="/images/trooper-logomark.png" alt="" width={size} height={size} style={{ objectFit: 'contain', imageRendering: 'pixelated' }} />
+    );
+  }
+  if (domain) return <DemoFavicon domain={domain} size={size + 2} rounded="sm" />;
+  return null;
+}
 
 function ToolIcon({ tool }: { tool: string }) {
   const name = getToolIconName(tool);
@@ -163,6 +176,7 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
 
 function AgentTurn({ turn }: { turn: Turn }) {
   const person = ALL_PEOPLE[turn.agent];
+  const harnessProvider = turn.tools.find(t => t.provider)?.provider;
   return (
     <div className="demo-thread-turn" style={{ marginBottom: 18 }}>
       <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
@@ -172,9 +186,19 @@ function AgentTurn({ turn }: { turn: Turn }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.tools.length ? 6 : 0,
-            minHeight: THREAD_AVATAR,
+            minHeight: THREAD_AVATAR, flexWrap: 'wrap',
           }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{turn.agent}</span>
+            {harnessProvider && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 600,
+                color: C.textMuted, padding: '2px 7px', borderRadius: 999,
+                background: C.bg, border: `1px solid ${C.border}`,
+              }}>
+                <ProviderChip provider={harnessProvider} size={12} />
+                {harnessProvider}
+              </span>
+            )}
             {person?.title && (
               <span style={{
                 fontSize: 10, color: C.textSubtle, padding: '1px 6px', borderRadius: 4,
@@ -294,67 +318,30 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
                     : isRunning ? <Loader2 size={14} className="demo-spin" color="#B45309" />
                       : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
                 </div>
-                <span style={{
-                  fontSize: 12, lineHeight: 1.45, flex: 1,
-                  color: isDone ? C.textSubtle : isRunning ? C.text : C.textMuted,
-                  fontWeight: isRunning ? 600 : 400,
-                  textDecoration: isDone ? 'line-through' : 'none',
-                }}>
-                  {s.title}
-                </span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{
+                    fontSize: 12, lineHeight: 1.45, display: 'block',
+                    color: isDone ? C.textSubtle : isRunning ? C.text : C.textMuted,
+                    fontWeight: isRunning ? 600 : 400,
+                    textDecoration: isDone ? 'line-through' : 'none',
+                  }}>
+                    {s.title}
+                  </span>
+                  {s.provider && (
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 3,
+                      fontSize: 10, fontWeight: 600, color: C.textSubtle,
+                    }}>
+                      <ProviderChip provider={s.provider} size={11} />
+                      {s.provider}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
       )}
-    </div>
-  );
-}
-
-function ArtifactPanel({ artifact }: { artifact: DemoArtifact | null }) {
-  if (!artifact) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center', background: C.card }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#F5F5F4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-          <FileText size={20} strokeWidth={1.75} color={C.textSubtle} />
-        </div>
-        <p style={{ fontSize: 13, fontWeight: 600, color: C.text, margin: 0 }}>No files yet</p>
-        <p style={{ fontSize: 11, color: C.textSubtle, marginTop: 6, maxWidth: 200, lineHeight: 1.5 }}>
-          Files and previews appear here as agents work.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px',
-        borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
-      }}>
-        <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
-          <span style={{
-            display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
-            fontSize: 11, fontWeight: 600, background: C.card, color: C.text,
-          }}>
-            <Layers size={12} strokeWidth={1.75} /> IDE
-          </span>
-        </div>
-        <span style={{ flex: 1, fontSize: 11, fontWeight: 500, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {artifact.name}
-        </span>
-        <button type="button" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6, border: `1px solid ${C.border}`, background: C.card, fontSize: 10, color: C.textMuted, cursor: 'pointer' }}>
-          <Download size={11} strokeWidth={1.75} /> Download
-        </button>
-      </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: 14 }}>
-        <pre style={{
-          margin: 0, fontSize: 11.5, lineHeight: 1.6, color: C.text,
-          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', whiteSpace: 'pre-wrap',
-        }}>
-          {artifact.content}
-        </pre>
-      </div>
     </div>
   );
 }
@@ -512,7 +499,7 @@ export function DemoTaskModal({
 
           {/* Right: artifact panel — always shown */}
           <div style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-            <ArtifactPanel artifact={artifact} />
+            <DemoArtifactPanel artifact={artifact} />
           </div>
         </div>
       </div>

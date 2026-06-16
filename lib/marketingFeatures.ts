@@ -16,7 +16,9 @@ export type MarketingVisualId =
 export type MarketingFeatureSection = {
   eyebrow: string;
   eyebrowNumber: string;
+  tag?: string;
   title: string;
+  titleHighlight?: string;
   intro?: string;
   bullets?: string[];
   visual: MarketingVisualId;
