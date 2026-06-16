@@ -12,6 +12,14 @@ export type PluginCatalogItem = {
   iconUrl: string | null;
   domain: string | null;
   homepage: string | null;
+  status: string | null;
+  installable: boolean;
+  connectionMode: string | null;
+  connectionLabel: string | null;
+  authType: string | null;
+  builtIn: boolean;
+  plannedId: string | null;
+  openclawChannelId: string | null;
 };
 
 const plugins = catalogData.plugins as PluginCatalogItem[];

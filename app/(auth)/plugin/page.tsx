@@ -7,9 +7,10 @@ import {
   integrationHubMeta,
   getPriorityIntegrations,
 } from '@/lib/integrationContent';
-import { PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/pluginCatalog';
+import { getAllPlugins, PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
+import PluginHubClient from './PluginHubClient';
 
 export const metadata = {
   title: integrationHubMeta.title,
@@ -32,6 +33,7 @@ export const metadata = {
 
 export default function PluginHubPage() {
   const priority = getPriorityIntegrations();
+  const allPlugins = getAllPlugins();
 
   return (
     <div className="bg-white">
@@ -107,23 +109,13 @@ export default function PluginHubPage() {
       </SectionShell>
 
       <SectionShell eyebrow="Catalog" eyebrowNumber="03" bgClass="bg-white">
-        <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-          <p className="text-slate-600 max-w-2xl leading-relaxed">
-            Trooper mirrors the full Trooper app plugin marketplace — {PLUGIN_CATALOG_COUNT.toLocaleString()} integrations
-            across Composio, Codex, OpenClaw channels, and native plugins. Every plugin has a dedicated SEO page at{' '}
+        <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
+          <p className="mb-8 text-slate-600 max-w-2xl leading-relaxed">
+            Browse all {PLUGIN_CATALOG_COUNT.toLocaleString()} Trooper app plugins — Composio, Codex, OpenClaw channels,
+            and native integrations. Each has a dedicated SEO page at{' '}
             <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded font-mono">/plugin/ai_agent_for_[plugin]</code>.
           </p>
-          <div className="mt-6">
-            <PixelButton
-              href="https://app.trooper.so"
-              external
-              size="lg"
-              tone="brand"
-              icon={<ArrowRight className="h-4 w-4" />}
-            >
-              Browse in app
-            </PixelButton>
-          </div>
+          <PluginHubClient plugins={allPlugins} />
         </div>
       </SectionShell>
 
