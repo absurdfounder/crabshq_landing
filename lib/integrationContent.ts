@@ -23,7 +23,6 @@ export type IntegrationPageContent = {
   logoUrl: string;
   missionLabel: string;
   title: string;
-  titleAccent?: string;
   description: string;
   overviewTitle: string;
   overviewParagraphs: string[];
@@ -45,7 +44,6 @@ export type IntegrationPageContent = {
 type RichOverride = Partial<
   Pick<
     IntegrationPageContent,
-    | 'titleAccent'
     | 'description'
     | 'overviewTitle'
     | 'overviewParagraphs'
@@ -116,7 +114,6 @@ const RELATED_BY_SLUG: Record<string, string[]> = {
 
 const RICH_OVERRIDES: Record<string, RichOverride> = {
   hubspot: {
-    titleAccent: 'CRM ops on autopilot',
     description:
       'Deploy an AI agent that reads your HubSpot pipeline, logs calls, updates deal stages, and prepares customer briefs — traced on the Trooper board with human approval gates.',
     overviewTitle: 'CRM work that actually gets done',
@@ -146,7 +143,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'gmail', label: 'Gmail' }, { slug: 'linkedin', label: 'LinkedIn' }, { slug: 'slack', label: 'Slack' }],
   },
   gmail: {
-    titleAccent: 'inbox triage that ships replies',
     description:
       'An AI agent that triages your Gmail inbox, drafts replies in your voice, extracts action items, and forwards updates to your team — with send approval before anything goes out.',
     overviewTitle: 'Email ops without the tab-switching',
@@ -176,7 +172,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'hubspot', label: 'HubSpot' }, { slug: 'slack', label: 'Slack' }, { slug: 'notion', label: 'Notion' }],
   },
   github: {
-    titleAccent: 'that ships real PRs',
     description:
       'AI agents that triage pull requests, debug failing CI, address review comments, and open draft PRs — with full diffs and terminal traces on the Trooper board.',
     overviewTitle: 'Agents that contribute like developers',
@@ -206,7 +201,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'linear', label: 'Linear' }, { slug: 'slack', label: 'Slack' }, { slug: 'notion', label: 'Notion' }],
   },
   slack: {
-    titleAccent: 'team updates without context loss',
     description:
       'AI agents that post pipeline updates, incident alerts, PR notifications, and status summaries to Slack channels — with full ticket traces behind every message.',
     overviewTitle: 'Ops output where your team already lives',
@@ -236,7 +230,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'github', label: 'GitHub' }, { slug: 'hubspot', label: 'HubSpot' }, { slug: 'linear', label: 'Linear' }],
   },
   googlesheets: {
-    titleAccent: 'reporting without manual exports',
     description:
       'AI agents that read, analyze, and update Google Sheets — building reports, cleaning data tables, writing formulas, and syncing CRM exports into structured spreadsheets.',
     overviewTitle: 'Spreadsheet ops at agent speed',
@@ -266,7 +259,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'hubspot', label: 'HubSpot' }, { slug: 'stripe', label: 'Stripe' }, { slug: 'slack', label: 'Slack' }],
   },
   linkedin: {
-    titleAccent: 'prospect research at scale',
     description:
       'AI agents that research prospects on LinkedIn, build account briefs, map decision-makers, and prepare outreach context — traced for your sales team before every call.',
     overviewTitle: 'Sales research without the tab marathon',
@@ -296,7 +288,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'hubspot', label: 'HubSpot' }, { slug: 'gmail', label: 'Gmail' }, { slug: 'notion', label: 'Notion' }],
   },
   notion: {
-    titleAccent: 'docs and wikis that stay current',
     description:
       'AI agents that search Notion, update docs, publish meeting notes, and maintain knowledge bases — keeping your team wiki aligned with what agents actually shipped.',
     overviewTitle: 'Knowledge ops that write back',
@@ -326,7 +317,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'github', label: 'GitHub' }, { slug: 'slack', label: 'Slack' }, { slug: 'linear', label: 'Linear' }],
   },
   linear: {
-    titleAccent: 'issue tracking with agent velocity',
     description:
       'AI agents that create Linear issues, update sprint status, triage bugs, and sync engineering work with GitHub PRs — traced on the Trooper board.',
     overviewTitle: 'Product ops wired to your sprint',
@@ -356,7 +346,6 @@ const RICH_OVERRIDES: Record<string, RichOverride> = {
     relatedIntegrations: [{ slug: 'github', label: 'GitHub' }, { slug: 'slack', label: 'Slack' }, { slug: 'notion', label: 'Notion' }],
   },
   stripe: {
-    titleAccent: 'billing ops without spreadsheet exports',
     description:
       'AI agents that monitor Stripe subscriptions, flag churn risk, reconcile invoices, and update revenue reports — with finance-grade traces on every action.',
     overviewTitle: 'Revenue ops grounded in live billing data',
@@ -445,7 +434,6 @@ function buildIntegrationPage(catalog: PluginCatalogItem): IntegrationPageConten
     logoUrl: pluginLogoUrl(catalog),
     missionLabel: 'Integration brief',
     title: `AI agent for ${catalog.name}`,
-    titleAccent: rich?.titleAccent,
     description: rich?.description ?? `Deploy an AI agent that connects to ${catalog.name} and executes ${catalog.category.toLowerCase()} workflows on your Trooper board — traced, approval-gated, and ready in minutes.`,
     overviewTitle: rich?.overviewTitle ?? `Why teams connect ${catalog.name}`,
     overviewParagraphs: rich?.overviewParagraphs ?? [

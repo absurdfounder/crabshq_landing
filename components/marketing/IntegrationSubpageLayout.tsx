@@ -27,20 +27,8 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
                 height={36}
                 className="h-9 w-9 shrink-0 object-contain"
               />
-              <span className="min-w-0">
-                {content.title}
-                {content.titleAccent && (
-                  <>
-                    <br />
-                    <span className="text-slate-500 font-normal">{content.titleAccent}</span>
-                  </>
-                )}
-              </span>
+              <span className="min-w-0">{content.title}</span>
             </h1>
-
-            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
-              {content.description}
-            </p>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <PixelButton
