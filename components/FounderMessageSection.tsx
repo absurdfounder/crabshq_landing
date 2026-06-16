@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -11,7 +11,14 @@ const getCalApiImport = () => import('@calcom/embed-react').then((mod) => mod.ge
 
 const TROOPER_GREEN = 'rgba(63, 107, 0, 0.4)';
 const PORTRAIT_FILTER =
-  'grayscale(100%) brightness(0.92) sepia(100%) hue-rotate(65deg) saturate(85%)';
+  'grayscale(100%) brightness(0.92) sepia(100%) hue-rotate(244deg) saturate(85%)';
+
+const STIPPLE_OVERLAY: CSSProperties = {
+  backgroundImage: `linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%), linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%)`,
+  backgroundSize: '4px 4px',
+  backgroundPosition: '0 0, 2px 2px',
+  imageRendering: 'pixelated',
+};
 
 export default function FounderMessageSection() {
   useEffect(() => {
@@ -45,34 +52,24 @@ export default function FounderMessageSection() {
         transition={{ duration: 0.5, ease }}
         viewport={{ once: true, margin: '-20px' }}
       >
-        <div className="flex flex-col md:flex-row">
-          <div className="flex shrink-0 items-center justify-center p-6 md:p-8 lg:p-10 md:border-r border-slate-200">
-            <div className="relative aspect-square w-full max-w-[220px] sm:max-w-[260px] md:max-w-[280px] border-[6px] border-trooper overflow-hidden bg-trooper-50">
-              <Image
-                src="/images/founder-portrait.png"
-                alt="Vaibhav, founder of Trooper"
-                fill
-                className="object-cover object-center"
-                style={{ filter: PORTRAIT_FILTER }}
-                sizes="(max-width: 768px) 220px, 280px"
-                priority={false}
-              />
-              <div
-                className="absolute inset-0 mix-blend-multiply pointer-events-none"
-                style={{
-                  backgroundImage: `
-                    linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%),
-                    linear-gradient(45deg, ${TROOPER_GREEN} 25%, transparent 25%, transparent 75%, ${TROOPER_GREEN} 75%)
-                  `,
-                  backgroundSize: '4px 4px',
-                  backgroundPosition: '0 0, 2px 2px',
-                  imageRendering: 'pixelated',
-                }}
-              />
-            </div>
+        <div className="flex flex-col md:flex-row md:items-stretch">
+          <div className="relative mx-auto aspect-square w-full max-w-[14rem] shrink-0 overflow-hidden border-[6px] border-trooper bg-trooper-50 border-b border-slate-200 md:mx-0 md:aspect-auto md:h-auto md:w-[22rem] md:max-w-none md:self-stretch md:border-b-0 md:border-r md:border-r-slate-200">
+            <Image
+              src="/images/founder-portrait.png"
+              alt="Vaibhav, founder of Trooper"
+              fill
+              className="object-cover object-center"
+              style={{ filter: PORTRAIT_FILTER }}
+              sizes="(max-width: 768px) 14rem, 22rem"
+              priority={false}
+            />
+            <div
+              className="absolute inset-0 mix-blend-multiply pointer-events-none"
+              style={STIPPLE_OVERLAY}
+            />
           </div>
 
-          <div className="flex flex-1 flex-col p-6 md:p-8 lg:p-10 border-t md:border-t-0 border-slate-200">
+          <div className="flex flex-1 flex-col p-6 md:p-8 lg:p-10">
             <p className="font-funneldisplay text-xl sm:text-2xl md:text-[1.65rem] leading-[1.35] tracking-tight text-slate-900">
               AI agents that can browse, code, and ship are here. What&apos;s missing is the{' '}
               <span className="text-trooper font-semibold">command layer</span> — a place where you
