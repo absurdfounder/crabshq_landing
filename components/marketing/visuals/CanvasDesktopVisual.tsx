@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Layers, MessageSquarePlus } from 'lucide-react';
+import { CANVAS_STATUS_BAR_H, CANVAS_TITLE_BAR_H } from '@/lib/canvasDesktopLayout';
 import {
   DemoCommentPin,
   DemoCursorsLayer,
@@ -22,9 +23,10 @@ export type CanvasWindow = {
   accent?: boolean;
 };
 
-export const CANVAS_STAGE_W = 520;
-export const CANVAS_STAGE_H = 300;
-const STATUS_BAR_H = 18;
+export const CANVAS_STAGE_W = 540;
+export const CANVAS_STAGE_H = 320;
+
+const MOTION_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
 function DesktopWorkspaceBg() {
   return (
@@ -56,17 +58,19 @@ function WindowTile({
   win,
   active,
   dragging,
-  animatePosition,
+  animateMotion,
   onDragStart,
   onFocus,
 }: {
   win: CanvasWindow;
   active: boolean;
   dragging: boolean;
-  animatePosition?: boolean;
+  animateMotion?: boolean;
   onDragStart: (e: React.MouseEvent) => void;
   onFocus: () => void;
 }) {
+  const bodyH = Math.max(48, win.h - CANVAS_TITLE_BAR_H);
+
   return (
     <div
       role="presentation"
@@ -77,7 +81,7 @@ function WindowTile({
         top: win.y,
         width: win.w,
         height: win.h,
-        zIndex: active ? 30 : 10,
+        zIndex: active ? 30 : dragging ? 20 : 10,
         borderRadius: 10,
         border: `1px solid ${active ? '#3f6b00' : 'rgba(231,229,228,0.95)'}`,
         background: '#fff',
@@ -89,7 +93,10 @@ function WindowTile({
         overflow: 'hidden',
         userSelect: 'none',
         transform: dragging ? 'scale(1.008)' : undefined,
-        transition: animatePosition ? undefined : 'box-shadow 0.2s ease, transform 0.15s ease',
+        willChange: animateMotion ? 'left, top, width, height, transform' : undefined,
+        transition: animateMotion
+          ? `left 0.72s ${MOTION_EASE}, top 0.72s ${MOTION_EASE}, width 0.72s ${MOTION_EASE}, height 0.72s ${MOTION_EASE}, box-shadow 0.25s ease, transform 0.18s ease, border-color 0.25s ease`
+          : 'box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease',
       }}
     >
       <div
@@ -99,6 +106,7 @@ function WindowTile({
           onDragStart(e);
         }}
         className="flex items-center gap-1.5 border-b border-stone-200/90 bg-[#FAFAF9] px-2 py-1.5 cursor-grab active:cursor-grabbing"
+        style={{ height: CANVAS_TITLE_BAR_H, boxSizing: 'border-box' }}
       >
         <span
           className="shrink-0 rounded-full bg-[#ff5f57]"
@@ -113,7 +121,10 @@ function WindowTile({
           <MessageSquarePlus size={8} strokeWidth={2} />
         </span>
       </div>
-      <div className={`h-[calc(100%-30px)] overflow-hidden ${win.accent ? 'bg-trooper-50/30' : 'bg-white'}`}>
+      <div
+        className={`Trooper-scrollbar overflow-auto ${win.accent ? 'bg-trooper-50/30' : 'bg-white'}`}
+        style={{ height: bodyH }}
+      >
         {win.body}
       </div>
     </div>
@@ -141,6 +152,8 @@ export function CanvasDesktopVisual({
   const inViewport = useInViewport(stageRef);
   const demoFrame = useCanvasDesktopDemo({
     windows,
+    stageW: CANVAS_STAGE_W,
+    stageH: CANVAS_STAGE_H,
     enabled: animated && inViewport,
     reducedMotion,
     paused: demoPaused || drag != null,
@@ -175,7 +188,7 @@ export function CanvasDesktopVisual({
         const win = windows.find(w => w.id === drag.id);
         if (!win) return prev;
         const maxX = Math.max(0, CANVAS_STAGE_W - 72);
-        const maxY = Math.max(0, CANVAS_STAGE_H - STATUS_BAR_H - 48);
+        const maxY = Math.max(0, CANVAS_STAGE_H - CANVAS_STATUS_BAR_H - 48);
         const x = Math.max(0, Math.min(maxX, contentX - drag.offsetX));
         const y = Math.max(0, Math.min(maxY, contentY - drag.offsetY));
         return { ...prev, [drag.id]: { x, y } };
@@ -238,15 +251,17 @@ export function CanvasDesktopVisual({
           {windows.map((win) => {
             const manualPos = positions[win.id] ?? { x: win.x, y: win.y };
             const demoPos = demoFrame.positions[win.id] ?? manualPos;
+            const demoSize = demoFrame.sizes[win.id] ?? { w: win.w, h: win.h };
             const pos = useDemoLayout ? demoPos : manualPos;
+            const size = useDemoLayout ? demoSize : { w: win.w, h: win.h };
             const isDragging = resolvedDragging.includes(win.id);
             return (
               <WindowTile
                 key={win.id}
-                win={{ ...win, x: pos.x, y: pos.y }}
+                win={{ ...win, x: pos.x, y: pos.y, w: size.w, h: size.h }}
                 active={resolvedActiveId === win.id}
                 dragging={isDragging}
-                animatePosition={useDemoLayout}
+                animateMotion={useDemoLayout}
                 onFocus={() => setActiveId(win.id)}
                 onDragStart={(e) => handleDragStart(e, win.id)}
               />
@@ -264,8 +279,11 @@ export function CanvasDesktopVisual({
             </>
           )}
           <div
-            className="pointer-events-none absolute bottom-0 left-0 right-0 z-[5] flex h-[18px] items-center justify-between border-t border-stone-500/25 px-2.5"
-            style={{ background: 'linear-gradient(180deg, rgba(41,37,36,0.88) 0%, rgba(28,25,23,0.94) 100%)' }}
+            className="pointer-events-none absolute bottom-0 left-0 right-0 z-[5] flex items-center justify-between border-t border-stone-500/25 px-2.5"
+            style={{
+              height: CANVAS_STATUS_BAR_H,
+              background: 'linear-gradient(180deg, rgba(41,37,36,0.88) 0%, rgba(28,25,23,0.94) 100%)',
+            }}
           >
             <span className="text-[8px] font-medium text-stone-400">Canvas workspace</span>
             <span className="text-[8px] text-stone-500">{windows.length} artifacts · organized</span>

@@ -8,6 +8,8 @@ import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
+  CodingMemoryVisual,
+  CodingCanvasVisual,
   CanvasBoardVisual,
   CampaignPipelineVisual,
   SalesPipelineVisual,
@@ -33,6 +35,8 @@ import {
 const VISUALS = {
   'coding-harness': CodingHarnessVisual,
   'coding-board': CodingBoardVisual,
+  'coding-memory': CodingMemoryVisual,
+  'coding-canvas': CodingCanvasVisual,
   'canvas-desktop': CanvasBoardVisual,
   'campaign-pipeline': CampaignPipelineVisual,
   'sales-pipeline': SalesPipelineVisual,

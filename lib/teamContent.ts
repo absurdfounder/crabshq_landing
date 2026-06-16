@@ -1,7 +1,7 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
-import { canvasFeatureSection } from '@/lib/marketingFeatures';
+import { canvasFeatureSection, codingCanvasFeatureSection } from '@/lib/marketingFeatures';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -74,8 +74,12 @@ const teamPages: Record<string, TeamPageContent> = {
         tag: 'MULTI-AGENT HARNESS',
         title: 'Your subscriptions.',
         titleHighlight: 'Our harness.',
-        intro: 'Run Claude Code, Codex, and OpenCode side-by-side — each on its own task with live diffs, provider logos, and activity logs.',
-        bullets: ['Parallel patch missions with traced tool calls', 'BYOA — Trooper routes work and enforces permissions'],
+        intro: 'Run Claude Code, Codex, and OpenCode side-by-side on one ticket — parser patch, ETL dedupe, and regression tests with live tool traces and diff stats.',
+        bullets: [
+          'Three harness lanes with provider logos and branch names',
+          'exec, apply_patch, and write_file traced per agent',
+          'BYOA — your keys, Trooper routes work and enforces permissions',
+        ],
         visual: 'coding-harness',
       },
       {
@@ -84,7 +88,12 @@ const teamPages: Record<string, TeamPageContent> = {
         tag: 'CANVAS + CI',
         title: 'Diffs, CI logs, and',
         titleHighlight: 'PR bundles on Canvas.',
-        intro: 'Open the ticket Canvas to see parser diff, ETL patch, green CI, and PR body together — coding deliverables, not marketing assets.',
+        intro: 'Open the ticket Canvas for parser.ts, etl/dedupe.ts, integration CI output, and PR #418 body — the same artifacts from the live demo, stacked for review.',
+        bullets: [
+          'Unified diffs with line numbers and +/− counts',
+          'Full integration log — 13 tests passed, CI green',
+          'PR body with summary, changes, and merge gate',
+        ],
         visual: 'coding-board',
       },
       {
@@ -93,10 +102,15 @@ const teamPages: Record<string, TeamPageContent> = {
         tag: 'ORG CONTEXT',
         title: 'Branch rules and reviewer prefs',
         titleHighlight: 'persist across agents.',
-        intro: 'Lint config, merge gates, and codebase conventions load on every coding mission — no re-briefing each session.',
-        visual: 'messaging-routing',
+        intro: 'AGENTS.md, eslint rules, CODEOWNERS, and merge gates load on every coding mission — Codex, Claude Code, and OpenCode share the same org memory.',
+        bullets: [
+          'Default branch, test commands, and reviewer routing',
+          'Lint and import-order conventions enforced in src/',
+          'CI required + human approval before merge',
+        ],
+        visual: 'coding-memory',
       },
-      canvasFeatureSection('06'),
+      codingCanvasFeatureSection('06'),
     ],
     title: 'Trooper for Coding',
     titleAccent: 'your keys, our harness',

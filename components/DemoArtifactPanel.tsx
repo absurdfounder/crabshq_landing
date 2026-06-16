@@ -173,7 +173,7 @@ function DiffFileBody({ file, compact }: { file: DiffFile; compact?: boolean }) 
                     {line.type !== 'deletion' ? line.newLine : ''}
                   </td>
                   <td style={{ textAlign: 'center', fontWeight: 600, color: markerColor, userSelect: 'none' }}>{marker}</td>
-                  <td style={{ padding: compact ? '0 4px 0 2px' : '1px 12px 1px 4px', color: C.text, whiteSpace: 'pre', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td style={{ padding: compact ? '0 4px 0 2px' : '1px 12px 1px 4px', color: C.text, whiteSpace: compact ? 'pre-wrap' : 'pre', wordBreak: compact ? 'break-word' : undefined, overflow: compact ? 'visible' : 'hidden', textOverflow: compact ? undefined : 'ellipsis' }}>
                     {line.content || ' '}
                   </td>
                 </tr>
@@ -532,7 +532,7 @@ function ArtifactBody({
 }
 
 /** Compact tile preview for canvas — legible at small scale without scaling the full panel */
-export function DemoArtifactTilePreview({ artifact }: { artifact: DemoArtifact }) {
+export function DemoArtifactTilePreview({ artifact, canvasTile }: { artifact: DemoArtifact; canvasTile?: boolean }) {
   const kind = inferKind(artifact);
   if (kind === 'diff') {
     return <UnifiedDiffPreview content={artifact.content} compact />;
@@ -542,25 +542,25 @@ export function DemoArtifactTilePreview({ artifact }: { artifact: DemoArtifact }
   }
   if (kind === 'markdown') {
     return (
-      <div style={{ padding: 8, fontSize: 9, lineHeight: 1.45, color: C.textMuted }}>
-        {artifact.content.split('\n').slice(0, 6).map((line, i) => (
-          <div key={i} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{line.replace(/^#+\s*/, '')}</div>
+      <div style={{ padding: canvasTile ? 10 : 8, fontSize: canvasTile ? 10 : 9, lineHeight: 1.55, color: C.textMuted }}>
+        {artifact.content.split('\n').slice(0, canvasTile ? 10 : 6).map((line, i) => (
+          <div key={i} style={{ marginBottom: 2, wordBreak: 'break-word' }}>{line.replace(/^#+\s*/, '') || '\u00A0'}</div>
         ))}
       </div>
     );
   }
   if (artifact.ext === 'log' || artifact.name.endsWith('.log')) {
     return (
-      <div style={{ background: '#1c1917', height: '100%', padding: '6px 8px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: 8, lineHeight: 1.45 }}>
-        {artifact.content.split('\n').slice(0, 8).map((line, i) => (
-          <div key={i} style={{ color: line.includes('✓') || line.includes('passed') ? '#86efac' : '#a8a29e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{line}</div>
+      <div style={{ background: '#1c1917', minHeight: '100%', padding: canvasTile ? '8px 10px' : '6px 8px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: canvasTile ? 9 : 8, lineHeight: 1.5 }}>
+        {artifact.content.split('\n').slice(0, canvasTile ? 12 : 8).map((line, i) => (
+          <div key={i} style={{ color: line.includes('✓') || line.includes('passed') ? '#86efac' : '#a8a29e', wordBreak: 'break-word' }}>{line}</div>
         ))}
       </div>
     );
   }
   return (
-    <pre style={{ margin: 0, padding: 8, fontSize: 8, lineHeight: 1.45, color: C.textMuted, fontFamily: 'ui-monospace, Menlo, monospace', overflow: 'hidden' }}>
-      {artifact.content.slice(0, 200)}
+    <pre style={{ margin: 0, padding: canvasTile ? 10 : 8, fontSize: canvasTile ? 9 : 8, lineHeight: 1.5, color: C.textMuted, fontFamily: 'ui-monospace, Menlo, monospace', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+      {canvasTile ? artifact.content.slice(0, 480) : artifact.content.slice(0, 200)}
     </pre>
   );
 }

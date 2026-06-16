@@ -3,6 +3,8 @@ import type { DemoScenarioId } from '@/lib/demoScenarios';
 export type MarketingVisualId =
   | 'coding-harness'
   | 'coding-board'
+  | 'coding-memory'
+  | 'coding-canvas'
   | 'canvas-desktop'
   | 'campaign-pipeline'
   | 'sales-pipeline'
@@ -50,6 +52,23 @@ export function canvasFeatureSection(eyebrowNumber: string): MarketingFeatureSec
       'Switch to IDE to focus a single file',
     ],
     visual: 'canvas-desktop',
+  };
+}
+
+export function codingCanvasFeatureSection(eyebrowNumber: string): MarketingFeatureSection {
+  return {
+    eyebrow: 'Canvas',
+    eyebrowNumber,
+    tag: 'DESKTOP CANVAS',
+    title: 'Parser hotfix bundle',
+    titleHighlight: 'on Canvas.',
+    intro: 'Four artifacts from one mission — parser diff, ETL patch, green CI, and PR body arranged for merge review.',
+    bullets: [
+      'Diffs, logs, and PR copy visible at once',
+      'Live review mode with cursors and comments',
+      'Drag title bars to organize before approval',
+    ],
+    visual: 'coding-canvas',
   };
 }
 

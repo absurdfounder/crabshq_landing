@@ -4,14 +4,23 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import { MessageSquare, StickyNote } from 'lucide-react';
 import { DemoCursorGlyph } from '@/components/DemoCursorGlyph';
 import type { CanvasWindow } from './CanvasDesktopVisual';
+import {
+  lerpLayouts,
+  lerpSizeMap,
+  scatterLayout,
+  tidyGridLayout,
+  wideRowLayout,
+  type DesktopSize,
+} from '@/lib/canvasDesktopLayout';
 
-export const CANVAS_DEMO_LOOP_MS = 14_000;
+export const CANVAS_DEMO_LOOP_MS = 16_000;
 const TITLE_BAR_Y = 15;
 const CURSOR_SCALE = 0.68;
 const CURSOR_TIP = { x: 6 * CURSOR_SCALE, y: 4 * CURSOR_SCALE };
 
 type Point = { x: number; y: number };
 type Layout = Record<string, Point>;
+type SizeMap = Record<string, DesktopSize>;
 
 export type DemoCursor = {
   id: string;
@@ -42,6 +51,7 @@ export type DemoComment = {
 
 export type CanvasDemoFrame = {
   positions: Layout;
+  sizes: SizeMap;
   activeId: string;
   draggingIds: string[];
   cursors: DemoCursor[];
@@ -71,11 +81,49 @@ function segmentT(elapsed: number, start: number, end: number) {
   return easeInOut((elapsed - start) / (end - start));
 }
 
-function titleGrab(windowId: string, layout: Layout, windows: CanvasWindow[]): Point {
+function baseSizes(windows: CanvasWindow[]): SizeMap {
+  return Object.fromEntries(windows.map((w) => [w.id, { w: w.w, h: w.h }]));
+}
+
+function expandedSizes(windows: CanvasWindow[]): SizeMap {
+  const base = baseSizes(windows);
+  const out: SizeMap = { ...base };
+  for (const win of windows) {
+    out[win.id] = {
+      w: Math.min(win.w + 18, win.w * 1.12),
+      h: Math.min(win.h + 16, win.h * 1.1),
+    };
+  }
+  return out;
+}
+
+function buildLayouts(windows: CanvasWindow[], stageW: number, stageH: number) {
+  const ids = windows.map((w) => w.id);
+  const base = baseSizes(windows);
+  const expanded = expandedSizes(windows);
+
+  return {
+    ids,
+    base,
+    expanded,
+    scattered: scatterLayout(ids, base, stageW, stageH),
+    tidy: tidyGridLayout(ids, base, stageW, stageH),
+    wide: wideRowLayout(ids, base, stageW, stageH),
+    tidyExpanded: tidyGridLayout(ids, expanded, stageW, stageH),
+  };
+}
+
+function titleGrab(
+  windowId: string,
+  layout: Layout,
+  sizes: SizeMap,
+  windows: CanvasWindow[],
+): Point {
   const win = windows.find((w) => w.id === windowId);
   const pos = layout[windowId];
-  if (!win || !pos) return { x: 0, y: 0 };
-  return { x: pos.x + win.w * 0.38, y: pos.y + TITLE_BAR_Y };
+  const size = sizes[windowId];
+  if (!win || !pos || !size) return { x: 0, y: 0 };
+  return { x: pos.x + size.w * 0.38, y: pos.y + TITLE_BAR_Y };
 }
 
 function cursorAtGrab(grab: Point): Point {
@@ -88,63 +136,51 @@ function dragLayout(
   windowIds: string[],
   t: number,
 ): Layout {
-  const next = { ...from };
-  for (const id of windowIds) {
-    if (from[id] && to[id]) next[id] = lerpPt(from[id], to[id], t);
-  }
-  return next;
+  return lerpLayouts(from, to, windowIds, t, lerp);
 }
 
-/** Slightly staggered — agents just dropped artifacts on the desk */
-const INITIAL: Layout = {
-  brief: { x: 22, y: 16 },
-  preview: { x: 148, y: 28 },
-  asset: { x: 52, y: 132 },
-  video: { x: 196, y: 108 },
-};
+function resizeLayout(
+  from: SizeMap,
+  to: SizeMap,
+  windowIds: string[],
+  t: number,
+): SizeMap {
+  return lerpSizeMap(from, to, windowIds, t, lerp);
+}
 
-/** Top row snapped; bottom row still mid-arrange */
-const ORGANIZED_A: Layout = {
-  brief: { x: 8, y: 8 },
-  preview: { x: 208, y: 12 },
-  asset: { x: 36, y: 140 },
-  video: { x: 196, y: 108 },
-};
-
-/** Final tidy desktop grid */
-const ORGANIZED_B: Layout = {
-  brief: { x: 8, y: 8 },
-  preview: { x: 208, y: 12 },
-  asset: { x: 12, y: 148 },
-  video: { x: 268, y: 128 },
-};
-
-export function staticDemoFrame(windows: CanvasWindow[]): CanvasDemoFrame {
-  const positions = { ...ORGANIZED_B };
+export function staticDemoFrame(
+  windows: CanvasWindow[],
+  stageW: number,
+  stageH: number,
+): CanvasDemoFrame {
+  const { wide, base } = buildLayouts(windows, stageW, stageH);
   const asset = windows.find((w) => w.id === 'asset');
   const video = windows.find((w) => w.id === 'video');
-  const assetPos = positions.asset ?? { x: 18, y: 148 };
-  const videoPos = positions.video ?? { x: 268, y: 96 };
+  const assetPos = wide.asset ?? { x: 12, y: 148 };
+  const videoPos = wide.video ?? { x: 268, y: 128 };
+  const assetSize = base.asset ?? { w: 178, h: 120 };
+  const videoSize = base.video ?? { w: 190, h: 124 };
 
   return {
-    positions,
-    activeId: 'preview',
+    positions: wide,
+    sizes: base,
+    activeId: windows.find((w) => w.id === 'preview')?.id ?? windows[0]?.id ?? '',
     draggingIds: [],
     cursors: [],
     postIts: asset
       ? [{
         id: 'note-asset',
-        x: assetPos.x + asset.w - 78,
+        x: assetPos.x + assetSize.w - 78,
         y: assetPos.y + 22,
         text: 'Headline A/B',
         opacity: 1,
-        rotate: 0,
+        rotate: -2,
       }]
       : [],
     comments: video
       ? [{
         id: 'comment-video',
-        x: videoPos.x + video.w - 88,
+        x: videoPos.x + videoSize.w - 88,
         y: videoPos.y + 14,
         author: 'Jordan',
         text: 'Trim intro 2s',
@@ -154,38 +190,67 @@ export function staticDemoFrame(windows: CanvasWindow[]): CanvasDemoFrame {
   };
 }
 
-export function frameAt(elapsedMs: number, windows: CanvasWindow[]): CanvasDemoFrame {
+export function frameAt(
+  elapsedMs: number,
+  windows: CanvasWindow[],
+  stageW: number,
+  stageH: number,
+): CanvasDemoFrame {
   const t = elapsedMs % CANVAS_DEMO_LOOP_MS;
+  const { ids, base, expanded, scattered, tidy, wide } = buildLayouts(windows, stageW, stageH);
 
-  // Beat 1 — dual cursor drag (brief + preview)
+  const primaryPair = ids.slice(0, 2);
+  const secondaryPair = ids.slice(2, 4);
+
+  // Beat 1 — dual drag (first two windows)
   const drag1 = segmentT(t, 900, 3400);
-  const positions1 = dragLayout(INITIAL, ORGANIZED_A, ['brief', 'preview'], drag1);
+  const positions1 = dragLayout(scattered, tidy, primaryPair, drag1);
+  const sizes1 = resizeLayout(base, expanded, primaryPair, segmentT(t, 1200, 2800));
 
-  // Beat 2 — post-it on carousel
+  // Beat 2 — post-it on carousel / asset window
   const postItOpacity = clamp01(segmentT(t, 3600, 4300));
 
   // Beat 3 — comment on video
   const commentOpacity = clamp01(segmentT(t, 4800, 5500));
 
-  // Beat 4 — rearrange asset + video
+  // Beat 4 — rearrange bottom row + resize preview/browser
   const drag2 = segmentT(t, 5800, 8600);
-  const positions2 = dragLayout(ORGANIZED_A, ORGANIZED_B, ['asset', 'video'], drag2);
-  const positions = drag2 > 0 ? { ...positions1, ...positions2 } : positions1;
+  const positions2 = dragLayout(tidy, wide, secondaryPair.length ? secondaryPair : ids.slice(-2), drag2);
+  const previewId = windows.find((w) => w.id === 'preview')?.id ?? primaryPair[1];
+  const resizeBeat = segmentT(t, 6200, 7600);
+  const sizes2 = previewId
+    ? resizeLayout(sizes1, expanded, [previewId], resizeBeat)
+    : sizes1;
 
-  // Beat 5 — fade overlays + cursors before reset
-  const fadeOut = clamp01(segmentT(t, 10800, 12200));
-  const resetT = segmentT(t, 12200, CANVAS_DEMO_LOOP_MS);
+  let positions = drag2 > 0 ? { ...positions1, ...positions2 } : positions1;
+  let sizes = sizes2;
+
+  // Beat 5 — brief expansion for reading
+  const briefId = windows.find((w) => w.id === 'brief')?.id;
+  if (briefId) {
+    const readExpand = segmentT(t, 3800, 5200);
+    sizes = resizeLayout(sizes, expanded, [briefId], readExpand);
+  }
+
+  // Beat 6 — fade overlays + reset loop
+  const fadeOut = clamp01(segmentT(t, 11800, 13200));
+  const resetT = segmentT(t, 13200, CANVAS_DEMO_LOOP_MS);
   const finalPositions = resetT > 0
-    ? dragLayout(ORGANIZED_B, INITIAL, ['brief', 'preview', 'asset', 'video'], resetT)
+    ? dragLayout(wide, scattered, ids, resetT)
     : positions;
+  const finalSizes = resetT > 0
+    ? resizeLayout(sizes, base, ids, resetT)
+    : sizes;
 
-  const briefGrab = titleGrab('brief', finalPositions, windows);
-  const previewGrab = titleGrab('preview', finalPositions, windows);
-  const assetGrab = titleGrab('asset', finalPositions, windows);
-  const videoGrab = titleGrab('video', finalPositions, windows);
+  const briefGrab = briefId ? titleGrab(briefId, finalPositions, finalSizes, windows) : { x: 24, y: 24 };
+  const previewGrab = titleGrab(previewId ?? primaryPair[0], finalPositions, finalSizes, windows);
+  const assetId = windows.find((w) => w.id === 'asset')?.id ?? secondaryPair[0];
+  const videoId = windows.find((w) => w.id === 'video')?.id ?? secondaryPair[1];
+  const assetGrab = assetId ? titleGrab(assetId, wide, base, windows) : briefGrab;
+  const videoGrab = videoId ? titleGrab(videoId, wide, base, windows) : previewGrab;
 
-  const cursorAVisible = t >= 350 && t < 11200;
-  const cursorBVisible = (t >= 1100 && t < 3400) || (t >= 5800 && t < 11200);
+  const cursorAVisible = t >= 350 && t < 11800;
+  const cursorBVisible = (t >= 1100 && t < 3400) || (t >= 5800 && t < 11800);
 
   let cursorA: DemoCursor = {
     id: 'a',
@@ -206,85 +271,115 @@ export function frameAt(elapsedMs: number, windows: CanvasWindow[]): CanvasDemoF
 
   const draggingIds: string[] = [];
 
-  if (t >= 900 && t < 3400) {
-    draggingIds.push('brief', 'preview');
+  if (t >= 900 && t < 3400 && primaryPair.length >= 2) {
+    draggingIds.push(primaryPair[0], primaryPair[1]);
     cursorA = {
       ...cursorA,
-      ...cursorAtGrab(lerpPt(titleGrab('brief', INITIAL, windows), briefGrab, drag1)),
-      grabbing: 'brief',
+      ...cursorAtGrab(lerpPt(
+        titleGrab(primaryPair[0], scattered, base, windows),
+        titleGrab(primaryPair[0], tidy, expanded, windows),
+        drag1,
+      )),
+      grabbing: primaryPair[0],
       clicking: false,
     };
     cursorB = {
       ...cursorB,
-      ...cursorAtGrab(lerpPt(titleGrab('preview', INITIAL, windows), previewGrab, drag1)),
-      grabbing: 'preview',
+      ...cursorAtGrab(lerpPt(
+        titleGrab(primaryPair[1], scattered, base, windows),
+        titleGrab(primaryPair[1], tidy, expanded, windows),
+        drag1,
+      )),
+      grabbing: primaryPair[1],
       clicking: false,
     };
   } else if (t >= 3400 && t < 5800) {
     cursorA = { ...cursorA, ...cursorAtGrab(briefGrab) };
     cursorB = { ...cursorB, ...cursorAtGrab(previewGrab) };
-  } else if (t >= 5800 && t < 8600) {
-    draggingIds.push('asset', 'video');
+  } else if (t >= 5800 && t < 8600 && assetId && videoId) {
+    draggingIds.push(assetId, videoId);
     cursorA = {
       ...cursorA,
-      ...cursorAtGrab(lerpPt(titleGrab('asset', ORGANIZED_A, windows), assetGrab, drag2)),
-      grabbing: 'asset',
+      ...cursorAtGrab(lerpPt(
+        titleGrab(assetId, tidy, base, windows),
+        titleGrab(assetId, wide, base, windows),
+        drag2,
+      )),
+      grabbing: assetId,
     };
     cursorB = {
       ...cursorB,
-      ...cursorAtGrab(lerpPt(titleGrab('video', ORGANIZED_A, windows), videoGrab, drag2)),
-      grabbing: 'video',
+      ...cursorAtGrab(lerpPt(
+        titleGrab(videoId, tidy, base, windows),
+        titleGrab(videoId, wide, base, windows),
+        drag2,
+      )),
+      grabbing: videoId,
     };
-  } else if (t >= 8600 && t < 11200) {
+  } else if (t >= 8600 && t < 11800) {
     cursorA = { ...cursorA, ...cursorAtGrab(assetGrab) };
     cursorB = { ...cursorB, ...cursorAtGrab(videoGrab) };
-  } else if (t >= 350 && t < 900) {
+  } else if (t >= 350 && t < 900 && primaryPair[0]) {
     const approach = segmentT(t, 350, 900);
     cursorA = {
       ...cursorA,
-      ...cursorAtGrab(lerpPt({ x: 24, y: 180 }, titleGrab('brief', INITIAL, windows), approach)),
+      ...cursorAtGrab(lerpPt(
+        { x: 24, y: 180 },
+        titleGrab(primaryPair[0], scattered, base, windows),
+        approach,
+      )),
     };
-  } else if (t >= 1100 && t < 1480) {
+  } else if (t >= 1100 && t < 1480 && primaryPair[1]) {
     const approach = segmentT(t, 1100, 1480);
     cursorB = {
       ...cursorB,
-      ...cursorAtGrab(lerpPt({ x: 420, y: 40 }, titleGrab('preview', INITIAL, windows), approach)),
+      ...cursorAtGrab(lerpPt(
+        { x: 420, y: 40 },
+        titleGrab(primaryPair[1], scattered, base, windows),
+        approach,
+      )),
     };
   }
 
   const overlayFade = 1 - fadeOut;
   const cursorFade = 1 - fadeOut;
 
-  const assetWin = windows.find((w) => w.id === 'asset');
-  const videoWin = windows.find((w) => w.id === 'video');
-  const assetPos = finalPositions.asset ?? ORGANIZED_B.asset;
-  const videoPos = finalPositions.video ?? ORGANIZED_B.video;
+  const assetWin = assetId ? windows.find((w) => w.id === assetId) : undefined;
+  const videoWin = videoId ? windows.find((w) => w.id === videoId) : undefined;
+  const assetPos = assetId ? (finalPositions[assetId] ?? wide[assetId]) : undefined;
+  const videoPos = videoId ? (finalPositions[videoId] ?? wide[videoId]) : undefined;
+  const assetSize = assetId ? (finalSizes[assetId] ?? base[assetId]) : undefined;
+  const videoSize = videoId ? (finalSizes[videoId] ?? base[videoId]) : undefined;
 
   const activeId = draggingIds[draggingIds.length - 1]
-    ?? (t >= 4800 ? 'video' : t >= 3600 ? 'asset' : t >= 900 ? 'preview' : 'brief');
+    ?? (t >= 4800 && videoId ? videoId
+      : t >= 3600 && assetId ? assetId
+        : t >= 900 && primaryPair[1] ? primaryPair[1]
+          : primaryPair[0] ?? windows[0]?.id ?? '');
 
   return {
     positions: finalPositions,
+    sizes: finalSizes,
     activeId,
     draggingIds,
     cursors: [
       { ...cursorA, visible: cursorAVisible && cursorFade > 0.05, x: cursorA.x, y: cursorA.y },
       { ...cursorB, visible: cursorBVisible && cursorFade > 0.05, x: cursorB.x, y: cursorB.y },
     ],
-    postIts: assetWin && postItOpacity * overlayFade > 0.02
+    postIts: assetWin && assetPos && assetSize && postItOpacity * overlayFade > 0.02
       ? [{
         id: 'note-asset',
-        x: assetPos.x + assetWin.w - 78,
+        x: assetPos.x + assetSize.w - 78,
         y: assetPos.y + 22,
         text: 'Headline A/B',
         opacity: postItOpacity * overlayFade,
-        rotate: 0,
+        rotate: -2,
       }]
       : [],
-    comments: videoWin && commentOpacity * overlayFade > 0.02
+    comments: videoWin && videoPos && videoSize && commentOpacity * overlayFade > 0.02
       ? [{
         id: 'comment-video',
-        x: videoPos.x + videoWin.w - 88,
+        x: videoPos.x + videoSize.w - 88,
         y: videoPos.y + 14,
         author: 'Jordan',
         text: 'Trim intro 2s',
@@ -380,17 +475,21 @@ export function DemoCursorsLayer({ cursors }: { cursors: DemoCursor[] }) {
 
 export function useCanvasDesktopDemo({
   windows,
+  stageW,
+  stageH,
   enabled,
   reducedMotion,
   paused,
 }: {
   windows: CanvasWindow[];
+  stageW: number;
+  stageH: number;
   enabled: boolean;
   reducedMotion: boolean;
   paused: boolean;
 }) {
   const [frame, setFrame] = useState<CanvasDemoFrame>(() =>
-    reducedMotion ? staticDemoFrame(windows) : frameAt(0, windows),
+    reducedMotion ? staticDemoFrame(windows, stageW, stageH) : frameAt(0, windows, stageW, stageH),
   );
   const startRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -398,16 +497,16 @@ export function useCanvasDesktopDemo({
   const tick = useCallback((now: number) => {
     if (startRef.current == null) startRef.current = now;
     const elapsed = now - startRef.current;
-    setFrame(frameAt(elapsed, windows));
+    setFrame(frameAt(elapsed, windows, stageW, stageH));
     rafRef.current = requestAnimationFrame(tick);
-  }, [windows]);
+  }, [windows, stageW, stageH]);
 
   useEffect(() => {
     if (!enabled || reducedMotion || paused) {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       startRef.current = null;
-      setFrame(reducedMotion ? staticDemoFrame(windows) : frameAt(0, windows));
+      setFrame(reducedMotion ? staticDemoFrame(windows, stageW, stageH) : frameAt(0, windows, stageW, stageH));
       return undefined;
     }
 
@@ -415,7 +514,7 @@ export function useCanvasDesktopDemo({
     return () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
     };
-  }, [enabled, reducedMotion, paused, tick, windows]);
+  }, [enabled, reducedMotion, paused, tick, windows, stageW, stageH]);
 
   return frame;
 }

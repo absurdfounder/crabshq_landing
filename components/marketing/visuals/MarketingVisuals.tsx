@@ -6,8 +6,21 @@ import {
 import { DemoFavicon } from '@/components/DemoFavicon';
 import { DemoBrowserFrame } from '@/components/DemoBrowserChrome';
 import { assetPath, DEMO_MEDIA } from '@/lib/demoScenarioAssets/helpers';
-import { VignetteChrome, ProviderChip, TrooperMark } from './shared';
+import { VignetteChrome, TrooperMark } from './shared';
 import { CanvasDesktopVisual } from './CanvasDesktopVisual';
+import {
+  CodingHarnessVisual,
+  CodingBoardVisual,
+  CodingMemoryVisual,
+  CodingCanvasVisual,
+} from './CodingMarketingVisuals';
+
+export {
+  CodingHarnessVisual,
+  CodingBoardVisual,
+  CodingMemoryVisual,
+  CodingCanvasVisual,
+};
 
 function ToolRow({ label, detail, done }: { label: string; detail: string; done?: boolean }) {
   return (
@@ -15,61 +28,6 @@ function ToolRow({ label, detail, done }: { label: string; detail: string; done?
       {done ? <Check size={12} className="text-trooper shrink-0" /> : <Loader2 size={12} className="animate-spin text-[#3f6b00] shrink-0" />}
       <span className="font-mono font-semibold text-stone-800">{label}</span>
       <span className="truncate text-stone-400">{detail}</span>
-    </div>
-  );
-}
-
-/* ─── Coding: multi-agent harness with provider logos ─── */
-export function CodingHarnessVisual() {
-  const lanes = [
-    { provider: 'Codex', agent: 'Leo', task: 'parser.ts patch', tools: ['apply_patch', 'exec tests'] },
-    { provider: 'OpenCode', agent: 'Leo', task: 'etl/dedupe.ts', tools: ['apply_patch'] },
-    { provider: 'Claude Code', agent: 'Ren', task: 'parser tests', tools: ['write_file', 'exec tests'] },
-  ];
-
-  return (
-    <VignetteChrome label="trooper · harness">
-      <div className="grid grid-cols-3 divide-x divide-stone-100 bg-white min-h-[280px]">
-        {lanes.map((lane) => (
-          <div key={lane.provider} className="flex flex-col">
-            <div className="flex items-center gap-2 border-b border-stone-100 px-2.5 py-2 bg-stone-50/80">
-              <ProviderChip provider={lane.provider} size={14} />
-              <span className="text-[10px] font-bold text-stone-700 truncate">{lane.provider}</span>
-            </div>
-            <div className="flex-1 p-2.5">
-              <div className="text-[10px] font-semibold text-stone-800 mb-1">{lane.task}</div>
-              <div className="text-[9px] text-stone-400 mb-2">{lane.agent} · in progress</div>
-              <div className="rounded-lg border border-stone-100 bg-[#FAF9F6] p-2 space-y-0.5">
-                {lane.tools.map((t) => (
-                  <ToolRow key={t} label={t} detail="traced" done={t.includes('exec') || t.includes('preview')} />
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-3 py-2">
-        <span className="font-mono text-[10px] text-stone-500">3 agents · your subscriptions</span>
-        <span className="font-mono text-[10px] text-trooper-700">Live diffs</span>
-      </div>
-    </VignetteChrome>
-  );
-}
-
-/* ─── Coding: Canvas — diff, CI log, PR bundle (draggable) ─── */
-function MiniDiffTile() {
-  return (
-    <div className="flex h-full flex-col bg-white text-[7px] leading-tight">
-      <div className="flex items-center gap-1 border-b border-stone-100 px-1.5 py-1 bg-stone-50">
-        <span className="font-mono font-semibold text-stone-700 truncate flex-1">parser.ts</span>
-        <span className="rounded bg-emerald-50 px-1 text-emerald-700 font-semibold">+3</span>
-        <span className="rounded bg-red-50 px-1 text-red-600 font-semibold">−1</span>
-      </div>
-      <div className="font-mono overflow-hidden">
-        <div className="flex bg-red-50/60"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">12</span><span className="w-3 text-red-500 text-center">−</span><span className="truncate text-red-800/80">.map(line =&gt; line.trim());</span></div>
-        <div className="flex bg-emerald-50/70"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">13</span><span className="w-3 text-emerald-600 text-center">+</span><span className="truncate text-emerald-800">.filter(Boolean);</span></div>
-        <div className="flex"><span className="w-4 shrink-0 text-right text-stone-400 px-0.5">14</span><span className="w-3 text-transparent"> </span><span className="truncate text-stone-500">return rows.map(parseRow);</span></div>
-      </div>
     </div>
   );
 }
@@ -97,15 +55,15 @@ function MiniMarkdownBrief() {
     { t: 'status', text: 'Awaiting brand review' },
   ];
   return (
-    <div className="h-full overflow-hidden bg-white p-2 text-[7px] leading-snug">
+    <div className="min-h-full overflow-y-auto bg-white p-2.5 text-[8px] leading-relaxed">
       {lines.map((line, i) => (
         <div
           key={i}
           className={
-            line.t === 'heading' ? 'mb-0.5 font-semibold text-stone-800'
-              : line.t === 'muted' ? 'mb-1 text-stone-400'
-                : line.t === 'bullet' ? 'truncate text-stone-600'
-                  : line.t === 'status' ? 'mt-1 font-medium text-[#3f6b00]'
+            line.t === 'heading' ? 'mb-1 text-[9px] font-semibold text-stone-800'
+              : line.t === 'muted' ? 'mb-1.5 text-stone-400'
+                : line.t === 'bullet' ? 'text-stone-600'
+                  : line.t === 'status' ? 'mt-2 font-medium text-[#3f6b00]'
                     : 'text-stone-600'
           }
         >
@@ -156,43 +114,6 @@ function MiniVideoTile() {
   );
 }
 
-export function CodingBoardVisual() {
-  return (
-    <CanvasDesktopVisual
-      windows={[
-        {
-          id: 'parser',
-          title: 'src/parser.ts.diff',
-          x: 12,
-          y: 10,
-          w: 190,
-          h: 118,
-          body: <MiniDiffTile />,
-        },
-        {
-          id: 'ci',
-          title: 'logs/ci-integration.log',
-          x: 108,
-          y: 36,
-          w: 190,
-          h: 100,
-          body: <div className="bg-stone-900 p-2 font-mono text-[8px] text-green-400">✓ 13 passed · CI green</div>,
-        },
-        {
-          id: 'pr',
-          title: 'pull-requests/418-body.md',
-          x: 56,
-          y: 132,
-          w: 210,
-          h: 108,
-          accent: true,
-          body: <div className="p-2 text-[9px] leading-snug text-stone-600">Parser hotfix · merge gate · Linear linked</div>,
-        },
-      ]}
-    />
-  );
-}
-
 export function CanvasBoardVisual() {
   const campaignSrc = assetPath('marketing', 'campaign.html');
   return (
@@ -204,8 +125,8 @@ export function CanvasBoardVisual() {
           title: 'content/q2-campaign-brief.md',
           x: 22,
           y: 16,
-          w: 168,
-          h: 120,
+          w: 182,
+          h: 148,
           body: <MiniMarkdownBrief />,
         },
         {
@@ -213,8 +134,8 @@ export function CanvasBoardVisual() {
           title: 'landing/campaign.html',
           x: 148,
           y: 28,
-          w: 200,
-          h: 118,
+          w: 224,
+          h: 142,
           body: <MiniBrowserTile url="northstar.io/q2" src={campaignSrc} faviconDomain="northstar.io" />,
         },
         {
@@ -222,8 +143,8 @@ export function CanvasBoardVisual() {
           title: 'creative/linkedin-carousel.png',
           x: 52,
           y: 132,
-          w: 164,
-          h: 108,
+          w: 178,
+          h: 124,
           body: <MiniCarouselTile />,
         },
         {
@@ -231,8 +152,8 @@ export function CanvasBoardVisual() {
           title: 'video/social-cut.mp4',
           x: 196,
           y: 108,
-          w: 176,
-          h: 112,
+          w: 192,
+          h: 128,
           accent: true,
           body: <MiniVideoTile />,
         },
