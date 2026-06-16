@@ -90,7 +90,6 @@ export const whatsappScenario: DemoScenario = {
     { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'deliver', name: 'tickets/whatsapp-support-881.md', delay: 450 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },
     { type: 'closeTaskModal', delay: 1800 },

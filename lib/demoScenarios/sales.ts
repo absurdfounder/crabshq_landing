@@ -120,7 +120,6 @@ export const salesScenario: DemoScenario = {
     { type: 'toolDone', id: 't3', delay: 350 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'sales/acme-outreach.md', delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Outreach ready — approve before send.', time: '15:25', delay: 450 },
     { type: 'moveTask', taskId: 2, col: 'review', delay: 400 },

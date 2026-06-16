@@ -1,6 +1,7 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
+import { canvasFeatureSection } from '@/lib/marketingFeatures';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -150,6 +151,7 @@ const teamPages: Record<string, TeamPageContent> = {
         intro: 'Agents ship HTML previews, generated social assets, and screen recordings — all attached to the same campaign ticket.',
         visual: 'campaign-pipeline',
       },
+      canvasFeatureSection('04'),
     ],
     title: 'Trooper for Marketing',
     titleAccent: 'campaigns on mission',
@@ -211,6 +213,7 @@ const teamPages: Record<string, TeamPageContent> = {
         intro: 'Inbound leads become qualified opportunities with research, outreach drafts, and CRM updates — all ticket-traced.',
         visual: 'sales-pipeline',
       },
+      canvasFeatureSection('04'),
     ],
     title: 'Trooper for Sales',
     titleAccent: 'pipeline never stalls',
@@ -272,6 +275,7 @@ const teamPages: Record<string, TeamPageContent> = {
         intro: 'Agents prep redlines and summaries — counsel approves before anything leaves the firm.',
         visual: 'legal-review',
       },
+      canvasFeatureSection('04'),
     ],
     title: 'Trooper for Legal Teams',
     titleAccent: 'prep, not practice of law',
@@ -333,6 +337,7 @@ const teamPages: Record<string, TeamPageContent> = {
         intro: 'Triage, rollback, and postmortem — every step logged on the ticket thread.',
         visual: 'engineering-incident',
       },
+      canvasFeatureSection('04'),
     ],
     title: 'Trooper for Engineering',
     titleAccent: 'that ships',
@@ -371,6 +376,7 @@ const teamPages: Record<string, TeamPageContent> = {
         intro: 'Reconciliation, access reviews, backups, and budget reports — routines that run while you command.',
         visual: 'ops-runbook',
       },
+      canvasFeatureSection('04'),
     ],
     title: 'Trooper for Operations',
     titleAccent: 'always on',

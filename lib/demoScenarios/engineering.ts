@@ -128,7 +128,6 @@ export const engineeringScenario: DemoScenario = {
     { type: 'toolDone', id: 't4', delay: 350 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'ops/incident-report.md', delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Postmortem ready for review.', time: '08:20', delay: 450 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },

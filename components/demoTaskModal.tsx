@@ -539,10 +539,7 @@ export function DemoTaskModal({
               <DemoCanvasView
                 artifacts={canvasArtifacts}
                 activeName={artifact?.name}
-                onSelect={(a) => {
-                  onWorkspaceModeChange?.('ide');
-                  onSelectArtifact?.(a.name);
-                }}
+                onSelect={(a) => onSelectArtifact?.(a.name)}
               />
             ) : (
               <DemoArtifactPanel artifact={artifact} />

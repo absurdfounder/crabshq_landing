@@ -101,7 +101,6 @@ export const operationsScenario: DemoScenario = {
     { type: 'subtask', id: 's3', status: 'running', delay: 280 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'ops/weekly-checklist.md', delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'ops/weekly-checklist.md', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Checklist 3/4 complete — budget report awaiting approval.', time: '09:04', delay: 450 },

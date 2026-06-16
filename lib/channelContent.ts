@@ -1,6 +1,7 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
+import { canvasFeatureSection } from '@/lib/marketingFeatures';
 import {
   allChannelSlugs,
   getChannelBySlug,
@@ -96,6 +97,7 @@ const slack = buildChannelPage({
       intro: 'Every assignment becomes a ticket with full context — chat stays fast, ops stays auditable.',
       visual: 'slack-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'without leaving your workspace',
   description:
@@ -134,6 +136,7 @@ const whatsapp = buildChannelPage({
       intro: 'Support and command from your pocket — agents execute on your server while you approve from mobile.',
       visual: 'whatsapp-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'from your pocket',
   description:
@@ -172,6 +175,7 @@ const telegram = buildChannelPage({
       intro: 'DMs from Telegram, Discord, Signal, or iMessage all route to the same traced workforce.',
       visual: 'messaging-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'via your bot',
   description:
@@ -197,6 +201,7 @@ const discord = buildChannelPage({
       intro: 'Community channels and DMs become first-class missions on your Trooper board.',
       visual: 'messaging-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'in your server',
   description:
@@ -222,6 +227,7 @@ const signal = buildChannelPage({
       intro: 'Signal keeps messages private while Trooper handles execution on your runtime.',
       visual: 'messaging-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'with end-to-end encryption',
   description:
@@ -247,6 +253,7 @@ const imessage = buildChannelPage({
       intro: 'Bridge Apple messaging to Trooper tickets without adding another app.',
       visual: 'messaging-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'through your Mac relay',
   description:
@@ -272,6 +279,7 @@ const email = buildChannelPage({
       intro: 'RFPs, support threads, and follow-ups parsed into missions with research and draft workflows.',
       visual: 'email-routing',
     },
+    canvasFeatureSection('04'),
   ],
   titleAccent: 'via IMAP and SMTP',
   description:

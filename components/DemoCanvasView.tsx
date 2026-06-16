@@ -157,15 +157,9 @@ export function DemoCanvasView({
                 key={key}
                 role="button"
                 tabIndex={0}
-                onMouseDown={() => {
-                  setActiveKey(key);
-                  onSelect?.(artifact);
-                }}
+                onMouseDown={() => setActiveKey(key)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    setActiveKey(key);
-                    onSelect?.(artifact);
-                  }
+                  if (e.key === 'Enter' || e.key === ' ') setActiveKey(key);
                 }}
                 style={{
                   position: 'absolute',

@@ -177,7 +177,6 @@ export const marketingScenario: DemoScenario = {
     { type: 'subtask', id: 's7', status: 'running', delay: 260 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'content/q2-campaign-brief.md', delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'content/q2-campaign-brief.md', delay: 220 },
     { type: 'subtask', id: 's7', status: 'done', delay: 280 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Campaign pack on Canvas — approve before we schedule.', time: '11:12', delay: 450 },

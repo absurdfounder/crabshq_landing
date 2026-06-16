@@ -673,7 +673,6 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         break;
       }
       case 'openArtifact':
-        setModalWorkspaceMode('ide');
         setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
         break;
       case 'setWorkspaceMode':

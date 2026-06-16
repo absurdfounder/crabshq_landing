@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { DemoFavicon } from '@/components/DemoFavicon';
 import { VignetteChrome, ProviderChip, TrooperMark } from './shared';
+import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 
 function ToolRow({ label, detail, done }: { label: string; detail: string; done?: boolean }) {
   return (
@@ -53,36 +54,96 @@ export function CodingHarnessVisual() {
   );
 }
 
-/* ─── Coding: Canvas — diff, CI log, PR bundle (no marketing assets) ─── */
+/* ─── Coding: Canvas — diff, CI log, PR bundle (draggable) ─── */
 export function CodingBoardVisual() {
   return (
-    <VignetteChrome label="trooper · canvas">
-      <div className="relative bg-[#E7E5E4] min-h-[280px] p-4 overflow-hidden">
-        <div className="absolute left-3 top-3 w-[42%] rounded-lg border border-stone-200 bg-white shadow-lg overflow-hidden">
-          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-stone-50">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
-            <span className="font-mono text-[8px] text-stone-500 truncate">parser.ts.diff</span>
-          </div>
-          <div className="bg-stone-900 p-2 font-mono text-[8px] leading-relaxed">
-            <div className="text-red-400/80">- .map(line =&gt; line.trim());</div>
-            <div className="text-green-400/90">+ .filter(Boolean);</div>
-          </div>
-        </div>
-        <div className="absolute left-[28%] top-10 w-[42%] rounded-lg border border-stone-200 bg-white shadow-lg overflow-hidden">
-          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-stone-50">
-            <span className="font-mono text-[8px] text-stone-500 truncate">ci-integration.log</span>
-          </div>
-          <div className="bg-stone-900 p-2 font-mono text-[8px] text-green-400">✓ 13 passed · CI green</div>
-        </div>
-        <div className="absolute left-[14%] top-[52%] w-[48%] rounded-lg border border-trooper/40 bg-white shadow-lg overflow-hidden ring-1 ring-trooper/20">
-          <div className="flex items-center gap-1.5 border-b border-stone-100 px-2 py-1 bg-trooper-50">
-            <span className="font-mono text-[8px] text-trooper-800 truncate">PR #418-body.md</span>
-          </div>
-          <div className="p-2 text-[9px] text-stone-600 leading-snug">Parser hotfix · merge gate</div>
-        </div>
-        <div className="absolute bottom-3 right-3 rounded-full bg-trooper px-2.5 py-1 text-[9px] font-bold text-white">Canvas · 4 artifacts</div>
-      </div>
-    </VignetteChrome>
+    <CanvasDesktopVisual
+      windows={[
+        {
+          id: 'parser',
+          title: 'src/parser.ts.diff',
+          x: 12,
+          y: 10,
+          w: 190,
+          h: 118,
+          body: (
+            <div className="bg-stone-900 p-2 font-mono text-[8px] leading-relaxed">
+              <div className="text-red-400/80">- .map(line =&gt; line.trim());</div>
+              <div className="text-green-400/90">+ .filter(Boolean);</div>
+            </div>
+          ),
+        },
+        {
+          id: 'ci',
+          title: 'logs/ci-integration.log',
+          x: 108,
+          y: 36,
+          w: 190,
+          h: 100,
+          body: <div className="bg-stone-900 p-2 font-mono text-[8px] text-green-400">✓ 13 passed · CI green</div>,
+        },
+        {
+          id: 'pr',
+          title: 'pull-requests/418-body.md',
+          x: 56,
+          y: 132,
+          w: 210,
+          h: 108,
+          accent: true,
+          body: <div className="p-2 text-[9px] leading-snug text-stone-600">Parser hotfix · merge gate · Linear linked</div>,
+        },
+      ]}
+    />
+  );
+}
+
+export function CanvasBoardVisual() {
+  return (
+    <CanvasDesktopVisual
+      windows={[
+        {
+          id: 'brief',
+          title: 'campaign-brief.md',
+          x: 14,
+          y: 12,
+          w: 188,
+          h: 112,
+          body: <div className="p-2 text-[9px] leading-snug text-stone-600">Q2 campaign pack · 4 deliverables ready for review</div>,
+        },
+        {
+          id: 'preview',
+          title: 'landing/campaign.html',
+          x: 98,
+          y: 28,
+          w: 196,
+          h: 104,
+          body: <div className="flex h-full items-center justify-center bg-stone-900 text-[8px] text-stone-400">Live HTML preview</div>,
+        },
+        {
+          id: 'asset',
+          title: 'creative/carousel.png',
+          x: 40,
+          y: 128,
+          w: 176,
+          h: 100,
+          body: <div className="h-full bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">LinkedIn carousel</div>,
+        },
+        {
+          id: 'video',
+          title: 'video/social-cut.mp4',
+          x: 168,
+          y: 118,
+          w: 168,
+          h: 96,
+          accent: true,
+          body: (
+            <div className="flex h-full items-center justify-center bg-stone-900">
+              <Play size={14} className="text-white" fill="white" />
+            </div>
+          ),
+        },
+      ]}
+    />
   );
 }
 

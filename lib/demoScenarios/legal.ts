@@ -113,7 +113,6 @@ export const legalScenario: DemoScenario = {
     { type: 'openArtifact', key: 'legal/msa-redline.diff', delay: 280 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'legal/risk-table.md', delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Redline ready — counsel approval required before counter.', time: '16:44', delay: 450 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 400 },

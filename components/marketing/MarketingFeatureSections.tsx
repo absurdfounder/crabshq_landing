@@ -7,6 +7,7 @@ import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
+  CanvasBoardVisual,
   CampaignPipelineVisual,
   SalesPipelineVisual,
   SlackRoutingVisual,
@@ -21,6 +22,7 @@ import {
 const VISUALS = {
   'coding-harness': CodingHarnessVisual,
   'coding-board': CodingBoardVisual,
+  'canvas-desktop': CanvasBoardVisual,
   'campaign-pipeline': CampaignPipelineVisual,
   'sales-pipeline': SalesPipelineVisual,
   'slack-routing': SlackRoutingVisual,
@@ -161,6 +163,7 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
               </div>
             );
           })}
+          <div className="hidden lg:block h-[45vh]" aria-hidden />
         </div>
       </div>
     </section>

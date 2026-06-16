@@ -168,7 +168,6 @@ export const launchScenario: DemoScenario = {
     { type: 'subtask', id: 's6', status: 'running', delay: 280 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'seo-launch-report.md', delay: 500 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'seo-launch-report.md', delay: 200 },
     { type: 'subtask', id: 's6', status: 'done', delay: 350 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Launch checklist on Canvas — approve meta + copy before deploy.', time: '14:58', tags: [{ label: 'launch-day', type: 'goal' }, { label: 'product-launch', type: 'channel' }], delay: 500 },

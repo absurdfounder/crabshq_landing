@@ -215,7 +215,6 @@ export const codingScenario: DemoScenario = {
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
     { type: 'deliver', name: 'reports/hotfix-bundle.md', delay: 480 },
     { type: 'openArtifact', key: 'reports/hotfix-bundle.md', delay: 250 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'subtask', id: 's6', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'PR bundle on Canvas — diffs, CI log, and PR body. Waiting on merge approval.', time: '09:22', delay: 480 },
     { type: 'moveTask', taskId: 1, col: 'review', delay: 420 },

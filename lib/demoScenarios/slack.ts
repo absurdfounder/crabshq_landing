@@ -119,7 +119,6 @@ export const slackScenario: DemoScenario = {
     { type: 'toolDone', id: 't4', delay: 350 },
     { type: 'deliver', name: 'tickets/slack-lead-4421.md', delay: 450 },
     { type: 'openCanvas', keys: CANVAS_KEYS, delay: 450 },
-    { type: 'setWorkspaceMode', mode: 'ide', delay: 200 },
     { type: 'openArtifact', key: 'tickets/slack-lead-4421.md', delay: 200 },
     { type: 'subtask', id: 's3', status: 'done', delay: 300 },
     { type: 'modalMsg', sender: 'Jordan', text: 'Ready to confirm in Slack — approve send.', time: '14:05', delay: 450 },

@@ -159,7 +159,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${robotoMono.variable} ${silkscreen.variable} ${funneldisplay.variable} bg-gray-50 font-sans antialiased text-slate-900 tracking-tight`}
       >
-        <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+        <div className="flex flex-col min-h-screen">
           {children}
           <SchemaMarkup />
         </div>
