@@ -372,10 +372,7 @@ const Pricing: React.FC = () => {
             <Header />
 
             <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white">
-                {/* SimplePricing section */}
-                <div className="pt-16">
-                    <SimplePricing />
-                </div>
+                <SimplePricing showFullPricingLink={false} />
             </SectionShell>
 
             <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-slate-50">
