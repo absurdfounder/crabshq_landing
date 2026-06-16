@@ -393,6 +393,341 @@ const teamPages: Record<string, TeamPageContent> = {
       { title: 'Anomaly surfacing', description: 'Threshold breaches and missing data flagged before the morning standup.' },
     ],
   }),
+
+  design: buildTeamPage({
+    slug: 'design',
+    demoId: 'design',
+    featureSections: [
+      {
+        eyebrow: 'Pipeline',
+        eyebrowNumber: '03',
+        tag: 'BRAND OPS',
+        title: 'Figma frames, exports, and',
+        titleHighlight: 'brand checklists traced.',
+        intro: 'Agents pull frames, export assets, and compile brand guidelines — all on one ticket with review gates.',
+        visual: 'design-pipeline',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Design',
+    titleAccent: 'on brand',
+    description: 'Creative design and brand assets at scale — mockups, exports, and brand checks with full traceability.',
+    overviewTitle: 'Creative ops without the handoffs',
+    overviewParagraphs: [
+      'Design agents pull Figma frames, export assets, and run brand checklist reviews on every deliverable.',
+      'Brand tokens, typography, and color rules live in org memory so variations stay consistent.',
+      'Design leads approve before anything ships — agents handle iteration and export drudgery.',
+    ],
+    benefits: [
+      { title: 'Figma-native workflows', description: 'Frame exports, asset bundles, and spec notes attached to traced tickets.' },
+      { title: 'Brand guardrails', description: 'Token diffs and checklist gates catch off-brand output before review.' },
+      { title: 'Canvas review', description: 'Mockups, PNG carousels, and guideline diffs visible side by side.' },
+    ],
+    extraSection: {
+      eyebrow: 'Design ops',
+      eyebrowNumber: '05',
+      title: 'Design missions Trooper runs',
+      useCases: [
+        { title: 'Brand refresh tickets', description: 'Frame audit → asset export → token diff → checklist sign-off in one mission.' },
+        { title: 'Asset resizing', description: 'Agents batch-export social, web, and print sizes from source frames.' },
+        { title: 'Creative QA', description: 'Automated brand checklist runs before human design lead review.' },
+        { title: 'Handoff packs', description: 'HTML previews, PNG carousels, and spec docs bundled on Canvas.' },
+      ],
+    },
+  }),
+
+  'customer-support': buildTeamPage({
+    slug: 'customer-support',
+    demoId: 'support',
+    featureSections: [
+      {
+        eyebrow: 'Queue',
+        eyebrowNumber: '03',
+        tag: 'SUPPORT OPS',
+        title: 'Tickets triaged, KB matched,',
+        titleHighlight: 'replies held for approval.',
+        intro: 'P1 tickets get classified, knowledge-base articles matched, and reply drafts traced — nothing sends without sign-off.',
+        visual: 'support-queue',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Customer Support',
+    titleAccent: '24/7',
+    description: '24/7 support and customer success — triage, KB lookup, and reply drafts with human approval gates.',
+    overviewTitle: 'Support without the queue backlog',
+    overviewParagraphs: [
+      'Agents classify tickets, search your knowledge base, and draft replies with full context from the customer thread.',
+      'Every interaction ties to a traced ticket — escalation paths and audit trails built in.',
+      'Humans handle sensitive cases; agents handle volume and first-response speed.',
+    ],
+    benefits: [
+      { title: 'Zendesk-style triage', description: 'Priority, tags, and routing applied automatically from ticket content.' },
+      { title: 'KB-aware replies', description: 'Agents match articles and cite fixes before drafting responses.' },
+      { title: 'Approval gates', description: 'Reply drafts held for human review on sensitive or high-impact tickets.' },
+    ],
+    extraSection: {
+      eyebrow: 'Support ops',
+      eyebrowNumber: '05',
+      title: 'Support missions Trooper runs',
+      useCases: [
+        { title: 'P1 triage', description: 'Classify severity, assign owner, and start KB lookup in seconds.' },
+        { title: 'Reply drafting', description: 'Context-aware drafts from thread history and knowledge base articles.' },
+        { title: 'Escalation routing', description: 'Edge cases flagged to humans with full thread and tool trace attached.' },
+        { title: 'CSAT follow-ups', description: 'Post-resolution surveys and follow-up tasks scheduled automatically.' },
+      ],
+    },
+  }),
+
+  finance: buildTeamPage({
+    slug: 'finance',
+    demoId: 'finance',
+    featureSections: [
+      {
+        eyebrow: 'Close',
+        eyebrowNumber: '03',
+        tag: 'FINANCE OPS',
+        title: 'Month-end close on autopilot',
+        intro: 'QuickBooks pulls, variance reports, and reconciliation diffs — traced through close checklist.',
+        visual: 'finance-close',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Finance',
+    titleAccent: 'with accuracy',
+    description: 'Financial planning and analysis — month-end close, reconciliations, and variance reports with approval gates.',
+    overviewTitle: 'Numbers without manual drudgery',
+    overviewParagraphs: [
+      'Finance agents pull ledger data, build variance reports, and flag reconciliation discrepancies.',
+      'Sensitive actions require your approval before journals post or reports distribute.',
+      'Full audit trails satisfy compliance and month-end review questions.',
+    ],
+    benefits: [
+      { title: 'Close checklists', description: 'Recurring month-end routines run on schedule with step logging.' },
+      { title: 'Reconciliation diffs', description: 'Discrepancies surfaced with side-by-side diffs before sign-off.' },
+      { title: 'QuickBooks integration', description: 'Ledger pulls and report exports wired through Composio skills.' },
+    ],
+    extraSection: {
+      eyebrow: 'Finance ops',
+      eyebrowNumber: '05',
+      title: 'Finance missions Trooper runs',
+      useCases: [
+        { title: 'Month-end close', description: 'Pull → reconcile → variance report → approval in one traced mission.' },
+        { title: 'Budget variance', description: 'Automated variance reports with anomaly flags for FP&A review.' },
+        { title: 'AP reconciliation', description: 'Vendor statement matching with diff highlights for exceptions.' },
+        { title: 'Board prep', description: 'Summary decks and metric snapshots compiled from live data pulls.' },
+      ],
+    },
+  }),
+
+  'business-development': buildTeamPage({
+    slug: 'business-development',
+    demoId: 'bd',
+    featureSections: [
+      {
+        eyebrow: 'Pipeline',
+        eyebrowNumber: '03',
+        tag: 'PARTNERSHIP OPS',
+        title: 'Partner research, briefs, and',
+        titleHighlight: 'intro emails traced.',
+        intro: 'BD agents research partners, write briefs, and draft mutual intro emails — held for approval before send.',
+        visual: 'bd-pipeline',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Business Development',
+    titleAccent: 'that scouts',
+    description: 'Partnership and growth opportunities — research, outreach briefs, and CRM notes with human command.',
+    overviewTitle: 'Partnerships without the research grind',
+    overviewParagraphs: [
+      'BD agents research target partners, compile briefs, and draft intro emails with personalized hooks.',
+      'CRM notes and pipeline stages update automatically as missions progress.',
+      'You approve outreach before anything sends externally.',
+    ],
+    benefits: [
+      { title: 'Partner research', description: 'Multi-source intel compiled into structured briefs on traced tickets.' },
+      { title: 'Outreach drafts', description: 'Personalized intro emails held for approval with full context attached.' },
+      { title: 'CRM sync', description: 'HubSpot and Airtable updates logged with every agent action.' },
+    ],
+    extraSection: {
+      eyebrow: 'BD ops',
+      eyebrowNumber: '05',
+      title: 'BD missions Trooper runs',
+      useCases: [
+        { title: 'Partner scouting', description: 'Research → fit score → brief → outreach draft in one pipeline.' },
+        { title: 'Mutual intros', description: 'Warm intro emails drafted with context from both sides.' },
+        { title: 'Pipeline hygiene', description: 'Stale opportunities flagged and follow-up tasks created automatically.' },
+        { title: 'Event lead capture', description: 'Conference contacts researched and routed into CRM with notes.' },
+      ],
+    },
+  }),
+
+  research: buildTeamPage({
+    slug: 'research',
+    demoId: 'research',
+    featureSections: [
+      {
+        eyebrow: 'Intel',
+        eyebrowNumber: '03',
+        tag: 'COMPETITIVE OPS',
+        title: 'Multi-source research, matrix,',
+        titleHighlight: 'and exec briefs traced.',
+        intro: 'Agents gather sources, build comparison matrices, and synthesize intel briefs for GTM review.',
+        visual: 'research-intel',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Research',
+    titleAccent: 'intel that compounds',
+    description: 'Market research and data analysis — competitive intel, synthesis briefs, and structured deliverables.',
+    overviewTitle: 'Research without the tab sprawl',
+    overviewParagraphs: [
+      'Research agents scrape sources, build comparison matrices, and write executive briefs on traced tickets.',
+      'Intel compounds in org memory — past briefs inform the next competitive cycle.',
+      'Strategy leads approve before briefs distribute to GTM or product.',
+    ],
+    benefits: [
+      { title: 'Multi-source synthesis', description: 'Notion, Airtable, and web research merged into structured briefs.' },
+      { title: 'Competitive matrices', description: 'Feature and pricing comparisons updated on schedule.' },
+      { title: 'Exec-ready output', description: 'Briefs formatted for leadership review with clear recommendations.' },
+    ],
+    extraSection: {
+      eyebrow: 'Research ops',
+      eyebrowNumber: '05',
+      title: 'Research missions Trooper runs',
+      useCases: [
+        { title: 'Competitive intel', description: 'Source notes → matrix → exec brief in one traced mission.' },
+        { title: 'Market sizing', description: 'Data pulls and TAM/SAM estimates with cited sources.' },
+        { title: 'Win/loss analysis', description: 'Deal postmortems synthesized into actionable patterns.' },
+        { title: 'Trend monitoring', description: 'Scheduled patrols flag competitor moves and market shifts.' },
+      ],
+    },
+  }),
+
+  security: buildTeamPage({
+    slug: 'security',
+    demoId: 'security',
+    featureSections: [
+      {
+        eyebrow: 'Audit',
+        eyebrowNumber: '03',
+        tag: 'SECOPS',
+        title: 'Log review, vuln scans, and',
+        titleHighlight: 'patch diffs traced.',
+        intro: 'Security agents run audits, surface findings, and deploy patches — with remediation tickets and human review.',
+        visual: 'security-audit',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Security',
+    titleAccent: 'audit ready',
+    description: 'Security audits and threat detection — log review, vulnerability scans, and remediation with full traceability.',
+    overviewTitle: 'SecOps without the alert fatigue',
+    overviewParagraphs: [
+      'Security agents run production audits, review logs, and deploy critical patches with traced diffs.',
+      'Findings compile into structured reports with severity tiers and remediation steps.',
+      'Critical actions require human approval; routine patrols run on schedule.',
+    ],
+    benefits: [
+      { title: 'Automated audits', description: 'Scheduled production scans with findings attached to tickets.' },
+      { title: 'Patch deployment', description: 'CVE fixes deployed with unified diffs and rollout verification.' },
+      { title: 'Remediation tracking', description: 'Follow-up tickets for IAM rotation and config hardening.' },
+    ],
+    extraSection: {
+      eyebrow: 'SecOps',
+      eyebrowNumber: '05',
+      title: 'Security missions Trooper runs',
+      useCases: [
+        { title: 'Weekly audit runs', description: 'Log review → findings report → patch diff on one mission.' },
+        { title: 'CVE response', description: 'Critical patches deployed with verification and postmortem notes.' },
+        { title: 'IAM reviews', description: 'Dormant keys and over-privileged roles flagged for rotation.' },
+        { title: 'Compliance prep', description: 'Audit evidence packs compiled from traced agent actions.' },
+      ],
+    },
+  }),
+
+  pr: buildTeamPage({
+    slug: 'pr',
+    demoId: 'pr',
+    featureSections: [
+      {
+        eyebrow: 'Comms',
+        eyebrowNumber: '03',
+        tag: 'PR OPS',
+        title: 'Press releases, media lists, and',
+        titleHighlight: 'embargo checklists traced.',
+        intro: 'PR agents draft releases, update media contacts, and compile announcement checklists — held for comms lead approval.',
+        visual: 'pr-comms',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for PR',
+    titleAccent: 'launch ready',
+    description: 'Public relations and media management — press releases, media lists, and announcement coordination.',
+    overviewTitle: 'Comms without the last-minute scramble',
+    overviewParagraphs: [
+      'PR agents draft press releases, maintain media contact lists, and compile embargo checklists on traced tickets.',
+      'Embargo and approval gates ensure nothing wires before comms lead sign-off.',
+      'Launch coordination ties PR assets to the same mission timeline as product and marketing.',
+    ],
+    benefits: [
+      { title: 'Release drafting', description: 'Press releases with CEO quotes held for approval before wire send.' },
+      { title: 'Media list management', description: 'Tiered contact lists updated and synced to outreach tools.' },
+      { title: 'Embargo coordination', description: 'Checklists track approval gates through launch day.' },
+    ],
+    extraSection: {
+      eyebrow: 'PR ops',
+      eyebrowNumber: '05',
+      title: 'PR missions Trooper runs',
+      useCases: [
+        { title: 'Funding announcements', description: 'Release → media list → embargo checklist in one mission.' },
+        { title: 'Product launches', description: 'Press kit assembly with quotes, assets, and timing coordination.' },
+        { title: 'Crisis comms prep', description: 'Holding statements drafted and held for executive review.' },
+        { title: 'Media monitoring', description: 'Coverage tracking with follow-up pitch tasks for gaps.' },
+      ],
+    },
+  }),
+
+  growth: buildTeamPage({
+    slug: 'growth',
+    demoId: 'growth',
+    featureSections: [
+      {
+        eyebrow: 'Experiments',
+        eyebrowNumber: '03',
+        tag: 'GROWTH OPS',
+        title: 'Funnel metrics, experiment docs,',
+        titleHighlight: 'and rollout checklists traced.',
+        intro: 'Growth agents pull funnel metrics, document experiment results, and compile rollout checklists for approval.',
+        visual: 'growth-experiments',
+      },
+      canvasFeatureSection('04'),
+    ],
+    title: 'Trooper for Growth',
+    titleAccent: 'experiments that ship',
+    description: 'User acquisition and retention — experiment cycles, funnel analysis, and rollout coordination.',
+    overviewTitle: 'Growth without the spreadsheet chaos',
+    overviewParagraphs: [
+      'Growth agents pull analytics, document A/B results, and compile rollout checklists on traced tickets.',
+      'Winning variants get deployment checklists with post-rollout monitoring tasks.',
+      'Growth leads approve before 100% rollout or budget shifts.',
+    ],
+    benefits: [
+      { title: 'Experiment tracking', description: 'Hypothesis, metrics, and statistical significance documented per mission.' },
+      { title: 'Funnel analysis', description: 'Sheets pulls and conversion breakdowns attached to tickets.' },
+      { title: 'Rollout gates', description: 'Checklists ensure engineering deploy and monitoring before full rollout.' },
+    ],
+    extraSection: {
+      eyebrow: 'Growth ops',
+      eyebrowNumber: '05',
+      title: 'Growth missions Trooper runs',
+      useCases: [
+        { title: 'Landing experiments', description: 'Metrics pull → experiment doc → rollout checklist in one cycle.' },
+        { title: 'Activation loops', description: 'Onboarding funnel analysis with recommended next tests.' },
+        { title: 'Retention campaigns', description: 'Cohort analysis and re-engagement task creation.' },
+        { title: 'Channel attribution', description: 'Multi-touch reports synthesized for budget allocation review.' },
+      ],
+    },
+  }),
 };
 
 /** Slugs with rich teamContent — others fall back to subpageContent */

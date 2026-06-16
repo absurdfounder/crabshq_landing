@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import SubpageLayout from '@/components/marketing/SubpageLayout';
 import TeamSubpageLayout from '@/components/marketing/TeamSubpageLayout';
@@ -64,6 +64,8 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export default function TeamPage({ params }: Props) {
+  if (params.slug === 'legal') redirect('/teams/lawyers');
+
   const rich = getTeamPageContent(params.slug);
   if (rich) return <TeamSubpageLayout content={rich} />;
 

@@ -44,7 +44,7 @@ export const OPENCLAW_CHANNELS: ChannelCatalogItem[] = [
     name: 'WhatsApp',
     desc: 'Send and receive messages on WhatsApp via the Business API.',
     setupVideoUrl: 'https://example.com/Trooper-setup/whatsapp',
-    icon: 'https://static.whatsapp.net/rsrc.php/v3/yP/r/rYZqPCBaG70.png',
+    icon: 'https://www.whatsapp.com/favicon.ico',
     tokenField: 'whatsappToken',
     tokenLabel: 'Access Token',
     tokenPlaceholder: 'EAAx...',

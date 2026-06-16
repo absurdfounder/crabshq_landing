@@ -12,7 +12,17 @@ export type MarketingVisualId =
   | 'ops-runbook'
   | 'engineering-incident'
   | 'messaging-routing'
-  | 'email-routing';
+  | 'email-routing'
+  | 'design-pipeline'
+  | 'support-queue'
+  | 'finance-close'
+  | 'bd-pipeline'
+  | 'research-intel'
+  | 'security-audit'
+  | 'pr-comms'
+  | 'growth-experiments'
+  | 'browser-serp'
+  | 'launch-ops';
 
 export type MarketingFeatureSection = {
   eyebrow: string;

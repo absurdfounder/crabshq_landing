@@ -51,7 +51,15 @@ export type DemoScenarioId =
   | 'slack'
   | 'whatsapp'
   | 'messaging'
-  | 'email';
+  | 'email'
+  | 'design'
+  | 'support'
+  | 'finance'
+  | 'bd'
+  | 'research'
+  | 'security'
+  | 'pr'
+  | 'growth';
 
 export type DemoScenario = {
   id: DemoScenarioId;

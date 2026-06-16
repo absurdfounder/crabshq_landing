@@ -17,6 +17,16 @@ import {
   EngineeringIncidentVisual,
   MessagingRoutingVisual,
   EmailRoutingVisual,
+  DesignPipelineVisual,
+  SupportQueueVisual,
+  FinanceCloseVisual,
+  BdPipelineVisual,
+  ResearchIntelVisual,
+  SecurityAuditVisual,
+  PrCommsVisual,
+  GrowthExperimentsVisual,
+  BrowserSerpVisual,
+  LaunchOpsVisual,
 } from '@/components/marketing/visuals/MarketingVisuals';
 
 const VISUALS = {
@@ -32,6 +42,16 @@ const VISUALS = {
   'engineering-incident': EngineeringIncidentVisual,
   'messaging-routing': MessagingRoutingVisual,
   'email-routing': EmailRoutingVisual,
+  'design-pipeline': DesignPipelineVisual,
+  'support-queue': SupportQueueVisual,
+  'finance-close': FinanceCloseVisual,
+  'bd-pipeline': BdPipelineVisual,
+  'research-intel': ResearchIntelVisual,
+  'security-audit': SecurityAuditVisual,
+  'pr-comms': PrCommsVisual,
+  'growth-experiments': GrowthExperimentsVisual,
+  'browser-serp': BrowserSerpVisual,
+  'launch-ops': LaunchOpsVisual,
 } as const;
 
 const sectionXPadding = 'px-4 sm:px-6 lg:px-8';

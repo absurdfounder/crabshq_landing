@@ -45,19 +45,39 @@ const TEAM_DEMO_MAP: Record<string, DemoScenarioId> = {
   engineering: 'engineering',
   operations: 'operations',
   legal: 'legal',
-  design: 'marketing',
-  'customer-support': 'messaging',
-  finance: 'operations',
-  'business-development': 'sales',
-  research: 'marketing',
-  security: 'engineering',
-  pr: 'marketing',
-  growth: 'marketing',
+  lawyers: 'legal',
+  coding: 'coding',
+  design: 'design',
+  'customer-support': 'support',
+  finance: 'finance',
+  'business-development': 'bd',
+  research: 'research',
+  security: 'security',
+  pr: 'pr',
+  growth: 'growth',
+};
+
+export const FEATURE_DEMO_MAP: Record<string, DemoScenarioId> = {
+  'ai-workforce': 'launch',
+  'github-integration': 'coding',
+  'task-execution': 'sales',
+  'persistent-memory': 'messaging',
+  'browser-control': 'launch',
+  'system-access': 'engineering',
+  'email-automation': 'email',
+  'skills-plugins': 'marketing',
+  'multi-agent-collaboration': 'coding',
+  'openclaw-powered': 'launch',
+  'chat-interfaces': 'slack',
 };
 
 function buildPage(args: BuildArgs): SubpageContent {
   const base = args.kind === 'feature' ? 'features' : 'teams';
-  const demoId = args.demoId ?? (args.kind === 'team' ? TEAM_DEMO_MAP[args.slug] ?? 'launch' : 'launch');
+  const demoId =
+    args.demoId ??
+    (args.kind === 'team'
+      ? TEAM_DEMO_MAP[args.slug] ?? 'launch'
+      : FEATURE_DEMO_MAP[args.slug] ?? 'task-execution');
   return {
     ...args,
     demoId,
