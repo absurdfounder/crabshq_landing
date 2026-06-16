@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import IntegrationSubpageLayout from '@/components/marketing/IntegrationSubpageLayout';
 import {
   allIntegrationPageSlugs,
-  getIntegrationPage,
+  getIntegrationPageByPageSlug,
   integrationSocialImage,
 } from '@/lib/integrationContent';
 
@@ -14,7 +14,7 @@ export function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: Props): Metadata {
-  const page = getIntegrationPage(params.slug);
+  const page = getIntegrationPageByPageSlug(params.slug);
   if (!page) return {};
   return {
     title: page.meta.title,
@@ -35,8 +35,8 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function IntegrationPage({ params }: Props) {
-  const page = getIntegrationPage(params.slug);
+export default function PluginPage({ params }: Props) {
+  const page = getIntegrationPageByPageSlug(params.slug);
   if (!page) notFound();
   return <IntegrationSubpageLayout content={page} />;
 }

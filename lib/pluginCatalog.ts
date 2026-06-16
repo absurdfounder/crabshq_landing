@@ -32,6 +32,28 @@ export function allPluginSlugs(): string[] {
   return plugins.map((p) => p.slug);
 }
 
+export const PLUGIN_PAGE_SLUG_PREFIX = 'ai_agent_for_';
+
+/** Map catalog plugin id/slug (e.g. "gmail") to public page slug (e.g. "ai_agent_for_gmail"). */
+export function pluginToPageSlug(pluginSlug: string): string {
+  return `${PLUGIN_PAGE_SLUG_PREFIX}${pluginSlug}`;
+}
+
+/** Reverse map: page slug → catalog plugin slug, or undefined if invalid. */
+export function pageSlugToPluginSlug(pageSlug: string): string | undefined {
+  if (!pageSlug.startsWith(PLUGIN_PAGE_SLUG_PREFIX)) return undefined;
+  const pluginSlug = pageSlug.slice(PLUGIN_PAGE_SLUG_PREFIX.length);
+  return bySlug.has(pluginSlug) ? pluginSlug : undefined;
+}
+
+export function allPluginPageSlugs(): string[] {
+  return plugins.map((p) => pluginToPageSlug(p.slug));
+}
+
+export function pluginPagePath(pluginSlug: string): string {
+  return `/plugin/${pluginToPageSlug(pluginSlug)}`;
+}
+
 export function pluginLogoUrl(plugin: PluginCatalogItem): string {
   if (plugin.iconUrl) return plugin.iconUrl;
   if (plugin.composioSlug) return `https://logos.composio.dev/api/${plugin.composioSlug}`;

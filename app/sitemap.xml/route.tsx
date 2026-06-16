@@ -38,7 +38,7 @@ async function loadIntegrations(): Promise<IntegrationOrTemplate[]> {
 const staticPages = [
   { path: '', priority: '1.0', changefreq: 'daily' },
   { path: '/integration', priority: '0.9', changefreq: 'daily' },
-  { path: '/integrations', priority: '0.9', changefreq: 'daily' },
+  { path: '/plugin', priority: '0.9', changefreq: 'daily' },
   { path: '/alternatives', priority: '0.8', changefreq: 'weekly' },
   { path: '/use-cases', priority: '0.8', changefreq: 'weekly' },
   { path: '/pricing', priority: '0.8', changefreq: 'weekly' },
@@ -127,7 +127,7 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
 
   const pluginIntegrationEntries = integrationSlugs.map(slug => `
   <url>
-    <loc>${URL}/integrations/${encodeURIComponent(slug)}</loc>
+    <loc>${URL}/plugin/${encodeURIComponent(slug)}</loc>
     <lastmod>${now}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

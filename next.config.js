@@ -14,6 +14,20 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/integrations',
+        destination: '/plugin',
+        permanent: true,
+      },
+      {
+        source: '/integrations/:slug',
+        destination: '/plugin/ai_agent_for_:slug',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

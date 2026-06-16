@@ -5,6 +5,7 @@ import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { IntegrationPageContent } from '@/lib/integrationContent';
+import { pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
@@ -17,31 +18,29 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
           <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-8">
             <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
 
-            <div className="flex items-start gap-4 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden">
+            <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900 flex items-center gap-3 sm:gap-4">
+              <span className="inline-flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={content.logoUrl}
                   alt={content.catalog.name}
-                  width={36}
-                  height={36}
-                  className="w-9 h-9 object-contain"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 object-contain"
                 />
-              </div>
-              <div>
-                <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900">
-                  {content.title}
-                  {content.titleAccent && (
-                    <>
-                      <br />
-                      <span className="text-slate-500 font-normal">{content.titleAccent}</span>
-                    </>
-                  )}
-                </h1>
-              </div>
-            </div>
+              </span>
+              <span className="min-w-0">
+                {content.title}
+                {content.titleAccent && (
+                  <>
+                    <br />
+                    <span className="text-slate-500 font-normal">{content.titleAccent}</span>
+                  </>
+                )}
+              </span>
+            </h1>
 
-            <p className="mt-2 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+            <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
               {content.description}
             </p>
 
@@ -56,7 +55,7 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
                 Connect {content.catalog.name}
               </PixelButton>
               <PixelButton
-                href="/integrations"
+                href="/plugin"
                 size="lg"
                 variant="outline"
                 tone="dark"
@@ -176,7 +175,7 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
                       {content.relatedIntegrations.map((i) => (
                         <li key={i.slug}>
                           <Link
-                            href={`/integrations/${i.slug}`}
+                            href={pluginPagePath(i.slug)}
                             className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                           >
                             AI agent for {i.label} →

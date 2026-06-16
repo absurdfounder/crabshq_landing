@@ -2,8 +2,10 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import {
   getPluginBySlug,
-  allPluginSlugs,
+  allPluginPageSlugs,
+  pageSlugToPluginSlug,
   pluginLogoUrl,
+  pluginPagePath,
   type PluginCatalogItem,
   PRIORITY_INTEGRATION_SLUGS,
 } from '@/lib/pluginCatalog';
@@ -462,29 +464,35 @@ function buildIntegrationPage(catalog: PluginCatalogItem): IntegrationPageConten
     meta: {
       title: `AI agent for ${catalog.name} | Trooper`,
       description: rich?.description ?? `Deploy an AI agent for ${catalog.name}. ${catalog.shortDescription || desc}`.slice(0, 160),
-      canonical: `https://trooper.so/integrations/${slug}`,
+      canonical: `https://trooper.so${pluginPagePath(slug)}`,
     },
   };
 }
 
 const pageCache = new Map<string, IntegrationPageContent>();
 
-export function getIntegrationPage(slug: string): IntegrationPageContent | undefined {
-  const catalog = getPluginBySlug(slug);
+export function getIntegrationPage(pluginSlug: string): IntegrationPageContent | undefined {
+  const catalog = getPluginBySlug(pluginSlug);
   if (!catalog) return undefined;
-  if (!pageCache.has(slug)) pageCache.set(slug, buildIntegrationPage(catalog));
-  return pageCache.get(slug);
+  if (!pageCache.has(pluginSlug)) pageCache.set(pluginSlug, buildIntegrationPage(catalog));
+  return pageCache.get(pluginSlug);
+}
+
+export function getIntegrationPageByPageSlug(pageSlug: string): IntegrationPageContent | undefined {
+  const pluginSlug = pageSlugToPluginSlug(pageSlug);
+  if (!pluginSlug) return undefined;
+  return getIntegrationPage(pluginSlug);
 }
 
 export function allIntegrationPageSlugs(): string[] {
-  return allPluginSlugs();
+  return allPluginPageSlugs();
 }
 
 export const integrationHubMeta = {
   title: 'AI Agent Integrations | Trooper',
   description:
     'Connect HubSpot, Gmail, GitHub, Slack, Notion, Linear, Stripe, and 1,000+ tools to your Trooper AI workforce. Deploy agents that execute real work through OpenClaw plugins.',
-  canonical: 'https://trooper.so/integrations',
+  canonical: 'https://trooper.so/plugin',
 };
 
 export const integrationSocialImage = SOCIAL_IMAGE;

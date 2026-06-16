@@ -7,7 +7,7 @@ import {
   integrationHubMeta,
   getPriorityIntegrations,
 } from '@/lib/integrationContent';
-import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog';
+import { PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
@@ -30,7 +30,7 @@ export const metadata = {
   },
 };
 
-export default function IntegrationsHubPage() {
+export default function PluginHubPage() {
   const priority = getPriorityIntegrations();
 
   return (
@@ -78,7 +78,7 @@ export default function IntegrationsHubPage() {
             {priority.map((page) => (
               <Link
                 key={page.slug}
-                href={`/integrations/${page.slug}`}
+                href={pluginPagePath(page.slug)}
                 className="group flex min-h-[140px] flex-col gap-3 border border-slate-200 bg-white p-5 transition-colors hover:border-slate-300 hover:bg-slate-50"
               >
                 <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export default function IntegrationsHubPage() {
           <p className="text-slate-600 max-w-2xl leading-relaxed">
             Trooper mirrors the full Trooper app plugin marketplace — {PLUGIN_CATALOG_COUNT.toLocaleString()} integrations
             across Composio, Codex, OpenClaw channels, and native plugins. Every plugin has a dedicated SEO page at{' '}
-            <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded font-mono">/integrations/[slug]</code>.
+            <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded font-mono">/plugin/ai_agent_for_[plugin]</code>.
           </p>
           <div className="mt-6">
             <PixelButton
