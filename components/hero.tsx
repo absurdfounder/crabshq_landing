@@ -163,6 +163,23 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
 
+              <div className="mt-5 max-w-md overflow-hidden rounded-sm border border-slate-200 bg-white shadow-sm">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-900 px-3 py-2">
+                  <div className="flex items-center gap-1.5" aria-hidden>
+                    <span className="h-2.5 w-2.5 rounded-full bg-trooper/70" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-trooper/70" />
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">
+                    bash
+                  </span>
+                </div>
+                <div className="bg-slate-950 px-4 py-3 font-mono text-[13px] leading-none sm:text-sm">
+                  <span className="text-trooper select-none">$</span>{' '}
+                  <span className="text-slate-200">npx trooper setup</span>
+                </div>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
                 <PixelButton
                   href="https://app.trooper.so?ref=herolanding"
