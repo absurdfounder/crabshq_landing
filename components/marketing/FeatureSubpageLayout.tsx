@@ -6,6 +6,7 @@ import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { FeaturePageContent } from '@/lib/featureContent';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
 export default function FeatureSubpageLayout({ content }: { content: FeaturePageContent }) {
   return (
@@ -86,6 +87,8 @@ export default function FeatureSubpageLayout({ content }: { content: FeaturePage
       {content.featureSections.length > 0 && (
         <MarketingFeatureSections sections={content.featureSections} />
       )}
+
+      <MarketingSubpageTail />
     </>
   );
 }

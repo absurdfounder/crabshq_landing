@@ -7,6 +7,7 @@ import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 import { channelHubMeta } from '@/lib/channelContent';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
 export const metadata = {
   title: channelHubMeta.title,
@@ -106,6 +107,8 @@ export default function ChannelsHubPage() {
           </div>
         </div>
       </SectionShell>
+
+      <MarketingSubpageTail />
     </div>
   );
 }

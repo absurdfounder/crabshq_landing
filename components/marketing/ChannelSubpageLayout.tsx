@@ -6,12 +6,9 @@ import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { ChannelPageContent } from '@/lib/channelContent';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
 export default function ChannelSubpageLayout({ content }: { content: ChannelPageContent }) {
-  const setupEyebrowNumber = content.featureSections?.length
-    ? String(3 + content.featureSections.length).padStart(2, '0')
-    : '03';
-
   return (
     <>
       <div className="bg-white">
@@ -90,7 +87,7 @@ export default function ChannelSubpageLayout({ content }: { content: ChannelPage
         <MarketingFeatureSections sections={content.featureSections} />
       )}
 
-      <SectionShell eyebrow="Setup" eyebrowNumber={setupEyebrowNumber} bgClass="bg-slate-50">
+      <SectionShell eyebrow="Setup" bgClass="bg-slate-50">
         <section className="py-12 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-10">
@@ -131,6 +128,8 @@ export default function ChannelSubpageLayout({ content }: { content: ChannelPage
           </div>
         </section>
       </SectionShell>
+
+      <MarketingSubpageTail />
     </>
   );
 }

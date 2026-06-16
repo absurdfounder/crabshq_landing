@@ -5,6 +5,7 @@ import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { SubpageContent } from '@/lib/subpageContent';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
 export default function SubpageLayout({ content }: { content: SubpageContent }) {
   return (
@@ -81,6 +82,8 @@ export default function SubpageLayout({ content }: { content: SubpageContent }) 
           </div>
         </section>
       </SectionShell>
+
+      <MarketingSubpageTail />
     </>
   );
 }

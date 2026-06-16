@@ -85,9 +85,9 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
         const cardsOnTop = Math.max(0, activeCardIndex - index);
         if (cardsOnTop > 0) {
           transforms.push({
-            scale: Math.max(0.92, 1 - 0.025 * cardsOnTop),
-            opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop),
-            y: -8 * cardsOnTop,
+            scale: Math.max(0.94, 1 - 0.022 * cardsOnTop),
+            opacity: Math.max(0.78, 1 - 0.08 * cardsOnTop),
+            y: -6 * cardsOnTop,
           });
         } else {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
@@ -127,13 +127,13 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
 
         <div className="relative" style={{ perspective: '1000px' }}>
           {sections.map((section, index) => {
-            const Visual = VISUALS[section.visual];
+            const Visual = VISUALS[section.visual] ?? CanvasBoardVisual;
             const t = cardTransforms[index] ?? { scale: 1, opacity: 1, y: 0 };
             const tag = section.tag ?? section.eyebrow;
 
             return (
               <div
-                key={section.title}
+                key={`${section.eyebrowNumber}-${section.visual}-${index}`}
                 ref={(el) => { cardRefs.current[index] = el; }}
                 className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
                 style={{ zIndex: sections.length + index }}
@@ -183,7 +183,7 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
               </div>
             );
           })}
-          <div className="hidden lg:block h-[45vh]" aria-hidden />
+          <div className="hidden lg:block h-[55vh]" aria-hidden />
         </div>
       </div>
     </section>

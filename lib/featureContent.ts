@@ -1,5 +1,5 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
-import { getFeaturePage, FEATURE_DEMO_MAP } from '@/lib/subpageContent';
+import { getFeaturePage, FEATURE_DEMO_MAP, allFeatureSlugs } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import { canvasFeatureSection } from '@/lib/marketingFeatures';
@@ -153,10 +153,20 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
   ],
 };
 
+const DEFAULT_FEATURE_SECTIONS: MarketingFeatureSection[] = [
+  {
+    eyebrow: 'Execution',
+    eyebrowNumber: '03',
+    title: 'Tickets from inbox to done',
+    intro: 'Multi-step work with tool traces, subtasks, and deliverables — not chat-only answers.',
+    visual: 'sales-pipeline',
+  },
+  canvasFeatureSection('04'),
+];
+
 function buildRichFeature(slug: string): FeaturePageContent | undefined {
   const base = getFeaturePage(slug);
-  const sections = FEATURE_SECTIONS[slug];
-  if (!base || !sections) return undefined;
+  if (!base) return undefined;
 
   return {
     slug: base.slug,
@@ -168,12 +178,12 @@ function buildRichFeature(slug: string): FeaturePageContent | undefined {
     overviewParagraphs: base.overviewParagraphs,
     benefits: base.benefits,
     demoId: FEATURE_DEMO_MAP[slug] ?? base.demoId,
-    featureSections: sections,
+    featureSections: FEATURE_SECTIONS[slug] ?? DEFAULT_FEATURE_SECTIONS,
     meta: base.meta,
   };
 }
 
-const richFeatureSlugs = Object.keys(FEATURE_SECTIONS);
+const richFeatureSlugs = allFeatureSlugs();
 
 const featurePages: Record<string, FeaturePageContent> = Object.fromEntries(
   richFeatureSlugs
