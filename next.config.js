@@ -13,6 +13,9 @@ const nextConfig = {
   },
   experimental: {
     serverActions: true,
+    outputFileTracingIncludes: {
+      '/og/route': ['./public/og-fonts/**/*'],
+    },
   },
   async redirects() {
     return [
