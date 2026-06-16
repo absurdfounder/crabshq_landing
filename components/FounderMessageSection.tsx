@@ -42,7 +42,7 @@ export default function FounderMessageSection() {
         viewport={{ once: true, margin: '-20px' }}
       >
         <div className="flex flex-col md:flex-row md:items-stretch">
-          <div className="relative mx-auto aspect-square w-full max-w-[14rem] shrink-0 overflow-hidden border-[6px] border-[#008037] bg-white border-b border-slate-200 md:mx-0 md:aspect-auto md:h-auto md:w-[22rem] md:max-w-none md:self-stretch md:border-b-0 md:border-r md:border-r-slate-200">
+          <div className="relative mx-auto aspect-square w-full max-w-[14rem] shrink-0 overflow-hidden border-[6px] border-[#007040] bg-white border-b border-slate-200 md:mx-0 md:aspect-auto md:h-auto md:w-[22rem] md:max-w-none md:self-stretch md:border-b-0 md:border-r md:border-r-slate-200">
             <Image
               src="/images/founder-portrait.png"
               alt="Vaibhav, founder of Trooper"
