@@ -2,7 +2,7 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import { getFeaturePage, FEATURE_DEMO_MAP, allFeatureSlugs } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
-import { canvasFeatureSection } from '@/lib/marketingFeatures';
+import { canvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -204,9 +204,15 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       eyebrow: 'Integrations',
       eyebrowNumber: '03',
       tag: 'COMPOSIO SKILLS',
-      title: '3,000+ skills at runtime',
-      intro: 'Notion, Figma, HubSpot, and more — tool rows show Composio logos on every traced step.',
-      visual: 'campaign-pipeline',
+      title: 'Figma, Sheets, and Gmail',
+      titleHighlight: 'traced on campaign missions.',
+      intro: 'Marketing agents call Composio skills — figma_export, sheets_update, and gmail_draft show logos on every tool row.',
+      bullets: [
+        '3,000+ skills available at runtime',
+        'Integration logos on every traced step',
+        'Campaign pack compiles to Canvas for review',
+      ],
+      visual: 'marketing-harness',
     },
     {
       eyebrow: 'Design',
@@ -222,7 +228,7 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       intro: 'Ticket triage, article lookup, and reply drafts with tool logos on every step.',
       visual: 'support-queue',
     },
-    canvasFeatureSection('06'),
+    marketingCanvasFeatureSection('06'),
   ],
   'multi-agent-collaboration': [
     {

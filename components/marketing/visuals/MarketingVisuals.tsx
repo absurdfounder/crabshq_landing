@@ -14,12 +14,24 @@ import {
   CodingMemoryVisual,
   CodingCanvasVisual,
 } from './CodingMarketingVisuals';
+import {
+  MarketingHarnessVisual,
+  MarketingBoardVisual,
+  MarketingMemoryVisual,
+  MarketingCanvasVisual,
+  MarketingLaunchVisual,
+} from './MarketingTeamVisuals';
 
 export {
   CodingHarnessVisual,
   CodingBoardVisual,
   CodingMemoryVisual,
   CodingCanvasVisual,
+  MarketingHarnessVisual,
+  MarketingBoardVisual,
+  MarketingMemoryVisual,
+  MarketingCanvasVisual,
+  MarketingLaunchVisual,
 };
 
 function ToolRow({ label, detail, done }: { label: string; detail: string; done?: boolean }) {

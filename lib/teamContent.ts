@@ -1,7 +1,8 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
-import { canvasFeatureSection, codingCanvasFeatureSection } from '@/lib/marketingFeatures';
+import type { MarketingHeadlineLine } from '@/components/marketing/MarketingHeadline';
+import { canvasFeatureSection, codingCanvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -23,6 +24,7 @@ export type TeamPageContent = {
   missionLabel: string;
   title: string;
   titleAccent?: string;
+  heroHeadline?: MarketingHeadlineLine[];
   description: string;
   overviewTitle: string;
   overviewParagraphs: string[];
@@ -42,6 +44,7 @@ type BuildArgs = {
   missionLabel?: string;
   title: string;
   titleAccent?: string;
+  heroHeadline?: MarketingHeadlineLine[];
   description: string;
   overviewTitle: string;
   overviewParagraphs: string[];
@@ -114,6 +117,21 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     title: 'Trooper for Coding',
     titleAccent: 'your keys, our harness',
+    heroHeadline: [
+      {
+        parts: [
+          { text: 'Your subscriptions.', tone: 'default' },
+          { text: 'Our harness', tone: 'default' },
+        ],
+        iconAfter: 0,
+      },
+      {
+        parts: [
+          { text: 'runs the work.', tone: 'brand' },
+          { text: 'You approve every merge.', tone: 'default' },
+        ],
+      },
+    ],
     description:
       'Delegate to Claude Code, Codex, Cursor, and your own agents from one Trooper harness. Your subscriptions, your repos, one unified task board with traced diffs and PR workflows.',
     overviewTitle: 'Multi-agent coding ops',
@@ -167,31 +185,48 @@ const teamPages: Record<string, TeamPageContent> = {
     demoId: 'marketing',
     featureSections: [
       {
-        eyebrow: 'Pipeline',
+        eyebrow: 'Harness',
         eyebrowNumber: '03',
         tag: 'CAMPAIGN OPS',
-        title: 'Landing pages, carousels,',
-        titleHighlight: 'and video cuts traced.',
-        intro: 'Agents ship HTML previews, generated social assets, and screen recordings — all attached to the same campaign ticket.',
-        visual: 'campaign-pipeline',
+        title: 'Landing, carousel, and',
+        titleHighlight: 'SEO recon in parallel.',
+        intro: 'Ren ships the pillar page and carousel on Claude Code and Codex while Aria runs competitor SEO — live tool traces on one Q2 ticket.',
+        bullets: [
+          'Three agent lanes with provider logos and artifact paths',
+          'write_file, image_gen, and sheets_update traced per agent',
+          'Jordan gates publish — nothing schedules without approval',
+        ],
+        visual: 'marketing-harness',
       },
       {
-        eyebrow: 'Launch',
+        eyebrow: 'Board',
         eyebrowNumber: '04',
-        tag: 'COORDINATION',
-        title: 'Cross-channel launches',
-        titleHighlight: 'on one mission board.',
-        intro: 'Blog, social, email, and landing pages coordinated as ticketed missions with clear ownership and approval gates.',
-        visual: 'launch-ops',
+        tag: 'CANVAS + CREATIVE',
+        title: 'Brief, landing, carousel, and',
+        titleHighlight: 'nurture copy on Canvas.',
+        intro: 'Open the campaign Canvas for q2-campaign-brief.md, northstar.io/q2 preview, LinkedIn carousel, and email-sequence.md — the same pack from the live demo.',
+        bullets: [
+          'HTML preview, PNG creative, and markdown copy side by side',
+          'Email nurture sequence held for brand sign-off',
+          'Cross-channel subtasks tied to one mission timeline',
+        ],
+        visual: 'marketing-board',
       },
       {
-        eyebrow: 'Inbox',
+        eyebrow: 'Memory',
         eyebrowNumber: '05',
-        title: 'Briefs from email to traced ticket',
-        intro: 'Inbound campaign requests parsed into structured tickets with research, drafts, and human sign-off before publish.',
-        visual: 'email-routing',
+        tag: 'BRAND CONTEXT',
+        title: 'Voice, ICP, and competitor intel',
+        titleHighlight: 'persist across campaigns.',
+        intro: 'brand-voice.md, icp.md, competitor-notes.md, and style-guide.yml load on every marketing mission — Ren, Aria, and Jordan share the same org memory.',
+        bullets: [
+          'Tone rules, CTA patterns, and words to avoid',
+          'ICP personas and proof points for every draft',
+          'Prior SEO recon and competitor gaps compound',
+        ],
+        visual: 'marketing-memory',
       },
-      canvasFeatureSection('06'),
+      marketingCanvasFeatureSection('06'),
     ],
     title: 'Trooper for Marketing',
     titleAccent: 'campaigns on mission',
@@ -425,6 +460,21 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     title: 'Trooper for Engineering',
     titleAccent: 'that ships',
+    heroHeadline: [
+      {
+        parts: [
+          { text: 'Engineering missions.', tone: 'default' },
+          { text: 'Traced end-to-end', tone: 'default' },
+        ],
+        iconAfter: 0,
+      },
+      {
+        parts: [
+          { text: 'in Trooper.', tone: 'brand' },
+          { text: 'You stay on architecture.', tone: 'default' },
+        ],
+      },
+    ],
     description: 'AI engineers for code, reviews, issues, and DevOps — scoped to your repos with checkout discipline and merge gates.',
     overviewTitle: 'Developers that never context-switch',
     overviewParagraphs: [

@@ -5,6 +5,10 @@ export type MarketingVisualId =
   | 'coding-board'
   | 'coding-memory'
   | 'coding-canvas'
+  | 'marketing-harness'
+  | 'marketing-board'
+  | 'marketing-memory'
+  | 'marketing-canvas'
   | 'canvas-desktop'
   | 'campaign-pipeline'
   | 'sales-pipeline'
@@ -69,6 +73,23 @@ export function codingCanvasFeatureSection(eyebrowNumber: string): MarketingFeat
       'Drag title bars to organize before approval',
     ],
     visual: 'coding-canvas',
+  };
+}
+
+export function marketingCanvasFeatureSection(eyebrowNumber: string): MarketingFeatureSection {
+  return {
+    eyebrow: 'Canvas',
+    eyebrowNumber,
+    tag: 'DESKTOP CANVAS',
+    title: 'Q2 campaign pack',
+    titleHighlight: 'on Canvas.',
+    intro: 'Four deliverables from one mission — brief, landing preview, carousel, and social cut arranged for brand review.',
+    bullets: [
+      'HTML, creative, and copy visible at once',
+      'Live review mode with cursors and comments',
+      'Drag title bars to organize before schedule',
+    ],
+    visual: 'marketing-canvas',
   };
 }
 

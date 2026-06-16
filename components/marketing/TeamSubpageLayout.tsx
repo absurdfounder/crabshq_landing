@@ -2,6 +2,7 @@ import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSections';
+import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
@@ -17,15 +18,19 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
           <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-8">
             <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
 
-            <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900">
-              {content.title}
-              {content.titleAccent && (
-                <>
-                  <br />
-                  <span className="text-slate-500 font-normal">{content.titleAccent}</span>
-                </>
-              )}
-            </h1>
+            {content.heroHeadline ? (
+              <MarketingHeadline as="h1" size="hero" lines={content.heroHeadline} />
+            ) : (
+              <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900">
+                {content.title}
+                {content.titleAccent && (
+                  <>
+                    <br />
+                    <span className="text-slate-500 font-normal">{content.titleAccent}</span>
+                  </>
+                )}
+              </h1>
+            )}
 
             <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
               {content.description}

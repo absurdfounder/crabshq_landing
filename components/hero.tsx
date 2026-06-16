@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
+import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
@@ -135,12 +136,27 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <PixelMissionTag index="01" label="Mission briefing" />
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl mb-2 leading-tight font-funneldisplay tracking-tight text-slate-800 font-normal">
-                <span className="block reveal reveal__usp">
-                  Build the company.{' '}
-                  <span className="font-bold text-slate-950">Let Trooper run it.</span>
-                </span>
-              </h1>
+              <div className="reveal reveal__usp max-w-3xl">
+                <MarketingHeadline
+                  as="h1"
+                  size="hero"
+                  lines={[
+                    {
+                      parts: [
+                        { text: 'Build the company.', tone: 'default' },
+                        { text: 'Let Trooper', tone: 'default' },
+                      ],
+                      iconAfter: 0,
+                    },
+                    {
+                      parts: [
+                        { text: 'run it.', tone: 'brand' },
+                        { text: 'You hold command.', tone: 'default' },
+                      ],
+                    },
+                  ]}
+                />
+              </div>
 
               <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
                 AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
