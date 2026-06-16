@@ -920,8 +920,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="dashboard-landscape-bg" style={{
-        position: "relative", padding: "20px 12px 24px",
+      <div className="dashboard-landscape-bg p-6 md:p-8" style={{
+        position: "relative",
         borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}`,
       }}>
         <DemoScaleFrame>
