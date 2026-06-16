@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Copy } from 'lucide-react';
 import Image from 'next/image';
 
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
@@ -53,6 +53,46 @@ const NotionIcon = () => (
   </svg>
 );
 
+
+const SETUP_COMMAND = 'npx trooper setup';
+
+function HeroSetupCommand() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(SETUP_COMMAND);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard unavailable — ignore
+    }
+  };
+
+  return (
+    <div
+      className="mt-4 flex max-w-md items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5"
+    >
+      <code className="flex min-w-0 flex-1 items-center gap-1.5 font-mono text-[12px] sm:text-[13px] leading-none">
+        <span className="text-cyan-600 select-none">$</span>
+        <span className="text-slate-900">{SETUP_COMMAND}</span>
+      </code>
+      <button
+        type="button"
+        onClick={handleCopy}
+        className="shrink-0 rounded-sm p-1 text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600"
+        title="Copy command"
+        aria-label="Copy command"
+      >
+        {copied ? (
+          <Check className="h-3.5 w-3.5 text-trooper" strokeWidth={2} />
+        ) : (
+          <Copy className="h-3.5 w-3.5" strokeWidth={2} />
+        )}
+      </button>
+    </div>
+  );
+}
 
 const Features = React.memo(() => {
   const features = [
@@ -142,17 +182,11 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   size="hero"
                   lines={[
                     {
-                      parts: [
-                        { text: 'Build the company.', tone: 'default' },
-                        { text: 'Let Trooper', tone: 'default' },
-                      ],
+                      parts: [{ text: 'Just Ask.', tone: 'default' }],
                       iconAfter: 0,
                     },
                     {
-                      parts: [
-                        { text: 'run it.', tone: 'brand' },
-                        { text: 'You hold command.', tone: 'default' },
-                      ],
+                      parts: [{ text: 'Troopers will do it.', tone: 'brand' }],
                     },
                   ]}
                 />
@@ -163,22 +197,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
 
-              <div className="mt-5 max-w-md overflow-hidden rounded-sm border border-slate-200 bg-white shadow-sm">
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-900 px-3 py-2">
-                  <div className="flex items-center gap-1.5" aria-hidden>
-                    <span className="h-2.5 w-2.5 rounded-full bg-trooper/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-trooper/70" />
-                  </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">
-                    bash
-                  </span>
-                </div>
-                <div className="bg-slate-950 px-4 py-3 font-mono text-[13px] leading-none sm:text-sm">
-                  <span className="text-trooper select-none">$</span>{' '}
-                  <span className="text-slate-200">npx trooper setup</span>
-                </div>
-              </div>
+              <HeroSetupCommand />
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
                 <PixelButton
