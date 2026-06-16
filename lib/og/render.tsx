@@ -1,26 +1,11 @@
 import { ImageResponse } from 'next/og';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { loadOgFonts } from '@/lib/og/fonts';
 import type { OgHeroContent } from '@/lib/og/types';
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
 const BRAND_GREEN = '#284800';
 const BRAND_GREEN_LIGHT = '#3f6b00';
-
-let fontPromise: Promise<ArrayBuffer> | null = null;
-
-async function loadDisplayFont(): Promise<ArrayBuffer> {
-  if (!fontPromise) {
-    fontPromise = readFile(
-      join(process.cwd(), 'public/fonts/FunnelDisplay-VariableFont_wght.ttf'),
-    ).then(
-      (buf) =>
-        buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer,
-    );
-  }
-  return fontPromise;
-}
 
 function truncate(text: string, max: number) {
   if (text.length <= max) return text;
@@ -184,22 +169,9 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
 }
 
 export async function createOgImageResponse(content: OgHeroContent) {
-  const fontData = await loadDisplayFont();
+  const fonts = await loadOgFonts();
   return new ImageResponse(<OgHeroImage content={content} />, {
     ...OG_SIZE,
-    fonts: [
-      {
-        name: 'Funnel Display',
-        data: fontData,
-        style: 'normal',
-        weight: 400,
-      },
-      {
-        name: 'Funnel Display',
-        data: fontData,
-        style: 'normal',
-        weight: 700,
-      },
-    ],
+    fonts,
   });
 }

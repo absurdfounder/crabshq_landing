@@ -28,10 +28,15 @@ export async function GET(request: Request) {
     return new Response('Not found', { status: 404 });
   }
 
-  const image = await createOgImageResponse(content);
-  image.headers.set(
-    'Cache-Control',
-    'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
-  );
-  return image;
+  try {
+    const image = await createOgImageResponse(content);
+    image.headers.set(
+      'Cache-Control',
+      'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
+    );
+    return image;
+  } catch (error) {
+    console.error('[og] render failed', { kind, slug, error });
+    return new Response('OG render failed', { status: 500 });
+  }
 }
