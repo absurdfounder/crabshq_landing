@@ -1,9 +1,10 @@
 import SectionShell from '@/components/ui/SectionShell';
 import GovernanceSection from '@/components/GovernanceSection';
 import SimplePricing from '@/components/SimplePricing';
+import FounderMessageSection from '@/components/FounderMessageSection';
 import FAQ from '@/components/faq';
 
-/** Shared closing sections for team, feature, and channel subpages — matches homepage [05]–[07]. */
+/** Shared closing sections for team, feature, and channel subpages — matches homepage [05]–[08]. */
 export default function MarketingSubpageTail() {
   return (
     <>
@@ -15,7 +16,11 @@ export default function MarketingSubpageTail() {
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="07" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
+        <FounderMessageSection />
+      </SectionShell>
+
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
         <FAQ />
       </SectionShell>
     </>

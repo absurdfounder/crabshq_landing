@@ -53,6 +53,7 @@ import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
+import FounderMessageSection from '@/components/FounderMessageSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 const trustedLogos = [
@@ -116,7 +117,11 @@ export default function Home() {
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="07" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
+        <FounderMessageSection />
+      </SectionShell>
+
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
         <FAQ />
       </SectionShell>
     </>
