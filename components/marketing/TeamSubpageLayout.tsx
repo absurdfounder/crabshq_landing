@@ -89,7 +89,11 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
       )}
 
       {content.extraSection && (
-        <SectionShell eyebrow={content.extraSection.eyebrow} bgClass="bg-slate-50">
+        <SectionShell
+          eyebrow={content.extraSection.eyebrow}
+          eyebrowNumber={content.extraSection.eyebrowNumber ?? '04'}
+          bgClass="bg-slate-50"
+        >
           <section className="py-12 md:py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-3xl mb-10">

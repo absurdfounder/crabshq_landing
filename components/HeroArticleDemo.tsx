@@ -21,7 +21,7 @@ import {
 } from '@/lib/demoScenarios';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
 import { DemoClickCursor, useDemoCursor } from './DemoClickCursor';
-import { animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply } from '@/lib/demoCursorActions';
+import { animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep } from '@/lib/demoCursorActions';
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
@@ -452,7 +452,7 @@ function DemoChatPane({
         </div>
       )}
 
-      <div ref={chatRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
+      <div ref={chatRef} data-demo-target="chat-thread" className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ marginBottom: 16, animation: `msgIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
@@ -599,6 +599,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [modalCanvasKeys, setModalCanvasKeys] = useState<string[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
+  const [artifactHighlight, setArtifactHighlight] = useState(false);
+  const [artifactReviewComment, setArtifactReviewComment] = useState<string | null>(null);
+  const [canvasTileComments, setCanvasTileComments] = useState<Record<string, string>>({});
+  const [canvasHighlightNames, setCanvasHighlightNames] = useState<string[]>([]);
   const chatRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -622,6 +626,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setModalCanvasKeys([]);
     setModalDelivery(null);
     setHighlightedTaskId(null);
+    setArtifactHighlight(false);
+    setArtifactReviewComment(null);
+    setCanvasTileComments({});
+    setCanvasHighlightNames([]);
     modalMsgCounter.current = 0;
   }, [scenario.initialSubtasks]);
 
@@ -662,6 +670,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         setActivePage('tasks');
         setModalWorkspaceMode('ide');
         setModalCanvasKeys([]);
+        setArtifactHighlight(false);
+        setArtifactReviewComment(null);
+        setCanvasTileComments({});
+        setCanvasHighlightNames([]);
         break;
       case 'subtask':
         setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
@@ -685,22 +697,47 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         }]);
         break;
       }
-      case 'openArtifact':
+      case 'openArtifact': {
+        setModalWorkspaceMode('ide');
         setModalArtifact(DEMO_ARTIFACTS[step.key] || null);
+        setArtifactHighlight(true);
+        setArtifactReviewComment('Check this section before approval');
+        setCanvasTileComments({});
+        setCanvasHighlightNames([]);
         break;
+      }
       case 'setWorkspaceMode':
         setModalWorkspaceMode(step.mode);
         break;
-      case 'openCanvas':
+      case 'openCanvas': {
         setModalCanvasKeys(step.keys);
         setModalWorkspaceMode('canvas');
         if (step.keys[0]) setModalArtifact(DEMO_ARTIFACTS[step.keys[0]] || null);
+        const comments: Record<string, string> = {};
+        const highlights: string[] = [];
+        step.keys.forEach((k) => {
+          const art = DEMO_ARTIFACTS[k];
+          if (art) {
+            highlights.push(art.name);
+            comments[art.name] = 'Add review note before share';
+          }
+        });
+        setCanvasTileComments(comments);
+        setCanvasHighlightNames(highlights);
+        setArtifactHighlight(false);
+        setArtifactReviewComment(null);
         break;
+      }
       case 'deliver': {
         setModalDelivery(step.name);
         const deliverKey = scenario.deliverArtifactKey
           ?? Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === step.name);
-        if (deliverKey) setModalArtifact(DEMO_ARTIFACTS[deliverKey] || null);
+        if (deliverKey) {
+          setModalArtifact(DEMO_ARTIFACTS[deliverKey] || null);
+          setModalWorkspaceMode('ide');
+          setArtifactHighlight(true);
+          setArtifactReviewComment('Final deliverable — approve before send');
+        }
         break;
       }
       case 'closeTaskModal':
@@ -725,14 +762,15 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
 
     if (idx >= CHAT_SCRIPT.length) {
       const execStep = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
+      const ctx = cursorContextForStep(execStep, DEMO_ARTIFACTS);
       if (!execStepCursorAfterApply(execStep)) {
-        animateExecStepCursor(execStep, goTo);
+        animateExecStepCursor(execStep, goTo, ctx);
       }
       timerRef.current = setTimeout(() => {
         if (execStepCursorAfterApply(execStep)) {
           applyTaskExecStep(execStep);
           requestAnimationFrame(() => {
-            requestAnimationFrame(() => animateExecStepCursor(execStep, goTo));
+            requestAnimationFrame(() => animateExecStepCursor(execStep, goTo, ctx));
           });
         } else {
           applyTaskExecStep(execStep);
@@ -892,6 +930,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
               taskTags={scenario.spotlightTaskTags}
               org={scenario.org}
+              artifactHighlight={artifactHighlight}
+              artifactReviewComment={artifactReviewComment}
+              canvasTileComments={canvasTileComments}
+              canvasHighlightNames={canvasHighlightNames}
               onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
               onSelectArtifact={(name) => {
                 const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);

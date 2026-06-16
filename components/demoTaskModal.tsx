@@ -124,12 +124,16 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
   return turns;
 }
 
-function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean }) {
+function ToolTimelineRow({ log, isLast, isLatest }: { log: DemoToolLog; isLast: boolean; isLatest?: boolean }) {
   const running = log.status === 'running';
   const iconMeta = getToolIconMeta(log);
 
   return (
-    <div className="demo-thread-tool-row" style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}>
+    <div
+      className="demo-thread-tool-row"
+      {...(isLatest ? { 'data-demo-target': 'modal-tool-latest' } : {})}
+      style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0 }}>
         <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />
         <div style={{
@@ -178,7 +182,7 @@ function ToolTimelineRow({ log, isLast }: { log: DemoToolLog; isLast: boolean })
   );
 }
 
-function AgentTurn({ turn }: { turn: Turn }) {
+function AgentTurn({ turn, latestToolId }: { turn: Turn; latestToolId?: string | null }) {
   const person = ALL_PEOPLE[turn.agent];
   const harnessProvider = turn.tools.find(t => t.provider)?.provider;
   return (
@@ -232,7 +236,12 @@ function AgentTurn({ turn }: { turn: Turn }) {
           {turn.tools.length > 0 && (
             <div style={{ marginTop: turn.message ? 4 : 0 }}>
               {turn.tools.map((log, i) => (
-                <ToolTimelineRow key={log.id} log={log} isLast={i === turn.tools.length - 1} />
+                <ToolTimelineRow
+                  key={log.id}
+                  log={log}
+                  isLast={i === turn.tools.length - 1}
+                  isLatest={log.id === latestToolId}
+                />
               ))}
             </div>
           )}
@@ -280,10 +289,13 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
   const allDone = done === total;
 
   return (
-    <div style={{
-      marginBottom: 8, borderRadius: 12, border: `1px solid ${C.border}`,
-      background: C.card, boxShadow: '0 1px 2px rgba(0,0,0,0.03)', overflow: 'hidden',
-    }}>
+    <div
+      data-demo-target="modal-subtasks"
+      style={{
+        marginBottom: 8, borderRadius: 12, border: `1px solid ${C.border}`,
+        background: C.card, boxShadow: '0 1px 2px rgba(0,0,0,0.03)', overflow: 'hidden',
+      }}
+    >
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
@@ -317,7 +329,7 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
             const isDone = s.status === 'done';
             const isRunning = s.status === 'running';
             return (
-              <div key={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
+              <div key={s.id} data-demo-subtask-id={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
                 <div style={{ marginTop: 2, flexShrink: 0 }}>
                   {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
                     : isRunning ? <Loader2 size={14} className="demo-spin" color="#B45309" />
@@ -367,6 +379,10 @@ export function DemoTaskModal({
   org = launchScenario.org,
   onClose,
   onSelectArtifact,
+  artifactHighlight,
+  artifactReviewComment,
+  canvasTileComments,
+  canvasHighlightNames,
 }: {
   open: boolean;
   taskTitle: string;
@@ -383,9 +399,20 @@ export function DemoTaskModal({
   org?: DemoOrg;
   onClose?: () => void;
   onSelectArtifact?: (name: string) => void;
+  artifactHighlight?: boolean;
+  artifactReviewComment?: string | null;
+  canvasTileComments?: Record<string, string>;
+  canvasHighlightNames?: string[];
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
+  const latestToolId = useMemo(() => {
+    for (let i = feed.length - 1; i >= 0; i--) {
+      const item = feed[i];
+      if (item.kind === 'tool') return item.id;
+    }
+    return null;
+  }, [feed]);
 
   useEffect(() => {
     const el = threadRef.current;
@@ -448,7 +475,7 @@ export function DemoTaskModal({
                   Assigned to <strong style={{ color: C.text }}>{assignee}</strong>
                 </div>
 
-                {turns.map((turn) => <AgentTurn key={turn.id} turn={turn} />)}
+                {turns.map((turn) => <AgentTurn key={turn.id} turn={turn} latestToolId={latestToolId} />)}
 
                 {delivery && (
                   <div className="demo-thread-turn" style={{ marginBottom: 12 }}>
@@ -543,9 +570,15 @@ export function DemoTaskModal({
                 artifacts={canvasArtifacts}
                 activeName={artifact?.name}
                 onSelect={(a) => onSelectArtifact?.(a.name)}
+                tileComments={canvasTileComments}
+                highlightNames={canvasHighlightNames}
               />
             ) : (
-              <DemoArtifactPanel artifact={artifact} />
+              <DemoArtifactPanel
+                artifact={artifact}
+                highlight={artifactHighlight}
+                reviewComment={artifactReviewComment}
+              />
             )}
           </div>
         </div>

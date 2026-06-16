@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { FileText, Download, Layers, Play, Film, Eye, Code, Globe, GitCompare, FileCode, ChevronDown, ChevronRight } from 'lucide-react';
+import { FileText, Download, Layers, Play, Film, Eye, Code, Globe, GitCompare, FileCode, ChevronDown, ChevronRight, MessageSquarePlus } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoArtifactKind } from './demoTaskExecution';
+import { DemoReviewOverlay } from './DemoReviewOverlay';
 import {
   parseDemoDiff,
   displayDiffPath,
@@ -435,7 +436,17 @@ export function DemoArtifactTilePreview({ artifact }: { artifact: DemoArtifact }
   );
 }
 
-export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifact | null; compact?: boolean }) {
+export function DemoArtifactPanel({
+  artifact,
+  compact,
+  highlight,
+  reviewComment,
+}: {
+  artifact: DemoArtifact | null;
+  compact?: boolean;
+  highlight?: boolean;
+  reviewComment?: string | null;
+}) {
   const kind = artifact ? inferKind(artifact) : 'code';
   const tabs = artifact ? availableTabs(artifact, kind) : [];
   const resolvedDefault = artifact ? defaultTab(artifact, kind) : 'ide';
@@ -472,7 +483,10 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
   const noPad = kind === 'html' || kind === 'image' || kind === 'video' || kind === 'diff' || artifact.ext === 'log';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card }}>
+    <div
+      data-demo-target="modal-artifact-panel"
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.card, position: 'relative' }}
+    >
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px',
         borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
@@ -486,6 +500,7 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
                 <button
                   key={tab}
                   type="button"
+                  data-demo-target={active ? 'modal-artifact-tab-active' : undefined}
                   onClick={() => setActiveTab(tab)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
@@ -513,12 +528,25 @@ export function DemoArtifactPanel({ artifact, compact }: { artifact: DemoArtifac
         <span style={{ flex: 1, fontSize: 11, fontWeight: 500, color: C.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {artifact.name}
         </span>
+        <button
+          type="button"
+          data-demo-target="modal-artifact-comment-btn"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6,
+            border: `1px solid ${reviewComment ? C.brand : C.border}`,
+            background: reviewComment ? '#f0f5e6' : C.card,
+            fontSize: 10, color: reviewComment ? '#284800' : C.textMuted, cursor: 'pointer',
+          }}
+        >
+          <MessageSquarePlus size={11} strokeWidth={1.75} /> Comment
+        </button>
         <button type="button" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6, border: `1px solid ${C.border}`, background: C.card, fontSize: 10, color: C.textMuted, cursor: 'pointer' }}>
           <Download size={11} strokeWidth={1.75} /> Download
         </button>
       </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: noPad ? 0 : 14 }}>
+      <div className="Trooper-scrollbar" style={{ flex: 1, overflow: 'auto', padding: noPad ? 0 : 14, position: 'relative' }}>
         <ArtifactBody artifact={artifact} tab={effectiveTab} />
+        <DemoReviewOverlay comment={reviewComment} showHighlight={highlight} />
       </div>
     </div>
   );

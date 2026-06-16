@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Layers } from 'lucide-react';
+import { Layers, MessageSquarePlus } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact } from './demoTaskExecution';
 import { DemoArtifactTilePreview } from './DemoArtifactPanel';
+import { DemoReviewOverlay } from './DemoReviewOverlay';
 
 const STAGE_W = 720;
 const STAGE_H = 420;
@@ -26,10 +27,14 @@ export function DemoCanvasView({
   artifacts,
   activeName,
   onSelect,
+  tileComments = {},
+  highlightNames = [],
 }: {
   artifacts: DemoArtifact[];
   activeName?: string | null;
   onSelect?: (artifact: DemoArtifact) => void;
+  tileComments?: Record<string, string>;
+  highlightNames?: string[];
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const positionsRef = useRef<Record<string, TilePos>>({});
@@ -142,6 +147,7 @@ export function DemoCanvasView({
       </div>
       <div
         ref={containerRef}
+        data-demo-target="canvas-stage"
         className="Trooper-scrollbar"
         style={{ flex: 1, position: 'relative', overflow: 'auto', minHeight: 280, cursor: drag ? 'grabbing' : 'default' }}
       >
@@ -151,10 +157,14 @@ export function DemoCanvasView({
             const pos = positions[key] ?? defaultPos(i);
             const active = activeKey === key || activeName === artifact.name;
             const dragging = drag?.key === key;
+            const comment = tileComments[key];
+            const showHighlight = highlightNames.includes(key) || Boolean(comment);
 
             return (
               <div
                 key={key}
+                data-demo-target="canvas-tile"
+                data-artifact-name={artifact.name}
                 role="button"
                 tabIndex={0}
                 onMouseDown={() => setActiveKey(key)}
@@ -169,16 +179,16 @@ export function DemoCanvasView({
                   height: pos.h,
                   zIndex: active ? 30 : 10 + i,
                   borderRadius: 10,
-                  border: `1px solid ${active ? C.brand : C.border}`,
+                  border: `1px solid ${active || showHighlight ? C.brand : C.border}`,
                   background: C.card,
-                  boxShadow: active
+                  boxShadow: active || showHighlight
                     ? '0 16px 40px -12px rgba(63,107,0,0.35), 0 4px 12px rgba(28,25,23,0.12)'
                     : '0 12px 32px -12px rgba(28,25,23,0.18)',
                   overflow: 'hidden',
                   textAlign: 'left',
                   padding: 0,
                   transform: dragging ? 'scale(1.01)' : 'none',
-                  transition: dragging ? 'none' : 'box-shadow 0.2s ease, transform 0.2s ease',
+                  transition: dragging ? 'none' : 'box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease',
                   userSelect: 'none',
                 }}
               >
@@ -200,9 +210,26 @@ export function DemoCanvasView({
                   }}>
                     {artifact.name}
                   </span>
+                  <button
+                    type="button"
+                    data-demo-target="canvas-comment-btn"
+                    data-artifact-name={artifact.name}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 6px',
+                      borderRadius: 5, border: `1px solid ${comment ? C.brand : C.border}`,
+                      background: comment ? '#f0f5e6' : C.card,
+                      fontSize: 9, fontWeight: 600, color: comment ? '#284800' : C.textSubtle,
+                      cursor: 'pointer', flexShrink: 0,
+                    }}
+                  >
+                    <MessageSquarePlus size={10} strokeWidth={2} />
+                    {comment ? '1' : '+'}
+                  </button>
                 </div>
-                <div style={{ height: pos.h - 34, overflow: 'hidden', pointerEvents: 'none' }}>
+                <div style={{ height: pos.h - 34, overflow: 'hidden', pointerEvents: 'none', position: 'relative' }}>
                   <DemoArtifactTilePreview artifact={artifact} />
+                  <DemoReviewOverlay comment={comment} showHighlight={showHighlight} compact />
                 </div>
               </div>
             );

@@ -124,6 +124,7 @@ export function CodingBoardVisual() {
 export function CanvasBoardVisual() {
   return (
     <CanvasDesktopVisual
+      animated
       windows={[
         {
           id: 'brief',

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import SectionShell from '@/components/ui/SectionShell';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelFramedVisual from '@/components/marketing/PixelFramedVisual';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
@@ -56,7 +57,21 @@ const VISUALS = {
 
 const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
 
-export default function MarketingFeatureSections({ sections }: { sections: MarketingFeatureSection[] }) {
+type MarketingFeatureSectionsProps = {
+  sections: MarketingFeatureSection[];
+  eyebrow?: string;
+  eyebrowNumber?: string;
+  heading?: string;
+  subheading?: string;
+};
+
+export default function MarketingFeatureSections({
+  sections,
+  eyebrow = 'Capabilities',
+  eyebrowNumber = '03',
+  heading = 'How this unit runs on Trooper.',
+  subheading = 'Traced tickets, live artifacts, and harnesses that match the work — not generic placeholders.',
+}: MarketingFeatureSectionsProps) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [cardTransforms, setCardTransforms] = useState<{ scale: number; opacity: number; y: number }[]>([]);
 
@@ -85,9 +100,9 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
         const cardsOnTop = Math.max(0, activeCardIndex - index);
         if (cardsOnTop > 0) {
           transforms.push({
-            scale: Math.max(0.94, 1 - 0.022 * cardsOnTop),
-            opacity: Math.max(0.78, 1 - 0.08 * cardsOnTop),
-            y: -6 * cardsOnTop,
+            scale: Math.max(0.92, 1 - 0.025 * cardsOnTop),
+            opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop),
+            y: -8 * cardsOnTop,
           });
         } else {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
@@ -114,15 +129,13 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
   if (!sections.length) return null;
 
   return (
-    <section className="bg-slate-50 relative border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-0 py-10 sm:py-16 md:py-20">
-        <div className={`${sectionXPadding} mb-8 sm:mb-12 max-w-2xl`}>
-          <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 leading-snug">
-            How this unit runs on Trooper.
+    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-slate-50">
+      <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
+        <div className="mb-8 sm:mb-12 md:mb-14 max-w-2xl">
+          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
+            {heading}
           </h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">
-            Traced tickets, live artifacts, and harnesses that match the work — not generic placeholders.
-          </p>
+          <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">{subheading}</p>
         </div>
 
         <div className="relative" style={{ perspective: '1000px' }}>
@@ -136,10 +149,13 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
                 key={`${section.eyebrowNumber}-${section.visual}-${index}`}
                 ref={(el) => { cardRefs.current[index] = el; }}
                 className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
-                style={{ zIndex: sections.length + index }}
+                style={{
+                  zIndex: sections.length + index,
+                  marginBottom: index === sections.length - 1 ? '0' : undefined,
+                }}
               >
                 <div
-                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[480px] flex flex-col will-change-transform mx-4 sm:mx-6 lg:mx-8"
+                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
@@ -173,7 +189,7 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
                         </ul>
                       )}
                     </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-[320px] md:min-h-0">
+                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
                       <PixelFramedVisual>
                         <Visual />
                       </PixelFramedVisual>
@@ -183,9 +199,8 @@ export default function MarketingFeatureSections({ sections }: { sections: Marke
               </div>
             );
           })}
-          <div className="hidden lg:block h-[55vh]" aria-hidden />
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }
