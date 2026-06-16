@@ -19,16 +19,14 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
             <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
 
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900 flex items-center gap-3 sm:gap-4">
-              <span className="inline-flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={content.logoUrl}
-                  alt={content.catalog.name}
-                  width={28}
-                  height={28}
-                  className="h-7 w-7 object-contain"
-                />
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={content.logoUrl}
+                alt={content.catalog.name}
+                width={36}
+                height={36}
+                className="h-9 w-9 shrink-0 object-contain"
+              />
               <span className="min-w-0">
                 {content.title}
                 {content.titleAccent && (
