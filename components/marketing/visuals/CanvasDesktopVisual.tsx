@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Layers, MessageSquarePlus } from 'lucide-react';
 import { CANVAS_STATUS_BAR_H, CANVAS_TITLE_BAR_H } from '@/lib/canvasDesktopLayout';
+import VisualScaleFrame from '@/components/marketing/VisualScaleFrame';
 import {
   DemoCommentPin,
   DemoCursorsLayer,
@@ -214,7 +215,7 @@ export function CanvasDesktopVisual({
   const resolvedDragging = useDemoLayout ? demoFrame.draggingIds : (drag ? [drag.id] : []);
 
   return (
-    <div className="flex h-full min-h-[280px] flex-col bg-[#E7E5E4]">
+    <div className="flex h-full min-h-0 flex-col bg-[#E7E5E4]">
       <style jsx global>{`
         @keyframes demoCursorRipple {
           from { opacity: 0.85; transform: scale(0.35); }
@@ -239,14 +240,15 @@ export function CanvasDesktopVisual({
       </div>
       <div
         ref={containerRef}
-        className="relative flex-1 overflow-auto p-2.5"
+        className="relative flex-1 overflow-hidden p-1 sm:p-2.5"
         style={{ cursor: drag ? 'grabbing' : 'default' }}
       >
-        <div
-          ref={stageRef}
-          className="relative overflow-hidden rounded-lg border border-stone-400/40 shadow-inner"
-          style={{ width: CANVAS_STAGE_W, height: CANVAS_STAGE_H, minWidth: '100%', minHeight: '100%' }}
-        >
+        <VisualScaleFrame baseWidth={CANVAS_STAGE_W} baseHeight={CANVAS_STAGE_H}>
+          <div
+            ref={stageRef}
+            className="relative overflow-hidden rounded-lg border border-stone-400/40 shadow-inner"
+            style={{ width: CANVAS_STAGE_W, height: CANVAS_STAGE_H }}
+          >
           <DesktopWorkspaceBg />
           {windows.map((win) => {
             const manualPos = positions[win.id] ?? { x: win.x, y: win.y };
@@ -288,7 +290,8 @@ export function CanvasDesktopVisual({
             <span className="text-[8px] font-medium text-stone-400">Canvas workspace</span>
             <span className="text-[8px] text-stone-500">{windows.length} artifacts · organized</span>
           </div>
-        </div>
+          </div>
+        </VisualScaleFrame>
       </div>
     </div>
   );

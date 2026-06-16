@@ -205,29 +205,32 @@ export default function MarketingFeatureSections({
                     transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
                   }}
                 >
-                  <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                  <div className="flex min-h-0 flex-1 flex-row items-stretch">
+                    <div className={`${sectionXPadding} box-border flex w-[44%] shrink-0 flex-col py-4 sm:w-[42%] sm:py-6 md:w-[38%] md:py-8 lg:py-10`}>
                       <PixelMissionTag index={section.eyebrowNumber} label={tag} />
                       <MarketingCardTitle
                         title={section.title}
                         titleHighlight={section.titleHighlight}
                         titleHighlightTone="brand"
+                        className="!text-base sm:!text-xl md:!text-2xl"
                       />
                       {section.intro && (
-                        <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{section.intro}</p>
+                        <p className="mt-2 hidden text-xs leading-relaxed text-slate-500 sm:mt-3 sm:block sm:text-sm">
+                          {section.intro}
+                        </p>
                       )}
                       {section.bullets && section.bullets.length > 0 && (
-                        <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                        <ul className="mt-2 space-y-1.5 text-[11px] text-slate-600 sm:mt-4 sm:space-y-2 sm:text-sm">
                           {section.bullets.map((b) => (
-                            <li key={b} className="flex gap-2">
-                              <span className="text-trooper mt-0.5 shrink-0">▸</span>
+                            <li key={b} className="flex gap-1.5 sm:gap-2">
+                              <span className="mt-0.5 shrink-0 text-trooper">▸</span>
                               <span>{b}</span>
                             </li>
                           ))}
                         </ul>
                       )}
                     </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
+                    <div className="box-border flex min-h-0 min-w-0 flex-1 flex-col border-l border-slate-200">
                       <PixelFramedVisual>
                         <Visual />
                       </PixelFramedVisual>
