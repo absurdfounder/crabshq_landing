@@ -246,6 +246,7 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
   return (
     <button
       type="button"
+      data-demo-target="modal-delivery"
       onClick={onClick}
       style={{
         display: 'flex', width: '100%', maxWidth: 360, textAlign: 'left', cursor: 'pointer',
@@ -413,6 +414,7 @@ export function DemoTaskModal({
       }}>
         <button
           type="button"
+          data-demo-target="modal-close"
           onClick={onClose}
           style={{
             position: 'absolute', top: 18, right: 18, zIndex: 5,
@@ -428,7 +430,7 @@ export function DemoTaskModal({
         <div style={{ display: 'flex', flex: 1, minHeight: 0, overflow: 'hidden' }}>
           {/* Left: thread */}
           <div style={{ flex: '0 0 54%', minWidth: 0, display: 'flex', flexDirection: 'column', borderRight: `1px solid ${C.border}` }}>
-            <div ref={threadRef} className="Trooper-scrollbar" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+            <div ref={threadRef} data-demo-target="modal-thread" className="Trooper-scrollbar" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
               <div style={{ padding: '14px 18px 8px', maxWidth: 480, margin: '0 auto' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
                   <span style={{ fontSize: 9, fontWeight: 700, color: statusColor, background: statusBg, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: 0.4 }}>
@@ -508,7 +510,7 @@ export function DemoTaskModal({
           </div>
 
           {/* Right: IDE or Canvas workspace */}
-          <div style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+          <div data-demo-target="modal-workspace" style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
             <div style={{
               display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px',
               borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
@@ -518,6 +520,7 @@ export function DemoTaskModal({
                   <button
                     key={mode}
                     type="button"
+                    data-demo-target={mode === 'ide' ? 'modal-workspace-ide' : 'modal-workspace-canvas'}
                     onClick={() => onWorkspaceModeChange?.(mode)}
                     style={{
                       padding: '3px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',

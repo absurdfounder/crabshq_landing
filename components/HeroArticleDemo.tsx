@@ -20,6 +20,8 @@ import {
   type DemoScenarioId,
 } from '@/lib/demoScenarios';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
+import { DemoClickCursor, useDemoCursor } from './DemoClickCursor';
+import { animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply } from '@/lib/demoCursorActions';
 
 const HUMANS = [
   { name: "Vaibhav", role: "Founder", img: "https://avatars.githubusercontent.com/u/25829699?v=4" },
@@ -137,7 +139,10 @@ function ComposerTag({ children, icon: Icon }: { children: ReactNode; icon?: typ
 
 function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number; highlighted?: boolean }) {
   return (
-    <div style={{
+    <div
+      data-demo-target="task-card"
+      data-task-id={task.id}
+      style={{
       background: C.card, borderRadius: 10,
       border: highlighted ? `2px solid ${C.brand}` : `1px solid ${C.border}`,
       padding: "10px 11px", marginBottom: 6,
@@ -172,7 +177,7 @@ function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number;
 function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoColumnId; tasks: Task[]; highlightedTaskId?: number | null }) {
   const col = KANBAN_COLUMNS[colKey];
   return (
-    <div style={{ width: DEMO_KANBAN_COL_W, minWidth: DEMO_KANBAN_COL_W, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
+    <div data-demo-target={`kanban-${colKey}`} style={{ width: DEMO_KANBAN_COL_W, minWidth: DEMO_KANBAN_COL_W, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "8px 12px", borderRadius: 8, marginBottom: 4, background: col.headerBg, color: col.headerText,
@@ -259,6 +264,7 @@ function DemoSidebarNav({
     return (
       <button
         type="button"
+        data-demo-target={tab === 'channels' ? 'sidebar-channels-tab' : undefined}
         onClick={() => { onUserInteract(); setSidebarTab(tab); }}
         style={{
           display: "inline-flex", alignItems: "center", gap: 6, height: 32, padding: active ? "0 10px" : 0,
@@ -283,6 +289,7 @@ function DemoSidebarNav({
       <button
         key={item.id}
         type="button"
+        data-demo-target={item.id === 'tasks' ? 'nav-tasks' : undefined}
         onClick={() => { onUserInteract(); onNavigate(item.id); }}
         style={{
           display: "flex", alignItems: "center", gap: 12, padding: "8px 12px", borderRadius: 16, marginBottom: 2,
@@ -492,7 +499,7 @@ function DemoChatPane({
 
       <div style={{ padding: "10px 16px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.card }}>
         <div style={{ borderRadius: 16, border: `1px solid ${C.border}`, background: C.card, boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06)" }}>
-          <div style={{ minHeight: 52, padding: "12px 14px", fontSize: 14, color: inputText ? C.text : C.textSubtle, lineHeight: 1.5 }}>
+          <div data-demo-target="composer" style={{ minHeight: 52, padding: "12px 14px", fontSize: 14, color: inputText ? C.text : C.textSubtle, lineHeight: 1.5 }}>
             {inputText ? (
               <>
                 {renderMentionParts(inputText, true)}
@@ -515,10 +522,13 @@ function DemoChatPane({
               <div style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
                 <Mic size={16} strokeWidth={1.75} />
               </div>
-              <div style={{
-                width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                background: inputText ? C.brand : "rgba(28,25,23,0.09)", color: inputText ? "white" : C.textSubtle,
-              }}>
+              <div
+                data-demo-target="composer-send"
+                style={{
+                  width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                  background: inputText ? C.brand : "rgba(28,25,23,0.09)", color: inputText ? "white" : C.textSubtle,
+                }}
+              >
                 <ArrowUp size={14} strokeWidth={2.25} />
               </div>
             </div>
@@ -590,9 +600,11 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
+  const demoCanvasRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const typeRef = useRef<NodeJS.Timeout | null>(null);
   const modalMsgCounter = useRef(0);
+  const { cursor, goTo, hide: hideCursor } = useDemoCursor(demoCanvasRef);
 
   const modalCanvasArtifacts = modalCanvasKeys
     .map(k => DEMO_ARTIFACTS[k])
@@ -618,7 +630,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setActivePage("tasks"); setSidebarTab(scenario.defaultSidebarTab ?? "channels"); setActiveChannel(scenario.defaultChannel ?? "general");
     resetTaskModal();
     setScriptIndex(0);
-  }, [resetTaskModal, scenario.defaultChannel, scenario.defaultSidebarTab]);
+    hideCursor();
+  }, [resetTaskModal, scenario.defaultChannel, scenario.defaultSidebarTab, hideCursor]);
 
   const pauseDemo = useCallback(() => setIsRunning(false), []);
 
@@ -712,14 +725,25 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
 
     if (idx >= CHAT_SCRIPT.length) {
       const execStep = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
+      if (!execStepCursorAfterApply(execStep)) {
+        animateExecStepCursor(execStep, goTo);
+      }
       timerRef.current = setTimeout(() => {
-        applyTaskExecStep(execStep);
+        if (execStepCursorAfterApply(execStep)) {
+          applyTaskExecStep(execStep);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => animateExecStepCursor(execStep, goTo));
+          });
+        } else {
+          applyTaskExecStep(execStep);
+        }
         setScriptIndex(idx + 1);
       }, execStep.delay);
       return;
     }
 
     const s = CHAT_SCRIPT[idx];
+    animateChatStepCursor(s, goTo);
     timerRef.current = setTimeout(() => {
       if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); setScriptIndex(idx + 1); return; }
       if (s.type === "typing") {
@@ -749,7 +773,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         return;
       }
     }, s.delay);
-  }, [applyTaskExecStep, resetDemo, totalScriptLength, CHAT_SCRIPT, TASK_EXEC_SCRIPT, PHASE1_TASKS, PHASE2_TASKS]);
+  }, [applyTaskExecStep, resetDemo, totalScriptLength, CHAT_SCRIPT, TASK_EXEC_SCRIPT, PHASE1_TASKS, PHASE2_TASKS, goTo]);
 
   useEffect(() => { if (!isRunning) return; processStep(scriptIndex); return cleanUp; }, [scriptIndex, isRunning, processStep, cleanUp]);
 
@@ -773,6 +797,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes modalIn { from { opacity:0; transform: scale(0.985); } to { opacity:1; transform: scale(1); } }
         @keyframes modalBackdropIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes demoCursorRipple { from { opacity: 0.85; transform: scale(0.35); } to { opacity: 0; transform: scale(2.2); } }
         @keyframes demoThreadEnter { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
         .demo-thread-turn { animation: demoThreadEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .demo-thread-tool-row { animation: demoThreadEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -816,7 +841,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
             </div>
           </div>
 
-          <div style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
+          <div ref={demoCanvasRef} style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
+            <DemoClickCursor state={cursor} />
             <DemoSidebarRail org={scenario.org} />
             <DemoSidebarNav
               sidebarTab={sidebarTab}
