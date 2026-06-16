@@ -3,13 +3,18 @@ import SectionShell from '@/components/ui/SectionShell';
 import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSections';
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
+import MaturityLadderSection from '@/components/marketing/MaturityLadderSection';
+import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSection';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { TeamPageContent } from '@/lib/teamContent';
+import { getCapabilitiesEyebrowNumber, getSubpageSectionOffset } from '@/lib/subpageSections';
 import { ArrowRight } from 'lucide-react';
 
 export default function TeamSubpageLayout({ content }: { content: TeamPageContent }) {
+  const sectionOffset = getSubpageSectionOffset(content);
+  const capabilitiesNumber = getCapabilitiesEyebrowNumber(sectionOffset);
   return (
     <>
       <div className="bg-white">
@@ -89,8 +94,22 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
         </section>
       </SectionShell>
 
+      {content.maturityLadder && (
+        <MaturityLadderSection content={content.maturityLadder} eyebrowNumber="03" />
+      )}
+
+      {content.playbookWorkflow && (
+        <PlaybookWorkflowSection
+          content={content.playbookWorkflow}
+          eyebrowNumber={content.maturityLadder ? '04' : '03'}
+        />
+      )}
+
       {content.featureSections && content.featureSections.length > 0 && (
-        <MarketingFeatureSections sections={content.featureSections} />
+        <MarketingFeatureSections
+          sections={content.featureSections}
+          eyebrowNumber={capabilitiesNumber}
+        />
       )}
 
       {content.extraSection && (

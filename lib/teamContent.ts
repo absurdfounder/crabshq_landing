@@ -2,7 +2,12 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import type { MarketingHeadlineLine } from '@/components/marketing/MarketingHeadline';
+import type { MaturityLadderContent } from '@/lib/maturityLadder';
+import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { canvasFeatureSection, codingCanvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
+import { codingPrReviewLadder, salesLeadQualificationLadder } from '@/lib/maturityLadderContent';
+import { codingPlaybookWorkflow } from '@/lib/playbookWorkflowContent';
+import { bumpFeatureSectionNumbers } from '@/lib/subpageSections';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -31,6 +36,8 @@ export type TeamPageContent = {
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
   demoId: DemoScenarioId;
+  maturityLadder?: MaturityLadderContent;
+  playbookWorkflow?: PlaybookWorkflowContent;
   featureSections?: MarketingFeatureSection[];
   meta: {
     title: string;
@@ -51,6 +58,8 @@ type BuildArgs = {
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
   demoId: DemoScenarioId;
+  maturityLadder?: MaturityLadderContent;
+  playbookWorkflow?: PlaybookWorkflowContent;
   featureSections?: MarketingFeatureSection[];
 };
 
@@ -70,7 +79,9 @@ const teamPages: Record<string, TeamPageContent> = {
   coding: buildTeamPage({
     slug: 'coding',
     demoId: 'coding',
-    featureSections: [
+    maturityLadder: codingPrReviewLadder,
+    playbookWorkflow: codingPlaybookWorkflow,
+    featureSections: bumpFeatureSectionNumbers([
       {
         eyebrow: 'Harness',
         eyebrowNumber: '03',
@@ -114,7 +125,7 @@ const teamPages: Record<string, TeamPageContent> = {
         visual: 'coding-memory',
       },
       codingCanvasFeatureSection('06'),
-    ],
+    ], 2),
     title: 'Trooper for Coding',
     titleAccent: 'Use Codex & Claude Code together.',
     description:
@@ -141,7 +152,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Field ops',
-      eyebrowNumber: '07',
+      eyebrowNumber: '09',
       title: 'How Trooper runs your code unit',
       intro: 'From invoice parsers to release notes — agents execute full workflows, not single prompts.',
       useCases: [
@@ -265,7 +276,8 @@ const teamPages: Record<string, TeamPageContent> = {
   sales: buildTeamPage({
     slug: 'sales',
     demoId: 'sales',
-    featureSections: [
+    maturityLadder: salesLeadQualificationLadder,
+    featureSections: bumpFeatureSectionNumbers([
       {
         eyebrow: 'Pipeline',
         eyebrowNumber: '03',
@@ -288,7 +300,7 @@ const teamPages: Record<string, TeamPageContent> = {
         visual: 'slack-routing',
       },
       canvasFeatureSection('06'),
-    ],
+    ], 1),
     title: 'Trooper for Sales',
     titleAccent: 'Pipeline that never stalls.',
     description:
@@ -315,7 +327,7 @@ const teamPages: Record<string, TeamPageContent> = {
     ],
     extraSection: {
       eyebrow: 'Revenue ops',
-      eyebrowNumber: '07',
+      eyebrowNumber: '08',
       title: 'Sales workflows on the board',
       useCases: [
         {

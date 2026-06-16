@@ -2,7 +2,12 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import { getFeaturePage, FEATURE_DEMO_MAP, allFeatureSlugs } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
+import type { MaturityLadderContent } from '@/lib/maturityLadder';
+import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { canvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
+import { githubIntegrationLadder } from '@/lib/maturityLadderContent';
+import { githubIntegrationPlaybookWorkflow } from '@/lib/playbookWorkflowContent';
+import { bumpFeatureSectionNumbers, getSubpageSectionOffset } from '@/lib/subpageSections';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -16,6 +21,8 @@ export type FeaturePageContent = {
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
   demoId: DemoScenarioId;
+  maturityLadder?: MaturityLadderContent;
+  playbookWorkflow?: PlaybookWorkflowContent;
   featureSections: MarketingFeatureSection[];
   meta: {
     title: string;
@@ -308,6 +315,18 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
   ],
 };
 
+type FeaturePageExtras = {
+  maturityLadder?: MaturityLadderContent;
+  playbookWorkflow?: PlaybookWorkflowContent;
+};
+
+const FEATURE_EXTRAS: Partial<Record<string, FeaturePageExtras>> = {
+  'github-integration': {
+    maturityLadder: githubIntegrationLadder,
+    playbookWorkflow: githubIntegrationPlaybookWorkflow,
+  },
+};
+
 const DEFAULT_FEATURE_SECTIONS: MarketingFeatureSection[] = [
   {
     eyebrow: 'Execution',
@@ -337,6 +356,10 @@ function buildRichFeature(slug: string): FeaturePageContent | undefined {
   const base = getFeaturePage(slug);
   if (!base) return undefined;
 
+  const extras = FEATURE_EXTRAS[slug] ?? {};
+  const sectionOffset = getSubpageSectionOffset(extras);
+  const baseSections = FEATURE_SECTIONS[slug] ?? DEFAULT_FEATURE_SECTIONS;
+
   return {
     slug: base.slug,
     missionLabel: base.missionLabel,
@@ -347,7 +370,9 @@ function buildRichFeature(slug: string): FeaturePageContent | undefined {
     overviewParagraphs: base.overviewParagraphs,
     benefits: base.benefits,
     demoId: FEATURE_DEMO_MAP[slug] ?? base.demoId,
-    featureSections: FEATURE_SECTIONS[slug] ?? DEFAULT_FEATURE_SECTIONS,
+    maturityLadder: extras.maturityLadder,
+    playbookWorkflow: extras.playbookWorkflow,
+    featureSections: bumpFeatureSectionNumbers(baseSections, sectionOffset),
     meta: base.meta,
   };
 }
