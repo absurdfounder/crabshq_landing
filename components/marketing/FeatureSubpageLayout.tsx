@@ -2,7 +2,6 @@ import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSections';
-import MaturityLadderSection from '@/components/marketing/MaturityLadderSection';
 import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSection';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
@@ -89,15 +88,8 @@ export default function FeatureSubpageLayout({ content }: { content: FeaturePage
         </section>
       </SectionShell>
 
-      {content.maturityLadder && (
-        <MaturityLadderSection content={content.maturityLadder} eyebrowNumber="03" />
-      )}
-
       {content.playbookWorkflow && (
-        <PlaybookWorkflowSection
-          content={content.playbookWorkflow}
-          eyebrowNumber={content.maturityLadder ? '04' : '03'}
-        />
+        <PlaybookWorkflowSection content={content.playbookWorkflow} eyebrowNumber="03" />
       )}
 
       {content.featureSections.length > 0 && (

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
+import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSection';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { IntegrationPageContent } from '@/lib/integrationContent';
@@ -47,7 +48,7 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
                 tone="dark"
                 icon={<ArrowRight className="h-4 w-4" />}
               >
-                All integrations
+                All plugins
               </PixelButton>
             </div>
           </div>
@@ -82,8 +83,10 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
         </section>
       </SectionShell>
 
+      <PlaybookWorkflowSection content={content.playbookWorkflow} eyebrowNumber="03" />
+
       {content.useCases.length > 0 && (
-        <SectionShell eyebrow="Use cases" eyebrowNumber="03" bgClass="bg-slate-50">
+        <SectionShell eyebrow="Use cases" eyebrowNumber="04" bgClass="bg-slate-50">
           <section className="py-12 md:py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-8">
@@ -102,7 +105,7 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
         </SectionShell>
       )}
 
-      <SectionShell eyebrow="Setup" bgClass="bg-white">
+      <SectionShell eyebrow="Setup" eyebrowNumber="05" bgClass="bg-white">
         <section className="py-12 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-10">
@@ -133,7 +136,7 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
       </SectionShell>
 
       {(content.relatedTeams.length > 0 || content.relatedIntegrations.length > 0) && (
-        <SectionShell eyebrow="Related" bgClass="bg-slate-50">
+        <SectionShell eyebrow="Related" eyebrowNumber="06" bgClass="bg-slate-50">
           <section className="py-12 md:py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid md:grid-cols-2 gap-8">

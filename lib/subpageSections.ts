@@ -1,14 +1,10 @@
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 
-/** Compute the next section index after optional maturity + playbook blocks. */
+/** Compute the next section index after optional playbook block. */
 export function getSubpageSectionOffset(options: {
-  maturityLadder?: unknown;
   playbookWorkflow?: unknown;
 }): number {
-  let offset = 0;
-  if (options.maturityLadder) offset += 1;
-  if (options.playbookWorkflow) offset += 1;
-  return offset;
+  return options.playbookWorkflow ? 1 : 0;
 }
 
 export function getCapabilitiesEyebrowNumber(offset: number): string {

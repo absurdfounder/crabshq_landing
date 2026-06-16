@@ -1,3 +1,5 @@
+import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
+import { getPluginPlaybook } from '@/lib/playbookWorkflowContent';
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import {
@@ -34,6 +36,7 @@ export type IntegrationPageContent = {
   relatedIntegrations: { slug: string; label: string }[];
   demoId: DemoScenarioId;
   isPriority: boolean;
+  playbookWorkflow: PlaybookWorkflowContent;
   meta: {
     title: string;
     description: string;
@@ -449,6 +452,7 @@ function buildIntegrationPage(catalog: PluginCatalogItem): IntegrationPageConten
     relatedIntegrations,
     demoId: rich?.demoId ?? DEMO_BY_CATEGORY[catalog.category] ?? 'launch',
     isPriority,
+    playbookWorkflow: getPluginPlaybook(catalog),
     meta: {
       title: `AI agent for ${catalog.name} | Trooper`,
       description: rich?.description ?? `Deploy an AI agent for ${catalog.name}. ${catalog.shortDescription || desc}`.slice(0, 160),

@@ -1,0 +1,2144 @@
+{
+  "github": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "GitHub playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "on autopilot.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Commits, PRs, CI traces, and merge gates \u2014 wired as reusable playbooks your agents execute end-to-end.",
+    "playbooks": [
+      {
+        "id": "pr-ship",
+        "tabLabel": "PR ship loop",
+        "triggerBadge": "Ticket \u2192 In Progress",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Mission started",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "a1",
+            "label": "Clone + patch",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Attach CI log",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Open GitHub PR",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "g1",
+            "label": "Human merge",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "CI pass rate",
+          "value": "94% first run"
+        }
+      },
+      {
+        "id": "ci-remediation",
+        "tabLabel": "CI remediation",
+        "triggerBadge": "GitHub check failed",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "CI red",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "a1",
+            "label": "Parse failure log",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Propose fix",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Push GitHub commit",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "g1",
+            "label": "Re-run CI",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Auto-fix success",
+          "value": "71% without human edit"
+        }
+      },
+      {
+        "id": "rollback",
+        "tabLabel": "Rollback",
+        "triggerBadge": "Deploy alert",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Failed deploy",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "a1",
+            "label": "Identify bad commit",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Revert PR",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Notify #incidents",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "github.com"
+          },
+          {
+            "id": "g1",
+            "label": "Verify recovery",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Mean time to recover",
+          "value": "12 min avg"
+        }
+      }
+    ]
+  },
+  "slack": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Slack playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "that keep up.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Route mentions, draft replies, and incident threads \u2014 Slack channels wired to Trooper agents with human gates.",
+    "playbooks": [
+      {
+        "id": "mention-triage",
+        "tabLabel": "Mention triage",
+        "triggerBadge": "@channel spike",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Slack mention",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "a1",
+            "label": "Pull thread context",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Draft reply",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Post to #support",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "g1",
+            "label": "Manager gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "First response",
+          "value": "< 2 min median"
+        }
+      },
+      {
+        "id": "incident-bridge",
+        "tabLabel": "Incident bridge",
+        "triggerBadge": "Pager \u2192 #incidents",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Pager fired",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "a1",
+            "label": "Open Slack bridge",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Timeline updates",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Slack huddle link",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "g1",
+            "label": "Resolve gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "MTTR",
+          "value": "38 min avg"
+        }
+      },
+      {
+        "id": "standup-digest",
+        "tabLabel": "Standup digest",
+        "triggerBadge": "Weekday 9am",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Cron trigger",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "a1",
+            "label": "Collect updates",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Summarize blockers",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Slack #standup post",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "slack.com"
+          },
+          {
+            "id": "g1",
+            "label": "Ship gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Manual standup time",
+          "value": "\u2193 55%"
+        }
+      }
+    ]
+  },
+  "gmail": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Gmail workflows",
+            "tone": "default"
+          },
+          {
+            "text": "without inbox dread.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Triage VIP senders, draft follow-ups, and label automation \u2014 Gmail playbooks agents replay with your tone.",
+    "playbooks": [
+      {
+        "id": "vip-triage",
+        "tabLabel": "VIP triage",
+        "triggerBadge": "New email",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Gmail arrival",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Detect VIP",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Summarize ask",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Draft Gmail reply",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Send gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "VIP response time",
+          "value": "18 min avg"
+        }
+      },
+      {
+        "id": "follow-up",
+        "tabLabel": "Follow-up loop",
+        "triggerBadge": "No reply 3d",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Thread stale",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Scan context",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Draft nudge",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Queue Gmail send",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Approve gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Revived threads",
+          "value": "31% re-open"
+        }
+      },
+      {
+        "id": "label-automation",
+        "tabLabel": "Label automation",
+        "triggerBadge": "Newsletter burst",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Bulk arrival",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Classify sender",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Apply Gmail labels",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Archive noise",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Review gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Inbox noise",
+          "value": "\u2193 62%"
+        }
+      }
+    ]
+  },
+  "hubspot": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "HubSpot playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "for revenue ops.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Deal stage moves, contact enrichment, and AE handoffs \u2014 HubSpot CRM steps traced on the Trooper board.",
+    "playbooks": [
+      {
+        "id": "deal-stage",
+        "tabLabel": "Deal stage",
+        "triggerBadge": "Stage changed",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "HubSpot deal move",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "a1",
+            "label": "Validate fields",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Notify AE",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Update HubSpot timeline",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "g1",
+            "label": "Forecast gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Forecast accuracy",
+          "value": "+11 pts QoQ"
+        }
+      },
+      {
+        "id": "lead-enrich",
+        "tabLabel": "Lead enrich",
+        "triggerBadge": "Form submit",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "HubSpot form lead",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "a1",
+            "label": "Enrich firmographics",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Score lead",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "HubSpot contact sync",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "g1",
+            "label": "Qualify gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "SQL rate",
+          "value": "34% \u2192 41%"
+        }
+      },
+      {
+        "id": "handoff",
+        "tabLabel": "AE handoff",
+        "triggerBadge": "SQL reached",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "SQL flag",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "a1",
+            "label": "Brief AE",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Schedule demo",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "HubSpot task created",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "hubspot.com"
+          },
+          {
+            "id": "g1",
+            "label": "Accept gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Demo show rate",
+          "value": "78%"
+        }
+      }
+    ]
+  },
+  "notion": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Notion playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "your wiki runs.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Spec intake, doc refresh, and launch checklists \u2014 Notion pages kept current by agents with review gates.",
+    "playbooks": [
+      {
+        "id": "spec-intake",
+        "tabLabel": "Spec intake",
+        "triggerBadge": "New Notion page",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Notion doc created",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "a1",
+            "label": "Extract reqs",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Link dependencies",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Notion status update",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "g1",
+            "label": "Review gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Spec completeness",
+          "value": "89% day one"
+        }
+      },
+      {
+        "id": "doc-refresh",
+        "tabLabel": "Doc refresh",
+        "triggerBadge": "Stale > 30d",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Stale Notion page",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "a1",
+            "label": "Diff vs product",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Propose edits",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Notion publish",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "g1",
+            "label": "Owner gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Stale pages",
+          "value": "\u2193 47%"
+        }
+      },
+      {
+        "id": "launch-checklist",
+        "tabLabel": "Launch checklist",
+        "triggerBadge": "Go-live date set",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Launch flagged",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "a1",
+            "label": "Fill checklist",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Assign owners",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Notion dashboard",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "notion.so"
+          },
+          {
+            "id": "g1",
+            "label": "Ship gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Missed launch tasks",
+          "value": "\u2193 71%"
+        }
+      }
+    ]
+  },
+  "linear": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Linear playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "on rails.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Issue intake, sprint planning, and release notes \u2014 Linear tickets orchestrated with coding agents end-to-end.",
+    "playbooks": [
+      {
+        "id": "issue-intake",
+        "tabLabel": "Issue intake",
+        "triggerBadge": "Customer report",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Linear issue filed",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "a1",
+            "label": "Repro steps",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Priority label",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Linear assignee",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "g1",
+            "label": "Start gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Time to triage",
+          "value": "12 min avg"
+        }
+      },
+      {
+        "id": "sprint-plan",
+        "tabLabel": "Sprint plan",
+        "triggerBadge": "Cycle start",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Cycle opened",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "a1",
+            "label": "Rank backlog",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Capacity check",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Linear sprint board",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "g1",
+            "label": "Commit gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Scope creep",
+          "value": "\u2193 23%"
+        }
+      },
+      {
+        "id": "release-notes",
+        "tabLabel": "Release notes",
+        "triggerBadge": "Version tagged",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Tag pushed",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "a1",
+            "label": "Summarize merges",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Draft changelog",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Linear + Notion sync",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linear.app"
+          },
+          {
+            "id": "g1",
+            "label": "Publish gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Notes acceptance",
+          "value": "92% first pass"
+        }
+      }
+    ]
+  },
+  "stripe": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Stripe playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "with guardrails.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Failed payments, dispute evidence, and payout alerts \u2014 Stripe events routed to agents with finance gates.",
+    "playbooks": [
+      {
+        "id": "dunning",
+        "tabLabel": "Dunning",
+        "triggerBadge": "Invoice failed",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Stripe payment fail",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "a1",
+            "label": "Customer context",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Draft recovery email",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Stripe retry schedule",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "g1",
+            "label": "Approve gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Recovery rate",
+          "value": "38% within 7d"
+        }
+      },
+      {
+        "id": "dispute",
+        "tabLabel": "Dispute pack",
+        "triggerBadge": "Charge disputed",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Stripe dispute opened",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "a1",
+            "label": "Gather evidence",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Compile PDF",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Stripe submit",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "g1",
+            "label": "Legal gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Win rate",
+          "value": "54% upheld"
+        }
+      },
+      {
+        "id": "payout-alert",
+        "tabLabel": "Payout alert",
+        "triggerBadge": "Balance threshold",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Stripe balance low",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "a1",
+            "label": "Forecast cash",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Notify finance",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Stripe payout plan",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "stripe.com"
+          },
+          {
+            "id": "g1",
+            "label": "CFO gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Cash surprises",
+          "value": "0 last quarter"
+        }
+      }
+    ]
+  },
+  "googlesheets": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "Sheets playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "that stay true.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Ops dashboards, quota models, and weekly rolls \u2014 Google Sheets updated by agents with diff review.",
+    "playbooks": [
+      {
+        "id": "ops-dashboard",
+        "tabLabel": "Ops dashboard",
+        "triggerBadge": "Hourly refresh",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Refresh tick",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Pull metrics",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Update Google Sheets tabs",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "Highlight anomalies",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Sign-off gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Stale cells",
+          "value": "< 1%"
+        }
+      },
+      {
+        "id": "quota-model",
+        "tabLabel": "Quota model",
+        "triggerBadge": "Headcount change",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "HR update",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Recalc quotas",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Write Google Sheets model",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "Share with leads",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Approve gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Model errors",
+          "value": "\u2193 80%"
+        }
+      },
+      {
+        "id": "weekly-roll",
+        "tabLabel": "Weekly roll",
+        "triggerBadge": "Friday 3pm",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Week close",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "a1",
+            "label": "Aggregate rows",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Pivot + chart",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "Google Sheets publish",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "google.com"
+          },
+          {
+            "id": "g1",
+            "label": "Send gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Manual sheet time",
+          "value": "4h \u2192 25m"
+        }
+      }
+    ]
+  },
+  "linkedin": {
+    "headlineLines": [
+      {
+        "parts": [
+          {
+            "text": "LinkedIn playbooks",
+            "tone": "default"
+          },
+          {
+            "text": "for GTM.",
+            "tone": "brand"
+          }
+        ]
+      }
+    ],
+    "subheading": "Prospect research, connection notes, and campaign replies \u2014 LinkedIn touchpoints orchestrated with human gates.",
+    "playbooks": [
+      {
+        "id": "prospect-research",
+        "tabLabel": "Prospect research",
+        "triggerBadge": "Account list upload",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "List imported",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "a1",
+            "label": "Research profiles",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "a2",
+            "label": "Draft connection note",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "i1",
+            "label": "LinkedIn save draft",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "g1",
+            "label": "Send gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Accept rate",
+          "value": "41% avg"
+        }
+      },
+      {
+        "id": "inbound-reply",
+        "tabLabel": "Inbound reply",
+        "triggerBadge": "DM received",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "LinkedIn DM",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "a1",
+            "label": "Classify intent",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "a2",
+            "label": "Draft response",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Claude Code"
+          },
+          {
+            "id": "i1",
+            "label": "LinkedIn send queue",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "g1",
+            "label": "Human gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Reply quality",
+          "value": "83% sent as-is"
+        }
+      },
+      {
+        "id": "campaign-sync",
+        "tabLabel": "Campaign sync",
+        "triggerBadge": "Ad lead webhook",
+        "nodes": [
+          {
+            "id": "t1",
+            "label": "Lead captured",
+            "x": 12,
+            "y": 28,
+            "kind": "trigger",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "a1",
+            "label": "Enrich LinkedIn",
+            "x": 38,
+            "y": 22,
+            "kind": "agent",
+            "agent": "OpenCode"
+          },
+          {
+            "id": "a2",
+            "label": "Push to CRM",
+            "x": 62,
+            "y": 38,
+            "kind": "agent",
+            "agent": "Codex"
+          },
+          {
+            "id": "i1",
+            "label": "LinkedIn audience update",
+            "x": 38,
+            "y": 58,
+            "kind": "integration",
+            "iconDomain": "linkedin.com"
+          },
+          {
+            "id": "g1",
+            "label": "Qualify gate",
+            "x": 82,
+            "y": 52,
+            "kind": "gate",
+            "iconDomain": "trooper"
+          }
+        ],
+        "edges": [
+          {
+            "from": "t1",
+            "to": "a1"
+          },
+          {
+            "from": "a1",
+            "to": "a2"
+          },
+          {
+            "from": "a1",
+            "to": "i1"
+          },
+          {
+            "from": "a2",
+            "to": "g1"
+          },
+          {
+            "from": "i1",
+            "to": "g1"
+          }
+        ],
+        "statusBar": {
+          "label": "Lead lag",
+          "value": "< 5 min"
+        }
+      }
+    ]
+  }
+}

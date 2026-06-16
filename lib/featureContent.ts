@@ -2,11 +2,9 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import { getFeaturePage, FEATURE_DEMO_MAP, allFeatureSlugs } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
-import type { MaturityLadderContent } from '@/lib/maturityLadder';
 import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { canvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
-import { githubIntegrationLadder } from '@/lib/maturityLadderContent';
-import { githubIntegrationPlaybookWorkflow } from '@/lib/playbookWorkflowContent';
+import { getFeaturePlaybook } from '@/lib/playbookWorkflowContent';
 import { bumpFeatureSectionNumbers, getSubpageSectionOffset } from '@/lib/subpageSections';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
@@ -21,7 +19,6 @@ export type FeaturePageContent = {
   overviewParagraphs: string[];
   benefits: SubpageBenefit[];
   demoId: DemoScenarioId;
-  maturityLadder?: MaturityLadderContent;
   playbookWorkflow?: PlaybookWorkflowContent;
   featureSections: MarketingFeatureSection[];
   meta: {
@@ -315,17 +312,9 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
   ],
 };
 
-type FeaturePageExtras = {
-  maturityLadder?: MaturityLadderContent;
-  playbookWorkflow?: PlaybookWorkflowContent;
-};
+type FeaturePageExtras = Record<string, never>;
 
-const FEATURE_EXTRAS: Partial<Record<string, FeaturePageExtras>> = {
-  'github-integration': {
-    maturityLadder: githubIntegrationLadder,
-    playbookWorkflow: githubIntegrationPlaybookWorkflow,
-  },
-};
+const FEATURE_EXTRAS: Partial<Record<string, FeaturePageExtras>> = {};
 
 const DEFAULT_FEATURE_SECTIONS: MarketingFeatureSection[] = [
   {
@@ -357,7 +346,8 @@ function buildRichFeature(slug: string): FeaturePageContent | undefined {
   if (!base) return undefined;
 
   const extras = FEATURE_EXTRAS[slug] ?? {};
-  const sectionOffset = getSubpageSectionOffset(extras);
+  const playbookWorkflow = getFeaturePlaybook(slug);
+  const sectionOffset = getSubpageSectionOffset({ playbookWorkflow });
   const baseSections = FEATURE_SECTIONS[slug] ?? DEFAULT_FEATURE_SECTIONS;
 
   return {
@@ -370,8 +360,7 @@ function buildRichFeature(slug: string): FeaturePageContent | undefined {
     overviewParagraphs: base.overviewParagraphs,
     benefits: base.benefits,
     demoId: FEATURE_DEMO_MAP[slug] ?? base.demoId,
-    maturityLadder: extras.maturityLadder,
-    playbookWorkflow: extras.playbookWorkflow,
+    playbookWorkflow,
     featureSections: bumpFeatureSectionNumbers(baseSections, sectionOffset),
     meta: base.meta,
   };

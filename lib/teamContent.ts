@@ -2,12 +2,10 @@ import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@/lib/demoScenarios';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import type { MarketingHeadlineLine } from '@/components/marketing/MarketingHeadline';
-import type { MaturityLadderContent } from '@/lib/maturityLadder';
 import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { canvasFeatureSection, codingCanvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';
-import { codingPrReviewLadder, salesLeadQualificationLadder } from '@/lib/maturityLadderContent';
-import { codingPlaybookWorkflow } from '@/lib/playbookWorkflowContent';
-import { bumpFeatureSectionNumbers } from '@/lib/subpageSections';
+import { getTeamPlaybook } from '@/lib/playbookWorkflowContent';
+import { bumpFeatureSectionNumbers, getSubpageSectionOffset } from '@/lib/subpageSections';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 
@@ -36,7 +34,6 @@ export type TeamPageContent = {
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
   demoId: DemoScenarioId;
-  maturityLadder?: MaturityLadderContent;
   playbookWorkflow?: PlaybookWorkflowContent;
   featureSections?: MarketingFeatureSection[];
   meta: {
@@ -58,14 +55,29 @@ type BuildArgs = {
   benefits: SubpageBenefit[];
   extraSection?: TeamExtraSection;
   demoId: DemoScenarioId;
-  maturityLadder?: MaturityLadderContent;
   playbookWorkflow?: PlaybookWorkflowContent;
   featureSections?: MarketingFeatureSection[];
 };
 
 function buildTeamPage(args: BuildArgs): TeamPageContent {
+  const playbookWorkflow = args.playbookWorkflow ?? getTeamPlaybook(args.slug);
+  const sectionOffset = getSubpageSectionOffset({ playbookWorkflow });
+  const featureSections = args.featureSections
+    ? bumpFeatureSectionNumbers(args.featureSections, sectionOffset)
+    : undefined;
+  const extraSection =
+    args.extraSection && sectionOffset > 0
+      ? {
+          ...args.extraSection,
+          eyebrowNumber: String(parseInt(args.extraSection.eyebrowNumber, 10) + sectionOffset).padStart(2, '0'),
+        }
+      : args.extraSection;
+
   return {
     ...args,
+    playbookWorkflow,
+    featureSections,
+    extraSection,
     missionLabel: args.missionLabel ?? 'Unit brief',
     meta: {
       title: `${args.title} | Trooper`,
@@ -79,9 +91,7 @@ const teamPages: Record<string, TeamPageContent> = {
   coding: buildTeamPage({
     slug: 'coding',
     demoId: 'coding',
-    maturityLadder: codingPrReviewLadder,
-    playbookWorkflow: codingPlaybookWorkflow,
-    featureSections: bumpFeatureSectionNumbers([
+    featureSections: [
       {
         eyebrow: 'Harness',
         eyebrowNumber: '03',
@@ -125,7 +135,7 @@ const teamPages: Record<string, TeamPageContent> = {
         visual: 'coding-memory',
       },
       codingCanvasFeatureSection('06'),
-    ], 2),
+    ],
     title: 'Trooper for Coding',
     titleAccent: 'Use Codex & Claude Code together.',
     description:
@@ -276,8 +286,7 @@ const teamPages: Record<string, TeamPageContent> = {
   sales: buildTeamPage({
     slug: 'sales',
     demoId: 'sales',
-    maturityLadder: salesLeadQualificationLadder,
-    featureSections: bumpFeatureSectionNumbers([
+    featureSections: [
       {
         eyebrow: 'Pipeline',
         eyebrowNumber: '03',
@@ -300,7 +309,7 @@ const teamPages: Record<string, TeamPageContent> = {
         visual: 'slack-routing',
       },
       canvasFeatureSection('06'),
-    ], 1),
+    ],
     title: 'Trooper for Sales',
     titleAccent: 'Pipeline that never stalls.',
     description:
