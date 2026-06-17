@@ -38,6 +38,8 @@ import {
 import type { Skill } from '@/app/utils/helper'
 import type { LucideIcon } from 'lucide-react'
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard'
+import { buildSkillRouteIndex, getSkillPagePath } from '@/lib/skillRoutes'
+import { getSkillIconUrl } from '@/lib/skillIcon'
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   'Coding Agents & IDEs': Code2,
@@ -75,14 +77,10 @@ function getCategoryIcon(category: string): LucideIcon {
   return CATEGORY_ICONS[category] || LayoutGrid
 }
 
-function getFaviconUrl(website: string) {
-  return `https://www.google.com/s2/favicons?domain=${website}&sz=64`
-}
-
-function SkillCard({ skill }: { skill: Skill }) {
+function SkillCard({ skill, href }: { skill: Skill; href: string }) {
   return (
     <HubCatalogCard
-      href={`/integration/${skill.id}`}
+      href={href}
       title={skill.name}
       description={skill.description}
       category={skill.category}
@@ -90,7 +88,7 @@ function SkillCard({ skill }: { skill: Skill }) {
       icon={
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={getFaviconUrl(skill.website)}
+          src={getSkillIconUrl(skill)}
           alt=""
           width={28}
           height={28}
@@ -132,6 +130,8 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
     })
     return counts
   }, [skills])
+
+  const skillRouteIndex = useMemo(() => buildSkillRouteIndex(skills), [skills])
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -190,7 +190,11 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
         {filteredSkills.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} />
+          <SkillCard
+            key={skill.id}
+            skill={skill}
+            href={getSkillPagePath(skill, skillRouteIndex)}
+          />
         ))}
       </div>
 

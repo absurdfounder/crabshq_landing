@@ -9,6 +9,7 @@ import { allIntegrationPageSlugs } from '@/lib/integrationContent';
 import { allAlternativeSlugs } from '@/lib/alternativeContent';
 import { allUseCaseSlugs } from '@/lib/useCaseContent';
 import { getAllLoopSlugs } from '@/lib/loopCatalog';
+import { buildSkillRouteIndex, getSkillPagePath } from '@/lib/skillRoutes';
 
 const URL = "https://trooper.so";
 
@@ -19,18 +20,27 @@ interface IntegrationOrTemplate {
 
 async function loadIntegrations(): Promise<IntegrationOrTemplate[]> {
   try {
-    const [integrationsFile, comparison, skills] = await Promise.all([
+    const [integrationsFile, comparison] = await Promise.all([
       _loadFromJson(false).then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'integration' }))),
       _loadFromJsonComparison().then((items: any[]): IntegrationOrTemplate[] =>
         items.map(item => ({ ...item, type: 'compare-against' }))),
-      _loadSkills().then((items: Skill[]): IntegrationOrTemplate[] =>
-        items.map(item => ({ id: item.id, type: 'integration' })))
     ]);
 
-    return [...integrationsFile, ...comparison, ...skills];
+    return [...integrationsFile, ...comparison];
   } catch (error) {
     console.error("Failed to load integrations", error);
+    return [];
+  }
+}
+
+async function loadSkillPaths(): Promise<string[]> {
+  try {
+    const skills = await _loadSkills();
+    const index = buildSkillRouteIndex(skills);
+    return skills.map((skill: Skill) => getSkillPagePath(skill, index));
+  } catch (error) {
+    console.error("Failed to load skills for sitemap", error);
     return [];
   }
 }
@@ -86,7 +96,10 @@ const staticPages = [
   { path: '/terms', priority: '0.3', changefreq: 'yearly' },
 ];
 
-function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): string {
+function generateSiteMap(
+  integrationsOrTemplates: IntegrationOrTemplate[],
+  skillPaths: string[] = [],
+): string {
   const now = new Date().toISOString();
 
   const teamSlugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()]));
@@ -159,18 +172,29 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
     <priority>0.7</priority>
   </url>`).join('');
 
+  const skillEntries = skillPaths.map(path => `
+  <url>
+    <loc>${URL}${path}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}${loopEntries}
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}${loopEntries}${skillEntries}
 </urlset>`;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const integrations = await loadIntegrations();
-    const sitemap = generateSiteMap(integrations);
+    const [integrations, skillPaths] = await Promise.all([
+      loadIntegrations(),
+      loadSkillPaths(),
+    ]);
+    const sitemap = generateSiteMap(integrations, skillPaths);
 
     return new Response(sitemap, {
       status: 200,

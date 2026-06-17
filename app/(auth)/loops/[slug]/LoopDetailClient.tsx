@@ -1,26 +1,58 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Terminal } from 'lucide-react';
+import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
+
+type LoopStep = {
+  label: string;
+  description?: string;
+  command?: string;
+};
 
 type LoopDetailClientProps = {
   kickoffPrompt: string;
   mermaid: string;
+  steps?: LoopStep[];
+  guardrails?: string[];
 };
 
-export default function LoopDetailClient({ kickoffPrompt, mermaid }: LoopDetailClientProps) {
-  const [copiedKickoff, setCopiedKickoff] = useState(false);
-  const [copiedMermaid, setCopiedMermaid] = useState(false);
+function CopyButton({ text, label }: { text: string; label?: string }) {
+  const [copied, setCopied] = useState(false);
 
-  const copyKickoff = async () => {
+  const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(kickoffPrompt);
-      setCopiedKickoff(true);
-      setTimeout(() => setCopiedKickoff(false), 2000);
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       // ignore
     }
   };
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="shrink-0 rounded p-1.5 transition-colors hover:bg-slate-800"
+      title={label || 'Copy to clipboard'}
+    >
+      {copied ? (
+        <Check className="h-4 w-4 text-green-400" />
+      ) : (
+        <Copy className="h-4 w-4 text-slate-400 hover:text-slate-200" />
+      )}
+    </button>
+  );
+}
+
+export default function LoopDetailClient({
+  kickoffPrompt,
+  mermaid,
+  steps = [],
+  guardrails = [],
+}: LoopDetailClientProps) {
+  const [copiedMermaid, setCopiedMermaid] = useState(false);
 
   const copyMermaid = async () => {
     try {
@@ -33,46 +65,83 @@ export default function LoopDetailClient({ kickoffPrompt, mermaid }: LoopDetailC
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={copyKickoff}
-          className="inline-flex items-center gap-2 rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-        >
-          {copiedKickoff ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
-          Use loop
-        </button>
-        <button
-          type="button"
-          onClick={copyMermaid}
-          className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
-        >
-          {copiedMermaid ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-          Copy Mermaid
-        </button>
-      </div>
-
+    <div className="space-y-6">
       <div className="rounded-lg border border-slate-200 bg-slate-900 p-4">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Kickoff prompt</span>
-          <button
-            type="button"
-            onClick={copyKickoff}
-            className="rounded p-1 hover:bg-slate-800"
-            title="Copy kickoff"
-          >
-            {copiedKickoff ? (
-              <Check className="h-3.5 w-3.5 text-green-400" />
-            ) : (
-              <Copy className="h-3.5 w-3.5 text-slate-400" />
-            )}
-          </button>
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400">
+            Kickoff prompt
+          </span>
+          <CopyButton text={kickoffPrompt} label="Copy kickoff prompt" />
         </div>
-        <pre className="max-h-64 overflow-auto font-mono text-xs leading-6 whitespace-pre-wrap text-green-400">
+        <pre className="max-h-72 overflow-auto whitespace-pre-wrap font-mono text-sm leading-6 text-green-400">
           {kickoffPrompt}
         </pre>
       </div>
+
+      <p className="font-mono text-xs text-slate-500">
+        Paste the kickoff prompt into Cursor, Claude Code, or Codex. Deeplinks do not install hook files.
+      </p>
+
+      {steps.length > 0 ? (
+        <div className="border border-slate-200 bg-white">
+          <div className="border-b border-slate-200 bg-slate-50 px-4 py-2.5">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-500">
+              Steps
+            </span>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {steps.map((step, index) => (
+              <div key={step.label} className="px-4 py-4">
+                <p className="font-funneldisplay text-sm font-semibold text-slate-900">
+                  {index + 1}. {step.label}
+                </p>
+                {step.description ? (
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{step.description}</p>
+                ) : null}
+                {step.command ? (
+                  <div className="mt-3 flex items-start gap-2 rounded-sm border border-slate-200 bg-slate-50 px-3 py-2">
+                    <Terminal className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" />
+                    <code className="font-mono text-xs text-slate-800">{step.command}</code>
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="border border-slate-200 bg-white">
+        <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2.5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-500">
+            Flow diagram
+          </span>
+          <button
+            type="button"
+            onClick={copyMermaid}
+            className="inline-flex items-center gap-1.5 rounded-sm border border-slate-200 bg-white px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            {copiedMermaid ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+            Copy Mermaid
+          </button>
+        </div>
+        <div className="overflow-x-auto p-4">
+          <MermaidFlowDiagram source={mermaid} />
+        </div>
+      </div>
+
+      {guardrails.length > 0 ? (
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 className="font-funneldisplay text-lg font-semibold text-slate-900">Guardrails</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Rules the agent must follow so it cannot cheat the exit condition.
+          </p>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-600">
+            {guardrails.map((rule) => (
+              <li key={rule}>{rule}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 }
