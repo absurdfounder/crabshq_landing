@@ -20,29 +20,12 @@ type PlatformCard = {
   action: 'download' | 'open';
 };
 
-const BrandIcon = ({ className, children }: { className?: string; children: React.ReactNode }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
-    {children}
-  </svg>
-);
-
-const SiApple = ({ className }: { className?: string }) => (
-  <BrandIcon className={className}>
-    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-  </BrandIcon>
-);
-
-const SiWindows = ({ className }: { className?: string }) => (
-  <BrandIcon className={className}>
-    <path d="M3 12V6.75l6-1.32v13.03L3 17.25V12zm6-1.32L22 3v5.75l-13 2.83V10.68zm0 2.52v5.75L22 21V15.25l-13-2.83z" />
-  </BrandIcon>
-);
-
-const SiAndroid = ({ className }: { className?: string }) => (
-  <BrandIcon className={className}>
-    <path d="M17.523 15.341c-.703 0-1.274.573-1.274 1.274s.571 1.274 1.274 1.274 1.274-.573 1.274-1.274-.571-1.274-1.274-1.274zm-11.046 0c-.703 0-1.274.573-1.274 1.274s.571 1.274 1.274 1.274 1.274-.573 1.274-1.274-.571-1.274-1.274-1.274zm11.397-6.02 1.997-3.459a.416.416 0 0 0-.152-.567.416.416 0 0 0-.567.152l-2.022 3.503C15.147 8.246 13.651 7.74 12 7.74s-3.147.506-4.131 1.404L5.847 5.641a.416.416 0 0 0-.567-.152.416.416 0 0 0-.152.567l1.997 3.459C2.688 11.186.343 14.658 0 18.761h24c-.343-4.103-2.688-7.575-6.126-9.44z" />
-  </BrandIcon>
-);
+function PlatformBrandIcon({ src }: { src: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt="" aria-hidden className="h-7 w-7 object-contain" />
+  );
+}
 
 const platforms: PlatformCard[] = [
   {
@@ -52,7 +35,7 @@ const platforms: PlatformCard[] = [
     requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
     href: 'https://github.com/absurdfounder/trooper_landing/releases/download/macos-latest/Trooper.dmg',
     cta: 'Download Mac app',
-    icon: <SiApple className="h-7 w-7" />,
+    icon: <PlatformBrandIcon src="/images/platforms/apple.svg" />,
     group: 'desktop',
     action: 'download',
   },
@@ -63,7 +46,7 @@ const platforms: PlatformCard[] = [
     requirements: 'Windows 10 20H2+ and Windows 11 · x64',
     href: 'https://github.com/absurdfounder/trooper_landing/releases/download/windows-latest/Trooper-Windows-x64-Setup.exe',
     cta: 'Download Windows app',
-    icon: <SiWindows className="h-7 w-7" />,
+    icon: <PlatformBrandIcon src="/images/platforms/windows.svg" />,
     group: 'desktop',
     action: 'download',
   },
@@ -74,7 +57,7 @@ const platforms: PlatformCard[] = [
     requirements: 'Command your agents from iPhone and iPad',
     href: 'https://apps.apple.com/app/trooper',
     cta: 'Get the iOS app',
-    icon: <SiApple className="h-7 w-7" />,
+    icon: <PlatformBrandIcon src="/images/platforms/apple.svg" />,
     group: 'mobile',
     action: 'download',
   },
@@ -85,7 +68,7 @@ const platforms: PlatformCard[] = [
     requirements: 'Command your agents from Android phones and tablets',
     href: 'https://play.google.com/store/apps/details?id=com.trooper',
     cta: 'Get the Android app',
-    icon: <SiAndroid className="h-7 w-7" />,
+    icon: <PlatformBrandIcon src="/images/platforms/android.svg" />,
     group: 'mobile',
     action: 'download',
   },
@@ -125,7 +108,7 @@ function PlatformTile({
         .join(' ')}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="relative z-10 flex h-12 w-12 items-center justify-center border border-slate-200 bg-white text-slate-700">
+        <div className="relative z-10 flex h-12 w-12 items-center justify-center border border-slate-200 bg-white p-2 text-slate-700">
           {platform.icon}
         </div>
         {isRecommended && (
