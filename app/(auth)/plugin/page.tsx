@@ -9,7 +9,6 @@ import {
 } from '@/lib/integrationContent';
 import { getAllPlugins, PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
-import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import PluginHubClient from './PluginHubClient';
 
 export const metadata = {
@@ -118,8 +117,6 @@ export default function PluginHubPage() {
           <PluginHubClient plugins={allPlugins} />
         </div>
       </SectionShell>
-
-      <MarketingSubpageTail />
     </div>
   );
 }

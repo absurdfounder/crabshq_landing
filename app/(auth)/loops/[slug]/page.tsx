@@ -4,7 +4,6 @@ import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import Loading from '@/components/Loading';
 import PixelButton from '@/components/ui/PixelButton';
-import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import {
   formatLoopCount,
   getAllLoopSlugs,
@@ -275,7 +274,6 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
           </div>
         </div>
       </SectionShell>
-      <MarketingSubpageTail />
     </article>
   );
 }

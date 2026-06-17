@@ -47,7 +47,7 @@ const LoopsPage = async ({
             Agent loop catalog
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            Reusable loops with kickoff prompts, guardrails, and Mermaid flow diagrams. Copy into Cursor, Claude Code, or Codex — no hook files required.
+            Reusable loops with kickoff prompts, guardrails, and flow diagrams. Copy into Cursor, Claude Code, or Codex — no hook files required.
           </p>
           <div className="mt-6">
             <PixelButton

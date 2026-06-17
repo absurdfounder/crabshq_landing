@@ -8,7 +8,6 @@ import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { IntegrationPageContent } from '@/lib/integrationContent';
 import { pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
-import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
 export default function IntegrationSubpageLayout({ content }: { content: IntegrationPageContent }) {
   return (
@@ -179,8 +178,6 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
           </section>
         </SectionShell>
       )}
-
-      <MarketingSubpageTail />
     </>
   );
 }

@@ -63,7 +63,7 @@ export function MermaidFlowDiagram({ source, className = '', onRender }: Mermaid
   if (error) {
     return (
       <div className={`rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-slate-600 ${className}`}>
-        <p className="font-medium text-slate-900">Mermaid preview unavailable</p>
+        <p className="font-medium text-slate-900">Flow diagram preview unavailable</p>
         <pre className="mt-3 max-h-48 overflow-auto rounded-lg bg-white p-3 font-mono text-xs whitespace-pre-wrap">{source}</pre>
       </div>
     );

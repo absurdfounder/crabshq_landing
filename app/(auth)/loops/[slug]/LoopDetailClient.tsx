@@ -52,18 +52,6 @@ export default function LoopDetailClient({
   steps = [],
   guardrails = [],
 }: LoopDetailClientProps) {
-  const [copiedMermaid, setCopiedMermaid] = useState(false);
-
-  const copyMermaid = async () => {
-    try {
-      await navigator.clipboard.writeText(mermaid);
-      setCopiedMermaid(true);
-      setTimeout(() => setCopiedMermaid(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="rounded-lg border border-slate-200 bg-slate-900 p-4">
@@ -111,18 +99,10 @@ export default function LoopDetailClient({
       ) : null}
 
       <div className="border border-slate-200 bg-white">
-        <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2.5">
+        <div className="border-b border-slate-200 bg-slate-50 px-4 py-2.5">
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-500">
             Flow diagram
           </span>
-          <button
-            type="button"
-            onClick={copyMermaid}
-            className="inline-flex items-center gap-1.5 rounded-sm border border-slate-200 bg-white px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50"
-          >
-            {copiedMermaid ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
-            Copy Mermaid
-          </button>
         </div>
         <div className="overflow-x-auto p-4">
           <MermaidFlowDiagram source={mermaid} />

@@ -4,7 +4,7 @@ import SimplePricing from '@/components/SimplePricing';
 import FounderMessageSection from '@/components/FounderMessageSection';
 import FAQ from '@/components/faq';
 
-/** Shared closing sections for team, feature, and channel subpages — matches homepage [05]–[08]. */
+/** Shared closing sections for feature, team, and channel marketing subpages — matches homepage [05]–[08]. Not for catalog/hub pages. */
 export default function MarketingSubpageTail() {
   return (
     <>

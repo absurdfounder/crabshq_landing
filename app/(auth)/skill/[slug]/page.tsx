@@ -17,7 +17,6 @@ import {
   getSkillPageSlug,
 } from '@/lib/skillRoutes';
 import PixelButton from '@/components/ui/PixelButton';
-import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import { ArrowRight } from 'lucide-react';
 
 function getSkillOgIconUrl(skill: Skill) {
@@ -397,7 +396,6 @@ export default async function SkillPage({ params }: { params: { slug: string } }
           </div>
         </div>
       </SectionShell>
-      <MarketingSubpageTail />
     </article>
   );
 }
