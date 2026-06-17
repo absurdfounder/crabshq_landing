@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 
 import {
@@ -71,8 +72,13 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
 }
 
 export default function MobileMenu() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const close = () => setIsOpen(false)
+
+  useEffect(() => {
+    close()
+  }, [pathname])
 
   useEffect(() => {
     if (!isOpen) return
@@ -89,6 +95,13 @@ export default function MobileMenu() {
       document.removeEventListener('keydown', onKey)
     }
   }, [isOpen])
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = ''
+      delete document.documentElement.dataset.menuOpen
+    }
+  }, [])
 
   return (
     <div className="lg:hidden">
@@ -107,18 +120,17 @@ export default function MobileMenu() {
           type="button"
           aria-label="Close menu"
           onClick={close}
-          className="fixed inset-0 z-[100] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out]"
+          className="fixed inset-0 z-[100] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out] lg:hidden"
         />
       ) : null}
 
+      {isOpen ? (
       <aside
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
         aria-hidden={!isOpen}
-        className={`fixed inset-y-0 right-0 z-[110] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
-          isOpen ? 'translate-x-0' : 'pointer-events-none translate-x-full'
-        }`}
+        className="fixed inset-y-0 right-0 z-[110] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
       >
         <div className="flex h-14 items-center justify-between border-b border-slate-100 bg-white px-4">
           <span className="font-display text-base font-bold text-slate-900">Menu</span>
@@ -176,6 +188,7 @@ export default function MobileMenu() {
           </Link>
         </div>
       </aside>
+      ) : null}
     </div>
   )
 }

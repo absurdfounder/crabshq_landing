@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { getCurrentLanguage, setLanguageWithCookie, ensureTranslation } from '../../app/utils/googleTranslateHelper';
 
 // Define TypeScript interfaces
@@ -67,6 +68,7 @@ const processLanguagesForDropdown = (): LanguageData[] => {
 const allUniqueLanguages = processLanguagesForDropdown();
 
 const TranslateButton = () => {
+  const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageData>(() => {
     // We'll initialize this in useEffect to avoid SSR issues
@@ -99,6 +101,10 @@ const TranslateButton = () => {
     }
   }, []);
   
+  useEffect(() => {
+    setDropdownOpen(false);
+  }, [pathname]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

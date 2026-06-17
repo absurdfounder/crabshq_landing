@@ -128,9 +128,14 @@ export default function RootLayout({
             .VIpgJd-ZVi9od-ORHb-OEVmcd, 
             .VIpgJd-ZVi9od-aZ2wEe-wOHMyf, 
             .goog-te-banner-frame, 
-            .skiptranslate {
+            .skiptranslate,
+            iframe.skiptranslate,
+            #google_translate_element iframe {
               display: none !important; 
               visibility: hidden !important;
+              pointer-events: none !important;
+              height: 0 !important;
+              width: 0 !important;
             }
             body {
               top: 0 !important;

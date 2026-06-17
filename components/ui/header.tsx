@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 
@@ -19,9 +20,14 @@ import {
 type DropdownKey = 'features' | 'teams' | null
 
 export default function Header() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    setOpenDropdown(null)
+  }, [pathname])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -50,7 +56,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-40 w-full border-b border-slate-200 bg-white transition-all duration-200 ${
+      className={`fixed top-0 z-[100] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
         scrolled ? 'shadow-sm' : ''
       }`}
     >
@@ -91,7 +97,11 @@ export default function Header() {
             />
             {primaryNavLinks.map((link) => (
               <li key={link.href}>
-                <NavLink href={link.href} label={link.label} />
+                <NavLink
+                  href={link.href}
+                  label={link.label}
+                  onNavigate={() => setOpenDropdown(null)}
+                />
               </li>
             ))}
           </ul>
@@ -152,6 +162,7 @@ function NavDropdownItem({
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
+        data-nav-dropdown-toggle
         className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
           isOpen
             ? 'bg-slate-50 text-slate-900'
@@ -169,12 +180,13 @@ function NavDropdownItem({
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute left-1/2 top-full z-50 mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
+            initial={{ opacity: 0, y: -8, pointerEvents: 'none' }}
+            animate={{ opacity: 1, y: 0, pointerEvents: 'auto' }}
+            exit={{ opacity: 0, y: -8, pointerEvents: 'none' }}
+            transition={{ duration: 0.12, ease: 'easeOut' }}
+            className="absolute left-1/2 top-full z-[110] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
             role="menu"
+            data-nav-dropdown-panel
           >
             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5">
               <div className="p-5">
@@ -222,10 +234,19 @@ function NavDropdownItem({
   )
 }
 
-function NavLink({ href, label }: { href: string; label: string }) {
+function NavLink({
+  href,
+  label,
+  onNavigate,
+}: {
+  href: string
+  label: string
+  onNavigate?: () => void
+}) {
   return (
     <Link
       href={href}
+      onClick={onNavigate}
       className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
     >
       {label}
