@@ -1,12 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
 import {
-  Check,
-  Copy,
   Crown,
-  Download,
   ExternalLink,
   Eye,
   GitBranch,
@@ -17,9 +13,9 @@ import {
   TestTube,
   type LucideIcon,
 } from 'lucide-react';
-import { AgentIcon } from '@/components/loops/AgentIcon';
+import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import type { EnrichedLoop } from '@/lib/loopCatalog';
-import { formatLoopCount, getLoopCategories } from '@/lib/loopCatalog';
+import { getLoopCategories } from '@/lib/loopCatalog';
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   CI: GitBranch,
@@ -35,102 +31,25 @@ function getCategoryIcon(category: string): LucideIcon {
 }
 
 function LoopCard({ loop }: { loop: EnrichedLoop }) {
-  const [copied, setCopied] = useState(false);
   const CategoryIcon = getCategoryIcon(loop.category);
 
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(loop.kickoffPrompt);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
-
   return (
-    <div
-      className={`group relative flex h-full flex-col rounded-xl border p-6 transition-all duration-300 hover:shadow-lg ${
-        loop.official
-          ? 'border-amber-300/60 bg-amber-50/30 hover:border-amber-400/70'
-          : 'border-gray-200 bg-white hover:border-gray-300'
-      }`}
-    >
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700">
-            <CategoryIcon className="h-3.5 w-3.5" />
-            {loop.category}
-          </span>
-          <span className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-medium text-gray-600">
-            {loop.trigger}
-          </span>
+    <HubCatalogCard
+      href={`/loops/${loop.slug}`}
+      title={loop.title}
+      description={loop.description}
+      category={loop.category}
+      footerMeta={loop.trigger}
+      viewLabel="View loop →"
+      icon={
+        <span className="relative flex h-7 w-7 items-center justify-center">
+          <CategoryIcon className="h-5 w-5 text-slate-700" aria-hidden />
           {loop.official ? (
-            <span className="inline-flex items-center rounded-full border border-amber-300/60 bg-amber-50 px-2 py-0.5 text-amber-700" aria-label="Official loop">
-              <Crown className="h-3 w-3" />
-            </span>
+            <Crown className="absolute -right-1 -top-1 h-3 w-3 text-amber-600" aria-label="Official loop" />
           ) : null}
-        </div>
-        <div className="flex shrink-0 flex-wrap justify-end gap-3 text-xs text-gray-500">
-          <span className="inline-flex items-center gap-1.5">
-            <Eye className="h-3.5 w-3.5" />
-            {formatLoopCount(loop.views)}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Download className="h-3.5 w-3.5" />
-            {formatLoopCount(loop.installs)}
-          </span>
-        </div>
-      </div>
-
-      <div className="mb-5 flex-1">
-        <h3 className="mb-2 text-base font-semibold tracking-tight text-gray-900">{loop.title}</h3>
-        <p className="text-sm leading-relaxed text-gray-600">{loop.description}</p>
-      </div>
-
-      <p className="mb-4 line-clamp-3 rounded-lg border border-gray-100 bg-gray-50 p-3 text-sm leading-6 text-gray-600">
-        {loop.kickoffPrompt}
-      </p>
-
-      <div className="mb-4 flex flex-wrap items-center gap-1.5">
-        {loop.agents.map((agent) => (
-          <AgentIcon key={agent} agent={agent} bestFit={loop.bestFitAgents.includes(agent)} />
-        ))}
-      </div>
-
-      <div className="mb-4 flex flex-wrap gap-2">
-        {loop.tags.map((tag) => (
-          <span key={tag} className="rounded-full border border-gray-200 bg-white px-2.5 py-0.5 text-xs text-gray-600">
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <div className="mt-auto space-y-3">
-        <div className="flex items-center justify-between gap-2 text-xs text-gray-500">
-          <span>by {loop.author}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/loops/${loop.slug}`}
-            className="inline-flex h-8 flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 text-xs font-medium text-gray-800 transition-colors hover:bg-gray-100"
-          >
-            <Eye className="h-3.5 w-3.5" />
-            View
-          </Link>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="inline-flex h-8 flex-1 items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 text-xs font-medium text-white transition-colors hover:bg-slate-700"
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
-            Copy
-          </button>
-        </div>
-      </div>
-    </div>
+        </span>
+      }
+    />
   );
 }
 
@@ -176,20 +95,21 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
 
   return (
     <div>
-      <div className="mb-6 sm:mb-8">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
-          <span className="font-semibold tabular-nums text-slate-900">{loops.length}</span> agent loops available
+          <span className="font-semibold tabular-nums text-slate-900">{filteredLoops.length}</span>
+          {filteredLoops.length === loops.length ? ' loops' : ` of ${loops.length} loops`}
         </p>
-      </div>
-
-      <div className="relative mb-8 max-w-xl">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search loops"
-          className="h-11 w-full rounded-lg border border-slate-200 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
-        />
+        <label className="relative block w-full sm:max-w-sm">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search loops…"
+            className="w-full rounded-sm border border-slate-200 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none"
+          />
+        </label>
       </div>
 
       <div className="mb-6">
@@ -205,7 +125,7 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 aria-pressed={isActive}
-                className={`inline-flex min-h-[36px] shrink-0 items-center gap-2.5 rounded-sm border px-3.5 py-2 text-sm font-medium transition-colors duration-150 ${
+                className={`inline-flex min-h-[36px] shrink-0 items-center gap-2 rounded-sm border px-3.5 py-2 text-sm font-medium transition-colors ${
                   isActive
                     ? 'border-slate-900 bg-slate-900 text-white'
                     : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
@@ -252,12 +172,12 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
       </div>
 
       {officialLoops.length > 0 ? (
-        <div className="mb-12">
-          <div className="mb-6 flex items-center gap-2">
+        <div className="mb-10">
+          <div className="mb-4 flex items-center gap-2">
             <Crown className="h-4 w-4 text-amber-600" />
-            <h2 className="font-funneldisplay text-xl font-semibold text-slate-900">Official loops</h2>
+            <h2 className="font-funneldisplay text-lg font-semibold text-slate-900">Official loops</h2>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {officialLoops.map((loop) => (
               <LoopCard key={loop.id} loop={loop} />
             ))}
@@ -266,9 +186,9 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
       ) : null}
 
       {communityLoops.length > 0 ? (
-        <div className="mb-12">
-          <h2 className="font-funneldisplay mb-6 text-xl font-semibold text-slate-900">Community loops</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-10">
+          <h2 className="font-funneldisplay mb-4 text-lg font-semibold text-slate-900">Community loops</h2>
+          <div className="grid gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {communityLoops.map((loop) => (
               <LoopCard key={loop.id} loop={loop} />
             ))}
@@ -277,17 +197,15 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
       ) : null}
 
       {filteredLoops.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-slate-200 bg-white p-10 text-center text-slate-600">
-          No loops match your search.
-        </div>
+        <p className="py-8 text-center text-sm text-slate-600">No loops match your search.</p>
       ) : null}
 
-      <div className="mt-16 text-center">
+      <div className="mt-10 text-center">
         <a
           href="https://app.trooper.so"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg bg-black px-6 py-3 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-gray-800 hover:shadow-md"
+          className="inline-flex items-center gap-2 rounded-sm bg-slate-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800"
         >
           Run loops in Trooper
           <ExternalLink className="h-4 w-4" />

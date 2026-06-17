@@ -8,6 +8,7 @@ import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import SkillDetailClient from './SkillDetailClient';
+import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 
 // Type definitions for integrations
 interface CallToAction {
@@ -459,29 +460,27 @@ export default async function Page({ params }: { params: { slug: string } }) {
                   <h2 className="font-mono text-lg font-semibold text-slate-900 mb-4">
                     More {skill.category} skills
                   </h2>
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-2 md:gap-5">
                     {relatedSkills.map((related: Skill) => (
-                      <Link
+                      <HubCatalogCard
                         key={related.id}
                         href={`/integration/${related.id}`}
-                        className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-lg hover:border-slate-300 hover:shadow-sm transition-all group"
-                      >
-                        <div className="w-8 h-8 rounded-md bg-white border border-slate-100 flex items-center justify-center flex-shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                        title={related.name}
+                        description={related.description}
+                        category={related.category}
+                        viewLabel="View skill →"
+                        icon={
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src={`https://www.google.com/s2/favicons?domain=${related.website}&sz=32`}
-                            alt={related.name}
-                            width={20}
-                            height={20}
-                            className="w-5 h-5"
+                            src={getFaviconUrl(related.website)}
+                            alt=""
+                            width={28}
+                            height={28}
+                            className="h-7 w-7 object-contain"
                             loading="lazy"
                           />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-slate-900 truncate group-hover:text-slate-700">{related.name}</p>
-                          <p className="text-xs text-slate-500 truncate">{related.description}</p>
-                        </div>
-                      </Link>
+                        }
+                      />
                     ))}
                   </div>
                   <div className="mt-4">

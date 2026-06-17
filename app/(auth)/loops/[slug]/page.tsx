@@ -7,6 +7,7 @@ import { AgentIcon } from '@/components/loops/AgentIcon';
 import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { formatLoopCount, getAllLoopSlugs, getAllLoops, getLoopBySlug, type EnrichedLoop } from '@/lib/loopCatalog';
 import LoopDetailClient from './LoopDetailClient';
+import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import {
   ArrowRight,
   CircleAlert,
@@ -14,6 +15,7 @@ import {
   Download,
   Eye,
   MessageSquare,
+  Repeat,
   ShieldCheck,
 } from 'lucide-react';
 
@@ -79,19 +81,22 @@ function FlowStepsList({ loop }: { loop: EnrichedLoop }) {
 
 function RelatedLoopCard({ loop }: { loop: EnrichedLoop }) {
   return (
-    <Link
+    <HubCatalogCard
       href={`/loops/${loop.slug}`}
-      className={`group flex flex-col rounded-xl border p-5 transition-all hover:shadow-md ${
-        loop.official ? 'border-amber-300/60 bg-amber-50/30 hover:border-amber-400/70' : 'border-slate-200 bg-white hover:border-slate-300'
-      }`}
-    >
-      <div className="mb-2 flex items-center gap-2">
-        <span className="text-xs font-medium text-slate-600">{loop.category}</span>
-        {loop.official ? <Crown className="h-3 w-3 text-amber-600" /> : null}
-      </div>
-      <p className="text-sm font-semibold text-slate-900 group-hover:text-slate-700">{loop.title}</p>
-      <p className="mt-1 line-clamp-2 text-xs text-slate-500">{loop.description}</p>
-    </Link>
+      title={loop.title}
+      description={loop.description}
+      category={loop.category}
+      footerMeta={loop.trigger}
+      viewLabel="View loop →"
+      icon={
+        <span className="relative flex h-7 w-7 items-center justify-center">
+          <Repeat className="h-5 w-5 text-slate-700" aria-hidden />
+          {loop.official ? (
+            <Crown className="absolute -right-1 -top-1 h-3 w-3 text-amber-600" aria-label="Official loop" />
+          ) : null}
+        </span>
+      }
+    />
   );
 }
 
@@ -251,7 +256,7 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                 {loop.relatedLoops.length > 0 ? (
                   <section className="mt-10 border-t border-slate-200 pt-8">
                     <h2 className="font-funneldisplay mb-4 text-lg font-semibold text-slate-900">Related loops</h2>
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2 md:gap-5">
                       {loop.relatedLoops.map((related) => (
                         <RelatedLoopCard key={related.id} loop={related} />
                       ))}
