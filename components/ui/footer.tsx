@@ -58,6 +58,7 @@ const featureColumn: FooterColumn = {
         { label: 'Multi-Agent Teams', href: '/features/multi-agent-collaboration', icon: <Network className="h-3.5 w-3.5 text-cyan-500" /> },
         { label: 'Plugin Integrations', href: '/plugin', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
         { label: 'OpenClaw Skills', href: '/integration', icon: <Puzzle className="h-3.5 w-3.5 text-violet-500" /> },
+        { label: 'Agent Loops', href: '/loops', icon: <Zap className="h-3.5 w-3.5 text-emerald-600" /> },
       ],
     },
     {
@@ -81,6 +82,7 @@ const productColumn: FooterColumn = {
         { label: 'How it works', href: '/' },
         { label: 'Plugin Integrations', href: '/plugin' },
         { label: 'OpenClaw Skills', href: '/integration' },
+        { label: 'Agent Loops', href: '/loops' },
         { label: 'Pricing', href: '/pricing' },
         { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
         { label: 'Download', href: '/download' },

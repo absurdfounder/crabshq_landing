@@ -8,6 +8,7 @@ import { allRichTeamSlugs } from '@/lib/teamContent';
 import { allIntegrationPageSlugs } from '@/lib/integrationContent';
 import { allAlternativeSlugs } from '@/lib/alternativeContent';
 import { allUseCaseSlugs } from '@/lib/useCaseContent';
+import { getAllLoopSlugs } from '@/lib/loopCatalog';
 
 const URL = "https://trooper.so";
 
@@ -38,6 +39,7 @@ async function loadIntegrations(): Promise<IntegrationOrTemplate[]> {
 const staticPages = [
   { path: '', priority: '1.0', changefreq: 'daily' },
   { path: '/integration', priority: '0.9', changefreq: 'daily' },
+  { path: '/loops', priority: '0.9', changefreq: 'weekly' },
   { path: '/plugin', priority: '0.9', changefreq: 'daily' },
   { path: '/alternatives', priority: '0.8', changefreq: 'weekly' },
   { path: '/use-cases', priority: '0.8', changefreq: 'weekly' },
@@ -149,11 +151,19 @@ function generateSiteMap(integrationsOrTemplates: IntegrationOrTemplate[]): stri
     <priority>0.7</priority>
   </url>`).join('');
 
+  const loopEntries = getAllLoopSlugs().map(slug => `
+  <url>
+    <loc>${URL}/loops/${encodeURIComponent(slug)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}${loopEntries}
 </urlset>`;
 }
 

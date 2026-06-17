@@ -1,0 +1,231 @@
+{
+  "generatedAt": "2026-06-17T00:00:00.000Z",
+  "count": 6,
+  "loops": [
+    {
+      "id": "ship-pr-until-green",
+      "slug": "ship-pr-until-green",
+      "title": "Ship PR Until Green",
+      "description": "Implement on a branch, run tests, push, open a PR, wait for CI, and loop until checks pass and the PR is ready to merge.",
+      "category": "CI",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1500,
+      "installs": 1800,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["ci", "github", "pr", "devops"],
+      "goal": "PR is open with all CI checks passing",
+      "maxIterations": 10,
+      "checkCommand": "gh pr checks",
+      "exitCondition": "all PR checks are success",
+      "guardrails": [
+        "Do not modify the check command or exit criteria to force success",
+        "Do not skip, disable, or bypass checks to pass the exit condition",
+        "If stuck after several iterations, stop and report blockers instead of gaming metrics"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Implement and test", "description": "Make the scoped change and run local tests.", "command": "npm test" },
+          { "label": "Commit and push", "description": "Commit with a clear message and push the branch." },
+          { "label": "Open or update PR", "description": "Open a PR with summary and test plan, or update existing PR.", "command": "gh pr view --json statusCheckRollup,url" },
+          { "label": "Fix CI", "description": "If CI fails, read logs, fix once locally, push, and re-wait." }
+        ],
+        "checkLabel": "Feedback gate",
+        "exitLabel": "PR checks pass and PR is merge-ready",
+        "loopBackLabel": "not done"
+      },
+      "kickoffPrompt": "Start the \"Ship PR Until Green\" loop.\n\nGoal: PR is open with all CI checks passing\nMax iterations: 10\nBetween iterations run: gh pr checks\nExit when: all PR checks are success\n\nStep 1: Implement the change, test locally, push, open PR, and fix CI until green.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["ci-failure-watcher", "pr-self-review", "test-until-green"]
+    },
+    {
+      "id": "ci-failure-watcher",
+      "slug": "ci-failure-watcher",
+      "title": "CI Failure Watcher",
+      "description": "Poll CI on an interval, investigate failures when checks go red, and push fixes until green.",
+      "category": "CI",
+      "trigger": "interval",
+      "official": true,
+      "hardened": false,
+      "views": 1793,
+      "installs": 1148,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["ci", "github", "devops"],
+      "goal": "latest CI run on this branch is green",
+      "maxIterations": 12,
+      "checkCommand": "gh run list --branch $(git branch --show-current) --limit 1",
+      "exitCondition": "latest run conclusion is success",
+      "guardrails": [
+        "Do not modify the check command or exit criteria to force success",
+        "Do not skip, disable, or bypass checks to pass the exit condition"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Check CI status", "description": "Poll the latest workflow run on the current branch." },
+          { "label": "Read failure logs", "description": "If red, pull logs and identify the smallest root cause." },
+          { "label": "Fix and verify locally", "description": "Patch once, run the failing check locally if possible." },
+          { "label": "Push and wait", "description": "Push the fix and wait for CI to rerun." }
+        ],
+        "checkLabel": "CI green?",
+        "exitLabel": "Latest CI run is success",
+        "loopBackLabel": "still failing"
+      },
+      "kickoffPrompt": "/loop 5m Start the \"CI Failure Watcher\" loop.\n\nGoal: latest CI run on this branch is green.\nMax iterations: 12.\nBetween iterations run: gh run list --branch $(git branch --show-current) --limit 1\nExit when: latest run conclusion is success.\n\nStep 1: Check CI status. If failed, read logs, fix root cause, verify locally, and push if needed.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["ship-pr-until-green", "test-until-green"]
+    },
+    {
+      "id": "pr-self-review",
+      "slug": "pr-self-review",
+      "title": "PR Self-Review",
+      "description": "Review your own diff like a senior reviewer, fix issues, and repeat for three passes before opening the PR.",
+      "category": "Review",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1997,
+      "installs": 1847,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["review", "pr", "quality"],
+      "goal": "three clean self-review passes on the current diff",
+      "maxIterations": 3,
+      "checkCommand": "git diff main...HEAD",
+      "exitCondition": "three passes complete with no critical findings",
+      "guardrails": [
+        "Do not rubber-stamp the diff to hit the iteration count",
+        "Report critical findings honestly even on the final pass"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Review diff", "description": "Read the diff like a senior reviewer — correctness, edge cases, naming, tests." },
+          { "label": "Fix findings", "description": "Address critical and high findings before the next pass." },
+          { "label": "Re-review", "description": "Run another pass on the updated diff." }
+        ],
+        "checkLabel": "Clean pass?",
+        "exitLabel": "Three clean passes complete",
+        "loopBackLabel": "findings remain"
+      },
+      "kickoffPrompt": "Start the \"PR Self-Review\" loop.\n\nGoal: three clean self-review passes on the current diff\nMax iterations: 3\nBetween iterations run: git diff main...HEAD\nExit when: three passes complete with no critical findings\n\nStep 1: Review the diff like a senior reviewer. Fix findings, then re-review.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["ship-pr-until-green", "test-until-green"]
+    },
+    {
+      "id": "test-until-green",
+      "slug": "test-until-green",
+      "title": "Test Until Green",
+      "description": "Run your test suite, fix the smallest root cause on failure, and repeat until every test passes.",
+      "category": "Testing",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1698,
+      "installs": 1277,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["testing", "tdd", "ci"],
+      "goal": "all tests pass",
+      "maxIterations": 10,
+      "checkCommand": "npm test",
+      "exitCondition": "tests exit 0",
+      "guardrails": [
+        "Do not weaken or delete tests to force green",
+        "Fix the smallest root cause per iteration"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Run tests", "description": "Execute the full or scoped test suite." },
+          { "label": "Triage failures", "description": "Pick the smallest root cause from the failure output." },
+          { "label": "Fix and re-run", "description": "Patch, then run tests again." }
+        ],
+        "checkLabel": "All green?",
+        "exitLabel": "Test suite passes",
+        "loopBackLabel": "failures remain"
+      },
+      "kickoffPrompt": "Start the \"Test Until Green\" loop.\n\nGoal: all tests pass\nMax iterations: 10\nBetween iterations run: npm test\nExit when: tests exit 0\n\nStep 1: Run tests. If there are failures, fix the smallest root cause, then repeat.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["ship-pr-until-green", "ci-failure-watcher"]
+    },
+    {
+      "id": "babysit-pr",
+      "slug": "babysit-pr",
+      "title": "Babysit PR",
+      "description": "Keep a PR merge-ready by triaging review comments, fixing CI, and updating the description until reviewers approve.",
+      "category": "Review",
+      "trigger": "interval",
+      "official": false,
+      "hardened": false,
+      "views": 842,
+      "installs": 531,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor"],
+      "tags": ["pr", "review", "github"],
+      "goal": "PR has approvals and all checks green",
+      "maxIterations": 15,
+      "checkCommand": "gh pr view --json reviewDecision,statusCheckRollup",
+      "exitCondition": "reviewDecision is APPROVED and all checks success",
+      "guardrails": [
+        "Do not dismiss valid review feedback without addressing it",
+        "Do not force-merge or bypass required checks"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Check PR status", "description": "Read review decision and check rollup." },
+          { "label": "Address comments", "description": "Reply to or fix outstanding review threads." },
+          { "label": "Fix CI / update PR", "description": "Push fixes and refresh the PR summary if scope changed." }
+        ],
+        "checkLabel": "Merge-ready?",
+        "exitLabel": "Approved with green checks",
+        "loopBackLabel": "not ready"
+      },
+      "kickoffPrompt": "/loop 10m Start the \"Babysit PR\" loop.\n\nGoal: PR has approvals and all checks green\nMax iterations: 15\nBetween iterations run: gh pr view --json reviewDecision,statusCheckRollup\nExit when: reviewDecision is APPROVED and all checks success\n\nStep 1: Check PR status. Address review comments and CI failures until merge-ready.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["ship-pr-until-green", "pr-self-review"]
+    },
+    {
+      "id": "lint-until-clean",
+      "slug": "lint-until-clean",
+      "title": "Lint Until Clean",
+      "description": "Run the linter, fix violations in small batches, and repeat until the repo is clean.",
+      "category": "Quality",
+      "trigger": "manual",
+      "official": false,
+      "hardened": true,
+      "views": 623,
+      "installs": 412,
+      "author": "Trooper",
+      "agents": ["cursor", "codex"],
+      "bestFitAgents": ["cursor"],
+      "tags": ["lint", "quality", "ci"],
+      "goal": "linter exits with zero errors",
+      "maxIterations": 8,
+      "checkCommand": "npm run lint",
+      "exitCondition": "lint exits 0",
+      "guardrails": [
+        "Do not disable lint rules to force a pass",
+        "Prefer fixing root causes over blanket suppressions"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Run linter", "description": "Execute the project lint command." },
+          { "label": "Fix batch", "description": "Resolve a focused batch of violations." },
+          { "label": "Re-run lint", "description": "Confirm the batch cleared and scan for remaining issues." }
+        ],
+        "checkLabel": "Lint clean?",
+        "exitLabel": "Zero lint errors",
+        "loopBackLabel": "errors remain"
+      },
+      "kickoffPrompt": "Start the \"Lint Until Clean\" loop.\n\nGoal: linter exits with zero errors\nMax iterations: 8\nBetween iterations run: npm run lint\nExit when: lint exits 0\n\nStep 1: Run the linter. Fix violations in small batches until clean.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["test-until-green", "ship-pr-until-green"]
+    }
+  ]
+}
