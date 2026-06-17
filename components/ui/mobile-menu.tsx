@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 
 import {
@@ -15,7 +15,7 @@ import {
 type AccordionProps = {
   label: string
   items: NavItem[]
-  onNavigate: () => void
+  onNavigate: (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => void
   defaultOpen?: boolean
 }
 
@@ -45,7 +45,7 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  onClick={onNavigate}
+                  onClick={onNavigate(item.href)}
                   className="flex items-center gap-3 rounded-lg p-2 text-slate-800 active:bg-slate-50"
                 >
                   <span
@@ -73,8 +73,21 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
 
 export default function MobileMenu() {
   const pathname = usePathname()
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const close = () => setIsOpen(false)
+
+  const navigate = useCallback(
+    (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return
+      }
+      event.preventDefault()
+      close()
+      router.push(href)
+    },
+    [router],
+  )
 
   useEffect(() => {
     close()
@@ -145,14 +158,14 @@ export default function MobileMenu() {
         </div>
 
         <nav className="flex-1 overflow-y-auto overscroll-contain bg-white px-4 pb-4">
-          <Accordion label="Features" items={featureNavItems} onNavigate={close} defaultOpen />
-          <Accordion label="Teams" items={teamNavItems} onNavigate={close} />
+          <Accordion label="Features" items={featureNavItems} onNavigate={navigate} defaultOpen />
+          <Accordion label="Teams" items={teamNavItems} onNavigate={navigate} />
 
           {primaryNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={close}
+              onClick={navigate(link.href)}
               className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
             >
               {link.label}
@@ -181,7 +194,7 @@ export default function MobileMenu() {
           </Link>
           <Link
             href="/pricing"
-            onClick={close}
+            onClick={navigate('/pricing')}
             className="mt-2 flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50"
           >
             View pricing

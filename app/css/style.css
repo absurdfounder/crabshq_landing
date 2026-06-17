@@ -211,6 +211,7 @@
 }
 
 /* Google Translate injects a full-viewport iframe that can block header clicks after SPA navigation */
+.skiptranslate,
 iframe.skiptranslate,
 .goog-te-banner-frame,
 #google_translate_element iframe {

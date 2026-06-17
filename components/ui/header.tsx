@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 
@@ -19,11 +19,27 @@ import {
 
 type DropdownKey = 'features' | 'teams' | null
 
+function isModifiedClick(event: ReactMouseEvent<HTMLAnchorElement>) {
+  return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0
+}
+
 export default function Header() {
   const pathname = usePathname()
+  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
+
+  const navigate = useCallback(
+    (href: string, onAfterNavigate?: () => void) =>
+      (event: ReactMouseEvent<HTMLAnchorElement>) => {
+        if (isModifiedClick(event)) return
+        event.preventDefault()
+        onAfterNavigate?.()
+        router.push(href)
+      },
+    [router],
+  )
 
   useEffect(() => {
     setOpenDropdown(null)
@@ -46,17 +62,18 @@ export default function Header() {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpenDropdown(null)
     }
-    document.addEventListener('mousedown', onClickOutside)
+    document.addEventListener('click', onClickOutside)
     document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('mousedown', onClickOutside)
+      document.removeEventListener('click', onClickOutside)
       document.removeEventListener('keydown', onKey)
     }
   }, [openDropdown])
 
   return (
     <header
-      className={`fixed top-0 z-[100] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
+      translate="no"
+      className={`notranslate fixed top-0 z-[100] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
         scrolled ? 'shadow-sm' : ''
       }`}
     >
@@ -83,6 +100,7 @@ export default function Header() {
               onToggle={() =>
                 setOpenDropdown(openDropdown === 'features' ? null : 'features')
               }
+              onNavigate={navigate}
               onClose={() => setOpenDropdown(null)}
             />
             <NavDropdownItem
@@ -93,14 +111,15 @@ export default function Header() {
               onToggle={() =>
                 setOpenDropdown(openDropdown === 'teams' ? null : 'teams')
               }
+              onNavigate={navigate}
               onClose={() => setOpenDropdown(null)}
             />
             {primaryNavLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.href} className="relative z-[120]">
                 <NavLink
                   href={link.href}
                   label={link.label}
-                  onNavigate={() => setOpenDropdown(null)}
+                  onClick={navigate(link.href, () => setOpenDropdown(null))}
                 />
               </li>
             ))}
@@ -147,6 +166,7 @@ function NavDropdownItem({
   items,
   isOpen,
   onToggle,
+  onNavigate,
   onClose,
 }: {
   label: string
@@ -154,10 +174,11 @@ function NavDropdownItem({
   items: NavItem[]
   isOpen: boolean
   onToggle: () => void
+  onNavigate: (href: string, onAfterNavigate?: () => void) => (event: ReactMouseEvent<HTMLAnchorElement>) => void
   onClose: () => void
 }) {
   return (
-    <li className="relative">
+    <li className="relative z-[115]">
       <button
         type="button"
         onClick={onToggle}
@@ -180,11 +201,11 @@ function NavDropdownItem({
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            initial={{ opacity: 0, y: -8, pointerEvents: 'none' }}
-            animate={{ opacity: 1, y: 0, pointerEvents: 'auto' }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8, pointerEvents: 'none' }}
             transition={{ duration: 0.12, ease: 'easeOut' }}
-            className="absolute left-1/2 top-full z-[110] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
+            className="pointer-events-none absolute left-1/2 top-full z-[110] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
             role="menu"
             data-nav-dropdown-panel
           >
@@ -202,9 +223,9 @@ function NavDropdownItem({
                       <Link
                         key={item.href}
                         href={item.href}
-                        onClick={onClose}
+                        onClick={onNavigate(item.href, onClose)}
                         role="menuitem"
-                        className="group flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-slate-50"
+                        className="group pointer-events-auto flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-slate-50"
                       >
                         <span
                           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.bgColor} transition-transform group-hover:scale-105`}
@@ -237,16 +258,16 @@ function NavDropdownItem({
 function NavLink({
   href,
   label,
-  onNavigate,
+  onClick,
 }: {
   href: string
   label: string
-  onNavigate?: () => void
+  onClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
 }) {
   return (
     <Link
       href={href}
-      onClick={onNavigate}
+      onClick={onClick}
       className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
     >
       {label}
