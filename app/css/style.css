@@ -332,6 +332,59 @@ html[data-menu-open='true'] .ch-plugin {
       padding: 0.25rem 0.45rem;
     }
   }
+
+  .affiliate-section-label {
+    @apply font-mono text-xs font-bold uppercase tracking-[0.28em] text-trooper-700;
+  }
+
+  .affiliate-section-title {
+    @apply font-funneldisplay text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-[2.5rem];
+  }
+
+  .affiliate-section-desc {
+    @apply max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg;
+  }
+
+  .affiliate-ds-card {
+    @apply border border-slate-200 bg-white p-6 transition-colors hover:border-trooper-200;
+  }
+
+  .earnings-slider {
+    appearance: none;
+    height: 8px;
+    width: 100%;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      #3f6b00 0%,
+      #3f6b00 var(--slider-progress, 0%),
+      #e2e8f0 var(--slider-progress, 0%),
+      #e2e8f0 100%
+    );
+    outline: none;
+    cursor: pointer;
+  }
+
+  .earnings-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    border: 2px solid #3f6b00;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    cursor: pointer;
+  }
+
+  .earnings-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    border: 2px solid #3f6b00;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    cursor: pointer;
+  }
 }
 
 /*custom css for the website here*/
