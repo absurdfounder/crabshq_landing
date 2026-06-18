@@ -1,38 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32" shape-rendering="crispEdges">
-  <!-- Trooper pixel pointer — brand green + light outline -->
-  <g fill="#f8fafc">
-    <rect x="0" y="0" width="1" height="1" />
-    <rect x="0" y="1" width="2" height="1" />
-    <rect x="0" y="2" width="3" height="1" />
-    <rect x="0" y="3" width="4" height="1" />
-    <rect x="0" y="4" width="5" height="1" />
-    <rect x="0" y="5" width="6" height="1" />
-    <rect x="0" y="6" width="7" height="1" />
-    <rect x="0" y="7" width="8" height="1" />
-    <rect x="0" y="8" width="9" height="1" />
-    <rect x="0" y="9" width="10" height="1" />
-    <rect x="0" y="10" width="11" height="1" />
-    <rect x="0" y="11" width="12" height="1" />
-    <rect x="7" y="12" width="1" height="1" />
-    <rect x="5" y="13" width="1" height="1" />
-    <rect x="4" y="14" width="1" height="1" />
-    <rect x="3" y="15" width="1" height="1" />
-  </g>
-  <g fill="#3f6b00">
-    <rect x="1" y="1" width="1" height="1" />
-    <rect x="1" y="2" width="2" height="1" />
-    <rect x="1" y="3" width="3" height="1" />
-    <rect x="1" y="4" width="4" height="1" />
-    <rect x="1" y="5" width="5" height="1" />
-    <rect x="1" y="6" width="6" height="1" />
-    <rect x="1" y="7" width="7" height="1" />
-    <rect x="1" y="8" width="8" height="1" />
-    <rect x="1" y="9" width="9" height="1" />
-    <rect x="1" y="10" width="10" height="1" />
-    <rect x="1" y="11" width="10" height="1" />
-    <rect x="8" y="12" width="3" height="1" />
-    <rect x="6" y="13" width="3" height="1" />
-    <rect x="5" y="14" width="2" height="1" />
-    <rect x="4" y="15" width="1" height="1" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+  <defs>
+    <linearGradient id="bluePtr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a3d6ff" />
+      <stop offset="55%" stop-color="#4f8ef7" />
+      <stop offset="100%" stop-color="#2a6bf5" />
+    </linearGradient>
+    <filter id="bluePtrGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.2" flood-color="#4f8ef7" flood-opacity="0.67" />
+    </filter>
+  </defs>
+  <path
+    d="M4.037 4.688 Q3.9 3.9 4.688 4.037 L20.688 10.537 Q21.42 10.84 20.625 11.484 L14.501 13.064 Q13.43 13.34 13.063 14.499 L11.484 20.625 Q11.17 21.42 10.537 20.688 Z"
+    fill="url(#bluePtr)"
+    stroke="rgba(255,255,255,0.55)"
+    stroke-width="0.6"
+    stroke-linejoin="round"
+    filter="url(#bluePtrGlow)"
+  />
 </svg>
