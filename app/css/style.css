@@ -332,9 +332,17 @@ html[data-menu-open='true'] .ch-plugin {
 
 /*custom css for the website here*/
 
+/* Global cursor — small blue agent pointer */
+body {
+  cursor: url('/images/cursor-agent.svg') 0 0, auto;
+}
 
-
-
+a,
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: url('/images/cursor-agent.svg') 0 0, pointer;
+}
 
 .bg-orange-700 {
   background-color: #faad5e;
