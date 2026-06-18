@@ -332,16 +332,35 @@ html[data-menu-open='true'] .ch-plugin {
 
 /*custom css for the website here*/
 
-/* Global cursor — small blue agent pointer */
-body {
-  cursor: url('/images/cursor-agent.svg') 0 0, auto;
+/* Global Trooper cursor — uses /public/images/custom-cursor.png */
+:root {
+  --trooper-cursor-default: url('/images/custom-cursor.png') 0 0, auto;
+  --trooper-cursor-pointer: url('/images/custom-cursor.png') 0 0, pointer;
 }
 
-a,
-button,
-[role="button"],
+html {
+  cursor: var(--trooper-cursor-default);
+}
+
+body,
+body *:not(input):not(textarea):not(select):not(option) {
+  cursor: inherit;
+}
+
+input,
+textarea,
+select,
+[contenteditable='true'] {
+  cursor: text;
+}
+
+a[href],
+button:not(:disabled),
+[role='button'],
+label[for],
+summary,
 .cursor-pointer {
-  cursor: url('/images/cursor-agent.svg') 0 0, pointer;
+  cursor: var(--trooper-cursor-pointer);
 }
 
 .bg-orange-700 {
