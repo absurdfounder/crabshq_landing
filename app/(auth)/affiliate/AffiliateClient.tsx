@@ -29,6 +29,16 @@ function sliderProgress(value: number) {
   return `${((value - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100}%`;
 }
 
+function SectionEyebrow({ index, label }: { index: string; label: string }) {
+  return (
+    <div className="border-b border-slate-200 px-4 py-3 sm:px-6 lg:px-8">
+      <span className="type-eyebrow-num">
+        <span className="text-slate-400">[{index}]</span>&nbsp;{label}
+      </span>
+    </div>
+  );
+}
+
 function EarningsCalculator() {
   const [referrals, setReferrals] = useState(SLIDER_MIN);
 
@@ -39,15 +49,9 @@ function EarningsCalculator() {
   const yearly = monthly * 12;
 
   return (
-    <div className="border border-slate-200 bg-white">
-      <div className="border-b border-slate-200 bg-[#FAFAF8] px-4 py-3 sm:px-6">
-        <span className="type-eyebrow-num">
-          <span className="text-slate-400">[02]</span>&nbsp;Earnings calculator
-        </span>
-      </div>
-
-      <div className="px-4 py-8 sm:px-8 md:py-10">
-        <h2 className="text-center font-funneldisplay text-2xl font-black tracking-tight text-slate-900 sm:text-3xl md:text-4xl">
+    <div className="border-b border-slate-200 bg-white">
+      <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <h2 id="earnings-calculator" className="affiliate-section-title">
           Number of referrals:{' '}
           <span className="tabular-nums text-trooper">{referrals}</span>
         </h2>
@@ -66,34 +70,34 @@ function EarningsCalculator() {
             className="earnings-slider w-full"
             style={{ '--slider-progress': sliderProgress(referrals) } as React.CSSProperties}
           />
-          <div className="mt-3 flex items-baseline justify-between font-mono text-[11px] uppercase tracking-[0.12em] text-slate-500">
+          <div className="mt-3 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">
             <span>{SLIDER_MIN} referrals</span>
             <span>{SLIDER_MAX} referrals</span>
           </div>
         </div>
 
-        <p className="mt-8 flex items-center justify-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-trooper-700">
+        <p className="mt-8 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-trooper-700">
           Your potential earnings
           <ArrowRight className="h-3.5 w-3.5" aria-hidden />
         </p>
       </div>
 
       <div className="grid gap-px border-t border-slate-200 bg-slate-200 md:grid-cols-2">
-        <div className="bg-white px-6 py-10 text-center">
-          <p className="font-funneldisplay text-5xl font-black tabular-nums text-slate-900 sm:text-6xl">
+        <div className="bg-white px-6 py-10 text-center sm:px-8">
+          <p className="font-funneldisplay text-4xl tabular-nums tracking-tight text-slate-900 sm:text-5xl">
             ~${formatMoney(monthly)}
           </p>
           <p className="mt-3 text-sm text-slate-500">monthly</p>
         </div>
-        <div className="bg-trooper-50 px-6 py-10 text-center">
-          <p className="font-funneldisplay text-5xl font-black tabular-nums text-trooper-700 sm:text-6xl">
+        <div className="bg-trooper-50 px-6 py-10 text-center sm:px-8">
+          <p className="font-funneldisplay text-4xl tabular-nums tracking-tight text-trooper-700 sm:text-5xl">
             ~${formatMoney(yearly)}
           </p>
           <p className="mt-3 text-sm font-medium text-trooper-700">yearly</p>
         </div>
       </div>
 
-      <p className="border-t border-slate-200 bg-[#FAFAF8] px-4 py-3 text-center text-xs text-slate-500 sm:px-6">
+      <p className="border-t border-slate-200 bg-[#FAFAF8] px-4 py-3 text-xs leading-relaxed text-slate-500 sm:px-6 lg:px-8">
         Estimates assume Cloud plan referrals at 30% recurring commission. Actual payouts vary by plan mix
         and retention.
       </p>
@@ -236,20 +240,26 @@ export default function AffiliateClient() {
         {/* Hero */}
         <section className="dashboard-landscape-bg border-b border-slate-200">
           <div className="bg-white/90 backdrop-blur-[2px]">
-            <div className="px-4 pb-10 pt-24 sm:px-6 sm:pb-12 sm:pt-28 md:px-8 md:pb-14 md:pt-32">
+            <div className="px-4 pb-10 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 md:pb-14 md:pt-32">
               <PixelMissionTag index="01" label="Affiliate program" className="mb-4" />
 
-              <div className="mx-auto max-w-4xl text-center">
-                <h1 className="font-funneldisplay text-3xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-4xl md:text-5xl lg:text-6xl">
-                  Earn 30% recurring.
-                  <br />
-                  For life.
-                </h1>
-                <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-                  Get <strong className="font-semibold text-slate-900">30% recurring commission</strong> for every
-                  customer you refer. No cap, no expiry. Share your link and get paid every month.
-                </p>
-                <div className="mt-8 flex justify-center">
+              <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-2xl">
+                  <h1 className="font-funneldisplay text-3xl leading-tight tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem]">
+                    Earn 30% recurring.
+                    <br />
+                    For life.
+                  </h1>
+                  <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                    Get <strong className="font-semibold text-slate-900">30% recurring commission</strong> for every
+                    customer you refer. No cap, no expiry. Share your link and get paid every month.
+                  </p>
+                </div>
+
+                <div className="shrink-0 lg:text-right">
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+                    Free to join
+                  </p>
                   <PixelButton
                     href={AFFILIATE_SIGNUP}
                     external
@@ -261,20 +271,22 @@ export default function AffiliateClient() {
                   </PixelButton>
                 </div>
               </div>
-
-              <div className="mx-auto mt-12 max-w-5xl md:mt-14">
-                <EarningsCalculator />
-              </div>
             </div>
           </div>
+        </section>
+
+        {/* Calculator */}
+        <section aria-labelledby="earnings-calculator">
+          <SectionEyebrow index="02" label="Earnings calculator" />
+          <EarningsCalculator />
         </section>
 
         {/* Stats */}
         <section className="border-b border-slate-200">
           <div className="grid grid-cols-1 gap-px bg-slate-200 md:grid-cols-3">
             {stats.map((stat) => (
-              <div key={stat.label} className="bg-white px-6 py-8 text-center">
-                <p className="font-funneldisplay text-3xl font-black text-trooper-700 sm:text-4xl">{stat.value}</p>
+              <div key={stat.label} className="bg-white px-6 py-8 text-center sm:px-8">
+                <p className="font-funneldisplay text-2xl tracking-tight text-trooper-700 sm:text-3xl">{stat.value}</p>
                 <p className="mt-2 text-sm text-slate-600">{stat.label}</p>
               </div>
             ))}
@@ -283,21 +295,19 @@ export default function AffiliateClient() {
 
         {/* How it works */}
         <section id="how-it-works" className="scroll-m-20 border-b border-slate-200">
-          <div className="border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8">
-            <span className="type-eyebrow-num">
-              <span className="text-slate-400">[03]</span>&nbsp;How it works
-            </span>
-          </div>
-          <div className="px-4 py-8 sm:px-6 md:px-8 md:py-12">
-            <h2 className="font-funneldisplay text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+          <SectionEyebrow index="03" label="How it works" />
+          <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+            <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl">
               Three steps to start earning
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-px border-t border-slate-200 bg-slate-200 md:grid-cols-3">
             {steps.map((step) => (
-              <div key={step.number} className="bg-white p-6 md:p-8">
-                <span className="font-mono text-sm font-bold tracking-[0.14em] text-trooper-700">{step.number}</span>
-                <h3 className="mt-4 font-display text-lg font-bold text-slate-900">{step.title}</h3>
+              <div key={step.number} className="bg-white p-6 sm:p-8">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-trooper-700">
+                  {step.number}
+                </span>
+                <h3 className="mt-4 font-semibold text-slate-900">{step.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">{step.description}</p>
               </div>
             ))}
@@ -306,16 +316,12 @@ export default function AffiliateClient() {
 
         {/* Who it's for */}
         <section className="border-b border-slate-200 bg-[#FAFAF8]">
-          <div className="border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8">
-            <span className="type-eyebrow-num">
-              <span className="text-slate-400">[04]</span>&nbsp;Who it&apos;s for
-            </span>
-          </div>
-          <div className="px-4 py-8 sm:px-6 md:px-8 md:py-12">
-            <h2 className="font-funneldisplay text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+          <SectionEyebrow index="04" label="Who it's for" />
+          <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+            <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl">
               Promote Trooper to people who need work done
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="affiliate-section-desc mt-3">
               Easiest to recommend when your audience builds, ships, markets, or runs operations with software every
               week.
             </p>
@@ -324,11 +330,11 @@ export default function AffiliateClient() {
             {audiences.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.title} className="bg-white p-6">
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center border border-slate-200 bg-[#FAFAF8] text-trooper-700">
+                <div key={item.title} className="affiliate-ds-card">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center border border-slate-200 bg-white p-2 text-trooper-700">
                     <Icon className="h-5 w-5" aria-hidden />
                   </div>
-                  <h3 className="font-display text-base font-bold text-slate-900">{item.title}</h3>
+                  <h3 className="font-semibold text-slate-900">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.description}</p>
                 </div>
               );
@@ -338,22 +344,18 @@ export default function AffiliateClient() {
 
         {/* Why promote */}
         <section className="border-b border-slate-200">
-          <div className="border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8">
-            <span className="type-eyebrow-num">
-              <span className="text-slate-400">[05]</span>&nbsp;Why promote Trooper
-            </span>
-          </div>
-          <div className="px-4 py-8 sm:px-6 md:px-8 md:py-12">
-            <h2 className="font-funneldisplay text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+          <SectionEyebrow index="05" label="Why promote Trooper" />
+          <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+            <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl">
               A product your audience will love
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-px border-t border-slate-200 bg-slate-200 md:grid-cols-2">
             {whyPromote.map((item) => (
-              <div key={item.title} className="flex gap-4 bg-white p-6 md:p-8">
+              <div key={item.title} className="flex gap-4 bg-white p-6 sm:p-8">
                 <span className="mt-0.5 shrink-0 font-mono text-sm font-bold text-trooper-700">✓</span>
                 <div>
-                  <h3 className="font-display font-bold text-slate-900">{item.title}</h3>
+                  <h3 className="font-semibold text-slate-900">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.description}</p>
                 </div>
               </div>
@@ -363,20 +365,16 @@ export default function AffiliateClient() {
 
         {/* FAQ */}
         <section className="border-b border-slate-200 bg-[#FAFAF8]">
-          <div className="border-b border-slate-200 px-4 py-3 sm:px-6 md:px-8">
-            <span className="type-eyebrow-num">
-              <span className="text-slate-400">[06]</span>&nbsp;FAQ
-            </span>
-          </div>
-          <div className="px-4 py-8 sm:px-6 md:px-8 md:py-12">
-            <h2 className="font-funneldisplay text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+          <SectionEyebrow index="06" label="FAQ" />
+          <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+            <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl">
               Frequently asked questions
             </h2>
           </div>
           <div className="divide-y divide-slate-200 border-t border-slate-200 bg-white">
             {FAQ_ITEMS.map((item) => (
-              <article key={item.question} className="px-4 py-6 sm:px-8 md:px-10">
-                <h3 className="font-display text-base font-bold text-slate-900">{item.question}</h3>
+              <article key={item.question} className="px-4 py-6 sm:px-8 lg:px-10">
+                <h3 className="font-semibold text-slate-900">{item.question}</h3>
                 <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">{item.answer}</p>
               </article>
             ))}
@@ -384,25 +382,26 @@ export default function AffiliateClient() {
         </section>
 
         {/* Closing CTA */}
-        <section>
-          <div className="border-b border-slate-200 bg-trooper-50/40 px-4 py-14 text-center sm:px-6 md:px-8 md:py-16">
-            <h2 className="mx-auto max-w-3xl font-funneldisplay text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
-              Ready to start earning?
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base text-slate-600">
-              Free to join. 30% recurring commission. No cap on earnings.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <PixelButton
-                href={AFFILIATE_SIGNUP}
-                external
-                size="lg"
-                tone="brand"
-                icon={<ArrowRight className="h-4 w-4" />}
-              >
-                Become an affiliate
-              </PixelButton>
+        <section className="border-b border-slate-200">
+          <div className="flex flex-col gap-6 border border-slate-200 bg-white p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8 lg:mx-8 lg:my-10">
+            <div className="max-w-xl">
+              <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl">
+                Ready to start earning?
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                Free to join. 30% recurring commission. No cap on earnings.
+              </p>
             </div>
+            <PixelButton
+              href={AFFILIATE_SIGNUP}
+              external
+              size="lg"
+              tone="brand"
+              icon={<ArrowRight className="h-4 w-4" />}
+              className="shrink-0"
+            >
+              Become an affiliate
+            </PixelButton>
           </div>
         </section>
       </div>

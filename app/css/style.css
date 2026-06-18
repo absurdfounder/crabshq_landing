@@ -230,26 +230,6 @@ body > iframe.goog-te-menu-frame {
   z-index: -1 !important;
 }
 
-/* Hide Channel.io chat widget while the mobile menu is open */
-html[data-menu-open='true'] #ch-plugin,
-html[data-menu-open='true'] [data-ch-testid='launcher'],
-html[data-menu-open='true'] iframe[name^='ch-plugin'],
-html[data-menu-open='true'] .ch-plugin {
-  visibility: hidden !important;
-}
-
-/* Channel.io launcher restyle — square dark to match grid aesthetic */
-#ch-plugin,
-#ch-plugin-launcher,
-#ch-plugin .ch-launcher,
-.ch-launcher,
-#ch-plugin button[class*='launcher'] {
-  border-radius: 4px !important;
-  background: #0f172a !important;
-  border: 1px solid #1e293b !important;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
-}
-
 /* Pixel-band decorative divider — opt-in utility to bridge sections with a
    pixelated slate-200 edge. Apply <div className="pixel-divider" /> between
    sections (recommended above <SectionShell eyebrow="Trusted By">). */

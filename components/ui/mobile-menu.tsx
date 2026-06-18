@@ -83,14 +83,12 @@ export default function MobileMenu() {
     if (!isOpen) return
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    document.documentElement.dataset.menuOpen = 'true'
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close()
     }
     document.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = previous
-      delete document.documentElement.dataset.menuOpen
       document.removeEventListener('keydown', onKey)
     }
   }, [isOpen])
@@ -98,7 +96,6 @@ export default function MobileMenu() {
   useEffect(() => {
     return () => {
       document.body.style.overflow = ''
-      delete document.documentElement.dataset.menuOpen
     }
   }, [])
 
