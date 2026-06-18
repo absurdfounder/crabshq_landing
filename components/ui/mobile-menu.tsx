@@ -1,8 +1,8 @@
 'use client'
 
-import { useCallback, useEffect, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 
 import {
@@ -15,7 +15,7 @@ import {
 type AccordionProps = {
   label: string
   items: NavItem[]
-  onNavigate: (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => void
+  onNavigate?: () => void
   defaultOpen?: boolean
 }
 
@@ -45,7 +45,7 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  onClick={onNavigate(item.href)}
+                  onClick={onNavigate}
                   className="flex items-center gap-3 rounded-lg p-2 text-slate-800 active:bg-slate-50"
                 >
                   <span
@@ -73,21 +73,8 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
 
 export default function MobileMenu() {
   const pathname = usePathname()
-  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const close = () => setIsOpen(false)
-
-  const navigate = useCallback(
-    (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-        return
-      }
-      event.preventDefault()
-      close()
-      router.push(href)
-    },
-    [router],
-  )
 
   useEffect(() => {
     close()
@@ -133,7 +120,7 @@ export default function MobileMenu() {
           type="button"
           aria-label="Close menu"
           onClick={close}
-          className="fixed inset-0 z-[100] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out] lg:hidden"
+          className="fixed inset-0 z-[250] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out] lg:hidden"
         />
       ) : null}
 
@@ -143,7 +130,7 @@ export default function MobileMenu() {
         aria-modal="true"
         aria-label="Site navigation"
         aria-hidden={!isOpen}
-        className="fixed inset-y-0 right-0 z-[110] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
+        className="fixed inset-y-0 right-0 z-[260] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
       >
         <div className="flex h-14 items-center justify-between border-b border-slate-100 bg-white px-4">
           <span className="font-display text-base font-bold text-slate-900">Menu</span>
@@ -158,14 +145,14 @@ export default function MobileMenu() {
         </div>
 
         <nav className="flex-1 overflow-y-auto overscroll-contain bg-white px-4 pb-4">
-          <Accordion label="Features" items={featureNavItems} onNavigate={navigate} defaultOpen />
-          <Accordion label="Teams" items={teamNavItems} onNavigate={navigate} />
+          <Accordion label="Features" items={featureNavItems} onNavigate={close} defaultOpen />
+          <Accordion label="Teams" items={teamNavItems} onNavigate={close} />
 
           {primaryNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={navigate(link.href)}
+              onClick={close}
               className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
             >
               {link.label}
@@ -194,7 +181,7 @@ export default function MobileMenu() {
           </Link>
           <Link
             href="/pricing"
-            onClick={navigate('/pricing')}
+            onClick={close}
             className="mt-2 flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50"
           >
             View pricing

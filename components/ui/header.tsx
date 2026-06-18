@@ -1,14 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { AnimatePresence, motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 
 import TrooperLogo from '@/components/ui/TrooperLogo'
 import MobileMenu from './mobile-menu'
-import PixelButton from './PixelButton'
+import PixelButton from '@/components/ui/PixelButton'
 import TranslateButton from './TranslateButton'
 import {
   featureNavItems,
@@ -19,27 +18,11 @@ import {
 
 type DropdownKey = 'features' | 'teams' | null
 
-function isModifiedClick(event: ReactMouseEvent<HTMLAnchorElement>) {
-  return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0
-}
-
 export default function Header() {
   const pathname = usePathname()
-  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
-
-  const navigate = useCallback(
-    (href: string, onAfterNavigate?: () => void) =>
-      (event: ReactMouseEvent<HTMLAnchorElement>) => {
-        if (isModifiedClick(event)) return
-        event.preventDefault()
-        onAfterNavigate?.()
-        router.push(href)
-      },
-    [router],
-  )
 
   useEffect(() => {
     setOpenDropdown(null)
@@ -54,18 +37,18 @@ export default function Header() {
 
   useEffect(() => {
     if (!openDropdown) return
-    const onClickOutside = (event: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null)
-      }
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (navRef.current?.contains(target)) return
+      setOpenDropdown(null)
     }
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpenDropdown(null)
     }
-    document.addEventListener('click', onClickOutside)
+    document.addEventListener('pointerdown', onPointerDown)
     document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener('click', onClickOutside)
+      document.removeEventListener('pointerdown', onPointerDown)
       document.removeEventListener('keydown', onKey)
     }
   }, [openDropdown])
@@ -73,7 +56,7 @@ export default function Header() {
   return (
     <header
       translate="no"
-      className={`notranslate fixed top-0 z-[100] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
+      className={`notranslate fixed top-0 z-[200] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
         scrolled ? 'shadow-sm' : ''
       }`}
     >
@@ -100,7 +83,6 @@ export default function Header() {
               onToggle={() =>
                 setOpenDropdown(openDropdown === 'features' ? null : 'features')
               }
-              onNavigate={navigate}
               onClose={() => setOpenDropdown(null)}
             />
             <NavDropdownItem
@@ -111,22 +93,21 @@ export default function Header() {
               onToggle={() =>
                 setOpenDropdown(openDropdown === 'teams' ? null : 'teams')
               }
-              onNavigate={navigate}
               onClose={() => setOpenDropdown(null)}
             />
             {primaryNavLinks.map((link) => (
-              <li key={link.href} className="relative z-[120]">
+              <li key={link.href} className="relative z-[220]">
                 <NavLink
                   href={link.href}
                   label={link.label}
-                  onClick={navigate(link.href, () => setOpenDropdown(null))}
+                  onNavigate={() => setOpenDropdown(null)}
                 />
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
+        <div className="relative z-[220] ml-auto flex items-center gap-2 sm:gap-3">
           <div className="hidden lg:block">
             <TranslateButton />
           </div>
@@ -166,7 +147,6 @@ function NavDropdownItem({
   items,
   isOpen,
   onToggle,
-  onNavigate,
   onClose,
 }: {
   label: string
@@ -174,11 +154,10 @@ function NavDropdownItem({
   items: NavItem[]
   isOpen: boolean
   onToggle: () => void
-  onNavigate: (href: string, onAfterNavigate?: () => void) => (event: ReactMouseEvent<HTMLAnchorElement>) => void
   onClose: () => void
 }) {
   return (
-    <li className="relative z-[115]">
+    <li className="relative z-[210]">
       <button
         type="button"
         onClick={onToggle}
@@ -198,59 +177,53 @@ function NavDropdownItem({
         />
       </button>
 
-      <AnimatePresence>
-        {isOpen ? (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8, pointerEvents: 'none' }}
-            transition={{ duration: 0.12, ease: 'easeOut' }}
-            className="pointer-events-none absolute left-1/2 top-full z-[110] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
-            role="menu"
-            data-nav-dropdown-panel
-          >
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5">
-              <div className="p-5">
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    {title}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1">
-                  {items.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={onNavigate(item.href, onClose)}
-                        role="menuitem"
-                        className="group pointer-events-auto flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-slate-50"
+      {isOpen ? (
+        <div
+          className="absolute left-1/2 top-full z-[205] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
+          role="menu"
+          data-nav-dropdown-panel
+        >
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-black/5">
+            <div className="p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  {title}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                {items.map((item) => {
+                  const Icon = item.icon
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={onClose}
+                      role="menuitem"
+                      className="group flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-slate-50"
+                    >
+                      <span
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.bgColor} transition-transform group-hover:scale-105`}
                       >
-                        <span
-                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.bgColor} transition-transform group-hover:scale-105`}
-                        >
-                          <Icon className={`h-4 w-4 ${item.iconColor}`} strokeWidth={2} />
+                        <Icon className={`h-4 w-4 ${item.iconColor}`} strokeWidth={2} />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-sm font-medium text-slate-900 group-hover:text-emerald-600">
+                          {item.title}
                         </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-medium text-slate-900 group-hover:text-emerald-600">
-                            {item.title}
+                        {item.description ? (
+                          <span className="mt-0.5 block truncate text-xs text-slate-500">
+                            {item.description}
                           </span>
-                          {item.description ? (
-                            <span className="mt-0.5 block truncate text-xs text-slate-500">
-                              {item.description}
-                            </span>
-                          ) : null}
-                        </span>
-                      </Link>
-                    )
-                  })}
-                </div>
+                        ) : null}
+                      </span>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          </div>
+        </div>
+      ) : null}
     </li>
   )
 }
@@ -258,16 +231,16 @@ function NavDropdownItem({
 function NavLink({
   href,
   label,
-  onClick,
+  onNavigate,
 }: {
   href: string
   label: string
-  onClick: (event: ReactMouseEvent<HTMLAnchorElement>) => void
+  onNavigate?: () => void
 }) {
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={onNavigate}
       className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
     >
       {label}
