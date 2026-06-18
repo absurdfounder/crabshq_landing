@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 
@@ -194,7 +193,7 @@ function NavDropdownItem({
                 {items.map((item) => {
                   const Icon = item.icon
                   return (
-                    <Link
+                    <a
                       key={item.href}
                       href={item.href}
                       onClick={onClose}
@@ -216,7 +215,7 @@ function NavDropdownItem({
                           </span>
                         ) : null}
                       </span>
-                    </Link>
+                    </a>
                   )
                 })}
               </div>
@@ -238,12 +237,12 @@ function NavLink({
   onNavigate?: () => void
 }) {
   return (
-    <Link
+    <a
       href={href}
       onClick={onNavigate}
       className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
     >
       {label}
-    </Link>
+    </a>
   )
 }

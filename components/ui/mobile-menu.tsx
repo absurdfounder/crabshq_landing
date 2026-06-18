@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 
@@ -43,7 +42,7 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
             const Icon = item.icon
             return (
               <li key={item.href}>
-                <Link
+                <a
                   href={item.href}
                   onClick={onNavigate}
                   className="flex items-center gap-3 rounded-lg p-2 text-slate-800 active:bg-slate-50"
@@ -61,7 +60,7 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
                       </span>
                     ) : null}
                   </span>
-                </Link>
+                </a>
               </li>
             )
           })}
@@ -149,27 +148,27 @@ export default function MobileMenu() {
           <Accordion label="Teams" items={teamNavItems} onNavigate={close} />
 
           {primaryNavLinks.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
               onClick={close}
               className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
 
-          <Link
+          <a
             href="https://app.trooper.so"
             onClick={close}
             className="flex border-b border-slate-100 py-4 text-[15px] font-semibold text-slate-900 active:text-[#009fbc]"
           >
             Sign in
-          </Link>
+          </a>
         </nav>
 
         <div className="border-t border-slate-100 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <Link
+          <a
             href="https://app.trooper.so"
             target="_blank"
             rel="noopener noreferrer"
@@ -178,14 +177,14 @@ export default function MobileMenu() {
           >
             Get started free
             <ArrowRight className="h-4 w-4" />
-          </Link>
-          <Link
+          </a>
+          <a
             href="/pricing"
             onClick={close}
             className="mt-2 flex w-full items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 active:bg-slate-50"
           >
             View pricing
-          </Link>
+          </a>
         </div>
       </aside>
       ) : null}

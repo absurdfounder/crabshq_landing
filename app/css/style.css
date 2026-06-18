@@ -214,7 +214,11 @@
 .skiptranslate,
 iframe.skiptranslate,
 .goog-te-banner-frame,
-#google_translate_element iframe {
+.goog-te-menu-frame,
+#google_translate_element,
+#google_translate_element iframe,
+body > .skiptranslate,
+body > iframe.goog-te-menu-frame {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;

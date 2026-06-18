@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 const characterSrc = '/images/trooper-logomark.png'
 
 type TrooperLogoProps = {
@@ -39,9 +37,9 @@ export default function TrooperLogo({
 
   if (asLink) {
     return (
-      <Link href="/" className="shrink-0" aria-label="Trooper">
+      <a href="/" className="shrink-0" aria-label="Trooper">
         {content}
-      </Link>
+      </a>
     )
   }
 

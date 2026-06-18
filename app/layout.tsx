@@ -159,7 +159,7 @@ export default function RootLayout({
           <SchemaMarkup />
         </div>
         {/* Hidden Google Translate Element */}
-        <div id="google_translate_element" className="hidden"></div>
+        <div id="google_translate_element" className="fixed -z-50 top-0 left-0 opacity-0 pointer-events-none" aria-hidden />
       </body>
     </html>
   )
