@@ -41,13 +41,13 @@ export default function FounderMessageSection() {
         transition={{ duration: 0.5, ease }}
         viewport={{ once: true, margin: '-20px' }}
       >
-        <div className="flex flex-row items-start">
-          <div className="relative aspect-[3/4] w-[5.25rem] shrink-0 overflow-hidden border-4 border-[#007040] border-r border-r-slate-200 bg-white sm:w-24 md:w-40 md:border-[5px] lg:w-48">
+        <div className="flex flex-row items-stretch">
+          <div className="relative min-h-full w-[5.25rem] shrink-0 overflow-hidden border-4 border-[#007040] border-r border-r-slate-200 bg-white sm:w-24 md:w-40 md:border-[5px] lg:w-48">
             <Image
               src="/images/founder-portrait.png"
               alt="Vaibhav, founder of Trooper"
               fill
-              className="object-cover object-center"
+              className="object-cover object-top"
               sizes="(max-width: 640px) 84px, (max-width: 768px) 96px, (max-width: 1024px) 160px, 192px"
               priority={false}
             />
@@ -55,9 +55,11 @@ export default function FounderMessageSection() {
 
           <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5 md:p-7 lg:p-9">
             <p className="font-funneldisplay text-[0.95rem] leading-[1.45] tracking-tight text-slate-900 sm:text-lg md:text-[1.65rem] md:leading-[1.35]">
-              AI agents that can browse, code, and ship are here. What&apos;s missing is the{' '}
-              <span className="text-trooper font-semibold">command layer</span> — a place where you
-              stay in charge while a real workforce executes.
+              Everyone deserves a{' '}
+              <span className="font-semibold text-trooper">fully powered agentic system</span> that
+              does real work for them. That power should not sit only in the hands of big
+              corporations — so we built Trooper for you, and made it{' '}
+              <span className="font-semibold text-trooper">free for anyone to use</span>.
             </p>
 
             <div className="mt-4 flex flex-col gap-4 sm:mt-5 sm:flex-row sm:items-end sm:justify-between md:mt-6">
