@@ -7,278 +7,200 @@ import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import PixelButton from './ui/PixelButton';
 import {
   CLOUD_SUBSCRIPTION_TIERS,
+  COMMON_PLAN_FEATURES,
+  estimateCloudMonthly,
   formatUsd,
+  getCloudTierMonthlyPrice,
   PRICING_USD,
   type CloudSubscriptionTier,
 } from '@/lib/pricing';
 import {
-  Bot,
-  MessageSquare,
-  Monitor,
-  Sparkles,
-  Terminal,
-  Brain,
-  ShieldCheck,
-  Puzzle,
-  Globe,
-  Smartphone,
-  Eye,
-  History,
-  Users,
-  Server,
-  Cpu,
-  Workflow,
-  GitBranch,
-  Mail,
-  Share2,
-  Settings,
-  Headphones,
-  Network,
-  Lock,
-  Palette,
-  UserPlus,
-  FileCheck,
-  Wrench,
-  Database,
-  BadgeCheck,
-  LucideIcon,
-  DollarSign,
-  Infinity,
-  CheckCircle,
   Building2,
+  Check,
+  Cloud,
+  Infinity,
   Laptop,
+  Minus,
+  Plus,
+  Server,
+  type LucideIcon,
 } from 'lucide-react';
-
-type Feature = {
-  icon: LucideIcon;
-  label: string;
-  color: string;
-  included?: boolean;
-};
-
-const oneWorkspaceFeature: Feature = {
-  icon: Building2,
-  label: '1 workspace',
-  color: 'text-slate-600',
-};
-
-const multiWorkspaceFeature: Feature = {
-  icon: Building2,
-  label: 'Multi-workspace support',
-  color: 'text-trooper',
-};
-
-const unlimitedDevicesFeature: Feature = {
-  icon: Monitor,
-  label: 'Unlimited Devices',
-  color: 'text-slate-600',
-};
-
-const noConnectedDevicesFeature: Feature = {
-  icon: Monitor,
-  label: 'No connected devices',
-  color: 'text-slate-500',
-};
-
-const soloFeatures: Feature[] = [
-  { icon: Bot, label: 'Unlimited Agents', color: 'text-trooper' },
-  { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-trooper-olive' },
-  { icon: Sparkles, label: 'All AI Models', color: 'text-trooper' },
-  { icon: Terminal, label: 'Claude Code & Codex', color: 'text-trooper-700' },
-  { icon: Brain, label: 'Adaptive Memory', color: 'text-trooper-olive' },
-  { icon: Eye, label: 'Context Awareness', color: 'text-cyan-500' },
-  { icon: History, label: 'System Memory', color: 'text-violet-500' },
-  { icon: ShieldCheck, label: 'Data Encryption', color: 'text-blue-500' },
-  { icon: Puzzle, label: '3,000+ OpenClaw Skills', color: 'text-pink-500' },
-  { icon: Globe, label: 'Browser Automation', color: 'text-trooper' },
-  { icon: Smartphone, label: 'Mac, Windows, iOS, Android', color: 'text-slate-500' },
-  { icon: Cpu, label: 'Always-on Virtual PC', color: 'text-indigo-500' },
-  { icon: Network, label: 'Multi-agent orchestration', color: 'text-cyan-500' },
-  { icon: GitBranch, label: 'GitHub integration (commits, PRs, reviews)', color: 'text-orange-500' },
-  { icon: Building2, label: 'License for 1 org', color: 'text-slate-600' },
-  { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-trooper' },
-];
-
-const localInstallHeader: Feature[] = [
-  { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
-  { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
-  { icon: DollarSign, label: '$0/month — no subscription', color: 'text-trooper-700' },
-  {
-    icon: Infinity,
-    label: `${formatUsd(PRICING_USD.localLifetime)} one-time lifetime license on your laptop`,
-    color: 'text-trooper',
-  },
-];
-
-const localSoloFeatures: Feature[] = [
-  oneWorkspaceFeature,
-  noConnectedDevicesFeature,
-  ...soloFeatures.map((feature) => {
-    if (feature.label === 'Lifetime access for 1 user') {
-      return { ...feature, label: 'Free unlimited access on your laptop', color: 'text-trooper' };
-    }
-    if (feature.label === 'License for 1 org') {
-      return { ...feature, label: 'Personal laptop install' };
-    }
-    return feature;
-  }),
-];
-
-const cloudFeatures: Feature[] = [
-  multiWorkspaceFeature,
-  unlimitedDevicesFeature,
-  { icon: Users, label: '2 team members included', color: 'text-trooper' },
-  { icon: DollarSign, label: 'Additional members at $10/user/month', color: 'text-trooper-700' },
-  { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
-  { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-orange-500' },
-  { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
-  { icon: Settings, label: 'Admin controls and permissions', color: 'text-slate-500' },
-  { icon: Database, label: 'Shared team knowledge base', color: 'text-yellow-500' },
-  { icon: Workflow, label: 'Shared workflows across team', color: 'text-cyan-500' },
-  { icon: Headphones, label: 'Priority email support', color: 'text-blue-500' },
-];
-
-const enterpriseFeatures: Feature[] = [
-  multiWorkspaceFeature,
-  unlimitedDevicesFeature,
-  { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-indigo-500' },
-  { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-blue-500' },
-  { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-green-500' },
-  { icon: DollarSign, label: 'Custom seat volume pricing', color: 'text-trooper-700' },
-  { icon: Palette, label: 'White-label and custom domain', color: 'text-pink-500' },
-  { icon: UserPlus, label: 'Dedicated onboarding and migration', color: 'text-orange-500' },
-  { icon: FileCheck, label: 'Security reviews and custom agreements', color: 'text-cyan-500' },
-  { icon: Wrench, label: 'Internal integrations and custom workflows', color: 'text-violet-500' },
-  { icon: Database, label: 'Shared company memory and knowledge', color: 'text-yellow-500' },
-  { icon: Headphones, label: 'Priority support with SLA', color: 'text-blue-500' },
-];
-
-const cloudLifetimeFeatures: Feature[] = [
-  oneWorkspaceFeature,
-  noConnectedDevicesFeature,
-  { icon: Users, label: '2 team members included', color: 'text-trooper' },
-  { icon: Cpu, label: 'Always-on managed cloud computer', color: 'text-indigo-500' },
-  { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
-  { icon: Workflow, label: 'Shared workflows across team', color: 'text-cyan-500' },
-  { icon: Headphones, label: 'Priority email support', color: 'text-blue-500' },
-  { icon: Infinity, label: 'Lifetime hosted access — pay once', color: 'text-trooper' },
-];
-
-type Plan = {
-  name: string;
-  eyebrow?: string;
-  price: string;
-  cadence: string;
-  perSeat?: string;
-  description: string;
-  badge?: string | null;
-  note?: string;
-  sections: {
-    label: string;
-    features: Feature[];
-    inheritsFrom?: string;
-  }[];
-  cloudTiers?: boolean;
-  cta: {
-    text: string;
-    href: string;
-  };
-  highlight?: boolean;
-};
-
-const plans: Plan[] = [
-  {
-    name: 'Local Install',
-    eyebrow: 'Self-install',
-    price: '$0',
-    cadence: '/ month',
-    perSeat: `Free, or ${formatUsd(PRICING_USD.localLifetime)} one-time lifetime on your laptop`,
-    description:
-      'Install Trooper on your laptop at no cost. Same unlimited solo experience — self-hosted runtime on your machine.',
-    badge: 'Free',
-    note: 'Bring your own API keys. Model usage is billed separately by your providers.',
-    sections: [
-      {
-        label: '',
-        features: [...localInstallHeader, ...localSoloFeatures],
-      },
-    ],
-    cta: {
-      text: 'Install locally',
-      href: 'https://app.trooper.so',
-    },
-    highlight: false,
-  },
-  {
-    name: 'Cloud Lifetime',
-    eyebrow: 'Lifetime deal',
-    price: formatUsd(PRICING_USD.cloudLifetime),
-    cadence: 'one-time payment',
-    perSeat: 'One user · one organization',
-    description:
-      'For solo founders who want full control with hosted infrastructure. Pay once and use Trooper Cloud forever.',
-    badge: 'Lifetime Access',
-    note: 'Includes 2 team members. Bring your own API keys for model usage.',
-    sections: [
-      { label: '', features: cloudLifetimeFeatures },
-      { label: '', features: [], inheritsFrom: 'All core AI features from Local Install' },
-    ],
-    cta: {
-      text: 'Get lifetime deal',
-      href: 'https://app.trooper.so',
-    },
-    highlight: false,
-  },
-  {
-    name: 'Trooper Cloud',
-    eyebrow: 'Hosted by us',
-    price: formatUsd(PRICING_USD.cloudStandardMonthly),
-    cadence: '/ month',
-    perSeat: `${PRICING_USD.cloudIncludedMembers} team members included`,
-    description:
-      'A managed AI workspace with hosted runtime, workflows, memory, and collaboration for your team.',
-    badge: 'Most Popular',
-    note: `Additional members ${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/mo each. Bring your own API keys for model usage.`,
-    cloudTiers: true,
-    sections: [
-      { label: '', features: cloudFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything from Cloud Lifetime' },
-    ],
-    cta: {
-      text: 'Start with cloud',
-      href: 'https://app.trooper.so',
-    },
-    highlight: true,
-  },
-  {
-    name: 'Enterprise',
-    eyebrow: 'Private deployment',
-    price: 'Custom',
-    cadence: '',
-    perSeat: 'Volume pricing from ~$4/seat/month',
-    description:
-      'For companies that want Trooper on their own infrastructure, with full control and custom pricing.',
-    badge: 'Self-host',
-    note: 'Starts at ~$7,000/year. Volume seat pricing available. Runs on your infra.',
-    sections: [
-      { label: '', features: enterpriseFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything from Cloud Plan' },
-    ],
-    cta: {
-      text: 'Talk to sales',
-      href: 'https://cal.com/trooper/setup-call',
-    },
-    highlight: false,
-  },
-];
 
 type SimplePricingProps = {
   /** Show link strip to full /pricing page (homepage embed). */
   showFullPricingLink?: boolean;
 };
 
+function FeatureItem({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 text-sm leading-5 text-slate-700/90">
+      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" aria-hidden />
+      <span>{children}</span>
+    </li>
+  );
+}
+
+function PlanBadge({ children, featured = false }: { children: React.ReactNode; featured?: boolean }) {
+  return (
+    <span
+      className={[
+        'border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]',
+        featured
+          ? 'border-trooper-200 bg-trooper-50 text-trooper'
+          : 'border-slate-200 bg-slate-100 text-slate-600',
+      ].join(' ')}
+    >
+      {children}
+    </span>
+  );
+}
+
+function PlanHeader({
+  index,
+  eyebrow,
+  badge,
+  title,
+  icon: Icon,
+  description,
+  featured = false,
+}: {
+  index: string;
+  eyebrow: string;
+  badge: string;
+  title: string;
+  icon: LucideIcon;
+  description: string;
+  featured?: boolean;
+}) {
+  return (
+    <div className="border-b border-slate-200 px-5 py-5">
+      <div className="flex items-start justify-between gap-3">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
+          <span className="text-slate-400">[{index}]</span> {eyebrow}
+        </span>
+        <PlanBadge featured={featured}>{badge}</PlanBadge>
+      </div>
+      <div className="mt-4 flex items-center gap-2.5">
+        <Icon className="h-5 w-5 text-emerald-600" aria-hidden />
+        <h3 className="font-funneldisplay text-xl font-medium tracking-tight text-slate-900">{title}</h3>
+      </div>
+      <p className="mt-3 text-sm leading-6 text-slate-500">{description}</p>
+    </div>
+  );
+}
+
+function AllowanceStepper({
+  label,
+  value,
+  min,
+  onChange,
+  helper,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  onChange: (value: number) => void;
+  helper: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-2 border border-slate-200 bg-white px-3 py-2.5">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-slate-900">{label}</p>
+        <p className="mt-0.5 text-[11px] leading-snug text-slate-500">{helper}</p>
+      </div>
+      <div className="flex shrink-0 items-center gap-1" role="group" aria-label={`${label} quantity`}>
+        <button
+          type="button"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
+          disabled={value <= min}
+          onClick={() => onChange(Math.max(min, value - 1))}
+          aria-label={`Decrease ${label.toLowerCase()}`}
+        >
+          <Minus className="h-3.5 w-3.5" aria-hidden />
+        </button>
+        <span className="w-8 text-center text-sm font-medium tabular-nums text-slate-900">{value}</span>
+        <button
+          type="button"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50"
+          onClick={() => onChange(Math.min(150, value + 1))}
+          aria-label={`Increase ${label.toLowerCase()}`}
+        >
+          <Plus className="h-3.5 w-3.5" aria-hidden />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CloudTierTabs({
+  value,
+  onChange,
+}: {
+  value: CloudSubscriptionTier;
+  onChange: (tier: CloudSubscriptionTier) => void;
+}) {
+  return (
+    <div
+      className="grid grid-cols-2 gap-1 border border-slate-200 bg-slate-50/80 p-1"
+      role="radiogroup"
+      aria-label="Trooper Cloud tier"
+    >
+      {CLOUD_SUBSCRIPTION_TIERS.map((tier) => {
+        const selected = value === tier.id;
+        return (
+          <button
+            key={tier.id}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            onClick={() => onChange(tier.id)}
+            className={[
+              'rounded-sm px-3 py-2.5 text-left transition-colors',
+              selected ? 'bg-white shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:bg-white/70',
+            ].join(' ')}
+          >
+            <span className="block text-[11px] font-medium">{tier.label}</span>
+            <span className="mt-0.5 block text-base font-semibold tabular-nums text-slate-900">
+              {formatUsd(tier.price)}
+              <span className="text-[11px] font-normal text-slate-500">/mo</span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function LocalInstallBanner() {
+  return (
+    <div className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
+      <div className="flex min-w-0 items-start gap-3">
+        <Laptop className="mt-0.5 h-5 w-5 shrink-0 text-trooper" aria-hidden />
+        <div>
+          <p className="font-funneldisplay text-base font-medium text-slate-900">Local Install</p>
+          <p className="mt-1 text-sm leading-6 text-slate-500">
+            {formatUsd(0)}/mo on your laptop · 1 workspace · no connected devices · optional{' '}
+            {formatUsd(PRICING_USD.localLifetime)} lifetime license
+          </p>
+        </div>
+      </div>
+      <PixelButton href="https://app.trooper.so" external size="sm" tone="dark" className="shrink-0">
+        Install locally
+      </PixelButton>
+    </div>
+  );
+}
+
 export default function SimplePricing({ showFullPricingLink = true }: SimplePricingProps) {
   const [cloudTier, setCloudTier] = useState<CloudSubscriptionTier>('standard');
+  const [seatCount, setSeatCount] = useState<number>(PRICING_USD.cloudIncludedMembers);
+  const [workspaceCount, setWorkspaceCount] = useState<number>(PRICING_USD.cloudIncludedWorkspaces);
+
+  const estimatedMonthly = estimateCloudMonthly({
+    tier: cloudTier,
+    seatCount,
+    workspaceCount,
+  });
 
   return (
     <div className="w-full pb-8 md:pb-10">
@@ -302,22 +224,134 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       </div>
 
       <div className="-mx-3 border-t border-slate-200 sm:-mx-4 md:-mx-6">
-        <div className="hidden border-b border-slate-200 bg-white lg:block">
-          <DesktopPricingGrid plans={plans} />
-        </div>
+        <LocalInstallBanner />
 
-        <div className="border-b border-slate-200 bg-white lg:hidden">
-          {plans.map((plan, idx) => (
-            <MobilePricingCard
-              key={plan.name}
-              plan={plan}
-              idx={idx}
-              isLast={idx === plans.length - 1}
-              cloudTier={cloudTier}
-              onCloudTierChange={setCloudTier}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          viewport={{ once: true }}
+          className="grid overflow-hidden gap-px border-b border-slate-200 bg-slate-200 lg:grid-cols-2"
+        >
+          <section className="flex min-w-0 flex-col bg-white">
+            <PlanHeader
+              index="01"
+              eyebrow="Lifetime deal"
+              badge="Lifetime access"
+              title="Cloud Lifetime"
+              icon={Infinity}
+              description="For solo founders who want hosted infrastructure. Pay once and use Trooper forever — one workspace, no connected devices."
             />
-          ))}
-        </div>
+            <div className="flex flex-1 flex-col px-6 py-6 md:px-8">
+              <div className="flex items-end gap-1.5">
+                <span className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+                  {formatUsd(PRICING_USD.cloudLifetime)}
+                </span>
+                <span className="pb-1 text-sm text-slate-500">one-time</span>
+              </div>
+              <p className="mt-2 text-sm font-medium text-emerald-700">
+                1 workspace · {PRICING_USD.cloudIncludedMembers} team members · no connected devices
+              </p>
+              <ul className="mt-6 space-y-2.5">
+                {COMMON_PLAN_FEATURES.map((feature) => (
+                  <FeatureItem key={feature}>{feature}</FeatureItem>
+                ))}
+                <FeatureItem>Always-on managed cloud computer</FeatureItem>
+                <FeatureItem>Bring your own API keys</FeatureItem>
+                <FeatureItem>Lifetime hosted access — pay once</FeatureItem>
+              </ul>
+              <div className="mt-auto pt-7">
+                <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
+                  Get lifetime deal
+                </PixelButton>
+              </div>
+            </div>
+          </section>
+
+          <section className="flex min-w-0 flex-col border-t-2 border-t-emerald-500 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.08)] lg:border-t-0">
+            <PlanHeader
+              featured
+              index="02"
+              eyebrow="Hosted by us"
+              badge="Most popular"
+              title="Trooper Cloud"
+              icon={Cloud}
+              description="A managed AI workspace with hosted runtime, workflows, memory, and collaboration for your team."
+            />
+            <div className="flex flex-1 flex-col px-6 py-6 md:px-8">
+              <CloudTierTabs value={cloudTier} onChange={setCloudTier} />
+              <p className="mt-4 text-sm font-medium text-emerald-700">
+                {PRICING_USD.cloudIncludedMembers} team members included
+              </p>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                Each workspace uses the selected usage tier ({formatUsd(getCloudTierMonthlyPrice(cloudTier))}/mo).
+                Additional members are {formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/month.
+              </p>
+              <div className="mt-4 space-y-2">
+                <AllowanceStepper
+                  label="Team members"
+                  value={seatCount}
+                  min={PRICING_USD.cloudIncludedMembers}
+                  onChange={setSeatCount}
+                  helper={`${PRICING_USD.cloudIncludedMembers} included`}
+                />
+                <AllowanceStepper
+                  label="Workspaces"
+                  value={workspaceCount}
+                  min={PRICING_USD.cloudIncludedWorkspaces}
+                  onChange={setWorkspaceCount}
+                  helper={`${PRICING_USD.cloudIncludedWorkspaces} included`}
+                />
+              </div>
+              <ul className="mt-6 space-y-2.5">
+                {COMMON_PLAN_FEATURES.map((feature) => (
+                  <FeatureItem key={feature}>{feature}</FeatureItem>
+                ))}
+                <FeatureItem>Always-on managed cloud computer</FeatureItem>
+                <FeatureItem>Multi-workspace support and unlimited connected devices</FeatureItem>
+                <FeatureItem>Admin controls and team collaboration</FeatureItem>
+              </ul>
+              <div className="mt-auto pt-7">
+                <PixelButton href="https://app.trooper.so" external size="md" tone="brand" className="w-full">
+                  Choose · {formatUsd(estimatedMonthly)}/month
+                </PixelButton>
+              </div>
+            </div>
+          </section>
+
+          <section className="flex min-w-0 flex-col bg-white lg:col-span-2 lg:grid lg:grid-cols-[1fr_1.3fr_auto] lg:items-center">
+            <PlanHeader
+              index="03"
+              eyebrow="Private deployment"
+              badge="Custom"
+              title="Enterprise"
+              icon={Building2}
+              description="For companies that need Trooper on private infrastructure with deployment, security, and support tailored to them."
+            />
+            <div className="border-t border-slate-200 px-6 py-6 md:px-8 lg:border-t-0 lg:border-r lg:border-slate-200">
+              <p className="text-sm font-medium text-emerald-700">Volume pricing and dedicated support</p>
+              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                <FeatureItem>Private VPC or on-prem deployment</FeatureItem>
+                <FeatureItem>SSO, custom domains, and agreements</FeatureItem>
+                <FeatureItem>Custom integrations and migration</FeatureItem>
+                <FeatureItem>Priority support with SLA</FeatureItem>
+              </ul>
+            </div>
+            <div className="border-t border-slate-200 px-6 pb-6 md:px-8 lg:border-t-0 lg:pb-0 lg:pr-8">
+              <PixelButton
+                href="https://cal.com/trooper/setup-call"
+                external
+                size="md"
+                tone="dark"
+                variant="outline"
+                className="w-full"
+                icon={<Server className="h-4 w-4" aria-hidden />}
+              >
+                Talk to sales
+              </PixelButton>
+            </div>
+          </section>
+        </motion.div>
 
         {showFullPricingLink ? (
           <div className="border-t border-slate-200 bg-trooper-50/80">
@@ -325,21 +359,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
               href="/pricing"
               className="group flex w-full items-center justify-center gap-2 py-5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700"
             >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-[15px] w-[15px] shrink-0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="9" y1="13" x2="15" y2="13" />
-                <line x1="9" y1="17" x2="13" y2="17" />
-              </svg>
               See full rate card and FAQ
               <svg
                 viewBox="0 0 14 14"
@@ -360,327 +379,5 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         ) : null}
       </div>
     </div>
-  );
-}
-
-function planNumber(idx: number) {
-  return `[${String(idx + 1).padStart(2, '0')}]`;
-}
-
-function getCloudTierPrice(tier: CloudSubscriptionTier) {
-  return CLOUD_SUBSCRIPTION_TIERS.find((entry) => entry.id === tier)?.price ?? PRICING_USD.cloudStandardMonthly;
-}
-
-/** Shared row tracks — mirrors Trooper app onboarding plan card bands. */
-const PRICING_GRID_TEMPLATE_ROWS =
-  'auto minmax(4.75rem,auto) minmax(2.25rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(3.25rem,auto) auto minmax(0,1fr)';
-
-const PRICING_TIER_RAIL_MIN_H = 'min-h-[2.25rem]';
-
-function planCellClass() {
-  return 'bg-white px-6 md:px-8';
-}
-
-function CloudTierTabs({
-  value,
-  onChange,
-}: {
-  value: CloudSubscriptionTier;
-  onChange: (tier: CloudSubscriptionTier) => void;
-}) {
-  return (
-    <div
-      className={`inline-flex w-full rounded-sm border border-slate-200 bg-slate-50 p-0.5 ${PRICING_TIER_RAIL_MIN_H}`}
-      role="radiogroup"
-      aria-label="Cloud plan tier"
-    >
-      {CLOUD_SUBSCRIPTION_TIERS.map((tier) => {
-        const selected = value === tier.id;
-        return (
-          <button
-            key={tier.id}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
-            onClick={() => onChange(tier.id)}
-            className={[
-              'flex-1 rounded-sm px-2 py-1 text-center text-[11px] font-medium leading-tight transition',
-              selected
-                ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
-                : 'text-slate-500 hover:bg-white/70 hover:text-slate-700',
-            ].join(' ')}
-          >
-            {tier.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function PricingTierRail({
-  plan,
-  cloudTier,
-  onCloudTierChange,
-}: {
-  plan: Plan;
-  cloudTier: CloudSubscriptionTier;
-  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
-}) {
-  if (plan.cloudTiers) {
-    return <CloudTierTabs value={cloudTier} onChange={onCloudTierChange} />;
-  }
-
-  return <div className={`h-full ${PRICING_TIER_RAIL_MIN_H}`} aria-hidden />;
-}
-
-function PricingAmount({
-  plan,
-  cloudTier,
-}: {
-  plan: Plan;
-  cloudTier: CloudSubscriptionTier;
-}) {
-  const price = plan.cloudTiers ? formatUsd(getCloudTierPrice(cloudTier)) : plan.price;
-
-  return (
-    <div className="flex h-full min-h-[2.75rem] items-end gap-2">
-      <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-        {price}
-      </div>
-      {plan.cadence ? <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div> : null}
-    </div>
-  );
-}
-
-function planPerSeatLabel(plan: Plan, cloudTier: CloudSubscriptionTier) {
-  if (plan.cloudTiers) {
-    const tierLabel = cloudTier === 'premium' ? 'Cloud Max' : 'Cloud';
-    return `${PRICING_USD.cloudIncludedMembers} team members included · ${tierLabel}`;
-  }
-  return plan.perSeat ?? '\u00a0';
-}
-
-function PricingPlanColumn({
-  plan,
-  idx,
-  isLast,
-  cloudTier,
-  onCloudTierChange,
-}: {
-  plan: Plan;
-  idx: number;
-  isLast: boolean;
-  cloudTier: CloudSubscriptionTier;
-  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
-}) {
-  const perSeat = planPerSeatLabel(plan, cloudTier);
-
-  return (
-    <article
-      className={[
-        'grid grid-rows-subgrid bg-white [grid-row:1/-1]',
-        !isLast ? 'border-r border-slate-200' : '',
-        plan.highlight ? 'border-t-2 border-t-trooper -mt-px' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      <div className={`${planCellClass()} pt-6 pb-3 md:pt-8`}>
-        <div className="flex min-h-[3.25rem] items-start justify-between gap-3">
-          {plan.eyebrow ? (
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
-              <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
-            </span>
-          ) : (
-            <span aria-hidden className="min-h-[1rem]" />
-          )}
-          <PlanBadge plan={plan} />
-        </div>
-        <h3 className="mt-3 font-funneldisplay text-2xl font-medium tracking-tight text-slate-900">
-          {plan.name}
-        </h3>
-      </div>
-
-      <div className={`${planCellClass()} flex items-start py-3`}>
-        <p className="line-clamp-3 text-sm leading-6 text-slate-500">{plan.description}</p>
-      </div>
-
-      <div className={`${planCellClass()} flex items-center py-1`}>
-        <PricingTierRail plan={plan} cloudTier={cloudTier} onCloudTierChange={onCloudTierChange} />
-      </div>
-
-      <div className={`${planCellClass()} py-1`}>
-        <PricingAmount plan={plan} cloudTier={cloudTier} />
-      </div>
-
-      <div className={`${planCellClass()} flex items-center py-1`}>
-        <p className="text-sm font-medium leading-snug text-trooper">{perSeat}</p>
-      </div>
-
-      <div className={`${planCellClass()} flex items-start py-1`}>
-        <p className="text-xs leading-5 text-slate-400">{plan.note ?? '\u00a0'}</p>
-      </div>
-
-      <div className={`${planCellClass()} flex items-center border-b border-slate-200 py-5`}>
-        <PixelButton
-          href={plan.cta.href}
-          external={plan.cta.href.startsWith('http')}
-          size="md"
-          tone={plan.highlight ? 'brand' : 'dark'}
-          className="w-full"
-        >
-          {plan.cta.text}
-        </PixelButton>
-      </div>
-
-      <div className={`${planCellClass()} py-6`}>
-        <PlanFeatures plan={plan} />
-      </div>
-    </article>
-  );
-}
-
-function PlanBadge({ plan }: { plan: Plan }) {
-  if (!plan.badge) return null;
-  const tone = plan.highlight
-    ? 'bg-trooper-50 text-trooper border-trooper-200'
-    : plan.badge === 'Lifetime Access' || plan.badge === 'Free'
-      ? 'bg-trooper-50 text-trooper border-trooper-200'
-      : 'bg-slate-100 text-slate-600 border-slate-200';
-  return (
-    <span
-      className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] ${tone}`}
-    >
-      {plan.badge}
-    </span>
-  );
-}
-
-function PlanFeatures({ plan }: { plan: Plan }) {
-  return (
-    <>
-      {plan.sections.map((section, sIdx) => (
-        <div key={sIdx}>
-          {section.inheritsFrom ? (
-            <div className="mt-5 flex items-center gap-2 border border-slate-200 bg-slate-50 px-3 py-2.5">
-              <CheckCircle className="h-4 w-4 shrink-0 text-trooper" />
-              <span className="text-sm font-medium text-slate-600">{section.inheritsFrom}</span>
-            </div>
-          ) : (
-            <ul className="space-y-2">
-              {section.features.map((feature) => {
-                const included = feature.included !== false;
-                return (
-                  <li key={feature.label} className="flex items-center gap-2">
-                    <feature.icon
-                      className={`h-4 w-4 shrink-0 ${included ? feature.color : 'text-slate-300'}`}
-                    />
-                    <span className={`text-sm ${included ? 'text-slate-700' : 'text-slate-400'}`}>
-                      {feature.label}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-      ))}
-    </>
-  );
-}
-
-function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
-  const [cloudTier, setCloudTier] = useState<CloudSubscriptionTier>('standard');
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      viewport={{ once: true }}
-      className="grid grid-cols-4"
-      style={{ gridTemplateRows: PRICING_GRID_TEMPLATE_ROWS }}
-    >
-      {plans.map((plan, idx) => (
-        <PricingPlanColumn
-          key={plan.name}
-          plan={plan}
-          idx={idx}
-          isLast={idx === plans.length - 1}
-          cloudTier={cloudTier}
-          onCloudTierChange={setCloudTier}
-        />
-      ))}
-    </motion.div>
-  );
-}
-
-function MobilePricingCard({
-  plan,
-  idx,
-  isLast,
-  cloudTier,
-  onCloudTierChange,
-}: {
-  plan: Plan;
-  idx: number;
-  isLast: boolean;
-  cloudTier: CloudSubscriptionTier;
-  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      viewport={{ once: true }}
-      className={[
-        'relative flex flex-col bg-white',
-        !isLast ? 'border-b border-slate-200' : '',
-        plan.highlight ? 'border-t-2 border-t-trooper -mt-px' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      <div className="border-b border-slate-200 px-6 pt-6 pb-6">
-        <div className="flex items-start justify-between gap-3">
-          {plan.eyebrow && (
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
-              <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
-            </span>
-          )}
-          <PlanBadge plan={plan} />
-        </div>
-        <h3 className="mt-3 font-funneldisplay text-2xl font-medium tracking-tight text-slate-900">
-          {plan.name}
-        </h3>
-        <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-500">{plan.description}</p>
-
-        <div className="mt-5 space-y-3">
-          <PricingTierRail plan={plan} cloudTier={cloudTier} onCloudTierChange={onCloudTierChange} />
-          <PricingAmount plan={plan} cloudTier={cloudTier} />
-          <p className="text-sm font-medium leading-snug text-trooper">{planPerSeatLabel(plan, cloudTier)}</p>
-          {plan.note ? <p className="text-xs leading-5 text-slate-400">{plan.note}</p> : null}
-        </div>
-      </div>
-
-      <div className="border-b border-slate-200 px-6 py-5">
-        <PixelButton
-          href={plan.cta.href}
-          external={plan.cta.href.startsWith('http')}
-          size="md"
-          tone={plan.highlight ? 'brand' : 'dark'}
-          className="w-full"
-        >
-          {plan.cta.text}
-        </PixelButton>
-      </div>
-
-      <div className="px-6 py-6">
-        <PlanFeatures plan={plan} />
-      </div>
-    </motion.div>
   );
 }

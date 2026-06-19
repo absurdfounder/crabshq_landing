@@ -6,6 +6,7 @@ export const PRICING_USD = {
   cloudPremiumMonthly: 99,
   cloudAdditionalMemberMonthly: 10,
   cloudIncludedMembers: 2,
+  cloudIncludedWorkspaces: 1,
 } as const;
 
 export type CloudSubscriptionTier = 'standard' | 'premium';
@@ -22,3 +23,27 @@ export const CLOUD_SUBSCRIPTION_TIERS: {
 export function formatUsd(amount: number) {
   return `$${amount}`;
 }
+
+export function getCloudTierMonthlyPrice(tier: CloudSubscriptionTier) {
+  return CLOUD_SUBSCRIPTION_TIERS.find((entry) => entry.id === tier)?.price ?? PRICING_USD.cloudStandardMonthly;
+}
+
+export function estimateCloudMonthly({
+  tier,
+  seatCount,
+  workspaceCount,
+}: {
+  tier: CloudSubscriptionTier;
+  seatCount: number;
+  workspaceCount: number;
+}) {
+  const tierPrice = getCloudTierMonthlyPrice(tier);
+  const additionalMembers = Math.max(0, seatCount - PRICING_USD.cloudIncludedMembers);
+  return tierPrice * workspaceCount + additionalMembers * PRICING_USD.cloudAdditionalMemberMonthly;
+}
+
+export const COMMON_PLAN_FEATURES = [
+  'Unlimited agents and chats',
+  'Adaptive memory and shared workflows',
+  'Skills, integrations, and browser automation',
+] as const;
