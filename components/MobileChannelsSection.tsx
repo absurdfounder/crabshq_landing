@@ -4,9 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Contact, Download } from 'lucide-react';
+import { ArrowRight, ChevronRight, Contact, Download } from 'lucide-react';
 import ChannelIcon from '@/components/marketing/ChannelIcon';
-import PixelButton from '@/components/ui/PixelButton';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -25,28 +24,25 @@ type ChatMessage = {
 };
 
 const CHAT_SCRIPT: ChatMessage[] = [
-  {
-    id: 'briefing',
-    text: 'Morning briefing — inbox triaged and 14 tasks completed overnight.',
-    direction: 'in',
-  },
+  { id: 'weather', text: 'Morning — nice day in SF, 64°.', direction: 'in' },
   {
     id: 'leads',
-    text: '23 leads enriched and scored. Top: Series B HR tech wants a demo this week.',
+    text: '23 leads came in overnight, already enriched and scored.',
     direction: 'in',
   },
   {
-    id: 'sarah',
-    text: 'Sarah at Vanta replied to your outreach.',
+    id: 'demo',
+    text: 'Top one is a Series B HR tech — wants a demo this week.',
     direction: 'in',
   },
-  { id: 'demo', text: 'Book the demo for Thursday', direction: 'out' },
-  { id: 'followup', text: 'Draft a follow-up to Sarah', direction: 'out' },
+  { id: 'sarah', text: 'Also: Sarah at Vanta replied to your outreach.', direction: 'in' },
+  { id: 'book', text: 'book the demo for Thursday', direction: 'out' },
+  { id: 'draft', text: 'and draft a follow-up to Sarah', direction: 'out' },
 ];
 
 function TypingIndicator() {
   return (
-    <div className="flex max-w-[72%] items-center gap-1 border border-slate-200 bg-white px-3 py-2.5">
+    <div className="inline-flex max-w-[72%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#E9E9EB] px-3.5 py-2.5">
       {[0, 1, 2].map((dot) => (
         <motion.span
           key={dot}
@@ -68,15 +64,11 @@ function PhoneChatMockup() {
     if (reduceMotion) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
-    let delay = 800;
+    let delay = 700;
 
     CHAT_SCRIPT.forEach((message, index) => {
       if (message.direction === 'in' && index > 0) {
-        timers.push(
-          setTimeout(() => {
-            setShowTyping(true);
-          }, delay - 500),
-        );
+        timers.push(setTimeout(() => setShowTyping(true), delay - 450));
       }
 
       timers.push(
@@ -86,7 +78,7 @@ function PhoneChatMockup() {
         }, delay),
       );
 
-      delay += message.direction === 'in' ? 1500 : 1000;
+      delay += message.direction === 'in' ? 1300 : 850;
     });
 
     return () => timers.forEach(clearTimeout);
@@ -96,86 +88,57 @@ function PhoneChatMockup() {
 
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[300px]"
-      animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
-      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      className="relative mx-auto w-full max-w-[290px] shrink-0"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease }}
+      viewport={{ once: true, margin: '-40px' }}
     >
-      <div
-        className="pointer-events-none absolute -inset-8 rounded-full bg-trooper/10 blur-3xl"
-        aria-hidden
-      />
-
-      <div className="relative rounded-[2.75rem] bg-gradient-to-b from-slate-700 via-slate-900 to-black p-[3px] shadow-[0_28px_60px_rgba(15,23,42,0.35)]">
-        <div className="absolute -left-[2px] top-24 h-10 w-[3px] rounded-l bg-slate-700" aria-hidden />
-        <div className="absolute -left-[2px] top-40 h-14 w-[3px] rounded-l bg-slate-700" aria-hidden />
-        <div className="absolute -right-[2px] top-32 h-16 w-[3px] rounded-r bg-slate-700" aria-hidden />
-
-        <div className="overflow-hidden rounded-[2.6rem] bg-slate-950 p-2">
-          <div className="relative overflow-hidden rounded-[2.2rem] bg-[#FAFAF8]">
-            <div className="relative z-10 flex items-center justify-between px-5 pb-1 pt-3 text-[10px] font-semibold text-slate-900">
-              <span>9:41</span>
-              <div className="flex items-center gap-1" aria-hidden>
-                <span className="h-2 w-2 rounded-full bg-slate-900" />
-                <span className="h-2.5 w-2.5 rounded-sm border border-slate-900" />
-              </div>
+      <div className="rounded-[2.75rem] border-[10px] border-slate-950 bg-slate-950 shadow-[0_32px_64px_-12px_rgba(15,23,42,0.35)]">
+        <div className="overflow-hidden rounded-[2rem] bg-white">
+          <div className="relative bg-white px-4 pb-3 pt-10 text-center">
+            <div className="absolute left-1/2 top-2.5 h-6 w-[88px] -translate-x-1/2 rounded-full bg-slate-950" aria-hidden />
+            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/20">
+              <Image
+                src="/images/trooper-logomark.png"
+                alt=""
+                width={26}
+                height={26}
+                className="h-6 w-6 object-contain"
+                style={{ imageRendering: 'pixelated' }}
+              />
             </div>
+            <p className="mt-2 flex items-center justify-center gap-0.5 text-[13px] font-medium text-slate-900">
+              Trooper
+              <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
+            </p>
+          </div>
 
-            <div className="absolute left-1/2 top-2 z-20 h-6 w-28 -translate-x-1/2 rounded-full bg-black" aria-hidden />
-
-            <div className="border-b border-slate-200 bg-white/95 px-4 pb-3 pt-8 backdrop-blur-sm">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className="flex h-9 w-9 items-center justify-center border border-slate-200 bg-white">
-                  <Image
-                    src="/images/trooper-logomark.png"
-                    alt=""
-                    width={24}
-                    height={24}
-                    className="h-6 w-6 object-contain"
-                    style={{ imageRendering: 'pixelated' }}
-                  />
-                </div>
-                <div className="flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-700">
-                  Team Lead
-                  <ArrowRight className="h-3 w-3 text-trooper" aria-hidden />
-                </div>
-              </div>
-            </div>
-
-            <div className="min-h-[390px] space-y-2.5 bg-[linear-gradient(180deg,#FAFAF8_0%,#f4f6ef_100%)] px-3 py-4">
-              <AnimatePresence initial={false}>
-                {visibleMessages.map((message, index) => (
-                  <motion.div
-                    key={message.id}
-                    initial={reduceMotion ? false : { opacity: 0, y: 10, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.35, ease }}
-                    className={[
-                      'max-w-[88%] px-3 py-2 text-[11px] leading-relaxed shadow-sm',
-                      message.direction === 'in'
-                        ? 'border border-slate-200 bg-white text-slate-700'
-                        : 'ml-auto bg-trooper text-white',
-                    ].join(' ')}
-                    style={{ transitionDelay: `${index * 40}ms` }}
-                  >
-                    {message.text}
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-
-              {showTyping ? (
+          <div className="min-h-[400px] space-y-2 bg-white px-3.5 pb-5 pt-1">
+            <AnimatePresence initial={false}>
+              {visibleMessages.map((message) => (
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 4 }}
+                  key={message.id}
+                  initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.32, ease }}
+                  className={[
+                    'max-w-[88%] px-3.5 py-2 text-[12px] leading-[1.45]',
+                    message.direction === 'in'
+                      ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
+                      : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
+                  ].join(' ')}
                 >
-                  <TypingIndicator />
+                  {message.text}
                 </motion.div>
-              ) : null}
-            </div>
+              ))}
+            </AnimatePresence>
 
-            <div className="flex justify-center bg-[#FAFAF8] pb-2 pt-1">
-              <div className="h-1 w-24 rounded-full bg-slate-900/80" aria-hidden />
-            </div>
+            {showTyping ? (
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                <TypingIndicator />
+              </motion.div>
+            ) : null}
           </div>
         </div>
       </div>
@@ -183,7 +146,7 @@ function PhoneChatMockup() {
   );
 }
 
-function ChannelTile({
+function ChannelPill({
   channelId,
   channelName,
   iconUrl,
@@ -196,24 +159,17 @@ function ChannelTile({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: index * 0.06, ease }}
-      viewport={{ once: true, margin: '-20px' }}
-      className="bg-white"
+      transition={{ duration: 0.4, delay: index * 0.05, ease }}
+      viewport={{ once: true }}
     >
       <Link
         href={`/channels/${channelId}`}
-        className="group flex h-full items-center gap-3 p-4 transition-colors hover:bg-trooper-50/50 sm:p-5"
+        className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-[15px] font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
       >
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-slate-200 bg-[#FAFAF8] transition-colors group-hover:border-trooper-200 group-hover:bg-white">
-          <ChannelIcon channelId={channelId} channelName={channelName} iconUrl={iconUrl} size={22} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400">Channel</p>
-          <p className="font-semibold text-slate-900">{channelName}</p>
-        </div>
-        <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-colors group-hover:text-trooper" />
+        <ChannelIcon channelId={channelId} channelName={channelName} iconUrl={iconUrl} size={20} />
+        <span>{channelName}</span>
       </Link>
     </motion.div>
   );
@@ -222,75 +178,62 @@ function ChannelTile({
 function ConnectQrPanel() {
   return (
     <motion.div
-      className="mt-8 overflow-hidden border border-slate-200 bg-white"
-      initial={{ opacity: 0, y: 14 }}
+      className="mt-10 flex flex-col gap-5 rounded-2xl border border-slate-200/80 bg-slate-50 p-5 sm:flex-row sm:items-center sm:p-6"
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.12, ease }}
-      viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.5, delay: 0.1, ease }}
+      viewport={{ once: true }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr]">
-        <div className="flex items-center justify-center border-b border-slate-200 bg-[#FAFAF8] p-5 sm:border-b-0 sm:border-r sm:p-6">
-          <div className="relative">
-            <div className="border border-slate-200 bg-white p-2 shadow-sm">
-              <Image
-                src="/images/trooper-connect-qr.png"
-                alt="QR code to open Trooper channel setup"
-                width={148}
-                height={148}
-                className="h-[148px] w-[148px]"
-              />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-10 w-10 items-center justify-center border border-slate-200 bg-white shadow-sm">
-                <Image
-                  src="/images/trooper-logomark.png"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 object-contain"
-                  style={{ imageRendering: 'pixelated' }}
-                />
-              </div>
-            </div>
+      <div className="relative mx-auto shrink-0 sm:mx-0">
+        <div className="overflow-hidden rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200/80">
+          <Image
+            src="/images/trooper-connect-qr.png"
+            alt="QR code to open Trooper channel setup"
+            width={132}
+            height={132}
+            className="h-[132px] w-[132px]"
+          />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-white shadow-sm ring-1 ring-slate-200">
+            <Image
+              src="/images/trooper-logomark.png"
+              alt=""
+              width={22}
+              height={22}
+              className="h-5 w-5 object-contain"
+              style={{ imageRendering: 'pixelated' }}
+            />
           </div>
         </div>
+      </div>
 
-        <div className="flex flex-col justify-center p-5 sm:p-6">
-          <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center border border-slate-200 bg-[#FAFAF8] text-trooper">
-              <Contact className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-            </div>
-            <div>
-              <p className="font-funneldisplay text-lg tracking-tight text-slate-900 sm:text-xl">
-                Save Trooper to your phone
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                Scan to open channel setup, then message your workforce from iMessage, WhatsApp,
-                Telegram, or email — same agents, same memory.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-            <PixelButton
-              href={CHANNEL_SETUP_URL}
-              external
-              size="md"
-              tone="brand"
-              icon={<ArrowRight className="h-3.5 w-3.5" />}
-            >
-              Connect channels
-            </PixelButton>
-            <PixelButton
-              href="/download"
-              size="md"
-              variant="outline"
-              tone="dark"
-              icon={<Download className="h-3.5 w-3.5" />}
-            >
-              Get mobile apps
-            </PixelButton>
-          </div>
+      <div className="min-w-0 flex-1 text-center sm:text-left">
+        <div className="flex items-center justify-center gap-2 sm:justify-start">
+          <Contact className="h-5 w-5 text-slate-500" strokeWidth={1.75} aria-hidden />
+          <p className="text-base font-semibold text-slate-900 sm:text-lg">Save Trooper to your phone</p>
+        </div>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+          Scan to open channel setup, then text your workforce from anywhere — iMessage, WhatsApp,
+          Telegram, or email.
+        </p>
+        <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-start">
+          <a
+            href={CHANNEL_SETUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-slate-800 sm:w-auto"
+          >
+            <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
+            Connect channels
+          </a>
+          <Link
+            href="/download"
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 sm:w-auto"
+          >
+            Mobile apps
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </div>
       </div>
     </motion.div>
@@ -299,39 +242,26 @@ function ConnectQrPanel() {
 
 export default function MobileChannelsSection() {
   return (
-    <div className="pb-10 pt-2 md:pb-16">
-      <div className="grid grid-cols-1 overflow-hidden border border-slate-200 bg-white lg:grid-cols-2">
-        <div className="relative border-b border-slate-200 lg:border-b-0 lg:border-r">
-          <div className="pointer-events-none absolute inset-0 pixel-camo-wash opacity-70" aria-hidden />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(250,250,248,0.88)_100%)]" aria-hidden />
-
-          <motion.div
-            className="relative flex min-h-[520px] items-center justify-center p-8 sm:p-10 lg:p-12"
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease }}
-            viewport={{ once: true, margin: '-40px' }}
-          >
-            <PhoneChatMockup />
-          </motion.div>
-        </div>
+    <div className="pb-12 pt-4 md:pb-20 md:pt-6">
+      <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
+        <PhoneChatMockup />
 
         <motion.div
-          className="flex flex-col justify-center p-6 sm:p-8 md:p-10 lg:p-12"
+          className="w-full max-w-xl lg:max-w-none lg:flex-1"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.06, ease }}
+          transition={{ duration: 0.55, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="font-funneldisplay text-2xl tracking-tight text-slate-900 sm:text-3xl md:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
+          <h2 className="font-funneldisplay text-[2rem] leading-[1.12] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
             Chat with your workforce,
             <br />
             on the go.
           </h2>
 
-          <div className="mt-6 grid grid-cols-1 gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-2">
+          <div className="mt-8 flex flex-wrap gap-2.5">
             {featuredChannels.map((channel, index) => (
-              <ChannelTile
+              <ChannelPill
                 key={channel.id}
                 channelId={channel.id}
                 channelName={channel.name}
@@ -341,21 +271,17 @@ export default function MobileChannelsSection() {
             ))}
           </div>
 
-          <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
-            and SMS, Slack, Discord, Signal, WebChat
-          </p>
+          <p className="mt-4 text-sm text-slate-500">and SMS, Slack, Discord, WebChat</p>
 
           <ConnectQrPanel />
 
-          <div className="mt-4">
-            <Link
-              href="/channels"
-              className="inline-flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-trooper transition-colors hover:text-trooper-700"
-            >
-              Browse all channels
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-            </Link>
-          </div>
+          <Link
+            href="/channels"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700"
+          >
+            Browse all channels
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
         </motion.div>
       </div>
     </div>
