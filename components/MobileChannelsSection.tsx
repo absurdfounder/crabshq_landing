@@ -87,25 +87,25 @@ function PhoneChatScreen() {
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
-    <div className="absolute inset-x-[8%] top-[20%] bottom-[2%] overflow-hidden bg-white">
-      <div className="border-b border-slate-100 bg-white px-3 pb-2.5 pt-1 text-center">
-        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/15">
+    <div className="flex h-full min-h-0 flex-col bg-white">
+      <div className="shrink-0 border-b border-slate-100 bg-white px-3 pb-2 pt-9 text-center">
+        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/15">
           <Image
             src="/images/trooper-logomark.png"
             alt=""
-            width={24}
-            height={24}
+            width={22}
+            height={22}
             className="h-5 w-5 object-contain"
             style={{ imageRendering: 'pixelated' }}
           />
         </div>
-        <p className="mt-1.5 flex items-center justify-center gap-0.5 text-[12px] font-medium text-slate-900">
+        <p className="mt-1 flex items-center justify-center gap-0.5 text-[11px] font-medium text-slate-900 sm:text-[12px]">
           Trooper
           <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
         </p>
       </div>
 
-      <div className="space-y-2 overflow-hidden px-3 pb-4 pt-2">
+      <div className="min-h-0 flex-1 space-y-2 overflow-hidden px-2.5 pb-3 pt-2">
         <AnimatePresence initial={false}>
           {visibleMessages.map((message) => (
             <motion.div
@@ -114,7 +114,7 @@ function PhoneChatScreen() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.32, ease }}
               className={[
-                'max-w-[88%] px-3 py-1.5 text-[11px] leading-[1.45] sm:text-[12px]',
+                'max-w-[90%] px-3 py-1.5 text-[10.5px] leading-[1.45] sm:text-[11px]',
                 message.direction === 'in'
                   ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
                   : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
@@ -138,30 +138,25 @@ function PhoneChatScreen() {
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[320px] shrink-0"
+      className="relative mx-auto w-full max-w-[300px] shrink-0 drop-shadow-[0_28px_56px_rgba(15,23,42,0.22)]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
       viewport={{ once: true, margin: '-40px' }}
     >
-      <div className="relative min-h-[640px] w-full">
-        <div
-          className="pointer-events-none absolute inset-x-[5%] bottom-0 top-[12%] rounded-b-[2.4rem] border-x-[11px] border-b-[11px] border-slate-800 bg-white shadow-[0_40px_80px_-24px_rgba(15,23,42,0.45)]"
-          aria-hidden
-        />
+      <div className="relative aspect-[292/350] w-full">
+        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.6rem] bg-white">
+          <PhoneChatScreen />
+        </div>
 
         <Image
           src="/images/iphone-frame.png"
           alt=""
-          width={292}
-          height={350}
-          className="pointer-events-none relative z-0 h-auto w-full select-none"
+          fill
+          sizes="300px"
+          className="pointer-events-none z-10 select-none object-fill"
           priority
         />
-
-        <div className="absolute inset-0 z-[1]">
-          <PhoneChatScreen />
-        </div>
       </div>
     </motion.div>
   );
