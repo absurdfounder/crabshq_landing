@@ -40,6 +40,7 @@ import {
   Infinity,
   CheckCircle,
   Building2,
+  Laptop,
 } from 'lucide-react';
 
 type Feature = {
@@ -117,6 +118,33 @@ type Plan = {
 };
 
 const plans: Plan[] = [
+  {
+    name: 'Local Install',
+    eyebrow: 'Self-install',
+    price: '$0',
+    cadence: '/ month',
+    perSeat: 'Free on your laptop · unlimited everything',
+    description:
+      'Install Trooper on your laptop at no cost. Same unlimited solo experience — self-hosted runtime on your machine.',
+    badge: 'Free',
+    note: 'Bring your own API keys. Model usage is billed separately by your providers.',
+    sections: [
+      {
+        label: '',
+        features: [
+          { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
+          { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
+          { icon: DollarSign, label: '$0/month — no subscription', color: 'text-trooper-700' },
+        ],
+      },
+      { label: '', features: [], inheritsFrom: 'Unlimited everything in Solo Founder' },
+    ],
+    cta: {
+      text: 'Install locally',
+      href: 'https://app.trooper.so',
+    },
+    highlight: false,
+  },
   {
     name: 'Solo Founder',
     eyebrow: 'Lifetime deal',
@@ -271,7 +299,7 @@ function PlanBadge({ plan }: { plan: Plan }) {
   if (!plan.badge) return null;
   const tone = plan.highlight
     ? 'bg-trooper-50 text-trooper border-trooper-200'
-    : plan.badge === 'Lifetime Access'
+    : plan.badge === 'Lifetime Access' || plan.badge === 'Free'
       ? 'bg-trooper-50 text-trooper border-trooper-200'
       : 'bg-slate-100 text-slate-600 border-slate-200';
   return (
@@ -316,7 +344,7 @@ function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       viewport={{ once: true }}
-      className="grid grid-cols-3 grid-rows-[auto_auto_auto_auto_1fr]"
+      className="grid grid-cols-4 grid-rows-[auto_auto_auto_auto_1fr]"
     >
       {plans.map((plan, idx) => {
         const isLast = idx === plans.length - 1;
