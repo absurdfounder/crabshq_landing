@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { loadOgFonts } from '@/lib/og/fonts';
 import type { OgHeroContent } from '@/lib/og/types';
+import { TROOPER_ONBOARD_COMMAND } from '@/lib/setupCommand';
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
@@ -135,7 +136,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
               <span style={{ fontSize: 22, color: '#0891b2', fontFamily: 'Roboto Mono', marginRight: 10 }}>
                 $
               </span>
-              <span style={{ fontSize: 22, color: '#0f172a', fontFamily: 'Roboto Mono' }}>npx trooper setup</span>
+              <span style={{ fontSize: 20, color: '#0f172a', fontFamily: 'Roboto Mono' }}>{TROOPER_ONBOARD_COMMAND}</span>
             </div>
           ) : null}
         </div>

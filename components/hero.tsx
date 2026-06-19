@@ -10,6 +10,7 @@ import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
 import { PixelMissionTag } from './PixelAtmosphere';
+import { TROOPER_ONBOARD_COMMAND } from '@/lib/setupCommand';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -53,15 +54,12 @@ const NotionIcon = () => (
   </svg>
 );
 
-
-const SETUP_COMMAND = 'npx trooper setup';
-
 function HeroSetupCommand() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(SETUP_COMMAND);
+      await navigator.clipboard.writeText(TROOPER_ONBOARD_COMMAND);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -71,11 +69,11 @@ function HeroSetupCommand() {
 
   return (
     <div
-      className="mt-4 flex max-w-md items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5"
+      className="mt-4 flex max-w-xl items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5"
     >
-      <code className="flex min-w-0 flex-1 items-center gap-1.5 font-mono text-[12px] sm:text-[13px] leading-none">
+      <code className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto font-mono text-[11px] leading-none sm:text-[12px]">
         <span className="text-cyan-600 select-none">$</span>
-        <span className="text-slate-900">{SETUP_COMMAND}</span>
+        <span className="whitespace-nowrap text-slate-900">{TROOPER_ONBOARD_COMMAND}</span>
       </code>
       <button
         type="button"
