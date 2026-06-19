@@ -55,7 +55,7 @@ function TypingIndicator() {
   );
 }
 
-function PhoneChatMockup() {
+function PhoneChatScreen() {
   const reduceMotion = useReducedMotion();
   const [visibleCount, setVisibleCount] = useState(reduceMotion ? CHAT_SCRIPT.length : 0);
   const [showTyping, setShowTyping] = useState(!reduceMotion);
@@ -87,59 +87,80 @@ function PhoneChatMockup() {
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
+    <div className="absolute inset-x-[8%] top-[20%] bottom-[2%] overflow-hidden bg-white">
+      <div className="border-b border-slate-100 bg-white px-3 pb-2.5 pt-1 text-center">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/15">
+          <Image
+            src="/images/trooper-logomark.png"
+            alt=""
+            width={24}
+            height={24}
+            className="h-5 w-5 object-contain"
+            style={{ imageRendering: 'pixelated' }}
+          />
+        </div>
+        <p className="mt-1.5 flex items-center justify-center gap-0.5 text-[12px] font-medium text-slate-900">
+          Trooper
+          <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
+        </p>
+      </div>
+
+      <div className="space-y-2 overflow-hidden px-3 pb-4 pt-2">
+        <AnimatePresence initial={false}>
+          {visibleMessages.map((message) => (
+            <motion.div
+              key={message.id}
+              initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.32, ease }}
+              className={[
+                'max-w-[88%] px-3 py-1.5 text-[11px] leading-[1.45] sm:text-[12px]',
+                message.direction === 'in'
+                  ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
+                  : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
+              ].join(' ')}
+            >
+              {message.text}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {showTyping ? (
+          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+            <TypingIndicator />
+          </motion.div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function PhoneChatMockup() {
+  return (
     <motion.div
-      className="relative mx-auto w-full max-w-[290px] shrink-0"
+      className="relative mx-auto w-full max-w-[320px] shrink-0"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
       viewport={{ once: true, margin: '-40px' }}
     >
-      <div className="rounded-[2.75rem] border-[10px] border-slate-950 bg-slate-950 shadow-[0_32px_64px_-12px_rgba(15,23,42,0.35)]">
-        <div className="overflow-hidden rounded-[2rem] bg-white">
-          <div className="relative bg-white px-4 pb-3 pt-10 text-center">
-            <div className="absolute left-1/2 top-2.5 h-6 w-[88px] -translate-x-1/2 rounded-full bg-slate-950" aria-hidden />
-            <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/20">
-              <Image
-                src="/images/trooper-logomark.png"
-                alt=""
-                width={26}
-                height={26}
-                className="h-6 w-6 object-contain"
-                style={{ imageRendering: 'pixelated' }}
-              />
-            </div>
-            <p className="mt-2 flex items-center justify-center gap-0.5 text-[13px] font-medium text-slate-900">
-              Trooper
-              <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
-            </p>
-          </div>
+      <div className="relative min-h-[640px] w-full">
+        <div
+          className="pointer-events-none absolute inset-x-[5%] bottom-0 top-[12%] rounded-b-[2.4rem] border-x-[11px] border-b-[11px] border-slate-800 bg-white shadow-[0_40px_80px_-24px_rgba(15,23,42,0.45)]"
+          aria-hidden
+        />
 
-          <div className="min-h-[400px] space-y-2 bg-white px-3.5 pb-5 pt-1">
-            <AnimatePresence initial={false}>
-              {visibleMessages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.32, ease }}
-                  className={[
-                    'max-w-[88%] px-3.5 py-2 text-[12px] leading-[1.45]',
-                    message.direction === 'in'
-                      ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
-                      : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
-                  ].join(' ')}
-                >
-                  {message.text}
-                </motion.div>
-              ))}
-            </AnimatePresence>
+        <Image
+          src="/images/iphone-frame.png"
+          alt=""
+          width={292}
+          height={350}
+          className="pointer-events-none relative z-0 h-auto w-full select-none"
+          priority
+        />
 
-            {showTyping ? (
-              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-                <TypingIndicator />
-              </motion.div>
-            ) : null}
-          </div>
+        <div className="absolute inset-0 z-[1]">
+          <PhoneChatScreen />
         </div>
       </div>
     </motion.div>
