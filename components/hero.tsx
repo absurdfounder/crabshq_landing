@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Check, Copy } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
@@ -10,7 +10,7 @@ import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
 import { PixelMissionTag } from './PixelAtmosphere';
-import { TROOPER_ONBOARD_COMMAND } from '@/lib/setupCommand';
+import HeroSetupCommand from './HeroSetupCommand';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -54,43 +54,6 @@ const NotionIcon = () => (
   </svg>
 );
 
-function HeroSetupCommand() {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(TROOPER_ONBOARD_COMMAND);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable — ignore
-    }
-  };
-
-  return (
-    <div
-      className="mt-4 flex max-w-xl items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5"
-    >
-      <code className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto font-mono text-[11px] leading-none sm:text-[12px]">
-        <span className="text-cyan-600 select-none">$</span>
-        <span className="whitespace-nowrap text-slate-900">{TROOPER_ONBOARD_COMMAND}</span>
-      </code>
-      <button
-        type="button"
-        onClick={handleCopy}
-        className="shrink-0 rounded-sm p-1 text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600"
-        title="Copy command"
-        aria-label="Copy command"
-      >
-        {copied ? (
-          <Check className="h-3.5 w-3.5 text-trooper" strokeWidth={2} />
-        ) : (
-          <Copy className="h-3.5 w-3.5" strokeWidth={2} />
-        )}
-      </button>
-    </div>
-  );
-}
 
 const Features = React.memo(() => {
   const features = [
