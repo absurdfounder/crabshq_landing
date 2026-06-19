@@ -369,6 +369,14 @@ function getCloudTierPrice(tier: CloudSubscriptionTier) {
   return CLOUD_SUBSCRIPTION_TIERS.find((entry) => entry.id === tier)?.price ?? PRICING_USD.cloudStandardMonthly;
 }
 
+/** Shared row tracks — mirrors Trooper app onboarding plan card bands. */
+const PRICING_GRID_TEMPLATE_ROWS =
+  'auto minmax(4.75rem,auto) minmax(5.5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(3.25rem,auto) auto minmax(0,1fr)';
+
+function planCellClass() {
+  return 'bg-white px-6 md:px-8';
+}
+
 function CloudTierTabs({
   value,
   onChange,
@@ -410,7 +418,7 @@ function CloudTierTabs({
   );
 }
 
-function CloudPlanPriceBlock({
+function PricingTierRail({
   plan,
   cloudTier,
   onCloudTierChange,
@@ -419,23 +427,117 @@ function CloudPlanPriceBlock({
   cloudTier: CloudSubscriptionTier;
   onCloudTierChange: (tier: CloudSubscriptionTier) => void;
 }) {
-  const tierLabel = cloudTier === 'premium' ? 'Cloud Max' : 'Cloud';
-  const price = getCloudTierPrice(cloudTier);
+  if (plan.cloudTiers) {
+    return <CloudTierTabs value={cloudTier} onChange={onCloudTierChange} />;
+  }
+
+  return <div className="h-full min-h-[5.5rem]" aria-hidden />;
+}
+
+function PricingAmount({
+  plan,
+  cloudTier,
+}: {
+  plan: Plan;
+  cloudTier: CloudSubscriptionTier;
+}) {
+  const price = plan.cloudTiers ? formatUsd(getCloudTierPrice(cloudTier)) : plan.price;
 
   return (
-    <>
-      <CloudTierTabs value={cloudTier} onChange={onCloudTierChange} />
-      <div className="mt-4 flex items-end gap-2">
-        <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-          {formatUsd(price)}
-        </div>
-        <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
+    <div className="flex h-full min-h-[2.75rem] items-end gap-2">
+      <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+        {price}
       </div>
-      <p className="mt-2 text-sm font-medium text-trooper">
-        {PRICING_USD.cloudIncludedMembers} team members included · {tierLabel}
-      </p>
-      {plan.note ? <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p> : null}
-    </>
+      {plan.cadence ? <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div> : null}
+    </div>
+  );
+}
+
+function planPerSeatLabel(plan: Plan, cloudTier: CloudSubscriptionTier) {
+  if (plan.cloudTiers) {
+    const tierLabel = cloudTier === 'premium' ? 'Cloud Max' : 'Cloud';
+    return `${PRICING_USD.cloudIncludedMembers} team members included · ${tierLabel}`;
+  }
+  return plan.perSeat ?? '\u00a0';
+}
+
+function PricingPlanColumn({
+  plan,
+  idx,
+  isLast,
+  cloudTier,
+  onCloudTierChange,
+}: {
+  plan: Plan;
+  idx: number;
+  isLast: boolean;
+  cloudTier: CloudSubscriptionTier;
+  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
+}) {
+  const perSeat = planPerSeatLabel(plan, cloudTier);
+
+  return (
+    <article
+      className={[
+        'grid grid-rows-subgrid bg-white [grid-row:1/-1]',
+        !isLast ? 'border-r border-slate-200' : '',
+        plan.highlight ? 'border-t-2 border-t-trooper -mt-px' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      <div className={`${planCellClass()} pt-6 pb-3 md:pt-8`}>
+        <div className="flex min-h-[3.25rem] items-start justify-between gap-3">
+          {plan.eyebrow ? (
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+              <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
+            </span>
+          ) : (
+            <span aria-hidden className="min-h-[1rem]" />
+          )}
+          <PlanBadge plan={plan} />
+        </div>
+        <h3 className="mt-3 font-funneldisplay text-2xl font-medium tracking-tight text-slate-900">
+          {plan.name}
+        </h3>
+      </div>
+
+      <div className={`${planCellClass()} flex items-start py-3`}>
+        <p className="line-clamp-3 text-sm leading-6 text-slate-500">{plan.description}</p>
+      </div>
+
+      <div className={`${planCellClass()} py-2`}>
+        <PricingTierRail plan={plan} cloudTier={cloudTier} onCloudTierChange={onCloudTierChange} />
+      </div>
+
+      <div className={`${planCellClass()} py-1`}>
+        <PricingAmount plan={plan} cloudTier={cloudTier} />
+      </div>
+
+      <div className={`${planCellClass()} flex items-center py-1`}>
+        <p className="text-sm font-medium leading-snug text-trooper">{perSeat}</p>
+      </div>
+
+      <div className={`${planCellClass()} flex items-start py-1`}>
+        <p className="text-xs leading-5 text-slate-400">{plan.note ?? '\u00a0'}</p>
+      </div>
+
+      <div className={`${planCellClass()} flex items-center border-b border-slate-200 py-5`}>
+        <PixelButton
+          href={plan.cta.href}
+          external={plan.cta.href.startsWith('http')}
+          size="md"
+          tone={plan.highlight ? 'brand' : 'dark'}
+          className="w-full"
+        >
+          {plan.cta.text}
+        </PixelButton>
+      </div>
+
+      <div className={`${planCellClass()} py-6`}>
+        <PlanFeatures plan={plan} />
+      </div>
+    </article>
   );
 }
 
@@ -513,142 +615,19 @@ function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       viewport={{ once: true }}
-      className="grid grid-cols-4 grid-rows-[auto_auto_auto_auto_1fr]"
+      className="grid grid-cols-4"
+      style={{ gridTemplateRows: PRICING_GRID_TEMPLATE_ROWS }}
     >
-      {plans.map((plan, idx) => {
-        const isLast = idx === plans.length - 1;
-        return (
-          <div
-            key={`h-${plan.name}`}
-            className={[
-              'flex flex-col bg-white px-6 pt-6 pb-3 md:px-8 md:pt-8',
-              !isLast ? 'border-r border-slate-200' : '',
-              plan.highlight ? 'border-t-2 border-t-trooper -mt-px' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            <div className="flex items-start justify-between gap-3">
-              {plan.eyebrow ? (
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
-                  <span className="text-slate-400">{planNumber(idx)}</span> {plan.eyebrow}
-                </span>
-              ) : (
-                <span />
-              )}
-              <PlanBadge plan={plan} />
-            </div>
-            <h3 className="mt-3 font-funneldisplay text-2xl font-medium tracking-tight text-slate-900">
-              {plan.name}
-            </h3>
-          </div>
-        );
-      })}
-
-      {plans.map((plan, idx) => {
-        const isLast = idx === plans.length - 1;
-        return (
-          <div
-            key={`d-${plan.name}`}
-            className={[
-              'bg-white px-6 py-3 md:px-8',
-              !isLast ? 'border-r border-slate-200' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            <p className="text-sm leading-6 text-slate-500">{plan.description}</p>
-          </div>
-        );
-      })}
-
-      {plans.map((plan, idx) => {
-        const isLast = idx === plans.length - 1;
-        return (
-          <div
-            key={`p-${plan.name}`}
-            className={[
-              'flex flex-col bg-white px-6 pt-3 pb-6 md:px-8 md:pb-8',
-              !isLast ? 'border-r border-slate-200' : '',
-              'border-b border-slate-200',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            {plan.cloudTiers ? (
-              <CloudPlanPriceBlock
-                plan={plan}
-                cloudTier={cloudTier}
-                onCloudTierChange={setCloudTier}
-              />
-            ) : (
-              <>
-                <div className="flex items-end gap-2">
-                  <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-                    {plan.price}
-                  </div>
-                  {plan.cadence && (
-                    <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
-                  )}
-                </div>
-                {plan.perSeat ? (
-                  <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
-                ) : (
-                  <p className="mt-2 text-sm font-medium text-transparent">—</p>
-                )}
-                {plan.note ? (
-                  <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
-                ) : (
-                  <p className="mt-3 text-xs leading-5 text-transparent">—</p>
-                )}
-              </>
-            )}
-          </div>
-        );
-      })}
-
-      {plans.map((plan, idx) => {
-        const isLast = idx === plans.length - 1;
-        return (
-          <div
-            key={`c-${plan.name}`}
-            className={[
-              'flex items-center bg-white px-6 py-5 md:px-8',
-              !isLast ? 'border-r border-slate-200' : '',
-              'border-b border-slate-200',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            <PixelButton
-              href={plan.cta.href}
-              external={plan.cta.href.startsWith('http')}
-              size="md"
-              tone={plan.highlight ? 'brand' : 'dark'}
-              className="w-full"
-            >
-              {plan.cta.text}
-            </PixelButton>
-          </div>
-        );
-      })}
-
-      {plans.map((plan, idx) => {
-        const isLast = idx === plans.length - 1;
-        return (
-          <div
-            key={`f-${plan.name}`}
-            className={[
-              'bg-white px-6 py-6 md:px-8',
-              !isLast ? 'border-r border-slate-200' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            <PlanFeatures plan={plan} />
-          </div>
-        );
-      })}
+      {plans.map((plan, idx) => (
+        <PricingPlanColumn
+          key={plan.name}
+          plan={plan}
+          idx={idx}
+          isLast={idx === plans.length - 1}
+          cloudTier={cloudTier}
+          onCloudTierChange={setCloudTier}
+        />
+      ))}
     </motion.div>
   );
 }
@@ -692,28 +671,13 @@ function MobilePricingCard({
         <h3 className="mt-3 font-funneldisplay text-2xl font-medium tracking-tight text-slate-900">
           {plan.name}
         </h3>
-        <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
-        <div className="mt-5">
-          {plan.cloudTiers ? (
-            <CloudPlanPriceBlock
-              plan={plan}
-              cloudTier={cloudTier}
-              onCloudTierChange={onCloudTierChange}
-            />
-          ) : (
-            <>
-              <div className="flex items-end gap-2">
-                <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-                  {plan.price}
-                </div>
-                {plan.cadence && <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>}
-              </div>
-              {plan.perSeat && (
-                <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
-              )}
-              {plan.note && <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>}
-            </>
-          )}
+        <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-500">{plan.description}</p>
+
+        <div className="mt-5 space-y-3">
+          <PricingTierRail plan={plan} cloudTier={cloudTier} onCloudTierChange={onCloudTierChange} />
+          <PricingAmount plan={plan} cloudTier={cloudTier} />
+          <p className="text-sm font-medium leading-snug text-trooper">{planPerSeatLabel(plan, cloudTier)}</p>
+          {plan.note ? <p className="text-xs leading-5 text-slate-400">{plan.note}</p> : null}
         </div>
       </div>
 
