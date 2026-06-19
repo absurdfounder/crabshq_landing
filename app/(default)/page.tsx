@@ -46,14 +46,9 @@ import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
+import MobileChannelsSection from '@/components/MobileChannelsSection'
+import YcQuoteSection from '@/components/YcQuoteSection'
 import SectionShell from '@/components/ui/SectionShell'
-
-const trustedLogos = [
-  { src: 'https://dazzling-cat.netlify.app/logos/zeroslistlogo.png', alt: 'Zeros List' },
-  { src: 'https://dazzling-cat.netlify.app/logos/marketingxlogo.png', alt: 'Marketing X' },
-  { src: 'https://dazzling-cat.netlify.app/logos/dealflowlogo.png', alt: 'Dealflow' },
-  { src: 'https://dazzling-cat.netlify.app/logos/downtownlogo.png', alt: 'Downtown' },
-]
 
 export default function Home() {
   return (
@@ -64,56 +59,35 @@ export default function Home() {
         <Hero />
       </div>
 
-      <SectionShell eyebrow="Allied Units" eyebrowNumber="02" bgClass="bg-white">
-        <div className="max-w-7xl mx-auto px-0 pt-4 pb-10 md:pb-14">
-          <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 bg-white overflow-hidden">
-            {trustedLogos.map((logo, i) => (
-              <div
-                key={logo.alt}
-                className={[
-                  'flex items-center justify-center h-20 sm:h-24 px-4',
-                  // Mobile (2-up grid): vertical divider between left/right column, bottom divider between rows
-                  i % 2 === 0 ? 'border-r border-slate-200' : '',
-                  i < 2 ? 'border-b border-slate-200 sm:border-b-0' : '',
-                  // Desktop (4-up): vertical dividers between every cell except the last
-                  i < trustedLogos.length - 1 ? 'sm:border-r sm:border-slate-200' : 'sm:border-r-0',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-              >
-                <img
-                  className="h-10 sm:h-12 w-auto max-w-[140px] origin-center object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                  src={logo.src}
-                  alt={logo.alt}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+      <SectionShell eyebrow="Endorsement" eyebrowNumber="02" bgClass="bg-white">
+        <YcQuoteSection />
       </SectionShell>
 
       <SectionShell eyebrow="How It Works" eyebrowNumber="03" bgClass="bg-white">
         <HowItWorksSteps />
       </SectionShell>
 
+      <SectionShell eyebrow="Field Comms" eyebrowNumber="04" bgClass="bg-white">
+        <MobileChannelsSection />
+      </SectionShell>
+
       <SectionShell bgClass="bg-slate-50">
         <OldWays />
       </SectionShell>
 
-      <SectionShell eyebrow="Governance" eyebrowNumber="05" bgClass="bg-white">
+      <SectionShell eyebrow="Governance" eyebrowNumber="06" bgClass="bg-white">
         <GovernanceSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="07" bgClass="bg-white">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="08" bgClass="bg-white">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-gray-50">
         <FAQ />
       </SectionShell>
     </>
