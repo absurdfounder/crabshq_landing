@@ -127,7 +127,7 @@ function PhoneChatScreen() {
       >
         <motion.div
           ref={threadRef}
-          className="flex min-h-full flex-col justify-end gap-2 px-4 pb-4 pt-2"
+          className="flex min-h-full flex-col justify-end gap-2 px-8 pb-4 pt-2"
           animate={{ y: reduceMotion ? 0 : -threadOffset }}
           transition={{ duration: 0.45, ease }}
         >
@@ -171,7 +171,7 @@ function PhoneChatScreen() {
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[380px] shrink-0 drop-shadow-[0_32px_64px_rgba(15,23,42,0.24)] sm:max-w-[400px]"
+      className="relative mx-auto w-full max-w-[380px] sm:max-w-[400px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}

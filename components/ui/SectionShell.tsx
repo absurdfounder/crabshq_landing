@@ -39,6 +39,7 @@ export default function SectionShell({
   const frameClasses = [
     'max-w-7xl mx-auto border-slate-200',
     'px-3 sm:px-4 md:px-6',
+    bgClass,
     !noBorder ? 'border-t border-l border-r' : 'border-l border-r',
     !noBorderBottom ? 'border-b' : '',
   ]

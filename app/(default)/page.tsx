@@ -67,27 +67,27 @@ export default function Home() {
         <HowItWorksSteps />
       </SectionShell>
 
-      <SectionShell eyebrow="Field Comms" eyebrowNumber="04" bgClass="bg-white">
-        <MobileChannelsSection />
-      </SectionShell>
-
       <SectionShell bgClass="bg-slate-50">
         <OldWays />
       </SectionShell>
 
-      <SectionShell eyebrow="Governance" eyebrowNumber="06" bgClass="bg-white">
+      <SectionShell eyebrow="Field Comms" eyebrowNumber="04" bgClass="bg-white">
+        <MobileChannelsSection />
+      </SectionShell>
+
+      <SectionShell eyebrow="Governance" eyebrowNumber="05" bgClass="bg-white">
         <GovernanceSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="07" bgClass="bg-white">
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="08" bgClass="bg-white">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
         <FAQ />
       </SectionShell>
     </>
