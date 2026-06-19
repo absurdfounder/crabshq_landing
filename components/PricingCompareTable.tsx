@@ -131,15 +131,18 @@ const comparisonCategories: ComparisonCategory[] = [
   },
 ];
 
-const DESKTOP_GRID = 'grid grid-cols-[minmax(12rem,1.15fr)_repeat(4,minmax(0,1fr))] gap-px bg-slate-200';
+const DESKTOP_GRID_COLS = 'grid-cols-[minmax(12rem,1.15fr)_repeat(4,minmax(0,1fr))]';
+const DESKTOP_GRID = `grid ${DESKTOP_GRID_COLS} gap-px bg-slate-200`;
 
-function planCellClass(featured = false) {
+function compareCellClass(featured = false) {
+  return ['px-5 py-3 xl:px-6', featured ? 'bg-emerald-50/45' : 'bg-white'].join(' ');
+}
+
+function compareHeaderCellClass(featured = false) {
   return [
-    'bg-white px-5 py-3 xl:px-6',
-    featured ? 'relative z-[1] shadow-[inset_0_2px_0_0_#10b981] ring-1 ring-inset ring-emerald-500/20' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+    'sticky top-16 z-10 px-5 py-4 xl:px-6',
+    featured ? 'border-t-2 border-emerald-500 bg-emerald-50/45' : 'bg-white',
+  ].join(' ');
 }
 
 function CompareCell({ cell }: { cell: ComparisonCell }) {
@@ -162,90 +165,84 @@ function CompareCell({ cell }: { cell: ComparisonCell }) {
 function DesktopCompareTable() {
   return (
     <div className="hidden overflow-hidden border-b border-slate-200 lg:block">
-      <div className="sticky top-16 z-10 border-b border-slate-200 bg-white">
-        <div className={DESKTOP_GRID}>
-          <div className={`${planCellClass()} py-4`}>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Features</span>
-          </div>
-          {PLAN_COLUMNS.map((plan) => (
-            <div key={plan.key} className={`${planCellClass(plan.featured)} py-4 text-center`}>
-              <span
-                className={[
-                  'font-mono text-[10px] font-bold uppercase tracking-[0.14em]',
-                  plan.featured ? 'text-slate-900' : 'text-slate-600',
-                ].join(' ')}
-              >
-                {plan.label}
-              </span>
-            </div>
-          ))}
+      <div className={DESKTOP_GRID}>
+        <div className={compareHeaderCellClass()}>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Features</span>
         </div>
-      </div>
-
-      {comparisonCategories.map((category) => (
-        <div key={category.title}>
-          <div className="border-b border-slate-200 bg-[#FAFAF8] px-5 py-2.5 xl:px-6">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-trooper-700">
-              {category.title}
+        {PLAN_COLUMNS.map((plan) => (
+          <div key={plan.key} className={`${compareHeaderCellClass(plan.featured)} text-center`}>
+            <span
+              className={[
+                'font-mono text-[10px] font-bold uppercase tracking-[0.14em]',
+                plan.featured ? 'text-slate-900' : 'text-slate-600',
+              ].join(' ')}
+            >
+              {plan.label}
             </span>
           </div>
-          {category.rows.map((row) => (
-            <div key={row.feature} className={`${DESKTOP_GRID} border-b border-slate-200`}>
-              <div className={`${planCellClass()} flex items-center py-3`}>
-                <span className="text-sm leading-snug text-slate-700">{row.feature}</span>
-              </div>
-              {PLAN_COLUMNS.map((plan) => (
-                <div key={plan.key} className={`${planCellClass(plan.featured)} flex items-center justify-center py-3`}>
-                  <CompareCell cell={row[plan.key]} />
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      ))}
+        ))}
 
-      <div className={`${DESKTOP_GRID} border-b border-slate-200`}>
-        <div className={`${planCellClass()} flex items-center py-4`}>
+        {comparisonCategories.map((category) => (
+          <React.Fragment key={category.title}>
+            <div className="col-span-5 bg-[#FAFAF8] px-5 py-2.5 xl:px-6">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-trooper-700">
+                {category.title}
+              </span>
+            </div>
+            {category.rows.map((row) => (
+              <React.Fragment key={row.feature}>
+                <div className={`${compareCellClass()} flex items-center`}>
+                  <span className="text-sm leading-snug text-slate-700">{row.feature}</span>
+                </div>
+                {PLAN_COLUMNS.map((plan) => (
+                  <div key={plan.key} className={`${compareCellClass(plan.featured)} flex items-center justify-center`}>
+                    <CompareCell cell={row[plan.key]} />
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        ))}
+
+        <div className={`${compareCellClass()} flex items-center py-4`}>
           <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-900">Price</span>
         </div>
-        <div className={`${planCellClass()} flex items-center justify-center py-4 text-center`}>
+        <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
           <span className="text-sm font-medium tabular-nums text-slate-900">
             $0/mo · {formatUsd(PRICING_USD.localLifetime)} lifetime
           </span>
         </div>
-        <div className={`${planCellClass()} flex items-center justify-center py-4 text-center`}>
+        <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
           <span className="text-sm font-medium tabular-nums text-slate-900">
             {formatUsd(PRICING_USD.cloudLifetime)} one-time
           </span>
         </div>
-        <div className={`${planCellClass(true)} flex items-center justify-center py-4 text-center`}>
+        <div className={`${compareCellClass(true)} flex items-center justify-center py-4 text-center`}>
           <span className="text-sm font-medium tabular-nums text-slate-900">
             {formatUsd(PRICING_USD.cloudStandardMonthly)}/mo · {formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo Max
           </span>
         </div>
-        <div className={`${planCellClass()} flex items-center justify-center py-4 text-center`}>
+        <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
           <span className="font-funneldisplay text-lg font-medium text-slate-900">Custom</span>
         </div>
-      </div>
 
-      <div className={`${DESKTOP_GRID}`}>
-        <div className={`${planCellClass()} py-5`} />
-        <div className={`${planCellClass()} flex items-center justify-center px-3 py-5`}>
+        <div className={`${compareCellClass()} py-5`} />
+        <div className={`${compareCellClass()} flex items-center justify-center px-3 py-5`}>
           <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
             Install locally
           </PixelButton>
         </div>
-        <div className={`${planCellClass()} flex items-center justify-center px-3 py-5`}>
+        <div className={`${compareCellClass()} flex items-center justify-center px-3 py-5`}>
           <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
             Get lifetime deal
           </PixelButton>
         </div>
-        <div className={`${planCellClass(true)} flex items-center justify-center px-3 py-5`}>
+        <div className={`${compareCellClass(true)} flex items-center justify-center px-3 py-5`}>
           <PixelButton href="https://app.trooper.so" external size="md" tone="brand" className="w-full">
             Start with cloud
           </PixelButton>
         </div>
-        <div className={`${planCellClass()} flex items-center justify-center px-3 py-5`}>
+        <div className={`${compareCellClass()} flex items-center justify-center px-3 py-5`}>
           <PixelButton
             href="https://cal.com/trooper/setup-call"
             external
@@ -281,8 +278,8 @@ function MobileCompareTable() {
                   <div
                     key={plan.key}
                     className={[
-                      'flex flex-col items-center gap-1.5 bg-white px-2 py-3',
-                      plan.featured ? 'shadow-[inset_0_2px_0_0_#10b981]' : '',
+                      'flex flex-col items-center gap-1.5 px-2 py-3',
+                      plan.featured ? 'bg-emerald-50/45' : 'bg-white',
                     ].join(' ')}
                   >
                     <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">{plan.label}</span>
