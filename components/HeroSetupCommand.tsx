@@ -2,8 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, Copy } from 'lucide-react';
-import Image from 'next/image';
-import { AgentIcon } from '@/components/loops/AgentIcon';
+import { DemoFavicon } from '@/components/DemoFavicon';
 import {
   DEFAULT_SETUP_TARGET_ID,
   SETUP_TARGETS,
@@ -11,32 +10,15 @@ import {
   type SetupTargetId,
 } from '@/lib/setupCommand';
 
-function TargetIcon({ target, size = 16 }: { target: SetupTarget; size?: number }) {
-  if (target.agentKey) {
-    return <AgentIcon agent={target.agentKey} className="!size-7 !p-1" />;
-  }
-
-  if (target.id === 'openclaw') {
-    return (
-      <Image
-        src="/images/trooper-logomark.png"
-        alt=""
-        width={size}
-        height={size}
-        className="size-4 object-contain"
-        aria-hidden
-      />
-    );
-  }
-
+function SetupTargetIcon({ target, size = 16 }: { target: SetupTarget; size?: number }) {
   return (
-    <Image
-      src="/images/trooper-logomark.png"
+    <DemoFavicon
+      domain={target.iconDomain}
+      src={target.iconSrc}
+      size={size}
       alt=""
-      width={size}
-      height={size}
-      className="size-4 object-contain"
-      aria-hidden
+      rounded="sm"
+      className="shrink-0"
     />
   );
 }
@@ -120,30 +102,28 @@ export default function HeroSetupCommand() {
 
   return (
     <div ref={rootRef} className="relative mt-4 max-w-xl">
-      <p className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-600 sm:text-base">
-        <span>Install with</span>
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-900 shadow-sm transition hover:border-slate-300"
-          aria-expanded={open}
-          aria-haspopup="listbox"
-        >
-          <TargetIcon target={selected} />
-          <span>{selected.label}</span>
-          <ChevronDown
-            className={`h-4 w-4 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
-            aria-hidden
-          />
-        </button>
-        <span>on your laptop</span>
-      </p>
-
       <div className="flex items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5">
         <code className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto font-mono text-[11px] leading-none sm:text-[12px]">
           <span className="select-none text-cyan-600">$</span>
           <span className="whitespace-nowrap text-slate-900">{selected.command}</span>
         </code>
+
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-medium text-slate-800 transition hover:border-slate-300 hover:bg-white sm:gap-2 sm:px-2.5 sm:text-xs"
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-label={`Install target: ${selected.label}`}
+        >
+          <SetupTargetIcon target={selected} size={14} />
+          <span className="max-w-[7rem] truncate sm:max-w-none">{selected.label}</span>
+          <ChevronDown
+            className={`h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
+            aria-hidden
+          />
+        </button>
+
         <button
           type="button"
           onClick={handleCopyCommand}
@@ -161,7 +141,7 @@ export default function HeroSetupCommand() {
 
       {open ? (
         <div
-          className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 shadow-xl backdrop-blur-md"
+          className="absolute right-0 top-full z-30 mt-2 w-full min-w-[17rem] overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 shadow-xl backdrop-blur-md sm:w-[20rem]"
           role="listbox"
           aria-label="Install target"
         >
@@ -183,7 +163,7 @@ export default function HeroSetupCommand() {
                         isSelected ? 'bg-trooper-50' : 'hover:bg-slate-50'
                       }`}
                     >
-                      <TargetIcon target={target} />
+                      <SetupTargetIcon target={target} size={18} />
                       <span className="text-sm font-medium text-slate-900">{target.label}</span>
                     </button>
                     <button

@@ -47,6 +47,7 @@ type Feature = {
   icon: LucideIcon;
   label: string;
   color: string;
+  included?: boolean;
 };
 
 const soloFeatures: Feature[] = [
@@ -68,6 +69,46 @@ const soloFeatures: Feature[] = [
   { icon: Building2, label: 'License for 1 org', color: 'text-slate-600' },
   { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-trooper' },
 ];
+
+const teamCloudExcluded: Feature[] = [
+  { icon: Users, label: '5 team seats included', color: 'text-slate-300', included: false },
+  { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-slate-300', included: false },
+  { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-slate-300', included: false },
+  { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-slate-300', included: false },
+  { icon: Mail, label: 'Email automation', color: 'text-slate-300', included: false },
+  { icon: Settings, label: 'Admin controls and permissions', color: 'text-slate-300', included: false },
+  { icon: Database, label: 'Shared team knowledge base', color: 'text-slate-300', included: false },
+  { icon: Workflow, label: 'Shared workflows across team', color: 'text-slate-300', included: false },
+  { icon: Headphones, label: 'Priority email support', color: 'text-slate-300', included: false },
+  { icon: Building2, label: 'Multi-org support', color: 'text-slate-300', included: false },
+];
+
+const enterpriseExcluded: Feature[] = [
+  { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-slate-300', included: false },
+  { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-slate-300', included: false },
+  { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-slate-300', included: false },
+  { icon: Palette, label: 'White-label and custom domain', color: 'text-slate-300', included: false },
+  { icon: UserPlus, label: 'Dedicated onboarding and migration', color: 'text-slate-300', included: false },
+  { icon: FileCheck, label: 'Security reviews and custom agreements', color: 'text-slate-300', included: false },
+  { icon: Wrench, label: 'Internal integrations and custom workflows', color: 'text-slate-300', included: false },
+  { icon: Headphones, label: 'Priority support with SLA', color: 'text-slate-300', included: false },
+];
+
+const localInstallHeader: Feature[] = [
+  { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
+  { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
+  { icon: DollarSign, label: '$0/month — no subscription', color: 'text-trooper-700' },
+];
+
+const localSoloFeatures: Feature[] = soloFeatures.map((feature) => {
+  if (feature.label === 'Lifetime access for 1 user') {
+    return { ...feature, label: 'Free unlimited access on your laptop', color: 'text-trooper' };
+  }
+  if (feature.label === 'License for 1 org') {
+    return { ...feature, label: 'Personal laptop install' };
+  }
+  return feature;
+});
 
 const cloudFeatures: Feature[] = [
   { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
@@ -110,6 +151,7 @@ type Plan = {
     features: Feature[];
     inheritsFrom?: string;
   }[];
+  excludedFeatures?: Feature[];
   cta: {
     text: string;
     href: string;
@@ -131,14 +173,10 @@ const plans: Plan[] = [
     sections: [
       {
         label: '',
-        features: [
-          { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
-          { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
-          { icon: DollarSign, label: '$0/month — no subscription', color: 'text-trooper-700' },
-        ],
+        features: [...localInstallHeader, ...localSoloFeatures],
       },
-      { label: '', features: [], inheritsFrom: 'Unlimited everything in Solo Founder' },
     ],
+    excludedFeatures: [...teamCloudExcluded, ...enterpriseExcluded],
     cta: {
       text: 'Install locally',
       href: 'https://app.trooper.so',
@@ -156,6 +194,7 @@ const plans: Plan[] = [
     badge: 'Lifetime Access',
     note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
     sections: [{ label: '', features: soloFeatures }],
+    excludedFeatures: [...teamCloudExcluded, ...enterpriseExcluded],
     cta: {
       text: 'Get lifetime deal',
       href: 'https://app.trooper.so',
@@ -176,6 +215,7 @@ const plans: Plan[] = [
       { label: '', features: cloudFeatures },
       { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
     ],
+    excludedFeatures: enterpriseExcluded,
     cta: {
       text: 'Start with cloud',
       href: 'https://app.trooper.so',
@@ -323,16 +363,39 @@ function PlanFeatures({ plan }: { plan: Plan }) {
             </div>
           ) : (
             <ul className="space-y-2">
-              {section.features.map((feature) => (
-                <li key={feature.label} className="flex items-center gap-2">
-                  <feature.icon className={`h-4 w-4 shrink-0 ${feature.color}`} />
-                  <span className="text-sm text-slate-700">{feature.label}</span>
-                </li>
-              ))}
+              {section.features.map((feature) => {
+                const included = feature.included !== false;
+                return (
+                  <li key={feature.label} className="flex items-center gap-2">
+                    <feature.icon
+                      className={`h-4 w-4 shrink-0 ${included ? feature.color : 'text-slate-300'}`}
+                    />
+                    <span className={`text-sm ${included ? 'text-slate-700' : 'text-slate-400'}`}>
+                      {feature.label}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
       ))}
+
+      {plan.excludedFeatures && plan.excludedFeatures.length > 0 ? (
+        <div className="mt-5 border-t border-slate-100 pt-4">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400">
+            Not included
+          </p>
+          <ul className="space-y-2">
+            {plan.excludedFeatures.map((feature) => (
+              <li key={feature.label} className="flex items-center gap-2">
+                <feature.icon className="h-4 w-4 shrink-0 text-slate-300" />
+                <span className="text-sm text-slate-400">{feature.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </>
   );
 }

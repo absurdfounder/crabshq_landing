@@ -9,8 +9,10 @@ export type SetupTargetId = 'trooper' | 'claude-code' | 'cursor' | 'openclaw' | 
 export type SetupTarget = {
   id: SetupTargetId;
   label: string;
-  /** Key for AgentIcon when available */
-  agentKey?: string;
+  /** Local asset when brand favicon is wrong or unavailable */
+  iconSrc?: string;
+  /** Domain for colored favicon via getFaviconUrl */
+  iconDomain?: string;
   command: string;
   prompt: string;
 };
@@ -19,6 +21,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'trooper',
     label: 'Trooper CLI',
+    iconSrc: '/images/trooper-logomark.png',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Install Trooper on your machine, then open the app and connect your API keys:\n\nnpx -y trooper-cli',
@@ -26,7 +29,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'claude-code',
     label: 'Claude Code',
-    agentKey: 'claude-code',
+    iconDomain: 'anthropic.com',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Set up Trooper locally, then point Claude Code at your Trooper workspace:\n\nnpx -y trooper-cli',
@@ -34,7 +37,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'cursor',
     label: 'Cursor',
-    agentKey: 'cursor',
+    iconDomain: 'cursor.com',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Install Trooper on your laptop and connect Cursor to your Trooper agents:\n\nnpx -y trooper-cli',
@@ -42,6 +45,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'openclaw',
     label: 'OpenClaw',
+    iconDomain: 'openclaw.ai',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Install Trooper with the OpenClaw runtime on your machine:\n\nnpx -y trooper-cli',
@@ -49,7 +53,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'codex',
     label: 'ChatGPT Codex',
-    agentKey: 'codex',
+    iconDomain: 'openai.com',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Install Trooper locally, then run Codex against your Trooper workspace:\n\nnpx -y trooper-cli',
