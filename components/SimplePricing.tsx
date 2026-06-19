@@ -56,10 +56,33 @@ type Feature = {
   included?: boolean;
 };
 
+const oneWorkspaceFeature: Feature = {
+  icon: Building2,
+  label: '1 workspace',
+  color: 'text-slate-600',
+};
+
+const multiWorkspaceFeature: Feature = {
+  icon: Building2,
+  label: 'Multi-workspace support',
+  color: 'text-trooper',
+};
+
+const unlimitedDevicesFeature: Feature = {
+  icon: Monitor,
+  label: 'Unlimited Devices',
+  color: 'text-slate-600',
+};
+
+const noConnectedDevicesFeature: Feature = {
+  icon: Monitor,
+  label: 'No connected devices',
+  color: 'text-slate-500',
+};
+
 const soloFeatures: Feature[] = [
   { icon: Bot, label: 'Unlimited Agents', color: 'text-trooper' },
   { icon: MessageSquare, label: 'Unlimited Chats', color: 'text-trooper-olive' },
-  { icon: Monitor, label: 'Unlimited Devices', color: 'text-slate-600' },
   { icon: Sparkles, label: 'All AI Models', color: 'text-trooper' },
   { icon: Terminal, label: 'Claude Code & Codex', color: 'text-trooper-700' },
   { icon: Brain, label: 'Adaptive Memory', color: 'text-trooper-olive' },
@@ -76,30 +99,6 @@ const soloFeatures: Feature[] = [
   { icon: Infinity, label: 'Lifetime access for 1 user', color: 'text-trooper' },
 ];
 
-const teamCloudExcluded: Feature[] = [
-  { icon: Users, label: '2 team members included', color: 'text-slate-300', included: false },
-  { icon: DollarSign, label: 'Additional members at $10/user/month', color: 'text-slate-300', included: false },
-  { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-slate-300', included: false },
-  { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-slate-300', included: false },
-  { icon: Mail, label: 'Email automation', color: 'text-slate-300', included: false },
-  { icon: Settings, label: 'Admin controls and permissions', color: 'text-slate-300', included: false },
-  { icon: Database, label: 'Shared team knowledge base', color: 'text-slate-300', included: false },
-  { icon: Workflow, label: 'Shared workflows across team', color: 'text-slate-300', included: false },
-  { icon: Headphones, label: 'Priority email support', color: 'text-slate-300', included: false },
-  { icon: Building2, label: 'Multi-org support', color: 'text-slate-300', included: false },
-];
-
-const enterpriseExcluded: Feature[] = [
-  { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-slate-300', included: false },
-  { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-slate-300', included: false },
-  { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-slate-300', included: false },
-  { icon: Palette, label: 'White-label and custom domain', color: 'text-slate-300', included: false },
-  { icon: UserPlus, label: 'Dedicated onboarding and migration', color: 'text-slate-300', included: false },
-  { icon: FileCheck, label: 'Security reviews and custom agreements', color: 'text-slate-300', included: false },
-  { icon: Wrench, label: 'Internal integrations and custom workflows', color: 'text-slate-300', included: false },
-  { icon: Headphones, label: 'Priority support with SLA', color: 'text-slate-300', included: false },
-];
-
 const localInstallHeader: Feature[] = [
   { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
   { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
@@ -111,18 +110,23 @@ const localInstallHeader: Feature[] = [
   },
 ];
 
-const localSoloFeatures: Feature[] = soloFeatures.map((feature) => {
-  if (feature.label === 'Lifetime access for 1 user') {
-    return { ...feature, label: 'Free unlimited access on your laptop', color: 'text-trooper' };
-  }
-  if (feature.label === 'License for 1 org') {
-    return { ...feature, label: 'Personal laptop install' };
-  }
-  return feature;
-});
+const localSoloFeatures: Feature[] = [
+  oneWorkspaceFeature,
+  noConnectedDevicesFeature,
+  ...soloFeatures.map((feature) => {
+    if (feature.label === 'Lifetime access for 1 user') {
+      return { ...feature, label: 'Free unlimited access on your laptop', color: 'text-trooper' };
+    }
+    if (feature.label === 'License for 1 org') {
+      return { ...feature, label: 'Personal laptop install' };
+    }
+    return feature;
+  }),
+];
 
 const cloudFeatures: Feature[] = [
-  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
+  multiWorkspaceFeature,
+  unlimitedDevicesFeature,
   { icon: Users, label: '2 team members included', color: 'text-trooper' },
   { icon: DollarSign, label: 'Additional members at $10/user/month', color: 'text-trooper-700' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
@@ -135,7 +139,8 @@ const cloudFeatures: Feature[] = [
 ];
 
 const enterpriseFeatures: Feature[] = [
-  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
+  multiWorkspaceFeature,
+  unlimitedDevicesFeature,
   { icon: Server, label: 'Self-hosted deployment on your infra', color: 'text-indigo-500' },
   { icon: Lock, label: 'Private VPC / on-prem options', color: 'text-blue-500' },
   { icon: BadgeCheck, label: 'SSO and enterprise auth', color: 'text-green-500' },
@@ -149,7 +154,8 @@ const enterpriseFeatures: Feature[] = [
 ];
 
 const cloudLifetimeFeatures: Feature[] = [
-  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
+  oneWorkspaceFeature,
+  noConnectedDevicesFeature,
   { icon: Users, label: '2 team members included', color: 'text-trooper' },
   { icon: Cpu, label: 'Always-on managed cloud computer', color: 'text-indigo-500' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
@@ -172,7 +178,6 @@ type Plan = {
     features: Feature[];
     inheritsFrom?: string;
   }[];
-  excludedFeatures?: Feature[];
   cloudTiers?: boolean;
   cta: {
     text: string;
@@ -198,7 +203,6 @@ const plans: Plan[] = [
         features: [...localInstallHeader, ...localSoloFeatures],
       },
     ],
-    excludedFeatures: [...teamCloudExcluded, ...enterpriseExcluded],
     cta: {
       text: 'Install locally',
       href: 'https://app.trooper.so',
@@ -219,7 +223,6 @@ const plans: Plan[] = [
       { label: '', features: cloudLifetimeFeatures },
       { label: '', features: [], inheritsFrom: 'All core AI features from Local Install' },
     ],
-    excludedFeatures: enterpriseExcluded,
     cta: {
       text: 'Get lifetime deal',
       href: 'https://app.trooper.so',
@@ -241,7 +244,6 @@ const plans: Plan[] = [
       { label: '', features: cloudFeatures },
       { label: '', features: [], inheritsFrom: 'Everything from Cloud Lifetime' },
     ],
-    excludedFeatures: enterpriseExcluded,
     cta: {
       text: 'Start with cloud',
       href: 'https://app.trooper.so',
@@ -371,7 +373,9 @@ function getCloudTierPrice(tier: CloudSubscriptionTier) {
 
 /** Shared row tracks — mirrors Trooper app onboarding plan card bands. */
 const PRICING_GRID_TEMPLATE_ROWS =
-  'auto minmax(4.75rem,auto) minmax(5.5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(3.25rem,auto) auto minmax(0,1fr)';
+  'auto minmax(4.75rem,auto) minmax(2.25rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(3.25rem,auto) auto minmax(0,1fr)';
+
+const PRICING_TIER_RAIL_MIN_H = 'min-h-[2.25rem]';
 
 function planCellClass() {
   return 'bg-white px-6 md:px-8';
@@ -386,7 +390,7 @@ function CloudTierTabs({
 }) {
   return (
     <div
-      className="grid grid-cols-2 gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-1.5"
+      className={`inline-flex w-full rounded-sm border border-slate-200 bg-slate-50 p-0.5 ${PRICING_TIER_RAIL_MIN_H}`}
       role="radiogroup"
       aria-label="Cloud plan tier"
     >
@@ -398,19 +402,16 @@ function CloudTierTabs({
             type="button"
             role="radio"
             aria-checked={selected}
+            aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
             onClick={() => onChange(tier.id)}
             className={[
-              'flex flex-col items-center rounded-md px-2 py-2 text-center transition',
+              'flex-1 rounded-sm px-2 py-1 text-center text-[11px] font-medium leading-tight transition',
               selected
                 ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
-                : 'text-slate-500 hover:bg-white/60 hover:text-slate-700',
+                : 'text-slate-500 hover:bg-white/70 hover:text-slate-700',
             ].join(' ')}
           >
-            <span className="font-funneldisplay text-lg font-medium tabular-nums tracking-tight">
-              {formatUsd(tier.price)}
-            </span>
-            <span className="text-[0.65rem] font-medium text-slate-400">/ mo</span>
-            <span className="mt-1 text-[0.7rem] font-medium text-slate-600">{tier.label}</span>
+            {tier.label}
           </button>
         );
       })}
@@ -431,7 +432,7 @@ function PricingTierRail({
     return <CloudTierTabs value={cloudTier} onChange={onCloudTierChange} />;
   }
 
-  return <div className="h-full min-h-[5.5rem]" aria-hidden />;
+  return <div className={`h-full ${PRICING_TIER_RAIL_MIN_H}`} aria-hidden />;
 }
 
 function PricingAmount({
@@ -506,7 +507,7 @@ function PricingPlanColumn({
         <p className="line-clamp-3 text-sm leading-6 text-slate-500">{plan.description}</p>
       </div>
 
-      <div className={`${planCellClass()} py-2`}>
+      <div className={`${planCellClass()} flex items-center py-1`}>
         <PricingTierRail plan={plan} cloudTier={cloudTier} onCloudTierChange={onCloudTierChange} />
       </div>
 
@@ -586,22 +587,6 @@ function PlanFeatures({ plan }: { plan: Plan }) {
           )}
         </div>
       ))}
-
-      {plan.excludedFeatures && plan.excludedFeatures.length > 0 ? (
-        <div className="mt-5 border-t border-slate-100 pt-4">
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400">
-            Not included
-          </p>
-          <ul className="space-y-2">
-            {plan.excludedFeatures.map((feature) => (
-              <li key={feature.label} className="flex items-center gap-2">
-                <feature.icon className="h-4 w-4 shrink-0 text-slate-300" />
-                <span className="text-sm text-slate-400">{feature.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </>
   );
 }

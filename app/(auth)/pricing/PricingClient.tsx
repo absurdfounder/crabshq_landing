@@ -94,7 +94,7 @@ const comparisonCategories: ComparisonCategory[] = [
         rows: [
             { feature: "Unlimited Agents", local: true, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Unlimited Chats", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Unlimited Devices", local: true, cloudLifetime: true, cloud: true, enterprise: true },
+            { feature: "Unlimited Devices", local: false, cloudLifetime: false, cloud: true, enterprise: true },
             { feature: "All AI Models (OpenAI, Claude, Gemini, etc.)", local: true, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Claude Code & Codex support", local: true, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Multi-agent orchestration", local: true, cloudLifetime: true, cloud: true, enterprise: true },
@@ -135,6 +135,7 @@ const comparisonCategories: ComparisonCategory[] = [
             { feature: "Windows app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "iOS app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Android app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
+            { feature: "Connected devices (OpenClaw nodes)", local: { text: "None" }, cloudLifetime: { text: "None" }, cloud: { text: "Unlimited" }, enterprise: { text: "Unlimited" } },
         ],
     },
     {
@@ -143,7 +144,8 @@ const comparisonCategories: ComparisonCategory[] = [
         iconColor: "text-emerald-500",
         rows: [
             { feature: "Team seats", local: { text: "1 user", sub: `${formatUsd(PRICING_USD.localLifetime)} lifetime` }, cloudLifetime: { text: "2 included", sub: "lifetime" }, cloud: { text: "2 included", sub: `+${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/member/mo` }, enterprise: { text: "Custom" } },
-            { feature: "Org licensing", local: { text: "Personal laptop install" }, cloudLifetime: { text: "Hosted lifetime · 1 org" }, cloud: { text: "Multi-org support" }, enterprise: { text: "Multi-org support" } },
+            { feature: "Workspaces", local: { text: "1 workspace" }, cloudLifetime: { text: "1 workspace" }, cloud: { text: "Multi-workspace" }, enterprise: { text: "Multi-workspace" } },
+            { feature: "Org licensing", local: { text: "Personal laptop install" }, cloudLifetime: { text: "Hosted lifetime · 1 org" }, cloud: { text: "Multi-workspace" }, enterprise: { text: "Multi-workspace" } },
             { feature: "Invite teammates & assign roles", local: false, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Team collaboration & shared memory", local: false, cloudLifetime: true, cloud: true, enterprise: true },
             { feature: "Admin controls & permissions", local: false, cloudLifetime: true, cloud: true, enterprise: true },
@@ -199,7 +201,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: `Local Install is free ($0/mo) on your laptop, or ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine. Cloud Lifetime is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with managed infrastructure. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.`,
+            answer: `Local Install is free ($0/mo) on your laptop, or ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine — one workspace, no connected devices. Cloud Lifetime is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
         },
         {
             question: "Does Trooper Cloud include hosting?",
