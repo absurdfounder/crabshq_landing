@@ -1,10 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import PixelButton from './ui/PixelButton';
+import {
+  CLOUD_SUBSCRIPTION_TIERS,
+  formatUsd,
+  PRICING_USD,
+  type CloudSubscriptionTier,
+} from '@/lib/pricing';
 import {
   Bot,
   MessageSquare,
@@ -71,8 +77,8 @@ const soloFeatures: Feature[] = [
 ];
 
 const teamCloudExcluded: Feature[] = [
-  { icon: Users, label: '5 team seats included', color: 'text-slate-300', included: false },
-  { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-slate-300', included: false },
+  { icon: Users, label: '2 team members included', color: 'text-slate-300', included: false },
+  { icon: DollarSign, label: 'Additional members at $10/user/month', color: 'text-slate-300', included: false },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-slate-300', included: false },
   { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-slate-300', included: false },
   { icon: Mail, label: 'Email automation', color: 'text-slate-300', included: false },
@@ -112,8 +118,8 @@ const localSoloFeatures: Feature[] = soloFeatures.map((feature) => {
 
 const cloudFeatures: Feature[] = [
   { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
-  { icon: Users, label: '5 team seats included', color: 'text-trooper' },
-  { icon: DollarSign, label: 'Additional seats at $8/user/month', color: 'text-trooper-700' },
+  { icon: Users, label: '2 team members included', color: 'text-trooper' },
+  { icon: DollarSign, label: 'Additional members at $10/user/month', color: 'text-trooper-700' },
   { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
   { icon: UserPlus, label: 'Invite teammates and assign roles', color: 'text-orange-500' },
   { icon: Mail, label: 'Email automation', color: 'text-violet-500' },
@@ -137,6 +143,16 @@ const enterpriseFeatures: Feature[] = [
   { icon: Headphones, label: 'Priority support with SLA', color: 'text-blue-500' },
 ];
 
+const cloudLifetimeFeatures: Feature[] = [
+  { icon: Building2, label: 'Multi-org support', color: 'text-slate-600' },
+  { icon: Users, label: '2 team members included', color: 'text-trooper' },
+  { icon: Cpu, label: 'Always-on managed cloud computer', color: 'text-indigo-500' },
+  { icon: Share2, label: 'Team collaboration and shared memory', color: 'text-green-500' },
+  { icon: Workflow, label: 'Shared workflows across team', color: 'text-cyan-500' },
+  { icon: Headphones, label: 'Priority email support', color: 'text-blue-500' },
+  { icon: Infinity, label: 'Lifetime hosted access — pay once', color: 'text-trooper' },
+];
+
 type Plan = {
   name: string;
   eyebrow?: string;
@@ -152,6 +168,7 @@ type Plan = {
     inheritsFrom?: string;
   }[];
   excludedFeatures?: Feature[];
+  cloudTiers?: boolean;
   cta: {
     text: string;
     href: string;
@@ -186,11 +203,11 @@ const plans: Plan[] = [
   {
     name: 'Solo Founder',
     eyebrow: 'Lifetime deal',
-    price: '$79',
+    price: formatUsd(PRICING_USD.soloLifetime),
     cadence: 'one-time payment',
-    perSeat: 'Pay once · use forever · no subscription',
+    perSeat: 'One user · one organization',
     description:
-      'For solo founders who want full control. Self-host on your own machine, pay once, use forever.',
+      'For solo founders who want full control. Self-host on your machine, pay once, and use forever.',
     badge: 'Lifetime Access',
     note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
     sections: [{ label: '', features: soloFeatures }],
@@ -202,15 +219,37 @@ const plans: Plan[] = [
     highlight: false,
   },
   {
+    name: 'Cloud Lifetime',
+    eyebrow: 'Hosted lifetime',
+    price: formatUsd(PRICING_USD.cloudLifetime),
+    cadence: 'one-time payment',
+    perSeat: 'Pay once · hosted cloud forever',
+    description:
+      'Managed Trooper Cloud with team collaboration — one payment, lifetime hosted access on our infrastructure.',
+    badge: 'Lifetime Access',
+    note: 'Includes 2 team members. Bring your own API keys for model usage.',
+    sections: [
+      { label: '', features: cloudLifetimeFeatures },
+      { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
+    ],
+    excludedFeatures: enterpriseExcluded,
+    cta: {
+      text: 'Get cloud lifetime',
+      href: 'https://app.trooper.so',
+    },
+    highlight: false,
+  },
+  {
     name: 'Trooper Cloud',
     eyebrow: 'Hosted by us',
-    price: '$99',
+    price: formatUsd(PRICING_USD.cloudStandardMonthly),
     cadence: '/ month',
-    perSeat: '$8 per additional seat / month',
+    perSeat: `${PRICING_USD.cloudIncludedMembers} team members included`,
     description:
-      'Your managed AI workspace in the cloud. We host the computer, workflows, and runtime for your team.',
+      'A managed AI workspace with hosted runtime, workflows, memory, and collaboration for your team.',
     badge: 'Most Popular',
-    note: '5 seats included. Additional seats $8/mo each. Bring your own API keys for model usage.',
+    note: `Additional members ${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/mo each. Bring your own API keys for model usage.`,
+    cloudTiers: true,
     sections: [
       { label: '', features: cloudFeatures },
       { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
@@ -250,6 +289,8 @@ type SimplePricingProps = {
 };
 
 export default function SimplePricing({ showFullPricingLink = true }: SimplePricingProps) {
+  const [cloudTier, setCloudTier] = useState<CloudSubscriptionTier>('standard');
+
   return (
     <div className="w-full pb-8 md:pb-10">
       <div className="flex flex-col gap-6 pb-8 pt-2 max-md:gap-5 max-md:pb-6 md:pt-4">
@@ -283,6 +324,8 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
               plan={plan}
               idx={idx}
               isLast={idx === plans.length - 1}
+              cloudTier={cloudTier}
+              onCloudTierChange={setCloudTier}
             />
           ))}
         </div>
@@ -333,6 +376,80 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
 
 function planNumber(idx: number) {
   return `[${String(idx + 1).padStart(2, '0')}]`;
+}
+
+function getCloudTierPrice(tier: CloudSubscriptionTier) {
+  return CLOUD_SUBSCRIPTION_TIERS.find((entry) => entry.id === tier)?.price ?? PRICING_USD.cloudStandardMonthly;
+}
+
+function CloudTierTabs({
+  value,
+  onChange,
+}: {
+  value: CloudSubscriptionTier;
+  onChange: (tier: CloudSubscriptionTier) => void;
+}) {
+  return (
+    <div
+      className="grid grid-cols-2 gap-1.5 rounded-lg border border-slate-200 bg-slate-50 p-1.5"
+      role="radiogroup"
+      aria-label="Cloud plan tier"
+    >
+      {CLOUD_SUBSCRIPTION_TIERS.map((tier) => {
+        const selected = value === tier.id;
+        return (
+          <button
+            key={tier.id}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            onClick={() => onChange(tier.id)}
+            className={[
+              'flex flex-col items-center rounded-md px-2 py-2 text-center transition',
+              selected
+                ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
+                : 'text-slate-500 hover:bg-white/60 hover:text-slate-700',
+            ].join(' ')}
+          >
+            <span className="font-funneldisplay text-lg font-medium tabular-nums tracking-tight">
+              {formatUsd(tier.price)}
+            </span>
+            <span className="text-[0.65rem] font-medium text-slate-400">/ mo</span>
+            <span className="mt-1 text-[0.7rem] font-medium text-slate-600">{tier.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function CloudPlanPriceBlock({
+  plan,
+  cloudTier,
+  onCloudTierChange,
+}: {
+  plan: Plan;
+  cloudTier: CloudSubscriptionTier;
+  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
+}) {
+  const tierLabel = cloudTier === 'premium' ? 'Cloud Max' : 'Cloud';
+  const price = getCloudTierPrice(cloudTier);
+
+  return (
+    <>
+      <CloudTierTabs value={cloudTier} onChange={onCloudTierChange} />
+      <div className="mt-4 flex items-end gap-2">
+        <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+          {formatUsd(price)}
+        </div>
+        <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
+      </div>
+      <p className="mt-2 text-sm font-medium text-trooper">
+        {PRICING_USD.cloudIncludedMembers} team members included · {tierLabel}
+      </p>
+      {plan.note ? <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p> : null}
+    </>
+  );
 }
 
 function PlanBadge({ plan }: { plan: Plan }) {
@@ -401,13 +518,15 @@ function PlanFeatures({ plan }: { plan: Plan }) {
 }
 
 function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
+  const [cloudTier, setCloudTier] = useState<CloudSubscriptionTier>('standard');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       viewport={{ once: true }}
-      className="grid grid-cols-4 grid-rows-[auto_auto_auto_auto_1fr]"
+      className="grid grid-cols-5 grid-rows-[auto_auto_auto_auto_1fr]"
     >
       {plans.map((plan, idx) => {
         const isLast = idx === plans.length - 1;
@@ -469,23 +588,33 @@ function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
               .filter(Boolean)
               .join(' ')}
           >
-            <div className="flex items-end gap-2">
-              <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-                {plan.price}
-              </div>
-              {plan.cadence && (
-                <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
-              )}
-            </div>
-            {plan.perSeat ? (
-              <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
+            {plan.cloudTiers ? (
+              <CloudPlanPriceBlock
+                plan={plan}
+                cloudTier={cloudTier}
+                onCloudTierChange={setCloudTier}
+              />
             ) : (
-              <p className="mt-2 text-sm font-medium text-transparent">—</p>
-            )}
-            {plan.note ? (
-              <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
-            ) : (
-              <p className="mt-3 text-xs leading-5 text-transparent">—</p>
+              <>
+                <div className="flex items-end gap-2">
+                  <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+                    {plan.price}
+                  </div>
+                  {plan.cadence && (
+                    <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>
+                  )}
+                </div>
+                {plan.perSeat ? (
+                  <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
+                ) : (
+                  <p className="mt-2 text-sm font-medium text-transparent">—</p>
+                )}
+                {plan.note ? (
+                  <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>
+                ) : (
+                  <p className="mt-3 text-xs leading-5 text-transparent">—</p>
+                )}
+              </>
             )}
           </div>
         );
@@ -541,10 +670,14 @@ function MobilePricingCard({
   plan,
   idx,
   isLast,
+  cloudTier,
+  onCloudTierChange,
 }: {
   plan: Plan;
   idx: number;
   isLast: boolean;
+  cloudTier: CloudSubscriptionTier;
+  onCloudTierChange: (tier: CloudSubscriptionTier) => void;
 }) {
   return (
     <motion.div
@@ -573,16 +706,28 @@ function MobilePricingCard({
           {plan.name}
         </h3>
         <p className="mt-4 text-sm leading-6 text-slate-500">{plan.description}</p>
-        <div className="mt-5 flex items-end gap-2">
-          <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
-            {plan.price}
-          </div>
-          {plan.cadence && <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>}
+        <div className="mt-5">
+          {plan.cloudTiers ? (
+            <CloudPlanPriceBlock
+              plan={plan}
+              cloudTier={cloudTier}
+              onCloudTierChange={onCloudTierChange}
+            />
+          ) : (
+            <>
+              <div className="flex items-end gap-2">
+                <div className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+                  {plan.price}
+                </div>
+                {plan.cadence && <div className="pb-1 text-sm text-slate-400">{plan.cadence}</div>}
+              </div>
+              {plan.perSeat && (
+                <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
+              )}
+              {plan.note && <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>}
+            </>
+          )}
         </div>
-        {plan.perSeat && (
-          <p className="mt-2 text-sm font-medium text-trooper">{plan.perSeat}</p>
-        )}
-        {plan.note && <p className="mt-3 text-xs leading-5 text-slate-400">{plan.note}</p>}
       </div>
 
       <div className="border-b border-slate-200 px-6 py-5">

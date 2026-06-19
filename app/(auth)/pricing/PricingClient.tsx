@@ -14,6 +14,7 @@ import Header from "@/components/ui/header";
 import SectionShell from "@/components/ui/SectionShell";
 import SimplePricing from "@/components/SimplePricing";
 import FAQ from "@/components/faq";
+import { formatUsd, PRICING_USD } from "@/lib/pricing";
 
 // --- Exit Intent Popup ---
 interface ExitIntentPopupProps {
@@ -73,8 +74,14 @@ interface ComparisonRow {
     feature: string;
     local: ComparisonCell;
     solo: ComparisonCell;
+    cloudLifetime?: ComparisonCell;
     cloud: ComparisonCell;
     enterprise: ComparisonCell;
+}
+
+function comparisonCell(row: ComparisonRow, plan: keyof Omit<ComparisonRow, 'feature' | 'cloudLifetime'> | 'cloudLifetime'): ComparisonCell {
+    if (plan === 'cloudLifetime') return row.cloudLifetime ?? row.cloud;
+    return row[plan];
 }
 
 interface ComparisonCategory {
@@ -141,7 +148,7 @@ const comparisonCategories: ComparisonCategory[] = [
         icon: Users,
         iconColor: "text-emerald-500",
         rows: [
-            { feature: "Team seats", local: { text: "1 user" }, solo: { text: "1 user" }, cloud: { text: "5 included", sub: "+$8/seat/mo" }, enterprise: { text: "Custom" } },
+            { feature: "Team seats", local: { text: "1 user" }, solo: { text: "1 user" }, cloudLifetime: { text: "2 included", sub: "lifetime" }, cloud: { text: "2 included", sub: `+${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/member/mo` }, enterprise: { text: "Custom" } },
             { feature: "Org licensing", local: { text: "Personal laptop install" }, solo: { text: "License for 1 org" }, cloud: { text: "Multi-org support" }, enterprise: { text: "Multi-org support" } },
             { feature: "Invite teammates & assign roles", local: false, solo: false, cloud: true, enterprise: true },
             { feature: "Team collaboration & shared memory", local: false, solo: false, cloud: true, enterprise: true },
@@ -198,7 +205,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: "Local Install is free ($0/mo) on your laptop with unlimited everything — same core solo experience, self-installed on your machine. Solo is a one-time $79 lifetime deal for individual founders with all core AI features and a license for 1 org. Cloud is $99/mo with 5 team seats, multi-org support, hosted infrastructure, and collaboration features. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.",
+            answer: `Local Install is free ($0/mo) on your laptop with unlimited everything — same core solo experience, self-installed on your machine. Solo Founder is a one-time ${formatUsd(PRICING_USD.soloLifetime)} lifetime deal for individual founders. Cloud Lifetime is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with managed infrastructure. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.`,
         },
         {
             question: "Does Trooper Cloud include hosting?",
@@ -388,10 +395,11 @@ const Pricing: React.FC = () => {
                     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
                         {/* Sticky header */}
                         <div className="sticky top-16 z-10 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-4">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-6 py-4">
                                 <div className="font-medium text-slate-600">Features</div>
                                 <div className="text-center font-medium text-slate-600">Local Install</div>
                                 <div className="text-center font-medium text-slate-600">Solo Founder</div>
+                                <div className="text-center font-medium text-slate-600">Cloud Lifetime</div>
                                 <div className="text-center font-medium text-slate-900">Trooper Cloud</div>
                                 <div className="text-center font-medium text-slate-600">Enterprise</div>
                             </div>
@@ -402,7 +410,7 @@ const Pricing: React.FC = () => {
                                 return (
                                     <div key={category.title}>
                                         <div className="border-b border-slate-100 bg-slate-50/50">
-                                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-4">
+                                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-6 py-4">
                                                 <h3 className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500`}>
                                                     <Icon className={`w-[18px] h-[18px] ${category.iconColor}`} />
                                                     {category.title}
@@ -411,16 +419,18 @@ const Pricing: React.FC = () => {
                                                 <div />
                                                 <div />
                                                 <div />
+                                                <div />
                                             </div>
                                         </div>
                                         {category.rows.map((row) => (
                                             <div key={row.feature} className="border-b border-slate-100">
-                                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 items-center py-3">
+                                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-6 items-center py-3">
                                                     <div className="text-slate-700 text-sm">{row.feature}</div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.local} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.solo} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.cloud} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.enterprise} /></div>
+                                                    <div className="flex justify-center"><CellRenderer cell={comparisonCell(row, 'local')} /></div>
+                                                    <div className="flex justify-center"><CellRenderer cell={comparisonCell(row, 'solo')} /></div>
+                                                    <div className="flex justify-center"><CellRenderer cell={comparisonCell(row, 'cloudLifetime')} /></div>
+                                                    <div className="flex justify-center"><CellRenderer cell={comparisonCell(row, 'cloud')} /></div>
+                                                    <div className="flex justify-center"><CellRenderer cell={comparisonCell(row, 'enterprise')} /></div>
                                                 </div>
                                             </div>
                                         ))}
@@ -429,16 +439,19 @@ const Pricing: React.FC = () => {
                             })}
                             {/* Price row */}
                             <div className="border-b border-slate-100">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 items-center py-3">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-6 items-center py-3">
                                     <div className="font-medium text-sm text-slate-900">Price</div>
                                     <div className="flex justify-center">
                                         <span className="text-sm text-slate-900 font-semibold">$0/mo</span>
                                     </div>
                                     <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">$79 one-time</span>
+                                        <span className="text-sm text-slate-900 font-semibold">{formatUsd(PRICING_USD.soloLifetime)} one-time</span>
                                     </div>
                                     <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">$99/mo</span>
+                                        <span className="text-sm text-slate-900 font-semibold">{formatUsd(PRICING_USD.cloudLifetime)} one-time</span>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        <span className="text-sm text-slate-900 font-semibold">{formatUsd(PRICING_USD.cloudStandardMonthly)}/mo · {formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo Max</span>
                                     </div>
                                     <div className="flex justify-center">
                                         <span className="text-sm text-slate-900 font-semibold">Custom</span>
@@ -447,7 +460,7 @@ const Pricing: React.FC = () => {
                             </div>
                             {/* CTA row */}
                             <div className="border-b border-slate-200 bg-slate-50/30">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-6">
+                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-6 py-6">
                                     <div />
                                     <div className="flex justify-center px-2">
                                         <Link
@@ -463,6 +476,14 @@ const Pricing: React.FC = () => {
                                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
                                         >
                                             Get lifetime deal
+                                        </Link>
+                                    </div>
+                                    <div className="flex justify-center px-2">
+                                        <Link
+                                            href="https://app.trooper.so"
+                                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+                                        >
+                                            Cloud lifetime
                                         </Link>
                                     </div>
                                     <div className="flex justify-center px-2">
@@ -502,22 +523,26 @@ const Pricing: React.FC = () => {
                                     {category.rows.map((row) => (
                                         <div key={row.feature} className="px-4 py-3">
                                             <div className="text-sm font-medium text-slate-800 mb-2">{row.feature}</div>
-                                            <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+                                            <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3 lg:grid-cols-5">
                                                 <div className="flex flex-col items-center gap-1">
                                                     <span className="text-slate-400">Local</span>
-                                                    <CellRenderer cell={row.local} />
+                                                    <CellRenderer cell={comparisonCell(row, 'local')} />
                                                 </div>
                                                 <div className="flex flex-col items-center gap-1">
                                                     <span className="text-slate-400">Solo</span>
-                                                    <CellRenderer cell={row.solo} />
+                                                    <CellRenderer cell={comparisonCell(row, 'solo')} />
+                                                </div>
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <span className="text-slate-400">Cloud LT</span>
+                                                    <CellRenderer cell={comparisonCell(row, 'cloudLifetime')} />
                                                 </div>
                                                 <div className="flex flex-col items-center gap-1">
                                                     <span className="text-slate-400">Cloud</span>
-                                                    <CellRenderer cell={row.cloud} />
+                                                    <CellRenderer cell={comparisonCell(row, 'cloud')} />
                                                 </div>
                                                 <div className="flex flex-col items-center gap-1">
                                                     <span className="text-slate-400">Enterprise</span>
-                                                    <CellRenderer cell={row.enterprise} />
+                                                    <CellRenderer cell={comparisonCell(row, 'enterprise')} />
                                                 </div>
                                             </div>
                                         </div>

@@ -7,7 +7,7 @@ import PricingClient from "./PricingClient";
 export const metadata: Metadata = {
   title: "Trooper Pricing – Solo Lifetime Deal, Cloud, and Enterprise",
   description:
-    "Choose how you want to run Trooper. Solo lifetime deal for $79, hosted cloud for teams at $99/mo, or self-host for enterprise. Unlimited agents, all AI models, bring your own API keys.",
+    "Choose how you want to run Trooper. Solo lifetime for $49, Cloud Lifetime for $149, hosted cloud from $25/mo, or self-host for enterprise. Unlimited agents, all AI models, bring your own API keys.",
   alternates: {
     canonical: "https://trooper.so/pricing",
   },
