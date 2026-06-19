@@ -84,7 +84,7 @@ function PlanHeader({
         <Icon className="h-5 w-5 text-emerald-600" aria-hidden />
         <h3 className="font-funneldisplay text-xl font-medium tracking-tight text-slate-900">{title}</h3>
       </div>
-      <p className="mt-3 text-sm leading-6 text-slate-500">{description}</p>
+      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">{description}</p>
     </div>
   );
 }
@@ -155,12 +155,12 @@ function CloudTierTabs({
             aria-checked={selected}
             onClick={() => onChange(tier.id)}
             className={[
-              'rounded-sm px-3 py-2.5 text-left transition-colors',
+              'rounded-sm px-2 py-2 text-left transition-colors xl:px-3 xl:py-2.5',
               selected ? 'bg-white shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:bg-white/70',
             ].join(' ')}
           >
-            <span className="block text-[11px] font-medium">{tier.label}</span>
-            <span className="mt-0.5 block text-base font-semibold tabular-nums text-slate-900">
+            <span className="block text-[10px] font-medium xl:text-[11px]">{tier.label}</span>
+            <span className="mt-0.5 block text-sm font-semibold tabular-nums text-slate-900 xl:text-base">
               {formatUsd(tier.price)}
               <span className="text-[11px] font-normal text-slate-500">/mo</span>
             </span>
@@ -172,7 +172,7 @@ function CloudTierTabs({
 }
 
 function PlanCardBody({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-1 flex-col px-6 py-6 md:px-8">{children}</div>;
+  return <div className="flex flex-1 flex-col px-5 py-6 xl:px-6">{children}</div>;
 }
 
 export default function SimplePricing({ showFullPricingLink = true }: SimplePricingProps) {
@@ -213,7 +213,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
           viewport={{ once: true }}
-          className="grid overflow-hidden gap-px border-b border-slate-200 bg-slate-200 lg:grid-cols-2"
+          className="grid grid-cols-1 items-stretch overflow-hidden gap-px border-b border-slate-200 bg-slate-200 lg:grid-cols-4"
         >
           <section className="flex min-w-0 flex-col bg-white">
             <PlanHeader
@@ -286,7 +286,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
             </PlanCardBody>
           </section>
 
-          <section className="flex min-w-0 flex-col border-t-2 border-t-emerald-500 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.08)] lg:col-span-2">
+          <section className="relative flex min-w-0 flex-col border-t-2 border-t-emerald-500 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
             <PlanHeader
               featured
               index="03"
@@ -337,7 +337,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
             </PlanCardBody>
           </section>
 
-          <section className="flex min-w-0 flex-col bg-white lg:col-span-2 lg:grid lg:grid-cols-[1fr_1.3fr_auto] lg:items-center">
+          <section className="flex min-w-0 flex-col bg-white">
             <PlanHeader
               index="04"
               eyebrow="Private deployment"
@@ -346,28 +346,31 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
               icon={Building2}
               description="For companies that need Trooper on private infrastructure with deployment, security, and support tailored to them."
             />
-            <div className="border-t border-slate-200 px-6 py-6 md:px-8 lg:border-t-0 lg:border-r lg:border-slate-200">
-              <p className="text-sm font-medium text-emerald-700">Volume pricing and dedicated support</p>
-              <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            <PlanCardBody>
+              <div className="flex items-end gap-1.5">
+                <span className="font-funneldisplay text-4xl font-medium tracking-tight text-slate-900">Custom</span>
+              </div>
+              <p className="mt-2 text-sm font-medium text-emerald-700">Volume pricing and dedicated support</p>
+              <ul className="mt-6 space-y-2.5">
                 <FeatureItem>Private VPC or on-prem deployment</FeatureItem>
                 <FeatureItem>SSO, custom domains, and agreements</FeatureItem>
                 <FeatureItem>Custom integrations and migration</FeatureItem>
                 <FeatureItem>Priority support with SLA</FeatureItem>
               </ul>
-            </div>
-            <div className="border-t border-slate-200 px-6 pb-6 md:px-8 lg:border-t-0 lg:pb-0 lg:pr-8">
-              <PixelButton
-                href="https://cal.com/trooper/setup-call"
-                external
-                size="md"
-                tone="dark"
-                variant="outline"
-                className="w-full"
-                icon={<Server className="h-4 w-4" aria-hidden />}
-              >
-                Talk to sales
-              </PixelButton>
-            </div>
+              <div className="mt-auto pt-7">
+                <PixelButton
+                  href="https://cal.com/trooper/setup-call"
+                  external
+                  size="md"
+                  tone="dark"
+                  variant="outline"
+                  className="w-full"
+                  icon={<Server className="h-4 w-4" aria-hidden />}
+                >
+                  Talk to sales
+                </PixelButton>
+              </div>
+            </PlanCardBody>
           </section>
         </motion.div>
 
