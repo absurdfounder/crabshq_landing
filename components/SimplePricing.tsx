@@ -171,24 +171,8 @@ function CloudTierTabs({
   );
 }
 
-function LocalInstallBanner() {
-  return (
-    <div className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
-      <div className="flex min-w-0 items-start gap-3">
-        <Laptop className="mt-0.5 h-5 w-5 shrink-0 text-trooper" aria-hidden />
-        <div>
-          <p className="font-funneldisplay text-base font-medium text-slate-900">Local Install</p>
-          <p className="mt-1 text-sm leading-6 text-slate-500">
-            {formatUsd(0)}/mo on your laptop · 1 workspace · no connected devices · optional{' '}
-            {formatUsd(PRICING_USD.localLifetime)} lifetime license
-          </p>
-        </div>
-      </div>
-      <PixelButton href="https://app.trooper.so" external size="sm" tone="dark" className="shrink-0">
-        Install locally
-      </PixelButton>
-    </div>
-  );
+function PlanCardBody({ children }: { children: React.ReactNode }) {
+  return <div className="flex flex-1 flex-col px-6 py-6 md:px-8">{children}</div>;
 }
 
 export default function SimplePricing({ showFullPricingLink = true }: SimplePricingProps) {
@@ -224,8 +208,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       </div>
 
       <div className="-mx-3 border-t border-slate-200 sm:-mx-4 md:-mx-6">
-        <LocalInstallBanner />
-
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -236,13 +218,49 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           <section className="flex min-w-0 flex-col bg-white">
             <PlanHeader
               index="01"
+              eyebrow="Self-install"
+              badge="Free"
+              title="Local Install"
+              icon={Laptop}
+              description="Install Trooper on your laptop at no cost. Self-hosted runtime on your machine — one workspace, no connected devices."
+            />
+            <PlanCardBody>
+              <div className="flex items-end gap-1.5">
+                <span className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+                  {formatUsd(0)}
+                </span>
+                <span className="pb-1 text-sm text-slate-500">/ month</span>
+              </div>
+              <p className="mt-2 text-sm font-medium text-emerald-700">
+                1 workspace · no connected devices · optional {formatUsd(PRICING_USD.localLifetime)} lifetime
+                license
+              </p>
+              <ul className="mt-6 space-y-2.5">
+                {COMMON_PLAN_FEATURES.map((feature) => (
+                  <FeatureItem key={feature}>{feature}</FeatureItem>
+                ))}
+                <FeatureItem>Install on Mac, Windows, or Linux</FeatureItem>
+                <FeatureItem>Bring your own API keys</FeatureItem>
+                <FeatureItem>Self-hosted runtime on your laptop</FeatureItem>
+              </ul>
+              <div className="mt-auto pt-7">
+                <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
+                  Install locally
+                </PixelButton>
+              </div>
+            </PlanCardBody>
+          </section>
+
+          <section className="flex min-w-0 flex-col bg-white">
+            <PlanHeader
+              index="02"
               eyebrow="Lifetime deal"
               badge="Lifetime access"
               title="Cloud Lifetime"
               icon={Infinity}
               description="For solo founders who want hosted infrastructure. Pay once and use Trooper forever — one workspace, no connected devices."
             />
-            <div className="flex flex-1 flex-col px-6 py-6 md:px-8">
+            <PlanCardBody>
               <div className="flex items-end gap-1.5">
                 <span className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
                   {formatUsd(PRICING_USD.cloudLifetime)}
@@ -265,20 +283,20 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
                   Get lifetime deal
                 </PixelButton>
               </div>
-            </div>
+            </PlanCardBody>
           </section>
 
-          <section className="flex min-w-0 flex-col border-t-2 border-t-emerald-500 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.08)] lg:border-t-0">
+          <section className="flex min-w-0 flex-col border-t-2 border-t-emerald-500 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.08)] lg:col-span-2">
             <PlanHeader
               featured
-              index="02"
+              index="03"
               eyebrow="Hosted by us"
               badge="Most popular"
               title="Trooper Cloud"
               icon={Cloud}
               description="A managed AI workspace with hosted runtime, workflows, memory, and collaboration for your team."
             />
-            <div className="flex flex-1 flex-col px-6 py-6 md:px-8">
+            <PlanCardBody>
               <CloudTierTabs value={cloudTier} onChange={setCloudTier} />
               <p className="mt-4 text-sm font-medium text-emerald-700">
                 {PRICING_USD.cloudIncludedMembers} team members included
@@ -316,12 +334,12 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
                   Choose · {formatUsd(estimatedMonthly)}/month
                 </PixelButton>
               </div>
-            </div>
+            </PlanCardBody>
           </section>
 
           <section className="flex min-w-0 flex-col bg-white lg:col-span-2 lg:grid lg:grid-cols-[1fr_1.3fr_auto] lg:items-center">
             <PlanHeader
-              index="03"
+              index="04"
               eyebrow="Private deployment"
               badge="Custom"
               title="Enterprise"
