@@ -3,17 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-    Check, X, Users, Sparkles, HelpCircle, Globe, Headphones,
-    Bot, MessageSquare, Monitor, Terminal, Brain, Eye, History,
-    ShieldCheck, Puzzle, Smartphone, Cpu, Network, GitBranch,
-    Server, Lock, BadgeCheck, Settings, Mail, Share2, Database,
-    Workflow, Palette, UserPlus, FileCheck, Wrench, DollarSign,
-} from 'lucide-react';
+import { X } from 'lucide-react';
 import Header from "@/components/ui/header";
 import SectionShell from "@/components/ui/SectionShell";
 import SimplePricing from "@/components/SimplePricing";
-import FAQ from "@/components/faq";
+import PricingCompareTable from "@/components/PricingCompareTable";
 import { formatUsd, PRICING_USD } from "@/lib/pricing";
 
 // --- Exit Intent Popup ---
@@ -66,126 +60,6 @@ const ExitIntentPopup: React.FC<ExitIntentPopupProps> = ({ isOpen, onClose }) =>
         </AnimatePresence>
     );
 };
-
-// --- Comparison Table Types ---
-type ComparisonCell = boolean | { text: string; sub?: string };
-
-interface ComparisonRow {
-    feature: string;
-    local: ComparisonCell;
-    cloudLifetime: ComparisonCell;
-    cloud: ComparisonCell;
-    enterprise: ComparisonCell;
-}
-
-interface ComparisonCategory {
-    title: string;
-    icon: React.ComponentType<{ className?: string }>;
-    iconColor: string;
-    rows: ComparisonRow[];
-}
-
-// --- Comparison Table Data (Solo vs Cloud vs Enterprise) ---
-const comparisonCategories: ComparisonCategory[] = [
-    {
-        title: "Core AI",
-        icon: Sparkles,
-        iconColor: "text-violet-500",
-        rows: [
-            { feature: "Unlimited Agents", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Unlimited Chats", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Unlimited Devices", local: false, cloudLifetime: false, cloud: true, enterprise: true },
-            { feature: "All AI Models (OpenAI, Claude, Gemini, etc.)", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Claude Code & Codex support", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Multi-agent orchestration", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-        ],
-    },
-    {
-        title: "Memory & Context",
-        icon: Brain,
-        iconColor: "text-green-500",
-        rows: [
-            { feature: "Adaptive Memory", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Context Awareness", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "System Memory", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Shared team knowledge base", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Shared company memory", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-        ],
-    },
-    {
-        title: "Platform & Tools",
-        icon: Globe,
-        iconColor: "text-cyan-500",
-        rows: [
-            { feature: "Always-on Virtual PC", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "3,000+ OpenClaw Skills", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Browser Automation", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "GitHub integration (commits, PRs, reviews)", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Email automation", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Shared workflows across team", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Deploy apps, automations, internal tools", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-        ],
-    },
-    {
-        title: "Apps & Devices",
-        icon: Smartphone,
-        iconColor: "text-slate-600",
-        rows: [
-            { feature: "Mac app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Windows app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "iOS app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Android app", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Connected devices (OpenClaw nodes)", local: { text: "None" }, cloudLifetime: { text: "None" }, cloud: { text: "Unlimited" }, enterprise: { text: "Unlimited" } },
-        ],
-    },
-    {
-        title: "Team & Collaboration",
-        icon: Users,
-        iconColor: "text-emerald-500",
-        rows: [
-            { feature: "Team seats", local: { text: "1 user", sub: `${formatUsd(PRICING_USD.localLifetime)} lifetime` }, cloudLifetime: { text: "2 included", sub: "lifetime" }, cloud: { text: "2 included", sub: `+${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/member/mo` }, enterprise: { text: "Custom" } },
-            { feature: "Workspaces", local: { text: "1 workspace" }, cloudLifetime: { text: "1 workspace" }, cloud: { text: "Multi-workspace" }, enterprise: { text: "Multi-workspace" } },
-            { feature: "Org licensing", local: { text: "Personal laptop install" }, cloudLifetime: { text: "Hosted lifetime · 1 org" }, cloud: { text: "Multi-workspace" }, enterprise: { text: "Multi-workspace" } },
-            { feature: "Invite teammates & assign roles", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Team collaboration & shared memory", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Admin controls & permissions", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-        ],
-    },
-    {
-        title: "Security & Compliance",
-        icon: ShieldCheck,
-        iconColor: "text-blue-500",
-        rows: [
-            { feature: "Data encryption", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "SSO and enterprise auth", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-            { feature: "Private VPC / on-prem", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-            { feature: "Security reviews & custom agreements", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-        ],
-    },
-    {
-        title: "Deployment",
-        icon: Server,
-        iconColor: "text-indigo-500",
-        rows: [
-            { feature: "Runs on your laptop", local: true, cloudLifetime: false, cloud: false, enterprise: false },
-            { feature: "Self-hosted", local: true, cloudLifetime: false, cloud: false, enterprise: true },
-            { feature: "Cloud-hosted by Trooper", local: false, cloudLifetime: true, cloud: true, enterprise: false },
-            { feature: "White-label & custom domain", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-            { feature: "Custom seat volume pricing", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-            { feature: "Dedicated onboarding & migration", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-        ],
-    },
-    {
-        title: "Support",
-        icon: Headphones,
-        iconColor: "text-amber-500",
-        rows: [
-            { feature: "Community support", local: true, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Priority email support", local: false, cloudLifetime: true, cloud: true, enterprise: true },
-            { feature: "Priority support with SLA", local: false, cloudLifetime: false, cloud: false, enterprise: true },
-        ],
-    },
-];
 
 // --- FAQ ---
 interface FAQItem {
@@ -338,23 +212,6 @@ const FAQSection: React.FC = () => {
     );
 };
 
-// --- Comparison Cell Renderer ---
-const CellRenderer: React.FC<{ cell: ComparisonCell }> = ({ cell }) => {
-    if (typeof cell === "boolean") {
-        return cell ? (
-            <Check className="w-5 h-5 text-green-600 shrink-0" strokeWidth={1.5} />
-        ) : (
-            <X className="w-5 h-5 text-slate-300 shrink-0" strokeWidth={1.5} />
-        );
-    }
-    return (
-        <div className="flex flex-col text-center items-center">
-            <span className="text-slate-700 text-sm">{cell.text}</span>
-            {cell.sub && <span className="text-slate-500 text-xs">{cell.sub}</span>}
-        </div>
-    );
-};
-
 // --- Main Pricing Component ---
 const Pricing: React.FC = () => {
     const [showExitPopup, setShowExitPopup] = useState(false);
@@ -381,156 +238,7 @@ const Pricing: React.FC = () => {
             </SectionShell>
 
             <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-slate-50">
-            {/* Comparison Table */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                {/* Desktop comparison */}
-                <div className="hidden lg:block mb-12 sm:mb-20">
-                    <h4 className="text-xl sm:text-2xl font-bold text-slate-900 text-start mb-6 sm:mb-8">
-                        Compare plans
-                    </h4>
-                    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
-                        {/* Sticky header */}
-                        <div className="sticky top-16 z-10 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-4">
-                                <div className="font-medium text-slate-600">Features</div>
-                                <div className="text-center font-medium text-slate-600">Local Install</div>
-                                <div className="text-center font-medium text-slate-600">Solo Cloud</div>
-                                <div className="text-center font-medium text-slate-900">Trooper Cloud</div>
-                                <div className="text-center font-medium text-slate-600">Enterprise</div>
-                            </div>
-                        </div>
-                        <div className="divide-y divide-slate-100">
-                            {comparisonCategories.map((category) => {
-                                const Icon = category.icon;
-                                return (
-                                    <div key={category.title}>
-                                        <div className="border-b border-slate-100 bg-slate-50/50">
-                                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-4">
-                                                <h3 className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500`}>
-                                                    <Icon className={`w-[18px] h-[18px] ${category.iconColor}`} />
-                                                    {category.title}
-                                                </h3>
-                                                <div />
-                                                <div />
-                                                <div />
-                                                <div />
-                                            </div>
-                                        </div>
-                                        {category.rows.map((row) => (
-                                            <div key={row.feature} className="border-b border-slate-100">
-                                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 items-center py-3">
-                                                    <div className="text-slate-700 text-sm">{row.feature}</div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.local} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.cloudLifetime} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.cloud} /></div>
-                                                    <div className="flex justify-center"><CellRenderer cell={row.enterprise} /></div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                );
-                            })}
-                            {/* Price row */}
-                            <div className="border-b border-slate-100">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 items-center py-3">
-                                    <div className="font-medium text-sm text-slate-900">Price</div>
-                                    <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">$0/mo · {formatUsd(PRICING_USD.localLifetime)} lifetime</span>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">{formatUsd(PRICING_USD.cloudLifetime)} one-time</span>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">{formatUsd(PRICING_USD.cloudStandardMonthly)}/mo · {formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo Max</span>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        <span className="text-sm text-slate-900 font-semibold">Custom</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* CTA row */}
-                            <div className="border-b border-slate-200 bg-slate-50/30">
-                                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-6">
-                                    <div />
-                                    <div className="flex justify-center px-2">
-                                        <Link
-                                            href="https://app.trooper.so"
-                                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
-                                        >
-                                            Install locally
-                                        </Link>
-                                    </div>
-                                    <div className="flex justify-center px-2">
-                                        <Link
-                                            href="https://app.trooper.so"
-                                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
-                                        >
-                                            Get lifetime deal
-                                        </Link>
-                                    </div>
-                                    <div className="flex justify-center px-2">
-                                        <Link
-                                            href="https://app.trooper.so"
-                                            className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
-                                        >
-                                            Start with cloud
-                                        </Link>
-                                    </div>
-                                    <div className="flex justify-center px-2">
-                                        <Link
-                                            href="https://cal.com/trooper/setup-call"
-                                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
-                                        >
-                                            Talk to sales
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile comparison - stacked cards */}
-                <div className="lg:hidden mb-12">
-                    <h4 className="text-xl font-bold text-slate-900 mb-6">Compare plans</h4>
-                    {comparisonCategories.map((category) => {
-                        const Icon = category.icon;
-                        return (
-                            <div key={category.title} className="mb-6">
-                                <h3 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 mb-3">
-                                    <Icon className={`w-4 h-4 ${category.iconColor}`} />
-                                    {category.title}
-                                </h3>
-                                <div className="bg-white rounded-lg border border-slate-200 overflow-hidden divide-y divide-slate-100">
-                                    {category.rows.map((row) => (
-                                        <div key={row.feature} className="px-4 py-3">
-                                            <div className="text-sm font-medium text-slate-800 mb-2">{row.feature}</div>
-                                            <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <span className="text-slate-400">Local</span>
-                                                    <CellRenderer cell={row.local} />
-                                                </div>
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <span className="text-slate-400">Cloud LT</span>
-                                                    <CellRenderer cell={row.cloudLifetime} />
-                                                </div>
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <span className="text-slate-400">Cloud</span>
-                                                    <CellRenderer cell={row.cloud} />
-                                                </div>
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <span className="text-slate-400">Enterprise</span>
-                                                    <CellRenderer cell={row.enterprise} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
+                <PricingCompareTable />
             </SectionShell>
 
             <SectionShell eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-white">
