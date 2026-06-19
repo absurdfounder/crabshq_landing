@@ -7,6 +7,8 @@ export const PRICING_USD = {
   cloudAdditionalMemberMonthly: 10,
   cloudIncludedMembers: 2,
   cloudIncludedWorkspaces: 1,
+  localIncludedMembers: 1,
+  localIncludedWorkspaces: 1,
 } as const;
 
 export type CloudSubscriptionTier = 'standard' | 'premium';

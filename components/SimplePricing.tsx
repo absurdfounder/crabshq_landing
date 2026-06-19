@@ -33,9 +33,9 @@ type SimplePricingProps = {
 
 /** Shared row bands — keeps headers, prices, steppers, features, and CTAs aligned across columns. */
 const PRICING_GRID_TEMPLATE_ROWS =
-  'auto minmax(4.5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(2.75rem,auto) minmax(11.5rem,auto) minmax(0px,1fr) auto';
+  'auto minmax(5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(2.75rem,auto) minmax(11.5rem,auto) minmax(0px,1fr) auto';
 
-const TIER_RAIL_MIN_H = 'min-h-[4.5rem]';
+const TIER_RAIL_MIN_H = 'min-h-[5rem]';
 const PRICE_ROW_MIN_H = 'min-h-[2.75rem]';
 const SUBLINE_ROW_MIN_H = 'min-h-[2.5rem]';
 const NOTE_ROW_MIN_H = 'min-h-[2.75rem]';
@@ -109,14 +109,14 @@ function AllowanceStepper({
   min,
   onChange,
   helper,
-  readOnly = false,
+  disableIncrease = false,
 }: {
   label: string;
   value: number;
   min: number;
   onChange: (value: number) => void;
   helper: string;
-  readOnly?: boolean;
+  disableIncrease?: boolean;
 }) {
   return (
     <div className="flex items-center justify-between gap-2 border border-slate-200 bg-white px-3 py-2.5">
@@ -128,7 +128,7 @@ function AllowanceStepper({
         <button
           type="button"
           className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
-          disabled={readOnly || value <= min}
+          disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
           aria-label={`Decrease ${label.toLowerCase()}`}
         >
@@ -138,7 +138,7 @@ function AllowanceStepper({
         <button
           type="button"
           className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
-          disabled={readOnly}
+          disabled={disableIncrease}
           onClick={() => onChange(Math.min(150, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
         >
@@ -161,7 +161,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
   return (
     <TierRail>
       <div
-        className="grid w-fit gap-1 border border-slate-200 bg-slate-50/80 p-1"
+        className="grid w-fit gap-1 rounded-sm border border-slate-200/90 bg-slate-50/60 p-1"
         role="radiogroup"
         aria-label="Hosting mode"
       >
@@ -169,9 +169,10 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
           type="button"
           role="radio"
           aria-checked={selected}
+          tabIndex={-1}
           className={[
-            'h-8 rounded-sm px-3 py-2 transition-colors xl:px-3',
-            selected ? 'bg-white shadow-sm ring-1 ring-slate-200 text-slate-900' : 'text-slate-500 hover:bg-white/70',
+            'h-8 cursor-default rounded-sm px-3 py-2 xl:px-3',
+            selected ? 'bg-white text-slate-600 ring-1 ring-slate-200/80' : 'text-slate-400',
           ].join(' ')}
         >
           <span className="block text-center text-[10px] font-medium xl:text-[11px]">{label}</span>
@@ -191,7 +192,7 @@ function CloudTierTabs({
   return (
     <TierRail>
       <div
-        className="grid w-fit grid-cols-2 gap-1 border border-slate-200 bg-slate-50/80 p-1"
+        className="grid w-full grid-cols-2 gap-1 rounded-md border border-slate-300 bg-slate-100 p-1 shadow-sm"
         role="radiogroup"
         aria-label="Trooper Cloud tier"
       >
@@ -203,13 +204,27 @@ function CloudTierTabs({
               type="button"
               role="radio"
               aria-checked={selected}
+              aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
               onClick={() => onChange(tier.id)}
               className={[
-                'h-8 rounded-sm px-3 py-2 transition-colors xl:px-3',
-                selected ? 'bg-white shadow-sm ring-1 ring-slate-200 text-slate-900' : 'text-slate-500 hover:bg-white/70',
+                'rounded-md px-2 py-2 transition-all duration-150 xl:px-3',
+                selected
+                  ? 'bg-trooper text-white shadow-md ring-2 ring-trooper/30'
+                  : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm',
               ].join(' ')}
             >
-              <span className="block text-center text-[10px] font-medium xl:text-[11px]">{tier.label}</span>
+              <span className="block text-center text-[11px] font-semibold xl:text-xs">{tier.label}</span>
+              <span
+                className={[
+                  'mt-0.5 block text-center text-sm font-semibold tabular-nums xl:text-base',
+                  selected ? 'text-white' : 'text-slate-700',
+                ].join(' ')}
+              >
+                {formatUsd(tier.price)}
+                <span className={['text-[10px] font-normal', selected ? 'text-white/80' : 'text-slate-500'].join(' ')}>
+                  /mo
+                </span>
+              </span>
             </button>
           );
         })}
@@ -223,31 +238,39 @@ function AllowanceBlock({
   workspaceCount,
   onSeatChange,
   onWorkspaceChange,
-  readOnly = false,
+  minSeats,
+  minWorkspaces,
+  seatHelper,
+  workspaceHelper,
+  disableIncrease = false,
 }: {
   seatCount: number;
   workspaceCount: number;
   onSeatChange: (value: number) => void;
   onWorkspaceChange: (value: number) => void;
-  readOnly?: boolean;
+  minSeats: number;
+  minWorkspaces: number;
+  seatHelper: string;
+  workspaceHelper: string;
+  disableIncrease?: boolean;
 }) {
   return (
     <div className={`space-y-2 ${ALLOWANCE_ROW_MIN_H}`}>
       <AllowanceStepper
         label="Team members"
         value={seatCount}
-        min={PRICING_USD.cloudIncludedMembers}
+        min={minSeats}
         onChange={onSeatChange}
-        helper={`${PRICING_USD.cloudIncludedMembers} included`}
-        readOnly={readOnly}
+        helper={seatHelper}
+        disableIncrease={disableIncrease}
       />
       <AllowanceStepper
         label="Workspaces"
         value={workspaceCount}
-        min={PRICING_USD.cloudIncludedWorkspaces}
+        min={minWorkspaces}
         onChange={onWorkspaceChange}
-        helper={`${PRICING_USD.cloudIncludedWorkspaces} included`}
-        readOnly={readOnly}
+        helper={workspaceHelper}
+        disableIncrease={disableIncrease}
       />
     </div>
   );
@@ -429,8 +452,12 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
   const [cloudTier, setCloudTier] = useState<CloudSubscriptionTier>('standard');
   const [seatCount, setSeatCount] = useState<number>(PRICING_USD.cloudIncludedMembers);
   const [workspaceCount, setWorkspaceCount] = useState<number>(PRICING_USD.cloudIncludedWorkspaces);
-  const [displaySeatCount, setDisplaySeatCount] = useState<number>(PRICING_USD.cloudIncludedMembers);
-  const [displayWorkspaceCount, setDisplayWorkspaceCount] = useState<number>(PRICING_USD.cloudIncludedWorkspaces);
+  const [localSeatCount, setLocalSeatCount] = useState<number>(PRICING_USD.localIncludedMembers);
+  const [localWorkspaceCount, setLocalWorkspaceCount] = useState<number>(PRICING_USD.localIncludedWorkspaces);
+  const [soloSeatCount, setSoloSeatCount] = useState<number>(PRICING_USD.cloudIncludedMembers);
+  const [soloWorkspaceCount, setSoloWorkspaceCount] = useState<number>(PRICING_USD.cloudIncludedWorkspaces);
+  const [enterpriseSeatCount, setEnterpriseSeatCount] = useState<number>(PRICING_USD.cloudIncludedMembers);
+  const [enterpriseWorkspaceCount, setEnterpriseWorkspaceCount] = useState<number>(PRICING_USD.cloudIncludedWorkspaces);
 
   const estimatedMonthly = estimateCloudMonthly({
     tier: cloudTier,
@@ -440,12 +467,29 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
 
   const cloudTierPrice = formatUsd(getCloudTierMonthlyPrice(cloudTier));
 
-  const standardAllowance = (
+  const localAllowance = (
     <AllowanceBlock
-      seatCount={displaySeatCount}
-      workspaceCount={displayWorkspaceCount}
-      onSeatChange={setDisplaySeatCount}
-      onWorkspaceChange={setDisplayWorkspaceCount}
+      seatCount={localSeatCount}
+      workspaceCount={localWorkspaceCount}
+      onSeatChange={setLocalSeatCount}
+      onWorkspaceChange={setLocalWorkspaceCount}
+      minSeats={PRICING_USD.localIncludedMembers}
+      minWorkspaces={PRICING_USD.localIncludedWorkspaces}
+      seatHelper={`${PRICING_USD.localIncludedMembers} included`}
+      workspaceHelper={`${PRICING_USD.localIncludedWorkspaces} included`}
+    />
+  );
+
+  const soloAllowance = (
+    <AllowanceBlock
+      seatCount={soloSeatCount}
+      workspaceCount={soloWorkspaceCount}
+      onSeatChange={setSoloSeatCount}
+      onWorkspaceChange={setSoloWorkspaceCount}
+      minSeats={PRICING_USD.cloudIncludedMembers}
+      minWorkspaces={PRICING_USD.cloudIncludedWorkspaces}
+      seatHelper={`${PRICING_USD.cloudIncludedMembers} included`}
+      workspaceHelper={`${PRICING_USD.cloudIncludedWorkspaces} included`}
     />
   );
 
@@ -455,6 +499,24 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       workspaceCount={workspaceCount}
       onSeatChange={setSeatCount}
       onWorkspaceChange={setWorkspaceCount}
+      minSeats={PRICING_USD.cloudIncludedMembers}
+      minWorkspaces={PRICING_USD.cloudIncludedWorkspaces}
+      seatHelper={`${PRICING_USD.cloudIncludedMembers} included`}
+      workspaceHelper={`${PRICING_USD.cloudIncludedWorkspaces} included`}
+    />
+  );
+
+  const enterpriseAllowance = (
+    <AllowanceBlock
+      seatCount={enterpriseSeatCount}
+      workspaceCount={enterpriseWorkspaceCount}
+      onSeatChange={setEnterpriseSeatCount}
+      onWorkspaceChange={setEnterpriseWorkspaceCount}
+      minSeats={PRICING_USD.cloudIncludedMembers}
+      minWorkspaces={PRICING_USD.cloudIncludedWorkspaces}
+      seatHelper="200 included"
+      workspaceHelper="100 included"
+      disableIncrease
     />
   );
 
@@ -503,7 +565,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
     local: {
       index: '01',
       eyebrow: 'Self-install',
-      badge: 'Free',
+      badge: 'Lifetime',
       title: 'Local Install',
       icon: Laptop,
       description:
@@ -517,7 +579,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       ),
       note: <PricingNote>Bring your own API keys. Model usage billed by your providers.</PricingNote>,
       tierRail: <HostingModePill label="Self Hosted" />,
-      allowance: standardAllowance,
+      allowance: localAllowance,
       features: localFeatures,
       cta: (
         <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
@@ -528,8 +590,8 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
     lifetime: {
       index: '02',
       eyebrow: 'Lifetime deal',
-      badge: 'Lifetime access',
-      title: 'Cloud Lifetime',
+      badge: 'Lifetime',
+      title: 'Solo Cloud',
       icon: Infinity,
       description:
         'For solo founders who want hosted infrastructure. Pay once and use Trooper forever — one workspace, no connected devices.',
@@ -542,7 +604,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       ),
       note: <PricingNote>Bring your own API keys. Model usage billed by your providers.</PricingNote>,
       tierRail: <HostingModePill label="Cloud Self Hosting" />,
-      allowance: standardAllowance,
+      allowance: soloAllowance,
       features: lifetimeFeatures,
       cta: (
         <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
@@ -589,7 +651,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       subline: <PricingSubline>Volume pricing and dedicated support</PricingSubline>,
       note: <PricingNote>Self-hosted deployment with migration and custom agreements.</PricingNote>,
       tierRail: <HostingModePill label="Self Hosted" />,
-      allowance: standardAllowance,
+      allowance: enterpriseAllowance,
       features: enterpriseFeatures,
       cta: (
         <PixelButton

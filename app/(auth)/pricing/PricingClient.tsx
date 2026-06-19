@@ -201,7 +201,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: `Local Install is free ($0/mo) on your laptop, or ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine — one workspace, no connected devices. Cloud Lifetime is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+            answer: `Local Install is free ($0/mo) on your laptop, or ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine — one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
         },
         {
             question: "Does Trooper Cloud include hosting?",
@@ -394,7 +394,7 @@ const Pricing: React.FC = () => {
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-5 py-4">
                                 <div className="font-medium text-slate-600">Features</div>
                                 <div className="text-center font-medium text-slate-600">Local Install</div>
-                                <div className="text-center font-medium text-slate-600">Cloud Lifetime</div>
+                                <div className="text-center font-medium text-slate-600">Solo Cloud</div>
                                 <div className="text-center font-medium text-slate-900">Trooper Cloud</div>
                                 <div className="text-center font-medium text-slate-600">Enterprise</div>
                             </div>
