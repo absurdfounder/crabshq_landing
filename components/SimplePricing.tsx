@@ -33,9 +33,9 @@ type SimplePricingProps = {
 
 /** Shared row bands — keeps headers, prices, steppers, features, and CTAs aligned across columns. */
 const PRICING_GRID_TEMPLATE_ROWS =
-  'auto minmax(5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(2.75rem,auto) minmax(11.5rem,auto) minmax(0px,1fr) auto';
+  'auto minmax(4.5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(2.75rem,auto) minmax(11.5rem,auto) minmax(0px,1fr) auto';
 
-const TIER_RAIL_MIN_H = 'min-h-[5rem]';
+const TIER_RAIL_MIN_H = 'min-h-[4.5rem]';
 const PRICE_ROW_MIN_H = 'min-h-[2.75rem]';
 const SUBLINE_ROW_MIN_H = 'min-h-[2.5rem]';
 const NOTE_ROW_MIN_H = 'min-h-[2.75rem]';
@@ -192,7 +192,7 @@ function CloudTierTabs({
   return (
     <TierRail>
       <div
-        className="grid w-full grid-cols-2 gap-1 rounded-md border border-slate-300 bg-slate-100 p-1 shadow-sm"
+        className="grid w-full grid-cols-2 gap-1 rounded-sm border border-slate-300 bg-slate-100 p-1 shadow-sm"
         role="radiogroup"
         aria-label="Trooper Cloud tier"
       >
@@ -207,23 +207,20 @@ function CloudTierTabs({
               aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
               onClick={() => onChange(tier.id)}
               className={[
-                'rounded-md px-2 py-2 transition-all duration-150 xl:px-3',
+                'flex h-8 items-center justify-center gap-1 rounded-sm px-2 transition-all duration-150 xl:gap-1.5 xl:px-2.5',
                 selected
-                  ? 'bg-trooper text-white shadow-md ring-2 ring-trooper/30'
-                  : 'text-slate-600 hover:bg-white hover:text-slate-900 hover:shadow-sm',
+                  ? 'bg-trooper text-white shadow-sm ring-1 ring-trooper/40'
+                  : 'text-slate-600 hover:bg-white hover:text-slate-900',
               ].join(' ')}
             >
-              <span className="block text-center text-[11px] font-semibold xl:text-xs">{tier.label}</span>
+              <span className="text-[10px] font-semibold leading-none xl:text-[11px]">{tier.label}</span>
               <span
                 className={[
-                  'mt-0.5 block text-center text-sm font-semibold tabular-nums xl:text-base',
-                  selected ? 'text-white' : 'text-slate-700',
+                  'text-[10px] font-medium tabular-nums leading-none xl:text-[11px]',
+                  selected ? 'text-white/90' : 'text-slate-500',
                 ].join(' ')}
               >
-                {formatUsd(tier.price)}
-                <span className={['text-[10px] font-normal', selected ? 'text-white/80' : 'text-slate-500'].join(' ')}>
-                  /mo
-                </span>
+                {formatUsd(tier.price)}/mo
               </span>
             </button>
           );
