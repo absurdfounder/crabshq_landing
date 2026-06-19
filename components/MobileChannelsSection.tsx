@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronRight, Contact, Download } from 'lucide-react';
 import ChannelIcon from '@/components/marketing/ChannelIcon';
@@ -59,6 +59,9 @@ function PhoneChatScreen() {
   const reduceMotion = useReducedMotion();
   const [visibleCount, setVisibleCount] = useState(reduceMotion ? CHAT_SCRIPT.length : 0);
   const [showTyping, setShowTyping] = useState(!reduceMotion);
+  const [threadOffset, setThreadOffset] = useState(0);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -84,11 +87,20 @@ function PhoneChatScreen() {
     return () => timers.forEach(clearTimeout);
   }, [reduceMotion]);
 
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const thread = threadRef.current;
+    if (!viewport || !thread) return;
+
+    const overflow = Math.max(0, thread.scrollHeight - viewport.clientHeight);
+    setThreadOffset(overflow);
+  }, [visibleCount, showTyping]);
+
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-white">
-      <div className="shrink-0 border-b border-slate-100 bg-white px-3 pb-2 pt-9 text-center">
+      <div className="shrink-0 border-b border-slate-100 bg-white px-4 pb-2 pt-9 text-center">
         <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/15">
           <Image
             src="/images/trooper-logomark.png"
@@ -99,37 +111,58 @@ function PhoneChatScreen() {
             style={{ imageRendering: 'pixelated' }}
           />
         </div>
-        <p className="mt-1 flex items-center justify-center gap-0.5 text-[11px] font-medium text-slate-900 sm:text-[12px]">
+        <p className="mt-1 flex items-center justify-center gap-0.5 text-[12px] font-medium text-slate-900">
           Trooper
           <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 space-y-2 overflow-hidden px-2.5 pb-3 pt-2">
-        <AnimatePresence initial={false}>
-          {visibleMessages.map((message) => (
-            <motion.div
-              key={message.id}
-              initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.32, ease }}
-              className={[
-                'max-w-[90%] px-3 py-1.5 text-[10.5px] leading-[1.45] sm:text-[11px]',
-                message.direction === 'in'
-                  ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
-                  : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
-              ].join(' ')}
-            >
-              {message.text}
-            </motion.div>
-          ))}
-        </AnimatePresence>
+      <div
+        ref={viewportRef}
+        className="relative min-h-0 flex-1 overflow-hidden"
+        style={{
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 100%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 100%)',
+        }}
+      >
+        <motion.div
+          ref={threadRef}
+          className="flex min-h-full flex-col justify-end gap-2 px-4 pb-4 pt-2"
+          animate={{ y: reduceMotion ? 0 : -threadOffset }}
+          transition={{ duration: 0.45, ease }}
+        >
+          <AnimatePresence initial={false} mode="popLayout">
+            {visibleMessages.map((message) => (
+              <motion.div
+                key={message.id}
+                layout
+                initial={reduceMotion ? false : { opacity: 0, y: 10, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.32, ease }}
+                className={[
+                  'max-w-[85%] px-3.5 py-2 text-[11px] leading-[1.45] sm:text-[12px]',
+                  message.direction === 'in'
+                    ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
+                    : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
+                ].join(' ')}
+              >
+                {message.text}
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
-        {showTyping ? (
-          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-            <TypingIndicator />
-          </motion.div>
-        ) : null}
+          {showTyping ? (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <TypingIndicator />
+            </motion.div>
+          ) : null}
+        </motion.div>
       </div>
     </div>
   );
@@ -138,14 +171,14 @@ function PhoneChatScreen() {
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[300px] shrink-0 drop-shadow-[0_28px_56px_rgba(15,23,42,0.22)]"
+      className="relative mx-auto w-full max-w-[380px] shrink-0 drop-shadow-[0_32px_64px_rgba(15,23,42,0.24)] sm:max-w-[400px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
       viewport={{ once: true, margin: '-40px' }}
     >
       <div className="relative aspect-[292/350] w-full">
-        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.6rem] bg-white">
+        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.75rem] bg-white">
           <PhoneChatScreen />
         </div>
 
@@ -153,7 +186,7 @@ function PhoneChatMockup() {
           src="/images/iphone-frame.png"
           alt=""
           fill
-          sizes="300px"
+          sizes="(max-width: 640px) 380px, 400px"
           className="pointer-events-none z-10 select-none object-fill"
           priority
         />
