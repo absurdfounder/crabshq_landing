@@ -88,7 +88,7 @@ const faqs: FAQCategories = {
     },
     {
       question: "What is the difference between Solo, Cloud, and Enterprise?",
-      answer: `Local Install is free ($0/mo) on your laptop with unlimited everything — same core solo experience, self-installed on your machine. Solo Founder is a one-time $49 lifetime deal for individual founders. Cloud Lifetime is $149 one-time for hosted team collaboration forever. Trooper Cloud is $25/mo (Cloud) or $99/mo (Cloud Max) with managed infrastructure. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.`,
+      answer: `Local Install is free ($0/mo) on your laptop, or $49 one-time for a lifetime license on your machine. Cloud Lifetime is $149 one-time for hosted team collaboration forever. Trooper Cloud is $25/mo (Cloud) or $99/mo (Cloud Max) with managed infrastructure. Enterprise is custom pricing with self-hosting, multi-org support, SSO, VPC, and dedicated support. All plans include unlimited agents, chats, and devices.`,
     },
     {
       question: "Does Trooper Cloud include hosting?",

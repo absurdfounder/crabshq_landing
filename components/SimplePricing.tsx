@@ -104,6 +104,11 @@ const localInstallHeader: Feature[] = [
   { icon: Laptop, label: 'Install on your Mac, Windows, or Linux laptop', color: 'text-trooper' },
   { icon: Server, label: 'Self-install cloud runtime on your machine', color: 'text-indigo-500' },
   { icon: DollarSign, label: '$0/month — no subscription', color: 'text-trooper-700' },
+  {
+    icon: Infinity,
+    label: `${formatUsd(PRICING_USD.localLifetime)} one-time lifetime license on your laptop`,
+    color: 'text-trooper',
+  },
 ];
 
 const localSoloFeatures: Feature[] = soloFeatures.map((feature) => {
@@ -182,7 +187,7 @@ const plans: Plan[] = [
     eyebrow: 'Self-install',
     price: '$0',
     cadence: '/ month',
-    perSeat: 'Free on your laptop · unlimited everything',
+    perSeat: `Free, or ${formatUsd(PRICING_USD.localLifetime)} one-time lifetime on your laptop`,
     description:
       'Install Trooper on your laptop at no cost. Same unlimited solo experience — self-hosted runtime on your machine.',
     badge: 'Free',
@@ -201,40 +206,22 @@ const plans: Plan[] = [
     highlight: false,
   },
   {
-    name: 'Solo Founder',
+    name: 'Cloud Lifetime',
     eyebrow: 'Lifetime deal',
-    price: formatUsd(PRICING_USD.soloLifetime),
+    price: formatUsd(PRICING_USD.cloudLifetime),
     cadence: 'one-time payment',
     perSeat: 'One user · one organization',
     description:
-      'For solo founders who want full control. Self-host on your machine, pay once, and use forever.',
-    badge: 'Lifetime Access',
-    note: 'Bring your own API keys. Model usage is billed separately by OpenAI, Anthropic, Google, etc.',
-    sections: [{ label: '', features: soloFeatures }],
-    excludedFeatures: [...teamCloudExcluded, ...enterpriseExcluded],
-    cta: {
-      text: 'Get lifetime deal',
-      href: 'https://app.trooper.so',
-    },
-    highlight: false,
-  },
-  {
-    name: 'Cloud Lifetime',
-    eyebrow: 'Hosted lifetime',
-    price: formatUsd(PRICING_USD.cloudLifetime),
-    cadence: 'one-time payment',
-    perSeat: 'Pay once · hosted cloud forever',
-    description:
-      'Managed Trooper Cloud with team collaboration — one payment, lifetime hosted access on our infrastructure.',
+      'For solo founders who want full control with hosted infrastructure. Pay once and use Trooper Cloud forever.',
     badge: 'Lifetime Access',
     note: 'Includes 2 team members. Bring your own API keys for model usage.',
     sections: [
       { label: '', features: cloudLifetimeFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
+      { label: '', features: [], inheritsFrom: 'All core AI features from Local Install' },
     ],
     excludedFeatures: enterpriseExcluded,
     cta: {
-      text: 'Get cloud lifetime',
+      text: 'Get lifetime deal',
       href: 'https://app.trooper.so',
     },
     highlight: false,
@@ -252,7 +239,7 @@ const plans: Plan[] = [
     cloudTiers: true,
     sections: [
       { label: '', features: cloudFeatures },
-      { label: '', features: [], inheritsFrom: 'Everything from Solo Plan' },
+      { label: '', features: [], inheritsFrom: 'Everything from Cloud Lifetime' },
     ],
     excludedFeatures: enterpriseExcluded,
     cta: {
@@ -526,7 +513,7 @@ function DesktopPricingGrid({ plans }: { plans: Plan[] }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       viewport={{ once: true }}
-      className="grid grid-cols-5 grid-rows-[auto_auto_auto_auto_1fr]"
+      className="grid grid-cols-4 grid-rows-[auto_auto_auto_auto_1fr]"
     >
       {plans.map((plan, idx) => {
         const isLast = idx === plans.length - 1;
