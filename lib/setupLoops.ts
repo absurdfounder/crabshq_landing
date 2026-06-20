@@ -17,13 +17,30 @@ export type SetupLoopCampaignPreview = {
   footer: string;
 };
 
+export type SetupLoopMetaAdVariant = {
+  platform: 'Facebook' | 'Instagram';
+  label: string;
+  detail: string;
+  dailyBudget: string;
+};
+
+export type SetupLoopMetaAdsPreview = {
+  appName: string;
+  statusLabel: string;
+  inspiration: string;
+  variants: SetupLoopMetaAdVariant[];
+  moreLabel: string;
+  footer: string;
+};
+
 export type SetupLoopChat = {
   userMessage: string;
   agentMessage: string;
   campaign?: SetupLoopCampaignPreview;
+  metaAds?: SetupLoopMetaAdsPreview;
 };
 
-export type SetupLoopId = 'command-layer' | 'apple-search-ads';
+export type SetupLoopId = 'command-layer' | 'apple-search-ads' | 'meta-ads-launch' | 'meta-ads-optimize';
 
 export type SetupLoop = {
   id: SetupLoopId;
@@ -89,6 +106,100 @@ export const SETUP_LOOPS: SetupLoop[] = [
       },
     },
     durationMs: 8000,
+  },
+  {
+    id: 'meta-ads-launch',
+    label: 'Meta launch',
+    headlineLines: [
+      {
+        parts: [
+          { text: 'Launch Facebook & Instagram ads', tone: 'default' },
+          { text: 'from what already wins.', tone: 'brand' },
+        ],
+      },
+    ],
+    subline:
+      'Trooper finds top-performing ads in your category, designs banners, gets your approval, runs the launch, and keeps A/B testing for you.',
+    chat: {
+      userMessage:
+        'Launch Pomelo Notes on Facebook and Instagram — use the best ads in our category as the starting point.',
+      agentMessage:
+        'Scouted 14 winning creatives · drafted 4 banners · paused until you approve.',
+      metaAds: {
+        appName: 'Pomelo Notes',
+        statusLabel: 'awaiting approval',
+        inspiration: 'Inspired by top Notes apps · 3.2% avg CTR',
+        variants: [
+          {
+            platform: 'Facebook',
+            label: 'Feed · Variant A',
+            detail: 'Auto banner · 3.1% CTR benchmark',
+            dailyBudget: '$30/d',
+          },
+          {
+            platform: 'Instagram',
+            label: 'Story · Variant A',
+            detail: 'Auto banner · 2.9% CTR benchmark',
+            dailyBudget: '$25/d',
+          },
+          {
+            platform: 'Instagram',
+            label: 'Reel · Variant B',
+            detail: 'A/B test slot · hook v2',
+            dailyBudget: '$25/d',
+          },
+        ],
+        moreLabel: '+ 1 more',
+        footer: '$80 / day · paused on deploy · A/B rotation after launch',
+      },
+    },
+    durationMs: 8500,
+  },
+  {
+    id: 'meta-ads-optimize',
+    label: 'Meta A/B',
+    headlineLines: [
+      {
+        parts: [
+          { text: 'A/B test Facebook & Instagram ads', tone: 'default' },
+          { text: 'while you sleep.', tone: 'brand' },
+        ],
+      },
+    ],
+    subline:
+      'Troopers track performance, pause losers, spin new banners, and keep testing until your launch hits target CPA.',
+    chat: {
+      userMessage: 'Keep optimizing the Pomelo launch — pause underperformers and test new banners.',
+      agentMessage: 'Week 1 report · IG Reel B is winning · 2 new variants ready for approval.',
+      metaAds: {
+        appName: 'Pomelo Notes',
+        statusLabel: 'A/B testing live',
+        inspiration: 'CPA −18% vs launch baseline · 4.2% CTR on winner',
+        variants: [
+          {
+            platform: 'Instagram',
+            label: 'Reel · Variant B',
+            detail: 'Winner · 4.2% CTR',
+            dailyBudget: '$35/d',
+          },
+          {
+            platform: 'Facebook',
+            label: 'Feed · Variant A',
+            detail: 'Paused · 1.1% CTR',
+            dailyBudget: '$0/d',
+          },
+          {
+            platform: 'Instagram',
+            label: 'Story · Variant C',
+            detail: 'Testing · day 2',
+            dailyBudget: '$20/d',
+          },
+        ],
+        moreLabel: '+ 2 variants in review',
+        footer: '$55 / day live · auto-pause rules on',
+      },
+    },
+    durationMs: 8500,
   },
 ];
 

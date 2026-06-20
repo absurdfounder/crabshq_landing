@@ -10,6 +10,7 @@ import {
   SETUP_LOOP_ROTATE_MS,
   type SetupLoop,
   type SetupLoopCampaignPreview,
+  type SetupLoopMetaAdsPreview,
 } from '@/lib/setupLoops';
 
 function CampaignPreviewCard({ campaign }: { campaign: SetupLoopCampaignPreview }) {
@@ -49,6 +50,37 @@ function CampaignPreviewCard({ campaign }: { campaign: SetupLoopCampaignPreview 
   );
 }
 
+function MetaAdsPreviewCard({ metaAds }: { metaAds: SetupLoopMetaAdsPreview }) {
+  return (
+    <div className="mt-3 rounded-sm border border-slate-200 bg-white p-3 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm font-medium text-slate-900">{metaAds.appName} · Meta launch</p>
+        <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-800 border border-amber-200 bg-amber-50 px-2 py-0.5">
+          {metaAds.statusLabel}
+        </span>
+      </div>
+
+      <p className="mt-2 text-[11px] leading-snug text-slate-500">{metaAds.inspiration}</p>
+
+      <div className="mt-3 space-y-2">
+        {metaAds.variants.map((variant) => (
+          <div key={`${variant.platform}-${variant.label}`} className="flex items-center justify-between gap-2 text-sm">
+            <span className="min-w-0 font-medium text-slate-900">
+              {variant.platform} · {variant.label}
+            </span>
+            <span className="hidden shrink-0 text-slate-500 sm:inline">{variant.detail}</span>
+            <span className="shrink-0 font-medium tabular-nums text-slate-700">{variant.dailyBudget}</span>
+          </div>
+        ))}
+
+        <div className="border-t border-dashed border-slate-200 pt-2 text-sm text-slate-600">{metaAds.moreLabel}</div>
+      </div>
+
+      <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">{metaAds.footer}</p>
+    </div>
+  );
+}
+
 function SetupLoopChatPreview({ loop }: { loop: SetupLoop }) {
   return (
     <div className="mt-5 max-w-xl rounded-sm border border-slate-200 bg-[#FAFAF8] p-3 sm:p-4">
@@ -66,6 +98,7 @@ function SetupLoopChatPreview({ loop }: { loop: SetupLoop }) {
           <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-trooper-700">Jordan · Chief of Staff</p>
           <p className="mt-1 text-sm leading-relaxed text-slate-800">{loop.chat.agentMessage}</p>
           {loop.chat.campaign ? <CampaignPreviewCard campaign={loop.chat.campaign} /> : null}
+          {loop.chat.metaAds ? <MetaAdsPreviewCard metaAds={loop.chat.metaAds} /> : null}
         </div>
       </div>
     </div>

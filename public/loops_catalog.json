@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-17T00:00:00.000Z",
-  "count": 6,
+  "generatedAt": "2026-06-20T00:00:00.000Z",
+  "count": 9,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -226,6 +226,123 @@
       },
       "kickoffPrompt": "Start the \"Lint Until Clean\" loop.\n\nGoal: linter exits with zero errors\nMax iterations: 8\nBetween iterations run: npm run lint\nExit when: lint exits 0\n\nStep 1: Run the linter. Fix violations in small batches until clean.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
       "related": ["test-until-green", "ship-pr-until-green"]
+    },
+    {
+      "id": "launch-apple-search-ads",
+      "slug": "launch-apple-search-ads",
+      "title": "Launch Apple Search Ads",
+      "description": "Describe your app in chat. Trooper drafts country-by-country Apple Search Ads campaigns with localized keywords — paused until you approve.",
+      "category": "Growth",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 920,
+      "installs": 640,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["apple-search-ads", "asa", "mobile", "launch", "keywords"],
+      "goal": "country campaigns are drafted, localized, and paused awaiting approval",
+      "maxIterations": 8,
+      "checkCommand": "Verify every target country has keywords, budget, and paused status",
+      "exitCondition": "all country campaigns are ready for approval with no missing locales",
+      "guardrails": [
+        "Do not enable live spend without explicit human approval",
+        "Do not invent keyword volume or CPA estimates without a source",
+        "Keep campaigns paused on deploy until the user approves"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Describe the app", "description": "Capture app name, category, locales, and tier targets from the user." },
+          { "label": "Research keywords", "description": "Draft localized keyword sets per country or tier." },
+          { "label": "Build campaigns", "description": "Create one campaign per country with budget, keywords, and ad groups." },
+          { "label": "Present for approval", "description": "Summarize spend, countries, and keyword counts — leave paused until approved." }
+        ],
+        "checkLabel": "Ready to approve?",
+        "exitLabel": "Campaign pack paused and awaiting approval",
+        "loopBackLabel": "gaps remain"
+      },
+      "kickoffPrompt": "Start the \"Launch Apple Search Ads\" loop.\n\nGoal: country campaigns are drafted, localized, and paused awaiting approval\nMax iterations: 8\nBetween iterations run: Verify every target country has keywords, budget, and paused status\nExit when: all country campaigns are ready for approval with no missing locales\n\nStep 1: Ask for the app, target countries or tier, and daily budget. Draft localized keyword sets and paused campaigns per country.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["launch-meta-ads", "meta-ads-ab-test"]
+    },
+    {
+      "id": "launch-meta-ads",
+      "slug": "launch-meta-ads",
+      "title": "Launch Meta Ads",
+      "description": "Scout top-performing Facebook and Instagram ads in your category, auto-design banners, get approval, and launch paused campaigns.",
+      "category": "Growth",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1104,
+      "installs": 788,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["facebook", "instagram", "meta-ads", "creative", "launch"],
+      "goal": "Meta ad variants are designed from top performers and paused awaiting approval",
+      "maxIterations": 10,
+      "checkCommand": "Verify each platform has creative variants, budgets, and paused status",
+      "exitCondition": "Facebook and Instagram launch pack is complete and awaiting approval",
+      "guardrails": [
+        "Do not publish ads or increase spend without explicit approval",
+        "Base creative direction on sourced top-performing ads — do not fabricate benchmarks",
+        "Keep all variants paused until the user approves deploy"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Scout top ads", "description": "Find best-performing Facebook and Instagram ads in the category." },
+          { "label": "Design banners", "description": "Draft feed, story, and reel creatives aligned to winning patterns." },
+          { "label": "Build launch pack", "description": "Assign budgets, platforms, and variant labels for A/B slots." },
+          { "label": "Request approval", "description": "Present the full pack paused — no live spend until approved." }
+        ],
+        "checkLabel": "Launch pack ready?",
+        "exitLabel": "Meta launch pack paused and awaiting approval",
+        "loopBackLabel": "missing variants"
+      },
+      "kickoffPrompt": "Start the \"Launch Meta Ads\" loop.\n\nGoal: Meta ad variants are designed from top performers and paused awaiting approval\nMax iterations: 10\nBetween iterations run: Verify each platform has creative variants, budgets, and paused status\nExit when: Facebook and Instagram launch pack is complete and awaiting approval\n\nStep 1: Scout top-performing ads in the category. Design Facebook and Instagram banners, assign budgets, and leave everything paused for approval.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["launch-apple-search-ads", "meta-ads-ab-test"]
+    },
+    {
+      "id": "meta-ads-ab-test",
+      "slug": "meta-ads-ab-test",
+      "title": "Meta Ads A/B Test",
+      "description": "Track Facebook and Instagram performance, pause losers, spin new banners, and keep A/B testing until the launch hits target CPA.",
+      "category": "Growth",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 876,
+      "installs": 512,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["facebook", "instagram", "meta-ads", "ab-test", "optimization"],
+      "goal": "underperforming variants are paused and winning creatives scale within budget",
+      "maxIterations": 20,
+      "checkCommand": "Review CTR, CPA, and spend by variant for Facebook and Instagram",
+      "exitCondition": "launch meets target CPA or max test cycles complete with a documented winner",
+      "guardrails": [
+        "Do not pause a variant without performance evidence from the ad account",
+        "Do not increase budget beyond approved limits",
+        "Surface new creative variants for approval before going live"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Pull performance", "description": "Read CTR, CPA, and spend by Facebook and Instagram variant." },
+          { "label": "Pause losers", "description": "Stop variants below threshold and reallocate budget." },
+          { "label": "Draft new variants", "description": "Design fresh banners based on the current winner." },
+          { "label": "Report and iterate", "description": "Post a week-over-week summary and queue approvals." }
+        ],
+        "checkLabel": "Target CPA hit?",
+        "exitLabel": "Winner scaled or test cycle complete",
+        "loopBackLabel": "keep testing"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Meta Ads A/B Test\" loop.\n\nGoal: underperforming variants are paused and winning creatives scale within budget\nMax iterations: 20\nBetween iterations run: Review CTR, CPA, and spend by variant for Facebook and Instagram\nExit when: launch meets target CPA or max test cycles complete with a documented winner\n\nStep 1: Pull performance, pause losers, draft new variants for approval, and report winners.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["launch-meta-ads", "launch-apple-search-ads"]
     }
   ]
 }

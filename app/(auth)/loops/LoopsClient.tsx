@@ -8,6 +8,7 @@ import {
   LayoutGrid,
   Search,
   Shield,
+  Target,
   TestTube,
   type LucideIcon,
 } from 'lucide-react';
@@ -20,6 +21,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Review: Eye,
   Testing: TestTube,
   Quality: Shield,
+  Growth: Target,
 };
 
 function getCategoryIcon(category: string): LucideIcon {
