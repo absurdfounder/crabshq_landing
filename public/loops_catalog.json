@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-06-20T00:00:00.000Z",
-  "count": 9,
+  "count": 10,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -343,6 +343,53 @@
       },
       "kickoffPrompt": "/loop 1d Start the \"Meta Ads A/B Test\" loop.\n\nGoal: underperforming variants are paused and winning creatives scale within budget\nMax iterations: 20\nBetween iterations run: Review CTR, CPA, and spend by variant for Facebook and Instagram\nExit when: launch meets target CPA or max test cycles complete with a documented winner\n\nStep 1: Pull performance, pause losers, draft new variants for approval, and report winners.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
       "related": ["launch-meta-ads", "launch-apple-search-ads"]
+    },
+    {
+      "id": "self-managing-website",
+      "slug": "self-managing-website",
+      "title": "Self Managing Website",
+      "description": "Trooper watches your site and competitors — rankings, traffic, content gaps, conversion drops — then writes content, fixes what's broken, runs experiments, and surfaces clear next steps.",
+      "category": "Website",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1340,
+      "installs": 920,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["website", "seo", "analytics", "content", "experiments", "competitors"],
+      "goal": "site health is monitored, actionable fixes are queued or shipped, and a clear opportunity brief is delivered",
+      "maxIterations": 30,
+      "checkCommand": "Verify rankings, traffic, conversion metrics, and competitor snapshots against the last cycle baseline",
+      "exitCondition": "monitoring cycle is complete with fixes applied or queued and a surfaced action brief delivered",
+      "guardrails": [
+        "Do not publish live content, deploy changes, or start experiments without the configured approval path",
+        "Cite analytics, ranking, and competitor sources — do not invent traffic or conversion numbers",
+        "Never break production; test fixes in staging or draft mode when available"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Trooper watches your site and your competitors' — continuously. Rankings, traffic, content gaps, conversion drops. Nothing slips through."
+          },
+          {
+            "label": "Act",
+            "description": "Trooper doesn't just report back. Its agents write content, fix what's broken, and run experiments — automatically, while you focus on the product."
+          },
+          {
+            "label": "Surface",
+            "description": "Every insight becomes a clear next step. Know who's visiting, what's working, and where your biggest opportunities are."
+          }
+        ],
+        "checkLabel": "Cycle complete?",
+        "exitLabel": "Brief delivered with fixes queued or shipped",
+        "loopBackLabel": "keep watching"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Self Managing Website\" loop.\n\nGoal: site health is monitored, actionable fixes are queued or shipped, and a clear opportunity brief is delivered\nMax iterations: 30\nBetween iterations run: Verify rankings, traffic, conversion metrics, and competitor snapshots against the last cycle baseline\nExit when: monitoring cycle is complete with fixes applied or queued and a surfaced action brief delivered\n\nStep 1 — Monitor: Watch your site and competitors continuously — rankings, traffic, content gaps, conversion drops.\nStep 2 — Act: Write content, fix what's broken, and run experiments automatically (respect approval gates).\nStep 3 — Surface: Deliver a brief with who's visiting, what's working, and the biggest opportunities.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["launch-meta-ads", "meta-ads-ab-test"]
     }
   ]
 }

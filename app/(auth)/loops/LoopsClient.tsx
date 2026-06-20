@@ -5,6 +5,7 @@ import {
   ExternalLink,
   Eye,
   GitBranch,
+  Globe,
   LayoutGrid,
   Search,
   Shield,
@@ -22,6 +23,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Testing: TestTube,
   Quality: Shield,
   Growth: Target,
+  Website: Globe,
 };
 
 function getCategoryIcon(category: string): LucideIcon {
