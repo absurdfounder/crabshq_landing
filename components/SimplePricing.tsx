@@ -75,7 +75,6 @@ function PlanHeader({
   badge,
   title,
   icon: Icon,
-  description,
   featured = false,
 }: {
   index: string;
@@ -83,7 +82,6 @@ function PlanHeader({
   badge: string;
   title: string;
   icon: LucideIcon;
-  description: string;
   featured?: boolean;
 }) {
   return (
@@ -98,7 +96,6 @@ function PlanHeader({
         <Icon className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
         <h3 className="font-funneldisplay text-xl font-medium tracking-tight text-slate-900">{title}</h3>
       </div>
-      <p className="mt-3 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-slate-500">{description}</p>
     </>
   );
 }
@@ -308,7 +305,6 @@ type DesktopPlanColumnProps = {
   badge: string;
   title: string;
   icon: LucideIcon;
-  description: string;
   featured?: boolean;
   price: string;
   cadence?: string;
@@ -327,7 +323,6 @@ function DesktopPlanColumn({
   badge,
   title,
   icon,
-  description,
   featured = false,
   price,
   cadence,
@@ -360,7 +355,6 @@ function DesktopPlanColumn({
           badge={badge}
           title={title}
           icon={icon}
-          description={description}
           featured={featured}
         />
       </div>
@@ -392,7 +386,6 @@ function MobilePlanCard({
   badge,
   title,
   icon,
-  description,
   featured = false,
   price,
   cadence,
@@ -425,7 +418,6 @@ function MobilePlanCard({
           badge={badge}
           title={title}
           icon={icon}
-          description={description}
           featured={featured}
         />
       </div>
@@ -565,8 +557,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       badge: 'Lifetime',
       title: 'Local Install',
       icon: Laptop,
-      description:
-        'Pay once and install Trooper on your laptop. Self-hosted runtime on your machine — one workspace, no connected devices.',
       price: formatUsd(PRICING_USD.localLifetime),
       cadence: 'one-time',
       subline: (
@@ -588,8 +578,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       badge: 'Lifetime',
       title: 'Solo Cloud',
       icon: Infinity,
-      description:
-        'For solo founders who want hosted infrastructure. Pay once and use Trooper forever — one workspace, no connected devices.',
       price: formatUsd(PRICING_USD.cloudLifetime),
       cadence: 'one-time',
       subline: (
@@ -613,8 +601,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       badge: 'Most popular',
       title: 'Trooper Cloud',
       icon: Cloud,
-      description:
-        'A managed AI workspace with hosted runtime, workflows, memory, and collaboration for your team.',
       featured: true,
       price: cloudTierPrice,
       cadence: '/ month',
@@ -640,8 +626,6 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       badge: 'Custom',
       title: 'Enterprise',
       icon: Building2,
-      description:
-        'For companies that need Trooper on private infrastructure with deployment, security, and support tailored to them.',
       price: 'Custom',
       subline: <PricingSubline>Volume pricing and dedicated support</PricingSubline>,
       note: <PricingNote>Self-hosted deployment with migration and custom agreements.</PricingNote>,
