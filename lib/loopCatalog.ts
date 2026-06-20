@@ -38,7 +38,7 @@ const bySlug = new Map(LOOPS.map((loop) => [loop.slug, loop]));
 export const LOOP_CATALOG_COUNT = catalogData.count;
 export const LOOP_CATALOG_GENERATED_AT = catalogData.generatedAt;
 
-const CATEGORIES = ['All', 'CI', 'Review', 'Testing', 'Quality', 'Growth', 'Website'] as const;
+const CATEGORIES = ['All', 'CI', 'Review', 'Testing', 'Quality', 'Growth', 'Website', 'Docs'] as const;
 const AGENT_LABELS: Record<string, string> = {
   'claude-code': 'Claude Code',
   cursor: 'Cursor',

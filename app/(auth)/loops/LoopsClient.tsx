@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import {
+  BookOpen,
   ExternalLink,
   Eye,
   GitBranch,
@@ -24,6 +25,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Quality: Shield,
   Growth: Target,
   Website: Globe,
+  Docs: BookOpen,
 };
 
 function getCategoryIcon(category: string): LucideIcon {

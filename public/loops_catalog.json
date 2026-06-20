@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-06-20T00:00:00.000Z",
-  "count": 10,
+  "count": 11,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -389,7 +389,54 @@
         "loopBackLabel": "keep watching"
       },
       "kickoffPrompt": "/loop 1d Start the \"Self Managing Website\" loop.\n\nGoal: site health is monitored, actionable fixes are queued or shipped, and a clear opportunity brief is delivered\nMax iterations: 30\nBetween iterations run: Verify rankings, traffic, conversion metrics, and competitor snapshots against the last cycle baseline\nExit when: monitoring cycle is complete with fixes applied or queued and a surfaced action brief delivered\n\nStep 1 — Monitor: Watch your site and competitors continuously — rankings, traffic, content gaps, conversion drops.\nStep 2 — Act: Write content, fix what's broken, and run experiments automatically (respect approval gates).\nStep 3 — Surface: Deliver a brief with who's visiting, what's working, and the biggest opportunities.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
-      "related": ["launch-meta-ads", "meta-ads-ab-test"]
+      "related": ["launch-meta-ads", "meta-ads-ab-test", "self-managing-helpdocs"]
+    },
+    {
+      "id": "self-managing-helpdocs",
+      "slug": "self-managing-helpdocs",
+      "title": "Self Managing Help Docs",
+      "description": "Trooper watches your help center against what you shipped — stale articles, support repeats, broken guides — then rewrites content, updates screenshots, and surfaces coverage gaps.",
+      "category": "Docs",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1180,
+      "installs": 840,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["helpdocs", "documentation", "help-center", "support", "knowledge-base", "screenshots"],
+      "goal": "help docs match the live product, updates are queued or published, and a coverage brief is delivered",
+      "maxIterations": 30,
+      "checkCommand": "Verify help articles against recent commits, support tickets, and live product behavior in browser",
+      "exitCondition": "doc drift is resolved or queued for approval and a surfaced coverage brief is delivered",
+      "guardrails": [
+        "Do not publish help center changes without the configured approval path",
+        "Describe user-facing behavior only — never document internal implementation details users cannot see",
+        "Run the app and capture screenshots when UI changed; do not leave placeholder images or TODO markers"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Trooper watches your help center and your product — continuously. Stale articles, repeat support questions, broken screenshots, docs that don't match what shipped. Nothing slips through."
+          },
+          {
+            "label": "Act",
+            "description": "Trooper doesn't just flag drift. Its agents rewrite articles, capture new screenshots, and publish updates — automatically, while you focus on shipping features."
+          },
+          {
+            "label": "Surface",
+            "description": "Every gap becomes a clear next step. Know what's outdated, what users keep asking, and which articles would deflect the most support."
+          }
+        ],
+        "checkLabel": "Cycle complete?",
+        "exitLabel": "Doc updates queued or published with coverage brief",
+        "loopBackLabel": "keep syncing"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Self Managing Help Docs\" loop.\n\nGoal: help docs match the live product, updates are queued or published, and a coverage brief is delivered\nMax iterations: 30\nBetween iterations run: Verify help articles against recent commits, support tickets, and live product behavior in browser\nExit when: doc drift is resolved or queued for approval and a surfaced coverage brief is delivered\n\nStep 1 — Monitor: Watch help docs vs the live product — stale articles, repeat tickets, broken screenshots, shipped features with no docs.\nStep 2 — Act: Rewrite articles, update step-by-steps, capture screenshots in browser, and queue or publish updates (respect approval gates).\nStep 3 — Surface: Deliver a brief on outdated pages, top unanswered questions, and highest-impact articles to write next.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["self-managing-website"]
     }
   ]
 }
