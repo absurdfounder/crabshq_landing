@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
-import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
 import { PixelMissionTag } from './PixelAtmosphere';
 import HeroSetupCommand from './HeroSetupCommand';
+import HeroSetupLoops from './HeroSetupLoops';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -138,23 +138,11 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               </div>
 
               <div className="reveal reveal__usp max-w-3xl">
-                <MarketingHeadline
-                  as="h1"
-                  size="hero"
-                  lines={[
-                    {
-                      parts: [{ text: 'Just Ask.', tone: 'default' }],
-                      iconAfter: 0,
-                    },
-                    {
-                      parts: [{ text: 'Troopers will do it.', tone: 'brand' }],
-                    },
-                  ]}
-                />
+                <HeroSetupLoops />
               </div>
 
               <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
-                AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
+                You hold command as the board of directors. Powered by{' '}
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
 
