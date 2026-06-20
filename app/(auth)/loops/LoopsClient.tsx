@@ -3,11 +3,16 @@
 import { useMemo, useState } from 'react';
 import {
   BookOpen,
+  Briefcase,
   ExternalLink,
   Eye,
+  FileText,
   GitBranch,
   Globe,
   LayoutGrid,
+  Lock,
+  Package,
+  Palette,
   Search,
   Shield,
   Target,
@@ -26,6 +31,12 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Growth: Target,
   Website: Globe,
   Docs: BookOpen,
+  Design: Palette,
+  Operations: Briefcase,
+  Research: Search,
+  Product: Package,
+  Content: FileText,
+  Security: Lock,
 };
 
 function getCategoryIcon(category: string): LucideIcon {

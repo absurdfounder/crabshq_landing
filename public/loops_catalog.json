@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-20T00:00:00.000Z",
-  "count": 11,
+  "generatedAt": "2026-06-20T12:00:00.000Z",
+  "count": 31,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -389,7 +389,7 @@
         "loopBackLabel": "keep watching"
       },
       "kickoffPrompt": "/loop 1d Start the \"Self Managing Website\" loop.\n\nGoal: site health is monitored, actionable fixes are queued or shipped, and a clear opportunity brief is delivered\nMax iterations: 30\nBetween iterations run: Verify rankings, traffic, conversion metrics, and competitor snapshots against the last cycle baseline\nExit when: monitoring cycle is complete with fixes applied or queued and a surfaced action brief delivered\n\nStep 1 — Monitor: Watch your site and competitors continuously — rankings, traffic, content gaps, conversion drops.\nStep 2 — Act: Write content, fix what's broken, and run experiments automatically (respect approval gates).\nStep 3 — Surface: Deliver a brief with who's visiting, what's working, and the biggest opportunities.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
-      "related": ["launch-meta-ads", "meta-ads-ab-test", "self-managing-helpdocs"]
+      "related": ["launch-meta-ads", "meta-ads-ab-test", "self-managing-helpdocs", "landing-page-iteration", "competitor-change-watch", "blog-until-published"]
     },
     {
       "id": "self-managing-helpdocs",
@@ -436,7 +436,821 @@
         "loopBackLabel": "keep syncing"
       },
       "kickoffPrompt": "/loop 1d Start the \"Self Managing Help Docs\" loop.\n\nGoal: help docs match the live product, updates are queued or published, and a coverage brief is delivered\nMax iterations: 30\nBetween iterations run: Verify help articles against recent commits, support tickets, and live product behavior in browser\nExit when: doc drift is resolved or queued for approval and a surfaced coverage brief is delivered\n\nStep 1 — Monitor: Watch help docs vs the live product — stale articles, repeat tickets, broken screenshots, shipped features with no docs.\nStep 2 — Act: Rewrite articles, update step-by-steps, capture screenshots in browser, and queue or publish updates (respect approval gates).\nStep 3 — Surface: Deliver a brief on outdated pages, top unanswered questions, and highest-impact articles to write next.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
-      "related": ["self-managing-website"]
+      "related": ["self-managing-website", "docs-until-accurate"]
+    },
+    {
+      "id": "staging-smoke-until-green",
+      "slug": "staging-smoke-until-green",
+      "title": "Staging Smoke Until Green",
+      "description": "Deploy to staging, run browser smoke tests on critical paths, fix failures, and repeat until every path is green.",
+      "category": "Testing",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1124,
+      "installs": 756,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["staging", "smoke-test", "browser", "deploy", "qa"],
+      "goal": "staging deploy passes all critical-path smoke checks",
+      "maxIterations": 8,
+      "checkCommand": "npm run smoke:staging || echo smoke-failed",
+      "exitCondition": "all critical paths pass in browser on staging",
+      "guardrails": [
+        "Do not skip critical paths to force green",
+        "Do not deploy to production from this loop",
+        "Capture screenshots on failure for triage"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Deploy staging", "description": "Trigger or verify the latest staging deploy is live." },
+          { "label": "Smoke critical paths", "description": "Walk login, checkout, settings, and other must-not-break flows in the browser." },
+          { "label": "Fix and redeploy", "description": "Patch the smallest root cause, redeploy staging, and re-run smoke." }
+        ],
+        "checkLabel": "Smoke green?",
+        "exitLabel": "All critical paths pass on staging",
+        "loopBackLabel": "failures remain"
+      },
+      "kickoffPrompt": "Start the \"Staging Smoke Until Green\" loop.\n\nGoal: staging deploy passes all critical-path smoke checks\nMax iterations: 8\nBetween iterations run: npm run smoke:staging || echo smoke-failed\nExit when: all critical paths pass in browser on staging\n\nStep 1: Deploy staging, smoke critical paths in the browser, fix failures, and repeat.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["e2e-until-green", "test-until-green", "signup-flow-until-smooth"]
+    },
+    {
+      "id": "e2e-until-green",
+      "slug": "e2e-until-green",
+      "title": "E2E Until Green",
+      "description": "Run Playwright or Cypress end-to-end tests with annotated failure screenshots, fix root causes, and loop until the suite is green.",
+      "category": "Testing",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1456,
+      "installs": 982,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["e2e", "playwright", "cypress", "testing", "browser"],
+      "goal": "E2E test suite exits zero with no flaky failures",
+      "maxIterations": 10,
+      "checkCommand": "npx playwright test || npx cypress run",
+      "exitCondition": "E2E suite exits 0",
+      "guardrails": [
+        "Do not disable or delete failing tests to force green",
+        "Attach annotated screenshots for every failure",
+        "Fix the smallest root cause per iteration"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Run E2E suite", "description": "Execute Playwright or Cypress against the target environment." },
+          { "label": "Annotate failures", "description": "Capture screenshots, trace files, and label the failing step." },
+          { "label": "Fix and re-run", "description": "Patch root cause, then re-run the failing spec or full suite." }
+        ],
+        "checkLabel": "E2E green?",
+        "exitLabel": "Full E2E suite passes",
+        "loopBackLabel": "failures remain"
+      },
+      "kickoffPrompt": "Start the \"E2E Until Green\" loop.\n\nGoal: E2E test suite exits zero with no flaky failures\nMax iterations: 10\nBetween iterations run: npx playwright test || npx cypress run\nExit when: E2E suite exits 0\n\nStep 1: Run E2E tests. On failure, annotate with screenshots, fix root cause, and repeat.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["staging-smoke-until-green", "test-until-green", "flaky-test-hunter"]
+    },
+    {
+      "id": "screenshot-regression-loop",
+      "slug": "screenshot-regression-loop",
+      "title": "Screenshot Regression Loop",
+      "description": "Capture UI screenshots, diff against baselines, fix visual drift, and repeat until pixel diffs are within tolerance.",
+      "category": "Testing",
+      "trigger": "manual",
+      "official": false,
+      "hardened": true,
+      "views": 734,
+      "installs": 489,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code"],
+      "bestFitAgents": ["cursor"],
+      "tags": ["visual-regression", "screenshots", "ui", "testing", "design"],
+      "goal": "visual regression diff is within approved tolerance",
+      "maxIterations": 8,
+      "checkCommand": "npx playwright test --grep @visual || npm run test:visual",
+      "exitCondition": "no unapproved visual diffs remain",
+      "guardrails": [
+        "Do not update baselines without reviewing each diff",
+        "Flag intentional design changes for human approval before accepting",
+        "Capture full-page and component-level shots for context"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Capture UI", "description": "Screenshot key pages and components at target breakpoints." },
+          { "label": "Diff baselines", "description": "Compare against stored baselines and highlight drift regions." },
+          { "label": "Fix or approve", "description": "Fix unintended drift or get approval to update baselines." }
+        ],
+        "checkLabel": "Diffs clean?",
+        "exitLabel": "All visual diffs resolved or approved",
+        "loopBackLabel": "drift remains"
+      },
+      "kickoffPrompt": "Start the \"Screenshot Regression Loop\" loop.\n\nGoal: visual regression diff is within approved tolerance\nMax iterations: 8\nBetween iterations run: npx playwright test --grep @visual || npm run test:visual\nExit when: no unapproved visual diffs remain\n\nStep 1: Capture UI screenshots, diff against baselines, fix drift or get approval to update baselines.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["figma-to-code-loop", "landing-page-iteration", "e2e-until-green"]
+    },
+    {
+      "id": "flaky-test-hunter",
+      "slug": "flaky-test-hunter",
+      "title": "Flaky Test Hunter",
+      "description": "Run the test suite N times on an interval, capture intermittent failures, isolate flakes, and open a fix PR.",
+      "category": "Testing",
+      "trigger": "interval",
+      "official": false,
+      "hardened": false,
+      "views": 892,
+      "installs": 567,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["flaky", "testing", "ci", "reliability"],
+      "goal": "identified flaky tests are fixed or quarantined with a PR open",
+      "maxIterations": 20,
+      "checkCommand": "npm test -- --repeat-each=5 2>&1 | tee /tmp/flake-run.log",
+      "exitCondition": "no flaky failures in the last N-run batch or fix PR is open",
+      "guardrails": [
+        "Do not delete tests without evidence they are truly obsolete",
+        "Quarantine flakes only with a linked fix issue",
+        "Log seed, timing, and environment for each flake"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Run N times", "description": "Execute the suite repeatedly to surface intermittent failures." },
+          { "label": "Capture flakes", "description": "Log failing specs, seeds, and stack traces from inconsistent runs." },
+          { "label": "Isolate and fix", "description": "Reproduce the flake, patch root cause, and open a fix PR." }
+        ],
+        "checkLabel": "Flakes resolved?",
+        "exitLabel": "No flakes in last batch or fix PR open",
+        "loopBackLabel": "flakes detected"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Flaky Test Hunter\" loop.\n\nGoal: identified flaky tests are fixed or quarantined with a PR open\nMax iterations: 20\nBetween iterations run: npm test -- --repeat-each=5 2>&1 | tee /tmp/flake-run.log\nExit when: no flaky failures in the last N-run batch or fix PR is open\n\nStep 1: Run tests N times, capture flakes, isolate root cause, and open a fix PR.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["test-until-green", "e2e-until-green", "ci-failure-watcher"]
+    },
+    {
+      "id": "dependency-drift-watch",
+      "slug": "dependency-drift-watch",
+      "title": "Dependency Drift Watch",
+      "description": "Weekly interval loop that flags outdated dependencies, tests version bumps in isolation, and opens grouped upgrade PRs.",
+      "category": "CI",
+      "trigger": "interval",
+      "official": false,
+      "hardened": true,
+      "views": 678,
+      "installs": 445,
+      "author": "Trooper",
+      "agents": ["cursor", "codex", "claude-code"],
+      "bestFitAgents": ["cursor", "codex"],
+      "tags": ["dependencies", "npm", "upgrade", "maintenance", "ci"],
+      "goal": "outdated deps are tested and grouped upgrade PRs are open",
+      "maxIterations": 12,
+      "checkCommand": "npm outdated --json || true",
+      "exitCondition": "no critical outdated deps remain untested or upgrade PRs cover all groups",
+      "guardrails": [
+        "Do not merge major bumps without changelog review",
+        "Group related deps into one PR — avoid dependency explosion",
+        "Run tests after each bump before opening the PR"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Scan outdated", "description": "List outdated packages and classify by severity and group." },
+          { "label": "Test bumps", "description": "Bump one group at a time and run the test suite locally." },
+          { "label": "Open grouped PR", "description": "Open a PR per group with changelog notes and test results." }
+        ],
+        "checkLabel": "Drift handled?",
+        "exitLabel": "Upgrade PRs open for all priority groups",
+        "loopBackLabel": "outdated deps remain"
+      },
+      "kickoffPrompt": "/loop 1w Start the \"Dependency Drift Watch\" loop.\n\nGoal: outdated deps are tested and grouped upgrade PRs are open\nMax iterations: 12\nBetween iterations run: npm outdated --json || true\nExit when: no critical outdated deps remain untested or upgrade PRs cover all groups\n\nStep 1: Scan outdated deps, test bumps in groups, and open upgrade PRs.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["dependency-cve-loop", "ship-pr-until-green", "test-until-green"]
+    },
+    {
+      "id": "landing-page-iteration",
+      "slug": "landing-page-iteration",
+      "title": "Landing Page Iteration",
+      "description": "Screenshot the live site, annotate weak sections, redesign in code, commit, preview, and iterate until conversion-ready.",
+      "category": "Design",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1289,
+      "installs": 867,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["landing-page", "design", "conversion", "ui", "marketing"],
+      "goal": "landing page passes design review with preview deployed",
+      "maxIterations": 10,
+      "checkCommand": "Verify preview URL loads and annotated issues are resolved",
+      "exitCondition": "all annotated sections are addressed and preview is live",
+      "guardrails": [
+        "Do not deploy to production without explicit approval",
+        "Keep copy changes aligned with brand voice",
+        "Screenshot before and after each iteration for comparison"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Screenshot site", "description": "Capture the current landing page at desktop and mobile breakpoints." },
+          { "label": "Annotate and redesign", "description": "Mark weak hero, CTA, and social proof sections; implement improvements in code." },
+          { "label": "Commit and preview", "description": "Push branch, open preview deploy, and compare against prior screenshot." }
+        ],
+        "checkLabel": "Design ready?",
+        "exitLabel": "Preview live with all annotations resolved",
+        "loopBackLabel": "issues remain"
+      },
+      "kickoffPrompt": "Start the \"Landing Page Iteration\" loop.\n\nGoal: landing page passes design review with preview deployed\nMax iterations: 10\nBetween iterations run: Verify preview URL loads and annotated issues are resolved\nExit when: all annotated sections are addressed and preview is live\n\nStep 1: Screenshot the site, annotate weak sections, redesign in code, commit, and verify preview.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["self-managing-website", "figma-to-code-loop", "screenshot-regression-loop"]
+    },
+    {
+      "id": "figma-to-code-loop",
+      "slug": "figma-to-code-loop",
+      "title": "Figma-to-Code Loop",
+      "description": "Implement a Figma design in code, screenshot the result, diff against the design spec, and iterate until they match.",
+      "category": "Design",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1567,
+      "installs": 1043,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["figma", "design", "implementation", "ui", "pixel-perfect"],
+      "goal": "implemented UI matches Figma spec within agreed tolerance",
+      "maxIterations": 12,
+      "checkCommand": "Compare implementation screenshot against Figma export or spec",
+      "exitCondition": "visual diff is within approved pixel tolerance",
+      "guardrails": [
+        "Do not alter the Figma spec without designer approval",
+        "Use design tokens and existing component library where possible",
+        "Document any intentional deviations with rationale"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Implement design", "description": "Build the Figma frame in code using project components and tokens." },
+          { "label": "Screenshot diff", "description": "Capture the implementation and overlay against the Figma export." },
+          { "label": "Iterate until match", "description": "Fix spacing, typography, and color drift until within tolerance." }
+        ],
+        "checkLabel": "Match spec?",
+        "exitLabel": "Implementation matches Figma within tolerance",
+        "loopBackLabel": "drift remains"
+      },
+      "kickoffPrompt": "Start the \"Figma-to-Code Loop\" loop.\n\nGoal: implemented UI matches Figma spec within agreed tolerance\nMax iterations: 12\nBetween iterations run: Compare implementation screenshot against Figma export or spec\nExit when: visual diff is within approved pixel tolerance\n\nStep 1: Implement the Figma design, screenshot, diff against spec, and iterate until match.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["screenshot-regression-loop", "landing-page-iteration", "app-store-screenshot-pack"]
+    },
+    {
+      "id": "app-store-screenshot-pack",
+      "slug": "app-store-screenshot-pack",
+      "title": "App Store Screenshot Pack",
+      "description": "Capture key app states in the browser or simulator, compose marketing frames, and export all required App Store and Play Store sizes.",
+      "category": "Design",
+      "trigger": "manual",
+      "official": false,
+      "hardened": false,
+      "views": 945,
+      "installs": 612,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["app-store", "screenshots", "mobile", "marketing", "export"],
+      "goal": "complete screenshot pack exported at all required store dimensions",
+      "maxIterations": 8,
+      "checkCommand": "Verify all required store sizes exist in export folder",
+      "exitCondition": "every required dimension has a final exported asset",
+      "guardrails": [
+        "Use real app states — no placeholder or lorem content",
+        "Respect App Store and Play Store dimension requirements",
+        "Get marketing copy approval before final export"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Capture app states", "description": "Screenshot onboarding, core workflow, and payoff moments at native resolution." },
+          { "label": "Compose frames", "description": "Add device frames, headlines, and brand styling per store guidelines." },
+          { "label": "Export store sizes", "description": "Render and export every required App Store and Play Store dimension." }
+        ],
+        "checkLabel": "Pack complete?",
+        "exitLabel": "All store sizes exported",
+        "loopBackLabel": "gaps remain"
+      },
+      "kickoffPrompt": "Start the \"App Store Screenshot Pack\" loop.\n\nGoal: complete screenshot pack exported at all required store dimensions\nMax iterations: 8\nBetween iterations run: Verify all required store sizes exist in export folder\nExit when: every required dimension has a final exported asset\n\nStep 1: Capture app states, compose marketing frames, and export all required store sizes.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["figma-to-code-loop", "launch-apple-search-ads", "landing-page-iteration"]
+    },
+    {
+      "id": "morning-operator-brief",
+      "slug": "morning-operator-brief",
+      "title": "Morning Operator Brief",
+      "description": "Daily interval loop that reads your calendar, open tickets, and inbox priorities, then delivers a concise operator brief with ranked actions.",
+      "category": "Operations",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1432,
+      "installs": 978,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["operations", "calendar", "tickets", "priorities", "daily"],
+      "goal": "morning brief delivered with ranked priorities and blockers surfaced",
+      "maxIterations": 1,
+      "checkCommand": "Verify brief covers calendar, tickets, and top three priorities",
+      "exitCondition": "brief is delivered with calendar conflicts, ticket status, and ranked actions",
+      "guardrails": [
+        "Do not send external messages without approval",
+        "Cite ticket IDs and meeting times — do not invent calendar events",
+        "Flag blockers and overdue items explicitly"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Scan calendar for today's meetings, open tickets by severity, and unread priority mail."
+          },
+          {
+            "label": "Act",
+            "description": "Draft time-blocked plan, pre-write standup notes, and queue safe prep tasks."
+          },
+          {
+            "label": "Surface",
+            "description": "Deliver a concise brief: top three priorities, conflicts, blockers, and what can wait."
+          }
+        ],
+        "checkLabel": "Brief ready?",
+        "exitLabel": "Morning brief delivered",
+        "loopBackLabel": "incomplete"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Morning Operator Brief\" loop.\n\nGoal: morning brief delivered with ranked priorities and blockers surfaced\nMax iterations: 1\nBetween iterations run: Verify brief covers calendar, tickets, and top three priorities\nExit when: brief is delivered with calendar conflicts, ticket status, and ranked actions\n\nStep 1 — Monitor: Read calendar, open tickets, and priority inbox.\nStep 2 — Act: Draft time-blocked plan and prep tasks.\nStep 3 — Surface: Deliver ranked priorities, conflicts, and blockers.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["inbox-triage-with-approval", "customer-onboarding-watch"]
+    },
+    {
+      "id": "inbox-triage-with-approval",
+      "slug": "inbox-triage-with-approval",
+      "title": "Inbox Triage with Approval",
+      "description": "On an interval, classify incoming mail, draft safe replies for routine threads, and escalate anything that needs a human decision.",
+      "category": "Operations",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1189,
+      "installs": 823,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["email", "inbox", "triage", "operations", "approval"],
+      "goal": "inbox triaged with drafts queued for approval and escalations surfaced",
+      "maxIterations": 15,
+      "checkCommand": "Verify inbox unread count and pending draft queue status",
+      "exitCondition": "all threads classified with drafts queued or escalations flagged",
+      "guardrails": [
+        "Never send mail without explicit human approval",
+        "Escalate legal, billing, and angry-customer threads immediately",
+        "Do not auto-archive threads that need a human decision"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Scan unread inbox for new threads, VIP senders, and SLA-sensitive messages."
+          },
+          {
+            "label": "Act",
+            "description": "Classify each thread, draft safe replies for routine items, and label for follow-up."
+          },
+          {
+            "label": "Surface",
+            "description": "Present draft queue for approval and escalate threads that need a human."
+          }
+        ],
+        "checkLabel": "Triage complete?",
+        "exitLabel": "All threads classified with drafts or escalations",
+        "loopBackLabel": "unread remains"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Inbox Triage with Approval\" loop.\n\nGoal: inbox triaged with drafts queued for approval and escalations surfaced\nMax iterations: 15\nBetween iterations run: Verify inbox unread count and pending draft queue status\nExit when: all threads classified with drafts queued or escalations flagged\n\nStep 1 — Monitor: Scan unread inbox for new and SLA-sensitive threads.\nStep 2 — Act: Classify, draft safe replies, and label follow-ups.\nStep 3 — Surface: Queue drafts for approval and escalate human-needed threads.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["morning-operator-brief", "customer-onboarding-watch"]
+    },
+    {
+      "id": "customer-onboarding-watch",
+      "slug": "customer-onboarding-watch",
+      "title": "Customer Onboarding Watch",
+      "description": "Interval loop that watches new signups, runs the onboarding checklist against each account, and nudges or escalates stuck users.",
+      "category": "Operations",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1067,
+      "installs": 734,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["onboarding", "customers", "signup", "operations", "retention"],
+      "goal": "new signups are checked against onboarding checklist with nudges or escalations sent",
+      "maxIterations": 20,
+      "checkCommand": "Verify new signups since last cycle against onboarding checklist",
+      "exitCondition": "all new signups are nudged, completed, or escalated",
+      "guardrails": [
+        "Do not send customer emails without approval unless pre-approved templates apply",
+        "Escalate enterprise and high-value signups immediately",
+        "Never expose internal metrics in customer-facing nudges"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Watch new signups, activation milestones, and accounts stuck on onboarding steps."
+          },
+          {
+            "label": "Act",
+            "description": "Run the checklist per account, send approved nudge templates, and flag blockers."
+          },
+          {
+            "label": "Surface",
+            "description": "Report completion rates, stuck accounts, and escalations needing human outreach."
+          }
+        ],
+        "checkLabel": "Onboarding current?",
+        "exitLabel": "All new signups handled",
+        "loopBackLabel": "stuck accounts remain"
+      },
+      "kickoffPrompt": "/loop 4h Start the \"Customer Onboarding Watch\" loop.\n\nGoal: new signups are checked against onboarding checklist with nudges or escalations sent\nMax iterations: 20\nBetween iterations run: Verify new signups since last cycle against onboarding checklist\nExit when: all new signups are nudged, completed, or escalated\n\nStep 1 — Monitor: Watch new signups and activation milestones.\nStep 2 — Act: Run checklist, send approved nudges, flag blockers.\nStep 3 — Surface: Report completion rates and escalations.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["signup-flow-until-smooth", "morning-operator-brief", "inbox-triage-with-approval"]
+    },
+    {
+      "id": "competitor-change-watch",
+      "slug": "competitor-change-watch",
+      "title": "Competitor Change Watch",
+      "description": "Daily interval loop that monitors competitor sites, pricing pages, and changelogs, then delivers a sourced brief on what changed.",
+      "category": "Research",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1345,
+      "installs": 891,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["competitors", "research", "pricing", "monitoring", "intel"],
+      "goal": "competitor changes detected and sourced brief delivered",
+      "maxIterations": 30,
+      "checkCommand": "Verify competitor snapshots differ from last baseline with sources cited",
+      "exitCondition": "monitoring cycle complete with sourced change brief delivered",
+      "guardrails": [
+        "Cite URLs and capture dates for every claimed change",
+        "Do not invent pricing or feature claims without a source",
+        "Respect robots.txt and rate limits when fetching competitor pages"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Watch competitor homepages, pricing pages, changelogs, and job boards for shifts."
+          },
+          {
+            "label": "Act",
+            "description": "Diff against last baseline, capture screenshots, and classify changes by impact."
+          },
+          {
+            "label": "Surface",
+            "description": "Deliver a sourced brief: what changed, why it matters, and suggested responses."
+          }
+        ],
+        "checkLabel": "Cycle complete?",
+        "exitLabel": "Sourced competitor brief delivered",
+        "loopBackLabel": "keep watching"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Competitor Change Watch\" loop.\n\nGoal: competitor changes detected and sourced brief delivered\nMax iterations: 30\nBetween iterations run: Verify competitor snapshots differ from last baseline with sources cited\nExit when: monitoring cycle complete with sourced change brief delivered\n\nStep 1 — Monitor: Watch competitor sites, pricing, and changelogs.\nStep 2 — Act: Diff against baseline, capture screenshots, classify impact.\nStep 3 — Surface: Deliver sourced brief with suggested responses.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["self-managing-website", "review-mining-loop", "launch-meta-ads"]
+    },
+    {
+      "id": "review-mining-loop",
+      "slug": "review-mining-loop",
+      "title": "Review Mining Loop",
+      "description": "Weekly interval loop that pulls G2 and App Store reviews, clusters themes, and surfaces product and positioning insights.",
+      "category": "Research",
+      "trigger": "interval",
+      "official": false,
+      "hardened": true,
+      "views": 823,
+      "installs": 534,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["reviews", "g2", "app-store", "research", "feedback"],
+      "goal": "review themes clustered with actionable insight brief delivered",
+      "maxIterations": 8,
+      "checkCommand": "Verify new reviews since last cycle are clustered with source links",
+      "exitCondition": "theme clusters and insight brief delivered with cited reviews",
+      "guardrails": [
+        "Link every theme to specific review quotes and sources",
+        "Do not paraphrase reviews in ways that change sentiment",
+        "Flag critical negative themes for immediate product review"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Pull new G2, App Store, and Play Store reviews since the last cycle."
+          },
+          {
+            "label": "Act",
+            "description": "Cluster reviews by theme — bugs, missing features, praise, pricing objections."
+          },
+          {
+            "label": "Surface",
+            "description": "Deliver theme clusters with quotes, trend direction, and recommended product actions."
+          }
+        ],
+        "checkLabel": "Brief ready?",
+        "exitLabel": "Theme clusters and insight brief delivered",
+        "loopBackLabel": "new reviews pending"
+      },
+      "kickoffPrompt": "/loop 1w Start the \"Review Mining Loop\" loop.\n\nGoal: review themes clustered with actionable insight brief delivered\nMax iterations: 8\nBetween iterations run: Verify new reviews since last cycle are clustered with source links\nExit when: theme clusters and insight brief delivered with cited reviews\n\nStep 1 — Monitor: Pull new G2 and App Store reviews.\nStep 2 — Act: Cluster by theme with cited quotes.\nStep 3 — Surface: Deliver insight brief with recommended actions.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["competitor-change-watch", "signup-flow-until-smooth", "self-managing-website"]
+    },
+    {
+      "id": "signup-flow-until-smooth",
+      "slug": "signup-flow-until-smooth",
+      "title": "Signup Flow Until Smooth",
+      "description": "Walk register-through-onboard in the browser, annotate friction points, fix UX blockers, and repeat until the flow is smooth.",
+      "category": "Product",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1278,
+      "installs": 856,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["signup", "onboarding", "ux", "product", "browser"],
+      "goal": "signup through first value moment completes without friction blockers",
+      "maxIterations": 10,
+      "checkCommand": "Complete signup flow in browser and verify no annotated blockers remain",
+      "exitCondition": "full signup-to-onboard path completes with zero open friction annotations",
+      "guardrails": [
+        "Use test accounts — do not create production users without cleanup",
+        "Screenshot and annotate every friction point before fixing",
+        "Do not remove validation to mask UX problems"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Walk the flow", "description": "Register a test account and complete onboarding in the browser." },
+          { "label": "Annotate friction", "description": "Screenshot confusing steps, errors, and drop-off points with notes." },
+          { "label": "Fix and retest", "description": "Patch UX blockers, then re-walk the flow from scratch." }
+        ],
+        "checkLabel": "Flow smooth?",
+        "exitLabel": "Signup-to-onboard completes cleanly",
+        "loopBackLabel": "friction remains"
+      },
+      "kickoffPrompt": "Start the \"Signup Flow Until Smooth\" loop.\n\nGoal: signup through first value moment completes without friction blockers\nMax iterations: 10\nBetween iterations run: Complete signup flow in browser and verify no annotated blockers remain\nExit when: full signup-to-onboard path completes with zero open friction annotations\n\nStep 1: Walk register-through-onboard in browser, annotate friction, fix blockers, and retest.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["customer-onboarding-watch", "checkout-until-green", "staging-smoke-until-green"]
+    },
+    {
+      "id": "checkout-until-green",
+      "slug": "checkout-until-green",
+      "title": "Checkout Until Green",
+      "description": "Test every payment path in the browser — card, wallet, trial, upgrade — fix blockers, and loop until checkout is green end-to-end.",
+      "category": "Product",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1398,
+      "installs": 912,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["checkout", "payments", "billing", "product", "stripe"],
+      "goal": "all payment paths complete successfully in test mode",
+      "maxIterations": 10,
+      "checkCommand": "Run checkout test suite or walk each payment path in browser",
+      "exitCondition": "every configured payment path completes without error",
+      "guardrails": [
+        "Use test mode and test cards only — never charge real cards",
+        "Do not disable fraud checks or webhooks to force green",
+        "Verify receipt, email, and subscription state after each path"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Test payment paths", "description": "Walk card, wallet, trial, upgrade, and cancel flows in test mode." },
+          { "label": "Capture blockers", "description": "Screenshot errors, log webhook failures, and note missing states." },
+          { "label": "Fix and re-verify", "description": "Patch blockers and re-run every path until all green." }
+        ],
+        "checkLabel": "Checkout green?",
+        "exitLabel": "All payment paths pass",
+        "loopBackLabel": "blockers remain"
+      },
+      "kickoffPrompt": "Start the \"Checkout Until Green\" loop.\n\nGoal: all payment paths complete successfully in test mode\nMax iterations: 10\nBetween iterations run: Run checkout test suite or walk each payment path in browser\nExit when: every configured payment path completes without error\n\nStep 1: Test every payment path in browser, capture blockers, fix, and re-verify.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["signup-flow-until-smooth", "staging-smoke-until-green", "e2e-until-green"]
+    },
+    {
+      "id": "docs-until-accurate",
+      "slug": "docs-until-accurate",
+      "title": "Docs Until Accurate",
+      "description": "Run the live app, compare docs against actual behavior, fix drift, and repeat until documentation matches reality.",
+      "category": "Docs",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 967,
+      "installs": 678,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["documentation", "accuracy", "helpdocs", "drift", "product"],
+      "goal": "docs match live product behavior with drift fixes queued or published",
+      "maxIterations": 15,
+      "checkCommand": "Verify docs against live app behavior in browser",
+      "exitCondition": "no unaddressed doc drift remains or fixes are queued for approval",
+      "guardrails": [
+        "Run the app — do not trust docs or code comments alone",
+        "Do not publish without the configured approval path",
+        "Capture fresh screenshots when UI steps changed"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor",
+            "description": "Compare docs against live app — wrong steps, stale screenshots, missing features."
+          },
+          {
+            "label": "Act",
+            "description": "Rewrite inaccurate sections, capture new screenshots, and queue or publish fixes."
+          },
+          {
+            "label": "Surface",
+            "description": "Report drift found, fixes applied, and articles still needing review."
+          }
+        ],
+        "checkLabel": "Docs accurate?",
+        "exitLabel": "Drift resolved or queued for approval",
+        "loopBackLabel": "drift remains"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Docs Until Accurate\" loop.\n\nGoal: docs match live product behavior with drift fixes queued or published\nMax iterations: 15\nBetween iterations run: Verify docs against live app behavior in browser\nExit when: no unaddressed doc drift remains or fixes are queued for approval\n\nStep 1 — Monitor: Compare docs vs live app behavior.\nStep 2 — Act: Fix drift, update screenshots, queue or publish.\nStep 3 — Surface: Report remaining gaps and fixes applied.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["self-managing-helpdocs", "self-managing-website", "changelog-until-shipped"]
+    },
+    {
+      "id": "blog-until-published",
+      "slug": "blog-until-published",
+      "title": "Blog Until Published",
+      "description": "Outline, draft, optimize for SEO, deploy to staging, verify live, and loop until the post is published and indexed.",
+      "category": "Content",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 1089,
+      "installs": 745,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["blog", "content", "seo", "publishing", "marketing"],
+      "goal": "blog post is live, SEO-checked, and verified at public URL",
+      "maxIterations": 8,
+      "checkCommand": "curl -sI public post URL and verify 200 with meta tags",
+      "exitCondition": "post returns 200 with title, description, and OG tags present",
+      "guardrails": [
+        "Do not publish without explicit approval",
+        "Cite sources for factual claims",
+        "Verify internal links and images load on the live URL"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Outline and draft", "description": "Structure the post, write draft copy, and add internal links." },
+          { "label": "SEO and deploy", "description": "Set title, meta, OG tags; deploy to staging then production." },
+          { "label": "Verify live", "description": "Confirm public URL, meta tags, and social preview render correctly." }
+        ],
+        "checkLabel": "Published?",
+        "exitLabel": "Post live with SEO verified",
+        "loopBackLabel": "not live"
+      },
+      "kickoffPrompt": "Start the \"Blog Until Published\" loop.\n\nGoal: blog post is live, SEO-checked, and verified at public URL\nMax iterations: 8\nBetween iterations run: curl -sI public post URL and verify 200 with meta tags\nExit when: post returns 200 with title, description, and OG tags present\n\nStep 1: Outline, draft, SEO-optimize, deploy, and verify the post is live.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["self-managing-website", "changelog-until-shipped", "landing-page-iteration"]
+    },
+    {
+      "id": "changelog-until-shipped",
+      "slug": "changelog-until-shipped",
+      "title": "Changelog Until Shipped",
+      "description": "Parse recent PRs and commits, write a user-facing changelog entry, publish it, and verify it appears on the public changelog page.",
+      "category": "Content",
+      "trigger": "manual",
+      "official": false,
+      "hardened": true,
+      "views": 756,
+      "installs": 498,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["changelog", "release-notes", "content", "github", "shipping"],
+      "goal": "changelog entry published and visible on public changelog page",
+      "maxIterations": 6,
+      "checkCommand": "Verify changelog page includes the new entry with correct date",
+      "exitCondition": "entry is live on public changelog with accurate release date",
+      "guardrails": [
+        "Write user-facing language — no internal ticket IDs or commit hashes in copy",
+        "Do not publish breaking changes without migration notes",
+        "Get approval before publishing customer-visible entries"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Parse changes", "description": "Read merged PRs and commits since last release; group by user impact." },
+          { "label": "Write changelog", "description": "Draft user-facing entries with features, fixes, and breaking changes." },
+          { "label": "Publish and verify", "description": "Deploy changelog update and confirm it appears on the public page." }
+        ],
+        "checkLabel": "Shipped?",
+        "exitLabel": "Changelog entry live on public page",
+        "loopBackLabel": "not published"
+      },
+      "kickoffPrompt": "Start the \"Changelog Until Shipped\" loop.\n\nGoal: changelog entry published and visible on public changelog page\nMax iterations: 6\nBetween iterations run: Verify changelog page includes the new entry with correct date\nExit when: entry is live on public changelog with accurate release date\n\nStep 1: Parse PRs/commits, write user-facing changelog, publish, and verify live.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["docs-until-accurate", "blog-until-published", "ship-pr-until-green"]
+    },
+    {
+      "id": "dependency-cve-loop",
+      "slug": "dependency-cve-loop",
+      "title": "Dependency CVE Loop",
+      "description": "Daily interval loop that audits dependency advisories, patches vulnerable packages, runs tests, and opens a security PR.",
+      "category": "Security",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 1123,
+      "installs": 789,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["security", "cve", "dependencies", "audit", "patch"],
+      "goal": "known CVEs in dependencies are patched with tests passing and PR open",
+      "maxIterations": 10,
+      "checkCommand": "npm audit --json || true",
+      "exitCondition": "no critical or high CVEs remain unpatched or fix PR is open",
+      "guardrails": [
+        "Do not ignore or suppress CVEs without documented risk acceptance",
+        "Run full test suite after every security patch",
+        "Prioritize critical and high severity advisories first"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          { "label": "Audit advisories", "description": "Run npm audit or equivalent and list critical/high CVEs." },
+          { "label": "Patch and test", "description": "Bump vulnerable packages, resolve conflicts, and run tests." },
+          { "label": "Open security PR", "description": "Open a PR with advisory IDs, patches applied, and test results." }
+        ],
+        "checkLabel": "CVEs handled?",
+        "exitLabel": "Critical/high CVEs patched or fix PR open",
+        "loopBackLabel": "CVEs remain"
+      },
+      "kickoffPrompt": "/loop 1d Start the \"Dependency CVE Loop\" loop.\n\nGoal: known CVEs in dependencies are patched with tests passing and PR open\nMax iterations: 10\nBetween iterations run: npm audit --json || true\nExit when: no critical or high CVEs remain unpatched or fix PR is open\n\nStep 1: Audit advisories, patch vulnerable deps, test, and open a security PR.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["dependency-drift-watch", "secret-scan-until-clean", "ship-pr-until-green"]
+    },
+    {
+      "id": "secret-scan-until-clean",
+      "slug": "secret-scan-until-clean",
+      "title": "Secret Scan Until Clean",
+      "description": "Scan the repo for leaked secrets, rotate exposed credentials, verify clean scan, and loop until no leaks remain.",
+      "category": "Security",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 987,
+      "installs": 654,
+      "author": "Trooper",
+      "agents": ["cursor", "claude-code", "codex"],
+      "bestFitAgents": ["cursor", "claude-code"],
+      "tags": ["secrets", "security", "scan", "credentials", "rotation"],
+      "goal": "repo secret scan is clean with exposed credentials rotated",
+      "maxIterations": 8,
+      "checkCommand": "gitleaks detect --source . --verbose || trufflehog filesystem .",
+      "exitCondition": "secret scan reports zero findings",
+      "guardrails": [
+        "Rotate every exposed secret — removing from git history alone is not enough",
+        "Do not commit new secrets while fixing old ones",
+        "Report rotation steps to the user — never log secret values"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          { "label": "Scan repo", "description": "Run gitleaks or trufflehog across the full repository." },
+          { "label": "Rotate and remove", "description": "Revoke exposed credentials, rotate keys, and purge from history if needed." },
+          { "label": "Verify clean", "description": "Re-run scan and confirm zero findings before closing the loop." }
+        ],
+        "checkLabel": "Scan clean?",
+        "exitLabel": "Zero secret scan findings",
+        "loopBackLabel": "leaks remain"
+      },
+      "kickoffPrompt": "Start the \"Secret Scan Until Clean\" loop.\n\nGoal: repo secret scan is clean with exposed credentials rotated\nMax iterations: 8\nBetween iterations run: gitleaks detect --source . --verbose || trufflehog filesystem .\nExit when: secret scan reports zero findings\n\nStep 1: Scan for secrets, rotate exposed credentials, remove leaks, and verify clean scan.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["dependency-cve-loop", "dependency-drift-watch"]
     }
   ]
 }
