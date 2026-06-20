@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { formatUsd, PRICING_USD } from '@/lib/pricing';
 
 interface FAQ {
   question: string;
@@ -88,7 +89,7 @@ const faqs: FAQCategories = {
     },
     {
       question: "What is the difference between Solo, Cloud, and Enterprise?",
-      answer: `Local Install is free ($0/mo) on your laptop, or $49 one-time for a lifetime license on your machine — one workspace, no connected devices. Solo Cloud is $149 one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is $25/mo (Cloud) or $99/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+      answer: `Local Install is ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine — one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
     },
     {
       question: "Does Trooper Cloud include hosting?",

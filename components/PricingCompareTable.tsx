@@ -209,7 +209,7 @@ function DesktopCompareTable() {
         </div>
         <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
           <span className="text-sm font-medium tabular-nums text-slate-900">
-            $0/mo · {formatUsd(PRICING_USD.localLifetime)} lifetime
+            {formatUsd(PRICING_USD.localLifetime)} one-time
           </span>
         </div>
         <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>

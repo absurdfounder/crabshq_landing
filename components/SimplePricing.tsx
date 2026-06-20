@@ -566,13 +566,11 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       title: 'Local Install',
       icon: Laptop,
       description:
-        'Install Trooper on your laptop at no cost. Self-hosted runtime on your machine — one workspace, no connected devices.',
-      price: formatUsd(0),
-      cadence: '/ month',
+        'Pay once and install Trooper on your laptop. Self-hosted runtime on your machine — one workspace, no connected devices.',
+      price: formatUsd(PRICING_USD.localLifetime),
+      cadence: 'one-time',
       subline: (
-        <PricingSubline>
-          1 workspace · no connected devices · optional {formatUsd(PRICING_USD.localLifetime)} lifetime license
-        </PricingSubline>
+        <PricingSubline>1 workspace · no connected devices · lifetime license on your machine</PricingSubline>
       ),
       note: <PricingNote>Bring your own API keys. Model usage billed by your providers.</PricingNote>,
       tierRail: <HostingModePill label="Self Hosted" />,
