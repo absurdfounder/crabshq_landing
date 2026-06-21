@@ -7,13 +7,17 @@ import {
   CircleDollarSign,
   ExternalLink,
   Eye,
+  FileInput,
   FileText,
   GitBranch,
   Globe,
+  Handshake,
+  HeartPulse,
   LayoutGrid,
   Lock,
   Package,
   Palette,
+  Plug,
   Search,
   Shield,
   Target,
@@ -39,6 +43,10 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Content: FileText,
   Security: Lock,
   Finance: CircleDollarSign,
+  Integrations: Plug,
+  Healthcare: HeartPulse,
+  Sales: Handshake,
+  Documents: FileInput,
 };
 
 function getCategoryIcon(category: string): LucideIcon {

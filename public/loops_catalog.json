@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-21T09:30:00.000Z",
-  "count": 32,
+  "generatedAt": "2026-06-21T12:00:00.000Z",
+  "count": 38,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -1308,6 +1308,351 @@
       },
       "kickoffPrompt": "/loop 1h Start the \"Reconciliation on Autopilot\" loop.\n\nGoal: all transactions matched or exceptions triaged with audit trail and compliance report ready\nMax iterations: 24\nBetween iterations run: Report unreconciled transaction count, open exception count, and match rate vs prior cycle\nExit when: match rate meets target and every open exception has owner, evidence, and resolution or approved escalation\n\nStep 1 — Ingest: Pull new transactions from processors, banks, and internal systems.\nStep 2 — Match: Apply deterministic rules (amount + vendor code + date within 2 days, etc.). Auto-reconcile confident matches.\nStep 3 — Investigate: For exceptions, gather warehouse data, analyze open invoices, reach out to customers if needed, and draft a suggested resolution.\nStep 4 — Triage: Present exceptions inbox for ops — assign, comment, approve AI suggestions or manual adjustments.\nStep 5 — Report: Export audit trail, update ERP/ledger with approval, and notify the team.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
       "related": ["morning-operator-brief", "inbox-triage-with-approval", "customer-onboarding-watch"]
+    },
+    {
+      "id": "portal-to-production-api",
+      "slug": "portal-to-production-api",
+      "title": "Portal to Production API",
+      "description": "Turn any login-gated portal into a fast, stable API for agents — record the real network flow once, reconstruct auth and sequencing without UI bots, ship one endpoint, and loop until production-ready.",
+      "category": "Integrations",
+      "trigger": "manual",
+      "official": true,
+      "hardened": true,
+      "views": 318,
+      "installs": 204,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["integrations", "portal", "api", "agents", "automation", "reliability"],
+      "goal": "blocked portal workflow is exposed as one stable production API with reliable auth, retries, and change monitoring",
+      "maxIterations": 15,
+      "checkCommand": "Run endpoint smoke tests: report success rate, p95 latency, session refresh, and structured response validity",
+      "exitCondition": "10 consecutive successful calls with session refresh working and no unresolved portal drift alerts",
+      "guardrails": [
+        "Prefer network-layer request replay over brittle browser automation for production paths",
+        "Never store portal credentials in chat, code, or commits — use approved secrets storage only",
+        "Keep a human in the loop for MFA and initial login during the record phase",
+        "Stop and escalate on CAPTCHA blocks, rate limits, or unclear portal ToS constraints",
+        "Return structured API data — do not scrape HTML when underlying JSON endpoints exist",
+        "Document the recorded workflow and get approval before routing production agent traffic"
+      ],
+      "flow": {
+        "trigger": "Manual start",
+        "steps": [
+          {
+            "label": "Record workflow",
+            "description": "Walk through the portal task once while capturing underlying network requests — login, sessions, API calls, and sequencing."
+          },
+          {
+            "label": "Reconstruct flow",
+            "description": "Model the real call graph: auth behavior, headers, retries, and edge cases. No UI selectors or headless Chrome in the production path."
+          },
+          {
+            "label": "Ship stable endpoint",
+            "description": "Publish one clean, parameterized API your agents can call. Document request schema, response shape, and error codes."
+          },
+          {
+            "label": "Harden reliability",
+            "description": "Add session management, automatic re-auth, retry policy, anti-bot/TLS handling, and portal change detection."
+          },
+          {
+            "label": "Monitor and repair",
+            "description": "Run smoke tests, detect drift when portals update, repair broken steps, and verify agents get milliseconds-level responses."
+          }
+        ],
+        "checkLabel": "Production ready?",
+        "exitLabel": "Stable API with 10 consecutive green checks",
+        "loopBackLabel": "drift or failures"
+      },
+      "kickoffPrompt": "Start the \"Portal to Production API\" loop.\n\nGoal: blocked portal workflow is exposed as one stable production API with reliable auth, retries, and change monitoring\nMax iterations: 15\nBetween iterations run: Run endpoint smoke tests: report success rate, p95 latency, session refresh, and structured response validity\nExit when: 10 consecutive successful calls with session refresh working and no unresolved portal drift alerts\n\nStep 1 — Record: Complete the portal workflow once and capture real network traffic (auth, sessions, API sequencing).\nStep 2 — Reconstruct: Build the optimal request flow with retries and edge cases — no UI automation in production.\nStep 3 — Ship: Expose one stable endpoint with clear parameters and structured responses for agents.\nStep 4 — Harden: Implement session refresh, re-auth, retries, and portal change detection.\nStep 5 — Monitor: Smoke test, repair drift, and confirm production reliability.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["signup-flow-until-smooth", "reconciliation-on-autopilot", "customer-onboarding-watch"]
+    },
+    {
+      "id": "care-ops-on-autopilot",
+      "slug": "care-ops-on-autopilot",
+      "title": "Care Ops on Autopilot",
+      "description": "24/7 care-agency operations — fill canceled shifts with matched caregivers, run hiring pipelines, chase missing clock-ins and session notes, and surface growth insights while humans handle emergencies.",
+      "category": "Healthcare",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 276,
+      "installs": 191,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["healthcare", "home-care", "scheduling", "hiring", "operations", "growth"],
+      "goal": "open shifts covered, hiring pipeline current, shift hygiene gaps closed, and growth alerts delivered to ops",
+      "maxIterations": 20,
+      "checkCommand": "Report uncovered shifts, stale ATS stages, missing clock-ins/notes, and unactioned growth alerts",
+      "exitCondition": "zero uncovered shifts in next 48h, no candidate stuck >48h without doc/reminder, and all shift hygiene gaps assigned or resolved",
+      "guardrails": [
+        "Treat client and caregiver data as sensitive — minimize PHI in logs and never expose it outside approved systems",
+        "Do not call or text caregivers/families without approval unless using pre-approved templates",
+        "Escalate medical emergencies and angry client concerns to human coordinators immediately",
+        "Do not extend final hire offers without explicit human approval",
+        "Match caregivers using agency preference rules — do not override compliance or credential requirements"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor ops board",
+            "description": "Scan for shift cancellations, missed clock-ins/outs, missing session notes, stuck hiring stages, and intake follow-ups."
+          },
+          {
+            "label": "Fill shift coverage",
+            "description": "When a caregiver calls out, rank replacements by agency preferences and reach out via approved channels until the shift is covered."
+          },
+          {
+            "label": "Run hiring autopilot",
+            "description": "Advance ATS candidates, collect required docs (licenses, TB tests, certifications), and send automated reminders and follow-ups."
+          },
+          {
+            "label": "Close shift hygiene gaps",
+            "description": "Remind caregivers of upcoming shifts and care plans; chase missing clock events and session notes after visits."
+          },
+          {
+            "label": "Surface growth insights",
+            "description": "Flag referral opportunities, intake conversion drops, and partner follow-ups (doctors, facilities, attorneys) for the ops team."
+          }
+        ],
+        "checkLabel": "Ops current?",
+        "exitLabel": "Shifts covered; pipeline and hygiene green",
+        "loopBackLabel": "gaps remain"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Care Ops on Autopilot\" loop.\n\nGoal: open shifts covered, hiring pipeline current, shift hygiene gaps closed, and growth alerts delivered to ops\nMax iterations: 20\nBetween iterations run: Report uncovered shifts, stale ATS stages, missing clock-ins/notes, and unactioned growth alerts\nExit when: zero uncovered shifts in next 48h, no candidate stuck >48h without doc/reminder, and all shift hygiene gaps assigned or resolved\n\nStep 1 — Monitor: Scan cancellations, clock gaps, missing notes, hiring pipeline, and intake queue.\nStep 2 — Coverage: Match and contact backup caregivers for open shifts using agency rules.\nStep 3 — Hiring: Move candidates through ATS, collect required credentials, send reminders.\nStep 4 — Hygiene: Remind caregivers and fill missing clock-ins, clock-outs, and session notes.\nStep 5 — Growth: Deliver referral, conversion, and partner follow-up alerts to ops.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["customer-onboarding-watch", "morning-operator-brief", "inbox-triage-with-approval"]
+    },
+    {
+      "id": "quote-order-on-autopilot",
+      "slug": "quote-order-on-autopilot",
+      "title": "Quote & Order on Autopilot",
+      "description": "Stop losing deals to manual quote and order handling — AI ingests customer requests from any channel, parses complex specs and tenders, matches spec-compliant catalog SKUs (prioritizing margin), generates professional quote drafts, and exports to CRM/ERP with a full audit trail.",
+      "category": "Sales",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 224,
+      "installs": 156,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["sales", "quotes", "orders", "inside-sales", "erp", "crm", "distributors", "manufacturing"],
+      "goal": "every inbound request parsed, spec-compliant quote draft ready for approval, and ERP/CRM export queued with audit trail",
+      "maxIterations": 20,
+      "checkCommand": "Report open requests, unparsed specs, unmatched line items, quotes pending approval, and ERP/CRM export backlog",
+      "exitCondition": "zero open requests without quote draft or explicit escalation, all line items cite catalog/ERP sources, and pending exports have owner or human approval",
+      "guardrails": [
+        "Require human approval before sending quotes to customers unless using pre-approved templates",
+        "Do not override compliance or spec requirements to prioritize margin or preferred SKUs",
+        "Escalate ambiguous specs and conflicting requirements to the assigned sales rep",
+        "Do not price below floor without explicit human approval",
+        "Cite catalog or ERP source for every line item — never invent SKUs, specs, or pricing"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Ingest requests",
+            "description": "Pull new RFQs from email, voice transcripts, portal uploads, and tender/spec documents across inbound channels."
+          },
+          {
+            "label": "Parse specs",
+            "description": "Extract quantities, dimensions, standards, delivery terms, and compliance requirements from complex specs and tender texts."
+          },
+          {
+            "label": "Match products",
+            "description": "Find spec-compliant catalog matches; rank by margin and preferred SKUs without violating compliance or substitution rules."
+          },
+          {
+            "label": "Generate quote",
+            "description": "Draft an accurate professional quote or order with line-item rationale, alternates, and pricing notes for rep review."
+          },
+          {
+            "label": "Push to ERP/CRM",
+            "description": "Export approved drafts to SAP, Oracle, or CRM with full audit trail — queue unapproved items for human sign-off."
+          }
+        ],
+        "checkLabel": "Quotes current?",
+        "exitLabel": "Requests quoted or escalated; exports owned",
+        "loopBackLabel": "backlog remains"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Quote & Order on Autopilot\" loop.\n\nGoal: every inbound request parsed, spec-compliant quote draft ready for approval, and ERP/CRM export queued with audit trail\nMax iterations: 20\nBetween iterations run: Report open requests, unparsed specs, unmatched line items, quotes pending approval, and ERP/CRM export backlog\nExit when: zero open requests without quote draft or explicit escalation, all line items cite catalog/ERP sources, and pending exports have owner or human approval\n\nStep 1 — Ingest: Pull new RFQs from email, voice, portals, and tender/spec uploads.\nStep 2 — Parse: Extract requirements, standards, quantities, and delivery terms from complex documents.\nStep 3 — Match: Select spec-compliant SKUs; prioritize margin and preferred products within compliance rules.\nStep 4 — Quote: Draft professional quote/order with cited sources and alternates for rep review.\nStep 5 — Export: Push approved drafts to ERP/CRM with audit trail; queue others for human approval.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["inbox-triage-with-approval", "reconciliation-on-autopilot", "portal-to-production-api"]
+    },
+    {
+      "id": "client-docs-to-forms",
+      "slug": "client-docs-to-forms",
+      "title": "Client Docs to Forms",
+      "description": "Client documents in, completed forms out — AI ingests uploads from portal, email, or file drops, extracts fields with confidence scores, merges into one reviewed master record, routes judgment calls for human sign-off, and fills firm-specific output forms with a full audit trail.",
+      "category": "Documents",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 198,
+      "installs": 142,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["documents", "intake", "forms", "extraction", "compliance", "operations", "pii", "audit"],
+      "goal": "every open case has an approved master record and completed output forms ready for delivery or explicit escalation",
+      "maxIterations": 20,
+      "checkCommand": "Report open cases, pending extractions, low-confidence fields, master records awaiting sign-off, and unfilled output forms",
+      "exitCondition": "zero open cases without approved master record or explicit escalation, all low-confidence fields reviewed, and pending forms have owner or human approval",
+      "guardrails": [
+        "Nothing is final without human sign-off on the master record",
+        "Treat SSN, wages, EIN, and client PII as sensitive — minimize exposure in logs",
+        "Do not auto-submit forms to external parties without approval",
+        "Escalate fields below confidence threshold for human review",
+        "Never use client data for model training; encrypted handling only",
+        "Full audit trail on every field change"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Intake documents",
+            "description": "Collect client documents from portal, email, or uploads; track new cases and attach source files."
+          },
+          {
+            "label": "Extract fields",
+            "description": "AI reads documents with confidence scores per field; flag low-confidence extractions for review."
+          },
+          {
+            "label": "Build master record",
+            "description": "Merge extracted fields into one reviewed record; resolve conflicts across source documents."
+          },
+          {
+            "label": "Human review",
+            "description": "Route cases needing judgment to team sign-off before anything is final."
+          },
+          {
+            "label": "Fill output forms",
+            "description": "Populate firm-specific forms from approved master record; audit trail on every field."
+          }
+        ],
+        "checkLabel": "Cases current?",
+        "exitLabel": "Master records approved; forms filled or escalated",
+        "loopBackLabel": "backlog remains"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Client Docs to Forms\" loop.\n\nGoal: every open case has an approved master record and completed output forms ready for delivery or explicit escalation\nMax iterations: 20\nBetween iterations run: Report open cases, pending extractions, low-confidence fields, master records awaiting sign-off, and unfilled output forms\nExit when: zero open cases without approved master record or explicit escalation, all low-confidence fields reviewed, and pending forms have owner or human approval\n\nStep 1 — Intake: Collect client documents from portal, email, or uploads; track new cases.\nStep 2 — Extract: AI reads documents with per-field confidence scores; flag low-confidence extractions.\nStep 3 — Master record: Merge extracted fields into one record; resolve conflicts across source docs.\nStep 4 — Review: Route judgment calls to team sign-off before anything is final.\nStep 5 — Forms: Populate firm-specific output forms from approved master record with full audit trail.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["customer-onboarding-watch", "inbox-triage-with-approval", "quote-order-on-autopilot"]
+    },
+    {
+      "id": "customer-activity-on-autopilot",
+      "slug": "customer-activity-on-autopilot",
+      "title": "Customer Activity on Autopilot",
+      "description": "Aggregate every customer interaction into a structured activity graph — emails, meetings, notes, calls, and webhooks from team and agents. Extract the right next actions, queue tracked tasks for reps and MCP clients, execute from anywhere, and keep CRM, email, and calendar in sync so nothing falls through the cracks.",
+      "category": "Sales",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 198,
+      "installs": 142,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["sales", "crm", "activity-graph", "tasks", "mcp", "api", "customer-success"],
+      "goal": "activity graph is current, next actions are queued or executed, and open commitments have owners with full audit trail",
+      "maxIterations": 20,
+      "checkCommand": "Report unsynced activity sources, accounts with stale activity, open next actions without owners, and pending CRM sync backlog",
+      "exitCondition": "activity graph covers all connected sources, every open commitment has a tracked task or explicit escalation, and high-impact CRM changes are approved or queued",
+      "guardrails": [
+        "Do not auto-send customer-facing emails or messages without human approval unless pre-approved templates apply",
+        "Preserve full account context when creating tasks — link back to source activity",
+        "Do not overwrite CRM fields without explicit approval for high-impact changes (deal stage, amount, owner)",
+        "Escalate ambiguous next actions to human rep rather than guessing",
+        "API and MCP actions must be auditable with actor (human vs agent) recorded"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Aggregate activity",
+            "description": "Pull emails, meetings, notes, calls, and webhooks from team and agents into one structured account stream."
+          },
+          {
+            "label": "Extract next actions",
+            "description": "AI suggests follow-ups and commitments from the activity graph — surface what needs to happen next per account."
+          },
+          {
+            "label": "Queue tracked tasks",
+            "description": "Turn commitments into tasks with context; reps, agents, and MCP clients share one queue with source links."
+          },
+          {
+            "label": "Execute from anywhere",
+            "description": "Create records, update fields, and dispatch tasks via keyboard-first bar, terminal, or MCP without breaking flow."
+          },
+          {
+            "label": "Sync the stack",
+            "description": "Connect CRM, email, calendar, and tools so the activity graph stays complete and bidirectionally current."
+          }
+        ],
+        "checkLabel": "Activity current?",
+        "exitLabel": "Graph synced; tasks owned or escalated",
+        "loopBackLabel": "gaps remain"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Customer Activity on Autopilot\" loop.\n\nGoal: activity graph is current, next actions are queued or executed, and open commitments have owners with full audit trail\nMax iterations: 20\nBetween iterations run: Report unsynced activity sources, accounts with stale activity, open next actions without owners, and pending CRM sync backlog\nExit when: activity graph covers all connected sources, every open commitment has a tracked task or explicit escalation, and high-impact CRM changes are approved or queued\n\nStep 1 — Aggregate: Pull emails, meetings, notes, calls, and webhooks into one structured account stream.\nStep 2 — Extract: AI suggests follow-ups and commitments from the activity graph.\nStep 3 — Queue: Turn commitments into tracked tasks with source context for reps, agents, and MCP clients.\nStep 4 — Execute: Create records, update fields, and dispatch tasks via keyboard bar, terminal, or MCP.\nStep 5 — Sync: Keep CRM, email, calendar, and connected tools bidirectionally current.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["inbox-triage-with-approval", "morning-operator-brief", "quote-order-on-autopilot"]
+    },
+    {
+      "id": "production-security-on-autopilot",
+      "slug": "production-security-on-autopilot",
+      "title": "Production Security on Autopilot",
+      "description": "A fleet of specialized security agents across your entire stack — pentesting, internal discovery, and remediation grounded in a live production knowledge graph. Agents run on every PR, deployment, and alert, catch threats in seconds, and verify fixes before closing.",
+      "category": "Security",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 387,
+      "installs": 264,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["security", "pentest", "discovery", "remediation", "knowledge-graph", "production", "devsecops"],
+      "goal": "open findings triaged with graph context, critical issues escalated, and verified fixes landed in production",
+      "maxIterations": 20,
+      "checkCommand": "Report open findings by severity, unverified fixes, stale graph assets, and unprocessed PR/deploy/alert events",
+      "exitCondition": "zero critical or high findings without owner and remediation plan, every resolved finding has verified fix in production, and live graph covers all connected stack sources",
+      "guardrails": [
+        "Use read-only roles for discovery and graph building unless explicitly approved for remediation",
+        "Do not apply destructive changes in production without human approval",
+        "Escalate critical and zero-day findings immediately — do not wait for the next loop iteration",
+        "Never expose secrets, tokens, or credentials in logs or reports",
+        "Mark findings resolved only after verified fix — not just PR merged",
+        "Preserve audit trail linking finding → fix → verification event"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Gather stack context",
+            "description": "Pull metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors using read-only access."
+          },
+          {
+            "label": "Maintain production graph",
+            "description": "Connect assets, hidden links, and change history into one live environment view."
+          },
+          {
+            "label": "Run on events",
+            "description": "Trigger pentest, discovery, and monitor agents on pull requests, deploys, and security alerts."
+          },
+          {
+            "label": "Prove impact",
+            "description": "Validate findings like an adversary would; rank by exploitability and blast radius with full graph context."
+          },
+          {
+            "label": "Remediate and verify",
+            "description": "Turn findings into fixes grounded in the real environment; verify the fix landed before closing."
+          }
+        ],
+        "checkLabel": "Security current?",
+        "exitLabel": "Findings owned, verified, or escalated; graph current",
+        "loopBackLabel": "gaps remain"
+      },
+      "kickoffPrompt": "/loop 30m Start the \"Production Security on Autopilot\" loop.\n\nGoal: open findings triaged with graph context, critical issues escalated, and verified fixes landed in production\nMax iterations: 20\nBetween iterations run: Report open findings by severity, unverified fixes, stale graph assets, and unprocessed PR/deploy/alert events\nExit when: zero critical or high findings without owner and remediation plan, every resolved finding has verified fix in production, and live graph covers all connected stack sources\n\nStep 1 — Context: Pull read-only metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors.\nStep 2 — Graph: Connect assets, hidden links, and change history into one live production view.\nStep 3 — Events: Run pentest, discovery, and monitor agents on PRs, deploys, and alerts.\nStep 4 — Impact: Validate findings adversarially; rank by exploitability and blast radius with graph context.\nStep 5 — Remediate: Draft fixes grounded in the real environment; verify fix landed before closing.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["dependency-cve-loop", "secret-scan-until-clean", "ci-failure-watcher"]
     }
   ]
 }
