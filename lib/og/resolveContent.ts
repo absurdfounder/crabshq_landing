@@ -13,10 +13,10 @@ const HOME_OG: OgHeroContent = {
   kind: 'home',
   eyebrowIndex: '01',
   eyebrowLabel: 'Mission briefing',
-  headlinePrimary: 'Just Ask.',
-  headlineAccent: 'Troopers will do it.',
+  headlinePrimary: 'Whole Team.',
+  headlineAccent: 'One App.',
   description:
-    'AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions.',
+    'Trooper is your team — plans your roadmap, ships code, runs ads, replies to customers, closes deals, and posts your tweets.',
   showSetup: true,
   singleLineHeadline: false,
   pageUrl: 'https://trooper.so',

@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect } from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
+import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import PixelButton from './ui/PixelButton';
@@ -138,16 +138,17 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               </div>
 
               <div className="reveal reveal__usp max-w-3xl">
+                <HeroRotatingHeadline />
                 <MarketingHeadline
-                  as="h1"
+                  as="h2"
                   size="hero"
+                  className="mt-0.5 sm:mt-1"
                   lines={[
                     {
-                      parts: [{ text: 'Just Ask.', tone: 'default' }],
-                      iconAfter: 0,
-                    },
-                    {
-                      parts: [{ text: 'Troopers will do it.', tone: 'brand' }],
+                      parts: [
+                        { text: 'Whole Team.', tone: 'default' },
+                        { text: 'One App.', tone: 'brand' },
+                      ],
                     },
                   ]}
                 />
