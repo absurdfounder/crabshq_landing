@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-20T12:00:00.000Z",
-  "count": 31,
+  "generatedAt": "2026-06-21T09:30:00.000Z",
+  "count": 32,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -1251,6 +1251,63 @@
       },
       "kickoffPrompt": "Start the \"Secret Scan Until Clean\" loop.\n\nGoal: repo secret scan is clean with exposed credentials rotated\nMax iterations: 8\nBetween iterations run: gitleaks detect --source . --verbose || trufflehog filesystem .\nExit when: secret scan reports zero findings\n\nStep 1: Scan for secrets, rotate exposed credentials, remove leaks, and verify clean scan.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
       "related": ["dependency-cve-loop", "dependency-drift-watch"]
+    },
+    {
+      "id": "reconciliation-on-autopilot",
+      "slug": "reconciliation-on-autopilot",
+      "title": "Reconciliation on Autopilot",
+      "description": "Continuous transaction reconciliation for high-volume payments — deterministic matching rules handle the bulk volume, AI investigates exceptions with full context, and ops triages an inbox until close is audit-ready.",
+      "category": "Finance",
+      "trigger": "interval",
+      "official": true,
+      "hardened": true,
+      "views": 412,
+      "installs": 287,
+      "author": "Trooper",
+      "agents": ["claude-code", "cursor", "codex"],
+      "bestFitAgents": ["claude-code", "cursor"],
+      "tags": ["finance", "reconciliation", "payments", "fintech", "audit", "exceptions"],
+      "goal": "all transactions matched or exceptions triaged with audit trail and compliance report ready",
+      "maxIterations": 24,
+      "checkCommand": "Report unreconciled transaction count, open exception count, and match rate vs prior cycle",
+      "exitCondition": "match rate meets target and every open exception has owner, evidence, and resolution or approved escalation",
+      "guardrails": [
+        "Do not force-match transactions or weaken rules to hit the exit condition",
+        "Never post ledger or ERP entries without explicit human approval",
+        "Every exception must include source events, supporting evidence, and an auditable action log",
+        "Escalate material variances and regulatory-sensitive items to finance leadership",
+        "Suggest rule improvements from resolved exceptions — do not auto-deploy rule changes without review"
+      ],
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Ingest sources",
+            "description": "Pull new transactions from payment processors, banks, warehouse/ledger exports, and internal systems."
+          },
+          {
+            "label": "Apply matching rules",
+            "description": "Run deterministic rules (amount, vendor code, invoice number, date within range). Auto-reconcile high-confidence matches."
+          },
+          {
+            "label": "Investigate exceptions",
+            "description": "For unmatched items: gather warehouse data, analyze open invoices/payouts, draft customer outreach if needed, and propose a resolution."
+          },
+          {
+            "label": "Triage inbox",
+            "description": "Queue exceptions for ops review — assign owners, add comments, approve or adjust AI-suggested resolutions."
+          },
+          {
+            "label": "Close and report",
+            "description": "Update sources of truth, emit webhooks for cleared payouts, and export audit-ready reconciliation summary."
+          }
+        ],
+        "checkLabel": "Reconciled?",
+        "exitLabel": "Match rate on target; exceptions owned and resolved",
+        "loopBackLabel": "exceptions remain"
+      },
+      "kickoffPrompt": "/loop 1h Start the \"Reconciliation on Autopilot\" loop.\n\nGoal: all transactions matched or exceptions triaged with audit trail and compliance report ready\nMax iterations: 24\nBetween iterations run: Report unreconciled transaction count, open exception count, and match rate vs prior cycle\nExit when: match rate meets target and every open exception has owner, evidence, and resolution or approved escalation\n\nStep 1 — Ingest: Pull new transactions from processors, banks, and internal systems.\nStep 2 — Match: Apply deterministic rules (amount + vendor code + date within 2 days, etc.). Auto-reconcile confident matches.\nStep 3 — Investigate: For exceptions, gather warehouse data, analyze open invoices, reach out to customers if needed, and draft a suggested resolution.\nStep 4 — Triage: Present exceptions inbox for ops — assign, comment, approve AI suggestions or manual adjustments.\nStep 5 — Report: Export audit trail, update ERP/ledger with approval, and notify the team.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "related": ["morning-operator-brief", "inbox-triage-with-approval", "customer-onboarding-watch"]
     }
   ]
 }

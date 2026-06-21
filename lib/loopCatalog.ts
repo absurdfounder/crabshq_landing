@@ -53,6 +53,7 @@ const CATEGORIES = [
   'Product',
   'Content',
   'Security',
+  'Finance',
 ] as const;
 const AGENT_LABELS: Record<string, string> = {
   'claude-code': 'Claude Code',

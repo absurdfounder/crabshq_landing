@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import {
   BookOpen,
   Briefcase,
+  CircleDollarSign,
   ExternalLink,
   Eye,
   FileText,
@@ -37,6 +38,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Product: Package,
   Content: FileText,
   Security: Lock,
+  Finance: CircleDollarSign,
 };
 
 function getCategoryIcon(category: string): LucideIcon {
