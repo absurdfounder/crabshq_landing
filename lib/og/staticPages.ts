@@ -47,8 +47,8 @@ export const HUB_OG_PAGES: Record<string, OgHeroContent> = {
   loops: hub(
     'loops',
     'Loops catalog',
-    'Agent',
-    'Loops',
+    'Agent Loops',
+    undefined,
     'Reusable loops with kickoff prompts, guardrails, and flow diagrams for Cursor, Claude Code, and Codex.',
     { badges: true },
   ),

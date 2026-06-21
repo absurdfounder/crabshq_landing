@@ -9,8 +9,29 @@ export const OG_SIZE = { width: 1200, height: 630 };
 
 const BRAND_GREEN = '#284800';
 const BRAND_GREEN_LIGHT = '#3f6b00';
-const TROOPER_LOGO_URL = 'https://trooper.so/favicon-96x96.png';
+const TROOPER_LOGOMARK_URL = 'https://trooper.so/images/trooper-logomark.png';
 const OG_BACKGROUND_URL = 'https://trooper.so/og/share-background.png';
+
+function TrooperBrandMark() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={TROOPER_LOGOMARK_URL} alt="" width={56} height={56} />
+      <span
+        style={{
+          fontSize: 36,
+          lineHeight: 1,
+          fontFamily: 'Silkscreen',
+          color: '#0f172a',
+          letterSpacing: '-0.02em',
+          textTransform: 'lowercase',
+        }}
+      >
+        trooper
+      </span>
+    </div>
+  );
+}
 
 function truncate(text: string, max: number) {
   if (text.length <= max) return text;
@@ -76,7 +97,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
           position: 'absolute',
           inset: 0,
           background:
-            'linear-gradient(105deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.94) 52%, rgba(255,255,255,0.55) 100%)',
+            'linear-gradient(105deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.96) 42%, rgba(255,255,255,0.90) 68%, rgba(255,255,255,0.78) 100%)',
         }}
       />
 
@@ -123,8 +144,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
               </span>
               <span style={{ fontWeight: 600 }}>{content.eyebrowLabel}</span>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={TROOPER_LOGO_URL} alt="" width={72} height={72} />
+            <TrooperBrandMark />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
@@ -146,7 +166,6 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     alignItems: 'baseline',
-                    gap: '0 18px',
                     maxWidth: 980,
                   }}
                 >
@@ -158,6 +177,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                       color: '#0f172a',
                       letterSpacing: '-0.03em',
                       fontFamily: 'Funnel Display',
+                      marginRight: content.headlineAccent ? 16 : 0,
                     }}
                   >
                     {content.headlinePrimary}

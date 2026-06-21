@@ -8,6 +8,7 @@ const FONT_FILES = {
   funnelDisplay700: 'FunnelDisplay-700.ttf',
   robotoMono400: 'RobotoMono-400.ttf',
   robotoMono700: 'RobotoMono-700.ttf',
+  silkscreen400: 'Silkscreen-400.ttf',
 } as const;
 
 const fontCache = new Map<string, ArrayBuffer>();
@@ -37,11 +38,13 @@ export async function loadOgFonts() {
       loadFont(FONT_FILES.funnelDisplay700),
       loadFont(FONT_FILES.robotoMono400),
       loadFont(FONT_FILES.robotoMono700),
-    ]).then(([display400, display700, mono400, mono700]) => [
+      loadFont(FONT_FILES.silkscreen400),
+    ]).then(([display400, display700, mono400, mono700, silkscreen400]) => [
       { name: 'Funnel Display', data: display400, weight: 400 as const, style: 'normal' as const },
       { name: 'Funnel Display', data: display700, weight: 700 as const, style: 'normal' as const },
       { name: 'Roboto Mono', data: mono400, weight: 400 as const, style: 'normal' as const },
       { name: 'Roboto Mono', data: mono700, weight: 700 as const, style: 'normal' as const },
+      { name: 'Silkscreen', data: silkscreen400, weight: 400 as const, style: 'normal' as const },
     ]);
   }
 
