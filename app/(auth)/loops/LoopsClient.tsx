@@ -25,8 +25,10 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
+import { RequirementItemIcon } from '@/components/loops/RequirementItemIcon';
 import type { EnrichedLoop } from '@/lib/loopCatalog';
 import { getLoopCategories } from '@/lib/loopCatalog';
+import { getInspiredByFaviconUrl } from '@/lib/loopIcons';
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   CI: GitBranch,
@@ -55,6 +57,15 @@ function getCategoryIcon(category: string): LucideIcon {
 
 function LoopCard({ loop }: { loop: EnrichedLoop }) {
   const CategoryIcon = getCategoryIcon(loop.category);
+  const icon = loop.inspiredBy ? (
+    <RequirementItemIcon
+      src={getInspiredByFaviconUrl(loop.inspiredBy.url, 32)}
+      fallback={loop.inspiredBy.company}
+      size={28}
+    />
+  ) : (
+    <CategoryIcon className="h-5 w-5 text-slate-700" aria-hidden />
+  );
 
   return (
     <HubCatalogCard
@@ -62,9 +73,9 @@ function LoopCard({ loop }: { loop: EnrichedLoop }) {
       title={loop.title}
       description={loop.description}
       category={loop.category}
-      footerMeta={loop.trigger}
+      footerMeta={loop.inspiredBy ? loop.inspiredBy.company : loop.trigger}
       viewLabel="View loop →"
-      icon={<CategoryIcon className="h-5 w-5 text-slate-700" aria-hidden />}
+      icon={icon}
     />
   );
 }

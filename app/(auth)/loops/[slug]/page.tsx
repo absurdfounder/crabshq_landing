@@ -13,6 +13,7 @@ import {
 } from '@/lib/loopCatalog';
 import LoopDetailClient from './LoopDetailClient';
 import { LoopRequirementsPanel } from '@/components/loops/LoopRequirementsPanel';
+import { InspiredByBadge } from '@/components/loops/InspiredByBadge';
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import {
   ArrowRight,
@@ -146,17 +147,7 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                 <p className="mt-3 text-base leading-relaxed text-slate-600">{loop.description}</p>
 
                 {loop.inspiredBy ? (
-                  <p className="mt-2 text-sm text-slate-500">
-                    Inspired by{' '}
-                    <a
-                      href={loop.inspiredBy.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 transition-colors hover:text-slate-900"
-                    >
-                      {loop.inspiredBy.company}
-                    </a>
-                  </p>
+                  <InspiredByBadge company={loop.inspiredBy.company} url={loop.inspiredBy.url} className="mt-2" />
                 ) : null}
 
                 <p className="mt-2 text-sm text-slate-500">by {loop.author}</p>
@@ -261,6 +252,15 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                     requirements={loop.requirements}
                     inferred={loop.requirementsInferred}
                   />
+
+                  {loop.inspiredBy ? (
+                    <div className="rounded-lg border border-slate-200 bg-white p-5">
+                      <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        Inspired by
+                      </h3>
+                      <InspiredByBadge company={loop.inspiredBy.company} url={loop.inspiredBy.url} />
+                    </div>
+                  ) : null}
 
                   {loop.agents.length > 0 ? (
                     <div className="rounded-lg border border-slate-200 bg-white p-5">
