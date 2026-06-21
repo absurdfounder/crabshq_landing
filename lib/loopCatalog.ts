@@ -24,6 +24,10 @@ export type LoopEntry = {
   flow: import('@/lib/loopMermaid').LoopFlow;
   kickoffPrompt?: string;
   related?: string[];
+  inspiredBy?: {
+    company: string;
+    url: string;
+  };
 };
 
 export type EnrichedLoop = LoopEntry & {
@@ -114,7 +118,15 @@ export function searchLoops(
     if (category && loop.category !== category) return false;
     if (trigger && loop.trigger !== trigger) return false;
     if (!q) return true;
-    return [loop.title, loop.description, loop.category, loop.trigger, ...(loop.tags || []), loop.goal]
+    return [
+      loop.title,
+      loop.description,
+      loop.category,
+      loop.trigger,
+      ...(loop.tags || []),
+      loop.goal,
+      loop.inspiredBy?.company,
+    ]
       .join(' ')
       .toLowerCase()
       .includes(q);

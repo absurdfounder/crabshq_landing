@@ -139,6 +139,20 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
 
                 <p className="mt-3 text-base leading-relaxed text-slate-600">{loop.description}</p>
 
+                {loop.inspiredBy ? (
+                  <p className="mt-2 text-sm text-slate-500">
+                    Inspired by{' '}
+                    <a
+                      href={loop.inspiredBy.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 transition-colors hover:text-slate-900"
+                    >
+                      {loop.inspiredBy.company}
+                    </a>
+                  </p>
+                ) : null}
+
                 <p className="mt-2 text-sm text-slate-500">by {loop.author}</p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
