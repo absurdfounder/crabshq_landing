@@ -1,4 +1,6 @@
 import type { OgHeroContent } from '@/lib/og/types';
+import { CODING_AGENT_BADGES } from '@/lib/og/agentIcons';
+import { resolveOgPageUrl } from '@/lib/og/pageUrls';
 
 function hub(
   slug: string,
@@ -6,6 +8,7 @@ function hub(
   headlinePrimary: string,
   headlineAccent: string | undefined,
   description: string,
+  options: { badges?: boolean } = {},
 ): OgHeroContent {
   return {
     kind: 'hub',
@@ -14,7 +17,9 @@ function hub(
     headlinePrimary,
     headlineAccent,
     description,
-    watermark: 'trooper.',
+    singleLineHeadline: true,
+    badgeIcons: options.badges ? CODING_AGENT_BADGES : undefined,
+    pageUrl: resolveOgPageUrl('hub', slug),
   };
 }
 
@@ -32,7 +37,8 @@ function page(
     headlinePrimary,
     headlineAccent,
     description,
-    watermark: 'trooper.',
+    singleLineHeadline: true,
+    pageUrl: resolveOgPageUrl('page', slug),
   };
 }
 
@@ -44,6 +50,7 @@ export const HUB_OG_PAGES: Record<string, OgHeroContent> = {
     'Agent',
     'Loops',
     'Reusable loops with kickoff prompts, guardrails, and flow diagrams for Cursor, Claude Code, and Codex.',
+    { badges: true },
   ),
   plugins: hub(
     'plugins',

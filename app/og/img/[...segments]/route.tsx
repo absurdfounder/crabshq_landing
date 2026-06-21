@@ -1,7 +1,9 @@
+import { finalizeOgContent } from '@/lib/og/enrich';
 import { resolveAsyncOgContent } from '@/lib/og/resolveAsync';
 import { resolveOgContent } from '@/lib/og/resolveContent';
 import { createOgImageResponse } from '@/lib/og/render';
 import { isAsyncOgKind, parseOgImageSegments } from '@/lib/og/routes';
+import type { OgKind } from '@/lib/og/types';
 
 export const runtime = 'nodejs';
 
@@ -16,9 +18,10 @@ export async function GET(_request: Request, context: RouteContext) {
   }
 
   const { kind, slug } = parsed;
-  const content = isAsyncOgKind(kind)
+  const raw = isAsyncOgKind(kind)
     ? await resolveAsyncOgContent(kind as 'skill' | 'compare' | 'showcase' | 'legacy-integration', slug)
     : resolveOgContent(kind, slug);
+  const content = finalizeOgContent(raw, kind as OgKind, slug);
 
   if (!content) {
     return new Response('Not found', { status: 404 });

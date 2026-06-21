@@ -3,6 +3,7 @@ import { getLoopBySlug } from '@/lib/loopCatalog';
 import { getInspiredByFaviconUrl } from '@/lib/loopIcons';
 import { getSkillIconUrl } from '@/lib/skillIcon';
 import { findSkillByPageSlug } from '@/lib/skillRoutes';
+import { resolveOgPageUrl } from '@/lib/og/pageUrls';
 import type { OgHeroContent } from '@/lib/og/types';
 
 function productOg(
@@ -11,6 +12,7 @@ function productOg(
   name: string,
   description: string,
   iconUrl?: string,
+  slug?: string,
 ): OgHeroContent {
   return {
     kind,
@@ -19,7 +21,8 @@ function productOg(
     headlinePrimary: name,
     description,
     iconUrl,
-    watermark: 'trooper.',
+    singleLineHeadline: true,
+    pageUrl: slug ? resolveOgPageUrl(kind, slug) : undefined,
   };
 }
 
@@ -39,6 +42,7 @@ export async function resolveAsyncOgContent(
       skill.name,
       skill.description,
       getSkillIconUrl(skill, 128),
+      slug,
     );
   }
 
@@ -54,6 +58,7 @@ export async function resolveAsyncOgContent(
       `Trooper vs ${item.product.name}`,
       item.product.description || '',
       item.product.heroimage,
+      slug,
     );
   }
 
@@ -70,6 +75,7 @@ export async function resolveAsyncOgContent(
       item.product.name,
       item.product.description || '',
       item.product.logo || item.proof?.screenshot,
+      slug,
     );
   }
 
@@ -87,6 +93,7 @@ export function resolveLoopOgContent(slug?: string): OgHeroContent | null {
     headlinePrimary: loop.title,
     description: loop.description,
     iconUrl: loop.inspiredBy ? getInspiredByFaviconUrl(loop.inspiredBy.url, 128) : undefined,
-    watermark: 'trooper.',
+    singleLineHeadline: true,
+    pageUrl: resolveOgPageUrl('loop', slug),
   };
 }

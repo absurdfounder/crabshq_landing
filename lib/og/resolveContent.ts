@@ -18,7 +18,8 @@ const HOME_OG: OgHeroContent = {
   description:
     'AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions.',
   showSetup: true,
-  watermark: 'trooper.',
+  singleLineHeadline: false,
+  pageUrl: 'https://trooper.so',
 };
 
 function fromTitleParts(title: string, titleAccent?: string, missionLabel = 'Unit brief'): OgHeroContent {
