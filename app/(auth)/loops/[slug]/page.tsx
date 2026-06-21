@@ -12,6 +12,7 @@ import {
   type EnrichedLoop,
 } from '@/lib/loopCatalog';
 import LoopDetailClient from './LoopDetailClient';
+import { LoopRequirementsPanel } from '@/components/loops/LoopRequirementsPanel';
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import {
   ArrowRight,
@@ -130,6 +131,11 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                       Hardened
                     </span>
                   ) : null}
+                  {loop.tier === 'draft' ? (
+                    <span className="rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
+                      Template
+                    </span>
+                  ) : null}
                 </div>
 
                 <h1 className="font-funneldisplay flex items-center gap-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -182,6 +188,7 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                     mermaid={loop.mermaid}
                     steps={loop.flow?.steps || []}
                     guardrails={loop.guardrails}
+                    requirements={loop.requirements}
                   />
                 </div>
 
@@ -249,6 +256,8 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                     <code className="block break-all font-mono text-xs text-green-400">{loop.checkCommand}</code>
                     <p className="mt-3 font-mono text-xs text-slate-500">Exit when: {loop.exitCondition}</p>
                   </div>
+
+                  <LoopRequirementsPanel requirements={loop.requirements} />
 
                   {loop.agents.length > 0 ? (
                     <div className="rounded-lg border border-slate-200 bg-white p-5">

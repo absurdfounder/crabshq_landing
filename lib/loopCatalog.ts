@@ -28,6 +28,8 @@ export type LoopEntry = {
     company: string;
     url: string;
   };
+  requirements?: import('@/lib/loopMermaid').LoopRequirements;
+  tier?: 'official' | 'draft';
 };
 
 export type EnrichedLoop = LoopEntry & {
@@ -78,7 +80,10 @@ export function getAllLoopSlugs(): string[] {
 }
 
 function shallowLoop(loop: LoopEntry): EnrichedLoop {
-  const mermaid = buildLoopMermaid(loop.flow);
+  const mermaid = buildLoopMermaid(loop.flow, {
+    checkCommand: loop.checkCommand,
+    requirements: loop.requirements,
+  });
   const kickoffPrompt = buildKickoffPrompt(loop);
   return { ...loop, mermaid, kickoffPrompt, relatedLoops: [] };
 }

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-21T12:52:29.358Z",
-  "count": 112,
+  "generatedAt": "2026-06-21T13:36:33.763Z",
+  "count": 119,
   "loops": [
     {
       "id": "ship-pr-until-green",
@@ -2024,35 +2024,115 @@
         "steps": [
           {
             "label": "Ingest sources",
-            "description": "Pull new transactions from payment processors, banks, warehouse/ledger exports, and internal systems."
+            "description": "Pull new transactions from payment processors, banks, warehouse/ledger exports, and internal systems.",
+            "tools": [
+              "Stripe",
+              "Bank feeds"
+            ]
           },
           {
             "label": "Apply matching rules",
-            "description": "Run deterministic rules (amount, vendor code, invoice number, date within range). Auto-reconcile high-confidence matches."
+            "description": "Run deterministic rules (amount, vendor code, invoice number, date within range). Auto-reconcile high-confidence matches.",
+            "tools": [
+              "Google Sheets"
+            ],
+            "command": "node scripts/reconciliation-report.js --since 24h"
           },
           {
             "label": "Investigate exceptions",
-            "description": "For unmatched items: gather warehouse data, analyze open invoices/payouts, draft customer outreach if needed, and propose a resolution."
+            "description": "For unmatched items: gather warehouse data, analyze open invoices/payouts, draft customer outreach if needed, and propose a resolution.",
+            "tools": [
+              "Gmail",
+              "ERP"
+            ]
           },
           {
             "label": "Triage inbox",
-            "description": "Queue exceptions for ops review — assign owners, add comments, approve or adjust AI-suggested resolutions."
+            "description": "Queue exceptions for ops review — assign owners, add comments, approve or adjust AI-suggested resolutions.",
+            "tools": [
+              "Slack",
+              "Google Sheets"
+            ]
           },
           {
             "label": "Close and report",
-            "description": "Update sources of truth, emit webhooks for cleared payouts, and export audit-ready reconciliation summary."
+            "description": "Update sources of truth, emit webhooks for cleared payouts, and export audit-ready reconciliation summary.",
+            "tools": [
+              "ERP",
+              "Stripe"
+            ]
           }
         ],
         "checkLabel": "Reconciled?",
         "exitLabel": "Match rate on target; exceptions owned and resolved",
         "loopBackLabel": "exceptions remain"
       },
-      "kickoffPrompt": "/loop 1h Start the \"Reconciliation on Autopilot\" loop.\n\nGoal: all transactions matched or exceptions triaged with audit trail and compliance report ready\nMax iterations: 24\nBetween iterations run: Report unreconciled transaction count, open exception count, and match rate vs prior cycle\nExit when: match rate meets target and every open exception has owner, evidence, and resolution or approved escalation\n\nStep 1 — Ingest: Pull new transactions from processors, banks, and internal systems.\nStep 2 — Match: Apply deterministic rules (amount + vendor code + date within 2 days, etc.). Auto-reconcile confident matches.\nStep 3 — Investigate: For exceptions, gather warehouse data, analyze open invoices, reach out to customers if needed, and draft a suggested resolution.\nStep 4 — Triage: Present exceptions inbox for ops — assign, comment, approve AI suggestions or manual adjustments.\nStep 5 — Report: Export audit trail, update ERP/ledger with approval, and notify the team.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Reconciliation on Autopilot\" loop.\n\nInspired by End Close (https://endclose.com).\n\nGoal: all transactions matched or exceptions triaged with audit trail and compliance report ready\nMax iterations: 24\nBetween iterations run: Report unreconciled transaction count, open exception count, and match rate vs prior cycle\nExit when: match rate meets target and every open exception has owner, evidence, and resolution or approved escalation\n\n## Before you start\n- Connect Stripe (required) — Pull payment processor transactions and payout events\n- Connect Gmail (optional) — Send customer outreach drafts for approval\n- Connect Slack (required) — Notify finance ops on material exceptions\n- Connect Google Sheets (required) — Export reconciliation summaries and exception inbox\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- Bank feeds / warehouse (read via api) — Ledger and payout source data\n- ERP / general ledger (write via api) — Post cleared entries with human approval\n\n## Steps\n1. Ingest sources: Pull new transactions from payment processors, banks, warehouse/ledger exports, and internal systems. [tools: Stripe, Bank feeds]\n2. Apply matching rules: Run deterministic rules (amount, vendor code, invoice number, date within range). Auto-reconcile high-confidence matches. [tools: Google Sheets]\n   Command: node scripts/reconciliation-report.js --since 24h\n3. Investigate exceptions: For unmatched items: gather warehouse data, analyze open invoices/payouts, draft customer outreach if needed, and propose a resolution. [tools: Gmail, ERP]\n4. Triage inbox: Queue exceptions for ops review — assign owners, add comments, approve or adjust AI-suggested resolutions. [tools: Slack, Google Sheets]\n5. Close and report: Update sources of truth, emit webhooks for cleared payouts, and export audit-ready reconciliation summary. [tools: ERP, Stripe]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Do not force-match transactions or weaken rules to hit the exit condition\n- Never post ledger or ERP entries without explicit human approval\n- Every exception must include source events, supporting evidence, and an auditable action log\n- Escalate material variances and regulatory-sensitive items to finance leadership\n- Suggest rule improvements from resolved exceptions — do not auto-deploy rule changes without review",
       "related": [
         "morning-operator-brief",
         "inbox-triage-with-approval",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "stripe",
+            "label": "Stripe",
+            "reason": "Pull payment processor transactions and payout events",
+            "required": true
+          },
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Send customer outreach drafts for approval",
+            "required": false
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Notify finance ops on material exceptions",
+            "required": true
+          },
+          {
+            "id": "googlesheets",
+            "label": "Google Sheets",
+            "reason": "Export reconciliation summaries and exception inbox",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Bank feeds / warehouse",
+            "role": "read",
+            "via": "api",
+            "notes": "Ledger and payout source data"
+          },
+          {
+            "name": "ERP / general ledger",
+            "role": "write",
+            "via": "api",
+            "notes": "Post cleared entries with human approval"
+          }
+        ]
+      }
     },
     {
       "id": "portal-to-production-api",
@@ -2105,35 +2185,102 @@
         "steps": [
           {
             "label": "Record workflow",
-            "description": "Walk through the portal task once while capturing underlying network requests — login, sessions, API calls, and sequencing."
+            "description": "Walk through the portal task once while capturing underlying network requests — login, sessions, API calls, and sequencing.",
+            "tools": [
+              "Browser",
+              "Target portal"
+            ]
           },
           {
             "label": "Reconstruct flow",
-            "description": "Model the real call graph: auth behavior, headers, retries, and edge cases. No UI selectors or headless Chrome in the production path."
+            "description": "Model the real call graph: auth behavior, headers, retries, and edge cases. No UI selectors in the production path.",
+            "tools": [
+              "GitHub"
+            ]
           },
           {
             "label": "Ship stable endpoint",
-            "description": "Publish one clean, parameterized API your agents can call. Document request schema, response shape, and error codes."
+            "description": "Publish one clean, parameterized API your agents can call. Document request schema, response shape, and error codes.",
+            "tools": [
+              "Production API endpoint",
+              "MCP clients"
+            ]
           },
           {
             "label": "Harden reliability",
-            "description": "Add session management, automatic re-auth, retry policy, anti-bot/TLS handling, and portal change detection."
+            "description": "Add session management, automatic re-auth, retry policy, and portal change detection.",
+            "tools": [
+              "GitHub"
+            ],
+            "command": "npm run test:portal-api-smoke"
           },
           {
             "label": "Monitor and repair",
-            "description": "Run smoke tests, detect drift when portals update, repair broken steps, and verify agents get milliseconds-level responses."
+            "description": "Run smoke tests, detect drift when portals update, repair broken steps, and verify agents get fast responses.",
+            "tools": [
+              "Production API endpoint"
+            ],
+            "command": "npm run test:portal-api-smoke"
           }
         ],
         "checkLabel": "Production ready?",
         "exitLabel": "Stable API with 10 consecutive green checks",
         "loopBackLabel": "drift or failures"
       },
-      "kickoffPrompt": "Start the \"Portal to Production API\" loop.\n\nGoal: blocked portal workflow is exposed as one stable production API with reliable auth, retries, and change monitoring\nMax iterations: 15\nBetween iterations run: Run endpoint smoke tests: report success rate, p95 latency, session refresh, and structured response validity\nExit when: 10 consecutive successful calls with session refresh working and no unresolved portal drift alerts\n\nStep 1 — Record: Complete the portal workflow once and capture real network traffic (auth, sessions, API sequencing).\nStep 2 — Reconstruct: Build the optimal request flow with retries and edge cases — no UI automation in production.\nStep 3 — Ship: Expose one stable endpoint with clear parameters and structured responses for agents.\nStep 4 — Harden: Implement session refresh, re-auth, retries, and portal change detection.\nStep 5 — Monitor: Smoke test, repair drift, and confirm production reliability.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Portal to Production API\" loop.\n\nInspired by Zatanna (https://www.zatanna.ai).\n\nGoal: blocked portal workflow is exposed as one stable production API with reliable auth, retries, and change monitoring\nMax iterations: 15\nBetween iterations run: Run endpoint smoke tests: report success rate, p95 latency, session refresh, and structured response validity\nExit when: 10 consecutive successful calls with session refresh working and no unresolved portal drift alerts\n\n## Before you start\n- Connect GitHub (required) — Store recorded flows and endpoint code as PRs\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Code change + verification (required) — Edit code or configs and verify locally.\n- Attach Test repair (required) — Run tests and fix failures without weakening coverage.\n- Target portal (read via browser) — Login-gated workflow to record\n- Production API endpoint (write via api) — Stable agent-callable surface\n- MCP clients (read via mcp) — Cursor / Claude Code callers\n\n## Steps\n1. Record workflow: Walk through the portal task once while capturing underlying network requests — login, sessions, API calls, and sequencing. [tools: Browser, Target portal]\n2. Reconstruct flow: Model the real call graph: auth behavior, headers, retries, and edge cases. No UI selectors in the production path. [tools: GitHub]\n3. Ship stable endpoint: Publish one clean, parameterized API your agents can call. Document request schema, response shape, and error codes. [tools: Production API endpoint, MCP clients]\n4. Harden reliability: Add session management, automatic re-auth, retry policy, and portal change detection. [tools: GitHub]\n   Command: npm run test:portal-api-smoke\n5. Monitor and repair: Run smoke tests, detect drift when portals update, repair broken steps, and verify agents get fast responses. [tools: Production API endpoint]\n   Command: npm run test:portal-api-smoke\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Prefer network-layer request replay over brittle browser automation for production paths\n- Never store portal credentials in chat, code, or commits — use approved secrets storage only\n- Keep a human in the loop for MFA and initial login during the record phase\n- Stop and escalate on CAPTCHA blocks, rate limits, or unclear portal ToS constraints\n- Return structured API data — do not scrape HTML when underlying JSON endpoints exist\n- Document the recorded workflow and get approval before routing production agent traffic",
       "related": [
         "signup-flow-until-smooth",
         "reconciliation-on-autopilot",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "github",
+            "label": "GitHub",
+            "reason": "Store recorded flows and endpoint code as PRs",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "code-change",
+            "label": "Code change + verification",
+            "reason": "Edit code or configs and verify locally."
+          },
+          {
+            "id": "testing",
+            "label": "Test repair",
+            "reason": "Run tests and fix failures without weakening coverage."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Target portal",
+            "role": "read",
+            "via": "browser",
+            "notes": "Login-gated workflow to record"
+          },
+          {
+            "name": "Production API endpoint",
+            "role": "write",
+            "via": "api",
+            "notes": "Stable agent-callable surface"
+          },
+          {
+            "name": "MCP clients",
+            "role": "read",
+            "via": "mcp",
+            "notes": "Cursor / Claude Code callers"
+          }
+        ]
+      }
     },
     {
       "id": "care-ops-on-autopilot",
@@ -2185,35 +2332,127 @@
         "steps": [
           {
             "label": "Monitor ops board",
-            "description": "Scan for shift cancellations, missed clock-ins/outs, missing session notes, stuck hiring stages, and intake follow-ups."
+            "description": "Scan for shift cancellations, missed clock-ins/outs, missing session notes, stuck hiring stages, and intake follow-ups.",
+            "tools": [
+              "WellSky",
+              "Slack"
+            ]
           },
           {
             "label": "Fill shift coverage",
-            "description": "When a caregiver calls out, rank replacements by agency preferences and reach out via approved channels until the shift is covered."
+            "description": "When a caregiver calls out, rank replacements by agency preferences and reach out via approved channels until the shift is covered.",
+            "tools": [
+              "RingCentral",
+              "Gmail",
+              "WellSky"
+            ]
           },
           {
             "label": "Run hiring autopilot",
-            "description": "Advance ATS candidates, collect required docs (licenses, TB tests, certifications), and send automated reminders and follow-ups."
+            "description": "Advance ATS candidates, collect required docs (licenses, TB tests, certifications), and send automated reminders and follow-ups.",
+            "tools": [
+              "Indeed",
+              "Gmail"
+            ]
           },
           {
             "label": "Close shift hygiene gaps",
-            "description": "Remind caregivers of upcoming shifts and care plans; chase missing clock events and session notes after visits."
+            "description": "Remind caregivers of upcoming shifts and care plans; chase missing clock events and session notes after visits.",
+            "tools": [
+              "WellSky",
+              "Gmail"
+            ]
           },
           {
             "label": "Surface growth insights",
-            "description": "Flag referral opportunities, intake conversion drops, and partner follow-ups (doctors, facilities, attorneys) for the ops team."
+            "description": "Flag referral opportunities, intake conversion drops, and partner follow-ups (doctors, facilities, attorneys) for the ops team.",
+            "tools": [
+              "HubSpot",
+              "Slack"
+            ]
           }
         ],
         "checkLabel": "Ops current?",
         "exitLabel": "Shifts covered; pipeline and hygiene green",
         "loopBackLabel": "gaps remain"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Care Ops on Autopilot\" loop.\n\nGoal: open shifts covered, hiring pipeline current, shift hygiene gaps closed, and growth alerts delivered to ops\nMax iterations: 20\nBetween iterations run: Report uncovered shifts, stale ATS stages, missing clock-ins/notes, and unactioned growth alerts\nExit when: zero uncovered shifts in next 48h, no candidate stuck >48h without doc/reminder, and all shift hygiene gaps assigned or resolved\n\nStep 1 — Monitor: Scan cancellations, clock gaps, missing notes, hiring pipeline, and intake queue.\nStep 2 — Coverage: Match and contact backup caregivers for open shifts using agency rules.\nStep 3 — Hiring: Move candidates through ATS, collect required credentials, send reminders.\nStep 4 — Hygiene: Remind caregivers and fill missing clock-ins, clock-outs, and session notes.\nStep 5 — Growth: Deliver referral, conversion, and partner follow-up alerts to ops.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Care Ops on Autopilot\" loop.\n\nInspired by MochaCare (https://www.mochacare.com).\n\nGoal: open shifts covered, hiring pipeline current, shift hygiene gaps closed, and growth alerts delivered to ops\nMax iterations: 20\nBetween iterations run: Report uncovered shifts, stale ATS stages, missing clock-ins/notes, and unactioned growth alerts\nExit when: zero uncovered shifts in next 48h, no candidate stuck >48h without doc/reminder, and all shift hygiene gaps assigned or resolved\n\n## Before you start\n- Connect Gmail (required) — Caregiver and family outreach drafts\n- Connect Slack (required) — Escalate emergencies and coverage updates to coordinators\n- Connect HubSpot (optional) — Track intake and referral partners\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Customer operations (required) — Triage intake, onboarding, and support queues.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- WellSky (read via browser) — Scheduling and caregiver roster\n- AxisCare (read via browser) — Agency scheduling preferences\n- Indeed (read via api) — Applicant pipeline\n- RingCentral (notify via api) — Voice/SMS outreach with approval\n\n## Steps\n1. Monitor ops board: Scan for shift cancellations, missed clock-ins/outs, missing session notes, stuck hiring stages, and intake follow-ups. [tools: WellSky, Slack]\n2. Fill shift coverage: When a caregiver calls out, rank replacements by agency preferences and reach out via approved channels until the shift is covered. [tools: RingCentral, Gmail, WellSky]\n3. Run hiring autopilot: Advance ATS candidates, collect required docs (licenses, TB tests, certifications), and send automated reminders and follow-ups. [tools: Indeed, Gmail]\n4. Close shift hygiene gaps: Remind caregivers of upcoming shifts and care plans; chase missing clock events and session notes after visits. [tools: WellSky, Gmail]\n5. Surface growth insights: Flag referral opportunities, intake conversion drops, and partner follow-ups (doctors, facilities, attorneys) for the ops team. [tools: HubSpot, Slack]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Treat client and caregiver data as sensitive — minimize PHI in logs and never expose it outside approved systems\n- Do not call or text caregivers/families without approval unless using pre-approved templates\n- Escalate medical emergencies and angry client concerns to human coordinators immediately\n- Do not extend final hire offers without explicit human approval\n- Match caregivers using agency preference rules — do not override compliance or credential requirements",
       "related": [
         "customer-onboarding-watch",
         "morning-operator-brief",
         "inbox-triage-with-approval"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Caregiver and family outreach drafts",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Escalate emergencies and coverage updates to coordinators",
+            "required": true
+          },
+          {
+            "id": "hubspot",
+            "label": "HubSpot",
+            "reason": "Track intake and referral partners",
+            "required": false
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "customer-ops",
+            "label": "Customer operations",
+            "reason": "Triage intake, onboarding, and support queues."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "WellSky",
+            "role": "read",
+            "via": "browser",
+            "notes": "Scheduling and caregiver roster"
+          },
+          {
+            "name": "AxisCare",
+            "role": "read",
+            "via": "browser",
+            "notes": "Agency scheduling preferences"
+          },
+          {
+            "name": "Indeed",
+            "role": "read",
+            "via": "api",
+            "notes": "Applicant pipeline"
+          },
+          {
+            "name": "RingCentral",
+            "role": "notify",
+            "via": "api",
+            "notes": "Voice/SMS outreach with approval"
+          }
+        ]
+      }
     },
     {
       "id": "quote-order-on-autopilot",
@@ -2267,35 +2506,114 @@
         "steps": [
           {
             "label": "Ingest requests",
-            "description": "Pull new RFQs from email, voice transcripts, portal uploads, and tender/spec documents across inbound channels."
+            "description": "Pull new RFQs from email, voice transcripts, portal uploads, and tender/spec documents across inbound channels.",
+            "tools": [
+              "Gmail",
+              "HubSpot"
+            ]
           },
           {
             "label": "Parse specs",
-            "description": "Extract quantities, dimensions, standards, delivery terms, and compliance requirements from complex specs and tender texts."
+            "description": "Extract quantities, dimensions, standards, delivery terms, and compliance requirements from complex specs and tender texts.",
+            "tools": [
+              "Google Sheets"
+            ]
           },
           {
             "label": "Match products",
-            "description": "Find spec-compliant catalog matches; rank by margin and preferred SKUs without violating compliance or substitution rules."
+            "description": "Find spec-compliant catalog matches; rank by margin and preferred SKUs without violating compliance or substitution rules.",
+            "tools": [
+              "SAP",
+              "Oracle ERP"
+            ]
           },
           {
             "label": "Generate quote",
-            "description": "Draft an accurate professional quote or order with line-item rationale, alternates, and pricing notes for rep review."
+            "description": "Draft an accurate professional quote or order with line-item rationale, alternates, and pricing notes for rep review.",
+            "tools": [
+              "Google Sheets",
+              "HubSpot"
+            ]
           },
           {
             "label": "Push to ERP/CRM",
-            "description": "Export approved drafts to SAP, Oracle, or CRM with full audit trail — queue unapproved items for human sign-off."
+            "description": "Export approved drafts to SAP, Oracle, or CRM with full audit trail — queue unapproved items for human sign-off.",
+            "tools": [
+              "Oracle ERP",
+              "HubSpot"
+            ]
           }
         ],
         "checkLabel": "Quotes current?",
         "exitLabel": "Requests quoted or escalated; exports owned",
         "loopBackLabel": "backlog remains"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Quote & Order on Autopilot\" loop.\n\nGoal: every inbound request parsed, spec-compliant quote draft ready for approval, and ERP/CRM export queued with audit trail\nMax iterations: 20\nBetween iterations run: Report open requests, unparsed specs, unmatched line items, quotes pending approval, and ERP/CRM export backlog\nExit when: zero open requests without quote draft or explicit escalation, all line items cite catalog/ERP sources, and pending exports have owner or human approval\n\nStep 1 — Ingest: Pull new RFQs from email, voice, portals, and tender/spec uploads.\nStep 2 — Parse: Extract requirements, standards, quantities, and delivery terms from complex documents.\nStep 3 — Match: Select spec-compliant SKUs; prioritize margin and preferred products within compliance rules.\nStep 4 — Quote: Draft professional quote/order with cited sources and alternates for rep review.\nStep 5 — Export: Push approved drafts to ERP/CRM with audit trail; queue others for human approval.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Quote & Order on Autopilot\" loop.\n\nInspired by Mercura (https://www.mercura.ai).\n\nGoal: every inbound request parsed, spec-compliant quote draft ready for approval, and ERP/CRM export queued with audit trail\nMax iterations: 20\nBetween iterations run: Report open requests, unparsed specs, unmatched line items, quotes pending approval, and ERP/CRM export backlog\nExit when: zero open requests without quote draft or explicit escalation, all line items cite catalog/ERP sources, and pending exports have owner or human approval\n\n## Before you start\n- Connect Gmail (required) — Ingest RFQs and tender emails\n- Connect HubSpot (required) — CRM deal and quote tracking\n- Connect Google Sheets (required) — Quote drafts and line-item audit trail\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Sales operations (required) — Manage pipeline, CRM updates, and follow-ups.\n- SAP (read via api) — Catalog and pricing source\n- Oracle ERP (write via api) — Approved quote export\n- Indeed (read via browser) — Inbound applicant/spec portals\n\n## Steps\n1. Ingest requests: Pull new RFQs from email, voice transcripts, portal uploads, and tender/spec documents across inbound channels. [tools: Gmail, HubSpot]\n2. Parse specs: Extract quantities, dimensions, standards, delivery terms, and compliance requirements from complex specs and tender texts. [tools: Google Sheets]\n3. Match products: Find spec-compliant catalog matches; rank by margin and preferred SKUs without violating compliance or substitution rules. [tools: SAP, Oracle ERP]\n4. Generate quote: Draft an accurate professional quote or order with line-item rationale, alternates, and pricing notes for rep review. [tools: Google Sheets, HubSpot]\n5. Push to ERP/CRM: Export approved drafts to SAP, Oracle, or CRM with full audit trail — queue unapproved items for human sign-off. [tools: Oracle ERP, HubSpot]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Require human approval before sending quotes to customers unless using pre-approved templates\n- Do not override compliance or spec requirements to prioritize margin or preferred SKUs\n- Escalate ambiguous specs and conflicting requirements to the assigned sales rep\n- Do not price below floor without explicit human approval\n- Cite catalog or ERP source for every line item — never invent SKUs, specs, or pricing",
       "related": [
         "inbox-triage-with-approval",
         "reconciliation-on-autopilot",
         "portal-to-production-api"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Ingest RFQs and tender emails",
+            "required": true
+          },
+          {
+            "id": "hubspot",
+            "label": "HubSpot",
+            "reason": "CRM deal and quote tracking",
+            "required": true
+          },
+          {
+            "id": "googlesheets",
+            "label": "Google Sheets",
+            "reason": "Quote drafts and line-item audit trail",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "sales-ops",
+            "label": "Sales operations",
+            "reason": "Manage pipeline, CRM updates, and follow-ups."
+          }
+        ],
+        "systems": [
+          {
+            "name": "SAP",
+            "role": "read",
+            "via": "api",
+            "notes": "Catalog and pricing source"
+          },
+          {
+            "name": "Oracle ERP",
+            "role": "write",
+            "via": "api",
+            "notes": "Approved quote export"
+          },
+          {
+            "name": "Indeed",
+            "role": "read",
+            "via": "browser",
+            "notes": "Inbound applicant/spec portals"
+          }
+        ]
+      }
     },
     {
       "id": "client-docs-to-forms",
@@ -2350,35 +2668,100 @@
         "steps": [
           {
             "label": "Intake documents",
-            "description": "Collect client documents from portal, email, or uploads; track new cases and attach source files."
+            "description": "Collect client documents from portal, email, or uploads; track new cases and attach source files.",
+            "tools": [
+              "Gmail",
+              "Client upload portal"
+            ]
           },
           {
             "label": "Extract fields",
-            "description": "AI reads documents with confidence scores per field; flag low-confidence extractions for review."
+            "description": "AI reads documents with confidence scores per field; flag low-confidence extractions for review.",
+            "tools": [
+              "Notion"
+            ]
           },
           {
             "label": "Build master record",
-            "description": "Merge extracted fields into one reviewed record; resolve conflicts across source documents."
+            "description": "Merge extracted fields into one reviewed record; resolve conflicts across source documents.",
+            "tools": [
+              "Notion"
+            ]
           },
           {
             "label": "Human review",
-            "description": "Route cases needing judgment to team sign-off before anything is final."
+            "description": "Route cases needing judgment to team sign-off before anything is final.",
+            "tools": [
+              "Slack"
+            ],
+            "command": "node scripts/doc-intake-report.js"
           },
           {
             "label": "Fill output forms",
-            "description": "Populate firm-specific forms from approved master record; audit trail on every field."
+            "description": "Populate firm-specific forms from approved master record; audit trail on every field.",
+            "tools": [
+              "Firm output forms"
+            ]
           }
         ],
         "checkLabel": "Cases current?",
         "exitLabel": "Master records approved; forms filled or escalated",
         "loopBackLabel": "backlog remains"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Client Docs to Forms\" loop.\n\nGoal: every open case has an approved master record and completed output forms ready for delivery or explicit escalation\nMax iterations: 20\nBetween iterations run: Report open cases, pending extractions, low-confidence fields, master records awaiting sign-off, and unfilled output forms\nExit when: zero open cases without approved master record or explicit escalation, all low-confidence fields reviewed, and pending forms have owner or human approval\n\nStep 1 — Intake: Collect client documents from portal, email, or uploads; track new cases.\nStep 2 — Extract: AI reads documents with per-field confidence scores; flag low-confidence extractions.\nStep 3 — Master record: Merge extracted fields into one record; resolve conflicts across source docs.\nStep 4 — Review: Route judgment calls to team sign-off before anything is final.\nStep 5 — Forms: Populate firm-specific output forms from approved master record with full audit trail.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Client Docs to Forms\" loop.\n\nInspired by Pollen (https://www.pollen.cx).\n\nGoal: every open case has an approved master record and completed output forms ready for delivery or explicit escalation\nMax iterations: 20\nBetween iterations run: Report open cases, pending extractions, low-confidence fields, master records awaiting sign-off, and unfilled output forms\nExit when: zero open cases without approved master record or explicit escalation, all low-confidence fields reviewed, and pending forms have owner or human approval\n\n## Before you start\n- Connect Gmail (required) — Client document intake from email\n- Connect Notion (optional) — Master record and audit trail storage\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Customer operations (required) — Triage intake, onboarding, and support queues.\n- Client upload portal (read via browser) — Secure document intake\n- Firm output forms (write via manual) — Populate PDF/forms after sign-off\n\n## Steps\n1. Intake documents: Collect client documents from portal, email, or uploads; track new cases and attach source files. [tools: Gmail, Client upload portal]\n2. Extract fields: AI reads documents with confidence scores per field; flag low-confidence extractions for review. [tools: Notion]\n3. Build master record: Merge extracted fields into one reviewed record; resolve conflicts across source documents. [tools: Notion]\n4. Human review: Route cases needing judgment to team sign-off before anything is final. [tools: Slack]\n   Command: node scripts/doc-intake-report.js\n5. Fill output forms: Populate firm-specific forms from approved master record; audit trail on every field. [tools: Firm output forms]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Nothing is final without human sign-off on the master record\n- Treat SSN, wages, EIN, and client PII as sensitive — minimize exposure in logs\n- Do not auto-submit forms to external parties without approval\n- Escalate fields below confidence threshold for human review\n- Never use client data for model training; encrypted handling only\n- Full audit trail on every field change",
       "related": [
         "customer-onboarding-watch",
         "inbox-triage-with-approval",
         "quote-order-on-autopilot"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Client document intake from email",
+            "required": true
+          },
+          {
+            "id": "notion",
+            "label": "Notion",
+            "reason": "Master record and audit trail storage",
+            "required": false
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "customer-ops",
+            "label": "Customer operations",
+            "reason": "Triage intake, onboarding, and support queues."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Client upload portal",
+            "role": "read",
+            "via": "browser",
+            "notes": "Secure document intake"
+          },
+          {
+            "name": "Firm output forms",
+            "role": "write",
+            "via": "manual",
+            "notes": "Populate PDF/forms after sign-off"
+          }
+        ]
+      }
     },
     {
       "id": "customer-activity-on-autopilot",
@@ -2431,35 +2814,128 @@
         "steps": [
           {
             "label": "Aggregate activity",
-            "description": "Pull emails, meetings, notes, calls, and webhooks from team and agents into one structured account stream."
+            "description": "Pull emails, meetings, notes, calls, and webhooks from team and agents into one structured account stream.",
+            "tools": [
+              "Gmail",
+              "HubSpot",
+              "Webhooks"
+            ]
           },
           {
             "label": "Extract next actions",
-            "description": "AI suggests follow-ups and commitments from the activity graph — surface what needs to happen next per account."
+            "description": "AI suggests follow-ups and commitments from the activity graph — surface what needs to happen next per account.",
+            "tools": [
+              "HubSpot",
+              "Linear"
+            ]
           },
           {
             "label": "Queue tracked tasks",
-            "description": "Turn commitments into tasks with context; reps, agents, and MCP clients share one queue with source links."
+            "description": "Turn commitments into tasks with context; reps, agents, and MCP clients share one queue with source links.",
+            "tools": [
+              "Linear",
+              "MCP clients"
+            ]
           },
           {
             "label": "Execute from anywhere",
-            "description": "Create records, update fields, and dispatch tasks via keyboard-first bar, terminal, or MCP without breaking flow."
+            "description": "Create records, update fields, and dispatch tasks via keyboard-first bar, terminal, or MCP without breaking flow.",
+            "tools": [
+              "HubSpot",
+              "MCP clients"
+            ]
           },
           {
             "label": "Sync the stack",
-            "description": "Connect CRM, email, calendar, and tools so the activity graph stays complete and bidirectionally current."
+            "description": "Connect CRM, email, calendar, and tools so the activity graph stays complete and bidirectionally current.",
+            "tools": [
+              "Gmail",
+              "HubSpot",
+              "Google Calendar"
+            ]
           }
         ],
         "checkLabel": "Activity current?",
         "exitLabel": "Graph synced; tasks owned or escalated",
         "loopBackLabel": "gaps remain"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Customer Activity on Autopilot\" loop.\n\nGoal: activity graph is current, next actions are queued or executed, and open commitments have owners with full audit trail\nMax iterations: 20\nBetween iterations run: Report unsynced activity sources, accounts with stale activity, open next actions without owners, and pending CRM sync backlog\nExit when: activity graph covers all connected sources, every open commitment has a tracked task or explicit escalation, and high-impact CRM changes are approved or queued\n\nStep 1 — Aggregate: Pull emails, meetings, notes, calls, and webhooks into one structured account stream.\nStep 2 — Extract: AI suggests follow-ups and commitments from the activity graph.\nStep 3 — Queue: Turn commitments into tracked tasks with source context for reps, agents, and MCP clients.\nStep 4 — Execute: Create records, update fields, and dispatch tasks via keyboard bar, terminal, or MCP.\nStep 5 — Sync: Keep CRM, email, calendar, and connected tools bidirectionally current.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Customer Activity on Autopilot\" loop.\n\nInspired by Fixture (https://fixture.app).\n\nGoal: activity graph is current, next actions are queued or executed, and open commitments have owners with full audit trail\nMax iterations: 20\nBetween iterations run: Report unsynced activity sources, accounts with stale activity, open next actions without owners, and pending CRM sync backlog\nExit when: activity graph covers all connected sources, every open commitment has a tracked task or explicit escalation, and high-impact CRM changes are approved or queued\n\n## Before you start\n- Connect Gmail (required) — Email activity stream\n- Connect HubSpot (required) — CRM records and deal stages\n- Connect Slack (required) — Team notifications and task handoffs\n- Connect Linear (required) — Tracked commitments and tasks\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Sales operations (required) — Manage pipeline, CRM updates, and follow-ups.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- Google Calendar (read via plugin) — Meetings and scheduling context\n- MCP clients (write via mcp) — Terminal and agent dispatch\n- Webhooks (read via api) — Product and support event stream\n\n## Steps\n1. Aggregate activity: Pull emails, meetings, notes, calls, and webhooks from team and agents into one structured account stream. [tools: Gmail, HubSpot, Webhooks]\n2. Extract next actions: AI suggests follow-ups and commitments from the activity graph — surface what needs to happen next per account. [tools: HubSpot, Linear]\n3. Queue tracked tasks: Turn commitments into tasks with context; reps, agents, and MCP clients share one queue with source links. [tools: Linear, MCP clients]\n4. Execute from anywhere: Create records, update fields, and dispatch tasks via keyboard-first bar, terminal, or MCP without breaking flow. [tools: HubSpot, MCP clients]\n5. Sync the stack: Connect CRM, email, calendar, and tools so the activity graph stays complete and bidirectionally current. [tools: Gmail, HubSpot, Google Calendar]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Do not auto-send customer-facing emails or messages without human approval unless pre-approved templates apply\n- Preserve full account context when creating tasks — link back to source activity\n- Do not overwrite CRM fields without explicit approval for high-impact changes (deal stage, amount, owner)\n- Escalate ambiguous next actions to human rep rather than guessing\n- API and MCP actions must be auditable with actor (human vs agent) recorded",
       "related": [
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "quote-order-on-autopilot"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Email activity stream",
+            "required": true
+          },
+          {
+            "id": "hubspot",
+            "label": "HubSpot",
+            "reason": "CRM records and deal stages",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Team notifications and task handoffs",
+            "required": true
+          },
+          {
+            "id": "linear",
+            "label": "Linear",
+            "reason": "Tracked commitments and tasks",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "sales-ops",
+            "label": "Sales operations",
+            "reason": "Manage pipeline, CRM updates, and follow-ups."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Google Calendar",
+            "role": "read",
+            "via": "plugin",
+            "notes": "Meetings and scheduling context"
+          },
+          {
+            "name": "MCP clients",
+            "role": "write",
+            "via": "mcp",
+            "notes": "Terminal and agent dispatch"
+          },
+          {
+            "name": "Webhooks",
+            "role": "read",
+            "via": "api",
+            "notes": "Product and support event stream"
+          }
+        ]
+      }
     },
     {
       "id": "production-security-on-autopilot",
@@ -2513,35 +2989,130 @@
         "steps": [
           {
             "label": "Gather stack context",
-            "description": "Pull metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors using read-only access."
+            "description": "Pull metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors using read-only access.",
+            "tools": [
+              "GitHub",
+              "AWS",
+              "Datadog"
+            ]
           },
           {
             "label": "Maintain production graph",
-            "description": "Connect assets, hidden links, and change history into one live environment view."
+            "description": "Connect assets, hidden links, and change history into one live environment view.",
+            "tools": [
+              "Kubernetes",
+              "AWS",
+              "Okta"
+            ]
           },
           {
             "label": "Run on events",
-            "description": "Trigger pentest, discovery, and monitor agents on pull requests, deploys, and security alerts."
+            "description": "Trigger pentest, discovery, and monitor agents on pull requests, deploys, and security alerts.",
+            "tools": [
+              "GitHub",
+              "CI/CD",
+              "Datadog"
+            ]
           },
           {
             "label": "Prove impact",
-            "description": "Validate findings like an adversary would; rank by exploitability and blast radius with full graph context."
+            "description": "Validate findings like an adversary would; rank by exploitability and blast radius with full graph context.",
+            "tools": [
+              "GitHub",
+              "Kubernetes"
+            ]
           },
           {
             "label": "Remediate and verify",
-            "description": "Turn findings into fixes grounded in the real environment; verify the fix landed before closing."
+            "description": "Turn findings into fixes grounded in the real environment; verify the fix landed before closing.",
+            "tools": [
+              "GitHub",
+              "Slack"
+            ],
+            "command": "npm run security:smoke"
           }
         ],
         "checkLabel": "Security current?",
         "exitLabel": "Findings owned, verified, or escalated; graph current",
         "loopBackLabel": "gaps remain"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Production Security on Autopilot\" loop.\n\nGoal: open findings triaged with graph context, critical issues escalated, and verified fixes landed in production\nMax iterations: 20\nBetween iterations run: Report open findings by severity, unverified fixes, stale graph assets, and unprocessed PR/deploy/alert events\nExit when: zero critical or high findings without owner and remediation plan, every resolved finding has verified fix in production, and live graph covers all connected stack sources\n\nStep 1 — Context: Pull read-only metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors.\nStep 2 — Graph: Connect assets, hidden links, and change history into one live production view.\nStep 3 — Events: Run pentest, discovery, and monitor agents on PRs, deploys, and alerts.\nStep 4 — Impact: Validate findings adversarially; rank by exploitability and blast radius with graph context.\nStep 5 — Remediate: Draft fixes grounded in the real environment; verify fix landed before closing.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Production Security on Autopilot\" loop.\n\nInspired by Tolmo (https://www.tolmo.com).\n\nGoal: open findings triaged with graph context, critical issues escalated, and verified fixes landed in production\nMax iterations: 20\nBetween iterations run: Report open findings by severity, unverified fixes, stale graph assets, and unprocessed PR/deploy/alert events\nExit when: zero critical or high findings without owner and remediation plan, every resolved finding has verified fix in production, and live graph covers all connected stack sources\n\n## Before you start\n- Connect GitHub (required) — PR checks, code context, and fix verification\n- Connect Slack (required) — Alert routing and incident coordination\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Security triage (required) — Rank findings by severity and blast radius.\n- Attach Code change + verification (required) — Edit code or configs and verify locally.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- AWS (read via api) — Cloud asset inventory\n- Kubernetes (read via api) — Cluster and workload graph\n- Datadog (read via api) — Observability and alert stream\n- CI/CD (read via api) — Deploy and build events\n- Okta (read via api) — Identity and access graph\n\n## Steps\n1. Gather stack context: Pull metadata from GitHub, cloud, K8s, CI/CD, observability, and security vendors using read-only access. [tools: GitHub, AWS, Datadog]\n2. Maintain production graph: Connect assets, hidden links, and change history into one live environment view. [tools: Kubernetes, AWS, Okta]\n3. Run on events: Trigger pentest, discovery, and monitor agents on pull requests, deploys, and security alerts. [tools: GitHub, CI/CD, Datadog]\n4. Prove impact: Validate findings like an adversary would; rank by exploitability and blast radius with full graph context. [tools: GitHub, Kubernetes]\n5. Remediate and verify: Turn findings into fixes grounded in the real environment; verify the fix landed before closing. [tools: GitHub, Slack]\n   Command: npm run security:smoke\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Use read-only roles for discovery and graph building unless explicitly approved for remediation\n- Do not apply destructive changes in production without human approval\n- Escalate critical and zero-day findings immediately — do not wait for the next loop iteration\n- Never expose secrets, tokens, or credentials in logs or reports\n- Mark findings resolved only after verified fix — not just PR merged\n- Preserve audit trail linking finding → fix → verification event",
       "related": [
         "dependency-cve-loop",
         "secret-scan-until-clean",
         "ci-failure-watcher"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "github",
+            "label": "GitHub",
+            "reason": "PR checks, code context, and fix verification",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Alert routing and incident coordination",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "security-triage",
+            "label": "Security triage",
+            "reason": "Rank findings by severity and blast radius."
+          },
+          {
+            "id": "code-change",
+            "label": "Code change + verification",
+            "reason": "Edit code or configs and verify locally."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          }
+        ],
+        "systems": [
+          {
+            "name": "AWS",
+            "role": "read",
+            "via": "api",
+            "notes": "Cloud asset inventory"
+          },
+          {
+            "name": "Kubernetes",
+            "role": "read",
+            "via": "api",
+            "notes": "Cluster and workload graph"
+          },
+          {
+            "name": "Datadog",
+            "role": "read",
+            "via": "api",
+            "notes": "Observability and alert stream"
+          },
+          {
+            "name": "CI/CD",
+            "role": "read",
+            "via": "api",
+            "notes": "Deploy and build events"
+          },
+          {
+            "name": "Okta",
+            "role": "read",
+            "via": "api",
+            "notes": "Identity and access graph"
+          }
+        ]
+      }
     },
     {
       "id": "compliance-until-audit-ready",
@@ -2594,35 +3165,119 @@
         "steps": [
           {
             "label": "Collect evidence",
-            "description": "Connect integrations across cloud, HR, identity, and dev tools to auto-gather control evidence on a schedule."
+            "description": "Connect integrations across cloud, HR, identity, and dev tools to auto-gather control evidence on a schedule.",
+            "tools": [
+              "GitHub",
+              "Cloud provider",
+              "HR / identity provider"
+            ]
           },
           {
             "label": "Run continuous tests",
-            "description": "Execute automated security and compliance checks; flag drift, misconfigurations, and missing attestations."
+            "description": "Execute automated security and compliance checks; flag drift, misconfigurations, and missing attestations.",
+            "tools": [
+              "Cloud provider"
+            ],
+            "command": "npm run compliance:controls-report"
           },
           {
             "label": "Draft policies & questionnaires",
-            "description": "AI drafts policies, procedures, and security questionnaire responses for human review and approval."
+            "description": "AI drafts policies, procedures, and security questionnaire responses for human review and approval.",
+            "tools": [
+              "Notion"
+            ]
           },
           {
             "label": "Monitor gaps & vendor risk",
-            "description": "Track failing controls, overdue remediations, and third-party/vendor risk in one compliance inbox."
+            "description": "Track failing controls, overdue remediations, and third-party/vendor risk in one compliance inbox.",
+            "tools": [
+              "Slack",
+              "Vendor risk register"
+            ]
           },
           {
             "label": "Prepare audit package",
-            "description": "Assemble Trust Center materials, completed questionnaires, and export-ready evidence folder for audit sign-off."
+            "description": "Assemble Trust Center materials, completed questionnaires, and export-ready evidence folder for audit sign-off.",
+            "tools": [
+              "Notion"
+            ]
           }
         ],
         "checkLabel": "Audit-ready?",
         "exitLabel": "Controls green; evidence current; package ready",
         "loopBackLabel": "gaps remain"
       },
-      "kickoffPrompt": "/loop 1h Start the \"Compliance Until Audit-Ready\" loop.\n\nGoal: every in-scope control has current evidence, open gaps are owned, and audit package is ready for human sign-off\nMax iterations: 24\nBetween iterations run: Report failing controls, missing evidence, stale tests, open questionnaire items, and vendor risk exceptions\nExit when: zero failing controls without owner and remediation plan, all evidence links current, and audit export ready for human approval\n\nStep 1 — Evidence: Connect integrations and auto-collect control evidence from cloud, HR, identity, and dev tools.\nStep 2 — Tests: Run continuous automated security/compliance checks; flag drift and missing attestations.\nStep 3 — Draft: AI-draft policies, procedures, and questionnaire responses for human review.\nStep 4 — Monitor: Track failing controls, overdue remediations, and vendor risk in one inbox.\nStep 5 — Audit: Assemble Trust Center materials and export-ready evidence folder for sign-off.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Compliance Until Audit-Ready\" loop.\n\nInspired by Vanta (https://vanta.com).\n\nGoal: every in-scope control has current evidence, open gaps are owned, and audit package is ready for human sign-off\nMax iterations: 24\nBetween iterations run: Report failing controls, missing evidence, stale tests, open questionnaire items, and vendor risk exceptions\nExit when: zero failing controls without owner and remediation plan, all evidence links current, and audit export ready for human approval\n\n## Before you start\n- Connect GitHub (required) — Change management and access evidence\n- Connect Slack (required) — Compliance inbox notifications\n- Connect Notion (required) — Policies, questionnaires, and audit binder\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Security triage (required) — Rank findings by severity and blast radius.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Docs QA (required) — Compare docs to live behavior.\n- Cloud provider (read via api) — Infrastructure control evidence\n- HR / identity provider (read via api) — Access and onboarding attestations\n- Vendor risk register (read via manual) — Third-party assessments\n\n## Steps\n1. Collect evidence: Connect integrations across cloud, HR, identity, and dev tools to auto-gather control evidence on a schedule. [tools: GitHub, Cloud provider, HR / identity provider]\n2. Run continuous tests: Execute automated security and compliance checks; flag drift, misconfigurations, and missing attestations. [tools: Cloud provider]\n   Command: npm run compliance:controls-report\n3. Draft policies & questionnaires: AI drafts policies, procedures, and security questionnaire responses for human review and approval. [tools: Notion]\n4. Monitor gaps & vendor risk: Track failing controls, overdue remediations, and third-party/vendor risk in one compliance inbox. [tools: Slack, Vendor risk register]\n5. Prepare audit package: Assemble Trust Center materials, completed questionnaires, and export-ready evidence folder for audit sign-off. [tools: Notion]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Never mark a control passing without linked, verifiable evidence\n- Do not submit audit materials or customer questionnaires without explicit human approval\n- Do not auto-publish policy or procedure changes without compliance review\n- Preserve audit trail for every evidence collection and control status change\n- Escalate critical control failures and audit deadlines immediately",
       "related": [
         "production-security-on-autopilot",
         "secret-scan-until-clean",
         "dependency-cve-loop"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "github",
+            "label": "GitHub",
+            "reason": "Change management and access evidence",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Compliance inbox notifications",
+            "required": true
+          },
+          {
+            "id": "notion",
+            "label": "Notion",
+            "reason": "Policies, questionnaires, and audit binder",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "security-triage",
+            "label": "Security triage",
+            "reason": "Rank findings by severity and blast radius."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "docs-qa",
+            "label": "Docs QA",
+            "reason": "Compare docs to live behavior."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Cloud provider",
+            "role": "read",
+            "via": "api",
+            "notes": "Infrastructure control evidence"
+          },
+          {
+            "name": "HR / identity provider",
+            "role": "read",
+            "via": "api",
+            "notes": "Access and onboarding attestations"
+          },
+          {
+            "name": "Vendor risk register",
+            "role": "read",
+            "via": "manual",
+            "notes": "Third-party assessments"
+          }
+        ]
+      }
     },
     {
       "id": "rote-on-autopilot",
@@ -2698,13 +3353,14 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "general-legal-on-autopilot",
       "slug": "general-legal-on-autopilot",
-      "title": "Elite AI law firm for on Autopilot",
-      "description": "Inspired by General Legal — Elite AI law firm for high growth companies. Loop until the workflow is current, exceptions are owned, and human sign-off is captured where required.",
+      "title": "Contract Review Until Redlines Resolved",
+      "description": "Inspired by General Legal — send contracts for flat-fee review, AI handles extraction and first-pass redlines, elite lawyer finishes the final 20% with human sign-off on every deliverable.",
       "category": "Documents",
       "trigger": "interval",
       "official": true,
@@ -2731,10 +3387,10 @@
         "b2b",
         "legal"
       ],
-      "goal": "open work triaged, exceptions owned, and core documents workflow current with audit trail",
+      "goal": "every open matter has quoted scope, AI draft redlines, and attorney-approved final deliverable or explicit escalation",
       "maxIterations": 20,
-      "checkCommand": "Report open queue items, stale tasks, failed automations, and items awaiting human approval for General Legal",
-      "exitCondition": "zero open items without owner or explicit escalation, all external actions approved or sent, and systems of record current",
+      "checkCommand": "Report open matters, pending extractions, redlines awaiting attorney review, and client deliverables not sent",
+      "exitCondition": "zero open matters without attorney sign-off or explicit escalation, and all client-facing sends approved",
       "guardrails": [
         "Require human approval before customer-facing sends, payments, or legal submissions unless pre-approved templates apply",
         "Preserve full audit trail linking source data to every automated action",
@@ -2745,36 +3401,82 @@
         "trigger": "Interval tick",
         "steps": [
           {
-            "label": "Intake matters",
-            "description": "Collect new matters, client documents, and deadlines for General Legal workflows."
+            "label": "Intake matter",
+            "description": "Collect contract, context, and deadline; issue flat-fee quote for human approval.",
+            "tools": [
+              "Gmail"
+            ]
           },
           {
-            "label": "Extract requirements",
-            "description": "Parse facts, jurisdictions, and deliverables from intake with confidence scores."
+            "label": "Extract obligations",
+            "description": "Parse parties, terms, risks, and open questions with confidence scores.",
+            "tools": [
+              "Contract repository"
+            ]
           },
           {
-            "label": "Draft work product",
-            "description": "Generate drafts, filings, or responses grounded in firm templates and precedent."
+            "label": "Draft redlines",
+            "description": "Produce first-pass redlines and issue summary for attorney review.",
+            "tools": [
+              "Gmail"
+            ]
           },
           {
-            "label": "Human review",
-            "description": "Route judgment calls and final outputs to attorney sign-off before delivery."
+            "label": "Attorney review",
+            "description": "Route judgment calls and final 20% to licensed attorney sign-off.",
+            "tools": [
+              "Gmail"
+            ]
           },
           {
-            "label": "Close and track",
-            "description": "File completed work, update matter status, and surface follow-ups."
+            "label": "Deliver and close",
+            "description": "Send approved deliverable to client and archive matter with audit trail.",
+            "tools": [
+              "Gmail"
+            ]
           }
         ],
-        "checkLabel": "Workflow current?",
-        "exitLabel": "Queue clear or escalated; audit trail complete",
-        "loopBackLabel": "gaps remain"
+        "checkLabel": "Matters current?",
+        "exitLabel": "Redlines resolved or escalated",
+        "loopBackLabel": "backlog remains"
       },
-      "kickoffPrompt": "/loop 30m Start the \"Elite AI law firm for on Autopilot\" loop.\n\nInspired by General Legal (https://general.legal).\n\nGoal: open work triaged, exceptions owned, and core documents workflow current with audit trail\nMax iterations: 20\nBetween iterations run: Report open queue items, stale tasks, failed automations, and items awaiting human approval for General Legal\nExit when: zero open items without owner or explicit escalation, all external actions approved or sent, and systems of record current\n\nStep 1 — Intake matters: Collect new matters, client documents, and deadlines for General Legal workflows.\nStep 2 — Extract requirements: Parse facts, jurisdictions, and deliverables from intake with confidence scores.\nStep 3 — Draft work product: Generate drafts, filings, or responses grounded in firm templates and precedent.\nStep 4 — Human review: Route judgment calls and final outputs to attorney sign-off before delivery.\nStep 5 — Close and track: File completed work, update matter status, and surface follow-ups.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Contract Review Until Redlines Resolved\" loop.\n\nInspired by General Legal (https://general.legal).\n\nGoal: every open matter has quoted scope, AI draft redlines, and attorney-approved final deliverable or explicit escalation\nMax iterations: 20\nBetween iterations run: Report open matters, pending extractions, redlines awaiting attorney review, and client deliverables not sent\nExit when: zero open matters without attorney sign-off or explicit escalation, and all client-facing sends approved\n\n## Before you start\n- Connect Gmail (required) — Matter intake and client delivery drafts\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Contract repository (read via browser) — Source agreements and exhibits\n\n## Steps\n1. Intake matter: Collect contract, context, and deadline; issue flat-fee quote for human approval. [tools: Gmail]\n2. Extract obligations: Parse parties, terms, risks, and open questions with confidence scores. [tools: Contract repository]\n3. Draft redlines: Produce first-pass redlines and issue summary for attorney review. [tools: Gmail]\n4. Attorney review: Route judgment calls and final 20% to licensed attorney sign-off. [tools: Gmail]\n5. Deliver and close: Send approved deliverable to client and archive matter with audit trail. [tools: Gmail]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Require human approval before customer-facing sends, payments, or legal submissions unless pre-approved templates apply\n- Preserve full audit trail linking source data to every automated action\n- Escalate compliance, safety, or regulatory-sensitive items immediately\n- Nothing is final without human sign-off on deliverables",
       "related": [
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Matter intake and client delivery drafts",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Contract repository",
+            "role": "read",
+            "via": "browser",
+            "notes": "Source agreements and exhibits"
+          }
+        ]
+      }
     },
     {
       "id": "moritz-on-autopilot",
@@ -2850,7 +3552,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "luel-on-autopilot",
@@ -2925,7 +3628,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "hub-on-autopilot",
@@ -3000,7 +3704,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "sazabi-on-autopilot",
@@ -3075,7 +3780,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "martini-on-autopilot",
@@ -3150,7 +3856,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "wayco-on-autopilot",
@@ -3226,7 +3933,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "unifold-on-autopilot",
@@ -3302,7 +4010,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "ritivel-on-autopilot",
@@ -3377,7 +4086,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "pollinate-on-autopilot",
@@ -3452,13 +4162,14 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "supafax-on-autopilot",
       "slug": "supafax-on-autopilot",
-      "title": "AI assistant for your email on Autopilot",
-      "description": "Inspired by Supafax — AI assistant for your email and calendar. Loop until the workflow is current, exceptions are owned, and human sign-off is captured where required.",
+      "title": "Inbox Triage Until SLA Green",
+      "description": "Inspired by Supafax — connect inbox and calendar, auto-label threads, draft replies in your voice, and schedule meetings until response SLAs stay green.",
       "category": "Operations",
       "trigger": "interval",
       "official": true,
@@ -3485,10 +4196,10 @@
         "b2b",
         "productivity"
       ],
-      "goal": "open work triaged, exceptions owned, and core operations workflow current with audit trail",
+      "goal": "inbox threads labeled, drafts ready for approval, and calendar holds proposed within SLA targets",
       "maxIterations": 20,
-      "checkCommand": "Report open queue items, stale tasks, failed automations, and items awaiting human approval for Supafax",
-      "exitCondition": "zero open items without owner or explicit escalation, all external actions approved or sent, and systems of record current",
+      "checkCommand": "Report unread priority threads, drafts pending approval, overdue SLAs, and scheduling conflicts",
+      "exitCondition": "zero priority threads without draft or explicit escalation, SLAs green, and calendar conflicts resolved or delegated",
       "guardrails": [
         "Require human approval before customer-facing sends, payments, or legal submissions unless pre-approved templates apply",
         "Preserve full audit trail linking source data to every automated action",
@@ -3498,36 +4209,101 @@
         "trigger": "Interval tick",
         "steps": [
           {
-            "label": "Monitor queue",
-            "description": "Scan inbound work, alerts, and backlog items for Supafax."
+            "label": "Connect streams",
+            "description": "Sync inbox and calendar; learn reply patterns and priority contacts.",
+            "tools": [
+              "Gmail",
+              "Google Calendar"
+            ]
           },
           {
-            "label": "Triage and prioritize",
-            "description": "Rank by SLA, revenue impact, and compliance risk."
+            "label": "Label and prioritize",
+            "description": "Auto-label threads; rank by SLA, sender importance, and urgency.",
+            "tools": [
+              "Gmail"
+            ]
           },
           {
-            "label": "Execute workflow",
-            "description": "Run the core automation with human checkpoints where required."
+            "label": "Draft replies",
+            "description": "Generate reply drafts in user voice; queue for approval before send.",
+            "tools": [
+              "Gmail"
+            ]
           },
           {
-            "label": "Review exceptions",
-            "description": "Escalate ambiguous cases; require sign-off on external actions."
+            "label": "Propose meetings",
+            "description": "Suggest calendar holds and scheduling options for approval.",
+            "tools": [
+              "Google Calendar"
+            ]
           },
           {
-            "label": "Close and report",
-            "description": "Update systems of record and report open gaps for next pass."
+            "label": "Report SLA state",
+            "description": "Surface overdue threads, conflicts, and threads needing human judgment.",
+            "tools": [
+              "Slack"
+            ],
+            "command": "node scripts/inbox-sla-report.js"
           }
         ],
-        "checkLabel": "Workflow current?",
-        "exitLabel": "Queue clear or escalated; audit trail complete",
-        "loopBackLabel": "gaps remain"
+        "checkLabel": "SLA green?",
+        "exitLabel": "Inbox current; drafts approved or queued",
+        "loopBackLabel": "SLA breaches remain"
       },
-      "kickoffPrompt": "/loop 30m Start the \"AI assistant for your email on Autopilot\" loop.\n\nInspired by Supafax (https://supafax.com).\n\nGoal: open work triaged, exceptions owned, and core operations workflow current with audit trail\nMax iterations: 20\nBetween iterations run: Report open queue items, stale tasks, failed automations, and items awaiting human approval for Supafax\nExit when: zero open items without owner or explicit escalation, all external actions approved or sent, and systems of record current\n\nStep 1 — Monitor queue: Scan inbound work, alerts, and backlog items for Supafax.\nStep 2 — Triage and prioritize: Rank by SLA, revenue impact, and compliance risk.\nStep 3 — Execute workflow: Run the core automation with human checkpoints where required.\nStep 4 — Review exceptions: Escalate ambiguous cases; require sign-off on external actions.\nStep 5 — Close and report: Update systems of record and report open gaps for next pass.\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.",
+      "kickoffPrompt": "/loop 30m Start the \"Inbox Triage Until SLA Green\" loop.\n\nInspired by Supafax (https://supafax.com).\n\nGoal: inbox threads labeled, drafts ready for approval, and calendar holds proposed within SLA targets\nMax iterations: 20\nBetween iterations run: Report unread priority threads, drafts pending approval, overdue SLAs, and scheduling conflicts\nExit when: zero priority threads without draft or explicit escalation, SLAs green, and calendar conflicts resolved or delegated\n\n## Before you start\n- Connect Gmail (required) — Inbox read, label, and draft replies\n- Connect Slack (optional) — Escalate urgent threads to team\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- Google Calendar (read via plugin) — Meeting scheduling context\n- Outlook (read via browser) — Alternate inbox source\n\n## Steps\n1. Connect streams: Sync inbox and calendar; learn reply patterns and priority contacts. [tools: Gmail, Google Calendar]\n2. Label and prioritize: Auto-label threads; rank by SLA, sender importance, and urgency. [tools: Gmail]\n3. Draft replies: Generate reply drafts in user voice; queue for approval before send. [tools: Gmail]\n4. Propose meetings: Suggest calendar holds and scheduling options for approval. [tools: Google Calendar]\n5. Report SLA state: Surface overdue threads, conflicts, and threads needing human judgment. [tools: Slack]\n   Command: node scripts/inbox-sla-report.js\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Require human approval before customer-facing sends, payments, or legal submissions unless pre-approved templates apply\n- Preserve full audit trail linking source data to every automated action\n- Escalate compliance, safety, or regulatory-sensitive items immediately",
       "related": [
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "official",
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Inbox read, label, and draft replies",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Escalate urgent threads to team",
+            "required": false
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Google Calendar",
+            "role": "read",
+            "via": "plugin",
+            "notes": "Meeting scheduling context"
+          },
+          {
+            "name": "Outlook",
+            "role": "read",
+            "via": "browser",
+            "notes": "Alternate inbox source"
+          }
+        ]
+      }
     },
     {
       "id": "copperlane-on-autopilot",
@@ -3603,7 +4379,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "canary-on-autopilot",
@@ -3678,7 +4455,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "sila-on-autopilot",
@@ -3753,7 +4531,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "maven-on-autopilot",
@@ -3829,7 +4608,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "moda-on-autopilot",
@@ -3905,7 +4685,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "beesafe-on-autopilot",
@@ -3980,7 +4761,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "fed10-on-autopilot",
@@ -4056,7 +4838,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "corelayer-on-autopilot",
@@ -4131,7 +4914,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "balance-on-autopilot",
@@ -4207,7 +4991,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "glue-on-autopilot",
@@ -4282,7 +5067,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "o11-on-autopilot",
@@ -4358,7 +5144,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "bubble-lab-on-autopilot",
@@ -4432,7 +5219,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "constellation-space-on-autopilot",
@@ -4507,7 +5295,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "oximy-on-autopilot",
@@ -4582,7 +5371,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "caretta-on-autopilot",
@@ -4656,7 +5446,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "sitefire-on-autopilot",
@@ -4731,7 +5522,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "robby-on-autopilot",
@@ -4806,7 +5598,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "emdash-on-autopilot",
@@ -4881,7 +5674,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "reframe-on-autopilot",
@@ -4956,7 +5750,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "approxima-on-autopilot",
@@ -5031,7 +5826,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "chamber-on-autopilot",
@@ -5106,7 +5902,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "patientdesk-on-autopilot",
@@ -5181,7 +5978,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "hex-security-on-autopilot",
@@ -5256,7 +6054,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "terminal-use-on-autopilot",
@@ -5331,7 +6130,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "proximitty-on-autopilot",
@@ -5407,7 +6207,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "unisson-on-autopilot",
@@ -5482,7 +6283,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "incidentfox-on-autopilot",
@@ -5557,7 +6359,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "orthogonal-on-autopilot",
@@ -5633,7 +6436,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "fern-on-autopilot",
@@ -5708,7 +6512,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "eigenpal-on-autopilot",
@@ -5782,7 +6587,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "salus-on-autopilot",
@@ -5858,7 +6664,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "ashr-on-autopilot",
@@ -5933,7 +6740,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "autositu-on-autopilot",
@@ -6009,7 +6817,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "verdex-on-autopilot",
@@ -6085,7 +6894,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "cumulus-labs-on-autopilot",
@@ -6160,7 +6970,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "21st-on-autopilot",
@@ -6235,7 +7046,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "burt-on-autopilot",
@@ -6310,7 +7122,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "protent-on-autopilot",
@@ -6386,7 +7199,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "cofia-on-autopilot",
@@ -6461,7 +7275,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "legalos-on-autopilot",
@@ -6537,7 +7352,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "sentrial-on-autopilot",
@@ -6613,7 +7429,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "lexius-on-autopilot",
@@ -6688,7 +7505,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "runanywhere-on-autopilot",
@@ -6763,7 +7581,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "syntropy-on-autopilot",
@@ -6838,7 +7657,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "panta-on-autopilot",
@@ -6914,7 +7734,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "payna-on-autopilot",
@@ -6990,7 +7811,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "valgo-on-autopilot",
@@ -7066,7 +7888,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "corvera-on-autopilot",
@@ -7140,7 +7963,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "fullseam-on-autopilot",
@@ -7216,7 +8040,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "haladir-on-autopilot",
@@ -7290,7 +8115,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "crosslayer-labs-on-autopilot",
@@ -7365,7 +8191,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "vector-legal-on-autopilot",
@@ -7441,7 +8268,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "captain-on-autopilot",
@@ -7516,7 +8344,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "agentic-fabriq-on-autopilot",
@@ -7591,7 +8420,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "button-computer-on-autopilot",
@@ -7666,7 +8496,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "spott-on-autopilot",
@@ -7741,7 +8572,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "mastra-on-autopilot",
@@ -7816,7 +8648,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "afterquery-on-autopilot",
@@ -7891,7 +8724,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "fuseai-on-autopilot",
@@ -7965,7 +8799,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "harper-on-autopilot",
@@ -8041,7 +8876,8 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
     },
     {
       "id": "athenahq-on-autopilot",
@@ -8116,7 +8952,1025 @@
         "inbox-triage-with-approval",
         "morning-operator-brief",
         "customer-onboarding-watch"
-      ]
+      ],
+      "tier": "draft"
+    },
+    {
+      "id": "expense-reconciliation-on-autopilot",
+      "slug": "expense-reconciliation-on-autopilot",
+      "title": "Expense Reconciliation on Autopilot",
+      "description": "Inspired by Ramp — ingest receipts, auto-code expenses, match corporate card spend, and close books continuously with human approval on material adjustments.",
+      "category": "Finance",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Ramp",
+        "url": "https://ramp.com"
+      },
+      "triggerInterval": "1h",
+      "goal": "every expense coded, matched to receipts, and exceptions triaged with audit trail",
+      "maxIterations": 24,
+      "checkCommand": "Report uncoded expenses, unmatched receipts, approval backlog, and GL sync errors",
+      "exitCondition": "zero uncoded expenses, all material items approved or escalated, and GL export current",
+      "guardrails": [
+        "Never post GL entries without explicit human approval",
+        "Do not weaken coding rules to hit exit condition",
+        "Use test/sandbox cards only when validating new flows"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "stripe",
+            "label": "Stripe",
+            "reason": "Corporate card and billing events",
+            "required": false
+          },
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Receipt capture from email",
+            "required": true
+          },
+          {
+            "id": "googlesheets",
+            "label": "Google Sheets",
+            "reason": "Exception inbox and coding audit",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Notify finance on material exceptions",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "ERP / GL",
+            "role": "write",
+            "via": "api",
+            "notes": "Ledger sync with approval"
+          },
+          {
+            "name": "Ramp",
+            "role": "read",
+            "via": "browser",
+            "notes": "Spend policies and card limits"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Ingest spend",
+            "description": "Pull card transactions, receipts, and employee submissions.",
+            "tools": [
+              "Ramp",
+              "Gmail",
+              "Stripe"
+            ]
+          },
+          {
+            "label": "Code expenses",
+            "description": "AI categorizes spend against policy and GL codes.",
+            "tools": [
+              "Google Sheets"
+            ]
+          },
+          {
+            "label": "Match receipts",
+            "description": "Link receipts to transactions; flag unmatched items.",
+            "tools": [
+              "Gmail",
+              "Google Sheets"
+            ]
+          },
+          {
+            "label": "Approval queue",
+            "description": "Route material or ambiguous items for human sign-off.",
+            "tools": [
+              "Slack"
+            ]
+          },
+          {
+            "label": "Sync ledger",
+            "description": "Export approved entries to ERP/GL with audit trail.",
+            "tools": [
+              "ERP / GL"
+            ]
+          }
+        ],
+        "checkLabel": "Books current?",
+        "exitLabel": "Expenses matched and approved",
+        "loopBackLabel": "exceptions remain"
+      },
+      "related": [
+        "reconciliation-on-autopilot",
+        "inbox-triage-with-approval",
+        "morning-operator-brief"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "finance",
+        "ramp"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 1h Start the \"Expense Reconciliation on Autopilot\" loop.\n\nInspired by Ramp (https://ramp.com).\n\nGoal: every expense coded, matched to receipts, and exceptions triaged with audit trail\nMax iterations: 24\nBetween iterations run: Report uncoded expenses, unmatched receipts, approval backlog, and GL sync errors\nExit when: zero uncoded expenses, all material items approved or escalated, and GL export current\n\n## Before you start\n- Connect Stripe (optional) — Corporate card and billing events\n- Connect Gmail (required) — Receipt capture from email\n- Connect Google Sheets (required) — Exception inbox and coding audit\n- Connect Slack (required) — Notify finance on material exceptions\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- ERP / GL (write via api) — Ledger sync with approval\n- Ramp (read via browser) — Spend policies and card limits\n\n## Steps\n1. Ingest spend: Pull card transactions, receipts, and employee submissions. [tools: Ramp, Gmail, Stripe]\n2. Code expenses: AI categorizes spend against policy and GL codes. [tools: Google Sheets]\n3. Match receipts: Link receipts to transactions; flag unmatched items. [tools: Gmail, Google Sheets]\n4. Approval queue: Route material or ambiguous items for human sign-off. [tools: Slack]\n5. Sync ledger: Export approved entries to ERP/GL with audit trail. [tools: ERP / GL]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Never post GL entries without explicit human approval\n- Do not weaken coding rules to hit exit condition\n- Use test/sandbox cards only when validating new flows"
+    },
+    {
+      "id": "close-books-daily-on-autopilot",
+      "slug": "close-books-daily-on-autopilot",
+      "title": "Close Books Daily on Autopilot",
+      "description": "Inspired by Brex — enforce budgets before spend, auto-receipt matching, bill pay approvals, and continuous close with ERP sync.",
+      "category": "Finance",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Brex",
+        "url": "https://www.brex.com"
+      },
+      "triggerInterval": "1h",
+      "goal": "daily books reconciled, bills queued or paid with approval, and accruals current",
+      "maxIterations": 24,
+      "checkCommand": "Report unreconciled accounts, pending bill pay approvals, missing receipts, and ERP sync backlog",
+      "exitCondition": "all accounts reconciled or escalated, bills approved or scheduled, and ERP sync green",
+      "guardrails": [
+        "No payments without approval",
+        "Preserve audit trail for every GL change",
+        "Escalate material variances immediately"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "stripe",
+            "label": "Stripe",
+            "reason": "Payments and treasury",
+            "required": true
+          },
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Invoice intake",
+            "required": true
+          },
+          {
+            "id": "googlesheets",
+            "label": "Google Sheets",
+            "reason": "Close checklist",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Brex",
+            "role": "read",
+            "via": "browser",
+            "notes": "Budgets and card controls"
+          },
+          {
+            "name": "ERP",
+            "role": "write",
+            "via": "api",
+            "notes": "GL and accruals"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Ingest transactions",
+            "description": "Pull bank, card, and bill pay activity.",
+            "tools": [
+              "Brex",
+              "Stripe"
+            ]
+          },
+          {
+            "label": "Match receipts",
+            "description": "Attach receipts and code expenses automatically.",
+            "tools": [
+              "Gmail"
+            ]
+          },
+          {
+            "label": "Bill pay queue",
+            "description": "Extract invoice fields and route approvals.",
+            "tools": [
+              "Gmail",
+              "Stripe"
+            ]
+          },
+          {
+            "label": "Reconcile accounts",
+            "description": "Match ledger to sources; investigate exceptions.",
+            "tools": [
+              "Google Sheets",
+              "ERP"
+            ]
+          },
+          {
+            "label": "Close and sync",
+            "description": "Post approved accruals and sync ERP.",
+            "tools": [
+              "ERP"
+            ]
+          }
+        ],
+        "checkLabel": "Close ready?",
+        "exitLabel": "Daily close complete or escalated",
+        "loopBackLabel": "exceptions remain"
+      },
+      "related": [
+        "reconciliation-on-autopilot",
+        "expense-reconciliation-on-autopilot",
+        "morning-operator-brief"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "finance",
+        "brex"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 1h Start the \"Close Books Daily on Autopilot\" loop.\n\nInspired by Brex (https://www.brex.com).\n\nGoal: daily books reconciled, bills queued or paid with approval, and accruals current\nMax iterations: 24\nBetween iterations run: Report unreconciled accounts, pending bill pay approvals, missing receipts, and ERP sync backlog\nExit when: all accounts reconciled or escalated, bills approved or scheduled, and ERP sync green\n\n## Before you start\n- Connect Stripe (required) — Payments and treasury\n- Connect Gmail (required) — Invoice intake\n- Connect Google Sheets (required) — Close checklist\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Brex (read via browser) — Budgets and card controls\n- ERP (write via api) — GL and accruals\n\n## Steps\n1. Ingest transactions: Pull bank, card, and bill pay activity. [tools: Brex, Stripe]\n2. Match receipts: Attach receipts and code expenses automatically. [tools: Gmail]\n3. Bill pay queue: Extract invoice fields and route approvals. [tools: Gmail, Stripe]\n4. Reconcile accounts: Match ledger to sources; investigate exceptions. [tools: Google Sheets, ERP]\n5. Close and sync: Post approved accruals and sync ERP. [tools: ERP]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- No payments without approval\n- Preserve audit trail for every GL change\n- Escalate material variances immediately"
+    },
+    {
+      "id": "global-payroll-on-autopilot",
+      "slug": "global-payroll-on-autopilot",
+      "title": "Global Payroll on Autopilot",
+      "description": "Inspired by Deel — configure countries, pay rules, and cutoffs; run payroll in 150+ currencies with compliance checks before each run.",
+      "category": "Finance",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Deel",
+        "url": "https://www.deel.com"
+      },
+      "goal": "every worker paid on time with compliant deductions and approved payroll runs",
+      "maxIterations": 20,
+      "checkCommand": "Report workers missing pay data, failed compliance checks, pending approvals, and payout errors",
+      "exitCondition": "all payroll runs approved or explicitly escalated, zero payout failures, and compliance checks green",
+      "guardrails": [
+        "Never submit payroll without human approval",
+        "Escalate compliance blockers immediately",
+        "Do not alter pay rules without audit log"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Payroll run notifications",
+            "required": true
+          },
+          {
+            "id": "googlesheets",
+            "label": "Google Sheets",
+            "reason": "Payroll exception log",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Deel",
+            "role": "read",
+            "via": "browser",
+            "notes": "Global payroll platform"
+          },
+          {
+            "name": "HRIS",
+            "role": "read",
+            "via": "api",
+            "notes": "Employee master data"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Validate roster",
+            "description": "Confirm active workers, countries, and pay rules.",
+            "tools": [
+              "HRIS",
+              "Deel"
+            ]
+          },
+          {
+            "label": "Collect inputs",
+            "description": "Gather hours, commissions, and one-off adjustments.",
+            "tools": [
+              "Deel",
+              "Google Sheets"
+            ]
+          },
+          {
+            "label": "Compliance checks",
+            "description": "Run statutory and contract compliance gates.",
+            "tools": [
+              "Deel"
+            ]
+          },
+          {
+            "label": "Approval gate",
+            "description": "Route payroll preview to finance/HR sign-off.",
+            "tools": [
+              "Slack"
+            ]
+          },
+          {
+            "label": "Execute payouts",
+            "description": "Submit approved run and verify settlement.",
+            "tools": [
+              "Deel"
+            ]
+          }
+        ],
+        "checkLabel": "Payroll ready?",
+        "exitLabel": "Workers paid; exceptions owned",
+        "loopBackLabel": "blockers remain"
+      },
+      "related": [
+        "new-hire-provisioning-on-autopilot",
+        "morning-operator-brief",
+        "customer-onboarding-watch"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "finance",
+        "deel"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 30m Start the \"Global Payroll on Autopilot\" loop.\n\nInspired by Deel (https://www.deel.com).\n\nGoal: every worker paid on time with compliant deductions and approved payroll runs\nMax iterations: 20\nBetween iterations run: Report workers missing pay data, failed compliance checks, pending approvals, and payout errors\nExit when: all payroll runs approved or explicitly escalated, zero payout failures, and compliance checks green\n\n## Before you start\n- Connect Slack (required) — Payroll run notifications\n- Connect Google Sheets (required) — Payroll exception log\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- Deel (read via browser) — Global payroll platform\n- HRIS (read via api) — Employee master data\n\n## Steps\n1. Validate roster: Confirm active workers, countries, and pay rules. [tools: HRIS, Deel]\n2. Collect inputs: Gather hours, commissions, and one-off adjustments. [tools: Deel, Google Sheets]\n3. Compliance checks: Run statutory and contract compliance gates. [tools: Deel]\n4. Approval gate: Route payroll preview to finance/HR sign-off. [tools: Slack]\n5. Execute payouts: Submit approved run and verify settlement. [tools: Deel]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Never submit payroll without human approval\n- Escalate compliance blockers immediately\n- Do not alter pay rules without audit log"
+    },
+    {
+      "id": "new-hire-provisioning-on-autopilot",
+      "slug": "new-hire-provisioning-on-autopilot",
+      "title": "New Hire Provisioning on Autopilot",
+      "description": "Inspired by Rippling — onboard hire, provision apps/devices/cards/payroll on a shared employee graph until all systems green.",
+      "category": "Operations",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Rippling",
+        "url": "https://rippling.com"
+      },
+      "goal": "every new hire fully provisioned across HR, IT, and finance systems with audit trail",
+      "maxIterations": 16,
+      "checkCommand": "Report hires missing app access, devices, payroll setup, or compliance training",
+      "exitCondition": "zero open hires with missing required provisioning step or explicit escalation",
+      "guardrails": [
+        "Do not grant admin access without approval",
+        "Verify identity before provisioning",
+        "Log every access change"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Welcome and IT handoffs",
+            "required": true
+          },
+          {
+            "id": "github",
+            "label": "GitHub",
+            "reason": "Engineering access",
+            "required": false
+          },
+          {
+            "id": "linear",
+            "label": "Linear",
+            "reason": "Onboarding task tracker",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "operations-brief",
+            "label": "Operations brief",
+            "reason": "Summarize queue state and blockers each pass."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Rippling",
+            "role": "read",
+            "via": "browser",
+            "notes": "HR/IT/payroll graph"
+          },
+          {
+            "name": "Google Workspace",
+            "role": "write",
+            "via": "api",
+            "notes": "Email and app accounts"
+          },
+          {
+            "name": "MDM",
+            "role": "write",
+            "via": "api",
+            "notes": "Device enrollment"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Detect new hires",
+            "description": "Pull accepted offers and start dates from HR graph.",
+            "tools": [
+              "Rippling"
+            ]
+          },
+          {
+            "label": "Provision access",
+            "description": "Create accounts, groups, and app seats per role template.",
+            "tools": [
+              "Google Workspace",
+              "GitHub",
+              "Slack"
+            ]
+          },
+          {
+            "label": "Device and payroll",
+            "description": "Ship/enroll devices and initialize payroll profile.",
+            "tools": [
+              "MDM",
+              "Rippling"
+            ]
+          },
+          {
+            "label": "Compliance training",
+            "description": "Assign required training; chase completion.",
+            "tools": [
+              "Rippling",
+              "Linear"
+            ]
+          },
+          {
+            "label": "Verify green",
+            "description": "Run provisioning checklist; escalate blockers.",
+            "tools": [
+              "Linear",
+              "Slack"
+            ]
+          }
+        ],
+        "checkLabel": "All green?",
+        "exitLabel": "Hire fully provisioned",
+        "loopBackLabel": "gaps remain"
+      },
+      "related": [
+        "customer-onboarding-watch",
+        "global-payroll-on-autopilot",
+        "morning-operator-brief"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "operations",
+        "rippling"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 30m Start the \"New Hire Provisioning on Autopilot\" loop.\n\nInspired by Rippling (https://rippling.com).\n\nGoal: every new hire fully provisioned across HR, IT, and finance systems with audit trail\nMax iterations: 16\nBetween iterations run: Report hires missing app access, devices, payroll setup, or compliance training\nExit when: zero open hires with missing required provisioning step or explicit escalation\n\n## Before you start\n- Connect Slack (required) — Welcome and IT handoffs\n- Connect GitHub (optional) — Engineering access\n- Connect Linear (required) — Onboarding task tracker\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Operations brief (required) — Summarize queue state and blockers each pass.\n- Rippling (read via browser) — HR/IT/payroll graph\n- Google Workspace (write via api) — Email and app accounts\n- MDM (write via api) — Device enrollment\n\n## Steps\n1. Detect new hires: Pull accepted offers and start dates from HR graph. [tools: Rippling]\n2. Provision access: Create accounts, groups, and app seats per role template. [tools: Google Workspace, GitHub, Slack]\n3. Device and payroll: Ship/enroll devices and initialize payroll profile. [tools: MDM, Rippling]\n4. Compliance training: Assign required training; chase completion. [tools: Rippling, Linear]\n5. Verify green: Run provisioning checklist; escalate blockers. [tools: Linear, Slack]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Do not grant admin access without approval\n- Verify identity before provisioning\n- Log every access change"
+    },
+    {
+      "id": "candidate-sla-on-autopilot",
+      "slug": "candidate-sla-on-autopilot",
+      "title": "Candidate SLA on Autopilot",
+      "description": "Inspired by Ashby — keep ATS pipeline moving: no candidate stale >48h, AI assists scheduling, sourcing, and funnel analytics.",
+      "category": "Sales",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Ashby",
+        "url": "https://www.ashbyhq.com"
+      },
+      "goal": "no candidate stuck >48h without owner action, interviews scheduled, and pipeline analytics current",
+      "maxIterations": 20,
+      "checkCommand": "Report stale stages, unscheduled interviews, sourcing backlog, and SLA breaches",
+      "exitCondition": "zero candidates stale >48h without owner or escalation, and scheduling queue clear",
+      "guardrails": [
+        "No candidate outreach without approval unless template-approved",
+        "Do not advance stage without documented feedback",
+        "Protect candidate PII in logs"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Candidate communication drafts",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Recruiter alerts",
+            "required": true
+          },
+          {
+            "id": "hubspot",
+            "label": "HubSpot",
+            "reason": "CRM sync",
+            "required": false
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          },
+          {
+            "id": "sales-ops",
+            "label": "Sales operations",
+            "reason": "Manage pipeline, CRM updates, and follow-ups."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Ashby ATS",
+            "role": "read",
+            "via": "browser",
+            "notes": "Pipeline and scheduling"
+          },
+          {
+            "name": "Google Calendar",
+            "role": "read",
+            "via": "plugin",
+            "notes": "Interview slots"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Scan pipeline",
+            "description": "Find stale stages and SLA breaches across roles.",
+            "tools": [
+              "Ashby ATS"
+            ]
+          },
+          {
+            "label": "Prioritize actions",
+            "description": "Rank candidates needing scheduling, feedback, or outreach.",
+            "tools": [
+              "Ashby ATS",
+              "Slack"
+            ]
+          },
+          {
+            "label": "Draft outreach",
+            "description": "Prepare candidate and interviewer emails for approval.",
+            "tools": [
+              "Gmail"
+            ]
+          },
+          {
+            "label": "Schedule interviews",
+            "description": "Propose calendar slots and send invites after approval.",
+            "tools": [
+              "Google Calendar",
+              "Ashby ATS"
+            ]
+          },
+          {
+            "label": "Report funnel",
+            "description": "Update analytics and flag bottlenecks to hiring managers.",
+            "tools": [
+              "Ashby ATS",
+              "Slack"
+            ]
+          }
+        ],
+        "checkLabel": "SLA green?",
+        "exitLabel": "Pipeline moving; no stale >48h",
+        "loopBackLabel": "SLA breaches remain"
+      },
+      "related": [
+        "inbox-triage-with-approval",
+        "customer-onboarding-watch",
+        "morning-operator-brief"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "sales",
+        "ashby"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 30m Start the \"Candidate SLA on Autopilot\" loop.\n\nInspired by Ashby (https://www.ashbyhq.com).\n\nGoal: no candidate stuck >48h without owner action, interviews scheduled, and pipeline analytics current\nMax iterations: 20\nBetween iterations run: Report stale stages, unscheduled interviews, sourcing backlog, and SLA breaches\nExit when: zero candidates stale >48h without owner or escalation, and scheduling queue clear\n\n## Before you start\n- Connect Gmail (required) — Candidate communication drafts\n- Connect Slack (required) — Recruiter alerts\n- Connect HubSpot (optional) — CRM sync\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Attach Sales operations (required) — Manage pipeline, CRM updates, and follow-ups.\n- Ashby ATS (read via browser) — Pipeline and scheduling\n- Google Calendar (read via plugin) — Interview slots\n\n## Steps\n1. Scan pipeline: Find stale stages and SLA breaches across roles. [tools: Ashby ATS]\n2. Prioritize actions: Rank candidates needing scheduling, feedback, or outreach. [tools: Ashby ATS, Slack]\n3. Draft outreach: Prepare candidate and interviewer emails for approval. [tools: Gmail]\n4. Schedule interviews: Propose calendar slots and send invites after approval. [tools: Google Calendar, Ashby ATS]\n5. Report funnel: Update analytics and flag bottlenecks to hiring managers. [tools: Ashby ATS, Slack]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- No candidate outreach without approval unless template-approved\n- Do not advance stage without documented feedback\n- Protect candidate PII in logs"
+    },
+    {
+      "id": "contract-workflow-on-autopilot",
+      "slug": "contract-workflow-on-autopilot",
+      "title": "Contract Workflow on Autopilot",
+      "description": "Inspired by Ironclad — create from CRM template, collaborate/redline, route approvals, e-sign, and analyze contract corpus.",
+      "category": "Documents",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Ironclad",
+        "url": "https://ironcladapp.com"
+      },
+      "goal": "every contract routed, approved, signed, or explicitly escalated with full audit trail",
+      "maxIterations": 20,
+      "checkCommand": "Report drafts awaiting review, blocked approvals, unsigned sent contracts, and CRM sync errors",
+      "exitCondition": "zero open contracts without owner, all sent contracts signed or escalated, CRM fields current",
+      "guardrails": [
+        "Legal must approve non-standard terms",
+        "No e-sign without authorized signatory approval",
+        "Preserve redline history"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "salesforce",
+            "label": "Salesforce",
+            "reason": "CRM contract origin",
+            "required": true
+          },
+          {
+            "id": "gmail",
+            "label": "Gmail",
+            "reason": "Counterparty communications",
+            "required": true
+          },
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Approval routing",
+            "required": true
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "approvals",
+            "label": "Human approvals",
+            "reason": "Queue external sends and high-impact changes for sign-off."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Ironclad",
+            "role": "read",
+            "via": "browser",
+            "notes": "CLM workflow and e-sign"
+          },
+          {
+            "name": "DocuSign",
+            "role": "write",
+            "via": "api",
+            "notes": "Signature collection"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Create from CRM",
+            "description": "Generate contract from approved template and deal data.",
+            "tools": [
+              "Salesforce",
+              "Ironclad"
+            ]
+          },
+          {
+            "label": "Draft and redline",
+            "description": "AI assists first-pass review; capture counterparty redlines.",
+            "tools": [
+              "Ironclad",
+              "Gmail"
+            ]
+          },
+          {
+            "label": "Route approvals",
+            "description": "Legal, finance, and sales approval chain with SLAs.",
+            "tools": [
+              "Slack",
+              "Ironclad"
+            ]
+          },
+          {
+            "label": "Send for signature",
+            "description": "Release e-sign packet after final approval.",
+            "tools": [
+              "Ironclad",
+              "DocuSign"
+            ]
+          },
+          {
+            "label": "Analyze corpus",
+            "description": "Sync executed contract metadata back to CRM; flag renewal dates.",
+            "tools": [
+              "Salesforce",
+              "Ironclad"
+            ]
+          }
+        ],
+        "checkLabel": "Contracts current?",
+        "exitLabel": "Signed or escalated",
+        "loopBackLabel": "blockers remain"
+      },
+      "related": [
+        "general-legal-on-autopilot",
+        "client-docs-to-forms",
+        "inbox-triage-with-approval"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "documents",
+        "ironclad"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 30m Start the \"Contract Workflow on Autopilot\" loop.\n\nInspired by Ironclad (https://ironcladapp.com).\n\nGoal: every contract routed, approved, signed, or explicitly escalated with full audit trail\nMax iterations: 20\nBetween iterations run: Report drafts awaiting review, blocked approvals, unsigned sent contracts, and CRM sync errors\nExit when: zero open contracts without owner, all sent contracts signed or escalated, CRM fields current\n\n## Before you start\n- Connect Salesforce (required) — CRM contract origin\n- Connect Gmail (required) — Counterparty communications\n- Connect Slack (required) — Approval routing\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Human approvals (required) — Queue external sends and high-impact changes for sign-off.\n- Ironclad (read via browser) — CLM workflow and e-sign\n- DocuSign (write via api) — Signature collection\n\n## Steps\n1. Create from CRM: Generate contract from approved template and deal data. [tools: Salesforce, Ironclad]\n2. Draft and redline: AI assists first-pass review; capture counterparty redlines. [tools: Ironclad, Gmail]\n3. Route approvals: Legal, finance, and sales approval chain with SLAs. [tools: Slack, Ironclad]\n4. Send for signature: Release e-sign packet after final approval. [tools: Ironclad, DocuSign]\n5. Analyze corpus: Sync executed contract metadata back to CRM; flag renewal dates. [tools: Salesforce, Ironclad]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Legal must approve non-standard terms\n- No e-sign without authorized signatory approval\n- Preserve redline history"
+    },
+    {
+      "id": "workflow-automation-on-autopilot",
+      "slug": "workflow-automation-on-autopilot",
+      "title": "Integration Errors Until Clean",
+      "description": "Inspired by Zapier — monitor cross-app workflows, fix failing zaps, validate AI agent chains, and keep 24h clean run history.",
+      "category": "Integrations",
+      "trigger": "interval",
+      "inspiredBy": {
+        "company": "Zapier",
+        "url": "https://zapier.com"
+      },
+      "goal": "all integration runs green for 24h or failures owned with remediation plan",
+      "maxIterations": 24,
+      "checkCommand": "Report failing zaps, error rate by integration, stale auth tokens, and MCP action failures",
+      "exitCondition": "24h clean run history with no unowned failures and auth tokens refreshed",
+      "guardrails": [
+        "Do not disable error handling to force green",
+        "Rotate secrets via approved store only",
+        "Test fixes in duplicate zap before prod cutover"
+      ],
+      "requirements": {
+        "plugins": [
+          {
+            "id": "slack",
+            "label": "Slack",
+            "reason": "Failure alerts",
+            "required": true
+          },
+          {
+            "id": "github",
+            "label": "GitHub",
+            "reason": "Store runbooks and fixes",
+            "required": false
+          }
+        ],
+        "skills": [
+          {
+            "id": "loop-runner",
+            "label": "Loop runner",
+            "reason": "Self-pace iterations and run checks between passes."
+          },
+          {
+            "id": "testing",
+            "label": "Test repair",
+            "reason": "Run tests and fix failures without weakening coverage."
+          },
+          {
+            "id": "code-change",
+            "label": "Code change + verification",
+            "reason": "Edit code or configs and verify locally."
+          }
+        ],
+        "systems": [
+          {
+            "name": "Zapier",
+            "role": "read",
+            "via": "browser",
+            "notes": "Workflow monitor"
+          },
+          {
+            "name": "Connected SaaS apps",
+            "role": "read",
+            "via": "api",
+            "notes": "Trigger and action endpoints"
+          },
+          {
+            "name": "MCP",
+            "role": "read",
+            "via": "mcp",
+            "notes": "Agent-triggered actions"
+          }
+        ]
+      },
+      "flow": {
+        "trigger": "Interval tick",
+        "steps": [
+          {
+            "label": "Monitor runs",
+            "description": "Ingest failure logs and error rates across zaps and agent chains.",
+            "tools": [
+              "Zapier",
+              "Slack"
+            ]
+          },
+          {
+            "label": "Diagnose root cause",
+            "description": "Classify auth, schema drift, rate limit, or payload errors.",
+            "tools": [
+              "Connected SaaS apps"
+            ]
+          },
+          {
+            "label": "Patch workflow",
+            "description": "Update mappings, refresh OAuth, or adjust retry policy.",
+            "tools": [
+              "Zapier",
+              "GitHub"
+            ]
+          },
+          {
+            "label": "Validate fix",
+            "description": "Replay failed payloads in test path.",
+            "tools": [
+              "Zapier",
+              "MCP"
+            ],
+            "command": "npm run integrations:smoke"
+          },
+          {
+            "label": "Confirm clean window",
+            "description": "Verify 24h green history before closing.",
+            "tools": [
+              "Zapier"
+            ]
+          }
+        ],
+        "checkLabel": "Runs clean?",
+        "exitLabel": "24h green history",
+        "loopBackLabel": "failures remain"
+      },
+      "related": [
+        "portal-to-production-api",
+        "ci-failure-watcher",
+        "morning-operator-brief"
+      ],
+      "official": true,
+      "hardened": true,
+      "views": 180,
+      "installs": 120,
+      "author": "Trooper",
+      "agents": [
+        "claude-code",
+        "cursor",
+        "codex"
+      ],
+      "bestFitAgents": [
+        "claude-code",
+        "cursor"
+      ],
+      "tags": [
+        "integrations",
+        "zapier"
+      ],
+      "tier": "official",
+      "kickoffPrompt": "/loop 30m Start the \"Integration Errors Until Clean\" loop.\n\nInspired by Zapier (https://zapier.com).\n\nGoal: all integration runs green for 24h or failures owned with remediation plan\nMax iterations: 24\nBetween iterations run: Report failing zaps, error rate by integration, stale auth tokens, and MCP action failures\nExit when: 24h clean run history with no unowned failures and auth tokens refreshed\n\n## Before you start\n- Connect Slack (required) — Failure alerts\n- Connect GitHub (optional) — Store runbooks and fixes\n- Attach Loop runner (required) — Self-pace iterations and run checks between passes.\n- Attach Test repair (required) — Run tests and fix failures without weakening coverage.\n- Attach Code change + verification (required) — Edit code or configs and verify locally.\n- Zapier (read via browser) — Workflow monitor\n- Connected SaaS apps (read via api) — Trigger and action endpoints\n- MCP (read via mcp) — Agent-triggered actions\n\n## Steps\n1. Monitor runs: Ingest failure logs and error rates across zaps and agent chains. [tools: Zapier, Slack]\n2. Diagnose root cause: Classify auth, schema drift, rate limit, or payload errors. [tools: Connected SaaS apps]\n3. Patch workflow: Update mappings, refresh OAuth, or adjust retry policy. [tools: Zapier, GitHub]\n4. Validate fix: Replay failed payloads in test path. [tools: Zapier, MCP]\n   Command: npm run integrations:smoke\n5. Confirm clean window: Verify 24h green history before closing. [tools: Zapier]\n\nSelf-pace this loop. After each iteration, run the check command, read the output, and only continue if the exit condition is not met. Stop when the exit condition passes or max iterations is reached. Give a short status update each pass.\n\nGuardrails:\n- Do not disable error handling to force green\n- Rotate secrets via approved store only\n- Test fixes in duplicate zap before prod cutover"
     }
   ]
 }

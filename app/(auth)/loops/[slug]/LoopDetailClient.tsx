@@ -4,17 +4,14 @@ import { useState } from 'react';
 import { Check, Copy, Terminal } from 'lucide-react';
 import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 
-type LoopStep = {
-  label: string;
-  description?: string;
-  command?: string;
-};
+import type { LoopFlowStep, LoopRequirements } from '@/lib/loopMermaid';
 
 type LoopDetailClientProps = {
   kickoffPrompt: string;
   mermaid: string;
-  steps?: LoopStep[];
+  steps?: LoopFlowStep[];
   guardrails?: string[];
+  requirements?: LoopRequirements;
 };
 
 function CopyButton({ text, label }: { text: string; label?: string }) {
@@ -85,6 +82,12 @@ export default function LoopDetailClient({
                 </p>
                 {step.description ? (
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{step.description}</p>
+                ) : null}
+                {step.tools?.length ? (
+                  <p className="mt-2 text-xs text-slate-500">
+                    <span className="font-medium text-slate-600">Tools:</span>{' '}
+                    {step.tools.join(', ')}
+                  </p>
                 ) : null}
                 {step.command ? (
                   <div className="mt-3 flex items-start gap-2 rounded-sm border border-slate-200 bg-slate-50 px-3 py-2">
