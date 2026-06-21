@@ -142,7 +142,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <MarketingHeadline
                   as="h2"
                   size="hero"
-                  className="mt-0.5 sm:mt-1"
+                  className="mt-3 sm:mt-4"
                   lines={[
                     {
                       parts: [

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const ROTATING_LINES = [
   'is your team.',
@@ -13,8 +13,11 @@ const ROTATING_LINES = [
   'posts your tweets.',
 ] as const;
 
-const ROTATE_MS = 2800;
-const ease = [0.22, 1, 0.36, 1] as const;
+const CHAR_MS = 46;
+const HOLD_MS = 1800;
+const FADE_MS = 480;
+
+type Phase = 'typing' | 'hold' | 'fade';
 
 type HeroRotatingHeadlineProps = {
   className?: string;
@@ -22,39 +25,67 @@ type HeroRotatingHeadlineProps = {
 
 export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHeadlineProps) {
   const reduceMotion = useReducedMotion();
-  const [index, setIndex] = useState(0);
+  const [lineIndex, setLineIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [phase, setPhase] = useState<Phase>('typing');
+
+  const line = ROTATING_LINES[lineIndex];
+  const displayed = reduceMotion ? line : line.slice(0, charIndex);
+  const isTyping = !reduceMotion && phase === 'typing' && charIndex < line.length;
 
   useEffect(() => {
     if (reduceMotion) return;
 
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % ROTATING_LINES.length);
-    }, ROTATE_MS);
+    if (phase === 'typing') {
+      if (charIndex < line.length) {
+        const timer = setTimeout(() => setCharIndex((count) => count + 1), CHAR_MS);
+        return () => clearTimeout(timer);
+      }
+      setPhase('hold');
+      return;
+    }
 
-    return () => clearInterval(timer);
-  }, [reduceMotion]);
+    if (phase === 'hold') {
+      const timer = setTimeout(() => setPhase('fade'), HOLD_MS);
+      return () => clearTimeout(timer);
+    }
 
-  const suffix = ROTATING_LINES[index];
+    const timer = setTimeout(() => {
+      setLineIndex((current) => (current + 1) % ROTATING_LINES.length);
+      setCharIndex(0);
+      setPhase('typing');
+    }, FADE_MS);
+
+    return () => clearTimeout(timer);
+  }, [phase, charIndex, line.length, reduceMotion]);
 
   return (
     <h1
       className={`font-funneldisplay tracking-tight text-balance max-w-3xl text-3xl sm:text-4xl md:text-[2.5rem] lg:text-[2.75rem] leading-[1.12] ${className}`}
     >
       <span className="block text-trooper font-normal">Trooper</span>
-      <span className="relative block mt-0.5 sm:mt-1 min-h-[1.15em]">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={suffix}
-            className="block text-slate-900 font-normal"
-            initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.38, ease }}
-            aria-live="polite"
-          >
-            {suffix}
-          </motion.span>
-        </AnimatePresence>
+
+      <span
+        className="relative mt-2 sm:mt-2.5 block min-h-[1.35em]"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <motion.span
+          key={lineIndex}
+          className="inline-block max-w-full border-b-[3px] border-trooper pb-1 text-slate-900 font-normal decoration-clone"
+          initial={reduceMotion ? false : { opacity: 1 }}
+          animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
+          transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {displayed}
+          {isTyping ? (
+            <span
+              className="ml-0.5 inline-block w-[2px] animate-pulse bg-trooper align-[-0.05em]"
+              style={{ height: '0.85em' }}
+              aria-hidden
+            />
+          ) : null}
+        </motion.span>
       </span>
     </h1>
   );
