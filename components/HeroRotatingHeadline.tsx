@@ -63,16 +63,15 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
     <h1
       className={`font-funneldisplay tracking-tight text-balance max-w-3xl text-3xl sm:text-4xl md:text-[2.5rem] lg:text-[2.75rem] leading-[1.12] ${className}`}
     >
-      <span className="block text-trooper font-normal">Trooper</span>
-
       <span
-        className="relative mt-2 sm:mt-2.5 block min-h-[1.35em]"
+        className="flex flex-wrap items-baseline gap-x-[0.35em] min-h-[1.35em]"
         aria-live="polite"
         aria-atomic="true"
       >
+        <span className="shrink-0 text-trooper font-normal">Trooper</span>
         <motion.span
           key={lineIndex}
-          className="inline-block max-w-full border-b-[3px] border-trooper pb-1 text-slate-900 font-normal decoration-clone"
+          className="inline border-b-[3px] border-trooper pb-1 text-slate-900 font-normal"
           initial={reduceMotion ? false : { opacity: 1 }}
           animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
           transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
