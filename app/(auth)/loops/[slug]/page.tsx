@@ -257,7 +257,10 @@ export default function LoopDetailPage({ params }: { params: { slug: string } })
                     <p className="mt-3 font-mono text-xs text-slate-500">Exit when: {loop.exitCondition}</p>
                   </div>
 
-                  <LoopRequirementsPanel requirements={loop.requirements} />
+                  <LoopRequirementsPanel
+                    requirements={loop.requirements}
+                    inferred={loop.requirementsInferred}
+                  />
 
                   {loop.agents.length > 0 ? (
                     <div className="rounded-lg border border-slate-200 bg-white p-5">

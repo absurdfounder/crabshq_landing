@@ -178,10 +178,27 @@ function formatStepsBlock(flow?: LoopFlow) {
 }
 
 export function buildKickoffPrompt(loop: LoopKickoffInput) {
-  if (loop.kickoffPrompt?.trim()) return loop.kickoffPrompt.trim();
+  const stored = loop.kickoffPrompt?.trim();
+  const setup = formatRequirementsBlock(loop.requirements);
+
+  if (stored) {
+    if (setup.length && !stored.includes('## Before you start')) {
+      const selfPaceIdx = stored.indexOf('Self-pace this loop');
+      if (selfPaceIdx > -1) {
+        return [
+          stored.slice(0, selfPaceIdx).trimEnd(),
+          '',
+          ...setup,
+          '',
+          stored.slice(selfPaceIdx),
+        ].join('\n');
+      }
+      return `${stored}\n\n${setup.join('\n')}`;
+    }
+    return stored;
+  }
 
   const title = loop.title || 'Untitled Loop';
-  const setup = formatRequirementsBlock(loop.requirements);
   const stepsBlock = formatStepsBlock(loop.flow);
   const firstStep = loop.flow?.steps?.[0];
   const fallbackStep = firstStep

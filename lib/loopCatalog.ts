@@ -1,5 +1,6 @@
 import catalogData from '@/public/loops_catalog.json';
 import { buildKickoffPrompt, buildLoopMermaid } from '@/lib/loopMermaid';
+import { getLoopCapabilityRequirements } from '@/lib/loopCapabilityRequirements';
 
 export type LoopEntry = {
   id: string;
@@ -36,6 +37,8 @@ export type EnrichedLoop = LoopEntry & {
   mermaid: string;
   kickoffPrompt: string;
   relatedLoops: EnrichedLoop[];
+  requirements: import('@/lib/loopMermaid').LoopRequirements;
+  requirementsInferred?: boolean;
 };
 
 const LOOPS = catalogData.loops as LoopEntry[];
@@ -80,12 +83,14 @@ export function getAllLoopSlugs(): string[] {
 }
 
 function shallowLoop(loop: LoopEntry): EnrichedLoop {
+  const resolved = getLoopCapabilityRequirements(loop);
+  const { inferred, ...requirements } = resolved;
   const mermaid = buildLoopMermaid(loop.flow, {
     checkCommand: loop.checkCommand,
-    requirements: loop.requirements,
+    requirements,
   });
-  const kickoffPrompt = buildKickoffPrompt(loop);
-  return { ...loop, mermaid, kickoffPrompt, relatedLoops: [] };
+  const kickoffPrompt = buildKickoffPrompt({ ...loop, requirements });
+  return { ...loop, requirements, requirementsInferred: inferred, mermaid, kickoffPrompt, relatedLoops: [] };
 }
 
 function enrichLoop(loop: LoopEntry): EnrichedLoop {

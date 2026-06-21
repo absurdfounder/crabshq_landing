@@ -4,18 +4,22 @@ import { getPluginBySlug, pluginPagePath } from '@/lib/pluginCatalog';
 
 type LoopRequirementsPanelProps = {
   requirements?: LoopRequirements;
+  inferred?: boolean;
 };
 
-export function LoopRequirementsPanel({ requirements }: LoopRequirementsPanelProps) {
+export function LoopRequirementsPanel({ requirements, inferred }: LoopRequirementsPanelProps) {
   if (!requirements) return null;
   const { plugins = [], skills = [], systems = [] } = requirements;
   if (!plugins.length && !skills.length && !systems.length) return null;
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5">
-      <h3 className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <h3 className="mb-1 font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">
         Install requirements
       </h3>
+      {inferred ? (
+        <p className="mb-3 text-xs text-slate-500">Suggested from loop title, steps, and tags.</p>
+      ) : null}
 
       {plugins.length > 0 ? (
         <div className="mb-4">
