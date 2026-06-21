@@ -8,9 +8,27 @@ import { TROOPER_CLI_COMMAND } from '@/lib/setupCommand';
 export const OG_SIZE = { width: 1200, height: 630 };
 
 const BRAND_GREEN = '#284800';
-const BRAND_GREEN_LIGHT = '#3f6b00';
+const BRAND_GREEN_TEXT = '#325600';
+const SLATE_200 = '#e2e8f0';
+const SLATE_400 = '#94a3b8';
 const TROOPER_LOGOMARK_URL = 'https://trooper.so/images/trooper-logomark.png';
 const OG_BACKGROUND_URL = 'https://trooper.so/og/share-background.png';
+
+/** Scaled from site max-w-7xl + md:px-6 frame rhythm for 1200×630 OG canvas. */
+const FRAME_INSET = 28;
+const FRAME_PAD_X = 40;
+const FRAME_PAD_Y = 36;
+
+const PIXEL_GRID_BG = [
+  'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(63, 107, 0, 0.045) 3px, rgba(63, 107, 0, 0.045) 4px)',
+  'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(15, 23, 42, 0.035) 3px, rgba(15, 23, 42, 0.035) 4px)',
+].join(', ');
+
+const CAMO_WASH_BG = [
+  'radial-gradient(circle at 18% 28%, rgba(123, 160, 68, 0.14) 0%, transparent 48%)',
+  'radial-gradient(circle at 82% 72%, rgba(63, 107, 0, 0.1) 0%, transparent 42%)',
+  'linear-gradient(180deg, #f8faf6 0%, #eef2e8 100%)',
+].join(', ');
 
 function TrooperBrandMark() {
   return (
@@ -33,6 +51,48 @@ function TrooperBrandMark() {
   );
 }
 
+function MissionEyebrow({ index, label }: { index: string; label: string }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        border: `1px solid rgba(63, 107, 0, 0.35)`,
+        background: 'linear-gradient(180deg, #f8faf9 0%, #f0f5e6 100%)',
+        padding: '8px 14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+      }}
+    >
+      <span
+        style={{
+          fontSize: 13,
+          fontFamily: 'Roboto Mono',
+          fontWeight: 700,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: SLATE_400,
+        }}
+      >
+        [{index}]
+      </span>
+      <div style={{ width: 1, height: 12, background: 'rgba(63, 107, 0, 0.25)' }} />
+      <span
+        style={{
+          fontSize: 13,
+          fontFamily: 'Roboto Mono',
+          fontWeight: 700,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: BRAND_GREEN_TEXT,
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
 function truncate(text: string, max: number) {
   if (text.length <= max) return text;
   return `${text.slice(0, max - 1).trim()}…`;
@@ -40,7 +100,7 @@ function truncate(text: string, max: number) {
 
 function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']> }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 24 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 20 }}>
       {badges.map((badge) => (
         <div
           key={badge.label}
@@ -48,10 +108,10 @@ function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']>
             display: 'flex',
             alignItems: 'center',
             gap: 8,
-            border: '1px solid #e2e8f0',
+            border: `1px solid ${SLATE_200}`,
             borderRadius: 999,
             padding: '8px 14px 8px 10px',
-            background: 'rgba(255,255,255,0.92)',
+            background: '#ffffff',
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -59,6 +119,71 @@ function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']>
           <span style={{ fontSize: 18, color: '#334155', fontFamily: 'Roboto Mono' }}>{badge.label}</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function DecorativeGridPanel() {
+  const cellStyle = {
+    flex: 1,
+    minHeight: 0,
+    background: '#ffffff',
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: 340,
+        flexShrink: 0,
+        borderLeft: `1px solid ${SLATE_200}`,
+        background: SLATE_200,
+        gap: 1,
+      }}
+    >
+      <div style={{ display: 'flex', flex: 1, gap: 1 }}>
+        <div style={{ ...cellStyle, background: '#f0f5e6' }} />
+        <div style={cellStyle}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={OG_BACKGROUND_URL}
+            alt=""
+            width={170}
+            height={130}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              opacity: 0.85,
+            }}
+          />
+        </div>
+        <div style={{ ...cellStyle, background: '#fafaf8' }} />
+      </div>
+      <div style={{ display: 'flex', flex: 1, gap: 1 }}>
+        <div style={cellStyle} />
+        <div style={{ ...cellStyle, background: '#f0f5e6' }} />
+        <div style={cellStyle}>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: BRAND_GREEN,
+              opacity: 0.08,
+            }}
+          />
+        </div>
+      </div>
+      <div style={{ display: 'flex', height: 48, gap: 1 }}>
+        <div style={{ ...cellStyle, background: '#fafaf8' }} />
+        <div style={{ ...cellStyle, background: '#ffffff' }} />
+        <div style={{ ...cellStyle, background: '#f0f5e6' }} />
+      </div>
     </div>
   );
 }
@@ -76,208 +201,195 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
+        backgroundColor: '#f0f3eb',
+        backgroundImage: CAMO_WASH_BG,
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={OG_BACKGROUND_URL}
-        alt=""
-        width={1200}
-        height={630}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-        }}
-      />
+      {/* Pixel grid overlay — matches .pixel-flicker-grid on site */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background:
-            'linear-gradient(105deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.96) 42%, rgba(255,255,255,0.90) 68%, rgba(255,255,255,0.78) 100%)',
+          backgroundImage: PIXEL_GRID_BG,
+          opacity: 0.55,
         }}
       />
 
+      {/* SectionShell-style frame: max-w-7xl rail borders */}
       <div
         style={{
           position: 'relative',
           display: 'flex',
-          flex: 1,
           flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '48px 64px 40px',
+          flex: 1,
+          margin: FRAME_INSET,
+          border: `1px solid ${SLATE_200}`,
+          background: 'rgba(255, 255, 255, 0.72)',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              marginBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                fontSize: 13,
-                fontFamily: 'Roboto Mono',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: BRAND_GREEN,
-              }}
-            >
-              <span
-                style={{
-                  border: `1px solid ${BRAND_GREEN_LIGHT}55`,
-                  background: '#f0f5e6',
-                  padding: '6px 10px',
-                  fontWeight: 700,
-                }}
-              >
-                [{content.eyebrowIndex}]
-              </span>
-              <span style={{ fontWeight: 600 }}>{content.eyebrowLabel}</span>
-            </div>
-            <TrooperBrandMark />
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
-            {content.iconUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={content.iconUrl}
-                alt=""
-                width={56}
-                height={56}
-                style={{ borderRadius: 12, marginTop: 6 }}
-              />
-            ) : null}
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              {singleLine ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    alignItems: 'baseline',
-                    maxWidth: 980,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 64,
-                      lineHeight: 1.08,
-                      fontWeight: 700,
-                      color: '#0f172a',
-                      letterSpacing: '-0.03em',
-                      fontFamily: 'Funnel Display',
-                      marginRight: content.headlineAccent ? 16 : 0,
-                    }}
-                  >
-                    {content.headlinePrimary}
-                  </span>
-                  {content.headlineAccent ? (
-                    <span
-                      style={{
-                        fontSize: 64,
-                        lineHeight: 1.08,
-                        fontWeight: 700,
-                        color: BRAND_GREEN,
-                        letterSpacing: '-0.03em',
-                        fontFamily: 'Funnel Display',
-                      }}
-                    >
-                      {content.headlineAccent}
-                    </span>
-                  ) : null}
-                </div>
-              ) : (
-                <>
-                  <div
-                    style={{
-                      fontSize: 64,
-                      lineHeight: 1.08,
-                      fontWeight: 700,
-                      color: '#0f172a',
-                      letterSpacing: '-0.03em',
-                      fontFamily: 'Funnel Display',
-                    }}
-                  >
-                    {content.headlinePrimary}
-                  </div>
-                  {content.headlineAccent ? (
-                    <div
-                      style={{
-                        fontSize: 64,
-                        lineHeight: 1.08,
-                        fontWeight: 700,
-                        color: BRAND_GREEN,
-                        letterSpacing: '-0.03em',
-                        fontFamily: 'Funnel Display',
-                        marginTop: 4,
-                      }}
-                    >
-                      {content.headlineAccent}
-                    </div>
-                  ) : null}
-                </>
-              )}
-            </div>
-          </div>
-
-          {content.description ? (
-            <p
-              style={{
-                marginTop: 22,
-                maxWidth: 900,
-                fontSize: 24,
-                lineHeight: 1.45,
-                color: '#475569',
-                fontFamily: 'Funnel Display',
-              }}
-            >
-              {truncate(content.description, 160)}
-            </p>
-          ) : null}
-
-          {badges?.length ? <BadgeRow badges={badges} /> : null}
-
-          {content.showSetup ? (
-            <div
-              style={{
-                marginTop: 28,
-                display: 'flex',
-                alignItems: 'center',
-                maxWidth: 420,
-                border: '1px dashed #cbd5e1',
-                borderRadius: 4,
-                padding: '14px 18px',
-                background: 'rgba(255,255,255,0.9)',
-              }}
-            >
-              <span style={{ fontSize: 22, color: '#0891b2', fontFamily: 'Roboto Mono', marginRight: 10 }}>
-                $
-              </span>
-              <span style={{ fontSize: 20, color: '#0f172a', fontFamily: 'Roboto Mono' }}>{TROOPER_CLI_COMMAND}</span>
-            </div>
-          ) : null}
-        </div>
-
+        {/* Header band — eyebrow + wordmark */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: '100%',
+            padding: `${FRAME_PAD_Y}px ${FRAME_PAD_X}px 24px`,
+            borderBottom: `1px solid ${SLATE_200}`,
           }}
         >
-          <span style={{ fontSize: 20, color: '#64748b', fontFamily: 'Roboto Mono' }}>{displayUrl}</span>
+          <MissionEyebrow index={content.eyebrowIndex} label={content.eyebrowLabel} />
+          <TrooperBrandMark />
+        </div>
+
+        {/* Main body — content column + decorative grid panel */}
+        <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              padding: `28px ${FRAME_PAD_X}px 24px`,
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
+                {content.iconUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={content.iconUrl}
+                    alt=""
+                    width={56}
+                    height={56}
+                    style={{ borderRadius: 12, marginTop: 6 }}
+                  />
+                ) : null}
+                <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  {singleLine ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignItems: 'baseline',
+                        maxWidth: 720,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 58,
+                          lineHeight: 1.08,
+                          fontWeight: 700,
+                          color: '#0f172a',
+                          letterSpacing: '-0.03em',
+                          fontFamily: 'Funnel Display',
+                          marginRight: content.headlineAccent ? 14 : 0,
+                        }}
+                      >
+                        {content.headlinePrimary}
+                      </span>
+                      {content.headlineAccent ? (
+                        <span
+                          style={{
+                            fontSize: 58,
+                            lineHeight: 1.08,
+                            fontWeight: 700,
+                            color: BRAND_GREEN,
+                            letterSpacing: '-0.03em',
+                            fontFamily: 'Funnel Display',
+                          }}
+                        >
+                          {content.headlineAccent}
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          fontSize: 58,
+                          lineHeight: 1.08,
+                          fontWeight: 700,
+                          color: '#0f172a',
+                          letterSpacing: '-0.03em',
+                          fontFamily: 'Funnel Display',
+                        }}
+                      >
+                        {content.headlinePrimary}
+                      </div>
+                      {content.headlineAccent ? (
+                        <div
+                          style={{
+                            fontSize: 58,
+                            lineHeight: 1.08,
+                            fontWeight: 700,
+                            color: BRAND_GREEN,
+                            letterSpacing: '-0.03em',
+                            fontFamily: 'Funnel Display',
+                            marginTop: 4,
+                          }}
+                        >
+                          {content.headlineAccent}
+                        </div>
+                      ) : null}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {content.description ? (
+                <p
+                  style={{
+                    marginTop: 18,
+                    maxWidth: 680,
+                    fontSize: 22,
+                    lineHeight: 1.45,
+                    color: '#475569',
+                    fontFamily: 'Funnel Display',
+                  }}
+                >
+                  {truncate(content.description, 160)}
+                </p>
+              ) : null}
+
+              {badges?.length ? <BadgeRow badges={badges} /> : null}
+
+              {content.showSetup ? (
+                <div
+                  style={{
+                    marginTop: 22,
+                    display: 'flex',
+                    alignItems: 'center',
+                    maxWidth: 420,
+                    border: `1px dashed ${SLATE_200}`,
+                    borderRadius: 4,
+                    padding: '14px 18px',
+                    background: '#ffffff',
+                  }}
+                >
+                  <span style={{ fontSize: 22, color: '#0891b2', fontFamily: 'Roboto Mono', marginRight: 10 }}>
+                    $
+                  </span>
+                  <span style={{ fontSize: 20, color: '#0f172a', fontFamily: 'Roboto Mono' }}>{TROOPER_CLI_COMMAND}</span>
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <DecorativeGridPanel />
+        </div>
+
+        {/* Footer band — URL row with section divider */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: `16px ${FRAME_PAD_X}px`,
+            borderTop: `1px solid ${SLATE_200}`,
+            background: 'rgba(255, 255, 255, 0.85)',
+          }}
+        >
+          <span style={{ fontSize: 18, color: '#64748b', fontFamily: 'Roboto Mono' }}>{displayUrl}</span>
         </div>
       </div>
     </div>
