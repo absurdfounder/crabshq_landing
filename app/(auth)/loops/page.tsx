@@ -5,28 +5,17 @@ import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 import { ArrowRight } from 'lucide-react';
 import { getAllLoops } from '@/lib/loopCatalog';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import LoopsClient from './LoopsClient';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: 'Agent Loops | Trooper',
   description:
     'Reusable prompt-only agent loops for CI, review, testing, and quality. Copy kickoff prompts into Cursor, Claude Code, or Codex and self-pace until checks pass.',
-  alternates: {
-    canonical: 'https://trooper.so/loops',
-  },
-  openGraph: {
-    title: 'Agent Loops | Trooper',
-    description: 'Prompt-only agent loops with kickoff prompts, guardrails, and flow diagrams.',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png',
-        width: 1200,
-        height: 630,
-        alt: 'Trooper Agent Loops',
-      },
-    ],
-  },
-};
+  canonical: 'https://trooper.so/loops',
+  ogKind: 'hub',
+  ogSlug: 'loops',
+});
 
 const LoopsPage = async ({
   searchParams,

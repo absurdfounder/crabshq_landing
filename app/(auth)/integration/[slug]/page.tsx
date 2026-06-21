@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { _loadFromJson, _loadSkills, _transformDataToPostPageView } from '../../../utils/helper';
+import { mergeOgImages } from '@/lib/og/buildMetadata';
 import MoveBack from '@/components/MoveBack';
 import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
@@ -71,24 +72,27 @@ export async function generateMetadata(
   const integration = integrations.find((item: { id: string }) => item.id === slug) as FilterBySlugType | undefined;
 
   if (integration) {
-    return {
-      title: `Integrate ${integration.product.name} with Trooper`,
-      description: `Connect Trooper to ${integration.product.name}: ${integration.product.description}`,
-      openGraph: {
-        title: `${integration.product.name} Integration | Trooper`,
+    return mergeOgImages(
+      {
+        title: `Integrate ${integration.product.name} with Trooper`,
         description: `Connect Trooper to ${integration.product.name}: ${integration.product.description}`,
-        images: [{ url: integration.proof.screenshot }],
-        type: 'article',
+        openGraph: {
+          title: `${integration.product.name} Integration | Trooper`,
+          description: `Connect Trooper to ${integration.product.name}: ${integration.product.description}`,
+          type: 'article',
+        },
+        twitter: {
+          title: `${integration.product.name} Integration | Trooper`,
+          description: integration.product.description,
+        },
+        alternates: {
+          canonical: `https://trooper.so/integration/${slug}`,
+        },
       },
-      twitter: {
-        card: 'summary_large_image',
-        title: `${integration.product.name} Integration | Trooper`,
-        description: integration.product.description,
-      },
-      alternates: {
-        canonical: `https://trooper.so/integration/${slug}`,
-      },
-    };
+      'legacy-integration',
+      `${integration.product.name} Integration | Trooper`,
+      slug,
+    );
   }
 
   return {

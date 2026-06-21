@@ -6,36 +6,17 @@ import ChannelIcon from '@/components/marketing/ChannelIcon';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 import { channelHubMeta } from '@/lib/channelContent';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: channelHubMeta.title,
   description: channelHubMeta.description,
-  alternates: { canonical: channelHubMeta.canonical },
-  openGraph: {
-    title: channelHubMeta.title,
-    description: channelHubMeta.description,
-    url: channelHubMeta.canonical,
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
-        width: 1200,
-        height: 630,
-        alt: 'Trooper Messaging Channels',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/trooper_social.png',
-        alt: 'Trooper Messaging Channels',
-      },
-    ],
-  },
-};
+  canonical: channelHubMeta.canonical,
+  ogKind: 'hub',
+  ogSlug: 'channels',
+});
 
 export default function ChannelsHubPage() {
   return (

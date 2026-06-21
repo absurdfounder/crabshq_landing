@@ -9,6 +9,7 @@ import SectionShell from '@/components/ui/SectionShell';
 import SkillDetailClient from './SkillDetailClient';
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import { getSkillIconUrl, resolveSkillWebsite, githubAuthorFromLink } from '@/lib/skillIcon';
+import { mergeOgImages } from '@/lib/og/buildMetadata';
 import {
   buildSkillRouteIndex,
   findSkillByPageSlug,
@@ -49,25 +50,30 @@ export async function generateMetadata({
 
   const canonical = getSkillCanonicalUrl(skill, index);
 
-  return {
-    title: `${skill.name} Skill — OpenClaw | Trooper`,
-    description: `${skill.description}. Install with: ${skill.install_command}. Browse ${skill.category} skills and 3,000+ more on Trooper.`,
-    openGraph: {
-      title: `${skill.name} — OpenClaw Skill`,
-      description: `${skill.description}. Category: ${skill.category}. Install: ${skill.install_command}`,
-      images: [{ url: getSkillOgIconUrl(skill) }],
-      type: 'article',
+  const pageSlug = params.slug;
+
+  return mergeOgImages(
+    {
+      title: `${skill.name} Skill — OpenClaw | Trooper`,
+      description: `${skill.description}. Install with: ${skill.install_command}. Browse ${skill.category} skills and 3,000+ more on Trooper.`,
+      openGraph: {
+        title: `${skill.name} — OpenClaw Skill`,
+        description: `${skill.description}. Category: ${skill.category}. Install: ${skill.install_command}`,
+        type: 'article',
+      },
+      twitter: {
+        title: `${skill.name} — OpenClaw Skill | Trooper`,
+        description: skill.description,
+      },
+      alternates: { canonical },
+      other: {
+        robots: 'index, follow, max-snippet:-1',
+      },
     },
-    twitter: {
-      card: 'summary',
-      title: `${skill.name} — OpenClaw Skill | Trooper`,
-      description: skill.description,
-    },
-    alternates: { canonical },
-    other: {
-      robots: 'index, follow, max-snippet:-1',
-    },
-  };
+    'skill',
+    `${skill.name} — OpenClaw Skill`,
+    pageSlug,
+  );
 }
 
 function SkillStructuredData({

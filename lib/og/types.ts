@@ -5,7 +5,14 @@ export type OgKind =
   | 'plugin'
   | 'use-case'
   | 'alternative'
-  | 'channel';
+  | 'channel'
+  | 'hub'
+  | 'page'
+  | 'loop'
+  | 'skill'
+  | 'compare'
+  | 'showcase'
+  | 'legacy-integration';
 
 export type OgHeroContent = {
   kind: OgKind;

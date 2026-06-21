@@ -14,6 +14,7 @@ import {
 import LoopDetailClient from './LoopDetailClient';
 import { LoopRequirementsPanel } from '@/components/loops/LoopRequirementsPanel';
 import { InspiredByBadge } from '@/components/loops/InspiredByBadge';
+import { mergeOgImages } from '@/lib/og/buildMetadata';
 import { HubCatalogCard } from '@/components/marketing/HubCatalogCard';
 import {
   ArrowRight,
@@ -49,18 +50,23 @@ export async function generateMetadata({
   if (!loop) {
     return { title: 'Loop | Trooper' };
   }
-  return {
-    title: `${loop.title} Loop | Trooper`,
-    description: `${loop.description} Copy the kickoff prompt for Cursor, Claude Code, or Codex.`,
-    alternates: {
-      canonical: `https://trooper.so/loops/${loop.slug}`,
+  return mergeOgImages(
+    {
+      title: `${loop.title} Loop | Trooper`,
+      description: `${loop.description} Copy the kickoff prompt for Cursor, Claude Code, or Codex.`,
+      alternates: {
+        canonical: `https://trooper.so/loops/${loop.slug}`,
+      },
+      openGraph: {
+        title: `${loop.title} — Agent Loop`,
+        description: loop.description,
+        type: 'article',
+      },
     },
-    openGraph: {
-      title: `${loop.title} — Agent Loop`,
-      description: loop.description,
-      type: 'article',
-    },
-  };
+    'loop',
+    `${loop.title} — Agent Loop`,
+    loop.slug,
+  );
 }
 
 function RelatedLoopCard({ loop }: { loop: EnrichedLoop }) {

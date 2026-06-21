@@ -5,6 +5,8 @@ import { getFeaturePageContent } from '@/lib/featureContent';
 import { getIntegrationPageByPageSlug } from '@/lib/integrationContent';
 import { getTeamPageContent } from '@/lib/teamContent';
 import { getUseCasePage } from '@/lib/useCaseContent';
+import { HUB_OG_PAGES, STATIC_OG_PAGES } from '@/lib/og/staticPages';
+import { resolveLoopOgContent } from '@/lib/og/resolveAsync';
 import type { OgHeroContent, OgKind } from '@/lib/og/types';
 
 const HOME_OG: OgHeroContent = {
@@ -32,6 +34,18 @@ function fromTitleParts(title: string, titleAccent?: string, missionLabel = 'Uni
 
 export function resolveOgContent(kind: OgKind, slug?: string): OgHeroContent | null {
   if (kind === 'home') return HOME_OG;
+
+  if (kind === 'hub') {
+    return slug ? HUB_OG_PAGES[slug] ?? null : null;
+  }
+
+  if (kind === 'page') {
+    return slug ? STATIC_OG_PAGES[slug] ?? null : null;
+  }
+
+  if (kind === 'loop') {
+    return resolveLoopOgContent(slug);
+  }
 
   if (!slug) return null;
 

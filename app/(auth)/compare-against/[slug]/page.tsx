@@ -8,7 +8,7 @@ import ComparisonTable from '../ComparisonTable';
 import TemplateDesign from '../TemplateDesign';
 import TemplateLibrary from '../TemplateList';
 import { _loadFromJsonComparison, _transformDataToPostPageView } from '../../../utils/helper';
-import MoveBack from '@/components/MoveBack';
+import { mergeOgImages } from '@/lib/og/buildMetadata';
 import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
@@ -65,17 +65,19 @@ export async function generateMetadata(
     throw new Error('Comparision not found');
   }
 
-  return {
-    title: `The simple, powerful ${filteredContent.product.name} alternative - Trooper vs ${filteredContent.product.name}`,
-    description: `Trooper is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
+  return mergeOgImages(
+    {
+      title: `The simple, powerful ${filteredContent.product.name} alternative - Trooper vs ${filteredContent.product.name}`,
+      description: `Trooper is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
 Compare Trooper  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
-    openGraph: {
-      images: [{ url: filteredContent.product.heroimage }],
+      alternates: {
+        canonical: `https://trooper.so/compare-against/${slug}`,
+      },
     },
-    alternates: {
-      canonical: `https://trooper.so/compare-against/${slug}`,
-    },
-  };
+    'compare',
+    `Trooper vs ${filteredContent.product.name}`,
+    slug,
+  );
 }
 
 export default async function ComparisonAgainst({ params }: { params: { slug: string } }) {

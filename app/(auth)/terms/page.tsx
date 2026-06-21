@@ -1,43 +1,15 @@
 import Link from 'next/link';
-// Image import is present but not used in this specific policy content
-import Image from 'next/image';
 import SectionShell from '@/components/ui/SectionShell';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 
-export const metadata = {
-    title: 'Trooper Terms of Service | OpenClaw AI Workforce Platform',
-    description: 'Terms of Service for Trooper - legal terms governing the use of our OpenClaw-powered AI workforce platform, GitHub integrations, and ClawdBot services.',
-    alternates: {
-        canonical: "https://trooper.so/terms",
-    },
-    openGraph: {
-        title: 'Terms of Service - Trooper',
-        description: 'Legal terms governing the use of Trooper AI workforce platform powered by OpenClaw AI and GitHub OpenClaw.',
-        url: "https://trooper.so/terms",
-        siteName: 'Trooper',
-        images: [
-            {
-                url: "https://dazzling-cat.netlify.app/trooper_social.png",
-                width: 1200,
-                height: 630,
-                alt: "Trooper - OpenClaw AI Workforce Platform",
-            },
-        ],
-        locale: 'en_US',
-        type: 'website',
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: 'Terms of Service - Trooper',
-        description: 'Legal terms governing the use of Trooper AI workforce platform powered by OpenClaw AI.',
-        site: '@trooper_so',
-        images: [
-            {
-                url: "https://dazzling-cat.netlify.app/trooper_social.png",
-                alt: "Trooper - OpenClaw AI Workforce Platform",
-            },
-        ],
-    },
-};
+export const metadata = buildPageMetadata({
+  title: 'Trooper Terms of Service | OpenClaw AI Workforce Platform',
+  description:
+    'Terms of Service for Trooper - legal terms governing the use of our OpenClaw-powered AI workforce platform, GitHub integrations, and ClawdBot services.',
+  canonical: 'https://trooper.so/terms',
+  ogKind: 'page',
+  ogSlug: 'terms',
+});
 
 
 export default function TermsOfServicePage() { // Renamed component

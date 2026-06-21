@@ -3,6 +3,7 @@ import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import {
   integrationHubMeta,
   getPriorityIntegrations,
@@ -11,24 +12,13 @@ import { getAllPlugins, PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/plugi
 import { ArrowRight } from 'lucide-react';
 import PluginHubClient from './PluginHubClient';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: integrationHubMeta.title,
   description: integrationHubMeta.description,
-  alternates: { canonical: integrationHubMeta.canonical },
-  openGraph: {
-    title: integrationHubMeta.title,
-    description: integrationHubMeta.description,
-    url: integrationHubMeta.canonical,
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png',
-        width: 1200,
-        height: 630,
-        alt: 'Trooper Integrations',
-      },
-    ],
-  },
-};
+  canonical: integrationHubMeta.canonical,
+  ogKind: 'hub',
+  ogSlug: 'plugins',
+});
 
 export default function PluginHubPage() {
   const priority = getPriorityIntegrations();

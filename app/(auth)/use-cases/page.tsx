@@ -4,14 +4,17 @@ import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { useCaseHubMeta, allUseCaseSlugs, getUseCasePage } from '@/lib/useCaseContent';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: useCaseHubMeta.title,
   description: useCaseHubMeta.description,
-  alternates: { canonical: useCaseHubMeta.canonical },
-};
+  canonical: useCaseHubMeta.canonical,
+  ogKind: 'hub',
+  ogSlug: 'use-cases',
+});
 
 export default function UseCasesHubPage() {
   const slugs = allUseCaseSlugs();

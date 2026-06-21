@@ -4,14 +4,17 @@ import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { alternativeHubMeta, allAlternativeSlugs, getAlternativePage } from '@/lib/alternativeContent';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: alternativeHubMeta.title,
   description: alternativeHubMeta.description,
-  alternates: { canonical: alternativeHubMeta.canonical },
-};
+  canonical: alternativeHubMeta.canonical,
+  ogKind: 'hub',
+  ogSlug: 'alternatives',
+});
 
 export default function AlternativesHubPage() {
   const slugs = allAlternativeSlugs();

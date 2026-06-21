@@ -1,3 +1,4 @@
+import { resolveAsyncOgContent } from '@/lib/og/resolveAsync';
 import { resolveOgContent } from '@/lib/og/resolveContent';
 import { createOgImageResponse } from '@/lib/og/render';
 import type { OgKind } from '@/lib/og/types';
@@ -12,7 +13,16 @@ const VALID_KINDS = new Set<OgKind>([
   'use-case',
   'alternative',
   'channel',
+  'hub',
+  'page',
+  'loop',
+  'skill',
+  'compare',
+  'showcase',
+  'legacy-integration',
 ]);
+
+const ASYNC_KINDS = new Set<OgKind>(['skill', 'compare', 'showcase', 'legacy-integration']);
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -23,7 +33,10 @@ export async function GET(request: Request) {
     return new Response('Invalid kind', { status: 400 });
   }
 
-  const content = resolveOgContent(kind, slug);
+  const content = ASYNC_KINDS.has(kind)
+    ? await resolveAsyncOgContent(kind as 'skill' | 'compare' | 'showcase' | 'legacy-integration', slug)
+    : resolveOgContent(kind, slug);
+
   if (!content) {
     return new Response('Not found', { status: 404 });
   }

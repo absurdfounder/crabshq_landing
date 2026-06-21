@@ -6,36 +6,16 @@ import IntegrationClient from './IntegrationClient';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 import { ArrowRight } from 'lucide-react';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: 'OpenClaw Skills | Trooper',
   description:
     'Extend your AI workforce with 3,000+ OpenClaw skills. Connect GitHub, Gmail, Slack, Notion, AWS, Docker, Shopify, and hundreds of other tools to your AI employees.',
-  alternates: {
-    canonical: 'https://trooper.so/integration',
-  },
-  openGraph: {
-    title: 'OpenClaw Skills | Trooper',
-    description: 'Extend your AI workforce with 3,000+ OpenClaw skills.',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png',
-        width: 1200,
-        height: 630,
-        alt: 'Trooper OpenClaw Skills',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: [
-      {
-        url: 'https://dazzling-cat.netlify.app/Trooperintegrations_socialshare.png',
-        alt: 'Trooper OpenClaw Skills',
-      },
-    ],
-  },
-};
+  canonical: 'https://trooper.so/integration',
+  ogKind: 'hub',
+  ogSlug: 'integration',
+});
 
 const Integration = async ({
   searchParams,

@@ -1,43 +1,15 @@
 import Link from 'next/link';
-// Image import is present but not used in this specific policy content
-import Image from 'next/image';
 import SectionShell from '@/components/ui/SectionShell';
+import { buildPageMetadata } from '@/lib/og/buildMetadata';
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: 'Trooper Privacy Policy | OpenClaw AI Workforce Platform',
-  description: 'Privacy Policy for Trooper - how we handle your data in our OpenClaw-powered AI workforce platform. Learn about data collection, storage, and your rights.',
-  alternates: {
-    canonical: "https://trooper.so/privacy",
-  },
-  openGraph: {
-    title: 'Privacy Policy - Trooper',
-    description: 'How Trooper protects your data while running AI workforce teams with OpenClaw AI, ClawdBot, and GitHub integrations.',
-    url: "https://trooper.so/privacy",
-    siteName: 'Trooper',
-    images: [
-      {
-        url: "https://dazzling-cat.netlify.app/trooper_social.png",
-        width: 1200,
-        height: 630,
-        alt: "Trooper - OpenClaw AI Workforce Platform",
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: 'Privacy Policy - Trooper',
-    description: 'How Trooper protects your data while running AI workforce teams with OpenClaw AI.',
-    site: '@trooper_so',
-    images: [
-      {
-        url: "https://dazzling-cat.netlify.app/trooper_social.png",
-        alt: "Trooper - OpenClaw AI Workforce Platform",
-      },
-    ],
-  },
-};
+  description:
+    'Privacy Policy for Trooper - how we handle your data in our OpenClaw-powered AI workforce platform. Learn about data collection, storage, and your rights.',
+  canonical: 'https://trooper.so/privacy',
+  ogKind: 'page',
+  ogSlug: 'privacy',
+});
 
 export default function PrivacyPolicyPage() { // Renamed component for clarity
   return (

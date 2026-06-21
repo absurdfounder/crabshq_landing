@@ -3,6 +3,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { _loadFromJson, _transformDataToPostPageView, renderContent } from '../../../utils/helper';
 import Image from 'next/image';
 import Link from 'next/link';
+import { mergeOgImages } from '@/lib/og/buildMetadata';
 import MoveBack from '@/components/MoveBack';
 import Loading from '@/components/Loading';
 import Header from '@/components/ui/header';
@@ -86,16 +87,18 @@ export async function generateMetadata(
       };
     }
 
-    return {
-      title: `${filteredContent.product.name}`,
-      description: `${filteredContent.product.name}: ${filteredContent.product.description}`,
-      openGraph: {
-        images: [{ url: filteredContent.proof.screenshot }],
+    return mergeOgImages(
+      {
+        title: `${filteredContent.product.name}`,
+        description: `${filteredContent.product.name}: ${filteredContent.product.description}`,
+        alternates: {
+          canonical: `https://trooper.so/showcase/${slug}`,
+        },
       },
-      alternates: {
-        canonical: `https://trooper.so/showcase/${slug}`,
-      },
-    };
+      'showcase',
+      filteredContent.product.name,
+      slug,
+    );
   } catch (error) {
     console.error('Error in generateMetadata:', error);
     return {
