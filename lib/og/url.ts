@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
 import type { OgKind } from '@/lib/og/types';
 import { OG_SIZE } from '@/lib/og/render';
+import { ogImagePath } from '@/lib/og/routes';
 
-export function ogImagePath(kind: OgKind, slug?: string): string {
-  const params = new URLSearchParams({ kind });
-  if (slug) params.set('slug', slug);
-  return `/og?${params.toString()}`;
-}
+export { ogImagePath };
 
 export function ogImageMeta(kind: OgKind, alt: string, slug?: string): Pick<Metadata, 'openGraph' | 'twitter'> {
   const url = ogImagePath(kind, slug);

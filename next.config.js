@@ -14,6 +14,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     outputFileTracingIncludes: {
+      '/og/img/[...segments]/route': ['./public/og-fonts/**/*'],
       '/og/route': ['./public/og-fonts/**/*'],
     },
   },

@@ -1,55 +1,19 @@
-import { resolveAsyncOgContent } from '@/lib/og/resolveAsync';
-import { resolveOgContent } from '@/lib/og/resolveContent';
-import { createOgImageResponse } from '@/lib/og/render';
-import type { OgKind } from '@/lib/og/types';
+import { ogImagePath } from '@/lib/og/routes';
 
-export const runtime = 'nodejs';
-
-const VALID_KINDS = new Set<OgKind>([
-  'home',
-  'team',
-  'feature',
-  'plugin',
-  'use-case',
-  'alternative',
-  'channel',
-  'hub',
-  'page',
-  'loop',
-  'skill',
-  'compare',
-  'showcase',
-  'legacy-integration',
-]);
-
-const ASYNC_KINDS = new Set<OgKind>(['skill', 'compare', 'showcase', 'legacy-integration']);
-
+/** Legacy query URLs — redirect to path-based OG routes so CDN caches do not collide. */
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const kind = searchParams.get('kind') as OgKind | null;
-  const slug = searchParams.get('slug') ?? undefined;
+  const url = new URL(request.url);
+  const kind = url.searchParams.get('kind');
+  const slug = url.searchParams.get('slug') ?? undefined;
 
-  if (!kind || !VALID_KINDS.has(kind)) {
+  if (!kind) {
     return new Response('Invalid kind', { status: 400 });
   }
 
-  const content = ASYNC_KINDS.has(kind)
-    ? await resolveAsyncOgContent(kind as 'skill' | 'compare' | 'showcase' | 'legacy-integration', slug)
-    : resolveOgContent(kind, slug);
-
-  if (!content) {
-    return new Response('Not found', { status: 404 });
-  }
-
   try {
-    const image = await createOgImageResponse(content);
-    image.headers.set(
-      'Cache-Control',
-      'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
-    );
-    return image;
-  } catch (error) {
-    console.error('[og] render failed', { kind, slug, error });
-    return new Response('OG render failed', { status: 500 });
+    const target = ogImagePath(kind as Parameters<typeof ogImagePath>[0], slug);
+    return Response.redirect(new URL(target, url.origin), 308);
+  } catch {
+    return new Response('Invalid OG request', { status: 400 });
   }
 }

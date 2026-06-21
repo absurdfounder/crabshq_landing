@@ -7,6 +7,7 @@ export const OG_SIZE = { width: 1200, height: 630 };
 
 const BRAND_GREEN = '#284800';
 const BRAND_GREEN_LIGHT = '#3f6b00';
+const TROOPER_LOGO_URL = 'https://trooper.so/favicon-96x96.png';
 
 function truncate(text: string, max: number) {
   if (text.length <= max) return text;
@@ -41,26 +42,44 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 10,
+              justifyContent: 'space-between',
               marginBottom: 28,
-              fontSize: 13,
-              fontFamily: 'Roboto Mono',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: BRAND_GREEN,
             }}
           >
-            <span
-              style={{
-                border: `1px solid ${BRAND_GREEN_LIGHT}55`,
-                background: '#f0f5e6',
-                padding: '6px 10px',
-                fontWeight: 700,
-              }}
-            >
-              [{content.eyebrowIndex}]
-            </span>
-            <span style={{ fontWeight: 600 }}>{content.eyebrowLabel}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  fontSize: 13,
+                  fontFamily: 'Roboto Mono',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: BRAND_GREEN,
+                }}
+              >
+                <span
+                  style={{
+                    border: `1px solid ${BRAND_GREEN_LIGHT}55`,
+                    background: '#f0f5e6',
+                    padding: '6px 10px',
+                    fontWeight: 700,
+                  }}
+                >
+                  [{content.eyebrowIndex}]
+                </span>
+                <span style={{ fontWeight: 600 }}>{content.eyebrowLabel}</span>
+              </div>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={TROOPER_LOGO_URL}
+              alt=""
+              width={48}
+              height={48}
+              style={{ borderRadius: 10, border: '1px solid #e2e8f0' }}
+            />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>

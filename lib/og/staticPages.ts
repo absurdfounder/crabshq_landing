@@ -42,7 +42,7 @@ export const HUB_OG_PAGES: Record<string, OgHeroContent> = {
     'loops',
     'Loops catalog',
     'Agent',
-    'loop catalog',
+    'Loops',
     'Reusable loops with kickoff prompts, guardrails, and flow diagrams for Cursor, Claude Code, and Codex.',
   ),
   plugins: hub(
