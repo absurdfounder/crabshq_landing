@@ -19,10 +19,9 @@ const FRAME_INSET = 28;
 const FRAME_PAD_X = 40;
 const FRAME_PAD_Y = 36;
 
-const PIXEL_GRID_BG = [
-  'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(63, 107, 0, 0.045) 3px, rgba(63, 107, 0, 0.045) 4px)',
-  'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(15, 23, 42, 0.035) 3px, rgba(15, 23, 42, 0.035) 4px)',
-].join(', ');
+// Satori/@vercel/og does not support repeating-linear-gradient — use a subtle wash instead.
+const PIXEL_GRID_BG =
+  'linear-gradient(180deg, rgba(63, 107, 0, 0.04) 0%, rgba(15, 23, 42, 0.02) 100%)';
 
 const CAMO_WASH_BG = [
   'radial-gradient(circle at 18% 28%, rgba(123, 160, 68, 0.14) 0%, transparent 48%)',
@@ -61,7 +60,7 @@ function MissionEyebrow({ index, label }: { index: string; label: string }) {
         border: `1px solid rgba(63, 107, 0, 0.35)`,
         background: 'linear-gradient(180deg, #f8faf9 0%, #f0f5e6 100%)',
         padding: '8px 14px',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+        boxShadow: '0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
     >
       <span
@@ -125,8 +124,8 @@ function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']>
 
 function DecorativeGridPanel() {
   const cellStyle = {
+    display: 'flex' as const,
     flex: 1,
-    minHeight: 0,
     background: '#ffffff',
     position: 'relative' as const,
     overflow: 'hidden' as const,
@@ -146,38 +145,13 @@ function DecorativeGridPanel() {
     >
       <div style={{ display: 'flex', flex: 1, gap: 1 }}>
         <div style={{ ...cellStyle, background: '#f0f5e6' }} />
-        <div style={cellStyle}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={OG_BACKGROUND_URL}
-            alt=""
-            width={170}
-            height={130}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              opacity: 0.85,
-            }}
-          />
-        </div>
+        <div style={cellStyle}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={OG_BACKGROUND_URL} alt="" width={170} height={130} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.85 }} /></div>
         <div style={{ ...cellStyle, background: '#fafaf8' }} />
       </div>
       <div style={{ display: 'flex', flex: 1, gap: 1 }}>
         <div style={cellStyle} />
         <div style={{ ...cellStyle, background: '#f0f5e6' }} />
-        <div style={cellStyle}>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: BRAND_GREEN,
-              opacity: 0.08,
-            }}
-          />
-        </div>
+        <div style={cellStyle}><div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: BRAND_GREEN, opacity: 0.08 }} /></div>
       </div>
       <div style={{ display: 'flex', height: 48, gap: 1 }}>
         <div style={{ ...cellStyle, background: '#fafaf8' }} />
@@ -242,7 +216,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
         </div>
 
         {/* Main body — content column + decorative grid panel */}
-        <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        <div style={{ display: 'flex', flex: 1 }}>
           <div
             style={{
               display: 'flex',
@@ -304,7 +278,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                       ) : null}
                     </div>
                   ) : (
-                    <>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <div
                         style={{
                           fontSize: 58,
@@ -332,7 +306,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                           {content.headlineAccent}
                         </div>
                       ) : null}
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
