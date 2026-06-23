@@ -29,7 +29,7 @@ export default function HeroDownloadButtons() {
       size="lg"
       variant="outline"
       tone="dark"
-      className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto"
+      className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto !border-white/25 !text-white hover:!bg-white/10 focus-visible:!ring-offset-[#141a10]"
       icon={
         download.external ? (
           <PlatformIcon src={download.iconSrc} />

@@ -6,6 +6,7 @@ type TrooperLogoProps = {
   textClassName?: string
   asLink?: boolean
   priority?: boolean
+  theme?: 'light' | 'dark'
 }
 
 export default function TrooperLogo({
@@ -14,7 +15,9 @@ export default function TrooperLogo({
   textClassName = 'text-xl sm:text-2xl',
   asLink = false,
   priority = false,
+  theme = 'light',
 }: TrooperLogoProps) {
+  const textColor = theme === 'dark' ? 'text-white' : 'text-slate-900'
   const content = (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <img
@@ -28,7 +31,7 @@ export default function TrooperLogo({
         aria-hidden
       />
       <span
-        className={`font-brand lowercase leading-none tracking-tight text-slate-900 ${textClassName}`}
+        className={`font-brand lowercase leading-none tracking-tight ${textColor} ${textClassName}`}
       >
         trooper
       </span>

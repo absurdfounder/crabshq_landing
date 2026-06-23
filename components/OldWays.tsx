@@ -901,8 +901,8 @@ const BYOAVisual = () => {
        Uses the shared pixel-art scene as a subtle backdrop, softened with a
        translucent white wash so the inner card remains the focal point. ─── */
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative h-full flex flex-col p-2 sm:p-4 lg:p-6 bg-slate-50/70 sm:bg-slate-100/80">
-    <div className="relative flex-1 flex flex-col border border-slate-200 bg-white overflow-hidden shadow-sm min-h-0">
+  <div className="features-landscape-bg relative flex h-full flex-col p-2 sm:p-4 lg:p-6">
+    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden border border-slate-100 bg-white shadow-sm">
       {children}
     </div>
   </div>
@@ -974,8 +974,8 @@ export default function OldWays() {
   }, []);
 
   return (
-    <section className="features-landscape-bg relative">
-      <div className="max-w-7xl mx-auto px-0 py-6 sm:py-16 md:py-24 border-l border-r border-white/[0.06]">
+    <section className="relative bg-white">
+      <div className="mx-auto max-w-7xl border-l border-r border-slate-100 px-0 py-6 sm:py-16 md:py-24">
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };

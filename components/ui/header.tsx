@@ -20,9 +20,11 @@ type DropdownKey = 'features' | 'teams' | null
 
 export default function Header() {
   const pathname = usePathname()
+  const isHome = pathname === '/'
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
+  const darkNav = isHome && !scrolled
 
   useEffect(() => {
     setOpenDropdown(null)
@@ -60,14 +62,21 @@ export default function Header() {
     >
       <TopBar />
       <div
-        className={`border-b border-slate-100 bg-white transition-shadow duration-200 ${
-          scrolled ? 'shadow-sm' : ''
+        className={`transition-colors duration-200 transition-shadow duration-200 ${
+          darkNav
+            ? 'border-b border-white/[0.06] bg-[#141a10]'
+            : `border-b border-slate-100 bg-white ${scrolled ? 'shadow-sm' : ''}`
         }`}
       >
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r border-slate-100 px-3 sm:h-16 sm:gap-4 sm:px-6">
+      <div
+        className={`mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r px-3 sm:h-16 sm:gap-4 sm:px-6 ${
+          darkNav ? 'border-white/[0.06]' : 'border-slate-100'
+        }`}
+      >
         <TrooperLogo
           asLink
           priority
+          theme={darkNav ? 'dark' : 'light'}
           className="shrink-0"
           characterClassName="h-8 w-8 sm:h-10 sm:w-10 object-contain"
           textClassName="text-[15px] sm:text-lg"
@@ -88,6 +97,7 @@ export default function Header() {
                 setOpenDropdown(openDropdown === 'features' ? null : 'features')
               }
               onClose={() => setOpenDropdown(null)}
+              dark={darkNav}
             />
             <NavDropdownItem
               label="Teams"
@@ -98,6 +108,7 @@ export default function Header() {
                 setOpenDropdown(openDropdown === 'teams' ? null : 'teams')
               }
               onClose={() => setOpenDropdown(null)}
+              dark={darkNav}
             />
             {primaryNavLinks.map((link) => (
               <li key={link.href} className="relative z-[220]">
@@ -105,6 +116,7 @@ export default function Header() {
                   href={link.href}
                   label={link.label}
                   onNavigate={() => setOpenDropdown(null)}
+                  dark={darkNav}
                 />
               </li>
             ))}
@@ -112,7 +124,7 @@ export default function Header() {
         </nav>
 
         <div className="relative z-[220] ml-auto flex items-center gap-2 sm:gap-3">
-          <div className="hidden lg:block">
+          <div className={`hidden lg:block ${darkNav ? '[&_button]:!text-white/80 [&_button:hover]:!text-white' : ''}`}>
             <TranslateButton />
           </div>
 
@@ -122,7 +134,11 @@ export default function Header() {
             size="sm"
             variant="outline"
             tone="dark"
-            className="hidden lg:inline-flex"
+            className={`hidden lg:inline-flex ${
+              darkNav
+                ? '!border-white/25 !text-white hover:!bg-white/10 focus-visible:!ring-offset-[#141a10]'
+                : ''
+            }`}
           >
             Sign in
           </PixelButton>
@@ -132,13 +148,13 @@ export default function Header() {
             external
             size="sm"
             tone="brand"
-            className="hidden lg:inline-flex"
+            className={`hidden lg:inline-flex ${darkNav ? 'focus-visible:!ring-offset-[#141a10]' : ''}`}
             icon={<ArrowRight className="h-3 w-3" strokeWidth={2.5} />}
           >
             Get started
           </PixelButton>
 
-          <MobileMenu />
+          <MobileMenu dark={darkNav} />
         </div>
       </div>
       </div>
@@ -153,6 +169,7 @@ function NavDropdownItem({
   isOpen,
   onToggle,
   onClose,
+  dark = false,
 }: {
   label: string
   title: string
@@ -160,6 +177,7 @@ function NavDropdownItem({
   isOpen: boolean
   onToggle: () => void
   onClose: () => void
+  dark?: boolean
 }) {
   return (
     <li className="relative z-[210]">
@@ -169,15 +187,25 @@ function NavDropdownItem({
         aria-expanded={isOpen}
         data-nav-dropdown-toggle
         className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-          isOpen
-            ? 'bg-slate-50 text-slate-900'
-            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+          dark
+            ? isOpen
+              ? 'bg-white/10 text-white'
+              : 'text-white/75 hover:bg-white/10 hover:text-white'
+            : isOpen
+              ? 'bg-slate-50 text-slate-900'
+              : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
         }`}
       >
         {label}
         <ChevronDown
-          className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
-            isOpen ? 'rotate-180 text-slate-600' : ''
+          className={`h-4 w-4 transition-transform duration-200 ${
+            dark
+              ? isOpen
+                ? 'rotate-180 text-white/80'
+                : 'text-white/45'
+              : isOpen
+                ? 'rotate-180 text-slate-600'
+                : 'text-slate-400'
           }`}
         />
       </button>
@@ -237,16 +265,22 @@ function NavLink({
   href,
   label,
   onNavigate,
+  dark = false,
 }: {
   href: string
   label: string
   onNavigate?: () => void
+  dark?: boolean
 }) {
   return (
     <a
       href={href}
       onClick={onNavigate}
-      className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
+      className={`inline-flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+        dark
+          ? 'text-white/75 hover:bg-white/10 hover:text-white'
+          : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+      }`}
     >
       {label}
     </a>

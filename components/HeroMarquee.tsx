@@ -32,15 +32,30 @@ const tags = [
   { label: 'goals', icon: Target },
 ];
 
-const Tag = ({ label, Icon }: { label: string; Icon: LucideIcon }) => (
-  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-trooper-100/80 bg-trooper-50/70 text-trooper-700 text-[11px] font-mono font-semibold uppercase tracking-[0.12em] whitespace-nowrap flex-shrink-0 hover:border-trooper hover:bg-trooper-50 transition-colors duration-200 [clip-path:polygon(3px_0,100%_0,100%_calc(100%-3px),calc(100%-3px)_100%,0_100%,0_3px)]">
-    <Icon className="w-3.5 h-3.5 text-trooper" strokeWidth={2} />
+const Tag = ({
+  label,
+  Icon,
+  dark = false,
+}: {
+  label: string;
+  Icon: LucideIcon;
+  dark?: boolean;
+}) => (
+  <div
+    className={`inline-flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[11px] font-mono font-semibold uppercase tracking-[0.12em] transition-colors duration-200 [clip-path:polygon(3px_0,100%_0,100%_calc(100%-3px),calc(100%-3px)_100%,0_100%,0_3px)] ${
+      dark
+        ? 'border border-white/10 bg-white/5 text-white/75 hover:border-white/20 hover:bg-white/10'
+        : 'border border-trooper-100/80 bg-trooper-50/70 text-trooper-700 hover:border-trooper hover:bg-trooper-50'
+    }`}
+  >
+    <Icon className={`h-3.5 w-3.5 ${dark ? 'text-trooper-300' : 'text-trooper'}`} strokeWidth={2} />
     <span>{label}</span>
   </div>
 );
 
-export default function HeroMarquee() {
+export default function HeroMarquee({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
   const allTags = [...tags, ...tags];
+  const dark = theme === 'dark';
 
   return (
     <div
@@ -51,11 +66,11 @@ export default function HeroMarquee() {
       }}
     >
       <div
-        className="flex gap-2.5 w-fit"
+        className="flex w-fit gap-2.5"
         style={{ animation: 'heroMarqueeScroll 60s linear infinite' }}
       >
         {allTags.map((tag, i) => (
-          <Tag key={`${tag.label}-${i}`} label={tag.label} Icon={tag.icon} />
+          <Tag key={`${tag.label}-${i}`} label={tag.label} Icon={tag.icon} dark={dark} />
         ))}
       </div>
     </div>

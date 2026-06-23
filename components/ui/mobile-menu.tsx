@@ -70,7 +70,7 @@ function Accordion({ label, items, onNavigate, defaultOpen = false }: AccordionP
   )
 }
 
-export default function MobileMenu() {
+export default function MobileMenu({ dark = false }: { dark?: boolean }) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const close = () => setIsOpen(false)
@@ -104,7 +104,11 @@ export default function MobileMenu() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm active:bg-slate-50 sm:h-10 sm:w-10"
+        className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border shadow-sm active:bg-slate-50 sm:h-10 sm:w-10 ${
+          dark
+            ? 'border-white/20 bg-white/5 text-white active:bg-white/10'
+            : 'border-slate-200 bg-white text-slate-900'
+        }`}
         aria-label="Open menu"
         aria-expanded={isOpen}
       >
