@@ -19,6 +19,13 @@ const silkscreen = localFont({
   variable: '--font-silkscreen',
 })
 
+/** H1, hero, section titles — Erode (Ferndesk display face) */
+const erode = localFont({
+  src: '../public/fonts/Erode-Variable.ttf',
+  variable: '--font-erode',
+  display: 'swap',
+})
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -92,10 +99,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
         <link rel="canonical" href={canonicalUrl} />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=erode@1,2&display=swap"
-          rel="stylesheet"
-        />
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
@@ -139,7 +142,7 @@ export default function RootLayout({
         }} />
       </head>
       <body
-        className={`${inter.variable} ${silkscreen.variable} bg-gray-50 font-sans antialiased text-slate-900 tracking-tight`}
+        className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-gray-50 font-sans antialiased text-slate-900`}
       >
         <div className="flex flex-col min-h-screen">
           {children}

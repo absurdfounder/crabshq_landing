@@ -4,13 +4,11 @@ import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
-import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import HeroDownloadButtons from './HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
-import { PixelMissionTag } from './PixelAtmosphere';
 
 // Optimized SVG components using Next.js Image for better loading
 const ProductHuntBadge = () => (
@@ -108,24 +106,11 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               </div>
 
               <div className="mb-4">
-                <PixelMissionTag index="01" label="Mission briefing" />
+                <span className="kicker block text-base text-trooper-700 sm:text-lg">Mission briefing</span>
               </div>
 
               <div className="reveal reveal__usp max-w-3xl">
                 <HeroRotatingHeadline />
-                <MarketingHeadline
-                  as="h2"
-                  size="hero"
-                  className="mt-2 max-md:mt-1.5 sm:mt-4"
-                  lines={[
-                    {
-                      parts: [
-                        { text: 'Whole Team.', tone: 'default' },
-                        { text: 'One App.', tone: 'brand' },
-                      ],
-                    },
-                  ]}
-                />
               </div>
 
               <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-[17px] sm:leading-relaxed md:text-lg">

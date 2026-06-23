@@ -289,7 +289,7 @@ body > iframe.goog-te-menu-frame {
   }
 
   .kicker {
-    @apply font-silkscreen text-base sm:text-lg;
+    @apply font-silkscreen text-base sm:text-lg tracking-normal normal-case;
   }
 
   .type-eyebrow {
@@ -375,7 +375,6 @@ body > iframe.goog-te-menu-frame {
 
 /* Global Trooper cursor — bright green gradient pointer */
 :root {
-  --font-erode: 'Erode', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --trooper-cursor-default: url('/images/custom-cursor.svg') 4 4, auto;
   --trooper-cursor-pointer: url('/images/custom-cursor.svg') 4 4, pointer;
 }
