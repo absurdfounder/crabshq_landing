@@ -140,7 +140,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               <div className="reveal reveal__usp max-w-3xl">
                 <HeroRotatingHeadline />
                 <MarketingHeadline
-                  as="p"
+                  as="h2"
                   size="card"
                   className="!mt-1.5 sm:!mt-2"
                   lines={[
