@@ -1,6 +1,6 @@
 import './css/style.css'
 
-import { Inter, Roboto_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import Script from 'next/script'
 
@@ -13,19 +13,10 @@ const homeOg = ogImageMeta('home', 'Trooper - AI Workforce Powered by OpenClaw A
 /** Body — paragraphs, nav, UI */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 
-/** Code, CLI, integrations, agent UI */
-const robotoMono = Roboto_Mono({ subsets: ['latin'], variable: '--font-roboto-mono', display: 'swap' })
-
-/** Logo wordmark, badges, small brand labels only */
+/** Section kickers, logo wordmark, small brand labels */
 const silkscreen = localFont({
   src: [{ path: '../public/fonts/Silkscreen-Regular.ttf', weight: '400', style: 'normal' }],
   variable: '--font-silkscreen',
-})
-
-/** H1, hero, section titles */
-const funneldisplay = localFont({
-  src: '../public/fonts/FunnelDisplay-VariableFont_wght.ttf',
-  variable: '--font-funneldisplay',
 })
 
 export const viewport = {
@@ -101,6 +92,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
         <link rel="canonical" href={canonicalUrl} />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=erode@1,2&display=swap"
+          rel="stylesheet"
+        />
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
@@ -144,7 +139,7 @@ export default function RootLayout({
         }} />
       </head>
       <body
-        className={`${inter.variable} ${robotoMono.variable} ${silkscreen.variable} ${funneldisplay.variable} bg-gray-50 font-sans antialiased text-slate-900 tracking-tight`}
+        className={`${inter.variable} ${silkscreen.variable} bg-gray-50 font-sans antialiased text-slate-900 tracking-tight`}
       >
         <div className="flex flex-col min-h-screen">
           {children}

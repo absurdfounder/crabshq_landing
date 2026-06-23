@@ -73,20 +73,21 @@ module.exports = {
         '1/1': '100%',
       },
       /*
-       * Trooper typography (4 roles)
-       * — font-sans / font-inter     → body, UI
-       * — font-display / font-funneldisplay → headlines
-       * — font-mono                  → code, terminal, agent UI
-       * — font-brand / font-silkscreen → logo wordmark, chips (sparingly)
-       * Utilities: type-h1, type-h2, type-body, type-caption, type-label, type-code
+       * Trooper typography (Ferndesk-aligned)
+       * — font-sans / font-inter        → body, UI (Inter)
+       * — font-display / font-erode     → headlines (Erode via Fontshare)
+       * — font-mono                     → code, terminal, agent UI (system stack)
+       * — font-brand / font-silkscreen  → section kickers, logo wordmark
+       * Utilities: type-h1, type-h2, type-body, type-caption, type-label, type-code, kicker
        */
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-funneldisplay)', 'var(--font-inter)', 'sans-serif'],
-        mono: ['var(--font-roboto-mono)', 'ui-monospace', 'monospace'],
+        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['var(--font-erode)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
         brand: ['var(--font-silkscreen)', 'monospace'],
         inter: ['var(--font-inter)', 'sans-serif'],
-        funneldisplay: ['var(--font-funneldisplay)', 'sans-serif'],
+        erode: ['var(--font-erode)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        funneldisplay: ['var(--font-erode)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         silkscreen: ['var(--font-silkscreen)', 'monospace'],
       },
       fontSize: {

@@ -66,7 +66,7 @@ function MissionEyebrow({ index, label }: { index: string; label: string }) {
       <span
         style={{
           fontSize: 13,
-          fontFamily: 'Roboto Mono',
+          fontFamily: 'Silkscreen',
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -79,7 +79,7 @@ function MissionEyebrow({ index, label }: { index: string; label: string }) {
       <span
         style={{
           fontSize: 13,
-          fontFamily: 'Roboto Mono',
+          fontFamily: 'Silkscreen',
           fontWeight: 700,
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
@@ -115,7 +115,7 @@ function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']>
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={badge.iconUrl} alt="" width={22} height={22} style={{ borderRadius: 4 }} />
-          <span style={{ fontSize: 18, color: '#334155', fontFamily: 'Roboto Mono' }}>{badge.label}</span>
+          <span style={{ fontSize: 18, color: '#334155', fontFamily: 'Inter' }}>{badge.label}</span>
         </div>
       ))}
     </div>
@@ -256,7 +256,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                           fontWeight: 700,
                           color: '#0f172a',
                           letterSpacing: '-0.03em',
-                          fontFamily: 'Funnel Display',
+                          fontFamily: 'Erode',
                           marginRight: content.headlineAccent ? 14 : 0,
                         }}
                       >
@@ -270,7 +270,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                             fontWeight: 700,
                             color: BRAND_GREEN,
                             letterSpacing: '-0.03em',
-                            fontFamily: 'Funnel Display',
+                            fontFamily: 'Erode',
                           }}
                         >
                           {content.headlineAccent}
@@ -286,7 +286,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                           fontWeight: 700,
                           color: '#0f172a',
                           letterSpacing: '-0.03em',
-                          fontFamily: 'Funnel Display',
+                          fontFamily: 'Erode',
                         }}
                       >
                         {content.headlinePrimary}
@@ -299,7 +299,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                             fontWeight: 700,
                             color: BRAND_GREEN,
                             letterSpacing: '-0.03em',
-                            fontFamily: 'Funnel Display',
+                            fontFamily: 'Erode',
                             marginTop: 4,
                           }}
                         >
@@ -319,7 +319,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                     fontSize: 22,
                     lineHeight: 1.45,
                     color: '#475569',
-                    fontFamily: 'Funnel Display',
+                    fontFamily: 'Erode',
                   }}
                 >
                   {truncate(content.description, 160)}
@@ -363,7 +363,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
             background: 'rgba(255, 255, 255, 0.85)',
           }}
         >
-          <span style={{ fontSize: 18, color: '#64748b', fontFamily: 'Roboto Mono' }}>{displayUrl}</span>
+          <span style={{ fontSize: 18, color: '#64748b', fontFamily: 'Inter' }}>{displayUrl}</span>
         </div>
       </div>
     </div>
