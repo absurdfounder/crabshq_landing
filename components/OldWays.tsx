@@ -5,7 +5,7 @@ import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit,
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import { PixelMissionTag } from './PixelAtmosphere';
-import PixelLandscapeBackground from './ui/PixelLandscapeBackground';
+import PixelDitherGradient from './ui/PixelDitherGradient';
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -898,12 +898,9 @@ const BYOAVisual = () => {
   );
 };
 
-/* ─── Pixel-art framed wrapper.
-       Uses the shared pixel-art scene as a subtle backdrop, softened with a
-       translucent white wash so the inner card remains the focal point. ─── */
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="features-landscape-bg relative flex h-full flex-col p-2 sm:p-4 lg:p-6">
-    <PixelLandscapeBackground />
+  <div className="relative flex h-full flex-col overflow-hidden p-2 sm:p-4 lg:p-6">
+    <PixelDitherGradient />
     <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden border border-slate-100 bg-white shadow-sm">
       {children}
     </div>

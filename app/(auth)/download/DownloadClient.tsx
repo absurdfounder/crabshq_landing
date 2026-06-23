@@ -5,7 +5,7 @@ import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
-import PixelLandscapeBackground from '@/components/ui/PixelLandscapeBackground';
+import PixelDitherGradient from '@/components/ui/PixelDitherGradient';
 
 type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'web' | 'unknown';
 
@@ -205,9 +205,9 @@ export default function DownloadClient() {
 
       <div className="max-w-7xl mx-auto border-l border-r border-slate-200">
         {/* Hero */}
-        <section className="dashboard-landscape-bg relative border-b border-slate-200">
-          <PixelLandscapeBackground />
-          <div className="relative z-10 bg-white/90 backdrop-blur-[2px]">
+        <section className="relative border-b border-slate-200">
+          <PixelDitherGradient />
+          <div className="relative z-10">
             <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
               <PixelMissionTag index="01" label="Choose your surface" className="mb-4" />
 

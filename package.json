@@ -15,7 +15,6 @@
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
     "@headlessui/react": "^1.7.17",
-    "@paper-design/shaders-react": "^0.0.76",
     "@sendgrid/mail": "^8.1.3",
     "@types/node": "^20.10.4",
     "@types/react": "^18.2.42",

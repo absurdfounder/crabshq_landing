@@ -145,18 +145,6 @@
 }
 
 
-/* Pixel forest backdrop — hero dashboard and feature card demos */
-.dashboard-landscape-bg,
-.features-landscape-bg {
-  position: relative;
-  overflow: hidden;
-  background-color: #141a10;
-  background-image: url(/images/hero-dashboard-bg.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 /* Fixed header: dark top bar + main nav */
 :root {
   --site-header-height: 5.75rem;
