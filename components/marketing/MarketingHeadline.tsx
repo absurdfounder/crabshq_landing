@@ -34,9 +34,9 @@ const sublineSizeClasses = {
 } as const;
 
 const toneClasses: Record<NonNullable<MarketingHeadlinePart['tone']>, string> = {
-  default: 'text-slate-900 font-normal',
-  brand: 'text-trooper font-normal',
-  muted: 'text-slate-500 font-normal',
+  default: 'text-slate-900',
+  brand: 'text-trooper',
+  muted: 'text-slate-500',
   strong: 'text-slate-950 font-semibold',
 };
 
@@ -85,7 +85,7 @@ export default function MarketingHeadline({
   return (
     <div className={alignClass}>
       <Tag
-        className={`font-funneldisplay tracking-tight text-balance max-w-3xl ${sizeClasses[size]} ${className}`}
+        className={`font-display font-medium tracking-tight text-balance max-w-3xl ${sizeClasses[size]} ${className}`}
       >
         {lines.map((line, lineIndex) => (
           <span
@@ -126,11 +126,11 @@ export function MarketingCardTitle({
   className?: string;
 }) {
   const highlightClass =
-    titleHighlightTone === 'brand' ? 'text-trooper font-normal' : 'text-slate-500 font-normal';
+    titleHighlightTone === 'brand' ? 'text-trooper' : 'text-slate-500';
 
   return (
     <h3
-      className={`font-funneldisplay text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug ${className}`}
+      className={`font-display font-medium text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug ${className}`}
     >
       {title}
       {titleHighlight ? (

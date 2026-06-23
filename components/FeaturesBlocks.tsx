@@ -29,7 +29,7 @@ export default function FeaturesBlocks() {
       {/* Section header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 md:pb-12">
         <div className="text-start">
-          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 font-normal text-slate-800">
+          <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">
           Get discovered by <b>Users</b> and <b>AI assistants</b>           
           </h2>
           <p className="text-xl text-slate-600">

@@ -9,6 +9,15 @@
 
 @import 'tailwindcss/utilities';
 
+/* Erode reads light at 400 — match Ferndesk display weight (medium) site-wide */
+@layer base {
+  .font-display,
+  .font-funneldisplay,
+  .font-erode {
+    font-weight: 500;
+  }
+}
+
 /* Additional Tailwind directives: https://tailwindcss.com/docs/functions-and-directives/#responsive */
 @layer utilities {
   .rtl {
@@ -261,15 +270,15 @@ body > iframe.goog-te-menu-frame {
 /* Trooper typography utilities — see tailwind.config.js fontFamily */
 @layer components {
   .type-h1 {
-    @apply font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl;
+    @apply font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl;
   }
 
   .type-h2 {
-    @apply font-display text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl;
+    @apply font-display text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl;
   }
 
   .type-h3 {
-    @apply font-display text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl;
+    @apply font-display text-xl font-medium tracking-tight text-slate-900 sm:text-2xl;
   }
 
   .type-body {
@@ -322,7 +331,7 @@ body > iframe.goog-te-menu-frame {
   }
 
   .affiliate-section-title {
-    @apply font-funneldisplay text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-[2.5rem];
+    @apply font-display text-3xl font-medium tracking-tight text-slate-900 sm:text-4xl md:text-[2.5rem];
   }
 
   .affiliate-section-desc {

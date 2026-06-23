@@ -24,6 +24,7 @@ const erode = localFont({
   src: '../public/fonts/Erode-Variable.ttf',
   variable: '--font-erode',
   display: 'swap',
+  weight: '300 700',
 })
 
 export const viewport = {
