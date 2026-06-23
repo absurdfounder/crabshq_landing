@@ -104,6 +104,7 @@ function AllowanceStepper({
   label,
   value,
   min,
+  max = 150,
   onChange,
   helper,
   disableIncrease = false,
@@ -111,10 +112,12 @@ function AllowanceStepper({
   label: string;
   value: number;
   min: number;
+  max?: number;
   onChange: (value: number) => void;
   helper: string;
   disableIncrease?: boolean;
 }) {
+  const atMax = disableIncrease || value >= max;
   return (
     <div className="flex items-center justify-between gap-2 border border-slate-200 bg-white px-3 py-2.5">
       <div className="min-w-0">
@@ -135,8 +138,8 @@ function AllowanceStepper({
         <button
           type="button"
           className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
-          disabled={disableIncrease}
-          onClick={() => onChange(Math.min(150, value + 1))}
+          disabled={atMax}
+          onClick={() => onChange(Math.min(max, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
         >
           <Plus className="h-3.5 w-3.5" aria-hidden />
@@ -234,6 +237,8 @@ function AllowanceBlock({
   onWorkspaceChange,
   minSeats,
   minWorkspaces,
+  maxSeats = 150,
+  maxWorkspaces = 150,
   seatHelper,
   workspaceHelper,
   disableIncrease = false,
@@ -244,6 +249,8 @@ function AllowanceBlock({
   onWorkspaceChange: (value: number) => void;
   minSeats: number;
   minWorkspaces: number;
+  maxSeats?: number;
+  maxWorkspaces?: number;
   seatHelper: string;
   workspaceHelper: string;
   disableIncrease?: boolean;
@@ -254,6 +261,7 @@ function AllowanceBlock({
         label="Team members"
         value={seatCount}
         min={minSeats}
+        max={maxSeats}
         onChange={onSeatChange}
         helper={seatHelper}
         disableIncrease={disableIncrease}
@@ -262,6 +270,7 @@ function AllowanceBlock({
         label="Workspaces"
         value={workspaceCount}
         min={minWorkspaces}
+        max={maxWorkspaces}
         onChange={onWorkspaceChange}
         helper={workspaceHelper}
         disableIncrease={disableIncrease}
@@ -463,7 +472,9 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       onSeatChange={setLocalSeatCount}
       onWorkspaceChange={setLocalWorkspaceCount}
       minSeats={PRICING_USD.localIncludedMembers}
+      maxSeats={PRICING_USD.localIncludedMembers}
       minWorkspaces={PRICING_USD.localIncludedWorkspaces}
+      maxWorkspaces={PRICING_USD.localIncludedWorkspaces}
       seatHelper={`${PRICING_USD.localIncludedMembers} included`}
       workspaceHelper={`${PRICING_USD.localIncludedWorkspaces} included`}
     />
@@ -476,7 +487,9 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       onSeatChange={setSoloSeatCount}
       onWorkspaceChange={setSoloWorkspaceCount}
       minSeats={PRICING_USD.cloudIncludedMembers}
+      maxSeats={PRICING_USD.cloudIncludedMembers}
       minWorkspaces={PRICING_USD.cloudIncludedWorkspaces}
+      maxWorkspaces={PRICING_USD.cloudIncludedWorkspaces}
       seatHelper={`${PRICING_USD.cloudIncludedMembers} included`}
       workspaceHelper={`${PRICING_USD.cloudIncludedWorkspaces} included`}
     />
