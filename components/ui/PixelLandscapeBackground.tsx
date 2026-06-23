@@ -8,10 +8,28 @@ const ImageDithering = dynamic(
   { ssr: false },
 );
 
+const FOREST_BACK = '#141a10';
+
 type PixelLandscapeBackgroundProps = {
   className?: string;
   image?: string;
 };
+
+function StaticForestLayer({ image, className = '' }: { image: string; className?: string }) {
+  return (
+    <div
+      aria-hidden
+      className={`absolute inset-0 ${className}`}
+      style={{
+        backgroundColor: FOREST_BACK,
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        imageRendering: 'pixelated',
+      }}
+    />
+  );
+}
 
 export default function PixelLandscapeBackground({
   className = '',
@@ -19,41 +37,31 @@ export default function PixelLandscapeBackground({
 }: PixelLandscapeBackgroundProps) {
   const reduceMotion = useReducedMotion();
 
-  if (reduceMotion) {
-    return (
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 ${className}`}
-        style={{
-          backgroundColor: '#141a10',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-    );
-  }
-
   return (
     <div aria-hidden className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
-      <ImageDithering
-        image={image}
-        width="100%"
-        height="100%"
-        colorBack="#141a10"
-        originalColors
-        inverted={false}
-        type="4x4"
-        size={2.25}
-        colorSteps={4}
-        fit="cover"
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.9 }}
-      />
+      <StaticForestLayer image={image} />
+
+      {!reduceMotion ? (
+        <ImageDithering
+          image={image}
+          width="100%"
+          height="100%"
+          colorBack={FOREST_BACK}
+          originalColors
+          inverted={false}
+          type="4x4"
+          size={2.25}
+          colorSteps={4}
+          fit="cover"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+        />
+      ) : null}
+
       <div
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(180deg, rgba(20, 26, 16, 0.02) 0%, rgba(20, 26, 16, 0.1) 100%)',
+            'linear-gradient(180deg, rgba(20, 26, 16, 0.04) 0%, rgba(20, 26, 16, 0.14) 100%)',
         }}
       />
     </div>

@@ -33,18 +33,18 @@ function DiscordIcon({ className }: { className?: string }) {
 }
 
 const linkClass =
-  'flex items-center gap-2 text-xs font-bold text-white transition-colors hover:text-white/80'
+  'flex items-center gap-2 text-xs font-bold text-slate-600 transition-colors hover:text-slate-900'
 
 export default function TopBar() {
   const changelogLabel = formatRelativeTime(CHANGELOG_UPDATED_AT)
 
   return (
-    <div className="site-top-bar border-b border-white/[0.04] bg-[#141a10]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-white/[0.04] px-4 py-2 sm:px-6">
-        <div className="hidden flex-grow items-center gap-3 text-xs font-bold text-gray-400 md:flex">
+    <div className="site-top-bar border-b border-slate-100 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-slate-100 px-4 py-2 sm:px-6">
+        <div className="hidden flex-grow items-center gap-3 text-xs font-bold text-slate-500 md:flex">
           <span>
-            <span className="text-white">Trooper</span> the delightful{' '}
-            <span className="text-white">AI workforce</span> platform
+            <span className="text-slate-900">Trooper</span> the delightful{' '}
+            <span className="text-slate-900">AI workforce</span> platform
           </span>
           <a
             href="https://app.trooper.so/changelog"
@@ -52,8 +52,7 @@ export default function TopBar() {
             rel="noopener noreferrer"
             aria-label={`View changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
             title={`Changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
-            className="flex items-center gap-1.5 text-xs font-bold opacity-75 transition-opacity hover:opacity-100"
-            style={{ color: 'rgba(255, 255, 255, 0.55)' }}
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-500 opacity-90 transition-opacity hover:opacity-100"
           >
             <LiquidOrb variant="changelog" />
             <span>Changelog: {changelogLabel}</span>
@@ -64,15 +63,15 @@ export default function TopBar() {
           href="https://app.trooper.so"
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto flex items-center gap-1.5 text-xs font-bold text-white transition-colors hover:text-white/80 md:ml-0"
+          className="ml-auto flex items-center gap-1.5 text-xs font-bold text-slate-600 transition-colors hover:text-slate-900 md:ml-0"
         >
           <LiquidOrb variant="status" />
-          <span style={{ color: 'rgba(255, 255, 255, 0.93)' }}>Online</span>
+          <span className="text-slate-800">Online</span>
         </a>
 
         <div className="hidden items-center gap-4 md:flex">
           <Link href="/download" className={linkClass}>
-            <Puzzle className="h-3.5 w-3.5 text-white/90" strokeWidth={2.25} />
+            <Puzzle className="h-3.5 w-3.5 text-slate-600" strokeWidth={2.25} />
             <span>Download Apps</span>
           </Link>
           <a
@@ -81,7 +80,7 @@ export default function TopBar() {
             rel="noopener noreferrer"
             className={linkClass}
           >
-            <BookOpen className="h-3.5 w-3.5 text-white/90" strokeWidth={2.25} />
+            <BookOpen className="h-3.5 w-3.5 text-slate-600" strokeWidth={2.25} />
             <span>Docs</span>
           </a>
           <a
@@ -90,7 +89,7 @@ export default function TopBar() {
             rel="noopener noreferrer"
             className={linkClass}
           >
-            <DiscordIcon className="h-3.5 w-3.5 text-white/90" />
+            <DiscordIcon className="h-3.5 w-3.5 text-slate-600" />
             <span>Discord</span>
           </a>
         </div>

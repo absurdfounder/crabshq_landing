@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <>
       <FloatingScrollIndicator />
-      <div className="hero-shell bg-[#141a10]">
+      <div className="hero-shell bg-white">
         <Header />
         <Hero />
       </div>
