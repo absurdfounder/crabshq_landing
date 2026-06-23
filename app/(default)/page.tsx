@@ -48,6 +48,8 @@ import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
 import MobileChannelsSection from '@/components/MobileChannelsSection'
 import YcQuoteSection from '@/components/YcQuoteSection'
+import FounderDarkQuote from '@/components/FounderDarkQuote'
+import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function Home() {
@@ -59,17 +61,21 @@ export default function Home() {
         <Hero />
       </div>
 
-      <SectionShell eyebrow="Endorsement" eyebrowNumber="02" bgClass="bg-white">
+      <DarkSplitSection>
         <YcQuoteSection />
-      </SectionShell>
+      </DarkSplitSection>
 
-      <SectionShell eyebrow="How It Works" eyebrowNumber="03" bgClass="bg-white">
+      <SectionShell eyebrow="How It Works" eyebrowNumber="02" bgClass="bg-white">
         <HowItWorksSteps />
       </SectionShell>
 
-      <SectionShell>
+      <SectionShell eyebrow="Capabilities" eyebrowNumber="03">
         <OldWays />
       </SectionShell>
+
+      <DarkSplitSection>
+        <FounderDarkQuote />
+      </DarkSplitSection>
 
       <SectionShell eyebrow="Field Comms" eyebrowNumber="04" bgClass="bg-white">
         <MobileChannelsSection />

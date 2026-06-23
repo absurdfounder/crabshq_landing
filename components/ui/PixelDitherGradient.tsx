@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
-/** 4×4 Bayer matrix for ordered dithering (matches classic pixel-gradient look). */
+/** 4×4 Bayer ordered dither — same family as Bento / reference pixel gradient. */
 const BAYER_4 = [
   [0, 8, 2, 10],
   [12, 4, 14, 6],
@@ -11,19 +11,25 @@ const BAYER_4 = [
   [15, 7, 13, 5],
 ] as const;
 
-/** Trooper palette — warm cream top → olive green bottom (reference layout). */
+/**
+ * Reference layout: pale sky top → cream mid → light lime bottom.
+ * Trooper tints: cool mist blue, trooper-50/100/200/300 (no dark olive).
+ */
 const GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
-  { at: 0, color: '#FAF9F6' },
-  { at: 0.18, color: '#f0f5e6' },
-  { at: 0.34, color: '#ddebc8' },
-  { at: 0.5, color: '#ddebc8' },
-  { at: 0.66, color: '#c4d9a0' },
-  { at: 0.82, color: '#9db866' },
-  { at: 1, color: '#6d9220' },
+  { at: 0, color: '#c8dce8' },
+  { at: 0.16, color: '#d8e8f0' },
+  { at: 0.32, color: '#eef0dc' },
+  { at: 0.46, color: '#f0f5e6' },
+  { at: 0.58, color: '#eef2dc' },
+  { at: 0.72, color: '#ddebc8' },
+  { at: 0.86, color: '#c4d9a0' },
+  { at: 1, color: '#b0d080' },
 ];
 
-const CANVAS_W = 96;
-const CANVAS_H = 192;
+/** Logical dither grid — each cell is drawn as a chunky square (reference ~6–8px). */
+const GRID_W = 40;
+const GRID_H = 80;
+const CELL_PX = 8;
 
 function hexToRgb(hex: string) {
   const value = parseInt(hex.slice(1), 16);
@@ -55,28 +61,38 @@ function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  if (canvas.width !== CANVAS_W) canvas.width = CANVAS_W;
-  if (canvas.height !== CANVAS_H) canvas.height = CANVAS_H;
+  const width = GRID_W * CELL_PX;
+  const height = GRID_H * CELL_PX;
+  if (canvas.width !== width) canvas.width = width;
+  if (canvas.height !== height) canvas.height = height;
 
-  const image = ctx.createImageData(CANVAS_W, CANVAS_H);
+  const image = ctx.createImageData(width, height);
   const { data } = image;
-  const bayerShiftX = Math.floor(timeMs * 0.007) % 4;
-  const bayerShiftY = Math.floor(timeMs * 0.005) % 4;
+  const bayerShiftX = Math.floor(timeMs * 0.004) % 4;
+  const bayerShiftY = Math.floor(timeMs * 0.003) % 4;
 
-  for (let y = 0; y < CANVAS_H; y += 1) {
-    const gradientT = Math.min(1, Math.max(0, y / (CANVAS_H - 1) + phase));
+  for (let gy = 0; gy < GRID_H; gy += 1) {
+    const gradientT = Math.min(1, Math.max(0, gy / (GRID_H - 1) + phase));
     const [colorA, colorB, mix] = segmentAt(gradientT);
     const rgbA = hexToRgb(colorA);
     const rgbB = hexToRgb(colorB);
 
-    for (let x = 0; x < CANVAS_W; x += 1) {
-      const threshold = BAYER_4[(y + bayerShiftY) % 4][(x + bayerShiftX) % 4] / 16;
+    for (let gx = 0; gx < GRID_W; gx += 1) {
+      const threshold = BAYER_4[(gy + bayerShiftY) % 4][(gx + bayerShiftX) % 4] / 16;
       const rgb = threshold < mix ? rgbB : rgbA;
-      const offset = (y * CANVAS_W + x) * 4;
-      data[offset] = rgb.r;
-      data[offset + 1] = rgb.g;
-      data[offset + 2] = rgb.b;
-      data[offset + 3] = 255;
+
+      const px = gx * CELL_PX;
+      const py = gy * CELL_PX;
+
+      for (let dy = 0; dy < CELL_PX; dy += 1) {
+        for (let dx = 0; dx < CELL_PX; dx += 1) {
+          const offset = ((py + dy) * width + (px + dx)) * 4;
+          data[offset] = rgb.r;
+          data[offset + 1] = rgb.g;
+          data[offset + 2] = rgb.b;
+          data[offset + 3] = 255;
+        }
+      }
     }
   }
 
@@ -105,7 +121,7 @@ export default function PixelDitherGradient({ className = '' }: PixelDitherGradi
 
     const tick = (now: number) => {
       const elapsed = now - start;
-      const phase = Math.sin(elapsed * 0.00065) * 0.09;
+      const phase = Math.sin(elapsed * 0.0005) * 0.06;
       paintDither(canvas, phase, elapsed);
       frame = requestAnimationFrame(tick);
     };
