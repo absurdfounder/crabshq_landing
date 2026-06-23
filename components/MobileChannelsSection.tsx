@@ -171,7 +171,7 @@ function PhoneChatScreen() {
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[380px] sm:max-w-[400px]"
+      className="relative mx-auto w-full max-w-[min(100%,340px)] sm:max-w-[400px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
@@ -215,7 +215,7 @@ function ChannelPill({
     >
       <Link
         href={`/channels/${channelId}`}
-        className="inline-flex items-center gap-2.5 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-[15px] font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md"
+        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-[15px]"
       >
         <ChannelIcon channelId={channelId} channelName={channelName} iconUrl={iconUrl} size={20} />
         <span>{channelName}</span>
@@ -227,7 +227,7 @@ function ChannelPill({
 function ConnectQrPanel() {
   return (
     <motion.div
-      className="mt-10 flex flex-col gap-5 rounded-2xl border border-slate-200/80 bg-slate-50 p-5 sm:flex-row sm:items-center sm:p-6"
+      className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-slate-50 p-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1, ease }}
@@ -292,7 +292,7 @@ function ConnectQrPanel() {
 export default function MobileChannelsSection() {
   return (
     <div className="pb-8 pt-2 md:pb-12">
-      <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
+      <div className="flex flex-col items-center gap-8 max-md:gap-8 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
         <PhoneChatMockup />
 
         <motion.div
@@ -302,13 +302,13 @@ export default function MobileChannelsSection() {
           transition={{ duration: 0.55, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="font-funneldisplay text-[1.75rem] leading-[1.15] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
+          <h2 className="font-funneldisplay text-[1.625rem] leading-[1.15] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
             Chat with your workforce,
             <br />
             on the go.
           </h2>
 
-          <div className="mt-8 flex flex-wrap gap-2.5">
+          <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-2.5">
             {featuredChannels.map((channel, index) => (
               <ChannelPill
                 key={channel.id}

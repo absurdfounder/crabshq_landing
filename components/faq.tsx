@@ -169,11 +169,11 @@ const FAQCell: React.FC<FAQCellProps> = ({ question, answer, index, totalRows, t
   return (
     <div className={`relative group bg-white ${borderClasses}`}>
       <button
-        className="w-full text-left px-5 sm:px-6 py-5 sm:py-6 flex items-start gap-4"
+        className="w-full text-left px-4 py-4 sm:px-6 sm:py-6 flex items-start gap-3 sm:gap-4"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
-        <span className="flex-1 font-semibold text-slate-900 text-[15px] sm:text-base leading-snug">
+        <span className="flex-1 font-semibold text-slate-900 text-[14px] sm:text-base leading-snug">
           {question}
         </span>
         <span
@@ -192,7 +192,7 @@ const FAQCell: React.FC<FAQCellProps> = ({ question, answer, index, totalRows, t
             transition={{ duration: 0.25 }}
             className="overflow-hidden"
           >
-            <div className="px-5 sm:px-6 pb-6 text-sm leading-relaxed text-slate-600">
+            <div className="px-4 pb-5 sm:px-6 sm:pb-6 text-sm leading-relaxed text-slate-600">
               {answer}
             </div>
           </motion.div>
@@ -210,7 +210,7 @@ const FAQ: React.FC = () => {
   return (
     <div className="px-0 pt-4 sm:pt-6 pb-12 sm:pb-20 max-w-7xl mx-auto">
       <div className="max-w-2xl">
-        <h2 className="font-funneldisplay text-3xl sm:text-4xl tracking-tight text-slate-900">
+        <h2 className="font-funneldisplay text-[1.65rem] sm:text-4xl tracking-tight text-slate-900">
           Intel brief.
         </h2>
         <p className="text-sm sm:text-base text-slate-600 mt-3">
@@ -228,12 +228,12 @@ const FAQ: React.FC = () => {
       </div>
 
       {/* Category tabs — flat mono text links with red underline on active */}
-      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-b border-slate-200">
+      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 sm:mt-8 sm:gap-x-6">
         {Object.keys(faqs).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`-mb-px pb-3 font-mono text-[12px] uppercase tracking-[0.15em] transition-colors ${
+            className={`-mb-px pb-2.5 sm:pb-3 font-mono text-[11px] sm:text-[12px] uppercase tracking-[0.12em] sm:tracking-[0.15em] transition-colors ${
               activeTab === tab
                 ? 'text-slate-900 border-b-2 border-trooper'
                 : 'text-slate-500 hover:text-slate-800 border-b-2 border-transparent'

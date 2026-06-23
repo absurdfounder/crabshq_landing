@@ -16,9 +16,9 @@ export default function YcQuoteSection() {
         transition={{ duration: 0.5, ease }}
         viewport={{ once: true, margin: '-20px' }}
       >
-        <div className="flex items-center border-b border-slate-200 px-5 py-6 sm:px-8 sm:py-10 lg:border-b-0 lg:border-r lg:py-12">
+        <div className="flex items-center border-b border-slate-200 px-4 py-5 sm:px-8 sm:py-10 lg:border-b-0 lg:border-r lg:py-12">
           <blockquote className="max-w-3xl">
-            <p className="font-funneldisplay text-xl leading-[1.35] tracking-tight text-slate-900 sm:text-2xl md:text-[1.75rem] md:leading-[1.3]">
+            <p className="font-funneldisplay text-lg leading-[1.35] tracking-tight text-slate-900 sm:text-2xl md:text-[1.75rem] md:leading-[1.3]">
               &ldquo;Placing agent power on your own computer empowers every user and I&apos;m so here for
               that.&rdquo;{' '}
               <Link
@@ -31,8 +31,8 @@ export default function YcQuoteSection() {
           </blockquote>
         </div>
 
-        <div className="flex items-center justify-center bg-[#FAFAF8] px-5 py-6 sm:px-8 sm:py-8 lg:min-w-[280px] lg:px-10">
-          <div className="flex w-full max-w-sm items-center gap-4 border border-slate-200 bg-white p-4">
+        <div className="flex items-center justify-center bg-[#FAFAF8] px-4 py-5 sm:px-8 sm:py-8 lg:min-w-[280px] lg:px-10">
+          <div className="flex w-full max-w-sm items-center gap-3 border border-slate-200 bg-white p-3 sm:gap-4 sm:p-4">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-slate-200 bg-slate-100">
               <Image
                 src="/images/garry-tan.jpg"

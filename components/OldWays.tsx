@@ -449,7 +449,7 @@ const CollabVisual = () => {
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[300px] sm:min-h-[460px] h-full flex flex-col p-3 sm:p-5 overflow-hidden">
+    <div ref={ref} className="min-h-[240px] sm:min-h-[460px] h-full flex flex-col p-3 sm:p-5 overflow-hidden">
       <div className="w-full flex-1 flex flex-col min-w-0">
         {/* Week headers */}
         <div className="grid grid-cols-5 mb-0.5">
@@ -582,7 +582,7 @@ const OpenClawVisual = () => (
         </div>
       </div>
 
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-3">
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg>} text="Data siloed per org" />
           <div className="flex items-center gap-2">
@@ -591,8 +591,8 @@ const OpenClawVisual = () => (
           </div>
           <DashedLabel icon={<svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/></svg>} text="Full API access" />
         </div>
-        <div className="text-right">
-          <p className="text-6xl sm:text-7xl font-bold text-slate-200 leading-none tracking-tighter">99.9%</p>
+        <div className="text-left sm:text-right">
+          <p className="text-5xl sm:text-7xl font-bold text-slate-200 leading-none tracking-tighter">99.9%</p>
           <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-slate-400 mt-1">Uptime SLA</p>
         </div>
       </div>
@@ -655,10 +655,10 @@ const TicketVisual = () => {
        Each goal level visually CONTAINS the next, so the task literally lives
        inside the agent goal, project, and mission. ─── */
 const GoalVisual = () => (
-  <div className="flex flex-col h-full p-4 sm:p-6 md:p-8 justify-center bg-white min-h-0">
+  <div className="flex flex-col h-full p-3 sm:p-6 md:p-8 justify-center bg-white min-h-0">
     {/* L1 · Mission */}
-    <div className="relative border border-slate-200 bg-white pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
-      <div className="absolute -top-3 left-4 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
+    <div className="relative border border-slate-200 bg-white pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
+      <div className="absolute -top-3 left-3 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
         <div className="w-3 h-3 overflow-hidden p-0.5 bg-transparent">
           <TrooperChar />
         </div>
@@ -666,37 +666,37 @@ const GoalVisual = () => (
           <span className="text-slate-400">[01]</span> Mission · Trooper Inc.
         </span>
       </div>
-      <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
+      <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
         Build the #1 AI workforce platform.
       </p>
 
       {/* L2 · Project */}
-      <div className="relative border border-slate-200 bg-slate-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
-        <div className="absolute -top-3 left-4 sm:left-5 bg-slate-50 px-2 py-0.5 flex items-center gap-1.5">
+      <div className="relative border border-slate-200 bg-slate-50 pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
+        <div className="absolute -top-3 left-3 sm:left-5 bg-slate-50 px-2 py-0.5 flex items-center gap-1.5">
           <span className="w-2 h-2 bg-slate-400" aria-hidden="true" />
           <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
             <span className="text-slate-400">[02]</span> Project · Q4 2026
           </span>
         </div>
-        <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
+        <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
           Ship team collaboration features.
         </p>
 
         {/* L3 · Agent goal */}
-        <div className="relative border border-slate-200 bg-white pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6">
-          <div className="absolute -top-3 left-4 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
+        <div className="relative border border-slate-200 bg-white pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
+          <div className="absolute -top-3 left-3 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
             <FaviconChip provider="Cursor" size={11} />
             <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
               <span className="text-slate-400">[03]</span> Agent goal · CTO
             </span>
           </div>
-          <p className="text-[13px] text-slate-900 font-medium leading-relaxed mb-4 sm:mb-5">
+          <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
             Implement real-time sync engine.
           </p>
 
           {/* L4 · Task — brand spotlight */}
-          <div className="relative border border-trooper bg-trooper-50 pt-8 sm:pt-9 px-5 sm:px-6 pb-5 sm:pb-6 shadow-[0_0_0_3px_rgba(63,107,0,0.08)]">
-            <div className="absolute -top-3 left-4 sm:left-5 bg-trooper-50 px-2 py-0.5 flex items-center gap-1.5">
+          <div className="relative border border-trooper bg-trooper-50 pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6 shadow-[0_0_0_3px_rgba(63,107,0,0.08)]">
+            <div className="absolute -top-3 left-3 sm:left-5 bg-trooper-50 px-2 py-0.5 flex items-center gap-1.5">
               <FaviconChip provider="Claude" size={11} />
               <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-trooper-700">
                 <span className="text-trooper">[04]</span> Task · Work happens here
@@ -707,11 +707,11 @@ const GoalVisual = () => (
                 <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-trooper" />
               </span>
-              <p className="text-[13px] text-trooper-700 font-semibold leading-relaxed">
+              <p className="text-[12px] sm:text-[13px] text-trooper-700 font-semibold leading-relaxed">
                 Write WebSocket handler for document updates.
               </p>
             </div>
-            <div className="mt-3 sm:mt-4 flex items-center justify-between gap-3">
+            <div className="mt-2.5 sm:mt-4 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
               <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-700/80">
                 ClaudeCoder · 2m elapsed
               </span>
@@ -726,7 +726,7 @@ const GoalVisual = () => (
       </div>
     </div>
 
-    <p className="mt-6 sm:mt-8 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
+    <p className="mt-4 sm:mt-8 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.18em] text-slate-400 text-center">
       Goals contain projects · projects contain goals · goals contain tasks
     </p>
   </div>
@@ -742,6 +742,8 @@ const BYOAVisual = () => {
     { role: 'Eng', provider: 'Codex' },
     { role: 'Eng', provider: 'Claude' },
   ];
+
+  const mobileTeam = yourTeam.slice(0, 4);
 
   // Grouped roughly: hosted LLMs, coding agents/CLIs, IDE assistants.
   const providers = [
@@ -767,8 +769,37 @@ const BYOAVisual = () => {
     'Replit',
   ];
 
+  const featuredProviders = ['Claude', 'OpenAI', 'Cursor', 'Codex', 'OpenClaw', 'Gemini'];
+  const extraProviderCount = providers.length - featuredProviders.length;
+
+  const renderTeamCell = (m: (typeof yourTeam)[number], i: number) => (
+    <div
+      key={`${m.role}-${i}`}
+      className={`relative flex flex-col items-center justify-center gap-1 py-2.5 sm:py-3 px-0.5 sm:px-1 ${
+        m.recommended ? 'bg-trooper-50/60' : ''
+      }`}
+    >
+      {m.recommended && (
+        <span className="absolute top-1 right-1 font-mono text-[9px] text-trooper">★</span>
+      )}
+      <div className="w-6 h-6 border border-slate-200 bg-white flex items-center justify-center">
+        {m.isYou ? (
+          <div className="w-4 h-4 overflow-hidden p-0.5">
+            <TrooperChar />
+          </div>
+        ) : (
+          <FaviconChip provider={m.provider} size={14} />
+        )}
+      </div>
+      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-700">{m.role}</span>
+      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400 truncate w-full text-center px-1">
+        {m.isYou ? 'You' : m.provider}
+      </span>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 bg-white min-h-0">
+    <div className="flex flex-col h-full p-2.5 sm:p-5 md:p-6 bg-white min-h-0">
       {/* Window chrome */}
       <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
         <div className="flex items-center gap-2">
@@ -784,7 +815,8 @@ const BYOAVisual = () => {
             <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-trooper" />
           </span>
-          6 agents · 5 providers
+          <span className="sm:hidden">4 agents</span>
+          <span className="hidden sm:inline">6 agents · 5 providers</span>
         </span>
       </div>
 
@@ -795,44 +827,20 @@ const BYOAVisual = () => {
             Your team
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-400 tabular-nums">
-            6 hired
+            <span className="sm:hidden">4 hired</span>
+            <span className="hidden sm:inline">6 hired</span>
           </span>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-6 divide-x divide-slate-100">
-          {yourTeam.map((m, i) => (
-            <div
-              key={`${m.role}-${i}`}
-              className={`relative flex flex-col items-center justify-center gap-1 py-2.5 sm:py-3 px-0.5 sm:px-1 ${
-                m.recommended ? 'bg-trooper-50/60' : ''
-              }`}
-            >
-              {m.recommended && (
-                <span className="absolute top-1 right-1 font-mono text-[9px] text-trooper">
-                  ★
-                </span>
-              )}
-              <div className="w-6 h-6 border border-slate-200 bg-white flex items-center justify-center">
-                {m.isYou ? (
-                  <div className="w-4 h-4 overflow-hidden p-0.5">
-                    <TrooperChar />
-                  </div>
-                ) : (
-                  <FaviconChip provider={m.provider} size={14} />
-                )}
-              </div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-slate-700">
-                {m.role}
-              </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400 truncate w-full text-center px-1">
-                {m.isYou ? 'You' : m.provider}
-              </span>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 divide-x divide-y divide-slate-100 sm:hidden">
+          {mobileTeam.map((m, i) => renderTeamCell(m, i))}
+        </div>
+        <div className="hidden sm:grid sm:grid-cols-6 sm:divide-x sm:divide-y-0 divide-slate-100">
+          {yourTeam.map((m, i) => renderTeamCell(m, i))}
         </div>
       </div>
 
-      {/* Available providers — big favicon grid */}
-      <div className="mt-4 flex-1 flex flex-col">
+      {/* Available providers */}
+      <div className="mt-3 sm:mt-4 flex-1 flex flex-col min-h-0">
         <div className="flex items-center justify-between mb-2">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
             Plug in any agent
@@ -842,7 +850,28 @@ const BYOAVisual = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-1.5 flex-1">
+        {/* Mobile: featured providers only */}
+        <div className="grid grid-cols-3 gap-1.5 sm:hidden">
+          {featuredProviders.map((p) => (
+            <div
+              key={p}
+              className="border border-slate-200 bg-white flex flex-col items-center justify-center gap-1 px-1.5 py-2 min-w-0"
+              title={p}
+            >
+              <FaviconChip provider={p} size={14} />
+              <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-slate-600 truncate w-full text-center">
+                {p}
+              </span>
+            </div>
+          ))}
+          <div className="border border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center gap-0.5 px-1.5 py-2 text-slate-500">
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em]">+{extraProviderCount}</span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.1em] text-slate-400">more</span>
+          </div>
+        </div>
+
+        {/* Desktop: full provider grid */}
+        <div className="hidden sm:grid sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-1.5 flex-1">
           {providers.map((p) => (
             <div
               key={p}
@@ -855,13 +884,12 @@ const BYOAVisual = () => {
               </span>
             </div>
           ))}
-          {/* + Add yours */}
           <div className="border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-500 hover:text-slate-700 transition-colors">
             <span className="font-mono text-[10px] uppercase tracking-[0.14em]">+ Yours</span>
           </div>
         </div>
 
-        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 text-center">
+        <p className="mt-2.5 sm:mt-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.18em] text-slate-400 text-center">
           If it can receive a heartbeat · it&apos;s hired
         </p>
       </div>
@@ -947,7 +975,7 @@ export default function OldWays() {
 
   return (
     <section className="bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-0 py-8 sm:py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-0 py-6 sm:py-16 md:py-24">
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
@@ -955,7 +983,7 @@ export default function OldWays() {
               <div
                 key={index}
                 ref={(el) => { cardRefs.current[index] = el; }}
-                className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
+                className="lg:sticky lg:top-[15vh] mb-3 sm:mb-6 lg:mb-8"
                 style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
@@ -973,12 +1001,12 @@ export default function OldWays() {
                     </span>
                   )}
                   <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                    <div className={`${sectionXPadding} box-border pt-5 sm:pt-8 md:pt-10 pb-5 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
                       <PixelMissionTag
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
                       />
-                      <h3 className="font-funneldisplay text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug">
+                      <h3 className="font-funneldisplay text-[1.05rem] sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-2.5 sm:mt-4 leading-snug">
                         {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>

@@ -330,10 +330,10 @@ export default function Footer() {
         </div>
 
         {/* Giant trooper. watermark */}
-        <div className="overflow-hidden border-t border-slate-200 pb-1 pt-2 md:pb-2 md:pt-4">
+        <div className="overflow-x-hidden border-t border-slate-200 pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
           <p
             aria-hidden
-            className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-[0.85] tracking-tight text-slate-200 text-[clamp(3.5rem,22vw,12rem)]"
+            className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-none tracking-tight text-slate-200 text-[clamp(2.75rem,18vw,12rem)]"
           >
             trooper.
           </p>

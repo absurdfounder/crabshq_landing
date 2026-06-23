@@ -32,6 +32,8 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
   const line = ROTATING_LINES[lineIndex];
   const displayed = reduceMotion ? line : line.slice(0, charIndex);
   const isTyping = !reduceMotion && phase === 'typing' && charIndex < line.length;
+  const showRotatingText = displayed.length > 0;
+  const showCursor = isTyping && showRotatingText;
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -64,20 +66,22 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
       className={`font-funneldisplay tracking-tight text-balance max-w-3xl text-[1.75rem] leading-[1.15] sm:text-4xl sm:leading-[1.12] md:text-[2.5rem] lg:text-[2.75rem] ${className}`}
     >
       <span
-        className="flex flex-wrap items-baseline gap-x-[0.35em] gap-y-1 min-h-[2.6em] sm:min-h-[1.35em]"
+        className="flex flex-wrap items-baseline gap-x-[0.35em] gap-y-0 min-h-0 sm:min-h-[1.35em]"
         aria-live="polite"
         aria-atomic="true"
       >
         <span className="shrink-0 text-trooper font-normal">Trooper</span>
         <motion.span
           key={lineIndex}
-          className="inline border-b-[3px] border-trooper pb-1 text-slate-900 font-normal"
+          className={`inline text-slate-900 font-normal ${
+            showRotatingText ? 'border-b-2 border-trooper pb-0.5 sm:border-b-[3px] sm:pb-1' : 'border-b-2 border-transparent pb-0.5 sm:pb-1'
+          }`}
           initial={reduceMotion ? false : { opacity: 1 }}
           animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
           transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
         >
           {displayed}
-          {isTyping ? (
+          {showCursor ? (
             <span
               className="ml-0.5 inline-block w-[2px] animate-pulse bg-trooper align-[-0.05em]"
               style={{ height: '0.85em' }}

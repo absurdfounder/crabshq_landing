@@ -104,7 +104,7 @@ export default function MobileMenu() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm active:bg-slate-50"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900 shadow-sm active:bg-slate-50 sm:h-10 sm:w-10"
         aria-label="Open menu"
         aria-expanded={isOpen}
       >
@@ -126,7 +126,7 @@ export default function MobileMenu() {
         aria-modal="true"
         aria-label="Site navigation"
         aria-hidden={!isOpen}
-        className="fixed inset-y-0 right-0 z-[260] flex h-[100dvh] w-[88vw] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
+        className="fixed inset-y-0 right-0 z-[260] flex h-[100dvh] w-[min(88vw,320px)] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
       >
         <div className="flex h-14 items-center justify-between border-b border-slate-100 bg-white px-4">
           <span className="font-display text-base font-bold text-slate-900">Menu</span>

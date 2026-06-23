@@ -146,7 +146,7 @@ function AllowanceStepper({
 function TierRail({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex w-full items-center lg:min-h-[4.5rem]">
-      <div className="flex items-center py-2">{children}</div>
+      <div className="flex w-full items-center lg:py-2">{children}</div>
     </div>
   );
 }
@@ -298,7 +298,9 @@ function PricingSubline({ children }: { children: React.ReactNode }) {
 
 function PricingNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs leading-5 text-slate-500 lg:min-h-[2.75rem]">{children || '\u00a0'}</p>
+    <p className="text-xs leading-5 text-slate-500 lg:min-h-[2.75rem]">
+      {children ?? <span className="hidden lg:inline">&nbsp;</span>}
+    </p>
   );
 }
 
@@ -427,14 +429,14 @@ function MobilePlanCard({
 
       <div className="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-6 xl:px-6">
         {tierRail}
-        <div className="mt-3 sm:mt-4">
+        <div className="mt-2 sm:mt-4">
           <PricingAmount price={price} cadence={cadence} />
         </div>
-        <div className="mt-2">{subline}</div>
+        <div className="mt-1.5 sm:mt-2">{subline}</div>
         <div className="mt-1">{note}</div>
-        <div className="mt-3 sm:mt-4">{allowance}</div>
-        <ul className="mt-4 space-y-2.5 sm:mt-6">{features}</ul>
-        <div className="mt-5 sm:mt-7">{cta}</div>
+        <div className="mt-2.5 sm:mt-4">{allowance}</div>
+        <div className="mt-5 border-y border-slate-200 py-4 sm:mt-6">{cta}</div>
+        <ul className="mt-4 space-y-2.5 sm:mt-5">{features}</ul>
       </div>
     </section>
   );
@@ -678,7 +680,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         />
       </div>
 
-      <div className="-mx-4 border-t border-slate-200 sm:-mx-6">
+      <div className="border-t border-slate-200 sm:-mx-6">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}

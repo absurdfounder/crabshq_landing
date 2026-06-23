@@ -8,9 +8,9 @@ import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
+import HeroDownloadButtons from './HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
 import { PixelMissionTag } from './PixelAtmosphere';
-import HeroSetupCommand from './HeroSetupCommand';
 
 // Defer non-critical Cal.com widget import
 const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
@@ -140,9 +140,9 @@ export default function Hero({ onCategorySelect }: HeroProps) {
               <div className="reveal reveal__usp max-w-3xl">
                 <HeroRotatingHeadline />
                 <MarketingHeadline
-                  as="h2"
-                  size="hero"
-                  className="mt-3 sm:mt-4"
+                  as="p"
+                  size="card"
+                  className="!mt-1.5 sm:!mt-2"
                   lines={[
                     {
                       parts: [
@@ -154,30 +154,30 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 />
               </div>
 
-              <p className="text-slate-600 text-[17px] sm:text-lg leading-relaxed mt-4 max-w-2xl">
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base md:text-lg">
                 AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
 
-              <HeroSetupCommand />
-
-              <div className="flex flex-col gap-3 mt-6 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
+              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
                 <PixelButton
                   href="https://app.trooper.so?ref=herolanding"
                   external
                   size="lg"
                   tone="brand"
-                  className="w-full sm:w-auto"
+                  className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
                   Get Started for free
                 </PixelButton>
 
+                <HeroDownloadButtons />
+
                 <PixelButton
                   size="lg"
                   variant="outline"
                   tone="dark"
-                  className="w-full sm:w-auto"
+                  className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                   data-cal-namespace="setup-call"
                   data-cal-link="set-meeting/setup-call"
@@ -197,7 +197,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
             </div>
 
             {/* Demo — soft olive tint behind mockup only */}
-            <div className="relative flex-1 -mx-4 sm:-mx-6 overflow-hidden">
+            <div className="relative hidden flex-1 overflow-hidden lg:-mx-6 lg:block">
               <HeroArticleDemo />
             </div>
           </div>

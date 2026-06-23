@@ -59,13 +59,13 @@ export default function Header() {
         scrolled ? 'shadow-sm' : ''
       }`}
     >
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 border-l border-r border-slate-200 px-4 sm:h-16 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r border-slate-200 px-3 sm:h-16 sm:gap-4 sm:px-6">
         <TrooperLogo
           asLink
           priority
           className="shrink-0"
-          characterClassName="h-9 w-9 sm:h-10 sm:w-10 object-contain"
-          textClassName="text-base sm:text-lg"
+          characterClassName="h-8 w-8 sm:h-10 sm:w-10 object-contain"
+          textClassName="text-[15px] sm:text-lg"
         />
 
         <nav

@@ -26,13 +26,13 @@ export default function HowItWorksSteps() {
   return (
     <div className="pb-8 md:pb-16 pt-2">
       <motion.div
-        className="how-it-works-header mb-8 md:mb-12 max-w-3xl"
+        className="how-it-works-header mb-6 md:mb-12 max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="how-it-works-heading font-funneldisplay text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
+        <h2 className="how-it-works-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
           Manage business goals
           <br />
           not pull requests.
@@ -48,7 +48,7 @@ export default function HowItWorksSteps() {
             transition={{ duration: 0.5, delay: index * 0.08, ease }}
             viewport={{ once: true, margin: '-20px' }}
             className={[
-              'step-card p-5 sm:p-6 md:p-8',
+              'step-card p-4 sm:p-6 md:p-8',
               index < steps.length - 1 ? 'border-b md:border-b-0 md:border-r border-slate-200' : '',
             ]
               .filter(Boolean)

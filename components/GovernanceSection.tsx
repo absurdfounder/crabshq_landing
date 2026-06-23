@@ -15,13 +15,13 @@ export default function GovernanceSection() {
   return (
     <div className="pb-8 md:pb-16 pt-2">
       <motion.div
-        className="governance-header mb-8 md:mb-12 max-w-3xl"
+        className="governance-header mb-6 md:mb-12 max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="governance-heading font-funneldisplay text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
+        <h2 className="governance-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
           You&apos;re in charge.
         </h2>
         <p className="governance-sub text-sm sm:text-base text-slate-500 mt-3 leading-relaxed">
@@ -31,7 +31,7 @@ export default function GovernanceSection() {
 
       <div className="governance-content grid grid-cols-1 lg:grid-cols-2 border border-slate-200 bg-white overflow-hidden">
         <motion.div
-          className="governance-block p-5 sm:p-6 md:p-8 lg:border-r border-slate-200"
+          className="governance-block p-4 sm:p-6 md:p-8 lg:border-r border-slate-200"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
@@ -49,7 +49,7 @@ export default function GovernanceSection() {
         </motion.div>
 
         <motion.div
-          className="governance-block p-5 sm:p-6 md:p-8 flex items-center border-t lg:border-t-0 border-slate-200"
+          className="governance-block p-4 sm:p-6 md:p-8 flex items-center border-t lg:border-t-0 border-slate-200"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-20px' }}
@@ -66,7 +66,7 @@ export default function GovernanceSection() {
                   hidden: { opacity: 0, y: 14 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
                 }}
-                className={`governance-action-line font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight ${action.colorClass}`}
+                className={`governance-action-line font-funneldisplay text-xl sm:text-3xl md:text-4xl tracking-tight ${action.colorClass}`}
               >
                 {action.label}
               </motion.span>

@@ -102,12 +102,13 @@ export default function HeroSetupCommand() {
 
   return (
     <div ref={rootRef} className="relative mt-4 max-w-xl">
-      <div className="flex items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5">
+      <div className="flex flex-col gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-2.5 sm:flex-row sm:items-center">
         <code className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto font-mono text-[11px] leading-none sm:text-[12px]">
           <span className="select-none text-cyan-600">$</span>
           <span className="whitespace-nowrap text-slate-900">{selected.command}</span>
         </code>
 
+        <div className="flex shrink-0 items-center gap-2 self-end sm:self-auto">
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
@@ -137,6 +138,7 @@ export default function HeroSetupCommand() {
             <Copy className="h-3.5 w-3.5" strokeWidth={2} />
           )}
         </button>
+        </div>
       </div>
 
       {open ? (
