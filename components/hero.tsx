@@ -141,8 +141,8 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 <HeroRotatingHeadline />
                 <MarketingHeadline
                   as="h2"
-                  size="card"
-                  className="!mt-1.5 sm:!mt-2"
+                  size="hero"
+                  className="mt-2 max-md:mt-1.5 sm:mt-4"
                   lines={[
                     {
                       parts: [
@@ -154,7 +154,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 />
               </div>
 
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:mt-4 sm:text-base md:text-lg">
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-[17px] sm:leading-relaxed md:text-lg">
                 AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
