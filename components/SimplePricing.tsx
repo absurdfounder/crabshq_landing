@@ -55,7 +55,7 @@ function PlanBadge({ children, featured = false }: { children: React.ReactNode; 
         'border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]',
         featured
           ? 'border-trooper-200 bg-trooper-50 text-trooper'
-          : 'border-slate-200 bg-slate-100 text-slate-600',
+          : 'border-slate-100 bg-slate-100 text-slate-600',
       ].join(' ')}
     >
       {children}
@@ -113,7 +113,7 @@ function AllowanceStepper({
 }) {
   const atMax = disableIncrease || value >= max;
   return (
-    <div className="flex items-center justify-between gap-2 border border-slate-200 bg-white px-3 py-2.5">
+    <div className="flex items-center justify-between gap-2 border border-slate-100 bg-white px-3 py-2.5">
       <div className="min-w-0">
         <p className="text-sm font-medium text-slate-900">{label}</p>
         <p className="mt-0.5 text-[11px] leading-snug text-slate-500">{helper}</p>
@@ -121,7 +121,7 @@ function AllowanceStepper({
       <div className="flex shrink-0 items-center gap-1" role="group" aria-label={`${label} quantity`}>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
           aria-label={`Decrease ${label.toLowerCase()}`}
@@ -131,7 +131,7 @@ function AllowanceStepper({
         <span className="w-8 text-center text-sm font-medium tabular-nums text-slate-900">{value}</span>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={atMax}
           onClick={() => onChange(Math.min(max, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
@@ -155,7 +155,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
   return (
     <TierRail>
       <div
-        className="grid w-fit gap-1 rounded-sm border border-slate-200/90 bg-slate-50/60 p-1"
+        className="grid w-fit gap-1 rounded-sm border border-slate-100/90 bg-slate-50/60 p-1"
         role="radiogroup"
         aria-label="Hosting mode"
       >
@@ -343,7 +343,7 @@ function DesktopPlanColumn({
     <article
       className={[
         'relative grid grid-rows-subgrid bg-white [grid-row:1/-1]',
-        !isLast ? 'border-r border-slate-200' : '',
+        !isLast ? 'border-r border-slate-100' : '',
         featured ? 'z-[1] shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-emerald-500/25' : '',
       ]
         .filter(Boolean)
@@ -353,7 +353,7 @@ function DesktopPlanColumn({
         <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-emerald-500" aria-hidden />
       ) : null}
 
-      <div className={`${planCellClass()} border-b border-slate-200 py-5`}>
+      <div className={`${planCellClass()} border-b border-slate-100 py-5`}>
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -380,7 +380,7 @@ function DesktopPlanColumn({
         <ul className="space-y-2.5">{features}</ul>
       </div>
 
-      <div className={`${planCellClass()} flex items-center border-t border-slate-200 py-5`}>{cta}</div>
+      <div className={`${planCellClass()} flex items-center border-t border-slate-100 py-5`}>{cta}</div>
     </article>
   );
 }
@@ -406,7 +406,7 @@ function MobilePlanCard({
     <section
       className={[
         'relative flex min-w-0 flex-col bg-white',
-        !isLast ? 'border-b border-slate-200' : '',
+        !isLast ? 'border-b border-slate-100' : '',
         featured ? 'shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-emerald-500/25' : '',
       ]
         .filter(Boolean)
@@ -416,7 +416,7 @@ function MobilePlanCard({
         <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-emerald-500" aria-hidden />
       ) : null}
 
-      <div className="border-b border-slate-200 px-4 py-4 sm:px-5 sm:py-5">
+      <div className="border-b border-slate-100 px-4 py-4 sm:px-5 sm:py-5">
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -435,7 +435,7 @@ function MobilePlanCard({
         <div className="mt-1.5 sm:mt-2">{subline}</div>
         <div className="mt-1">{note}</div>
         <div className="mt-2.5 sm:mt-4">{allowance}</div>
-        <div className="mt-5 border-y border-slate-200 py-4 sm:mt-6">{cta}</div>
+        <div className="mt-5 border-y border-slate-100 py-4 sm:mt-6">{cta}</div>
         <ul className="mt-4 space-y-2.5 sm:mt-5">{features}</ul>
       </div>
     </section>
@@ -680,13 +680,13 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         />
       </div>
 
-      <div className="border-t border-slate-200 sm:-mx-6">
+      <div className="border-t border-slate-100 sm:-mx-6">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
           viewport={{ once: true }}
-          className="hidden overflow-hidden border-b border-slate-200 bg-slate-200 lg:grid lg:grid-cols-4"
+          className="hidden overflow-hidden border-b border-slate-100 bg-slate-200 lg:grid lg:grid-cols-4"
           style={{ gridTemplateRows: PRICING_GRID_TEMPLATE_ROWS }}
         >
           {plans.map((plan, idx) => (
@@ -694,14 +694,14 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           ))}
         </motion.div>
 
-        <div className="border-b border-slate-200 bg-white lg:hidden">
+        <div className="border-b border-slate-100 bg-white lg:hidden">
           {plans.map((plan, idx) => (
             <MobilePlanCard key={plan.title} {...plan} isLast={idx === plans.length - 1} />
           ))}
         </div>
 
         {showFullPricingLink ? (
-          <div className="border-t border-slate-200 bg-trooper-50/80">
+          <div className="border-t border-slate-100 bg-trooper-50/80">
             <Link
               href="/pricing"
               className="group flex w-full items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700 sm:py-4 md:py-5"

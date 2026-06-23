@@ -156,12 +156,12 @@ const FAQCell: React.FC<FAQCellProps> = ({ question, answer, index, totalRows, t
 
   const borderClasses = [
     // Mobile: every cell gets a bottom hairline except the final cell
-    !isLastMobile ? 'border-b border-slate-200' : '',
+    !isLastMobile ? 'border-b border-slate-100' : '',
     // Desktop: bottom hairline unless on last row
     'md:border-b',
     isLastRowDesktop ? 'md:border-b-0' : '',
     // Desktop: right hairline only on left column
-    isLeftCol ? 'md:border-r md:border-slate-200' : '',
+    isLeftCol ? 'md:border-r md:border-slate-100' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -228,7 +228,7 @@ const FAQ: React.FC = () => {
       </div>
 
       {/* Category tabs — flat mono text links with red underline on active */}
-      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-200 sm:mt-8 sm:gap-x-6">
+      <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-b border-slate-100 sm:mt-8 sm:gap-x-6">
         {Object.keys(faqs).map((tab) => (
           <button
             key={tab}
@@ -245,7 +245,7 @@ const FAQ: React.FC = () => {
       </div>
 
       {/* 2-column shared-border grid */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 border border-slate-200 bg-white">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 border border-slate-100 bg-white">
         {activeFaqs.map((faq, index) => (
           <FAQCell
             key={`${activeTab}-${index}`}

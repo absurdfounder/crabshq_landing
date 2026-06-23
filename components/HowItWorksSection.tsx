@@ -22,7 +22,7 @@ export default function HowItWorksSection() {
           {/* Text content on top */}
           <div className="pt-12 pb-4 sm:pt-20 text-center lg:text-left">
             <span className="font-silkscreen text-emerald-600 mb-4 text-xs sm:text-lg">How it works</span>
-            <h2 className="mt-4 font-funneldisplay font-display text-balance text-2xl sm:text-3xl md:text-4xl text-slate-800">
+            <h2 className="mt-4 font-display font-medium text-balance text-2xl sm:text-3xl md:text-4xl text-slate-800">
             One home for all product knowledge
             </h2>
             <p className="body-text mt-6 max-w-4xl text-base text-slate-600 leading-relaxed">

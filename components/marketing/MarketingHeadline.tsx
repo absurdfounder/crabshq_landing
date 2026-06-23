@@ -130,7 +130,7 @@ export function MarketingCardTitle({
 
   return (
     <h3
-      className={`font-display font-medium text-lg sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-3 sm:mt-4 leading-snug ${className}`}
+      className={`font-sans font-medium text-lg sm:text-2xl lg:text-3xl tracking-tight text-balance text-slate-900 mt-3 sm:mt-4 leading-snug ${className}`}
     >
       {title}
       {titleHighlight ? (

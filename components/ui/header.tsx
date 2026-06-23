@@ -14,6 +14,7 @@ import {
   teamNavItems,
   type NavItem,
 } from './nav-data'
+import TopBar from './TopBar'
 
 type DropdownKey = 'features' | 'teams' | null
 
@@ -55,11 +56,15 @@ export default function Header() {
   return (
     <header
       translate="no"
-      className={`notranslate fixed top-0 z-[200] w-full border-b border-slate-200 bg-white transition-all duration-200 ${
-        scrolled ? 'shadow-sm' : ''
-      }`}
+      className={`notranslate site-header fixed top-0 z-[200] w-full transition-all duration-200`}
     >
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r border-slate-200 px-3 sm:h-16 sm:gap-4 sm:px-6">
+      <TopBar />
+      <div
+        className={`border-b border-slate-100 bg-white transition-shadow duration-200 ${
+          scrolled ? 'shadow-sm' : ''
+        }`}
+      >
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r border-slate-100 px-3 sm:h-16 sm:gap-4 sm:px-6">
         <TrooperLogo
           asLink
           priority
@@ -135,6 +140,7 @@ export default function Header() {
 
           <MobileMenu />
         </div>
+      </div>
       </div>
     </header>
   )

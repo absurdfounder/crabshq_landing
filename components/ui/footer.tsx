@@ -176,7 +176,7 @@ function FooterColumnCell({
     <div
       className={[
         'flex flex-col gap-6 px-6 py-8 md:px-8 md:py-10',
-        borderRight ? 'lg:border-r lg:border-slate-200' : '',
+        borderRight ? 'lg:border-r lg:border-slate-100' : '',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -200,12 +200,12 @@ function FooterColumnCell({
 export default function Footer() {
   const linkColumns = [featureColumn, productColumn, ecosystemColumn];
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="mx-auto max-w-7xl border-l border-r border-slate-200">
+    <footer className="border-t border-slate-100 bg-white">
+      <div className="mx-auto max-w-7xl border-l border-r border-slate-100">
         {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
-          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-200 border-b border-slate-200 sm:col-span-2 lg:col-span-1 lg:border-b-0">
+          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-100 border-b border-slate-100 sm:col-span-2 lg:col-span-1 lg:border-b-0">
             <CellHeader number="01" eyebrow="Trooper" />
             <TrooperLogo
               characterClassName="h-10 w-10 sm:h-11 sm:w-11 object-contain"
@@ -272,8 +272,8 @@ export default function Footer() {
               <div
                 key={col.number}
                 className={[
-                  !isMobileLast ? 'border-b border-slate-200 sm:border-b lg:border-b-0' : '',
-                  idx % 2 === 0 ? 'sm:border-r sm:border-slate-200 lg:border-r-0' : '',
+                  !isMobileLast ? 'border-b border-slate-100 sm:border-b lg:border-b-0' : '',
+                  idx % 2 === 0 ? 'sm:border-r sm:border-slate-100 lg:border-r-0' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
@@ -285,7 +285,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-4 border-t border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
+        <div className="flex flex-col gap-4 border-t border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 md:text-sm">
             <span>© Boring Sites LLC. All rights reserved.</span>
             <Link href="/privacy" className="hover:text-slate-900">
@@ -330,7 +330,7 @@ export default function Footer() {
         </div>
 
         {/* Giant trooper. watermark */}
-        <div className="overflow-x-hidden border-t border-slate-200 pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
+        <div className="overflow-x-hidden border-t border-slate-100 pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
           <p
             aria-hidden
             className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-none tracking-tight text-slate-200 text-[clamp(2.75rem,18vw,12rem)]"

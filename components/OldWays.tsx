@@ -974,8 +974,8 @@ export default function OldWays() {
   }, []);
 
   return (
-    <section className="bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-0 py-6 sm:py-16 md:py-24">
+    <section className="features-landscape-bg relative">
+      <div className="max-w-7xl mx-auto px-0 py-6 sm:py-16 md:py-24 border-l border-r border-white/[0.06]">
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
@@ -987,7 +987,7 @@ export default function OldWays() {
                 style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
+                  className="relative bg-white border border-slate-100 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
@@ -1006,12 +1006,12 @@ export default function OldWays() {
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
                       />
-                      <h3 className="font-funneldisplay text-[1.05rem] sm:text-2xl lg:text-3xl tracking-tight text-slate-900 mt-2.5 sm:mt-4 leading-snug">
-                        {card.title}{' '}<span className="font-normal text-slate-400">{card.highlight}</span>
+                      <h3 className="font-sans text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-slate-900 mt-2.5 sm:mt-4 leading-snug">
+                        {card.title}{' '}<span className="text-slate-500">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
                     </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
+                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-100 flex flex-col min-h-0">
                       <PixelFramedVisual>
                         {cardVisuals[index]}
                       </PixelFramedVisual>

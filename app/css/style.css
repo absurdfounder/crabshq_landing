@@ -9,15 +9,6 @@
 
 @import 'tailwindcss/utilities';
 
-/* Erode reads light at 400 — match Ferndesk display weight (medium) site-wide */
-@layer base {
-  .font-display,
-  .font-funneldisplay,
-  .font-erode {
-    font-weight: 500;
-  }
-}
-
 /* Additional Tailwind directives: https://tailwindcss.com/docs/functions-and-directives/#responsive */
 @layer utilities {
   .rtl {
@@ -155,14 +146,24 @@
 
 
 /* Landscape painting behind hero dashboard mockup */
-.dashboard-landscape-bg {
-  background-color: #d6d3c9;
-  background-image:
-    linear-gradient(rgba(248, 250, 246, 0.12), rgba(238, 242, 232, 0.22)),
-    url(/images/hero-landscape-bg.png);
+.dashboard-landscape-bg,
+.features-landscape-bg {
+  background-color: #141a10;
+  background-image: url(/images/hero-dashboard-bg.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* Fixed header: dark top bar + main nav */
+:root {
+  --site-header-height: 5.75rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-header-height: 6.25rem;
+  }
 }
 
 .army-status-badge {
@@ -269,6 +270,12 @@ body > iframe.goog-te-menu-frame {
 
 /* Trooper typography utilities — see tailwind.config.js fontFamily */
 @layer components {
+  /* Erode is light at 400; default display headings to medium unless a weight utility is set */
+  .font-display,
+  .font-funneldisplay {
+    @apply font-medium;
+  }
+
   .type-h1 {
     @apply font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl;
   }

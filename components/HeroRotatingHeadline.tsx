@@ -63,13 +63,9 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
 
   return (
     <h1
-      className={`font-display text-4xl font-medium text-balance text-slate-900 sm:text-5xl max-w-3xl ${className}`}
+      className={`max-w-none font-sans text-[2.35rem] font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[3.75rem] lg:leading-[1.02] xl:text-[4.25rem] ${className}`}
     >
-      <span
-        className="block"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      <span className="block" aria-live="polite" aria-atomic="true">
         <span className="text-trooper">Trooper</span>{' '}
         <motion.span
           key={lineIndex}
@@ -81,14 +77,14 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
           {displayed}
           {showCursor ? (
             <span
-              className="ml-0.5 inline-block w-[2px] animate-pulse bg-trooper align-[-0.05em]"
-              style={{ height: '0.85em' }}
+              className="ml-0.5 inline-block w-[3px] animate-pulse bg-trooper align-[-0.05em]"
+              style={{ height: '0.9em' }}
               aria-hidden
             />
           ) : null}
         </motion.span>
       </span>
-      <span className="mt-1 block">
+      <span className="mt-2 block text-slate-900">
         Whole Team. <span className="text-trooper">One App.</span>
       </span>
     </h1>

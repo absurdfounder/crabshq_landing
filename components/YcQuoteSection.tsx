@@ -10,13 +10,13 @@ export default function YcQuoteSection() {
   return (
     <div className="pb-8 pt-2 md:pb-12">
       <motion.div
-        className="grid grid-cols-1 overflow-hidden border border-slate-200 bg-white lg:grid-cols-[1fr_auto]"
+        className="grid grid-cols-1 overflow-hidden border border-slate-100 bg-white lg:grid-cols-[1fr_auto]"
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease }}
         viewport={{ once: true, margin: '-20px' }}
       >
-        <div className="flex items-center border-b border-slate-200 px-4 py-5 sm:px-8 sm:py-10 lg:border-b-0 lg:border-r lg:py-12">
+        <div className="flex items-center border-b border-slate-100 px-4 py-5 sm:px-8 sm:py-10 lg:border-b-0 lg:border-r lg:py-12">
           <blockquote className="max-w-3xl">
             <p className="font-funneldisplay text-lg leading-[1.35] tracking-tight text-slate-900 sm:text-2xl md:text-[1.75rem] md:leading-[1.3]">
               &ldquo;Placing agent power on your own computer empowers every user and I&apos;m so here for
@@ -32,8 +32,8 @@ export default function YcQuoteSection() {
         </div>
 
         <div className="flex items-center justify-center bg-[#FAFAF8] px-4 py-5 sm:px-8 sm:py-8 lg:min-w-[280px] lg:px-10">
-          <div className="flex w-full max-w-sm items-center gap-3 border border-slate-200 bg-white p-3 sm:gap-4 sm:p-4">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-slate-200 bg-slate-100">
+          <div className="flex w-full max-w-sm items-center gap-3 border border-slate-100 bg-white p-3 sm:gap-4 sm:p-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-slate-100 bg-slate-100">
               <Image
                 src="/images/garry-tan.jpg"
                 alt="Garry Tan"

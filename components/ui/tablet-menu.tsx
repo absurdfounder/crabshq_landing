@@ -89,7 +89,7 @@ export default function TabletMenu() {
         <Transition.Child
           as="nav"
           id="tablet-nav"
-          className="absolute top-0 left-0 w-full h-full overflow-y-auto bg-white shadow-lg pt-16 pb-8"
+          className="absolute top-0 left-0 w-full h-full overflow-y-auto bg-white shadow-lg pt-24 pb-8 sm:pt-28"
           enter="transition ease-out duration-300 transform"
           enterFrom="opacity-0 -translate-y-full"
           enterTo="opacity-100 translate-y-0"

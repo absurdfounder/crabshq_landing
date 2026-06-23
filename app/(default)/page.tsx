@@ -67,7 +67,7 @@ export default function Home() {
         <HowItWorksSteps />
       </SectionShell>
 
-      <SectionShell bgClass="bg-slate-50">
+      <SectionShell>
         <OldWays />
       </SectionShell>
 
