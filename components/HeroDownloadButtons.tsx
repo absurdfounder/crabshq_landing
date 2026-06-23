@@ -6,15 +6,15 @@ import { Download } from 'lucide-react';
 import PixelButton from '@/components/ui/PixelButton';
 import { detectPlatform, getPlatformDownload, type Platform } from '@/lib/platformDownload';
 
-function PlatformIcon({ src }: { src: string }) {
+function PlatformIcon({ src, className = '' }: { src: string; className?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt="" aria-hidden className="h-4 w-4 object-contain" />
+    <img src={src} alt="" aria-hidden className={`h-4 w-4 object-contain brightness-0 invert ${className}`} />
   );
 }
 
 export default function HeroDownloadButtons() {
-  const [platform, setPlatform] = useState<Platform>('unknown');
+  const [platform, setPlatform] = useState<Platform>('mac');
 
   useEffect(() => {
     setPlatform(detectPlatform());
@@ -29,7 +29,8 @@ export default function HeroDownloadButtons() {
       size="lg"
       variant="outline"
       tone="dark"
-      className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto !border-white/25 !text-white hover:!bg-white/10 focus-visible:!ring-offset-[#141a10]"
+      className="w-full focus-visible:!ring-offset-[#141a10] max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto"
+      labelClassName="!border-white/30 !bg-transparent !text-white hover:!bg-white/10 hover:!border-white/45"
       icon={
         download.external ? (
           <PlatformIcon src={download.iconSrc} />

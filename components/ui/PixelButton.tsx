@@ -15,6 +15,7 @@ interface BasePropsCommon {
   icon?: React.ReactNode;
   ariaLabel?: string;
   className?: string;
+  labelClassName?: string;
   disabled?: boolean;
 }
 
@@ -159,6 +160,7 @@ export default function PixelButton(props: PixelButtonProps) {
     icon,
     ariaLabel,
     className,
+    labelClassName: labelClassNameProp,
     disabled,
   } = props;
 
@@ -186,6 +188,7 @@ export default function PixelButton(props: PixelButtonProps) {
           'transition-none',
         ].join(' ')
       : [toneStyles.outlineBorder, toneStyles.outlineBg, toneStyles.outlineHover].join(' '),
+    labelClassNameProp,
   ]
     .filter(Boolean)
     .join(' ');

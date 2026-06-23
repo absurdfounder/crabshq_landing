@@ -3,15 +3,18 @@
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
+/** Keep lines short so "Trooper …" stays on one row; second line is fixed below. */
 const ROTATING_LINES = [
   'is your team.',
-  'plans your roadmap.',
-  'ships your code.',
-  'runs your ads.',
-  'replies to customers.',
-  'closes your deals.',
-  'posts your tweets.',
+  'ships code.',
+  'runs ads.',
+  'closes deals.',
+  'posts tweets.',
+  'writes code.',
+  'plans launches.',
 ] as const;
+
+const LONGEST_LINE = 'plans launches.';
 
 const CHAR_MS = 46;
 const HOLD_MS = 1800;
@@ -63,26 +66,34 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
 
   return (
     <h1
-      className={`max-w-none font-sans text-[2.25rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl md:text-[3.25rem] md:leading-[1.04] lg:text-[3.75rem] xl:text-[4rem] ${className}`}
+      className={`max-w-none font-sans text-[2rem] font-extrabold leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.06] xl:text-[3.5rem] ${className}`}
     >
-      <span className="block" aria-live="polite" aria-atomic="true">
-        <span className="text-white">Trooper </span>
-        <motion.span
-          key={lineIndex}
-          className="text-white/90"
-          initial={reduceMotion ? false : { opacity: 1 }}
-          animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
-          transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {displayed}
-          {showCursor ? (
-            <span
-              className="ml-0.5 inline-block w-[3px] animate-pulse bg-trooper align-[-0.05em]"
-              style={{ height: '0.9em' }}
-              aria-hidden
-            />
-          ) : null}
-        </motion.span>
+      <span className="grid">
+        <span className="col-start-1 row-start-1 invisible pointer-events-none select-none" aria-hidden>
+          Trooper {LONGEST_LINE}
+        </span>
+        <span className="col-start-1 row-start-1 text-white" aria-live="polite" aria-atomic="true">
+          <span className="text-trooper-300">Trooper</span>{' '}
+          <motion.span
+            key={lineIndex}
+            className="text-white"
+            initial={reduceMotion ? false : { opacity: 1 }}
+            animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
+            transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {displayed}
+            {showCursor ? (
+              <span
+                className="ml-0.5 inline-block w-[3px] animate-pulse bg-trooper align-[-0.05em]"
+                style={{ height: '0.9em' }}
+                aria-hidden
+              />
+            ) : null}
+          </motion.span>
+        </span>
+      </span>
+      <span className="mt-1 block text-white sm:mt-2">
+        Whole Team. <span className="text-trooper-300">One App.</span>
       </span>
     </h1>
   );

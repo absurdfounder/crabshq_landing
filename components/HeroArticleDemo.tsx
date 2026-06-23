@@ -11,6 +11,7 @@ import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoThem
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import { DemoFavicon } from './DemoFavicon';
+import PixelLandscapeBackground from './ui/PixelLandscapeBackground';
 import {
   type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep, type DemoWorkspaceMode,
 } from './demoTaskExecution';
@@ -920,9 +921,9 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="dashboard-landscape-bg hidden border-t border-white/[0.06] px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14 lg:block" style={{
-        position: "relative",
-      }}>
+      <div className="dashboard-landscape-bg relative hidden border-t border-white/[0.06] px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14 lg:block">
+        <PixelLandscapeBackground />
+        <div className="relative z-10">
         <DemoScaleFrame>
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
@@ -1015,6 +1016,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
           </div>
         </div>
         </DemoScaleFrame>
+        </div>
       </div>
     </div>
   );
