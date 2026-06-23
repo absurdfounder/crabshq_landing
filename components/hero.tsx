@@ -122,13 +122,13 @@ export default function Hero({ onCategorySelect }: HeroProps) {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 border-l border-r border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 border-l border-r border-slate-200">
 
-        <div className="pt-24 sm:pt-28 md:pt-32 pb-0 sm:pb-0 md:pb-0">
+        <div className="pt-20 sm:pt-28 md:pt-32 pb-0">
           {/* Left (text) + Right (tab sector) on lg; stacked on smaller screens */}
           <div className="flex flex-col lg:flex-col lg:justify-between lg:gap-4 xl:gap-6">
             {/* Copy — open layout, no nested box */}
-            <div className="px-4 sm:px-6 lg:px-8 pb-6">
+            <div className="pb-6 sm:pb-8 lg:px-2">
               <div className="hidden">
                 <ProductHuntBadge />
               </div>
@@ -154,19 +154,20 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 />
               </div>
 
-              <p className="text-slate-600 text-base sm:text-lg leading-relaxed mt-3 max-w-2xl">
+              <p className="text-slate-600 text-[17px] sm:text-lg leading-relaxed mt-4 max-w-2xl">
                 AI units that write code, make commits, browse the web, send emails, and execute real missions — not just answer questions. You hold command as the board of directors. Powered by{' '}
                 <span className="font-semibold text-trooper-700">OpenClaw</span>.
               </p>
 
               <HeroSetupCommand />
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 items-start">
+              <div className="flex flex-col gap-3 mt-6 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
                 <PixelButton
                   href="https://app.trooper.so?ref=herolanding"
                   external
                   size="lg"
                   tone="brand"
+                  className="w-full sm:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
                   Get Started for free
@@ -176,6 +177,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                   size="lg"
                   variant="outline"
                   tone="dark"
+                  className="w-full sm:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                   data-cal-namespace="setup-call"
                   data-cal-link="set-meeting/setup-call"
@@ -195,7 +197,7 @@ export default function Hero({ onCategorySelect }: HeroProps) {
             </div>
 
             {/* Demo — soft olive tint behind mockup only */}
-            <div className="relative flex-1 -mx-3 sm:-mx-4 md:-mx-6 overflow-hidden">
+            <div className="relative flex-1 -mx-4 sm:-mx-6 overflow-hidden">
               <HeroArticleDemo />
             </div>
           </div>

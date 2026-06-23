@@ -22,7 +22,7 @@ export type MarketingHeadlineProps = {
 };
 
 const sizeClasses = {
-  hero: 'text-3xl sm:text-4xl md:text-[2.5rem] lg:text-[2.75rem] leading-[1.12]',
+  hero: 'text-[1.75rem] leading-[1.15] sm:text-4xl sm:leading-[1.12] md:text-[2.5rem] lg:text-[2.75rem]',
   section: 'text-2xl sm:text-3xl md:text-4xl leading-[1.15]',
   card: 'text-lg sm:text-2xl lg:text-3xl leading-snug',
 } as const;

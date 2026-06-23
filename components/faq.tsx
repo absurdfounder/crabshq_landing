@@ -208,7 +208,7 @@ const FAQ: React.FC = () => {
   const totalRows = Math.ceil(activeFaqs.length / 2);
 
   return (
-    <div className="px-0 pt-10 sm:pt-14 pb-16 sm:pb-24 max-w-7xl mx-auto">
+    <div className="px-0 pt-4 sm:pt-6 pb-12 sm:pb-20 max-w-7xl mx-auto">
       <div className="max-w-2xl">
         <h2 className="font-funneldisplay text-3xl sm:text-4xl tracking-tight text-slate-900">
           Intel brief.

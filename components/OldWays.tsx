@@ -947,7 +947,7 @@ export default function OldWays() {
 
   return (
     <section className="bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-0 py-8 sm:py-16 md:py-24">
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };

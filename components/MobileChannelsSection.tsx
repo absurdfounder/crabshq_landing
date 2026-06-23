@@ -291,7 +291,7 @@ function ConnectQrPanel() {
 
 export default function MobileChannelsSection() {
   return (
-    <div className="pb-12 pt-4 md:pb-20 md:pt-6">
+    <div className="pb-8 pt-2 md:pb-12">
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
         <PhoneChatMockup />
 
@@ -302,7 +302,7 @@ export default function MobileChannelsSection() {
           transition={{ duration: 0.55, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="font-funneldisplay text-[2rem] leading-[1.12] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
+          <h2 className="font-funneldisplay text-[1.75rem] leading-[1.15] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
             Chat with your workforce,
             <br />
             on the go.

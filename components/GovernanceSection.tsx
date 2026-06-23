@@ -13,7 +13,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function GovernanceSection() {
   return (
-    <div className="pb-10 md:pb-16 pt-2">
+    <div className="pb-8 md:pb-16 pt-2">
       <motion.div
         className="governance-header mb-8 md:mb-12 max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
@@ -31,7 +31,7 @@ export default function GovernanceSection() {
 
       <div className="governance-content grid grid-cols-1 lg:grid-cols-2 border border-slate-200 bg-white overflow-hidden">
         <motion.div
-          className="governance-block p-6 md:p-8 lg:border-r border-slate-200"
+          className="governance-block p-5 sm:p-6 md:p-8 lg:border-r border-slate-200"
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease }}
@@ -49,7 +49,7 @@ export default function GovernanceSection() {
         </motion.div>
 
         <motion.div
-          className="governance-block p-6 md:p-8 flex items-center border-t lg:border-t-0 border-slate-200"
+          className="governance-block p-5 sm:p-6 md:p-8 flex items-center border-t lg:border-t-0 border-slate-200"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-20px' }}

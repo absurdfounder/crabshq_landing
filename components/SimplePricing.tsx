@@ -35,12 +35,6 @@ type SimplePricingProps = {
 const PRICING_GRID_TEMPLATE_ROWS =
   'auto minmax(4.5rem,auto) minmax(2.75rem,auto) minmax(2.5rem,auto) minmax(2.75rem,auto) minmax(11.5rem,auto) minmax(0px,1fr) auto';
 
-const TIER_RAIL_MIN_H = 'min-h-[4.5rem]';
-const PRICE_ROW_MIN_H = 'min-h-[2.75rem]';
-const SUBLINE_ROW_MIN_H = 'min-h-[2.5rem]';
-const NOTE_ROW_MIN_H = 'min-h-[2.75rem]';
-const ALLOWANCE_ROW_MIN_H = 'min-h-[11.5rem]';
-
 function planCellClass() {
   return 'bg-white px-5 xl:px-6';
 }
@@ -151,7 +145,7 @@ function AllowanceStepper({
 
 function TierRail({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`flex w-full items-center ${TIER_RAIL_MIN_H}`}>
+    <div className="flex w-full items-center lg:min-h-[4.5rem]">
       <div className="flex items-center py-2">{children}</div>
     </div>
   );
@@ -256,7 +250,7 @@ function AllowanceBlock({
   disableIncrease?: boolean;
 }) {
   return (
-    <div className={`space-y-2 ${ALLOWANCE_ROW_MIN_H}`}>
+    <div className="space-y-2 lg:min-h-[11.5rem]">
       <AllowanceStepper
         label="Team members"
         value={seatCount}
@@ -287,8 +281,8 @@ function PricingAmount({
   cadence?: string;
 }) {
   return (
-    <div className={`flex ${PRICE_ROW_MIN_H} items-end gap-1.5`}>
-      <span className="font-funneldisplay text-4xl font-medium tabular-nums tracking-tight text-slate-900">
+    <div className="flex items-end gap-1.5 lg:min-h-[2.75rem]">
+      <span className="font-funneldisplay text-3xl font-medium tabular-nums tracking-tight text-slate-900 sm:text-4xl">
         {price}
       </span>
       {cadence ? <span className="pb-1 text-sm text-slate-500">{cadence}</span> : null}
@@ -298,13 +292,13 @@ function PricingAmount({
 
 function PricingSubline({ children }: { children: React.ReactNode }) {
   return (
-    <p className={`${SUBLINE_ROW_MIN_H} text-sm font-medium leading-snug text-emerald-700`}>{children}</p>
+    <p className="text-sm font-medium leading-snug text-emerald-700 lg:min-h-[2.5rem]">{children}</p>
   );
 }
 
 function PricingNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className={`${NOTE_ROW_MIN_H} text-xs leading-5 text-slate-500`}>{children || '\u00a0'}</p>
+    <p className="text-xs leading-5 text-slate-500 lg:min-h-[2.75rem]">{children || '\u00a0'}</p>
   );
 }
 
@@ -420,7 +414,7 @@ function MobilePlanCard({
         <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-emerald-500" aria-hidden />
       ) : null}
 
-      <div className="border-b border-slate-200 px-5 py-5">
+      <div className="border-b border-slate-200 px-4 py-4 sm:px-5 sm:py-5">
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -431,16 +425,16 @@ function MobilePlanCard({
         />
       </div>
 
-      <div className="flex flex-1 flex-col px-5 py-6 xl:px-6">
+      <div className="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-6 xl:px-6">
         {tierRail}
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <PricingAmount price={price} cadence={cadence} />
         </div>
         <div className="mt-2">{subline}</div>
         <div className="mt-1">{note}</div>
-        <div className="mt-4">{allowance}</div>
-        <ul className="mt-6 space-y-2.5">{features}</ul>
-        <div className="mt-7">{cta}</div>
+        <div className="mt-3 sm:mt-4">{allowance}</div>
+        <ul className="mt-4 space-y-2.5 sm:mt-6">{features}</ul>
+        <div className="mt-5 sm:mt-7">{cta}</div>
       </div>
     </section>
   );
@@ -684,7 +678,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         />
       </div>
 
-      <div className="-mx-3 border-t border-slate-200 sm:-mx-4 md:-mx-6">
+      <div className="-mx-4 border-t border-slate-200 sm:-mx-6">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -708,7 +702,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           <div className="border-t border-slate-200 bg-trooper-50/80">
             <Link
               href="/pricing"
-              className="group flex w-full items-center justify-center gap-2 py-5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700"
+              className="group flex w-full items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700 sm:py-4 md:py-5"
             >
               See full rate card and FAQ
               <svg

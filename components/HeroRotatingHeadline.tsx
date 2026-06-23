@@ -61,10 +61,10 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
 
   return (
     <h1
-      className={`font-funneldisplay tracking-tight text-balance max-w-3xl text-3xl sm:text-4xl md:text-[2.5rem] lg:text-[2.75rem] leading-[1.12] ${className}`}
+      className={`font-funneldisplay tracking-tight text-balance max-w-3xl text-[1.75rem] leading-[1.15] sm:text-4xl sm:leading-[1.12] md:text-[2.5rem] lg:text-[2.75rem] ${className}`}
     >
       <span
-        className="flex flex-wrap items-baseline gap-x-[0.35em] min-h-[1.35em]"
+        className="flex flex-wrap items-baseline gap-x-[0.35em] gap-y-1 min-h-[2.6em] sm:min-h-[1.35em]"
         aria-live="polite"
         aria-atomic="true"
       >
