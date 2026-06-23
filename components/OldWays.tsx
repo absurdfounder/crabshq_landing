@@ -899,9 +899,9 @@ const BYOAVisual = () => {
 };
 
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex h-full flex-col overflow-hidden p-2 sm:p-4 lg:p-6">
+  <div className="relative flex h-full min-h-[220px] flex-col overflow-hidden p-4 sm:p-6 lg:p-8">
     <PixelDitherGradient />
-    <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden border border-slate-100 bg-white shadow-sm">
+    <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden border border-slate-100 bg-white/95 shadow-sm backdrop-blur-[1px]">
       {children}
     </div>
   </div>

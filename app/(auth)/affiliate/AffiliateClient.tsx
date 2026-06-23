@@ -239,7 +239,7 @@ export default function AffiliateClient() {
 
       <div className="mx-auto max-w-7xl border-x border-slate-200">
         {/* Hero */}
-        <section className="relative border-b border-slate-200">
+        <section className="relative overflow-hidden border-b border-slate-200">
           <PixelDitherGradient />
           <div className="relative z-10">
             <div className="px-4 pb-10 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 md:pb-14 md:pt-32">

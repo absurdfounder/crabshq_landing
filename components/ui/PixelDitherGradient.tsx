@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
-/** 4×4 Bayer ordered dither — same family as Bento / reference pixel gradient. */
 const BAYER_4 = [
   [0, 8, 2, 10],
   [12, 4, 14, 6],
@@ -11,25 +10,23 @@ const BAYER_4 = [
   [15, 7, 13, 5],
 ] as const;
 
-/**
- * Reference layout: pale sky top → cream mid → light lime bottom.
- * Trooper tints: cool mist blue, trooper-50/100/200/300 (no dark olive).
- */
+/** Reference-style sky → cream → lime, Trooper-tinted for visibility on white pages. */
 const GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
-  { at: 0, color: '#c8dce8' },
-  { at: 0.16, color: '#d8e8f0' },
-  { at: 0.32, color: '#eef0dc' },
-  { at: 0.46, color: '#f0f5e6' },
-  { at: 0.58, color: '#eef2dc' },
-  { at: 0.72, color: '#ddebc8' },
-  { at: 0.86, color: '#c4d9a0' },
-  { at: 1, color: '#b0d080' },
+  { at: 0, color: '#9ec0d8' },
+  { at: 0.2, color: '#b8d4e8' },
+  { at: 0.36, color: '#e4e8cc' },
+  { at: 0.5, color: '#ebe8d0' },
+  { at: 0.64, color: '#d8e8b0' },
+  { at: 0.8, color: '#b8d878' },
+  { at: 1, color: '#98c858' },
 ];
 
-/** Logical dither grid — each cell is drawn as a chunky square (reference ~6–8px). */
-const GRID_W = 40;
-const GRID_H = 80;
-const CELL_PX = 8;
+const GRID_W = 48;
+const GRID_H = 96;
+const CELL_PX = 10;
+
+const FALLBACK_BG =
+  'linear-gradient(180deg, #9ec0d8 0%, #ebe8d0 48%, #98c858 100%)';
 
 function hexToRgb(hex: string) {
   const value = parseInt(hex.slice(1), 16);
@@ -58,7 +55,7 @@ function segmentAt(t: number): [string, string, number] {
 }
 
 function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) return;
 
   const width = GRID_W * CELL_PX;
@@ -80,7 +77,6 @@ function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
     for (let gx = 0; gx < GRID_W; gx += 1) {
       const threshold = BAYER_4[(gy + bayerShiftY) % 4][(gx + bayerShiftX) % 4] / 16;
       const rgb = threshold < mix ? rgbB : rgbA;
-
       const px = gx * CELL_PX;
       const py = gy * CELL_PX;
 
@@ -107,14 +103,15 @@ export default function PixelDitherGradient({ className = '' }: PixelDitherGradi
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    paintDither(canvas, 0, 0);
+  }, []);
 
-    if (reduceMotion) {
-      paintDither(canvas, 0, 0);
-      return;
-    }
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || reduceMotion) return;
 
     const start = performance.now();
     let frame = 0;
@@ -131,11 +128,19 @@ export default function PixelDitherGradient({ className = '' }: PixelDitherGradi
   }, [reduceMotion]);
 
   return (
-    <canvas
-      ref={canvasRef}
+    <div
       aria-hidden
-      className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
-      style={{ imageRendering: 'pixelated' }}
-    />
+      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
+      style={{ background: FALLBACK_BG }}
+    >
+      <canvas
+        ref={canvasRef}
+        className="block h-full w-full"
+        style={{
+          imageRendering: 'pixelated',
+          objectFit: 'cover',
+        }}
+      />
+    </div>
   );
 }

@@ -205,7 +205,7 @@ export default function DownloadClient() {
 
       <div className="max-w-7xl mx-auto border-l border-r border-slate-200">
         {/* Hero */}
-        <section className="relative border-b border-slate-200">
+        <section className="relative overflow-hidden border-b border-slate-200">
           <PixelDitherGradient />
           <div className="relative z-10">
             <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">

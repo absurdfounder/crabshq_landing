@@ -899,7 +899,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const showSplit = SPLIT_PAGES.includes(activePage);
 
   return (
-    <div className="Trooper-demo" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
+    <>
       <style>{`
         @keyframes cardIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
@@ -921,9 +921,9 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="relative hidden min-h-[320px] border-t border-slate-100 px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14 lg:block">
+      <div className="relative min-h-[280px] border-t border-slate-100 px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
         <PixelDitherGradient />
-        <div className="relative z-10">
+        <div className="Trooper-demo relative z-10 hidden lg:block" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
         <DemoScaleFrame>
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
@@ -1018,6 +1018,6 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         </DemoScaleFrame>
         </div>
       </div>
-    </div>
+    </>
   );
 }
