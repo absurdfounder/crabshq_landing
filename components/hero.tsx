@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
@@ -11,9 +11,6 @@ import HeroMarquee from './HeroMarquee';
 import HeroDownloadButtons from './HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
 import { PixelMissionTag } from './PixelAtmosphere';
-
-// Defer non-critical Cal.com widget import
-const getCalApiImport = () => import("@calcom/embed-react").then(mod => mod.getCalApi);
 
 // Optimized SVG components using Next.js Image for better loading
 const ProductHuntBadge = () => (
@@ -86,29 +83,6 @@ interface HeroProps {
 }
 
 export default function Hero({ onCategorySelect }: HeroProps) {
-  // Defer Cal.com widget loading to well after initial render
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const loadCalApi = async () => {
-        try {
-          const getCalApi = await getCalApiImport();
-          const cal = await getCalApi({ "namespace": "setup-call" });
-          cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
-        } catch (error) {
-          // Cal.com widget failed to load silently
-        }
-      };
-
-      if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-        window.requestIdleCallback(loadCalApi);
-      } else {
-        setTimeout(loadCalApi, 2000);
-      }
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleCategoryClick = (category: string) => {
     if (onCategorySelect) {
       onCategorySelect(category);
@@ -172,19 +146,6 @@ export default function Hero({ onCategorySelect }: HeroProps) {
                 </PixelButton>
 
                 <HeroDownloadButtons />
-
-                <PixelButton
-                  size="lg"
-                  variant="outline"
-                  tone="dark"
-                  className="w-full max-sm:active:translate-x-0 max-sm:active:translate-y-0 sm:w-auto"
-                  icon={<ArrowRight className="h-4 w-4" />}
-                  data-cal-namespace="setup-call"
-                  data-cal-link="set-meeting/setup-call"
-                  data-cal-config='{"layout":"month_view"}'
-                >
-                  Talk to founder
-                </PixelButton>
               </div>
 
               <div className="mt-6">
