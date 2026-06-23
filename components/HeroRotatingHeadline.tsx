@@ -66,7 +66,7 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
 
   return (
     <h1
-      className={`max-w-none font-sans text-[2rem] font-extrabold leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.06] xl:text-[3.5rem] ${className}`}
+      className={`max-w-none font-display font-medium text-[2rem] leading-[1.12] tracking-tight sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08] xl:text-[3.5rem] ${className}`}
     >
       <span className="grid">
         <span className="col-start-1 row-start-1 invisible pointer-events-none select-none" aria-hidden>

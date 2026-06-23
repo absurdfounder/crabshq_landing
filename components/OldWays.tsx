@@ -1005,7 +1005,7 @@ export default function OldWays() {
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
                       />
-                      <h3 className="font-sans text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-slate-900 mt-2.5 sm:mt-4 leading-snug">
+                      <h3 className="font-display text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-slate-900 mt-2.5 sm:mt-4 leading-snug">
                         {card.title}{' '}<span className="text-slate-500">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
