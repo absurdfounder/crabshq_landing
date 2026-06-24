@@ -1,7 +1,6 @@
 import { _loadFromJson, _loadFromJsonComparison, _loadSkills } from '@/app/utils/helper';
 import { allAlternativeSlugs } from '@/lib/alternativeContent';
 import { allChannelPageSlugs } from '@/lib/channelContent';
-import { allIntegrationPageSlugs } from '@/lib/integrationContent';
 import { getAllLoopSlugs } from '@/lib/loopCatalog';
 import { HUB_OG_PAGES, STATIC_OG_PAGES } from '@/lib/og/staticPages';
 import type { OgKind } from '@/lib/og/types';
@@ -52,10 +51,6 @@ export async function listAllOgImageTargets(): Promise<OgImageTarget[]> {
   const integrations = await _loadFromJson(false);
   for (const entry of integrations) {
     if (entry.id) pushSlug(targets, 'legacy-integration', entry.id);
-  }
-
-  for (const slug of allIntegrationPageSlugs()) {
-    pushSlug(targets, 'legacy-integration', slug);
   }
 
   return targets;

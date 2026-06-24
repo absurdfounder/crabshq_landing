@@ -10,9 +10,10 @@
     "validate:playbooks": "node scripts/validate-playbooks.mjs",
     "generate:og": "tsx scripts/generate-og-images.ts",
     "generate:og:home": "tsx scripts/generate-og-images.ts --home",
-    "build": "npm run validate:playbooks && npm run generate:og && next build",
+    "build": "npm run validate:playbooks && npm run generate:og:core && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,alternative,channel,loop,compare,showcase,legacy-integration"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
