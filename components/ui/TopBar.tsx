@@ -9,7 +9,8 @@ export default function TopBar() {
   return (
     <div className="site-top-bar">
       <PixelSurface
-        className="bg-fern-bright"
+        className="relative"
+        dither={false}
         surfaceStyle={{
           ...(PIXEL_SURFACE_BANNER_STYLE as PixelSurfaceStyle),
           '--pixel-bg-size': 'auto 100%',
@@ -18,17 +19,17 @@ export default function TopBar() {
       >
         <Link
           href="/download/mac"
-          className="group flex h-10 w-full items-center justify-center gap-2 px-4 text-sm font-medium text-lime-950/85 transition-colors hover:bg-fern/90 sm:gap-2.5"
+          className="group relative flex h-10 w-full items-center justify-center gap-2 px-4 text-sm font-medium text-lime-950/80 transition-colors hover:text-lime-950 sm:gap-2.5"
         >
-          <span className="shrink-0 rounded-md bg-lime-950/15 px-1.5 py-0.5 text-[11px] font-semibold leading-none text-lime-950/90">
+          <span className="mr-1 shrink-0 rounded-md bg-lime-900/20 px-1 py-0.5 text-[11px] font-semibold leading-none text-lime-950/90">
             New
           </span>
           <span className="min-w-0 truncate sm:hidden">Trooper for Mac</span>
           <span className="hidden min-w-0 truncate sm:inline">
             Trooper for Mac — run your AI workforce on your machine
           </span>
-          <span className="hidden shrink-0 items-center gap-1 text-lime-950/55 transition-colors group-hover:text-lime-950/75 sm:inline-flex">
-            <span aria-hidden className="text-lime-950/35">
+          <span className="ml-2 hidden shrink-0 items-center gap-1 text-sm font-medium text-lime-950/50 transition-colors group-hover:text-lime-950/70 sm:inline-flex">
+            <span aria-hidden className="mr-1">
               |
             </span>
             <span>Download</span>

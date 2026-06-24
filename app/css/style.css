@@ -181,6 +181,26 @@
   background-position: top;
 }
 
+/* Top promo strip — tiled horizontal pixel landscape, no stretched canvas */
+.site-top-bar .pixel-surface {
+  --pixel-bg-size: auto 100%;
+  --pixel-bg-repeat: repeat-x;
+  background-color: #8cc352;
+  animation: site-top-bar-pixel-drift 48s linear infinite;
+}
+
+@keyframes site-top-bar-pixel-drift {
+  to {
+    background-position: 448px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-top-bar .pixel-surface {
+    animation: none;
+  }
+}
+
 .pixel-surface__clouds {
   background-image: var(--cloud-a), var(--cloud-b);
   opacity: var(--cloud-opacity, 0);
