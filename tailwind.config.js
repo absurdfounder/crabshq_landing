@@ -1,12 +1,14 @@
-/** Ferndesk-aligned marketing accent (Silkscreen kickers, promo bar) */
+/** Ferndesk-aligned marketing accent — darker sage than pastel lime */
 const fernAccent = {
-  DEFAULT: '#8ECD44',
-  bright: '#8CC352',
-  dark: '#6aab2e',
-  muted: '#a8d96a',
-  50: '#f4fbe8',
-  100: '#e8f5d4',
-  200: '#d4ecb8',
+  DEFAULT: '#6BA82E',
+  light: '#8ECD44',
+  bright: '#72B833',
+  check: '#65a30d',
+  dark: '#4d7d1f',
+  muted: '#7aab38',
+  50: '#eef6e4',
+  100: '#dcecc8',
+  200: '#c5dda4',
   700: '#5a9628',
   800: '#4a7d22',
 };

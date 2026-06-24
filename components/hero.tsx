@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import HeroDownloadButtons from './HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
+import FernCircleCheckIcon from './ui/FernCircleCheckIcon';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'OpenClaw-powered'] as const;
 
@@ -56,7 +57,7 @@ export default function Hero() {
               <ul className="fern-trust-row mt-5" aria-label="Product highlights">
                 {TRUST_ITEMS.map((item) => (
                   <li key={item} className="fern-trust-row__item">
-                    <Check className="fern-trust-row__check" strokeWidth={2.5} aria-hidden />
+                    <FernCircleCheckIcon className="fern-trust-row__check" />
                     <span>{item}</span>
                   </li>
                 ))}

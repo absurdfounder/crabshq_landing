@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, BookOpen, Puzzle } from 'lucide-react'
+import { BookOpen, Puzzle } from 'lucide-react'
 
 import LiquidOrb from '@/components/ui/LiquidOrb'
 
@@ -42,12 +42,18 @@ export default function TopBar() {
     <div className="site-top-bar">
       <Link
         href="/download"
-        className="group flex items-center justify-center gap-1.5 bg-fern-bright px-4 py-2 text-center text-xs font-medium text-ink transition-colors hover:bg-fern"
+        className="flex h-10 items-center justify-center bg-fern-bright px-4 transition-colors hover:bg-fern"
       >
-        <span>New: Trooper for Mac — run your AI workforce on your machine</span>
-        <span className="inline-flex items-center gap-0.5 font-medium">
-          Download
-          <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
+        <span className="flex min-w-0 items-center gap-1 text-sm font-medium text-lime-950/80">
+          <span className="mr-1 rounded-md bg-lime-900/20 px-1 py-0.5 text-xs font-medium">New</span>
+          <span className="sm:hidden">Trooper for Mac</span>
+          <span className="hidden sm:inline">
+            Trooper for Mac — run your AI workforce on your machine
+          </span>
+        </span>
+        <span className="ml-2 hidden text-sm font-medium text-lime-950/50 sm:inline">
+          <span className="mr-1">|</span>
+          Download →
         </span>
       </Link>
 
