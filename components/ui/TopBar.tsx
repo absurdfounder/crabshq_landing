@@ -10,12 +10,9 @@ export default function TopBar() {
     <div className="site-top-bar">
       <PixelSurface
         className="relative"
-        dither={false}
-        surfaceStyle={{
-          ...(PIXEL_SURFACE_BANNER_STYLE as PixelSurfaceStyle),
-          '--pixel-bg-size': 'auto 100%',
-          '--pixel-bg-repeat': 'repeat-x',
-        }}
+        animated
+        ditherOrientation="horizontal"
+        surfaceStyle={PIXEL_SURFACE_BANNER_STYLE as PixelSurfaceStyle}
       >
         <Link
           href="/download/mac"

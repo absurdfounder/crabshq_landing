@@ -11,7 +11,8 @@ import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoThem
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
 import { DemoTaskModal } from './demoTaskModal';
 import { DemoFavicon } from './DemoFavicon';
-import PixelDitherGradient from './ui/PixelDitherGradient';
+import PixelSurface, { HERO_DITHER_STOPS, type PixelSurfaceStyle } from './ui/PixelSurface';
+import { PIXEL_SURFACE_HERO_STYLE } from '@/lib/pixelSurfaceHero';
 import {
   type DemoArtifact, type DemoFeedItem, type DemoSubtask, type TaskExecStep, type DemoWorkspaceMode,
 } from './demoTaskExecution';
@@ -921,8 +922,12 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="relative min-h-[280px] border-t border-slate-100 px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
-        <PixelDitherGradient />
+      <PixelSurface
+        animated
+        className="min-h-[280px] border-t border-slate-100 bg-sky-100 px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14"
+        ditherStops={HERO_DITHER_STOPS}
+        surfaceStyle={PIXEL_SURFACE_HERO_STYLE as PixelSurfaceStyle}
+      >
         <div className="Trooper-demo relative z-10 hidden lg:block" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
         <DemoScaleFrame>
         <div style={{
@@ -1017,7 +1022,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         </div>
         </DemoScaleFrame>
         </div>
-      </div>
+      </PixelSurface>
     </>
   );
 }

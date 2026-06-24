@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
-import PixelDitherGradient from './ui/PixelDitherGradient';
+import PixelSurface, { HERO_DITHER_STOPS, type PixelSurfaceStyle } from './ui/PixelSurface';
+import { PIXEL_SURFACE_HERO_STYLE } from '@/lib/pixelSurfaceHero';
 
 function FeatureKicker({ index, label }: { index: string; label: string }) {
   return (
@@ -922,8 +923,12 @@ const PixelFramedVisual = ({
   bare?: boolean;
   contain?: boolean;
 }) => (
-  <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
-    <PixelDitherGradient variant="warm" />
+  <PixelSurface
+    animated
+    className="relative flex min-h-[320px] flex-col bg-sky-100 sm:min-h-[380px] lg:min-h-[500px]"
+    ditherStops={HERO_DITHER_STOPS}
+    surfaceStyle={PIXEL_SURFACE_HERO_STYLE as PixelSurfaceStyle}
+  >
     <div
       className={`relative z-10 flex flex-1 ${
         bare
@@ -943,7 +948,7 @@ const PixelFramedVisual = ({
         </div>
       )}
     </div>
-  </div>
+  </PixelSurface>
 );
 
 /* ─── Card visuals ─── */
