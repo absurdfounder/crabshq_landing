@@ -9,7 +9,7 @@ type DarkSplitSectionProps = {
 export default function DarkSplitSection({ children, className = '' }: DarkSplitSectionProps) {
   return (
     <section className={`bg-split text-white ${className}`}>
-      <div className="mx-auto max-w-7xl border-x border-white/[0.06] px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 sm:px-6">
         {children}
       </div>
     </section>

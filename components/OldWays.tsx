@@ -5,6 +5,7 @@ import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit,
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import PixelDitherGradient from './ui/PixelDitherGradient';
+import FeatureVisualStage from './ui/FeatureVisualStage';
 
 function FeatureKicker({ index, label }: { index: string; label: string }) {
   return (
@@ -215,53 +216,71 @@ const FlowLine = ({ className = '' }: { className?: string }) => (
 );
 
 /* ─── Visual 1: AI Org — Org chart with Trooper ─── */
-const OrgVisual = () => (
-  <div className="flex flex-col items-center justify-center py-2">
-    {/* CEO / Founder */}
-    <div className="flex flex-col items-center">
-      <div className="w-14 h-14 rounded-full border-2 border-white overflow-hidden bg-transparent flex items-center justify-center -mb-4 relative z-10 p-1.5">
+const ORG_MANAGERS = [
+  { name: 'Research Trooper', role: 'Head of Research', count: 24 },
+  { name: 'Dev Trooper', role: 'Head of Engineering', count: 18 },
+] as const;
+
+function OrgNode({
+  name,
+  role,
+  count,
+  compact = false,
+}: {
+  name: string;
+  role: string;
+  count?: number;
+  compact?: boolean;
+}) {
+  return (
+    <div className="flex w-[148px] flex-col items-center">
+      <div
+        className={`relative z-10 -mb-2.5 flex items-center justify-center overflow-hidden rounded-full border-2 border-white bg-white shadow-sm ${
+          compact ? 'h-10 w-10 p-1' : 'h-11 w-11 p-1'
+        }`}
+      >
         <TrooperChar />
       </div>
-      <div className="bg-white rounded-sm border border-slate-200 px-4 sm:px-6 py-3 sm:py-4 text-center min-w-0 w-full max-w-[220px] sm:max-w-none sm:min-w-[180px]">
-        <p className="font-semibold text-[14px] text-slate-900 mt-1">Trooper Prime</p>
-        <p className="text-[12px] text-slate-400">CEO, Founder</p>
+      <div className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center shadow-sm">
+        <p className={`font-semibold leading-tight text-slate-900 ${compact ? 'text-[11px]' : 'text-[12px]'}`}>
+          {name}
+        </p>
+        <p className="mt-0.5 text-[10px] leading-snug text-slate-400">{role}</p>
       </div>
-      <span className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] bg-slate-900 text-white rounded-sm px-2.5 py-1">
-        +44 reports
-      </span>
-    </div>
-
-    {/* Connector lines */}
-    <div className="relative w-full max-w-[420px] h-6">
-      <div className="absolute left-1/2 top-0 w-px h-2 bg-slate-300 -translate-x-1/2" />
-      <div className="absolute top-2 left-[25%] right-[25%] h-px bg-slate-300" />
-      <div className="absolute top-2 left-[25%] w-px h-4 bg-slate-300" />
-      <div className="absolute top-2 right-[25%] w-px h-4 bg-slate-300" />
-    </div>
-
-    {/* Managers row */}
-    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-10 w-full max-w-[420px]">
-      {[
-        { name: 'Research Trooper', role: 'Head of Research', count: 24 },
-        { name: 'Dev Trooper', role: 'Head of Engineering', count: 18 },
-      ].map((mgr, i) => (
-        <div key={i} className="flex flex-col items-center w-full sm:w-auto">
-          <div className="w-11 h-11 rounded-full border-2 border-white overflow-hidden bg-transparent flex items-center justify-center -mb-3 relative z-10 p-1">
-            <TrooperChar />
-          </div>
-          <div className="bg-white rounded-sm border border-slate-200 px-4 sm:px-5 py-3 text-center min-w-0 w-full max-w-[220px] sm:max-w-none sm:min-w-[150px]">
-            <p className="font-semibold text-[13px] text-slate-900 mt-0.5">{mgr.name}</p>
-            <p className="text-[11px] text-slate-400">{mgr.role}</p>
-          </div>
-          <div className="flex items-center gap-1.5 mt-2 bg-white border border-slate-200 rounded-sm px-2.5 py-1">
-            <span className="text-[11px] font-semibold text-slate-700">{mgr.count}</span>
-            <svg className="w-3 h-3 text-slate-400" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
-          </div>
+      {count != null ? (
+        <div className="mt-1.5 flex items-center gap-1 rounded border border-slate-200 bg-white px-2 py-0.5 shadow-sm">
+          <span className="text-[10px] font-semibold tabular-nums text-slate-700">{count}</span>
+          <svg className="h-2.5 w-2.5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
         </div>
+      ) : null}
+    </div>
+  );
+}
+
+const OrgVisual = () => (
+  <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-white px-6">
+    <OrgNode name="Trooper Prime" role="CEO, Founder" />
+    <span className="mt-1.5 rounded bg-slate-900 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-white">
+      +44 reports
+    </span>
+
+    <svg className="my-1 h-5 w-[248px] shrink-0" viewBox="0 0 248 20" aria-hidden>
+      <path d="M124 0 V7 M62 7 H186 M62 7 V20 M186 7 V20" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
+    </svg>
+
+    <div className="flex items-start justify-center gap-10">
+      {ORG_MANAGERS.map((mgr) => (
+        <OrgNode key={mgr.name} name={mgr.name} role={mgr.role} count={mgr.count} compact />
       ))}
     </div>
 
-    <p className="mt-5 text-center text-[11px] font-mono uppercase tracking-[0.18em] text-slate-400">2 leaders · 44 reports</p>
+    <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-slate-400">2 leaders · 44 reports</p>
   </div>
 );
 
@@ -271,7 +290,7 @@ const IntegrationsVisual = () => {
   const row2 = ['notion.so', 'atlassian.com', 'dropbox.com', 'asana.com', 'gmail.com', 'github.com'];
 
   return (
-    <div className="flex flex-col justify-center h-full p-3 sm:p-5 md:p-6">
+    <div className="flex h-full w-full flex-col justify-center p-5">
       <div className="border border-dashed border-slate-300 rounded-sm p-2.5 sm:p-4 bg-white/60">
         <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
           {row1.map((d) => <Fav key={d} domain={d} size={22} />)}
@@ -392,7 +411,7 @@ const MemoryVisual = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full p-3 sm:p-5 md:p-6 min-h-0">
+    <div className="flex h-full w-full flex-col p-5 min-h-0">
       <div className="flex items-center justify-between mb-3 sm:mb-4">
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">
           <span className="w-1.5 h-1.5 rounded-sm bg-slate-400" />
@@ -458,7 +477,7 @@ const CollabVisual = () => {
   }, []);
 
   return (
-    <div ref={ref} className="flex min-h-[220px] flex-col p-3 sm:min-h-0 sm:p-4">
+    <div ref={ref} className="flex h-full w-full flex-col p-4">
       <div className="w-full flex-1 flex flex-col min-w-0">
         {/* Week headers */}
         <div className="grid grid-cols-5 mb-0.5">
@@ -552,7 +571,7 @@ const CollabVisual = () => {
 
 /* ─── Visual 6: OpenClaw Runtime ─── */
 const OpenClawVisual = () => (
-  <div className="relative flex flex-col justify-between overflow-visible p-2 sm:p-3">
+  <div className="relative flex h-full w-full flex-col justify-between overflow-hidden p-2 sm:p-3">
     <FlowLine className="inset-0 opacity-40" />
     <div className="relative z-10 space-y-6">
       <div className="border border-dashed border-slate-300 rounded-sm overflow-hidden bg-white/60 backdrop-blur-sm">
@@ -911,35 +930,31 @@ const BYOAVisual = () => {
   );
 };
 
+
 const CHROME_VISUAL_INDICES = new Set([2, 6, 8]);
+
+const FEATURE_VISUAL_FRAME =
+  'relative aspect-[4/3] w-full max-w-[32rem] overflow-hidden';
 
 const PixelFramedVisual = ({
   children,
   bare = false,
-  contain = false,
 }: {
   children: React.ReactNode;
   bare?: boolean;
-  contain?: boolean;
 }) => (
-  <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
+  <div className="relative flex min-h-0 flex-col lg:min-h-[500px]">
     <PixelDitherGradient variant="warm" />
-    <div
-      className={`relative z-10 flex flex-1 ${
-        bare
-          ? `items-center p-4 sm:p-6 md:p-8${contain ? ' min-h-0 overflow-hidden' : ''}`
-          : 'items-start justify-center p-5 sm:p-7 md:p-9 lg:p-10'
-      }`}
-    >
+    <div className="relative z-10 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       {bare ? (
-        <div
-          className={`w-full max-w-[min(100%,36rem)] ${contain ? 'max-h-full overflow-hidden' : ''}`}
-        >
-          {children}
+        <div className={`${FEATURE_VISUAL_FRAME} rounded-xl ring-1 ring-black/[0.06]`}>
+          <FeatureVisualStage>{children}</FeatureVisualStage>
         </div>
       ) : (
-        <div className="w-full max-w-[min(100%,40rem)] rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
-          <div className="px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
+        <div
+          className={`${FEATURE_VISUAL_FRAME} rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]`}
+        >
+          <FeatureVisualStage>{children}</FeatureVisualStage>
         </div>
       )}
     </div>
@@ -1001,7 +1016,20 @@ export default function OldWays() {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
         }
       });
-      setCardTransforms(transforms);
+      setCardTransforms((prev) => {
+        if (
+          prev.length === transforms.length &&
+          prev.every(
+            (p, i) =>
+              p.scale === transforms[i].scale &&
+              p.opacity === transforms[i].opacity &&
+              p.y === transforms[i].y,
+          )
+        ) {
+          return prev;
+        }
+        return transforms;
+      });
     };
     calculateTransforms();
     let rafId: number | undefined;
@@ -1062,8 +1090,8 @@ export default function OldWays() {
                     </p>
                   </div>
 
-                  <div className="relative min-h-[320px] border-t border-[var(--color-line)] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)} contain={index === 8}>
+                  <div className="relative min-h-0 border-t border-[var(--color-line)] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
+                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)}>
                       {cardVisuals[index]}
                     </PixelFramedVisual>
                   </div>

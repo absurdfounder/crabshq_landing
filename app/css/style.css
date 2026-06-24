@@ -408,7 +408,7 @@ body > iframe.goog-te-menu-frame {
   }
 
   .hero-shell {
-    @apply bg-canvas text-ink;
+    @apply overflow-x-hidden bg-canvas text-ink;
   }
 
   /* Offset fixed TopBar + nav — use on the first block after .site-header */
@@ -437,7 +437,7 @@ body > iframe.goog-te-menu-frame {
   }
 
   .fern-trust-row {
-    @apply flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-neutral-500;
+    @apply flex flex-col items-start gap-2 text-sm text-neutral-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2;
   }
 
   .fern-trust-row__item {

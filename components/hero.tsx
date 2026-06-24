@@ -12,46 +12,52 @@ import FernCircleCheckIcon from './ui/FernCircleCheckIcon';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'OpenClaw-powered'] as const;
 
+function HeroStackMarquee({ className = '' }: { className?: string }) {
+  return (
+    <div className={className}>
+      <p className="mb-3 font-silkscreen text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
+        Built for your stack
+      </p>
+      <HeroMarquee />
+    </div>
+  );
+}
+
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-canvas text-ink">
-      <div className="mx-auto max-w-7xl border-l border-r border-[var(--color-line)] px-4 sm:px-6">
+    <section className="relative overflow-x-hidden bg-canvas text-ink">
+      <div className="mx-auto max-w-7xl min-w-0 border-l border-r border-[var(--color-line)] px-4 sm:px-6">
         <div className="pb-0 pt-[calc(var(--site-header-height)+1.25rem)] sm:pt-[calc(var(--site-header-height)+1.75rem)] md:pt-[calc(var(--site-header-height)+2rem)]">
-          <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
-            <div className="lg:col-span-7">
+          <div className="grid min-w-0 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
+            <div className="min-w-0 lg:col-span-7">
               <p className="reveal reveal__kicker kicker mb-4 sm:mb-5">AI workforce</p>
 
               <div className="reveal reveal__usp">
                 <HeroRotatingHeadline />
               </div>
 
-              <div className="mt-8 sm:mt-10">
-                <p className="mb-3 font-silkscreen text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
-                  Built for your stack
-                </p>
-                <HeroMarquee />
-              </div>
+              <HeroStackMarquee className="mt-8 hidden sm:mt-10 lg:block" />
             </div>
 
-            <div className="lg:col-span-5 lg:pt-8 xl:pt-10">
-              <p className="text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
+            <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
+              <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
                 AI units that write code, make commits, browse the web, send emails, and execute real
                 missions — not just answer questions. You hold command as the board of directors.
                 Powered by <span className="font-semibold text-ink">OpenClaw</span>.
               </p>
 
-              <div className="mt-6 flex flex-col gap-3 lg:inline-flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-2">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:inline-flex lg:flex-nowrap">
                 <PixelButton
                   href="https://app.trooper.so?ref=herolanding"
                   external
                   size="lg"
                   tone="dark"
-                  className="w-full shrink-0 lg:w-auto"
+                  className="w-full shrink-0 sm:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
                   Get Started
                 </PixelButton>
-                <HeroDownloadButtons className="w-full shrink-0 lg:w-auto" />
+                <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
               </div>
 
               <ul className="fern-trust-row mt-5" aria-label="Product highlights">
@@ -63,9 +69,11 @@ export default function Hero() {
                 ))}
               </ul>
             </div>
+
+            <HeroStackMarquee className="min-w-0 lg:col-span-7 lg:hidden" />
           </div>
 
-          <div className="relative -mx-4 mt-10 sm:-mx-6 sm:mt-12 lg:mt-14">
+          <div className="relative mt-8 hidden min-w-0 overflow-hidden sm:mt-10 lg:mt-14 lg:block">
             <HeroArticleDemo />
           </div>
         </div>

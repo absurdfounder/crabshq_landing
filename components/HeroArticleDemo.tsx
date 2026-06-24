@@ -65,7 +65,7 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
     if (!el) return;
     const update = () => {
       const w = el.clientWidth;
-      setScale(w >= DEMO_CANVAS_W ? 1 : Math.max(0.72, w / DEMO_CANVAS_W));
+      setScale(Math.min(1, w / DEMO_CANVAS_W));
     };
     update();
     const ro = new ResizeObserver(update);
@@ -81,7 +81,7 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
   const scaledH = DEMO_CANVAS_H * scale;
 
   return (
-    <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
+    <div ref={containerRef} className="w-full overflow-hidden" style={{ position: 'relative' }}>
       <div style={{ height: scaledH, display: 'flex', justifyContent: 'center', width: '100%' }}>
         <div style={{ width: scaledW, height: scaledH, position: 'relative', flexShrink: 0 }}>
           <div
@@ -918,10 +918,9 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         .Trooper-scrollbar::-webkit-scrollbar-track{background:rgba(231,229,228,0.35);border-radius:4px}
         .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.textSubtle};border-radius:4px}
         *{box-sizing:border-box}
-        @media (max-width: 1024px) { .Trooper-demo { display: none !important; } }
       `}</style>
 
-      <div className="relative min-h-[280px] border-t border-slate-100 px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
+      <div className="relative border-t border-slate-100 px-4 py-8 sm:px-6 sm:py-10 md:px-10 md:py-12">
         <PixelDitherGradient />
         <div className="Trooper-demo relative z-10 hidden lg:block" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
         <DemoScaleFrame>

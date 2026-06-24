@@ -59,7 +59,7 @@ export default function HeroMarquee({ theme = 'light' }: { theme?: 'light' | 'da
 
   return (
     <div
-      className="w-full overflow-hidden"
+      className="max-w-full overflow-hidden"
       style={{
         maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',

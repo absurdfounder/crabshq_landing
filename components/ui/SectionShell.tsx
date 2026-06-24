@@ -45,7 +45,7 @@ export default function SectionShell({
   // box on top. The next SectionShell's own top border serves as this
   // section's bottom divider, so we omit border-b unless explicitly asked.
   const frameClasses = [
-    'max-w-7xl mx-auto border-[var(--color-line)]',
+    'max-w-7xl mx-auto min-w-0 overflow-x-hidden border-[var(--color-line)]',
     'px-4 sm:px-6',
     bgClass || 'bg-canvas',
     !noBorder ? 'border-t border-l border-r' : 'border-l border-r',

@@ -66,7 +66,7 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
 
   return (
     <h1
-      className={`max-w-none font-display font-medium text-[2rem] leading-[1.12] tracking-tight sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08] xl:text-[3.5rem] ${className}`}
+      className={`max-w-full font-display font-medium text-[2rem] leading-[1.12] tracking-tight sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08] xl:text-[3.5rem] ${className}`}
     >
       <span className="grid">
         <span className="col-start-1 row-start-1 invisible pointer-events-none select-none" aria-hidden>
@@ -92,7 +92,7 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
           </motion.span>
         </span>
       </span>
-      <span className="mt-1 block text-ink sm:mt-2">Whole Team. One App.</span>
+      <span className="mt-1 block text-balance text-ink sm:mt-2">Whole Team. One App.</span>
     </h1>
   );
 }

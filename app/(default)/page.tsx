@@ -55,6 +55,7 @@ import SectionShell from '@/components/ui/SectionShell'
 export default function Home() {
   return (
     <>
+      <div className="overflow-x-hidden">
       <FloatingScrollIndicator />
       <div className="hero-shell bg-canvas">
         <Header />
@@ -94,6 +95,7 @@ export default function Home() {
       <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
+      </div>
     </>
   )
 }
