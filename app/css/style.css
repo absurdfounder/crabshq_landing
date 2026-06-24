@@ -324,6 +324,14 @@ body > iframe.goog-te-menu-frame {
     animation: pixelFlicker 8s steps(1) infinite;
   }
 
+  .type-eyebrow-num-dark {
+    @apply inline-flex items-center gap-2 font-silkscreen text-[11px] font-bold uppercase tracking-[0.22em] text-fern;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid rgba(107, 168, 46, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+    clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
+  }
+
   @media (max-width: 640px) {
     .type-eyebrow-num {
       font-size: 10px;

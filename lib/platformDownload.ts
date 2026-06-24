@@ -1,3 +1,5 @@
+import { WINDOWS_INSTALLER_URL } from './downloadUrls';
+
 export type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'web' | 'unknown';
 
 export type PlatformDownload = {
@@ -15,14 +17,14 @@ export const PLATFORM_DOWNLOADS: Record<
   mac: {
     key: 'mac',
     label: 'Download for Mac',
-    href: 'https://github.com/absurdfounder/trooper_landing/releases/download/macos-latest/Trooper.dmg',
+    href: '/download/mac',
     iconSrc: '/images/platforms/apple.svg',
-    external: true,
+    external: false,
   },
   windows: {
     key: 'windows',
     label: 'Download for Windows',
-    href: 'https://github.com/absurdfounder/trooper_landing/releases/download/windows-latest/Trooper-Windows-x64-Setup.exe',
+    href: WINDOWS_INSTALLER_URL,
     iconSrc: '/images/platforms/windows.svg',
     external: true,
   },

@@ -77,9 +77,9 @@ export default function Home() {
         <FounderDarkQuote />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="Field Comms" eyebrowNumber="04">
+      <DarkSplitSection>
         <MobileChannelsSection />
-      </SectionShell>
+      </DarkSplitSection>
 
       <SectionShell eyebrow="Governance" eyebrowNumber="05">
         <GovernanceSection />

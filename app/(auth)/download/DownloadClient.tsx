@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
-import PixelDitherGradient from '@/components/ui/PixelDitherGradient';
 
 type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'web' | 'unknown';
 
@@ -18,7 +16,7 @@ type PlatformCard = {
   cta: string;
   icon: React.ReactNode;
   group: 'desktop' | 'mobile';
-  action: 'download' | 'open';
+  external: boolean;
 };
 
 function PlatformBrandIcon({ src }: { src: string }) {
@@ -34,11 +32,11 @@ const platforms: PlatformCard[] = [
     label: 'macOS',
     subtitle: 'Mac app',
     requirements: 'macOS 12+ · Universal (Intel & Apple Silicon)',
-    href: 'https://github.com/absurdfounder/trooper_landing/releases/download/macos-latest/Trooper.dmg',
+    href: '/download/mac',
     cta: 'Download Mac app',
     icon: <PlatformBrandIcon src="/images/platforms/apple.svg" />,
     group: 'desktop',
-    action: 'download',
+    external: false,
   },
   {
     key: 'windows',
@@ -49,7 +47,7 @@ const platforms: PlatformCard[] = [
     cta: 'Download Windows app',
     icon: <PlatformBrandIcon src="/images/platforms/windows.svg" />,
     group: 'desktop',
-    action: 'download',
+    external: true,
   },
   {
     key: 'ios',
@@ -60,7 +58,7 @@ const platforms: PlatformCard[] = [
     cta: 'Get the iOS app',
     icon: <PlatformBrandIcon src="/images/platforms/apple.svg" />,
     group: 'mobile',
-    action: 'download',
+    external: true,
   },
   {
     key: 'android',
@@ -71,7 +69,7 @@ const platforms: PlatformCard[] = [
     cta: 'Get the Android app',
     icon: <PlatformBrandIcon src="/images/platforms/android.svg" />,
     group: 'mobile',
-    action: 'download',
+    external: true,
   },
 ];
 
@@ -102,43 +100,41 @@ function PlatformTile({
   return (
     <div
       className={[
-        'flex flex-col h-full p-6 sm:p-7 bg-white transition-colors',
-        isRecommended ? 'ring-2 ring-trooper ring-inset bg-trooper-50/30' : '',
+        'flex h-full flex-col bg-white p-6 transition-colors sm:p-7',
+        isRecommended ? 'ring-2 ring-inset ring-fern/40 bg-fern-50/20' : '',
       ]
         .filter(Boolean)
         .join(' ')}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="relative z-10 flex h-12 w-12 items-center justify-center border border-slate-200 bg-white p-2 text-slate-700">
+        <div className="flex h-12 w-12 items-center justify-center rounded-sm border border-[var(--color-line)] bg-canvas p-2">
           {platform.icon}
         </div>
-        {isRecommended && (
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-trooper-700 bg-white border border-trooper-100 px-2 py-0.5">
+        {isRecommended ? (
+          <span className="rounded-sm bg-fern-50 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-fern-800 ring-1 ring-fern-200">
             Your device
           </span>
-        )}
+        ) : null}
       </div>
 
       <div className="mt-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">
           {platform.subtitle}
         </p>
-        <h3 className="mt-1 font-funneldisplay text-xl tracking-tight text-slate-900">
+        <h3 className="mt-1 font-display text-xl font-medium tracking-tight text-ink">
           {platform.label}
         </h3>
-        <p className="mt-2 text-sm text-slate-500 leading-relaxed">{platform.requirements}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-muted">{platform.requirements}</p>
       </div>
 
-      <div className="mt-auto pt-6 border-t border-slate-100">
+      <div className="mt-auto border-t border-[var(--color-line)] pt-6">
         <PixelButton
           href={platform.href}
-          external
+          external={platform.external}
           size="md"
-          tone={isRecommended ? 'brand' : 'dark'}
+          tone={isRecommended ? 'dark' : 'dark'}
           variant={isRecommended ? 'solid' : 'outline'}
-          icon={platform.action === 'download'
-            ? <Download className="h-3.5 w-3.5" />
-            : <ArrowRight className="h-3.5 w-3.5" />}
+          icon={<Download className="h-3.5 w-3.5" />}
           className="w-full justify-center"
         >
           {platform.cta}
@@ -163,9 +159,9 @@ function PlatformGroup({
 }) {
   return (
     <div className={className}>
-      <div className="flex items-center gap-2 px-4 sm:px-6 py-3 border-b border-slate-200 bg-slate-50/80">
-        <span className="text-slate-500">{icon}</span>
-        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">
+      <div className="flex items-center gap-2 border-b border-[var(--color-line)] bg-canvas-warm px-4 py-3 sm:px-6">
+        <span className="text-ink-faint">{icon}</span>
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-muted">
           {title}
         </span>
       </div>
@@ -174,8 +170,8 @@ function PlatformGroup({
           <div
             key={p.key}
             className={[
-              i % 2 === 0 ? 'sm:border-r sm:border-slate-200' : '',
-              i < items.length - 1 ? 'border-b border-slate-200 sm:border-b-0' : '',
+              i % 2 === 0 ? 'sm:border-r sm:border-[var(--color-line)]' : '',
+              i < items.length - 1 ? 'border-b border-[var(--color-line)] sm:border-b-0' : '',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -200,57 +196,52 @@ export default function DownloadClient() {
   const recommended = platforms.find((p) => p.key === detected);
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen bg-canvas text-ink">
       <Header />
 
-      <div className="max-w-7xl mx-auto border-l border-r border-slate-200">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-slate-200">
-          <PixelDitherGradient />
-          <div className="relative z-10">
-            <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-10 md:pb-14">
-              <PixelMissionTag index="01" label="Choose your surface" className="mb-4" />
+      <div className="mx-auto max-w-7xl border-l border-r border-[var(--color-line)]">
+        <section className="border-b border-[var(--color-line)] bg-canvas">
+          <div className="px-4 pb-10 pt-[calc(var(--site-header-height)+2rem)] sm:px-6 sm:pb-12 md:pb-14 md:pt-[calc(var(--site-header-height)+2.5rem)] lg:px-8">
+            <p className="kicker mb-4 text-sm sm:text-base">Downloads</p>
 
-              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-                <div className="max-w-2xl">
-                  <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.75rem] tracking-tight text-slate-900 leading-tight">
-                    Trooper, wherever work happens
-                  </h1>
-                  <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-                    One command center for your AI team across Mac, Windows, iOS, Android, and web.
-                  </p>
-                </div>
-
-                {recommended && (
-                  <div className="shrink-0 lg:text-right">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400 mb-2">
-                      Recommended for you
-                    </p>
-                    <PixelButton
-                      href={recommended.href}
-                      external
-                      size="lg"
-                      tone="brand"
-                      icon={<Download className="h-4 w-4" />}
-                    >
-                      {recommended.cta}
-                    </PixelButton>
-                  </div>
-                )}
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <h1 className="font-display text-3xl font-medium leading-tight tracking-tight text-ink sm:text-4xl md:text-[2.75rem]">
+                  Trooper, wherever work happens
+                </h1>
+                <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-lg">
+                  One command center for your AI team across Mac, Windows, iOS, Android, and web.
+                </p>
               </div>
+
+              {recommended ? (
+                <div className="shrink-0 lg:text-right">
+                  <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">
+                    Recommended for you
+                  </p>
+                  <PixelButton
+                    href={recommended.href}
+                    external={recommended.external}
+                    size="lg"
+                    tone="dark"
+                    icon={<Download className="h-4 w-4" />}
+                  >
+                    {recommended.cta}
+                  </PixelButton>
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
 
-        {/* Platform grid */}
-        <section>
-          <div className="px-4 sm:px-6 lg:px-8 py-3 border-b border-slate-200">
+        <section className="overflow-hidden rounded-sm bg-white shadow-sm ring-1 ring-black/5">
+          <div className="border-b border-[var(--color-line)] px-4 py-3 sm:px-6 lg:px-8">
             <span className="type-eyebrow-num">
-              <span className="text-slate-400">[02]</span>&nbsp;Choose how you work
+              <span className="text-ink-faint">[02]</span>&nbsp;Choose how you work
             </span>
           </div>
 
-          <div className="border-b border-slate-200">
+          <div className="border-b border-[var(--color-line)]">
             <PlatformGroup
               title="Desktop apps"
               icon={<Monitor className="h-4 w-4" strokeWidth={2} />}
@@ -267,30 +258,30 @@ export default function DownloadClient() {
           />
         </section>
 
-        {/* Web fallback */}
-        <section className="border-t border-slate-200 bg-slate-50">
-          <div className="px-4 sm:px-6 lg:px-8 py-10 md:py-12">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border border-slate-200 bg-white p-6 sm:p-8">
+        <section className="border-t border-[var(--color-line)] bg-canvas-warm">
+          <div className="px-4 py-10 sm:px-6 md:py-12 lg:px-8">
+            <div className="flex flex-col gap-6 rounded-sm bg-white p-6 ring-1 ring-black/5 sm:p-8 md:flex-row md:items-center md:justify-between">
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-slate-200 bg-slate-50 text-trooper">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm border border-[var(--color-line)] bg-canvas text-fern">
                   <Globe className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <h2 className="font-funneldisplay text-xl tracking-tight text-slate-900">
+                  <h2 className="font-display text-xl font-medium tracking-tight text-ink">
                     Run agents on your own computer
                   </h2>
-                  <p className="mt-1 text-sm text-slate-600 leading-relaxed max-w-md">
-                    Sign in, choose <span className="font-medium text-slate-800">Settings → AI Server → This computer</span>,
+                  <p className="mt-1 max-w-md text-sm leading-relaxed text-ink-muted">
+                    Sign in, choose{' '}
+                    <span className="font-medium text-ink">Settings → AI Server → This computer</span>,
                     then run the secure paired command for macOS or Windows.
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
                 <PixelButton
                   href="https://app.trooper.so/settings/server"
                   external
                   size="lg"
-                  tone="brand"
+                  tone="dark"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
                   Set up local host

@@ -4,8 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
-import { PixelMissionTag } from './PixelAtmosphere';
 import PixelDitherGradient from './ui/PixelDitherGradient';
+
+function FeatureKicker({ index, label }: { index: string; label: string }) {
+  return (
+    <p className="kicker text-sm sm:text-base">
+      <span className="text-ink-faint/80">[{index}]</span>{' '}
+      <span className="normal-case">{label}</span>
+    </p>
+  );
+}
 
 const sectionXPadding = "px-4 sm:px-6 lg:px-8";
 
@@ -899,10 +907,12 @@ const BYOAVisual = () => {
 };
 
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex h-full min-h-[300px] flex-1 flex-col overflow-hidden">
-    <PixelDitherGradient />
-    <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10">
-      <div className="w-full max-w-full">{children}</div>
+  <div className="relative flex h-full min-h-[280px] flex-1 flex-col overflow-hidden sm:min-h-[340px]">
+    <PixelDitherGradient variant="warm" />
+    <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center p-5 sm:p-7 md:p-8 lg:p-10">
+      <div className="w-full max-w-[min(100%,28rem)] overflow-hidden rounded-sm bg-white shadow-[0_12px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5">
+        {children}
+      </div>
     </div>
   </div>
 );
@@ -957,7 +967,7 @@ export default function OldWays() {
         if (!card) { transforms.push({ scale: 1, opacity: 1, y: 0 }); return; }
         const cardsOnTop = Math.max(0, activeCardIndex - index);
         if (cardsOnTop > 0) {
-          transforms.push({ scale: Math.max(0.92, 1 - 0.025 * cardsOnTop), opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop), y: -8 * cardsOnTop });
+          transforms.push({ scale: Math.max(0.94, 1 - 0.02 * cardsOnTop), opacity: Math.max(0.55, 1 - 0.1 * cardsOnTop), y: -6 * cardsOnTop });
         } else {
           transforms.push({ scale: 1, opacity: 1, y: 0 });
         }
@@ -973,55 +983,65 @@ export default function OldWays() {
   }, []);
 
   return (
-    <section className="relative bg-canvas">
-      <div className="mx-auto max-w-7xl border-l border-r border-[var(--color-line)] px-0 py-6 sm:py-16 md:py-24">
-        <div className="relative" style={{ perspective: '1000px' }}>
-          {cards.map((card, index) => {
-            const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
-            return (
-              <div
-                key={index}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                className="lg:sticky lg:top-[15vh] mb-3 sm:mb-6 lg:mb-8"
-                style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
+    <div className="relative pb-6 sm:pb-10 md:pb-14">
+      <div className="relative space-y-4 sm:space-y-5 md:space-y-6" style={{ perspective: '1000px' }}>
+        {cards.map((card, index) => {
+          const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
+          const cardIndex = String(index + 1).padStart(2, '0');
+
+          return (
+            <div
+              key={index}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className="lg:sticky lg:top-[14vh]"
+              style={{
+                zIndex: cards.length + index,
+                marginBottom: index === cards.length - 1 ? 0 : undefined,
+              }}
+            >
+              <article
+                className="relative overflow-hidden rounded-sm bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
+                style={{
+                  transform: `scale(${t.scale}) translateY(${t.y}px)`,
+                  opacity: t.opacity,
+                  transformOrigin: 'center top',
+                  transition:
+                    'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+                }}
               >
-                <div
-                  className="relative overflow-hidden border border-[var(--color-line)] min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
-                  style={{
-                    transform: `scale(${t.scale}) translateY(${t.y}px)`,
-                    opacity: t.opacity,
-                    transformOrigin: 'center top',
-                    transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-                  }}
-                >
-                  {index === 8 && (
-                    <span className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700 bg-trooper-50 border border-trooper-100 px-2 py-0.5 rounded-sm">
-                      Flagship
-                    </span>
-                  )}
-                  <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border bg-canvas pt-5 sm:pt-8 md:pt-10 pb-5 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
-                      <PixelMissionTag
-                        index={String(index + 1).padStart(2, '0')}
-                        label={card.tag}
-                      />
-                      <h3 className="font-display text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-ink mt-2.5 sm:mt-4 leading-snug">
-                        {card.title}{' '}<span className="text-ink-muted">{card.highlight}</span>
-                      </h3>
-                      <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
-                    </div>
-                    <div className="box-border flex min-h-[300px] w-full flex-1 flex-col md:w-[62%] border-t border-slate-100 md:border-l md:border-t-0">
-                      <PixelFramedVisual>
-                        {cardVisuals[index]}
-                      </PixelFramedVisual>
-                    </div>
+                {index === 8 && (
+                  <span className="absolute top-3 right-3 z-20 rounded-sm bg-fern-50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-fern-800 ring-1 ring-fern-200 sm:top-4 sm:right-4">
+                    Flagship
+                  </span>
+                )}
+
+                <div className="grid min-h-0 lg:min-h-[480px] lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+                  <div
+                    className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}
+                  >
+                    <FeatureKicker index={cardIndex} label={card.tag} />
+                    <h3 className="mt-4 font-display text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+                      {card.title}{' '}
+                      {card.highlight ? (
+                        <span className="text-ink-muted">{card.highlight}</span>
+                      ) : null}
+                    </h3>
+                    <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
+                      {card.description}
+                    </p>
+                  </div>
+
+                  <div className="relative min-h-[280px] border-t border-[var(--color-line)] lg:min-h-0 lg:border-l lg:border-t-0">
+                    <PixelFramedVisual>{cardVisuals[index]}</PixelFramedVisual>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              </article>
+            </div>
+          );
+        })}
       </div>
-    </section>
+    </div>
   );
 }

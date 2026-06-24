@@ -10,8 +10,8 @@ const BAYER_4 = [
   [15, 7, 13, 5],
 ] as const;
 
-/** Reference-style sky → cream → lime, Trooper-tinted for visibility on white pages. */
-const GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
+/** Hero band — sky → cream → lime. */
+const HERO_GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
   { at: 0, color: '#9ec0d8' },
   { at: 0.2, color: '#b8d4e8' },
   { at: 0.36, color: '#e4e8cc' },
@@ -21,12 +21,29 @@ const GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
   { at: 1, color: '#98c858' },
 ];
 
+/** Feature panels — warm cream → sage (no sky-blue band). */
+const WARM_GRADIENT_STOPS: ReadonlyArray<{ at: number; color: string }> = [
+  { at: 0, color: '#f0efe6' },
+  { at: 0.3, color: '#ebe8d0' },
+  { at: 0.55, color: '#dce8b8' },
+  { at: 0.78, color: '#c4d890' },
+  { at: 1, color: '#a8c868' },
+];
+
+const VARIANTS = {
+  hero: {
+    stops: HERO_GRADIENT_STOPS,
+    fallback: 'linear-gradient(180deg, #9ec0d8 0%, #ebe8d0 48%, #98c858 100%)',
+  },
+  warm: {
+    stops: WARM_GRADIENT_STOPS,
+    fallback: 'linear-gradient(180deg, #f0efe6 0%, #ebe8d0 42%, #a8c868 100%)',
+  },
+} as const;
+
 const GRID_W = 48;
 const GRID_H = 96;
 const CELL_PX = 10;
-
-const FALLBACK_BG =
-  'linear-gradient(180deg, #9ec0d8 0%, #ebe8d0 48%, #98c858 100%)';
 
 function hexToRgb(hex: string) {
   const value = parseInt(hex.slice(1), 16);
@@ -37,24 +54,32 @@ function hexToRgb(hex: string) {
   };
 }
 
-function segmentAt(t: number): [string, string, number] {
+function segmentAt(
+  t: number,
+  stops: ReadonlyArray<{ at: number; color: string }>,
+): [string, string, number] {
   const clamped = Math.min(1, Math.max(0, t));
 
-  for (let index = 0; index < GRADIENT_STOPS.length - 1; index += 1) {
-    const start = GRADIENT_STOPS[index];
-    const end = GRADIENT_STOPS[index + 1];
-    if (clamped <= end.at || index === GRADIENT_STOPS.length - 2) {
+  for (let index = 0; index < stops.length - 1; index += 1) {
+    const start = stops[index];
+    const end = stops[index + 1];
+    if (clamped <= end.at || index === stops.length - 2) {
       const span = end.at - start.at || 1;
       const local = (clamped - start.at) / span;
       return [start.color, end.color, local];
     }
   }
 
-  const last = GRADIENT_STOPS[GRADIENT_STOPS.length - 1];
+  const last = stops[stops.length - 1];
   return [last.color, last.color, 0];
 }
 
-function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
+function paintDither(
+  canvas: HTMLCanvasElement,
+  phase: number,
+  timeMs: number,
+  stops: ReadonlyArray<{ at: number; color: string }>,
+) {
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) return;
 
@@ -70,7 +95,7 @@ function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
 
   for (let gy = 0; gy < GRID_H; gy += 1) {
     const gradientT = Math.min(1, Math.max(0, gy / (GRID_H - 1) + phase));
-    const [colorA, colorB, mix] = segmentAt(gradientT);
+    const [colorA, colorB, mix] = segmentAt(gradientT, stops);
     const rgbA = hexToRgb(colorA);
     const rgbB = hexToRgb(colorB);
 
@@ -97,17 +122,22 @@ function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
 
 type PixelDitherGradientProps = {
   className?: string;
+  variant?: keyof typeof VARIANTS;
 };
 
-export default function PixelDitherGradient({ className = '' }: PixelDitherGradientProps) {
+export default function PixelDitherGradient({
+  className = '',
+  variant = 'hero',
+}: PixelDitherGradientProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
+  const { stops, fallback } = VARIANTS[variant];
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    paintDither(canvas, 0, 0);
-  }, []);
+    paintDither(canvas, 0, 0, stops);
+  }, [stops]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -118,20 +148,20 @@ export default function PixelDitherGradient({ className = '' }: PixelDitherGradi
 
     const tick = (now: number) => {
       const elapsed = now - start;
-      const phase = Math.sin(elapsed * 0.0005) * 0.06;
-      paintDither(canvas, phase, elapsed);
+      const phase = Math.sin(elapsed * 0.0005) * 0.04;
+      paintDither(canvas, phase, elapsed, stops);
       frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [reduceMotion]);
+  }, [reduceMotion, stops]);
 
   return (
     <div
       aria-hidden
       className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${className}`}
-      style={{ background: FALLBACK_BG }}
+      style={{ background: fallback }}
     >
       <canvas
         ref={canvasRef}

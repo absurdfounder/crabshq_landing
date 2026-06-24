@@ -49,7 +49,7 @@ export default function Hero() {
                   className="w-full shrink-0 lg:w-auto"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
-                  Get started for free
+                  Get Started
                 </PixelButton>
                 <HeroDownloadButtons className="w-full shrink-0 lg:w-auto" />
               </div>

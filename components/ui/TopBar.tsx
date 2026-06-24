@@ -41,7 +41,7 @@ export default function TopBar() {
   return (
     <div className="site-top-bar">
       <Link
-        href="/download"
+        href="/download/mac"
         className="flex h-10 items-center justify-center bg-fern-bright px-4 transition-colors hover:bg-fern"
       >
         <span className="flex min-w-0 items-center gap-1 text-sm font-medium text-lime-950/80">

@@ -215,7 +215,7 @@ function ChannelPill({
     >
       <Link
         href={`/channels/${channelId}`}
-        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:shadow-md sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-[15px]"
+        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-medium text-white/90 shadow-sm transition-all hover:border-white/25 hover:bg-white/10 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-[15px]"
       >
         <ChannelIcon channelId={channelId} channelName={channelName} iconUrl={iconUrl} size={20} />
         <span>{channelName}</span>
@@ -227,7 +227,7 @@ function ChannelPill({
 function ConnectQrPanel() {
   return (
     <motion.div
-      className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-slate-50 p-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
+      className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1, ease }}
@@ -259,10 +259,10 @@ function ConnectQrPanel() {
 
       <div className="min-w-0 flex-1 text-center sm:text-left">
         <div className="flex items-center justify-center gap-2 sm:justify-start">
-          <Contact className="h-5 w-5 text-slate-500" strokeWidth={1.75} aria-hidden />
-          <p className="text-base font-semibold text-slate-900 sm:text-lg">Save Trooper to your phone</p>
+          <Contact className="h-5 w-5 text-white/50" strokeWidth={1.75} aria-hidden />
+          <p className="text-base font-semibold text-white sm:text-lg">Save Trooper to your phone</p>
         </div>
-        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        <p className="mt-2 text-sm leading-relaxed text-white/55">
           Scan to open channel setup, then text your workforce from anywhere — iMessage, WhatsApp,
           Telegram, or email.
         </p>
@@ -271,14 +271,14 @@ function ConnectQrPanel() {
             href={CHANNEL_SETUP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-slate-800 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-split transition-colors hover:bg-white/90 sm:w-auto"
           >
             <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
             Connect channels
           </a>
           <Link
             href="/download"
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 sm:w-auto"
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/20 bg-transparent px-5 py-2.5 text-sm font-medium text-white/85 transition-colors hover:bg-white/10 sm:w-auto"
           >
             Mobile apps
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
@@ -291,7 +291,15 @@ function ConnectQrPanel() {
 
 export default function MobileChannelsSection() {
   return (
-    <div className="pb-8 pt-2 md:pb-12">
+    <div className="py-8 md:py-14 lg:py-16">
+      <div className="mb-8 md:mb-10">
+        <span className="type-eyebrow-num-dark">
+          <span className="text-white/40">[04]</span>
+          <span>&nbsp;</span>
+          Field Comms
+        </span>
+      </div>
+
       <div className="flex flex-col items-center gap-8 max-md:gap-8 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
         <PhoneChatMockup />
 
@@ -302,7 +310,7 @@ export default function MobileChannelsSection() {
           transition={{ duration: 0.55, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="font-funneldisplay text-[1.625rem] leading-[1.15] tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
+          <h2 className="font-funneldisplay text-[1.625rem] leading-[1.15] tracking-tight text-white sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
             Chat with your workforce,
             <br />
             on the go.
@@ -320,13 +328,13 @@ export default function MobileChannelsSection() {
             ))}
           </div>
 
-          <p className="mt-4 text-sm text-slate-500">and SMS, Slack, Discord, WebChat</p>
+          <p className="mt-4 text-sm text-white/45">and SMS, Slack, Discord, WebChat</p>
 
           <ConnectQrPanel />
 
           <Link
             href="/channels"
-            className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-fern transition-colors hover:text-fern-light"
           >
             Browse all channels
             <ArrowRight className="h-4 w-4" aria-hidden />
