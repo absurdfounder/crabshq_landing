@@ -290,27 +290,33 @@ const IntegrationsVisual = () => {
   const row2 = ['notion.so', 'atlassian.com', 'dropbox.com', 'asana.com', 'gmail.com', 'github.com'];
 
   return (
-    <div className="flex h-full w-full flex-col justify-center p-5">
-      <div className="border border-dashed border-slate-300 rounded-sm p-2.5 sm:p-4 bg-white/60">
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
-          {row1.map((d) => <Fav key={d} domain={d} size={22} />)}
+    <div className="flex h-full min-h-0 w-full flex-col justify-center">
+      <div className="rounded-sm border border-dashed border-slate-300 bg-white/60 p-3 sm:p-4">
+        <div className="mb-2 grid grid-cols-6 gap-1.5 sm:gap-2">
+          {row1.map((d) => (
+            <Fav key={d} domain={d} size={22} />
+          ))}
         </div>
-        <div className="grid grid-cols-4 sm:grid-cols-6 gap-1.5 sm:gap-2">
-          {row2.map((d) => <Fav key={d} domain={d} size={22} />)}
+        <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
+          {row2.map((d) => (
+            <Fav key={d} domain={d} size={22} />
+          ))}
         </div>
-        <p className="text-center text-[11px] sm:text-[12px] text-slate-400 font-mono mt-3 sm:mt-4 tracking-wide">Over 3000 integrations</p>
+        <p className="mt-3 text-center font-mono text-[11px] tracking-wide text-slate-400 sm:mt-4 sm:text-xs">
+          Over 3000 integrations
+        </p>
       </div>
 
-      <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-2.5 flex-wrap">
-        <span className="font-mono text-lg sm:text-xl font-bold text-slate-400 leading-none tabular-nums">3k</span>
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-trooper-50 border border-trooper-100">
+      <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-4 sm:gap-2.5">
+        <span className="font-mono text-lg font-bold tabular-nums leading-none text-slate-400 sm:text-xl">3k</span>
+        <span className="inline-flex items-center gap-1.5 rounded-sm border border-trooper-100 bg-trooper-50 px-2 py-0.5">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-trooper" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-trooper-olive opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-trooper" />
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-trooper-700">Live</span>
         </span>
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.18em] text-slate-500 leading-snug">
+        <span className="font-mono text-[9px] uppercase leading-snug tracking-[0.14em] text-slate-500 sm:text-[10px] sm:tracking-[0.18em]">
           Integrations via browser and native APIs
         </span>
       </div>
@@ -932,34 +938,45 @@ const BYOAVisual = () => {
 
 
 const CHROME_VISUAL_INDICES = new Set([2, 6, 8]);
-
-const FEATURE_VISUAL_FRAME =
-  'relative aspect-[4/3] w-full max-w-[32rem] overflow-hidden';
+/** Org, gantt, runtime, and goal trees scale inside a fixed canvas so they never spill the card. */
+const SCALED_VISUAL_INDICES = new Set([0, 4, 5, 7]);
 
 const PixelFramedVisual = ({
   children,
   bare = false,
+  scaled = false,
 }: {
   children: React.ReactNode;
   bare?: boolean;
-}) => (
-  <div className="relative flex min-h-0 flex-col lg:min-h-[500px]">
-    <PixelDitherGradient variant="warm" />
-    <div className="relative z-10 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      {bare ? (
-        <div className={`${FEATURE_VISUAL_FRAME} rounded-xl ring-1 ring-black/[0.06]`}>
-          <FeatureVisualStage>{children}</FeatureVisualStage>
-        </div>
-      ) : (
-        <div
-          className={`${FEATURE_VISUAL_FRAME} rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]`}
-        >
-          <FeatureVisualStage>{children}</FeatureVisualStage>
-        </div>
-      )}
+  scaled?: boolean;
+}) => {
+  const body = scaled ? (
+    <div className="relative min-h-[240px] flex-1 sm:min-h-[280px] lg:min-h-[320px]">
+      <FeatureVisualStage>{children}</FeatureVisualStage>
     </div>
-  </div>
-);
+  ) : (
+    children
+  );
+
+  return (
+    <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
+      <PixelDitherGradient variant="warm" />
+      <div className="relative z-10 flex flex-1 items-stretch justify-center p-5 sm:p-7 md:p-9 lg:p-10">
+        {bare ? (
+          <div className="flex w-full max-w-[min(100%,40rem)] min-h-0 flex-1 flex-col overflow-hidden">
+            {body}
+          </div>
+        ) : (
+          <div className="flex w-full max-w-[min(100%,40rem)] min-h-0 flex-1 flex-col overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
+            <div className="flex min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">
+              {body}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 /* ─── Card visuals ─── */
 const cardVisuals = [
@@ -1090,8 +1107,8 @@ export default function OldWays() {
                     </p>
                   </div>
 
-                  <div className="relative min-h-0 border-t border-[var(--color-line)] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)}>
+                  <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
+                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)} scaled={SCALED_VISUAL_INDICES.has(index)}>
                       {cardVisuals[index]}
                     </PixelFramedVisual>
                   </div>
