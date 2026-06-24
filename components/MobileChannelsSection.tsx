@@ -179,11 +179,11 @@ const IPHONE_SCREEN_INSET = {
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full shrink-0 max-w-[min(100%,300px)] sm:max-w-[340px]"
+      className="relative mx-auto w-[min(100%,300px)] shrink-0 sm:w-[340px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, amount: 0.2 }}
     >
       <div className="relative aspect-[292/350] w-full">
         <div
@@ -201,10 +201,10 @@ function PhoneChatMockup() {
 
         <Image
           src="/images/iphone-frame.png"
-          alt=""
+          alt="Trooper iMessage conversation on iPhone"
           fill
-          sizes="(max-width: 640px) 300px, 340px"
-          className="pointer-events-none z-10 h-full w-full select-none object-contain"
+          sizes="340px"
+          className="pointer-events-none z-10 select-none object-fill"
           priority
         />
       </div>
@@ -316,7 +316,7 @@ export default function MobileChannelsSection() {
       </div>
 
       <div className="flex flex-col items-center gap-10 max-md:gap-8 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
-        <div className="w-full lg:w-auto lg:pt-2">
+        <div className="mx-auto w-[min(100%,300px)] shrink-0 sm:w-[340px] lg:mx-0 lg:pt-2">
           <PhoneChatMockup />
         </div>
 
