@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ChevronRight, Contact, Download } from 'lucide-react';
+import { ArrowRight, ChevronRight, Download } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
@@ -17,6 +17,8 @@ const featuredChannels = FEATURED_CHANNEL_IDS.map(
   (id) => OPENCLAW_CHANNELS.find((channel) => channel.id === id)!,
 );
 
+const MORE_CHANNELS = 'SMS, Slack, Discord, WebChat';
+
 type ChatMessage = {
   id: string;
   text: string;
@@ -24,25 +26,16 @@ type ChatMessage = {
 };
 
 const CHAT_SCRIPT: ChatMessage[] = [
-  { id: 'weather', text: 'Morning — nice day in SF, 64°.', direction: 'in' },
-  {
-    id: 'leads',
-    text: '23 leads came in overnight, already enriched and scored.',
-    direction: 'in',
-  },
-  {
-    id: 'demo',
-    text: 'Top one is a Series B HR tech — wants a demo this week.',
-    direction: 'in',
-  },
-  { id: 'sarah', text: 'Also: Sarah at Vanta replied to your outreach.', direction: 'in' },
+  { id: 'leads', text: '23 leads came in overnight — enriched and scored.', direction: 'in' },
+  { id: 'demo', text: 'Top one is Series B HR tech. Wants a demo this week.', direction: 'in' },
+  { id: 'sarah', text: 'Sarah at Vanta replied to your outreach.', direction: 'in' },
   { id: 'book', text: 'book the demo for Thursday', direction: 'out' },
   { id: 'draft', text: 'and draft a follow-up to Sarah', direction: 'out' },
 ];
 
 function TypingIndicator() {
   return (
-    <div className="inline-flex max-w-[72%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#3A3A3C] px-3.5 py-2.5">
+    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#3A3A3C] px-3 py-2">
       {[0, 1, 2].map((dot) => (
         <motion.span
           key={dot}
@@ -67,11 +60,11 @@ function PhoneChatScreen() {
     if (reduceMotion) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
-    let delay = 700;
+    let delay = 600;
 
     CHAT_SCRIPT.forEach((message, index) => {
       if (message.direction === 'in' && index > 0) {
-        timers.push(setTimeout(() => setShowTyping(true), delay - 450));
+        timers.push(setTimeout(() => setShowTyping(true), delay - 400));
       }
 
       timers.push(
@@ -81,7 +74,7 @@ function PhoneChatScreen() {
         }, delay),
       );
 
-      delay += message.direction === 'in' ? 1300 : 850;
+      delay += message.direction === 'in' ? 1200 : 800;
     });
 
     return () => timers.forEach(clearTimeout);
@@ -100,20 +93,20 @@ function PhoneChatScreen() {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-black">
-      <div className="shrink-0 border-b border-white/10 bg-black px-4 pb-2 pt-9 text-center">
-        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
+      <div className="shrink-0 border-b border-white/10 bg-black px-3 pb-2 pt-8 text-center">
+        <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
           <Image
             src="/images/trooper-logomark.png"
             alt=""
-            width={22}
-            height={22}
+            width={20}
+            height={20}
             className="h-5 w-5 object-contain"
             style={{ imageRendering: 'pixelated' }}
           />
         </div>
-        <p className="mt-1 flex items-center justify-center gap-0.5 text-[12px] font-medium text-white">
+        <p className="mt-1 flex items-center justify-center gap-0.5 text-[11px] font-medium text-white">
           Trooper
-          <ChevronRight className="h-3.5 w-3.5 text-white/40" strokeWidth={2} aria-hidden />
+          <ChevronRight className="h-3 w-3 text-white/40" strokeWidth={2} aria-hidden />
         </p>
       </div>
 
@@ -121,13 +114,13 @@ function PhoneChatScreen() {
         ref={viewportRef}
         className="relative min-h-0 flex-1 overflow-hidden"
         style={{
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 12%, black 100%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 12%, black 100%)',
         }}
       >
         <motion.div
           ref={threadRef}
-          className="flex min-h-full flex-col justify-end gap-2 px-8 pb-4 pt-2"
+          className="flex min-h-full flex-col justify-end gap-1.5 px-3.5 pb-3 pt-1"
           animate={{ y: reduceMotion ? 0 : -threadOffset }}
           transition={{ duration: 0.45, ease }}
         >
@@ -136,12 +129,12 @@ function PhoneChatScreen() {
               <motion.div
                 key={message.id}
                 layout
-                initial={reduceMotion ? false : { opacity: 0, y: 10, scale: 0.97 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.32, ease }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.28, ease }}
                 className={[
-                  'max-w-[85%] px-3.5 py-2 text-[11px] leading-[1.45] sm:text-[12px]',
+                  'max-w-[88%] px-3 py-1.5 text-[10.5px] leading-[1.4] sm:text-[11px]',
                   message.direction === 'in'
                     ? 'rounded-2xl rounded-tl-md bg-[#3A3A3C] text-white'
                     : 'ml-auto rounded-2xl rounded-tr-md bg-fern text-white',
@@ -153,12 +146,7 @@ function PhoneChatScreen() {
           </AnimatePresence>
 
           {showTyping ? (
-            <motion.div
-              layout
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-            >
+            <motion.div layout initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <TypingIndicator />
             </motion.div>
           ) : null}
@@ -178,14 +166,18 @@ const IPHONE_SCREEN_INSET = {
 
 function PhoneChatMockup() {
   return (
-    <motion.div
-      className="relative mx-auto w-[min(100%,300px)] shrink-0 sm:w-[340px]"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease }}
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      <div className="relative aspect-[292/350] w-full">
+    <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[320px]">
+      <div
+        className="pointer-events-none absolute left-1/2 top-[18%] -z-10 h-[55%] w-[90%] -translate-x-1/2 rounded-full bg-fern/20 blur-3xl"
+        aria-hidden
+      />
+      <motion.div
+        className="relative aspect-[292/350] w-full"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease }}
+        viewport={{ once: true, amount: 0.35 }}
+      >
         <div
           className="absolute overflow-hidden bg-black"
           style={{
@@ -201,113 +193,90 @@ function PhoneChatMockup() {
 
         <Image
           src="/images/iphone-frame.png"
-          alt="Trooper iMessage conversation on iPhone"
+          alt="Trooper conversation on iPhone"
           fill
-          sizes="340px"
+          sizes="(max-width: 640px) 280px, 320px"
           className="pointer-events-none z-10 select-none object-fill"
           priority
         />
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
-function ChannelPill({
-  channelId,
-  channelName,
-  index,
-}: {
-  channelId: string;
-  channelName: string;
-  index: number;
-}) {
+function ChannelChip({ channelId, channelName }: { channelId: string; channelName: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05, ease }}
-      viewport={{ once: true }}
+    <Link
+      href={`/channels/${channelId}`}
+      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:border-white/20 hover:bg-white/[0.09] sm:px-3.5 sm:py-2 sm:text-sm"
     >
-      <Link
-        href={`/channels/${channelId}`}
-        className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.06] px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:border-white/22 hover:bg-white/10 sm:gap-3 sm:px-4 sm:py-2.5 sm:text-[15px]"
-      >
-        <FieldCommsChannelIcon channelId={channelId} size={26} />
-        <span>{channelName}</span>
-      </Link>
-    </motion.div>
+      <FieldCommsChannelIcon channelId={channelId} size={22} />
+      <span>{channelName}</span>
+    </Link>
   );
 }
 
-function ConnectQrPanel() {
+function ConnectCard() {
   return (
-    <motion.div
-      className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.1, ease }}
-      viewport={{ once: true }}
-    >
-      <div className="relative mx-auto shrink-0 sm:mx-0">
-        <div className="overflow-hidden rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200/80">
-          <Image
-            src="/images/trooper-connect-qr.png"
-            alt="QR code to open Trooper channel setup"
-            width={132}
-            height={132}
-            className="h-[132px] w-[132px]"
-          />
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-white shadow-sm ring-1 ring-slate-200">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 sm:p-5">
+      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5">
+        <div className="relative shrink-0">
+          <div className="overflow-hidden rounded-xl bg-white p-1.5 shadow-sm ring-1 ring-white/10">
             <Image
-              src="/images/trooper-logomark.png"
-              alt=""
-              width={22}
-              height={22}
-              className="h-5 w-5 object-contain"
-              style={{ imageRendering: 'pixelated' }}
+              src="/images/trooper-connect-qr.png"
+              alt="QR code to open Trooper channel setup"
+              width={112}
+              height={112}
+              className="h-28 w-28"
             />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-white shadow-sm ring-1 ring-slate-200">
+              <Image
+                src="/images/trooper-logomark.png"
+                alt=""
+                width={18}
+                height={18}
+                className="h-4 w-4 object-contain"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="min-w-0 flex-1 text-center sm:text-left">
+          <p className="text-base font-semibold text-white sm:text-[1.05rem]">Save Trooper to your phone</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-white/50">
+            Scan to open channel setup — then message your workforce from the apps you already use.
+          </p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+            <a
+              href={CHANNEL_SETUP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-split transition-colors hover:bg-white/92 sm:w-auto"
+            >
+              <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
+              Connect channels
+            </a>
+            <Link
+              href="/download"
+              className="inline-flex w-full items-center justify-center gap-1 text-sm font-medium text-white/55 transition-colors hover:text-white/80 sm:w-auto sm:px-2"
+            >
+              Mobile apps
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            </Link>
           </div>
         </div>
       </div>
-
-      <div className="min-w-0 flex-1 text-center sm:text-left">
-        <div className="flex items-center justify-center gap-2 sm:justify-start">
-          <Contact className="h-5 w-5 text-white/50" strokeWidth={1.75} aria-hidden />
-          <p className="text-base font-semibold text-white sm:text-lg">Save Trooper to your phone</p>
-        </div>
-        <p className="mt-2 text-sm leading-relaxed text-white/55">
-          Scan to open channel setup, then text your workforce from anywhere — iMessage, WhatsApp,
-          Telegram, or email.
-        </p>
-        <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-start">
-          <a
-            href={CHANNEL_SETUP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-split transition-colors hover:bg-white/90 sm:w-auto"
-          >
-            <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
-            Connect channels
-          </a>
-          <Link
-            href="/download"
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/20 bg-transparent px-5 py-2.5 text-sm font-medium text-white/85 transition-colors hover:bg-white/10 sm:w-auto"
-          >
-            Mobile apps
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-          </Link>
-        </div>
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function MobileChannelsSection() {
   return (
-    <div className="py-8 md:py-14 lg:py-16">
-      <div className="mb-8 md:mb-10">
+    <div className="py-10 md:py-14 lg:py-16">
+      <div className="mb-8 lg:mb-10">
         <span className="type-eyebrow-num-dark">
           <span className="text-white/40">[04]</span>
           <span>&nbsp;</span>
@@ -315,47 +284,58 @@ export default function MobileChannelsSection() {
         </span>
       </div>
 
-      <div className="flex flex-col items-center gap-10 max-md:gap-8 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
-        <div className="mx-auto w-[min(100%,300px)] shrink-0 sm:w-[340px] lg:mx-0 lg:pt-2">
-          <PhoneChatMockup />
-        </div>
-
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-14 xl:gap-20">
+        {/* Copy — first on mobile, right column on desktop */}
         <motion.div
-          className="w-full max-w-xl lg:max-w-none lg:flex-1"
-          initial={{ opacity: 0, y: 16 }}
+          className="order-1 flex flex-col gap-6 lg:order-2 lg:gap-7"
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.05, ease }}
+          transition={{ duration: 0.5, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="font-funneldisplay text-[1.625rem] leading-[1.15] tracking-tight text-white sm:text-4xl md:text-[2.75rem] md:leading-[1.1]">
-            Chat with your workforce,
-            <br />
-            on the go.
-          </h2>
-
-          <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-2.5">
-            {featuredChannels.map((channel, index) => (
-              <ChannelPill
-                key={channel.id}
-                channelId={channel.id}
-                channelName={channel.name}
-                index={index}
-              />
-            ))}
+          <div className="space-y-4 text-center lg:text-left">
+            <h2 className="font-funneldisplay text-[1.75rem] leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.65rem] lg:leading-[1.08]">
+              Chat with your workforce,
+              <br className="hidden sm:block" />
+              <span className="sm:whitespace-nowrap"> on the go.</span>
+            </h2>
+            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-white/50 sm:text-base lg:mx-0 lg:max-w-lg">
+              Text your agents from iMessage, WhatsApp, Telegram, or email — the same channels your
+              team already checks.
+            </p>
           </div>
 
-          <p className="mt-4 text-sm text-white/45">and SMS, Slack, Discord, WebChat</p>
+          <div className="flex flex-col items-center gap-3 lg:items-start">
+            <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
+              {featuredChannels.map((channel) => (
+                <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
+              ))}
+            </div>
+            <p className="text-xs text-white/35 sm:text-[13px]">+ {MORE_CHANNELS}</p>
+          </div>
 
-          <ConnectQrPanel />
+          <div className="hidden lg:block">
+            <ConnectCard />
+          </div>
 
           <Link
             href="/channels"
-            className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-fern transition-colors hover:text-fern-light"
+            className="mx-auto inline-flex items-center gap-1.5 text-sm font-medium text-fern transition-colors hover:text-fern-light lg:mx-0"
           >
             Browse all channels
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </motion.div>
+
+        {/* Phone — second on mobile, left column on desktop */}
+        <div className="order-2 flex justify-center lg:order-1 lg:justify-start">
+          <PhoneChatMockup />
+        </div>
+
+        {/* Connect card — mobile/tablet only, below phone */}
+        <div className="order-3 lg:hidden">
+          <ConnectCard />
+        </div>
       </div>
     </div>
   );
