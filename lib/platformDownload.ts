@@ -1,5 +1,3 @@
-import { WINDOWS_INSTALLER_URL } from './downloadUrls';
-
 export type Platform = 'mac' | 'windows' | 'ios' | 'android' | 'web' | 'unknown';
 
 export type PlatformDownload = {
@@ -24,9 +22,9 @@ export const PLATFORM_DOWNLOADS: Record<
   windows: {
     key: 'windows',
     label: 'Download for Windows',
-    href: WINDOWS_INSTALLER_URL,
+    href: '/download/windows',
     iconSrc: '/images/platforms/windows.svg',
-    external: true,
+    external: false,
   },
   ios: {
     key: 'ios',
