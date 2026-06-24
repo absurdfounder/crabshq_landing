@@ -8,6 +8,8 @@ interface SectionShellProps {
   bgClass?: string;
   noBorder?: boolean;
   noBorderBottom?: boolean;
+  /** First section below fixed site header — clears TopBar + nav overlap */
+  clearSiteHeader?: boolean;
   children: React.ReactNode;
 }
 
@@ -27,9 +29,15 @@ export default function SectionShell({
   bgClass = 'bg-canvas',
   noBorder = false,
   noBorderBottom = true,
+  clearSiteHeader = false,
   children,
 }: SectionShellProps) {
-  const sectionClasses = ['relative', bgClass || 'bg-canvas', className]
+  const sectionClasses = [
+    'relative',
+    bgClass || 'bg-canvas',
+    clearSiteHeader ? 'site-header-clear' : '',
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 

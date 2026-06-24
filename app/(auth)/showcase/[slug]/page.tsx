@@ -191,14 +191,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div>
       <Header />
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="site-header-clear max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back navigation */}
         <div className="mb-8">
           <MoveBack />

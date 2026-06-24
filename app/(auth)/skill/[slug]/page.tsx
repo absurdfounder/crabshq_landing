@@ -176,8 +176,8 @@ export default async function SkillPage({ params }: { params: { slug: string } }
     <article itemScope itemType="https://schema.org/SoftwareSourceCode">
       <Header />
       <SkillStructuredData skill={skill} index={index} />
-      <SectionShell eyebrow="SKILL" eyebrowNumber="01" bgClass="bg-white">
-        <div className="pb-4 pt-24">
+      <SectionShell eyebrow="SKILL" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
+        <div className="pb-4 pt-2">
           <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <ol className="flex items-center gap-1.5 font-mono text-sm text-slate-400">
               <li>

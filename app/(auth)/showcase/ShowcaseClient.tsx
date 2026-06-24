@@ -445,14 +445,7 @@ function TemplateClientContent() {
             <Header />
 
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="site-header-clear max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Page header with improved spacing and typography */}
                 <div className="pt-4 pb-12 md:pt-12 md:pb-18">
                     <div className="mx-auto text-center">

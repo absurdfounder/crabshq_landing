@@ -163,13 +163,7 @@ export default function ContactUs() {
     <div className="card create-demo mt-12">
       <Header />
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-      <SectionShell eyebrow="CONTACT" eyebrowNumber="01" bgClass="bg-white">
+      <SectionShell eyebrow="CONTACT" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
       <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       <div className="justify-center mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-2 items-start max-w-7xl border bg-slate-100 rounded-2xl p-8 mb-12">
         <div className="w-full p-4 h-full px-12">

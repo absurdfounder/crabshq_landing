@@ -129,8 +129,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return (
       <div>
         <Header />
-        <br/><br/><br/><br/><br/>
-        <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white">
+        <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
         <div className="max-w-6xl m-auto my-8 px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-y-8 gap-x-8 lg:grid-cols-2 xl:gap-x-12">
             <div>

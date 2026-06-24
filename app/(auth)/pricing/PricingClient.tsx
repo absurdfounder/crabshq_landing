@@ -233,7 +233,7 @@ const Pricing: React.FC = () => {
             <ExitIntentPopup isOpen={showExitPopup} onClose={() => setShowExitPopup(false)} />
             <Header />
 
-            <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white">
+            <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
                 <SimplePricing showFullPricingLink={false} />
             </SectionShell>
 

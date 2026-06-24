@@ -18,16 +18,9 @@ export default function PageDetail() {
         <section >
             <Header/>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-            <SectionShell eyebrow="HERO" eyebrowNumber="01" bgClass="bg-white">
+            <SectionShell eyebrow="HERO" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                <div className="pt-12 pb-6 md:pt-4 md:pb-6">
+                <div className="pb-6 md:pb-6">
 
                     {/* Page header */}
 

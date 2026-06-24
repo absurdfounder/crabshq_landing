@@ -93,17 +93,10 @@ export default async function ComparisonAgainst({ params }: { params: { slug: st
     <section >
       <Header />
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-
-
-      <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white">
+      <SectionShell eyebrow="OVERVIEW" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="pt-24 pb-12 md:pt-20 md:pb-20">
-            <div className="max-w-xl mx-auto text-center pb-12 md:pb-20 pt-12">
+          <div className="pb-12 md:pb-20">
+            <div className="max-w-xl mx-auto text-center pb-12 md:pb-20 pt-4 md:pt-8">
               <Image
                 src={filteredContent.product.heroimage}
                 alt={filteredContent.product.name}

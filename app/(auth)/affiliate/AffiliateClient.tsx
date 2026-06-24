@@ -242,7 +242,7 @@ export default function AffiliateClient() {
         <section className="relative overflow-hidden border-b border-slate-200">
           <PixelDitherGradient />
           <div className="relative z-10">
-            <div className="px-4 pb-10 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 md:pb-14 md:pt-32">
+            <div className="page-hero-padding px-4 sm:px-6 lg:px-8">
               <PixelMissionTag index="01" label="Affiliate program" className="mb-4" />
 
               <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">

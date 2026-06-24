@@ -19,7 +19,7 @@ export default function BrowserCapabilitySection() {
               </Link>
             </p>
             <h2 className="font-display text-3xl font-medium leading-9 tracking-tight text-ink sm:text-4xl sm:leading-11 xl:text-[2.75rem] xl:leading-[3rem]">
-              Anything you do in a browser,
+              Anything you do in a computer,
               <br />
               Trooper can do for you.
             </h2>
