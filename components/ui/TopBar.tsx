@@ -11,11 +11,7 @@ export default function TopBar() {
       <PixelSurface
         className="relative"
         dither={false}
-        surfaceStyle={{
-          ...(PIXEL_SURFACE_BANNER_STYLE as PixelSurfaceStyle),
-          '--pixel-bg-size': 'auto 100%',
-          '--pixel-bg-repeat': 'repeat-x',
-        }}
+        surfaceStyle={PIXEL_SURFACE_BANNER_STYLE as PixelSurfaceStyle}
       >
         <Link
           href="/download/mac"

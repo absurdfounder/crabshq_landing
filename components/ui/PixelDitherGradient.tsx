@@ -41,9 +41,9 @@ const VARIANTS = {
   },
 } as const;
 
-const GRID_W = 48;
-const GRID_H = 96;
-const CELL_PX = 10;
+const GRID_W = 200;
+const GRID_H = 80;
+const CELL_PX = 4;
 
 function hexToRgb(hex: string) {
   const value = parseInt(hex.slice(1), 16);

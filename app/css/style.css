@@ -181,17 +181,17 @@
   background-position: top;
 }
 
-/* Top promo strip — tiled horizontal pixel landscape, no stretched canvas */
+/* Top promo strip — fine 4px tiles (native SVG cells are 8px; displayed at 0.5×) */
 .site-top-bar .pixel-surface {
-  --pixel-bg-size: auto 100%;
-  --pixel-bg-repeat: repeat-x;
+  --pixel-bg-size: 224px 16px;
+  --pixel-bg-repeat: repeat;
   background-color: #8cc352;
   animation: site-top-bar-pixel-drift 48s linear infinite;
 }
 
 @keyframes site-top-bar-pixel-drift {
   to {
-    background-position: 448px 0;
+    background-position: 224px 0;
   }
 }
 

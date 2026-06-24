@@ -18,8 +18,8 @@ const BANNER_STOPS: ReadonlyArray<{ at: number; color: string }> = [
   { at: 1, color: '#6ba82e' },
 ];
 
-const GRID = 8;
-const CELL_PX = 10;
+const GRID = 16;
+const CELL_PX = 4;
 const CANVAS_PX = GRID * CELL_PX;
 
 function hexToRgb(hex: string) {
