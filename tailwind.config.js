@@ -1,3 +1,16 @@
+/** Ferndesk-aligned marketing accent (Silkscreen kickers, promo bar) */
+const fernAccent = {
+  DEFAULT: '#8ECD44',
+  bright: '#8CC352',
+  dark: '#6aab2e',
+  muted: '#a8d96a',
+  50: '#f4fbe8',
+  100: '#e8f5d4',
+  200: '#d4ecb8',
+  700: '#5a9628',
+  800: '#4a7d22',
+};
+
 /** Trooper brand green #3f6b00 and derived shades */
 const brandGreen = {
   DEFAULT: '#3f6b00',
@@ -23,6 +36,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        fern: fernAccent,
+        canvas: {
+          DEFAULT: '#FAFAF8',
+          warm: '#F7F7F4',
+          section: '#FCFCFA',
+        },
+        ink: {
+          DEFAULT: '#1a1a1a',
+          muted: '#525252',
+          faint: '#737373',
+        },
+        split: '#14170f',
         trooper: {
           ...brandGreen,
           olive: '#6d9220',

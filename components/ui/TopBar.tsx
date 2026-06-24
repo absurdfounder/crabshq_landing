@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { BookOpen, Puzzle } from 'lucide-react'
+import { ArrowRight, BookOpen, Puzzle } from 'lucide-react'
 
 import LiquidOrb from '@/components/ui/LiquidOrb'
 
@@ -33,65 +33,78 @@ function DiscordIcon({ className }: { className?: string }) {
 }
 
 const linkClass =
-  'flex items-center gap-2 text-xs font-bold text-slate-600 transition-colors hover:text-slate-900'
+  'flex items-center gap-2 text-xs font-medium text-ink-muted transition-colors hover:text-ink'
 
 export default function TopBar() {
   const changelogLabel = formatRelativeTime(CHANGELOG_UPDATED_AT)
 
   return (
-    <div className="site-top-bar border-b border-slate-100 bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-slate-100 px-4 py-2 sm:px-6">
-        <div className="hidden flex-grow items-center gap-3 text-xs font-bold text-slate-500 md:flex">
-          <span>
-            <span className="text-slate-900">Trooper</span> the delightful{' '}
-            <span className="text-slate-900">AI workforce</span> platform
-          </span>
-          <a
-            href="https://app.trooper.so/changelog"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
-            title={`Changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-500 opacity-90 transition-opacity hover:opacity-100"
-          >
-            <LiquidOrb variant="changelog" />
-            <span>Changelog: {changelogLabel}</span>
-          </a>
-        </div>
+    <div className="site-top-bar">
+      <Link
+        href="/download"
+        className="group flex items-center justify-center gap-1.5 bg-fern-bright px-4 py-2 text-center text-xs font-medium text-ink transition-colors hover:bg-fern"
+      >
+        <span>New: Trooper for Mac — run your AI workforce on your machine</span>
+        <span className="inline-flex items-center gap-0.5 font-medium">
+          Download
+          <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.25} />
+        </span>
+      </Link>
 
-        <a
-          href="https://app.trooper.so"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ml-auto flex items-center gap-1.5 text-xs font-bold text-slate-600 transition-colors hover:text-slate-900 md:ml-0"
-        >
-          <LiquidOrb variant="status" />
-          <span className="text-slate-800">Online</span>
-        </a>
+      <div className="border-b border-[var(--color-line)] bg-canvas">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-[var(--color-line)] px-4 py-2 sm:px-6">
+          <div className="hidden flex-grow items-center gap-3 text-xs font-medium text-ink-muted md:flex">
+            <span>
+              <span className="text-ink">Trooper</span> the delightful{' '}
+              <span className="text-ink">AI workforce</span> platform
+            </span>
+            <a
+              href="https://app.trooper.so/changelog"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
+              title={`Changelog: ${CHANGELOG_UPDATED_AT.toLocaleString()}`}
+              className="flex items-center gap-1.5 text-xs font-medium text-ink-muted opacity-90 transition-opacity hover:opacity-100"
+            >
+              <LiquidOrb variant="changelog" />
+              <span>Changelog: {changelogLabel}</span>
+            </a>
+          </div>
 
-        <div className="hidden items-center gap-4 md:flex">
-          <Link href="/download" className={linkClass}>
-            <Puzzle className="h-3.5 w-3.5 text-slate-600" strokeWidth={2.25} />
-            <span>Download Apps</span>
-          </Link>
           <a
-            href="https://docs.openclaw.ai"
+            href="https://app.trooper.so"
             target="_blank"
             rel="noopener noreferrer"
-            className={linkClass}
+            className="ml-auto flex items-center gap-1.5 text-xs font-medium text-ink-muted transition-colors hover:text-ink md:ml-0"
           >
-            <BookOpen className="h-3.5 w-3.5 text-slate-600" strokeWidth={2.25} />
-            <span>Docs</span>
+            <LiquidOrb variant="status" />
+            <span className="text-ink">Online</span>
           </a>
-          <a
-            href="https://discord.com/invite/clawd"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            <DiscordIcon className="h-3.5 w-3.5 text-slate-600" />
-            <span>Discord</span>
-          </a>
+
+          <div className="hidden items-center gap-4 md:flex">
+            <Link href="/download" className={linkClass}>
+              <Puzzle className="h-3.5 w-3.5 text-ink-muted" strokeWidth={2.25} />
+              <span>Download Apps</span>
+            </Link>
+            <a
+              href="https://docs.openclaw.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              <BookOpen className="h-3.5 w-3.5 text-ink-muted" strokeWidth={2.25} />
+              <span>Docs</span>
+            </a>
+            <a
+              href="https://discord.com/invite/clawd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              <DiscordIcon className="h-3.5 w-3.5 text-ink-muted" />
+              <span>Discord</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

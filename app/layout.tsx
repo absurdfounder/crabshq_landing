@@ -143,7 +143,7 @@ export default function RootLayout({
         }} />
       </head>
       <body
-        className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-gray-50 font-sans antialiased text-slate-900`}
+        className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-canvas font-sans antialiased text-ink`}
       >
         <div className="flex flex-col min-h-screen">
           {children}

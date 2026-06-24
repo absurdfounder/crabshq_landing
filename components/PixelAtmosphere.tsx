@@ -66,7 +66,7 @@ export function PixelMissionTag({
 }) {
   return (
     <span className={`army-mission-tag ${className}`}>
-      <span className="text-slate-400">[{index}]</span>
+      <span className="text-ink-faint">[{index}]</span>
       <span className="army-mission-tag__sep" aria-hidden />
       {label}
     </span>

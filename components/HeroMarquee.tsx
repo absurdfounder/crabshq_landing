@@ -45,10 +45,10 @@ const Tag = ({
     className={`inline-flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-[11px] font-mono font-semibold uppercase tracking-[0.12em] transition-colors duration-200 [clip-path:polygon(3px_0,100%_0,100%_calc(100%-3px),calc(100%-3px)_100%,0_100%,0_3px)] ${
       dark
         ? 'border border-white/10 bg-white/5 text-white/75 hover:border-white/20 hover:bg-white/10'
-        : 'border border-trooper-100/80 bg-trooper-50/70 text-trooper-700 hover:border-trooper hover:bg-trooper-50'
+        : 'border border-fern-100/90 bg-fern-50/80 text-fern-800 hover:border-fern hover:bg-fern-50'
     }`}
   >
-    <Icon className={`h-3.5 w-3.5 ${dark ? 'text-trooper-300' : 'text-trooper'}`} strokeWidth={2} />
+    <Icon className={`h-3.5 w-3.5 ${dark ? 'text-fern-muted' : 'text-fern'}`} strokeWidth={2} />
     <span>{label}</span>
   </div>
 );

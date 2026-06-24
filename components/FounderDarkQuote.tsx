@@ -21,7 +21,7 @@ export default function FounderDarkQuote() {
         viewport={{ once: true, margin: '-20px' }}
       >
         <div
-          className="font-display text-[4.5rem] leading-[0.85] tracking-tight text-[#c4a882] sm:text-[5.5rem] md:pt-1"
+          className="font-display text-[4.5rem] leading-[0.85] tracking-tight text-[var(--color-quote-gold)] sm:text-[5.5rem] md:pt-1"
           aria-hidden
         >
           &ldquo;

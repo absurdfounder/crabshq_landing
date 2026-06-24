@@ -112,11 +112,11 @@ function resolveTone(variant: Variant, tone: Tone): ToneStyles {
   }
   if (variant === 'solid' && tone === 'dark') {
     return {
-      fill: 'bg-slate-900',
+      fill: 'bg-neutral-950 hover:bg-neutral-900',
       text: 'text-white',
-      outlineBorder: 'border-slate-900',
+      outlineBorder: 'border-neutral-950',
       outlineBg: 'bg-transparent',
-      outlineHover: 'hover:bg-slate-800',
+      outlineHover: 'hover:bg-neutral-50',
     };
   }
   if (variant === 'solid' && tone === 'light') {
@@ -142,7 +142,7 @@ function buildShellClass(className?: string, disabled?: boolean) {
   return [
     'group relative inline-flex items-stretch select-none',
     wantsFullWidth ? '' : 'w-fit',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trooper focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
     'active:translate-x-px active:translate-y-px',
     disabled ? 'pointer-events-none opacity-60' : '',
     className,

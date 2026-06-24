@@ -32,14 +32,14 @@ export default function HowItWorksSteps() {
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="how-it-works-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
+        <h2 className="how-it-works-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-ink leading-[1.15]">
           Manage business goals
           <br />
           not pull requests.
         </h2>
       </motion.div>
 
-      <div className="steps-grid grid grid-cols-1 md:grid-cols-3 border border-slate-100 bg-white overflow-hidden">
+      <div className="steps-grid grid grid-cols-1 md:grid-cols-3 border border-[var(--color-line)] bg-canvas-section overflow-hidden">
         {steps.map((step, index) => (
           <motion.div
             key={step.number}
@@ -49,7 +49,7 @@ export default function HowItWorksSteps() {
             viewport={{ once: true, margin: '-20px' }}
             className={[
               'step-card p-4 sm:p-6 md:p-8',
-              index < steps.length - 1 ? 'border-b md:border-b-0 md:border-r border-slate-100' : '',
+              index < steps.length - 1 ? 'border-b md:border-b-0 md:border-r border-[var(--color-line)]' : '',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -57,7 +57,7 @@ export default function HowItWorksSteps() {
             <span className="step-number block font-mono text-2xl sm:text-3xl text-slate-300 tabular-nums">
               {step.number}
             </span>
-            <h3 className="step-title font-sans text-lg sm:text-xl font-semibold text-slate-900 mt-4 mb-3">
+            <h3 className="step-title font-sans text-lg sm:text-xl font-semibold text-ink mt-4 mb-3">
               {step.title}
             </h3>
             <p className="step-example text-sm sm:text-base text-slate-500 leading-relaxed">

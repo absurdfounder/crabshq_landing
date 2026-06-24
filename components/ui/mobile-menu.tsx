@@ -174,7 +174,7 @@ export default function MobileMenu({ dark = false }: { dark?: boolean }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={close}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-trooper px-4 py-3 text-sm font-semibold text-white shadow-sm active:bg-trooper-700"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-950 px-4 py-3 text-sm font-semibold text-white shadow-sm active:bg-neutral-900"
           >
             Get started free
             <ArrowRight className="h-4 w-4" />

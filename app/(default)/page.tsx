@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <>
       <FloatingScrollIndicator />
-      <div className="hero-shell bg-white">
+      <div className="hero-shell bg-canvas">
         <Header />
         <Hero />
       </div>
@@ -65,7 +65,7 @@ export default function Home() {
         <YcQuoteSection />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="How It Works" eyebrowNumber="02" bgClass="bg-white">
+      <SectionShell eyebrow="How It Works" eyebrowNumber="02">
         <HowItWorksSteps />
       </SectionShell>
 
@@ -77,23 +77,23 @@ export default function Home() {
         <FounderDarkQuote />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="Field Comms" eyebrowNumber="04" bgClass="bg-white">
+      <SectionShell eyebrow="Field Comms" eyebrowNumber="04">
         <MobileChannelsSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Governance" eyebrowNumber="05" bgClass="bg-white">
+      <SectionShell eyebrow="Governance" eyebrowNumber="05">
         <GovernanceSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
     </>

@@ -72,11 +72,11 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
         <span className="col-start-1 row-start-1 invisible pointer-events-none select-none" aria-hidden>
           Trooper {LONGEST_LINE}
         </span>
-        <span className="col-start-1 row-start-1 text-slate-900" aria-live="polite" aria-atomic="true">
-          <span className="text-trooper">Trooper</span>{' '}
+        <span className="col-start-1 row-start-1 text-ink" aria-live="polite" aria-atomic="true">
+          <span>Trooper </span>
           <motion.span
             key={lineIndex}
-            className="text-slate-900"
+            className="text-ink"
             initial={reduceMotion ? false : { opacity: 1 }}
             animate={{ opacity: phase === 'fade' && !reduceMotion ? 0 : 1 }}
             transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
@@ -84,7 +84,7 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
             {displayed}
             {showCursor ? (
               <span
-                className="ml-0.5 inline-block w-[3px] animate-pulse bg-trooper align-[-0.05em]"
+                className="ml-0.5 inline-block w-[3px] animate-pulse bg-fern align-[-0.05em]"
                 style={{ height: '0.9em' }}
                 aria-hidden
               />
@@ -92,9 +92,7 @@ export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHea
           </motion.span>
         </span>
       </span>
-      <span className="mt-1 block text-slate-900 sm:mt-2">
-        Whole Team. <span className="text-trooper">One App.</span>
-      </span>
+      <span className="mt-1 block text-ink sm:mt-2">Whole Team. One App.</span>
     </h1>
   );
 }

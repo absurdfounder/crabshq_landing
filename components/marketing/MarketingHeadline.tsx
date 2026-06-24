@@ -35,7 +35,7 @@ const sublineSizeClasses = {
 
 const toneClasses: Record<NonNullable<MarketingHeadlinePart['tone']>, string> = {
   default: 'text-slate-900',
-  brand: 'text-trooper',
+  brand: 'text-fern',
   muted: 'text-slate-500',
   strong: 'text-slate-950 font-semibold',
 };
@@ -126,7 +126,7 @@ export function MarketingCardTitle({
   className?: string;
 }) {
   const highlightClass =
-    titleHighlightTone === 'brand' ? 'text-trooper' : 'text-slate-500';
+    titleHighlightTone === 'brand' ? 'text-fern' : 'text-ink-muted';
 
   return (
     <h3

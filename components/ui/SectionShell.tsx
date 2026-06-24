@@ -24,12 +24,12 @@ export default function SectionShell({
   eyebrow,
   eyebrowNumber,
   className = '',
-  bgClass = '',
+  bgClass = 'bg-canvas',
   noBorder = false,
   noBorderBottom = true,
   children,
 }: SectionShellProps) {
-  const sectionClasses = ['relative', bgClass, className]
+  const sectionClasses = ['relative', bgClass || 'bg-canvas', className]
     .filter(Boolean)
     .join(' ');
 
@@ -37,9 +37,9 @@ export default function SectionShell({
   // box on top. The next SectionShell's own top border serves as this
   // section's bottom divider, so we omit border-b unless explicitly asked.
   const frameClasses = [
-    'max-w-7xl mx-auto border-slate-100',
+    'max-w-7xl mx-auto border-[var(--color-line)]',
     'px-4 sm:px-6',
-    bgClass,
+    bgClass || 'bg-canvas',
     !noBorder ? 'border-t border-l border-r' : 'border-l border-r',
     !noBorderBottom ? 'border-b' : '',
   ]
@@ -53,7 +53,7 @@ export default function SectionShell({
           <div className="pt-4 sm:pt-6 md:pt-8 pb-2">
             <span className="type-eyebrow-num">
               {eyebrowNumber && (
-                <span className="text-slate-400">[{eyebrowNumber}]</span>
+                <span className="text-ink-faint">[{eyebrowNumber}]</span>
               )}
               {eyebrowNumber && <span>&nbsp;</span>}
               {eyebrow}

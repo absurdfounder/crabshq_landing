@@ -656,7 +656,7 @@ const TicketVisual = () => {
        Each goal level visually CONTAINS the next, so the task literally lives
        inside the agent goal, project, and mission. ─── */
 const GoalVisual = () => (
-  <div className="flex flex-col h-full p-3 sm:p-6 md:p-8 justify-center bg-white min-h-0">
+  <div className="flex flex-col h-full p-3 sm:p-6 md:p-8 justify-center min-h-0">
     {/* L1 · Mission */}
     <div className="relative border border-slate-200 bg-white pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
       <div className="absolute -top-3 left-3 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
@@ -800,7 +800,7 @@ const BYOAVisual = () => {
   );
 
   return (
-    <div className="flex flex-col h-full p-2.5 sm:p-5 md:p-6 bg-white min-h-0">
+    <div className="flex flex-col h-full p-2.5 sm:p-5 md:p-6 min-h-0">
       {/* Window chrome */}
       <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
         <div className="flex items-center gap-2">
@@ -899,10 +899,10 @@ const BYOAVisual = () => {
 };
 
 const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex h-full min-h-[220px] flex-col overflow-hidden p-4 sm:p-6 lg:p-8">
+  <div className="relative flex h-full min-h-[300px] flex-1 flex-col overflow-hidden">
     <PixelDitherGradient />
-    <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden border border-slate-100 bg-white/95 shadow-sm backdrop-blur-[1px]">
-      {children}
+    <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10">
+      <div className="w-full max-w-full">{children}</div>
     </div>
   </div>
 );
@@ -973,8 +973,8 @@ export default function OldWays() {
   }, []);
 
   return (
-    <section className="relative bg-white">
-      <div className="mx-auto max-w-7xl border-l border-r border-slate-100 px-0 py-6 sm:py-16 md:py-24">
+    <section className="relative bg-canvas">
+      <div className="mx-auto max-w-7xl border-l border-r border-[var(--color-line)] px-0 py-6 sm:py-16 md:py-24">
         <div className="relative" style={{ perspective: '1000px' }}>
           {cards.map((card, index) => {
             const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
@@ -986,7 +986,7 @@ export default function OldWays() {
                 style={{ zIndex: cards.length + index, marginBottom: index === cards.length - 1 ? '0' : undefined }}
               >
                 <div
-                  className="relative bg-white border border-slate-100 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
+                  className="relative overflow-hidden border border-[var(--color-line)] min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
                   style={{
                     transform: `scale(${t.scale}) translateY(${t.y}px)`,
                     opacity: t.opacity,
@@ -1000,17 +1000,17 @@ export default function OldWays() {
                     </span>
                   )}
                   <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border pt-5 sm:pt-8 md:pt-10 pb-5 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
+                    <div className={`${sectionXPadding} box-border bg-canvas pt-5 sm:pt-8 md:pt-10 pb-5 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
                       <PixelMissionTag
                         index={String(index + 1).padStart(2, '0')}
                         label={card.tag}
                       />
-                      <h3 className="font-display text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-slate-900 mt-2.5 sm:mt-4 leading-snug">
-                        {card.title}{' '}<span className="text-slate-500">{card.highlight}</span>
+                      <h3 className="font-display text-[1.05rem] sm:text-2xl lg:text-3xl font-medium tracking-tight text-balance text-ink mt-2.5 sm:mt-4 leading-snug">
+                        {card.title}{' '}<span className="text-ink-muted">{card.highlight}</span>
                       </h3>
                       <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{card.description}</p>
                     </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-100 flex flex-col min-h-0">
+                    <div className="box-border flex min-h-[300px] w-full flex-1 flex-col md:w-[62%] border-t border-slate-100 md:border-l md:border-t-0">
                       <PixelFramedVisual>
                         {cardVisuals[index]}
                       </PixelFramedVisual>

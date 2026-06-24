@@ -64,13 +64,13 @@ export default function Header() {
       <div
         className={`transition-colors duration-200 transition-shadow duration-200 ${
           darkNav
-            ? 'border-b border-white/[0.06] bg-[#141a10]'
-            : `border-b border-slate-100 bg-white ${scrolled ? 'shadow-sm' : ''}`
+            ? 'border-b border-white/[0.06] bg-split'
+            : `border-b border-[var(--color-line)] bg-canvas ${scrolled ? 'shadow-sm' : ''}`
         }`}
       >
       <div
         className={`mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r px-3 sm:h-16 sm:gap-4 sm:px-6 ${
-          darkNav ? 'border-white/[0.06]' : 'border-slate-100'
+          darkNav ? 'border-white/[0.06]' : 'border-[var(--color-line)]'
         }`}
       >
         <TrooperLogo
@@ -147,8 +147,8 @@ export default function Header() {
             href="https://app.trooper.so"
             external
             size="sm"
-            tone="brand"
-            className={`hidden lg:inline-flex ${darkNav ? 'focus-visible:!ring-offset-[#141a10]' : ''}`}
+            tone="dark"
+            className={`hidden lg:inline-flex ${darkNav ? 'focus-visible:!ring-offset-split' : ''}`}
             icon={<ArrowRight className="h-3 w-3" strokeWidth={2.5} />}
           >
             Get started
@@ -192,8 +192,8 @@ function NavDropdownItem({
               ? 'bg-white/10 text-white'
               : 'text-white/75 hover:bg-white/10 hover:text-white'
             : isOpen
-              ? 'bg-slate-50 text-slate-900'
-              : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+              ? 'bg-canvas-warm text-ink'
+              : 'text-ink-muted hover:bg-canvas-warm hover:text-ink'
         }`}
       >
         {label}
