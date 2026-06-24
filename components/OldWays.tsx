@@ -6,6 +6,7 @@ import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import PixelDitherGradient from './ui/PixelDitherGradient';
 import FeatureVisualStage from './ui/FeatureVisualStage';
+import SmartRoutingCard from './SmartRoutingSection';
 
 function FeatureKicker({ index, label }: { index: string; label: string }) {
   return (
@@ -1005,6 +1006,7 @@ export default function OldWays() {
     { tag: "OPENCLAW RUNTIME", title: "Powered by OpenClaw", highlight: "private server for each org.", description: "Trooper deploys OpenClaw backend on a private server, keeping your company data siloed and safe. Also giving you full untampered access to OpenClaw with a beautiful UI." },
     { tag: "TICKET SYSTEM", title: "Every conversation traced.", highlight: "Every decision explained.", description: "You communicate with agents through tickets. Every instruction, every response, every tool call and decision is recorded with full tracing. Nothing happens in the dark." },
     { tag: "GOAL ALIGNMENT", title: "Keep your agents aligned", highlight: "on the goal.", description: "Every piece of work is given context that traces back to the company mission. Your agents will know what to do and why. Goals cascade from company → project → agent → task." },
+    { tag: "SMART ROUTING", title: "", highlight: "", description: "", isSmartRouting: true },
     { tag: "BRING YOUR OWN AGENT", title: "Bring your own bot.", highlight: "", description: "Your OpenClaw, Claude, Cursor, and Codex — organized under one org structure, pointed at one goal. If it can receive a heartbeat, it's hired." },
   ];
 
@@ -1063,6 +1065,20 @@ export default function OldWays() {
           const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
           const cardIndex = String(index + 1).padStart(2, '0');
 
+          if ('isSmartRouting' in card && card.isSmartRouting) {
+            return (
+              <SmartRoutingCard
+                key="smart-routing"
+                cardIndex={cardIndex}
+                transform={t}
+                cardRef={(el) => {
+                  cardRefs.current[index] = el;
+                }}
+                zIndex={cards.length + index}
+              />
+            );
+          }
+
           return (
             <div
               key={index}
@@ -1085,7 +1101,7 @@ export default function OldWays() {
                     'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
               >
-                {index === 8 && (
+                {index === 9 && (
                   <span className="absolute top-3 right-3 z-20 rounded-sm bg-fern-50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-fern-800 ring-1 ring-fern-200 sm:top-4 sm:right-4">
                     Flagship
                   </span>
