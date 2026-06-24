@@ -36,6 +36,9 @@ export async function GET(_request: Request, context: RouteContext) {
     return image;
   } catch (error) {
     console.error('[og] render failed', { kind, slug, error });
-    return new Response('OG render failed', { status: 500 });
+    return new Response('OG render failed', {
+      status: 500,
+      headers: { 'Cache-Control': 'no-store' },
+    });
   }
 }
