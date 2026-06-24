@@ -8,7 +8,9 @@
     "regenerate:skill-websites": "node scripts/regenerate-skill-websites.mjs",
     "generate:playbooks": "node scripts/generate-plugin-playbooks.mjs",
     "validate:playbooks": "node scripts/validate-playbooks.mjs",
-    "build": "npm run validate:playbooks && next build",
+    "generate:og": "tsx scripts/generate-og-images.ts",
+    "generate:og:home": "tsx scripts/generate-og-images.ts --home",
+    "build": "npm run validate:playbooks && npm run generate:og && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -41,6 +43,7 @@
     "@types/canvas-confetti": "^1.6.4",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.3.6",
+    "tsx": "^4.22.4"
   }
 }

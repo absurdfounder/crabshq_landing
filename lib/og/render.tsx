@@ -1,3 +1,4 @@
+import React from 'react';
 import { ImageResponse } from 'next/og';
 import { mergeBadgeIcons } from '@/lib/og/agentIcons';
 import { loadOgFonts } from '@/lib/og/fonts';

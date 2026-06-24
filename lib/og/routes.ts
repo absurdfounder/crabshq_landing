@@ -1,4 +1,5 @@
 import type { OgKind } from '@/lib/og/types';
+import { ogPrebuiltUrlPath } from '@/lib/og/prebuilt';
 
 const VALID_KINDS = new Set<OgKind>([
   'home',
@@ -20,11 +21,7 @@ const VALID_KINDS = new Set<OgKind>([
 const ASYNC_KINDS = new Set<OgKind>(['skill', 'compare', 'showcase', 'legacy-integration']);
 
 export function ogImagePath(kind: OgKind, slug?: string): string {
-  if (kind === 'home') return '/og/img/home';
-  if (!slug) {
-    throw new Error(`OG slug is required for kind "${kind}"`);
-  }
-  return `/og/img/${kind}/${encodeURIComponent(slug)}`;
+  return ogPrebuiltUrlPath(kind, slug);
 }
 
 export function parseOgImageSegments(segments: string[] = []): { kind: OgKind; slug?: string } | null {
