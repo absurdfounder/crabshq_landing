@@ -40,6 +40,7 @@ export const metadata = {
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import HowItWorksSteps from '@/components/HowItWorksSteps'
+import BrowserCapabilitySection from '@/components/BrowserCapabilitySection'
 import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
@@ -67,6 +68,8 @@ export default function Home() {
       <SectionShell eyebrow="How It Works" eyebrowNumber="02">
         <HowItWorksSteps />
       </SectionShell>
+
+      <BrowserCapabilitySection />
 
       <SectionShell eyebrow="Capabilities" eyebrowNumber="03">
         <OldWays />
