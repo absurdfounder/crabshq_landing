@@ -782,13 +782,13 @@ const BYOAVisual = () => {
     'Replit',
   ];
 
-  const featuredProviders = ['Claude', 'OpenAI', 'Cursor', 'Codex', 'OpenClaw', 'Gemini'];
-  const extraProviderCount = providers.length - featuredProviders.length;
+  const desktopProviders = providers.slice(0, 11);
+  const extraProviderCount = providers.length - desktopProviders.length;
 
   const renderTeamCell = (m: (typeof yourTeam)[number], i: number) => (
     <div
       key={`${m.role}-${i}`}
-      className={`relative flex flex-col items-center justify-center gap-1 py-2.5 sm:py-3 px-0.5 sm:px-1 ${
+      className={`relative flex flex-col items-center justify-center gap-0.5 py-2 px-0.5 sm:px-1 ${
         m.recommended ? 'bg-trooper-50/60' : ''
       }`}
     >
@@ -812,9 +812,9 @@ const BYOAVisual = () => {
   );
 
   return (
-    <div className="flex flex-col h-full p-2.5 sm:p-5 md:p-6 min-h-0">
+    <div className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)]">
       {/* Window chrome */}
-      <div className="flex items-center justify-between border border-slate-200 border-b-0 px-3 py-2 bg-slate-50">
+      <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2 bg-slate-50">
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 overflow-hidden p-0.5 bg-transparent border border-trooper-100">
             <TrooperChar />
@@ -834,8 +834,8 @@ const BYOAVisual = () => {
       </div>
 
       {/* Your team — compact roster row */}
-      <div className="border border-slate-200 bg-white">
-        <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
+      <div className="border-b border-slate-200 bg-white">
+        <div className="px-3 py-1.5 border-b border-slate-100 flex items-center justify-between">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
             Your team
           </span>
@@ -853,8 +853,8 @@ const BYOAVisual = () => {
       </div>
 
       {/* Available providers */}
-      <div className="mt-3 sm:mt-4 flex-1 flex flex-col min-h-0">
-        <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-col min-h-0 px-3 py-2.5 sm:px-4 sm:py-3">
+        <div className="flex items-center justify-between mb-1.5">
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
             Plug in any agent
           </span>
@@ -864,45 +864,46 @@ const BYOAVisual = () => {
         </div>
 
         {/* Mobile: featured providers only */}
-        <div className="grid grid-cols-3 gap-1.5 sm:hidden">
-          {featuredProviders.map((p) => (
+        <div className="grid grid-cols-3 gap-1 sm:hidden">
+          {['Claude', 'OpenAI', 'Cursor', 'Codex', 'OpenClaw', 'Gemini'].map((p) => (
             <div
               key={p}
-              className="border border-slate-200 bg-white flex flex-col items-center justify-center gap-1 px-1.5 py-2 min-w-0"
+              className="border border-slate-200 bg-white flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 min-w-0"
               title={p}
             >
-              <FaviconChip provider={p} size={14} />
-              <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-slate-600 truncate w-full text-center">
+              <FaviconChip provider={p} size={13} />
+              <span className="font-mono text-[8px] uppercase tracking-[0.08em] text-slate-600 truncate w-full text-center">
                 {p}
               </span>
             </div>
           ))}
-          <div className="border border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center gap-0.5 px-1.5 py-2 text-slate-500">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em]">+{extraProviderCount}</span>
+          <div className="border border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-slate-500">
+            <span className="font-mono text-[9px] uppercase tracking-[0.12em]">+{extraProviderCount}</span>
             <span className="font-mono text-[8px] uppercase tracking-[0.1em] text-slate-400">more</span>
           </div>
         </div>
 
-        {/* Desktop: full provider grid */}
-        <div className="hidden sm:grid sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-1.5 flex-1">
-          {providers.map((p) => (
+        {/* Desktop: compact provider grid */}
+        <div className="hidden sm:grid sm:grid-cols-4 gap-1">
+          {desktopProviders.map((p) => (
             <div
               key={p}
-              className="border border-slate-200 bg-white flex items-center gap-1.5 px-2 py-2 min-w-0"
+              className="border border-slate-200 bg-white flex items-center gap-1 px-1.5 py-1.5 min-w-0"
               title={p}
             >
-              <FaviconChip provider={p} size={12} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.10em] text-slate-700 truncate">
+              <FaviconChip provider={p} size={11} />
+              <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-slate-700 truncate">
                 {p}
               </span>
             </div>
           ))}
-          <div className="border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center gap-1.5 px-2 py-2 text-slate-500 hover:text-slate-700 transition-colors">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em]">+ Yours</span>
+          <div className="border border-dashed border-slate-300 bg-slate-50 flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-slate-500">
+            <span className="font-mono text-[9px] uppercase tracking-[0.12em]">+{extraProviderCount}</span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.1em] text-slate-400">more</span>
           </div>
         </div>
 
-        <p className="mt-2.5 sm:mt-3 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-[0.18em] text-slate-400 text-center">
+        <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.16em] text-slate-400 text-center">
           If it can receive a heartbeat · it&apos;s hired
         </p>
       </div>
@@ -910,7 +911,7 @@ const BYOAVisual = () => {
   );
 };
 
-const CHROME_VISUAL_INDICES = new Set([2, 6]);
+const CHROME_VISUAL_INDICES = new Set([2, 6, 8]);
 
 const PixelFramedVisual = ({
   children,
@@ -919,20 +920,20 @@ const PixelFramedVisual = ({
   children: React.ReactNode;
   bare?: boolean;
 }) => (
-  <div className="relative flex min-h-[320px] flex-1 flex-col sm:min-h-[380px] lg:absolute lg:inset-0 lg:min-h-0">
+  <div className="relative flex min-h-[320px] flex-1 flex-col overflow-hidden sm:min-h-[380px] lg:absolute lg:inset-0 lg:min-h-0">
     <PixelDitherGradient variant="warm" />
     <div
-      className={`relative z-10 flex flex-1 ${
+      className={`relative z-10 flex min-h-0 flex-1 overflow-hidden ${
         bare
           ? 'items-center p-4 sm:p-6 md:p-8'
           : 'items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10'
       }`}
     >
       {bare ? (
-        <div className="w-full max-w-[min(100%,36rem)]">{children}</div>
+        <div className="max-h-full w-full max-w-[min(100%,36rem)] overflow-hidden">{children}</div>
       ) : (
-        <div className="w-full max-w-[min(100%,40rem)] overflow-visible rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
-          <div className="overflow-visible px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
+        <div className="max-h-full w-full max-w-[min(100%,40rem)] overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
+          <div className="overflow-hidden px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
         </div>
       )}
     </div>
@@ -1024,7 +1025,7 @@ export default function OldWays() {
               }}
             >
               <article
-                className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform lg:overflow-visible"
+                className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
                 style={{
                   transform: `scale(${t.scale}) translateY(${t.y}px)`,
                   opacity: t.opacity,
@@ -1055,7 +1056,7 @@ export default function OldWays() {
                     </p>
                   </div>
 
-                  <div className="relative min-h-[320px] overflow-hidden border-t border-[var(--color-line)] lg:min-h-0 lg:overflow-visible lg:border-t-0 lg:rounded-r-xl">
+                  <div className="relative min-h-[320px] overflow-hidden border-t border-[var(--color-line)] lg:min-h-0 lg:border-t-0 lg:rounded-r-xl">
                     <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)}>
                       {cardVisuals[index]}
                     </PixelFramedVisual>

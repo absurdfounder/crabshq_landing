@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronRight, Contact, Download } from 'lucide-react';
-import ChannelIcon from '@/components/marketing/ChannelIcon';
+import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -168,17 +168,34 @@ function PhoneChatScreen() {
   );
 }
 
+/** Screen cutout aligned to public/images/iphone-frame.png (292×350). */
+const IPHONE_SCREEN_INSET = {
+  top: '12.57%',
+  right: '12.33%',
+  bottom: '5.14%',
+  left: '12.33%',
+} as const;
+
 function PhoneChatMockup() {
   return (
     <motion.div
-      className="relative mx-auto w-full max-w-[min(100%,340px)] sm:max-w-[400px]"
+      className="relative mx-auto w-full shrink-0 max-w-[min(100%,300px)] sm:max-w-[340px]"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
       viewport={{ once: true, margin: '-40px' }}
     >
       <div className="relative aspect-[292/350] w-full">
-        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.75rem] bg-black">
+        <div
+          className="absolute overflow-hidden bg-black"
+          style={{
+            top: IPHONE_SCREEN_INSET.top,
+            right: IPHONE_SCREEN_INSET.right,
+            bottom: IPHONE_SCREEN_INSET.bottom,
+            left: IPHONE_SCREEN_INSET.left,
+            borderRadius: '1.45rem',
+          }}
+        >
           <PhoneChatScreen />
         </div>
 
@@ -186,8 +203,8 @@ function PhoneChatMockup() {
           src="/images/iphone-frame.png"
           alt=""
           fill
-          sizes="(max-width: 640px) 380px, 400px"
-          className="pointer-events-none z-10 select-none object-fill"
+          sizes="(max-width: 640px) 300px, 340px"
+          className="pointer-events-none z-10 h-full w-full select-none object-contain"
           priority
         />
       </div>
@@ -198,12 +215,10 @@ function PhoneChatMockup() {
 function ChannelPill({
   channelId,
   channelName,
-  iconUrl,
   index,
 }: {
   channelId: string;
   channelName: string;
-  iconUrl: string;
   index: number;
 }) {
   return (
@@ -215,9 +230,9 @@ function ChannelPill({
     >
       <Link
         href={`/channels/${channelId}`}
-        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-sm font-medium text-white/90 shadow-sm transition-all hover:border-white/25 hover:bg-white/10 sm:gap-2.5 sm:px-4 sm:py-2.5 sm:text-[15px]"
+        className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.06] px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:border-white/22 hover:bg-white/10 sm:gap-3 sm:px-4 sm:py-2.5 sm:text-[15px]"
       >
-        <ChannelIcon channelId={channelId} channelName={channelName} iconUrl={iconUrl} size={20} />
+        <FieldCommsChannelIcon channelId={channelId} size={26} />
         <span>{channelName}</span>
       </Link>
     </motion.div>
@@ -300,8 +315,10 @@ export default function MobileChannelsSection() {
         </span>
       </div>
 
-      <div className="flex flex-col items-center gap-8 max-md:gap-8 lg:flex-row lg:items-center lg:gap-16 xl:gap-20">
-        <PhoneChatMockup />
+      <div className="flex flex-col items-center gap-10 max-md:gap-8 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+        <div className="w-full lg:w-auto lg:pt-2">
+          <PhoneChatMockup />
+        </div>
 
         <motion.div
           className="w-full max-w-xl lg:max-w-none lg:flex-1"
@@ -322,7 +339,6 @@ export default function MobileChannelsSection() {
                 key={channel.id}
                 channelId={channel.id}
                 channelName={channel.name}
-                iconUrl={channel.icon}
                 index={index}
               />
             ))}
