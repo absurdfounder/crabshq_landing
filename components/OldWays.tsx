@@ -458,7 +458,7 @@ const CollabVisual = () => {
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[240px] sm:min-h-[460px] h-full flex flex-col p-3 sm:p-5 overflow-hidden">
+    <div ref={ref} className="flex min-h-[220px] flex-col p-3 sm:min-h-0 sm:p-4">
       <div className="w-full flex-1 flex flex-col min-w-0">
         {/* Week headers */}
         <div className="grid grid-cols-5 mb-0.5">
@@ -552,7 +552,7 @@ const CollabVisual = () => {
 
 /* ─── Visual 6: OpenClaw Runtime ─── */
 const OpenClawVisual = () => (
-  <div className="relative flex flex-col h-full justify-between p-4 sm:p-6 md:p-8 overflow-hidden min-h-0">
+  <div className="relative flex flex-col justify-between overflow-visible p-2 sm:p-3">
     <FlowLine className="inset-0 opacity-40" />
     <div className="relative z-10 space-y-6">
       <div className="border border-dashed border-slate-300 rounded-sm overflow-hidden bg-white/60 backdrop-blur-sm">
@@ -916,24 +916,30 @@ const CHROME_VISUAL_INDICES = new Set([2, 6, 8]);
 const PixelFramedVisual = ({
   children,
   bare = false,
+  contain = false,
 }: {
   children: React.ReactNode;
   bare?: boolean;
+  contain?: boolean;
 }) => (
-  <div className="relative flex min-h-[320px] flex-1 flex-col overflow-hidden sm:min-h-[380px] lg:absolute lg:inset-0 lg:min-h-0">
+  <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
     <PixelDitherGradient variant="warm" />
     <div
-      className={`relative z-10 flex min-h-0 flex-1 overflow-hidden ${
+      className={`relative z-10 flex flex-1 ${
         bare
-          ? 'items-center p-4 sm:p-6 md:p-8'
-          : 'items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10'
+          ? `items-center p-4 sm:p-6 md:p-8${contain ? ' min-h-0 overflow-hidden' : ''}`
+          : 'items-start justify-center p-5 sm:p-7 md:p-9 lg:p-10'
       }`}
     >
       {bare ? (
-        <div className="max-h-full w-full max-w-[min(100%,36rem)] overflow-hidden">{children}</div>
+        <div
+          className={`w-full max-w-[min(100%,36rem)] ${contain ? 'max-h-full overflow-hidden' : ''}`}
+        >
+          {children}
+        </div>
       ) : (
-        <div className="max-h-full w-full max-w-[min(100%,40rem)] overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
-          <div className="overflow-hidden px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
+        <div className="w-full max-w-[min(100%,40rem)] rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
+          <div className="px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
         </div>
       )}
     </div>
@@ -1040,7 +1046,7 @@ export default function OldWays() {
                   </span>
                 )}
 
-                <div className="grid min-h-0 lg:min-h-[500px] lg:grid-cols-2">
+                <div className="grid lg:grid-cols-2 lg:items-stretch">
                   <div
                     className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}
                   >
@@ -1056,8 +1062,8 @@ export default function OldWays() {
                     </p>
                   </div>
 
-                  <div className="relative min-h-[320px] overflow-hidden border-t border-[var(--color-line)] lg:min-h-0 lg:border-t-0 lg:rounded-r-xl">
-                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)}>
+                  <div className="relative min-h-[320px] border-t border-[var(--color-line)] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
+                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)} contain={index === 8}>
                       {cardVisuals[index]}
                     </PixelFramedVisual>
                   </div>
