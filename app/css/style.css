@@ -156,12 +156,52 @@
   --color-split: #14170f;
   --color-quote-gold: #c4a882;
   --color-line: #e8e8e5;
-  --site-header-height: 5.75rem;
+  --site-header-height: 6rem;
 }
 
 @media (min-width: 640px) {
   :root {
-    --site-header-height: 6.25rem;
+    --site-header-height: 6.5rem;
+  }
+}
+
+/* Ferndesk-style pixel surface + dither overlay */
+.pixel-dither {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.pixel-surface {
+  background-image: var(--pixel-bg);
+  background-repeat: var(--pixel-bg-repeat, repeat);
+  background-size: var(--pixel-bg-size, 192px 48px);
+  image-rendering: pixelated;
+  background-position: top;
+}
+
+.pixel-surface__clouds {
+  background-image: var(--cloud-a), var(--cloud-b);
+  opacity: var(--cloud-opacity, 0);
+  background-position: 0 6px, 143px 12px;
+  background-repeat: repeat-x, repeat-x;
+  background-size: 520px 24px, 371px 24px;
+}
+
+.pixel-surface--animated .pixel-surface__clouds {
+  animation: pixel-cloud-drift 36s linear infinite;
+}
+
+@keyframes pixel-cloud-drift {
+  to {
+    background-position: 520px 6px, -371px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-surface--animated .pixel-surface__clouds {
+    animation: none;
   }
 }
 
