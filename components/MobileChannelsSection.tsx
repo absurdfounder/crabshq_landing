@@ -42,11 +42,11 @@ const CHAT_SCRIPT: ChatMessage[] = [
 
 function TypingIndicator() {
   return (
-    <div className="inline-flex max-w-[72%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#E9E9EB] px-3.5 py-2.5">
+    <div className="inline-flex max-w-[72%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#3A3A3C] px-3.5 py-2.5">
       {[0, 1, 2].map((dot) => (
         <motion.span
           key={dot}
-          className="h-1.5 w-1.5 rounded-full bg-slate-400"
+          className="h-1.5 w-1.5 rounded-full bg-white/45"
           animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}
           transition={{ duration: 0.9, repeat: Infinity, delay: dot * 0.15, ease: 'easeInOut' }}
         />
@@ -99,9 +99,9 @@ function PhoneChatScreen() {
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-white">
-      <div className="shrink-0 border-b border-slate-100 bg-white px-4 pb-2 pt-9 text-center">
-        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-trooper-50 ring-1 ring-trooper/15">
+    <div className="flex h-full min-h-0 flex-col bg-black">
+      <div className="shrink-0 border-b border-white/10 bg-black px-4 pb-2 pt-9 text-center">
+        <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
           <Image
             src="/images/trooper-logomark.png"
             alt=""
@@ -111,9 +111,9 @@ function PhoneChatScreen() {
             style={{ imageRendering: 'pixelated' }}
           />
         </div>
-        <p className="mt-1 flex items-center justify-center gap-0.5 text-[12px] font-medium text-slate-900">
+        <p className="mt-1 flex items-center justify-center gap-0.5 text-[12px] font-medium text-white">
           Trooper
-          <ChevronRight className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} aria-hidden />
+          <ChevronRight className="h-3.5 w-3.5 text-white/40" strokeWidth={2} aria-hidden />
         </p>
       </div>
 
@@ -143,8 +143,8 @@ function PhoneChatScreen() {
                 className={[
                   'max-w-[85%] px-3.5 py-2 text-[11px] leading-[1.45] sm:text-[12px]',
                   message.direction === 'in'
-                    ? 'rounded-2xl rounded-tl-md bg-[#E9E9EB] text-slate-900'
-                    : 'ml-auto rounded-2xl rounded-tr-md bg-trooper text-white',
+                    ? 'rounded-2xl rounded-tl-md bg-[#3A3A3C] text-white'
+                    : 'ml-auto rounded-2xl rounded-tr-md bg-fern text-white',
                 ].join(' ')}
               >
                 {message.text}
@@ -178,7 +178,7 @@ function PhoneChatMockup() {
       viewport={{ once: true, margin: '-40px' }}
     >
       <div className="relative aspect-[292/350] w-full">
-        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.75rem] bg-white">
+        <div className="absolute inset-[12.5%_12.5%_1.5%_12.5%] overflow-hidden rounded-b-[1.75rem] bg-black">
           <PhoneChatScreen />
         </div>
 

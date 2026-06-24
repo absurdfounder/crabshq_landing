@@ -48,7 +48,6 @@ import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
 import MobileChannelsSection from '@/components/MobileChannelsSection'
 import YcQuoteSection from '@/components/YcQuoteSection'
-import FounderDarkQuote from '@/components/FounderDarkQuote'
 import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
@@ -72,10 +71,6 @@ export default function Home() {
       <SectionShell eyebrow="Capabilities" eyebrowNumber="03">
         <OldWays />
       </SectionShell>
-
-      <DarkSplitSection>
-        <FounderDarkQuote />
-      </DarkSplitSection>
 
       <DarkSplitSection>
         <MobileChannelsSection />

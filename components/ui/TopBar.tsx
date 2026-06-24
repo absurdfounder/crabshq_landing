@@ -39,26 +39,8 @@ export default function TopBar() {
   const changelogLabel = formatRelativeTime(CHANGELOG_UPDATED_AT)
 
   return (
-    <div className="site-top-bar">
-      <Link
-        href="/download/mac"
-        className="flex h-10 items-center justify-center bg-fern-bright px-4 transition-colors hover:bg-fern"
-      >
-        <span className="flex min-w-0 items-center gap-1 text-sm font-medium text-lime-950/80">
-          <span className="mr-1 rounded-md bg-lime-900/20 px-1 py-0.5 text-xs font-medium">New</span>
-          <span className="sm:hidden">Trooper for Mac</span>
-          <span className="hidden sm:inline">
-            Trooper for Mac — run your AI workforce on your machine
-          </span>
-        </span>
-        <span className="ml-2 hidden text-sm font-medium text-lime-950/50 sm:inline">
-          <span className="mr-1">|</span>
-          Download →
-        </span>
-      </Link>
-
-      <div className="border-b border-[var(--color-line)] bg-canvas">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-[var(--color-line)] px-4 py-2 sm:px-6">
+    <div className="site-top-bar border-b border-[var(--color-line)] bg-canvas">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-x border-[var(--color-line)] px-4 py-2 sm:px-6">
           <div className="hidden flex-grow items-center gap-3 text-xs font-medium text-ink-muted md:flex">
             <span>
               <span className="text-ink">Trooper</span> the delightful{' '}
@@ -111,7 +93,6 @@ export default function TopBar() {
               <span>Discord</span>
             </a>
           </div>
-        </div>
       </div>
     </div>
   )

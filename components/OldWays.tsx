@@ -216,7 +216,7 @@ const FlowLine = ({ className = '' }: { className?: string }) => (
 
 /* ─── Visual 1: AI Org — Org chart with Trooper ─── */
 const OrgVisual = () => (
-  <div className="flex flex-col items-center justify-center h-full p-3 sm:p-5">
+  <div className="flex flex-col items-center justify-center py-2">
     {/* CEO / Founder */}
     <div className="flex flex-col items-center">
       <div className="w-14 h-14 rounded-full border-2 border-white overflow-hidden bg-transparent flex items-center justify-center -mb-4 relative z-10 p-1.5">
@@ -301,8 +301,8 @@ const IntegrationsVisual = () => {
 
 /* ─── Cropped app vignette chrome (not a full dashboard) ─── */
 const VignetteChrome = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="flex flex-col h-full justify-center p-3 sm:p-5 md:p-6">
-    <div className="rounded-xl border border-stone-200 bg-white shadow-[0_8px_24px_-8px_rgba(28,25,23,0.12)] overflow-hidden">
+  <div className="flex flex-col justify-center">
+    <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-[0_24px_60px_-16px_rgba(0,0,0,0.22)] ring-1 ring-black/[0.06]">
       <div className="flex items-center gap-2.5 px-3.5 py-2 border-b border-stone-100 bg-[#FDFCFB]">
         <div className="flex gap-1.5">
           <span className="w-2 h-2 rounded-full bg-[#ff5f57]" />
@@ -663,54 +663,58 @@ const TicketVisual = () => {
 /* ─── Visual 8: Goal Alignment — nested container model.
        Each goal level visually CONTAINS the next, so the task literally lives
        inside the agent goal, project, and mission. ─── */
+const GoalLevelLabel = ({ children }: { children: React.ReactNode }) => (
+  <div className="mb-2.5 flex items-center gap-1.5 sm:mb-3">{children}</div>
+);
+
 const GoalVisual = () => (
-  <div className="flex flex-col h-full p-3 sm:p-6 md:p-8 justify-center min-h-0">
+  <div className="flex min-h-0 flex-col justify-center">
     {/* L1 · Mission */}
-    <div className="relative border border-slate-200 bg-white pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
-      <div className="absolute -top-3 left-3 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
+    <div className="border border-slate-200 bg-white px-3 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
+      <GoalLevelLabel>
         <div className="w-3 h-3 overflow-hidden p-0.5 bg-transparent">
           <TrooperChar />
         </div>
         <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
           <span className="text-slate-400">[01]</span> Mission · Trooper Inc.
         </span>
-      </div>
+      </GoalLevelLabel>
       <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
         Build the #1 AI workforce platform.
       </p>
 
       {/* L2 · Project */}
-      <div className="relative border border-slate-200 bg-slate-50 pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
-        <div className="absolute -top-3 left-3 sm:left-5 bg-slate-50 px-2 py-0.5 flex items-center gap-1.5">
+      <div className="border border-slate-200 bg-slate-50 px-3 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4">
+        <GoalLevelLabel>
           <span className="w-2 h-2 bg-slate-400" aria-hidden="true" />
           <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
             <span className="text-slate-400">[02]</span> Project · Q4 2026
           </span>
-        </div>
+        </GoalLevelLabel>
         <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
           Ship team collaboration features.
         </p>
 
         {/* L3 · Agent goal */}
-        <div className="relative border border-slate-200 bg-white pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6">
-          <div className="absolute -top-3 left-3 sm:left-5 bg-white px-2 py-0.5 flex items-center gap-1.5">
+        <div className="border border-slate-200 bg-white px-3 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4">
+          <GoalLevelLabel>
             <FaviconChip provider="Cursor" size={11} />
             <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-slate-500">
               <span className="text-slate-400">[03]</span> Agent goal · CTO
             </span>
-          </div>
+          </GoalLevelLabel>
           <p className="text-[12px] sm:text-[13px] text-slate-900 font-medium leading-relaxed mb-3 sm:mb-5">
             Implement real-time sync engine.
           </p>
 
           {/* L4 · Task — brand spotlight */}
-          <div className="relative border border-trooper bg-trooper-50 pt-7 sm:pt-9 px-3 sm:px-6 pb-4 sm:pb-6 shadow-[0_0_0_3px_rgba(63,107,0,0.08)]">
-            <div className="absolute -top-3 left-3 sm:left-5 bg-trooper-50 px-2 py-0.5 flex items-center gap-1.5">
+          <div className="border border-trooper bg-trooper-50 px-3 pb-4 pt-3 sm:px-6 sm:pb-6 sm:pt-4 shadow-[0_0_0_3px_rgba(63,107,0,0.08)]">
+            <GoalLevelLabel>
               <FaviconChip provider="Claude" size={11} />
               <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-trooper-700">
                 <span className="text-trooper">[04]</span> Task · Work happens here
               </span>
-            </div>
+            </GoalLevelLabel>
             <div className="flex items-start gap-2.5">
               <span className="relative flex h-2 w-2 mt-1.5 flex-shrink-0">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-trooper-olive opacity-75 animate-ping" />
@@ -906,13 +910,31 @@ const BYOAVisual = () => {
   );
 };
 
-const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex h-full min-h-[280px] flex-1 flex-col overflow-hidden sm:min-h-[340px]">
+const CHROME_VISUAL_INDICES = new Set([2, 6]);
+
+const PixelFramedVisual = ({
+  children,
+  bare = false,
+}: {
+  children: React.ReactNode;
+  bare?: boolean;
+}) => (
+  <div className="relative flex min-h-[320px] flex-1 flex-col sm:min-h-[380px] lg:absolute lg:inset-0 lg:min-h-0">
     <PixelDitherGradient variant="warm" />
-    <div className="relative z-10 flex min-h-0 flex-1 items-center justify-center p-5 sm:p-7 md:p-8 lg:p-10">
-      <div className="w-full max-w-[min(100%,28rem)] overflow-hidden rounded-sm bg-white shadow-[0_12px_40px_-12px_rgba(0,0,0,0.18)] ring-1 ring-black/5">
-        {children}
-      </div>
+    <div
+      className={`relative z-10 flex flex-1 ${
+        bare
+          ? 'items-center p-4 sm:p-6 md:p-8'
+          : 'items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10'
+      }`}
+    >
+      {bare ? (
+        <div className="w-full max-w-[min(100%,36rem)]">{children}</div>
+      ) : (
+        <div className="w-full max-w-[min(100%,40rem)] overflow-visible rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
+          <div className="overflow-visible px-4 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">{children}</div>
+        </div>
+      )}
     </div>
   </div>
 );
@@ -1002,7 +1024,7 @@ export default function OldWays() {
               }}
             >
               <article
-                className="relative overflow-hidden rounded-sm bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
+                className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform lg:overflow-visible"
                 style={{
                   transform: `scale(${t.scale}) translateY(${t.y}px)`,
                   opacity: t.opacity,
@@ -1017,7 +1039,7 @@ export default function OldWays() {
                   </span>
                 )}
 
-                <div className="grid min-h-0 lg:min-h-[480px] lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)]">
+                <div className="grid min-h-0 lg:min-h-[500px] lg:grid-cols-2">
                   <div
                     className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}
                   >
@@ -1033,8 +1055,10 @@ export default function OldWays() {
                     </p>
                   </div>
 
-                  <div className="relative min-h-[280px] border-t border-[var(--color-line)] lg:min-h-0 lg:border-l lg:border-t-0">
-                    <PixelFramedVisual>{cardVisuals[index]}</PixelFramedVisual>
+                  <div className="relative min-h-[320px] overflow-hidden border-t border-[var(--color-line)] lg:min-h-0 lg:overflow-visible lg:border-t-0 lg:rounded-r-xl">
+                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)}>
+                      {cardVisuals[index]}
+                    </PixelFramedVisual>
                   </div>
                 </div>
               </article>

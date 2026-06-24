@@ -27,15 +27,15 @@ const LoopsPage = async ({
     typeof searchParams?.category === 'string' ? searchParams.category : undefined;
 
   return (
-    <div className="bg-white">
+    <div className="bg-canvas">
       <Header />
-      <section className="mx-auto max-w-7xl border-l border-r border-slate-200">
-        <div className="px-4 pb-10 pt-24 sm:px-6 sm:pt-28 md:pt-32 lg:px-8">
+      <section className="mx-auto max-w-7xl border-b border-l border-r border-[var(--color-line)] bg-canvas">
+        <div className="page-hero-padding px-4 sm:px-6 lg:px-8">
           <PixelMissionTag index="01" label="Loops catalog" className="mb-4" />
-          <h1 className="font-funneldisplay max-w-3xl text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl md:text-[2.5rem]">
+          <h1 className="font-funneldisplay max-w-3xl text-3xl font-medium tracking-tight text-ink sm:text-4xl md:text-[2.5rem]">
             Agent loop catalog
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
             Reusable loops with kickoff prompts, guardrails, and flow diagrams. Copy into Cursor, Claude Code, or Codex — no hook files required.
           </p>
           <div className="mt-6">
@@ -43,7 +43,7 @@ const LoopsPage = async ({
               href="https://app.trooper.so"
               external
               size="lg"
-              tone="brand"
+              tone="dark"
               icon={<ArrowRight className="h-4 w-4" />}
             >
               Run loops in Trooper
@@ -52,8 +52,8 @@ const LoopsPage = async ({
         </div>
       </section>
 
-      <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-slate-50">
-        <div className="mx-auto max-w-7xl px-4 py-10 md:py-14 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-canvas-warm">
+        <div className="py-10 md:py-14">
           <LoopsClient loops={loops} initialCategory={initialCategory} />
         </div>
       </SectionShell>

@@ -19,7 +19,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
       <div className="bg-white">
         <Header />
         <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
-          <div className="pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
             <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
 
             {content.heroHeadline ? (

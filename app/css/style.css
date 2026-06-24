@@ -156,12 +156,12 @@
   --color-split: #14170f;
   --color-quote-gold: #c4a882;
   --color-line: #e8e8e5;
-  --site-header-height: 8rem;
+  --site-header-height: 5.75rem;
 }
 
 @media (min-width: 640px) {
   :root {
-    --site-header-height: 8.5rem;
+    --site-header-height: 6.25rem;
   }
 }
 
@@ -358,6 +358,26 @@ body > iframe.goog-te-menu-frame {
 
   .hero-shell {
     @apply bg-canvas text-ink;
+  }
+
+  /* Clear fixed TopBar + nav; use instead of pt-24/pt-32 on subpage heroes */
+  .page-hero-padding {
+    padding-top: calc(var(--site-header-height) + 1.25rem);
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-hero-padding {
+      padding-top: calc(var(--site-header-height) + 1.75rem);
+      padding-bottom: 2.75rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .page-hero-padding {
+      padding-top: calc(var(--site-header-height) + 2rem);
+      padding-bottom: 3rem;
+    }
   }
 
   .fern-trust-row {
