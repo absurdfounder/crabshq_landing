@@ -33,6 +33,34 @@ The `pages/api` marketplace is mapped to `/api/*`. Files in this marketplace are
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Social / OG images
+
+Twitter, LinkedIn, Slack, and iMessage previews use **pre-rendered PNGs** in `public/og/prebuilt/`. They are **committed to git** and are **not** regenerated on every Netlify deploy (deploys stay fast).
+
+| Scope | Pages | Command | Committed? |
+| --- | ---: | --- | --- |
+| **Core** (home, pricing, teams, features, loops, channels, etc.) | ~300 | `npm run generate:og:core` | Yes — check these in |
+| **Full catalog** (adds every plugin + skill page) | ~4,500+ | `npm run generate:og` | Optional — large (~700MB); only run when needed |
+
+**Homepage only:** `npm run generate:og:home`
+
+**Regenerate even if files exist:** append `-- --force`
+
+### Ask AI to refresh OG images
+
+When copy, fonts, or the OG card layout changes, paste this into Cursor (or any coding agent) in this repo:
+
+```
+Regenerate Trooper social/OG preview images and commit them.
+
+1. Run `npm run generate:og:core` (or `npm run generate:og -- --force` for the full ~4.5k catalog).
+2. Confirm PNGs landed under `public/og/prebuilt/` and `public/og/prebuilt/manifest.json` updated.
+3. Commit the PNGs + manifest. Do not add `generate:og` back to the `build` script.
+4. Plugin/skill pages without a prebuilt file still fall back to `/og/img/...` at share time.
+```
+
+Implementation lives in `scripts/generate-og-images.ts`, `lib/og/`, and metadata via `ogImageMeta()` → `/og/prebuilt/...`.
+
 ### Learn More
 
 To learn more about Next.js, take a look at the following resources:

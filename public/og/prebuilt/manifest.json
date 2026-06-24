@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-24T09:45:09.585Z",
+  "generatedAt": "2026-06-24T09:59:50.404Z",
   "count": 296,
   "totals": {
-    "written": 255,
-    "skipped": 0,
+    "written": 0,
+    "skipped": 255,
     "missing": 41,
     "failed": 0
   },

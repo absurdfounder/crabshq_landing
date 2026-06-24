@@ -37,6 +37,3 @@ next-env.d.ts
 
 # contentlayer
 .contentlayer
-
-# Pre-rendered social/OG PNGs (built via npm run generate:og)
-/public/og/prebuilt/**/*.png
