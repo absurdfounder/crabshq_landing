@@ -23,7 +23,7 @@ const ASYNC_KINDS = new Set<OgKind>(['skill', 'compare', 'showcase', 'legacy-int
 /** Large catalogs stay on /og/img/* (server render). Everything else is prebuilt PNG. */
 const DYNAMIC_OG_KINDS = new Set<OgKind>(['plugin', 'skill']);
 
-export const PREBUILD_OG_KINDS = [...VALID_KINDS].filter((kind) => !DYNAMIC_OG_KINDS.has(kind));
+export const PREBUILD_OG_KINDS = Array.from(VALID_KINDS).filter((kind) => !DYNAMIC_OG_KINDS.has(kind));
 
 export function ogDynamicImagePath(kind: OgKind, slug: string): string {
   return `/og/img/${kind}/${encodeURIComponent(slug)}`;

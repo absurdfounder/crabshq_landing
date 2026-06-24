@@ -34,9 +34,9 @@ export async function listAllOgImageTargets(): Promise<OgImageTarget[]> {
 
   const skills = await _loadSkills();
   const skillIndex = buildSkillRouteIndex(skills);
-  for (const slug of skillIndex.bySlug.keys()) {
+  skillIndex.bySlug.forEach((_, slug) => {
     if (slug) pushSlug(targets, 'skill', slug);
-  }
+  });
 
   const comparisons = await _loadFromJsonComparison();
   for (const entry of comparisons) {

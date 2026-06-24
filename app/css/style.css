@@ -181,24 +181,9 @@
   background-position: top;
 }
 
-/* Top promo strip — fine 4px tiles (native SVG cells are 8px; displayed at 0.5×) */
-.site-top-bar .pixel-surface {
-  --pixel-bg-size: 224px 16px;
-  --pixel-bg-repeat: repeat;
+/* Top promo strip — solid lime (no pixel tile background) */
+.site-top-bar {
   background-color: #8cc352;
-  animation: site-top-bar-pixel-drift 48s linear infinite;
-}
-
-@keyframes site-top-bar-pixel-drift {
-  to {
-    background-position: 224px 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-top-bar .pixel-surface {
-    animation: none;
-  }
 }
 
 .pixel-surface__clouds {
