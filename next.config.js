@@ -14,15 +14,8 @@ const nextConfig = {
   experimental: {
     serverActions: true,
     outputFileTracingIncludes: {
-      // Inter lives in public/fonts (shared with site); og-fonts are vendored for Satori.
-      '/og/img/[...segments]/route': [
-        './public/og-fonts/**/*',
-        './public/fonts/Inter-VariableFont_opsz,wght.ttf',
-      ],
-      '/og/route': [
-        './public/og-fonts/**/*',
-        './public/fonts/Inter-VariableFont_opsz,wght.ttf',
-      ],
+      '/og/img/[...segments]/route': ['./public/og-fonts/**/*'],
+      '/og/route': ['./public/og-fonts/**/*'],
     },
   },
   async redirects() {
