@@ -1,11 +1,9 @@
 'use client';
 
 import type { CSSProperties, ReactNode } from 'react';
-import PixelDither, { BANNER_DITHER_STOPS, HERO_DITHER_STOPS } from './PixelDither';
+import PixelDither from './PixelDither';
 
 export type PixelSurfaceStyle = CSSProperties & Record<`--${string}`, string | number>;
-
-export { BANNER_DITHER_STOPS, HERO_DITHER_STOPS };
 
 type PixelSurfaceProps = {
   children: ReactNode;
@@ -13,8 +11,6 @@ type PixelSurfaceProps = {
   surfaceStyle?: PixelSurfaceStyle;
   animated?: boolean;
   dither?: boolean;
-  ditherStops?: ReadonlyArray<{ at: number; color: string }>;
-  ditherOrientation?: 'vertical' | 'horizontal';
 };
 
 /**
@@ -27,8 +23,6 @@ export default function PixelSurface({
   surfaceStyle,
   animated = false,
   dither = true,
-  ditherStops = BANNER_DITHER_STOPS,
-  ditherOrientation = 'vertical',
 }: PixelSurfaceProps) {
   return (
     <div
@@ -41,7 +35,7 @@ export default function PixelSurface({
 
       {dither ? (
         <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <PixelDither stops={ditherStops} orientation={ditherOrientation} />
+          <PixelDither />
         </div>
       ) : null}
 

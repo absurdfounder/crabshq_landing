@@ -181,17 +181,12 @@
   background-position: top;
 }
 
-/* Top promo strip — tiled horizontal pixel landscape + drifting dither */
+/* Top promo strip — tiled horizontal pixel landscape, no stretched canvas */
 .site-top-bar .pixel-surface {
   --pixel-bg-size: auto 100%;
   --pixel-bg-repeat: repeat-x;
   background-color: #8cc352;
   animation: site-top-bar-pixel-drift 48s linear infinite;
-}
-
-.site-top-bar .pixel-dither {
-  mix-blend-mode: soft-light;
-  opacity: 0.92;
 }
 
 @keyframes site-top-bar-pixel-drift {

@@ -11,22 +11,11 @@ const BAYER_4 = [
 ] as const;
 
 /** Lime banner tones — matches Ferndesk promo / pixel-surface strips. */
-export const BANNER_DITHER_STOPS: ReadonlyArray<{ at: number; color: string }> = [
+const BANNER_STOPS: ReadonlyArray<{ at: number; color: string }> = [
   { at: 0, color: '#a8d060' },
   { at: 0.35, color: '#8cc352' },
   { at: 0.65, color: '#72b833' },
   { at: 1, color: '#6ba82e' },
-];
-
-/** Hero band — sky → cream → lime (matches pixel-surface hero tiles). */
-export const HERO_DITHER_STOPS: ReadonlyArray<{ at: number; color: string }> = [
-  { at: 0, color: '#9ec0d8' },
-  { at: 0.2, color: '#b8d4e8' },
-  { at: 0.36, color: '#e4e8cc' },
-  { at: 0.5, color: '#ebe8d0' },
-  { at: 0.64, color: '#d8e8b0' },
-  { at: 0.8, color: '#b8d878' },
-  { at: 1, color: '#98c858' },
 ];
 
 const GRID = 8;
@@ -62,13 +51,7 @@ function segmentAt(
   return [last.color, last.color, 0];
 }
 
-function paintDither(
-  canvas: HTMLCanvasElement,
-  phase: number,
-  timeMs: number,
-  stops: ReadonlyArray<{ at: number; color: string }>,
-  orientation: 'vertical' | 'horizontal',
-) {
+function paintDither(canvas: HTMLCanvasElement, phase: number, timeMs: number) {
   const ctx = canvas.getContext('2d', { alpha: false });
   if (!ctx) return;
 
@@ -81,12 +64,12 @@ function paintDither(
   const bayerShiftY = Math.floor(timeMs * 0.003) % 4;
 
   for (let gy = 0; gy < GRID; gy += 1) {
+    const gradientT = Math.min(1, Math.max(0, gy / (GRID - 1) + phase));
+    const [colorA, colorB, mix] = segmentAt(gradientT, BANNER_STOPS);
+    const rgbA = hexToRgb(colorA);
+    const rgbB = hexToRgb(colorB);
+
     for (let gx = 0; gx < GRID; gx += 1) {
-      const axisT = orientation === 'horizontal' ? gx / (GRID - 1) : gy / (GRID - 1);
-      const gradientT = Math.min(1, Math.max(0, axisT + phase));
-      const [colorA, colorB, mix] = segmentAt(gradientT, stops);
-      const rgbA = hexToRgb(colorA);
-      const rgbB = hexToRgb(colorB);
       const threshold = BAYER_4[(gy + bayerShiftY) % 4][(gx + bayerShiftX) % 4] / 16;
       const rgb = threshold < mix ? rgbB : rgbA;
       const px = gx * CELL_PX;
@@ -109,25 +92,18 @@ function paintDither(
 
 type PixelDitherProps = {
   className?: string;
-  stops?: ReadonlyArray<{ at: number; color: string }>;
-  /** Horizontal on narrow strips avoids vertical banding when the canvas stretches. */
-  orientation?: 'vertical' | 'horizontal';
 };
 
 /** Animated 80×80 bayer dither canvas — scales to fill its container. */
-export default function PixelDither({
-  className = '',
-  stops = BANNER_DITHER_STOPS,
-  orientation = 'vertical',
-}: PixelDitherProps) {
+export default function PixelDither({ className = '' }: PixelDitherProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    paintDither(canvas, 0, 0, stops, orientation);
-  }, [orientation, stops]);
+    paintDither(canvas, 0, 0);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -139,13 +115,13 @@ export default function PixelDither({
     const tick = (now: number) => {
       const elapsed = now - start;
       const phase = Math.sin(elapsed * 0.0005) * 0.04;
-      paintDither(canvas, phase, elapsed, stops, orientation);
+      paintDither(canvas, phase, elapsed);
       frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [orientation, reduceMotion, stops]);
+  }, [reduceMotion]);
 
   return (
     <canvas
