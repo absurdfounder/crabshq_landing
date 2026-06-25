@@ -1057,12 +1057,9 @@ export default function OldWays() {
     return () => { window.removeEventListener('scroll', handleScroll); window.removeEventListener('resize', calculateTransforms); if (rafId) cancelAnimationFrame(rafId); };
   }, []);
 
-  const STICKY_SCROLL_PAD = 'lg:pb-[min(40vh,26rem)]';
-
   const renderCapabilityCard = (card: (typeof cards)[number], index: number) => {
     const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
     const cardIndex = String(index + (index >= 8 ? 2 : 1)).padStart(2, '0');
-    const isLastSticky = index === cards.length - 1;
 
     return (
       <div
@@ -1070,10 +1067,9 @@ export default function OldWays() {
         ref={(el) => {
           cardRefs.current[index] = el;
         }}
-        className={`lg:sticky lg:top-[14vh] ${!isLastSticky ? STICKY_SCROLL_PAD : ''}`}
+        className="lg:sticky lg:top-[14vh] pb-16"
         style={{
           zIndex: cards.length + index,
-          marginBottom: isLastSticky ? 0 : undefined,
         }}
       >
         <article

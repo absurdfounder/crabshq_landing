@@ -2,6 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 import { getFaviconUrl } from '@/lib/favicon';
+import PixelDitherGradient from './ui/PixelDitherGradient';
 
 const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
 
@@ -56,6 +57,21 @@ function ResultMark({ pass }: { pass: boolean }) {
   );
 }
 
+function CapabilityVisualFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
+      <PixelDitherGradient variant="warm" />
+      <div className="relative z-10 flex flex-1 items-stretch justify-center p-5 sm:p-7 md:p-9 lg:p-10">
+        <div className="flex w-full max-w-[min(100%,40rem)] min-h-0 flex-1 flex-col overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
+          <div className="flex min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SmartRoutingVisual() {
   const scoreByModel = MODELS.map((model) => {
     const wins = CATEGORIES.filter((row) => row.winner === model.id).length;
@@ -63,7 +79,7 @@ function SmartRoutingVisual() {
   });
 
   return (
-    <div className="flex h-full min-h-0 flex-col justify-center border-t border-[var(--color-line)] bg-slate-50/50 px-4 py-6 sm:px-6 sm:py-8 lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
+    <div className="flex h-full min-h-0 w-full flex-col justify-center">
       <p className="mb-4 text-center font-serif text-lg text-ink sm:mb-5 sm:text-xl">
         Same test, different{' '}
         <span className="text-amber-600">strengths.</span>
@@ -144,44 +160,46 @@ function SmartRoutingVisual() {
   );
 }
 
-/** Standalone explainer — sits outside the sticky capability deck. */
+/** Same card shell as other capabilities — sits between sticky deck segments. */
 export default function SmartRoutingSection() {
   return (
-    <section
+    <article
       aria-labelledby="smart-routing-heading"
-      className="relative z-20 my-6 sm:my-8 md:my-10"
+      className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5"
     >
-      <div className="overflow-hidden rounded-xl border border-[var(--color-line)] bg-white">
-        <div className="grid lg:grid-cols-2 lg:items-stretch">
-          <div className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}>
-            <p className="kicker text-sm sm:text-base">
-              <span className="text-ink-faint/80">[09]</span>{' '}
-              <span className="normal-case">Smart Routing</span>
-            </p>
-            <h3
-              id="smart-routing-heading"
-              className="mt-4 font-serif text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]"
-            >
-              No single model wins every query
-            </h3>
-            <ol className="mt-5 divide-y divide-slate-200 border-t border-slate-200 sm:mt-6">
-              {ROUTING_STEPS.map((step, index) => (
-                <li
-                  key={index}
-                  className="flex gap-3 py-3 text-sm leading-relaxed text-ink-muted sm:gap-4 sm:py-3.5 sm:text-[15px] sm:leading-7"
-                >
-                  <span className="shrink-0 font-mono text-xs tabular-nums text-slate-400 sm:text-sm">
-                    {index + 1}
-                  </span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
+      <div className="grid lg:grid-cols-2 lg:items-stretch">
+        <div className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}>
+          <p className="kicker text-sm sm:text-base">
+            <span className="text-ink-faint/80">[09]</span>{' '}
+            <span className="normal-case">Smart Routing</span>
+          </p>
+          <h3
+            id="smart-routing-heading"
+            className="mt-4 font-display text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]"
+          >
+            No single model wins every query
+          </h3>
+          <ol className="mt-5 divide-y divide-slate-200 border-t border-slate-200 sm:mt-6">
+            {ROUTING_STEPS.map((step, index) => (
+              <li
+                key={index}
+                className="flex gap-3 py-3 text-sm leading-relaxed text-ink-muted sm:gap-4 sm:py-3.5 sm:text-[15px] sm:leading-7"
+              >
+                <span className="shrink-0 font-mono text-xs tabular-nums text-slate-400 sm:text-sm">
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
 
-          <SmartRoutingVisual />
+        <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
+          <CapabilityVisualFrame>
+            <SmartRoutingVisual />
+          </CapabilityVisualFrame>
         </div>
       </div>
-    </section>
+    </article>
   );
 }
