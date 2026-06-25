@@ -56,23 +56,14 @@ function ResultMark({ pass }: { pass: boolean }) {
   );
 }
 
-function FeatureKicker({ index, label }: { index: string; label: string }) {
-  return (
-    <p className="kicker text-sm sm:text-base">
-      <span className="text-ink-faint/80">[{index}]</span>{' '}
-      <span className="normal-case">{label}</span>
-    </p>
-  );
-}
-
-export function SmartRoutingVisual() {
+function SmartRoutingVisual() {
   const scoreByModel = MODELS.map((model) => {
     const wins = CATEGORIES.filter((row) => row.winner === model.id).length;
     return { ...model, score: Math.round((wins / CATEGORIES.length) * 100) };
   });
 
   return (
-    <div className="flex h-full min-h-0 flex-col justify-center border-t border-[var(--color-line)] bg-slate-50/40 px-4 py-6 sm:px-6 sm:py-8 lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
+    <div className="flex h-full min-h-0 flex-col justify-center border-t border-[var(--color-line)] bg-slate-50/50 px-4 py-6 sm:px-6 sm:py-8 lg:border-l lg:border-t-0 lg:px-8 lg:py-10">
       <p className="mb-4 text-center font-serif text-lg text-ink sm:mb-5 sm:text-xl">
         Same test, different{' '}
         <span className="text-amber-600">strengths.</span>
@@ -153,34 +144,24 @@ export function SmartRoutingVisual() {
   );
 }
 
-type SmartRoutingCardProps = {
-  cardIndex: string;
-  transform: { scale: number; opacity: number; y: number };
-  cardRef: (el: HTMLDivElement | null) => void;
-  zIndex: number;
-};
-
-export default function SmartRoutingCard({ cardIndex, transform, cardRef, zIndex }: SmartRoutingCardProps) {
+/** Standalone explainer — sits outside the sticky capability deck. */
+export default function SmartRoutingSection() {
   return (
-    <div
-      ref={cardRef}
-      className="lg:sticky lg:top-[14vh]"
-      style={{ zIndex }}
+    <section
+      aria-labelledby="smart-routing-heading"
+      className="relative z-20 my-6 sm:my-8 md:my-10"
     >
-      <article
-        className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
-        style={{
-          transform: `scale(${transform.scale}) translateY(${transform.y}px)`,
-          opacity: transform.opacity,
-          transformOrigin: 'center top',
-          transition:
-            'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-        }}
-      >
+      <div className="overflow-hidden rounded-xl border border-[var(--color-line)] bg-white">
         <div className="grid lg:grid-cols-2 lg:items-stretch">
           <div className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}>
-            <FeatureKicker index={cardIndex} label="SMART ROUTING" />
-            <h3 className="mt-4 font-serif text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+            <p className="kicker text-sm sm:text-base">
+              <span className="text-ink-faint/80">[09]</span>{' '}
+              <span className="normal-case">Smart Routing</span>
+            </p>
+            <h3
+              id="smart-routing-heading"
+              className="mt-4 font-serif text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]"
+            >
               No single model wins every query
             </h3>
             <ol className="mt-5 divide-y divide-slate-200 border-t border-slate-200 sm:mt-6">
@@ -200,7 +181,7 @@ export default function SmartRoutingCard({ cardIndex, transform, cardRef, zIndex
 
           <SmartRoutingVisual />
         </div>
-      </article>
-    </div>
+      </div>
+    </section>
   );
 }

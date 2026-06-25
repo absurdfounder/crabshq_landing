@@ -6,7 +6,7 @@ import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import PixelDitherGradient from './ui/PixelDitherGradient';
 import FeatureVisualStage from './ui/FeatureVisualStage';
-import SmartRoutingCard from './SmartRoutingSection';
+import SmartRoutingSection from './SmartRoutingSection';
 
 function FeatureKicker({ index, label }: { index: string; label: string }) {
   return (
@@ -1006,7 +1006,6 @@ export default function OldWays() {
     { tag: "OPENCLAW RUNTIME", title: "Powered by OpenClaw", highlight: "private server for each org.", description: "Trooper deploys OpenClaw backend on a private server, keeping your company data siloed and safe. Also giving you full untampered access to OpenClaw with a beautiful UI." },
     { tag: "TICKET SYSTEM", title: "Every conversation traced.", highlight: "Every decision explained.", description: "You communicate with agents through tickets. Every instruction, every response, every tool call and decision is recorded with full tracing. Nothing happens in the dark." },
     { tag: "GOAL ALIGNMENT", title: "Keep your agents aligned", highlight: "on the goal.", description: "Every piece of work is given context that traces back to the company mission. Your agents will know what to do and why. Goals cascade from company → project → agent → task." },
-    { tag: "SMART ROUTING", title: "", highlight: "", description: "", isSmartRouting: true },
     { tag: "BRING YOUR OWN AGENT", title: "Bring your own bot.", highlight: "", description: "Your OpenClaw, Claude, Cursor, and Codex — organized under one org structure, pointed at one goal. If it can receive a heartbeat, it's hired." },
   ];
 
@@ -1058,81 +1057,74 @@ export default function OldWays() {
     return () => { window.removeEventListener('scroll', handleScroll); window.removeEventListener('resize', calculateTransforms); if (rafId) cancelAnimationFrame(rafId); };
   }, []);
 
+  const STICKY_SCROLL_PAD = 'lg:pb-[min(40vh,26rem)]';
+
+  const renderCapabilityCard = (card: (typeof cards)[number], index: number) => {
+    const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
+    const cardIndex = String(index + (index >= 8 ? 2 : 1)).padStart(2, '0');
+    const isLastSticky = index === cards.length - 1;
+
+    return (
+      <div
+        key={index}
+        ref={(el) => {
+          cardRefs.current[index] = el;
+        }}
+        className={`lg:sticky lg:top-[14vh] ${!isLastSticky ? STICKY_SCROLL_PAD : ''}`}
+        style={{
+          zIndex: cards.length + index,
+          marginBottom: isLastSticky ? 0 : undefined,
+        }}
+      >
+        <article
+          className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
+          style={{
+            transform: `scale(${t.scale}) translateY(${t.y}px)`,
+            opacity: t.opacity,
+            transformOrigin: 'center top',
+            transition:
+              'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
+          {index === 8 && (
+            <span className="absolute top-3 right-3 z-20 rounded-sm bg-fern-50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-fern-800 ring-1 ring-fern-200 sm:top-4 sm:right-4">
+              Flagship
+            </span>
+          )}
+
+          <div className="grid lg:grid-cols-2 lg:items-stretch">
+            <div
+              className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}
+            >
+              <FeatureKicker index={cardIndex} label={card.tag} />
+              <h3 className="mt-4 font-display text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+                {card.title}{' '}
+                {card.highlight ? (
+                  <span className="text-ink-muted">{card.highlight}</span>
+                ) : null}
+              </h3>
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
+                {card.description}
+              </p>
+            </div>
+
+            <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
+              <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)} scaled={SCALED_VISUAL_INDICES.has(index)}>
+                {cardVisuals[index]}
+              </PixelFramedVisual>
+            </div>
+          </div>
+        </article>
+      </div>
+    );
+  };
+
   return (
     <div className="relative pb-6 sm:pb-10 md:pb-14">
       <div className="relative space-y-4 sm:space-y-5 md:space-y-6" style={{ perspective: '1000px' }}>
-        {cards.map((card, index) => {
-          const t = cardTransforms[index] || { scale: 1, opacity: 1, y: 0 };
-          const cardIndex = String(index + 1).padStart(2, '0');
-
-          if ('isSmartRouting' in card && card.isSmartRouting) {
-            return (
-              <SmartRoutingCard
-                key="smart-routing"
-                cardIndex={cardIndex}
-                transform={t}
-                cardRef={(el) => {
-                  cardRefs.current[index] = el;
-                }}
-                zIndex={cards.length + index}
-              />
-            );
-          }
-
-          return (
-            <div
-              key={index}
-              ref={(el) => {
-                cardRefs.current[index] = el;
-              }}
-              className="lg:sticky lg:top-[14vh]"
-              style={{
-                zIndex: cards.length + index,
-                marginBottom: index === cards.length - 1 ? 0 : undefined,
-              }}
-            >
-              <article
-                className="relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 will-change-transform"
-                style={{
-                  transform: `scale(${t.scale}) translateY(${t.y}px)`,
-                  opacity: t.opacity,
-                  transformOrigin: 'center top',
-                  transition:
-                    'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-                }}
-              >
-                {index === 9 && (
-                  <span className="absolute top-3 right-3 z-20 rounded-sm bg-fern-50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-fern-800 ring-1 ring-fern-200 sm:top-4 sm:right-4">
-                    Flagship
-                  </span>
-                )}
-
-                <div className="grid lg:grid-cols-2 lg:items-stretch">
-                  <div
-                    className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}
-                  >
-                    <FeatureKicker index={cardIndex} label={card.tag} />
-                    <h3 className="mt-4 font-display text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
-                      {card.title}{' '}
-                      {card.highlight ? (
-                        <span className="text-ink-muted">{card.highlight}</span>
-                      ) : null}
-                    </h3>
-                    <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
-                      {card.description}
-                    </p>
-                  </div>
-
-                  <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-                    <PixelFramedVisual bare={CHROME_VISUAL_INDICES.has(index)} scaled={SCALED_VISUAL_INDICES.has(index)}>
-                      {cardVisuals[index]}
-                    </PixelFramedVisual>
-                  </div>
-                </div>
-              </article>
-            </div>
-          );
-        })}
+        {cards.slice(0, 8).map((card, index) => renderCapabilityCard(card, index))}
+        <SmartRoutingSection />
+        {cards.slice(8).map((card, index) => renderCapabilityCard(card, index + 8))}
       </div>
     </div>
   );
