@@ -36,6 +36,32 @@ const CATEGORIES: CategoryRow[] = [
   { label: 'Law', winner: 'chatgpt' },
 ];
 
+const MockCard = ({
+  title,
+  meta,
+  children,
+}: {
+  title: React.ReactNode;
+  meta?: React.ReactNode;
+  children: React.ReactNode;
+}) => (
+  <div className="w-full overflow-hidden rounded-2xl border border-black/[0.06] bg-white/90 shadow-[0_28px_64px_-28px_rgba(28,25,23,0.35)] ring-1 ring-black/[0.04] backdrop-blur-xl">
+    <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 sm:px-5">
+      <span className="truncate text-[13px] font-semibold tracking-tight text-slate-900 sm:text-sm">{title}</span>
+      {meta ? (
+        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">{meta}</span>
+      ) : null}
+    </div>
+    {children}
+  </div>
+);
+
+const MockFoot = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex flex-col items-center gap-2 border-t border-slate-100 px-4 py-3 sm:px-5 sm:py-3.5">
+    {children}
+  </div>
+);
+
 function ModelIcon({ domain, label, size = 18 }: { domain: string; label: string; size?: number }) {
   return (
     <img
@@ -51,9 +77,9 @@ function ModelIcon({ domain, label, size = 18 }: { domain: string; label: string
 
 function ResultMark({ pass }: { pass: boolean }) {
   return pass ? (
-    <Check className="mx-auto size-4 text-emerald-600" strokeWidth={2.5} aria-label="Correct" />
+    <Check className="mx-auto size-3.5 text-trooper" strokeWidth={2.5} aria-label="Correct" />
   ) : (
-    <X className="mx-auto size-4 text-red-500" strokeWidth={2.5} aria-label="Incorrect" />
+    <X className="mx-auto size-3.5 text-red-500" strokeWidth={2.5} aria-label="Incorrect" />
   );
 }
 
@@ -64,22 +90,24 @@ function SmartRoutingVisual() {
   });
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col justify-center">
-      <p className="mb-4 text-center font-serif text-lg text-ink sm:mb-5 sm:text-xl">
-        Same test, different{' '}
-        <span className="text-amber-600">strengths.</span>
-      </p>
-
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[280px] border-collapse text-left">
+    <MockCard
+      title={
+        <>
+          Same test, different <span className="text-amber-600">strengths.</span>
+        </>
+      }
+      meta="6 categories"
+    >
+      <div className="overflow-x-auto px-2 py-2 sm:px-3">
+        <table className="w-full min-w-[260px] border-collapse text-left">
           <thead>
-            <tr className="border-b border-slate-200">
-              <th className="pb-2 pr-2 font-mono text-[10px] font-normal uppercase tracking-[0.12em] text-slate-400 sm:text-[11px]" />
+            <tr className="border-b border-slate-100">
+              <th className="pb-2 pr-2 font-mono text-[9px] font-normal uppercase tracking-[0.12em] text-slate-400" />
               {MODELS.map((model) => (
-                <th key={model.id} className="pb-2 px-1 text-center">
+                <th key={model.id} className="px-1 pb-2 text-center">
                   <div className="flex flex-col items-center gap-1">
-                    <ModelIcon domain={model.domain} label={model.label} size={20} />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-slate-600 sm:text-[11px]">
+                    <ModelIcon domain={model.domain} label={model.label} size={18} />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-slate-500">
                       {model.label}
                     </span>
                   </div>
@@ -89,8 +117,8 @@ function SmartRoutingVisual() {
           </thead>
           <tbody>
             {CATEGORIES.map((row) => (
-              <tr key={row.label} className="border-b border-slate-100">
-                <td className="py-2 pr-2 font-mono text-[10px] uppercase tracking-[0.08em] text-slate-500 sm:text-[11px]">
+              <tr key={row.label} className="border-b border-slate-50">
+                <td className="py-2 pr-2 font-mono text-[10px] uppercase tracking-[0.08em] text-slate-500">
                   {row.label}
                 </td>
                 {MODELS.map((model) => (
@@ -101,13 +129,11 @@ function SmartRoutingVisual() {
               </tr>
             ))}
             <tr>
-              <td className="pt-3 pr-2 font-mono text-[10px] uppercase tracking-[0.08em] text-slate-400 sm:text-[11px]">
-                Score
-              </td>
+              <td className="pt-2.5 pr-2 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">Score</td>
               {scoreByModel.map((model) => (
                 <td
                   key={model.id}
-                  className="pt-3 px-1 text-center font-mono text-sm font-semibold tabular-nums text-slate-500 sm:text-base"
+                  className="px-1 pt-2.5 text-center font-mono text-[12px] font-semibold tabular-nums text-slate-500"
                 >
                   {model.score}%
                 </td>
@@ -117,31 +143,31 @@ function SmartRoutingVisual() {
         </table>
       </div>
 
-      <div className="mt-5 rounded-lg border border-dashed border-slate-300 bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.35)_1px,transparent_0)] bg-[length:10px_10px] px-3 py-4 sm:mt-6 sm:px-4 sm:py-5">
-        <p className="mb-3 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-slate-500 sm:text-[11px]">
-          Routed test · Beats every model
+      <MockFoot>
+        <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-slate-400">
+          Routed test · beats every model
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-1.5">
           {CATEGORIES.map((row, index) => {
             const model = MODELS.find((m) => m.id === row.winner)!;
             return (
               <span key={row.label} className="inline-flex items-center gap-1.5">
                 {index > 0 ? (
-                  <span className="font-mono text-xs text-slate-400" aria-hidden>
+                  <span className="font-mono text-[11px] text-slate-300" aria-hidden>
                     +
                   </span>
                 ) : null}
-                <ModelIcon domain={model.domain} label={model.label} size={22} />
+                <ModelIcon domain={model.domain} label={model.label} size={20} />
               </span>
             );
           })}
-          <span className="font-mono text-sm text-slate-400 sm:text-base" aria-hidden>
+          <span className="font-mono text-[12px] text-slate-300" aria-hidden>
             =
           </span>
-          <span className="font-serif text-2xl font-medium text-amber-600 sm:text-3xl">100%</span>
+          <span className="font-display text-xl font-medium tabular-nums text-amber-600 sm:text-2xl">100%</span>
         </div>
-      </div>
-    </div>
+      </MockFoot>
+    </MockCard>
   );
 }
 
@@ -184,7 +210,7 @@ export default function SmartRoutingSection({ kicker = '09' }: SmartRoutingSecti
         </div>
 
         <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-          <FeaturePeekStage>
+          <FeaturePeekStage framed={false}>
             <SmartRoutingVisual />
           </FeaturePeekStage>
         </div>

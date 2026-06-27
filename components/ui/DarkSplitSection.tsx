@@ -3,13 +3,16 @@ import type { ReactNode } from 'react';
 type DarkSplitSectionProps = {
   children: ReactNode;
   className?: string;
+  innerClassName?: string;
 };
 
 /** Full-bleed dark band with grid rails — Ferndesk/Bento-style split section. */
-export default function DarkSplitSection({ children, className = '' }: DarkSplitSectionProps) {
+export default function DarkSplitSection({ children, className = '', innerClassName = '' }: DarkSplitSectionProps) {
   return (
     <section className={`bg-split text-white ${className}`}>
-      <div className="mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 sm:px-6">
+      <div
+        className={`mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 sm:px-6 ${innerClassName}`}
+      >
         {children}
       </div>
     </section>

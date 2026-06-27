@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ChevronLeft, Download, Signal, Wifi } from 'lucide-react';
+import { ArrowRight, Download, Signal, Wifi } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
@@ -33,31 +33,6 @@ const CHAT_SCRIPT: ChatMessage[] = [
   { id: 'draft', text: 'and draft a follow-up to Sarah', direction: 'out' },
 ];
 
-function DarkDotFade() {
-  return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[42%] overflow-hidden" aria-hidden>
-      <div
-        className="absolute inset-0 opacity-50"
-        style={{
-          WebkitMaskImage: 'radial-gradient(circle, #000 32%, transparent 46%)',
-          maskImage: 'radial-gradient(circle, #000 32%, transparent 46%)',
-          WebkitMaskSize: '5px 5px',
-          maskSize: '5px 5px',
-          backgroundColor: 'rgba(107, 168, 46, 0.35)',
-          backgroundImage:
-            'radial-gradient(125% 95% at 50% 108%, rgba(107,168,46,0.55) 0%, rgba(107,168,46,0.25) 35%, transparent 78%)',
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(to top, transparent 0%, rgba(20,23,15,0.55) 55%, #14170f 100%)',
-        }}
-      />
-    </div>
-  );
-}
-
 function TypingIndicator() {
   return (
     <div className="inline-flex max-w-[78%] items-center gap-1 rounded-[18px] rounded-bl-[4px] bg-[#3A3A3C] px-3.5 py-2.5 shadow-sm">
@@ -75,9 +50,9 @@ function TypingIndicator() {
 
 function PhoneStatusBar() {
   return (
-    <div className="flex shrink-0 items-center justify-between px-5 pb-1 pt-3 text-[10px] font-semibold text-white">
-      <span className="tabular-nums">9:41</span>
-      <div className="flex items-center gap-1 text-white/90">
+    <div className="mt-2 flex shrink-0 items-center justify-between px-3 pb-1 pt-3 text-[10px] font-semibold text-white">
+      <span className="tabular-nums opacity-50">9:41</span>
+      <div className="flex items-center gap-1 text-white/90 opacity-50">
         <Signal className="size-3" strokeWidth={2.5} aria-hidden />
         <Wifi className="size-3" strokeWidth={2.5} aria-hidden />
         <span className="ml-0.5 inline-flex h-2.5 w-[18px] rounded-[3px] border border-white/35 p-[1px]">
@@ -135,8 +110,7 @@ function PhoneChatScreen() {
 
       <div className="shrink-0 border-b border-white/[0.06] px-3 pb-2.5 pt-1">
         <div className="flex items-center gap-2">
-          <ChevronLeft className="size-4 text-[#0A84FF]" strokeWidth={2.5} aria-hidden />
-          <div className="mx-auto flex flex-col items-center -translate-x-2">
+          <div className="mx-auto flex flex-col items-center">
             <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-white/10 ring-1 ring-white/12">
               <Image
                 src="/images/trooper-logomark.png"
@@ -200,7 +174,7 @@ function PhoneChatScreen() {
         </motion.div>
       </div>
 
-      <div className="shrink-0 border-t border-white/[0.06] px-3 py-2">
+      <div className="mb-4 shrink-0 border-t border-white/[0.06] px-3 py-2">
         <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1C1E] px-3 py-1.5">
           <span className="flex-1 text-[11px] text-white/25">iMessage</span>
           <span className="flex size-6 items-center justify-center rounded-full bg-fern text-[10px] font-bold text-white">
@@ -365,9 +339,8 @@ export default function MobileChannelsSection() {
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12 xl:gap-16">
         {/* Phone stage */}
         <div className="relative order-2 flex justify-center lg:order-1 lg:justify-start">
-          <div className="relative w-full max-w-[340px] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] lg:max-w-none">
-            <DarkDotFade />
-            <div className="relative z-10 flex items-end justify-center px-4 pb-2 pt-8 sm:px-6 sm:pb-4 sm:pt-10 lg:px-8 lg:pb-6 lg:pt-12">
+          <div className="relative w-full max-w-[340px] overflow-hidden rounded-2xl lg:max-w-none">
+            <div>
               <IphoneDevice />
             </div>
           </div>

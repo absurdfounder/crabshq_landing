@@ -200,6 +200,20 @@ const FaviconChip = ({ provider, size = 14 }: { provider: string; size?: number 
   );
 };
 
+const DashedLabel = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
+  <div className="inline-flex items-center gap-2 rounded-sm border border-dashed border-slate-300 bg-white px-3 py-1.5">
+    <span className="text-slate-400">{icon}</span>
+    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">{text}</span>
+  </div>
+);
+
+const FlowLine = ({ className = '' }: { className?: string }) => (
+  <svg className={`absolute text-slate-200 ${className}`} width="100%" height="100%" viewBox="0 0 400 500" fill="none" preserveAspectRatio="none" aria-hidden>
+    <path d="M200 0 C180 100, 280 150, 200 250 C120 350, 300 400, 200 500" stroke="currentColor" strokeWidth="1.5" fill="none" />
+    <path d="M350 0 C330 120, 100 180, 180 300 C260 420, 50 460, 150 500" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.5" />
+  </svg>
+);
+
 /* ─── Shared clean mockup primitives (design-system cards) ─── */
 const MockCard = ({
   title,
@@ -223,34 +237,74 @@ const MockFoot = ({ children }: { children: React.ReactNode }) => (
   <div className="flex items-center justify-between gap-2 border-t border-slate-100 px-4 py-2.5 sm:px-5">{children}</div>
 );
 
-const OrgVisual = () => {
-  const roster = [
-    { name: 'Trooper Prime', role: 'CEO · Founder', badge: '+44', lead: true },
-    { name: 'Research Trooper', role: 'Head of Research', badge: '24' },
-    { name: 'Dev Trooper', role: 'Head of Engineering', badge: '18' },
-    { name: 'Growth Trooper', role: 'Head of Growth', badge: '11' },
-  ];
+/* ─── Visual 1: AI Org — org chart with Trooper ─── */
+const ORG_MANAGERS = [
+  { name: 'Research Trooper', role: 'Head of Research', count: 24 },
+  { name: 'Dev Trooper', role: 'Head of Engineering', count: 18 },
+] as const;
+
+function OrgNode({
+  name,
+  role,
+  count,
+  compact = false,
+}: {
+  name: string;
+  role: string;
+  count?: number;
+  compact?: boolean;
+}) {
   return (
-    <MockCard title="Organization" meta="2 leaders · 44 reports">
-      <ul className="divide-y divide-slate-100">
-        {roster.map((m) => (
-          <li key={m.name} className="grid grid-cols-[28px_1fr_auto] items-center gap-3 px-4 py-3 sm:px-5">
-            <span className="inline-flex size-7 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-1">
-              <TrooperChar />
-            </span>
-            <div className="min-w-0">
-              <p className="truncate text-[12.5px] font-semibold text-slate-800">{m.name}</p>
-              <p className="font-mono text-[10px] text-slate-400">{m.role}</p>
-            </div>
-            <span className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold tabular-nums ${m.lead ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}`}>
-              {m.badge}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </MockCard>
+    <div className="flex w-[148px] flex-col items-center">
+      <div
+        className={`relative z-10 -mb-2.5 flex items-center justify-center overflow-hidden rounded-full border-2 border-white bg-white shadow-sm ${
+          compact ? 'h-10 w-10 p-1' : 'h-11 w-11 p-1'
+        }`}
+      >
+        <TrooperChar />
+      </div>
+      <div className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-center shadow-sm">
+        <p className={`font-semibold leading-tight text-slate-900 ${compact ? 'text-[11px]' : 'text-[12px]'}`}>
+          {name}
+        </p>
+        <p className="mt-0.5 text-[10px] leading-snug text-slate-400">{role}</p>
+      </div>
+      {count != null ? (
+        <div className="mt-1.5 flex items-center gap-1 rounded border border-slate-200 bg-white px-2 py-0.5 shadow-sm">
+          <span className="text-[10px] font-semibold tabular-nums text-slate-700">{count}</span>
+          <svg className="h-2.5 w-2.5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+      ) : null}
+    </div>
   );
-};
+}
+
+const OrgVisual = () => (
+  <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-white px-6 py-4">
+    <OrgNode name="Trooper Prime" role="CEO, Founder" />
+    <span className="mt-1.5 rounded bg-slate-900 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.16em] text-white">
+      +44 reports
+    </span>
+
+    <svg className="my-1 h-5 w-[248px] shrink-0" viewBox="0 0 248 20" aria-hidden>
+      <path d="M124 0 V7 M62 7 H186 M62 7 V20 M186 7 V20" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
+    </svg>
+
+    <div className="flex items-start justify-center gap-10">
+      {ORG_MANAGERS.map((mgr) => (
+        <OrgNode key={mgr.name} name={mgr.name} role={mgr.role} count={mgr.count} compact />
+      ))}
+    </div>
+
+    <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-slate-400">2 leaders · 44 reports</p>
+  </div>
+);
 
 /* ─── Visual 2: Integrations — favicon grid ─── */
 const IntegrationsVisual = () => {
@@ -507,35 +561,90 @@ const CollabVisual = () => {
 };
 
 /* ─── Visual 6: OpenClaw Runtime ─── */
-const OpenClawVisual = () => {
-  const lines = [
-    <><span className="text-trooper">$</span> <span className="text-slate-200">openclaw deploy </span><span className="text-amber-400">--org</span><span className="text-slate-200"> acme-corp</span></>,
-    <span className="text-slate-400" key="l2">→ Provisioning private server…</span>,
-    <span className="text-slate-400" key="l3">→ Loading 4 AI employees…</span>,
-    <span className="font-semibold text-trooper-olive" key="l4">✓ Runtime ready</span>,
-    <span className="text-slate-500" key="l5">  https://acme.openclaw.run</span>,
-  ];
-  return (
-    <MockCard title="OpenClaw runtime" meta="private · 99.9% SLA">
-      <div className="bg-slate-950 px-3 py-3 font-mono text-[11px] leading-[1.7] sm:px-4">
-        {lines.map((content, i) => (
-          <div key={i} className={`flex items-baseline gap-3 ${i === 3 ? 'rounded bg-trooper/10' : ''}`}>
-            <span className="w-4 shrink-0 select-none text-right tabular-nums text-slate-700">{i + 1}</span>
-            <span>{content}</span>
+const OpenClawVisual = () => (
+  <div className="relative flex w-full flex-col justify-between overflow-hidden p-1 sm:p-2">
+    <FlowLine className="inset-0 opacity-40" />
+    <div className="relative z-10 space-y-5 sm:space-y-6">
+      <div className="overflow-hidden rounded-sm border border-dashed border-slate-300 bg-white/60 backdrop-blur-sm">
+        <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900 px-4 py-2">
+          <div className="flex items-center gap-1.5">
+            <span className="size-2.5 rounded-full bg-trooper/70" />
+            <span className="size-2.5 rounded-full bg-amber-500/70" />
+            <span className="size-2.5 rounded-full bg-trooper/70" />
           </div>
-        ))}
+          <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
+            <OpenClawFavicon size={11} />
+            openclaw — bash
+          </span>
+        </div>
+        <div className="bg-slate-950 py-3 font-mono text-[11px] leading-[1.7] sm:py-4 sm:text-[12px]">
+          {[
+            { ln: 1, content: <><span className="text-trooper select-none">$</span> <span className="text-slate-200">openclaw deploy </span><span className="text-amber-400">--org</span><span className="text-slate-200"> acme-corp</span></> },
+            { ln: 2 },
+            { ln: 3, content: <span className="text-slate-400">→ Provisioning private server…</span> },
+            { ln: 4, content: <span className="text-slate-400">→ Mounting encrypted volume…</span> },
+            { ln: 5, content: <span className="text-slate-400">→ Loading 4 AI employees…</span> },
+            { ln: 6 },
+            { ln: 7, content: <span className="font-semibold text-trooper-olive">✓ Runtime ready</span>, highlight: true },
+            { ln: 8, content: <span className="text-slate-500">  https://acme.openclaw.run</span> },
+          ].map((row) => (
+            <div
+              key={row.ln}
+              className={`flex items-baseline ${row.highlight ? 'border-l-2 border-trooper bg-trooper/10' : 'border-l-2 border-transparent'}`}
+            >
+              <span className="w-10 shrink-0 select-none pr-3 text-right tabular-nums text-slate-700">
+                {row.ln}
+              </span>
+              <span className="min-h-[1.4em]">{row.content || '\u00A0'}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-3 divide-x divide-slate-100">
-        {[['Private', 'server'], ['Data', 'siloed per org'], ['Full', 'API access']].map(([a, b]) => (
-          <div key={a} className="px-2 py-2.5 text-center">
-            <p className="text-[11px] font-semibold text-slate-700">{a}</p>
-            <p className="font-mono text-[9px] uppercase tracking-[0.1em] text-slate-400">{b}</p>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-2.5 sm:space-y-3">
+          <DashedLabel
+            icon={
+              <svg className="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+              </svg>
+            }
+            text="Data siloed per org"
+          />
+          <div className="flex flex-wrap items-center gap-2">
+            <DashedLabel
+              icon={
+                <svg className="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              }
+              text="Private server"
+            />
+            <span className="inline-flex items-center rounded-sm border border-trooper-100 bg-trooper-50 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-trooper-700">
+              Recommended
+            </span>
           </div>
-        ))}
+          <DashedLabel
+            icon={
+              <svg className="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z" />
+                <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
+                <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
+              </svg>
+            }
+            text="Full API access"
+          />
+        </div>
+        <div className="text-left sm:text-right">
+          <p className="font-display text-4xl font-bold leading-none tracking-tighter text-slate-200 sm:text-6xl lg:text-7xl">
+            99.9%
+          </p>
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-400">Uptime SLA</p>
+        </div>
       </div>
-    </MockCard>
-  );
-};
+    </div>
+  </div>
+);
 
 /* ─── Visual 7: Ticket System — single polished ticket with live trace ─── */
 const TicketVisual = () => {
@@ -660,8 +769,8 @@ const BYOAVisual = () => {
 };
 
 
-const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
-  <FeaturePeekStage framed={false}>{children}</FeaturePeekStage>
+const PixelFramedVisual = ({ children, wide = false }: { children: React.ReactNode; wide?: boolean }) => (
+  <FeaturePeekStage framed={false} wide={wide}>{children}</FeaturePeekStage>
 );
 
 /* ─── Card visuals ─── */
@@ -790,7 +899,7 @@ export default function OldWays() {
             </div>
 
             <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-              <PixelFramedVisual>
+              <PixelFramedVisual wide={index === 5}>
                 {cardVisuals[index]}
               </PixelFramedVisual>
             </div>

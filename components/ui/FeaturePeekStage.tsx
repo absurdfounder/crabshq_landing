@@ -37,21 +37,26 @@ type FeaturePeekStageProps = {
   children: ReactNode;
   /** Wrap the visual in a glass card. Set false when the visual is already self-framed. */
   framed?: boolean;
+  /** Wider canvas for expansive visuals (e.g. OpenClaw runtime). */
+  wide?: boolean;
 };
 
 /**
- * Shared feature visual stage: a clean canvas wash, a single focused visual that
- * peeks up from the bottom, and a dot-matrix fade — matching the reference
- * design system in the site's light theme.
+ * Shared feature visual stage: a clean canvas wash, dot-matrix fade, and a
+ * focused visual centered in the panel.
  */
-export default function FeaturePeekStage({ children, framed = true }: FeaturePeekStageProps) {
+export default function FeaturePeekStage({ children, framed = true, wide = false }: FeaturePeekStageProps) {
+  const contentMax = wide
+    ? 'max-w-[min(100%,36rem)]'
+    : 'max-w-[min(100%,24rem)] sm:max-w-[min(100%,26rem)]';
+
   return (
     <div className="relative flex min-h-[320px] flex-col overflow-hidden sm:min-h-[380px] lg:min-h-[500px]">
       <div className="absolute inset-0 bg-gradient-to-br from-canvas via-canvas to-slate-100/50" />
       <DotMatrixFade />
 
-      <div className="relative z-10 flex flex-1 items-end justify-center p-5 pt-9 sm:p-7 sm:pt-10 md:p-9 lg:p-10">
-        <div className="w-full max-w-[min(100%,38rem)] translate-y-3 md:translate-y-4">
+      <div className="relative z-10 flex flex-1 items-center justify-center p-5 sm:p-7 md:p-9 lg:p-10">
+        <div className={`w-full ${contentMax}`}>
           {framed ? (
             <div className="overflow-hidden rounded-2xl border border-black/[0.06] bg-white/85 shadow-[0_28px_64px_-28px_rgba(28,25,23,0.35)] ring-1 ring-black/[0.04] backdrop-blur-xl">
               <div className="p-4 sm:p-5">{children}</div>

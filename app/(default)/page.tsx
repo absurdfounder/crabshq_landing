@@ -76,7 +76,7 @@ export default function Home() {
         <OldWays />
       </SectionShell>
 
-      <DarkSplitSection>
+      <DarkSplitSection innerClassName="bg-gray-900">
         <MobileChannelsSection />
       </DarkSplitSection>
 
