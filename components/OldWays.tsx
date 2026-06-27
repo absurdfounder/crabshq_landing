@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from "react";
-import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench } from "lucide-react";
+import { Terminal, Globe, FileText, FileEdit, Search, Check, Loader2, GitCommit, Wrench, Sparkles, Clock, History, ArrowRight } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
 import { TROOPER_DEMO as T } from './demoTheme';
 import PixelDitherGradient from './ui/PixelDitherGradient';
@@ -418,34 +418,56 @@ const MemoryVisual = () => {
   ];
 
   return (
-    <div className="flex h-full w-full flex-col p-5 min-h-0">
-      <div className="flex items-center justify-between mb-3 sm:mb-4">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] px-2 py-1 rounded-sm bg-slate-100 text-slate-600 border border-slate-200">
-          <span className="w-1.5 h-1.5 rounded-sm bg-slate-400" />
+    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)]">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 sm:px-5">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-trooper-50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-trooper-700 ring-1 ring-trooper-100">
+          <Sparkles className="size-3 text-trooper-500" strokeWidth={2} />
           Recalled from memory
         </span>
-        <span className="font-mono text-[11px] text-slate-400">9:16 AM</span>
+        <span className="font-mono text-[11px] tabular-nums text-slate-400">9:16 AM</span>
       </div>
 
-      <h4 className="font-semibold text-base sm:text-lg text-slate-900 leading-snug mb-5">
-        Drafted the blog post your way.
-      </h4>
+      {/* Body */}
+      <div className="flex min-h-0 flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
+        <h4 className="mb-4 text-[15px] font-semibold leading-snug text-slate-900 sm:text-base">
+          Drafted the blog post your way.
+        </h4>
 
-      <div className="grid grid-cols-2 gap-2.5 flex-1">
-        {chips.map((c) => (
-          <div key={c.label} className="border border-slate-200 rounded-sm bg-white p-3.5 flex flex-col">
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-1.5">{c.label}</span>
-            <span className="text-[13px] text-slate-700 leading-relaxed">{c.value}</span>
-          </div>
-        ))}
+        <div className="grid flex-1 grid-cols-2 gap-2.5">
+          {chips.map((c) => (
+            <div
+              key={c.label}
+              className="group relative flex flex-col overflow-hidden rounded-lg border border-slate-200/80 bg-slate-50/60 p-3 transition-colors"
+            >
+              <span className="absolute inset-y-0 left-0 w-[2px] bg-trooper-300/70" />
+              <span className="mb-1 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">
+                {c.label}
+              </span>
+              <span className="text-[12.5px] leading-snug text-slate-700">{c.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex items-center gap-2 rounded-lg bg-trooper-50/70 px-3 py-2.5 ring-1 ring-trooper-100/70">
+          <Check className="size-3.5 shrink-0 text-trooper-600" strokeWidth={2.5} />
+          <span className="text-[12.5px] leading-snug text-slate-600">
+            Used these 4 preferences to draft and ship in{' '}
+            <span className="font-semibold text-slate-900">3 minutes</span>.
+          </span>
+        </div>
       </div>
 
-      <p className="text-[13px] text-slate-600 italic leading-relaxed mt-5">
-        Used these 4 preferences to draft and ship the post in 3 minutes.
-      </p>
-
-      <div className="mt-3 pt-3 border-t border-slate-100">
-        <span className="font-mono text-[11px] text-slate-400">Across 47 past conversations</span>
+      {/* Footer */}
+      <div className="flex items-center justify-between border-t border-slate-100 px-4 py-2.5 sm:px-5">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
+          <History className="size-3 text-slate-400" strokeWidth={2} />
+          Across 47 past conversations
+        </span>
+        <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.14em] text-trooper-600">
+          Context
+          <ArrowRight className="size-3" strokeWidth={2} />
+        </span>
       </div>
     </div>
   );
@@ -938,7 +960,7 @@ const BYOAVisual = () => {
 };
 
 
-const CHROME_VISUAL_INDICES = new Set([2, 6, 8]);
+const CHROME_VISUAL_INDICES = new Set([2, 3, 6, 8]);
 /** Org, gantt, runtime, and goal trees scale inside a fixed canvas so they never spill the card. */
 const SCALED_VISUAL_INDICES = new Set([0, 4, 5, 7]);
 
