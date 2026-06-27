@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 
 const GITHUB_ORG_URL = 'https://github.com/Trooper-AI';
+
+type LinkItem = {
   label: string;
   href: string;
   external?: boolean;
