@@ -20,7 +20,7 @@ import {
   Zap,
 } from 'lucide-react';
 
-type LinkItem = {
+const GITHUB_ORG_URL = 'https://github.com/Trooper-AI';
   label: string;
   href: string;
   external?: boolean;
@@ -233,6 +233,17 @@ export default function Footer() {
                   className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
                   target="_blank"
                   rel="noopener noreferrer"
+                  href={GITHUB_ORG_URL}
+                >
+                  <Github className="h-3.5 w-3.5 text-slate-400" />
+                  <span>GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   href="https://twitter.com/absurdfounder"
                 >
                   <Twitter className="h-3.5 w-3.5 text-slate-400" />
@@ -297,16 +308,15 @@ export default function Footer() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <PixelButton
-              href="https://github.com/absurdfounder"
+              href={GITHUB_ORG_URL}
               external
               size="sm"
               variant="outline"
               tone="dark"
-              ariaLabel="Track my commits on GitHub"
+              ariaLabel="Trooper open source on GitHub"
               icon={<Github className="h-3.5 w-3.5" strokeWidth={2} />}
             >
-              <span className="hidden md:inline">Track my commits</span>
-              <span className="md:hidden">Commits</span>
+              Open Source
             </PixelButton>
             <a
               href="https://openclaw.ai"

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown, Github } from 'lucide-react'
 
 import TrooperLogo from '@/components/ui/TrooperLogo'
 import MobileMenu from './mobile-menu'
@@ -17,6 +17,8 @@ import {
 import TopBar from './TopBar'
 
 type DropdownKey = 'features' | 'teams' | null
+
+const GITHUB_URL = 'https://github.com/Trooper-AI'
 
 export default function Header() {
   const pathname = usePathname()
@@ -124,6 +126,8 @@ export default function Header() {
         </nav>
 
         <div className="relative z-[220] ml-auto flex items-center gap-2 sm:gap-3">
+          <GitHubNavLink dark={darkNav} />
+
           <div className={`hidden lg:block ${darkNav ? '[&_button]:!text-white/80 [&_button:hover]:!text-white' : ''}`}>
             <TranslateButton />
           </div>
@@ -159,6 +163,24 @@ export default function Header() {
       </div>
       </div>
     </header>
+  )
+}
+
+function GitHubNavLink({ dark = false }: { dark?: boolean }) {
+  return (
+    <a
+      href={GITHUB_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Trooper on GitHub"
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 ${
+        dark
+          ? 'border-white/20 text-white/75 hover:bg-white/10 hover:text-white'
+          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+      }`}
+    >
+      <Github className="h-[18px] w-[18px] sm:h-5 sm:w-5" strokeWidth={2} />
+    </a>
   )
 }
 
