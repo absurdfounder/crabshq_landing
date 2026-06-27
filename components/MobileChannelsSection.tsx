@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Download, Signal, Wifi } from 'lucide-react';
+import { ArrowRight, Download, FileSpreadsheet, FileText, Signal, Wifi } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
@@ -19,19 +19,115 @@ const featuredChannels = FEATURED_CHANNEL_IDS.map(
 
 const MORE_CHANNELS = 'SMS, Slack, Discord, WebChat';
 
-type ChatMessage = {
-  id: string;
-  text: string;
-  direction: 'in' | 'out';
-};
+type ChatMessage =
+  | { id: string; direction: 'in' | 'out'; kind: 'text'; text: string }
+  | { id: string; direction: 'in' | 'out'; kind: 'image' }
+  | { id: string; direction: 'in' | 'out'; kind: 'file'; name: string; meta: string; fileKind: 'doc' | 'sheet' | 'pdf' };
 
 const CHAT_SCRIPT: ChatMessage[] = [
-  { id: 'leads', text: '23 leads came in overnight — enriched and scored.', direction: 'in' },
-  { id: 'demo', text: 'Top one is Series B HR tech. Wants a demo this week.', direction: 'in' },
-  { id: 'sarah', text: 'Sarah at Vanta replied to your outreach.', direction: 'in' },
-  { id: 'book', text: 'book the demo for Thursday', direction: 'out' },
-  { id: 'draft', text: 'and draft a follow-up to Sarah', direction: 'out' },
+  { id: 'leads', kind: 'text', text: '23 leads came in overnight — enriched and scored.', direction: 'in' },
+  { id: 'demo', kind: 'text', text: 'Top one is Series B HR tech. Wants a demo this week.', direction: 'in' },
+  { id: 'sarah', kind: 'text', text: 'Sarah at Vanta replied to your outreach.', direction: 'in' },
+  { id: 'book', kind: 'text', text: 'book the demo for Thursday', direction: 'out' },
+  { id: 'draft', kind: 'text', text: 'and draft a follow-up to Sarah', direction: 'out' },
+  { id: 'confirm', kind: 'text', text: 'Done — demo booked Thu 2pm PT. Pulling assets now.', direction: 'in' },
+  { id: 'chart', kind: 'image', direction: 'in' },
+  { id: 'doc', kind: 'file', name: 'vanta-follow-up.docx', meta: 'DOCX · 18 KB', fileKind: 'doc', direction: 'in' },
+  { id: 'csv', kind: 'file', name: 'lead-scores-jan.csv', meta: 'CSV · 42 KB', fileKind: 'sheet', direction: 'in' },
+  { id: 'deck', kind: 'file', name: 'demo-deck-vanta.pdf', meta: 'PDF · 1.2 MB', fileKind: 'pdf', direction: 'in' },
+  { id: 'ready', kind: 'text', text: 'Follow-up + deck attached. Review before I send to Sarah.', direction: 'in' },
 ];
+
+function LeadChartImage() {
+  return (
+    <div className="overflow-hidden rounded-[14px] bg-[#2C2C2E]">
+      <div className="border-b border-white/10 px-2.5 py-1.5">
+        <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-white/45">Lead score breakdown</p>
+      </div>
+      <div className="space-y-1.5 p-2.5">
+        {[
+          { label: 'Vanta', w: '92%' },
+          { label: 'Rippling', w: '78%' },
+          { label: 'Gusto', w: '64%' },
+        ].map((row) => (
+          <div key={row.label} className="grid grid-cols-[52px_1fr] items-center gap-2">
+            <span className="truncate font-mono text-[9px] text-white/55">{row.label}</span>
+            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-gradient-to-r from-fern to-fern-light" style={{ width: row.w }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FileAttachment({ name, meta, fileKind }: { name: string; meta: string; fileKind: 'doc' | 'sheet' | 'pdf' }) {
+  const icon =
+    fileKind === 'sheet' ? (
+      <FileSpreadsheet className="size-4 text-emerald-400" strokeWidth={2} />
+    ) : (
+      <FileText className={`size-4 ${fileKind === 'pdf' ? 'text-red-400' : 'text-blue-400'}`} strokeWidth={2} />
+    );
+
+  return (
+    <div className="flex items-center gap-2.5 rounded-[14px] bg-[#2C2C2E] px-2.5 py-2 ring-1 ring-white/10">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white/10">{icon}</span>
+      <div className="min-w-0">
+        <p className="truncate text-[11px] font-medium text-white">{name}</p>
+        <p className="font-mono text-[9px] text-white/45">{meta}</p>
+      </div>
+    </div>
+  );
+}
+
+function ChatBubble({
+  message,
+  isGrouped,
+}: {
+  message: ChatMessage;
+  isGrouped: boolean;
+}) {
+  const isIn = message.direction === 'in';
+  const shell = [
+    'max-w-[88%] shadow-sm',
+    isIn ? 'rounded-[18px]' : 'ml-auto rounded-[18px] bg-fern text-white',
+    isIn && isGrouped ? 'rounded-tl-[4px]' : '',
+    isIn && !isGrouped ? 'rounded-bl-[4px]' : '',
+    !isIn && isGrouped ? 'rounded-tr-[4px]' : '',
+    !isIn && !isGrouped ? 'rounded-br-[4px]' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  if (message.kind === 'image') {
+    return (
+      <div className={`${shell} overflow-hidden p-1`}>
+        <LeadChartImage />
+      </div>
+    );
+  }
+
+  if (message.kind === 'file') {
+    return (
+      <div className={shell}>
+        <FileAttachment name={message.name} meta={message.meta} fileKind={message.fileKind} />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={[
+        shell,
+        'px-3 py-[7px] text-[11px] leading-[1.38]',
+        isIn ? 'bg-[#3A3A3C] text-white' : '',
+      ].join(' ')}
+    >
+      {message.text}
+    </div>
+  );
+}
 
 function TypingIndicator() {
   return (
@@ -78,8 +174,12 @@ function PhoneChatScreen() {
     let delay = 700;
 
     CHAT_SCRIPT.forEach((message, index) => {
-      if (message.direction === 'in' && index > 0) {
-        timers.push(setTimeout(() => setShowTyping(true), delay - 450));
+      const prev = CHAT_SCRIPT[index - 1];
+      const showTypingBefore =
+        message.direction === 'in' && index > 0 && prev?.direction === 'out';
+
+      if (showTypingBefore) {
+        timers.push(setTimeout(() => setShowTyping(true), delay - 500));
       }
 
       timers.push(
@@ -89,7 +189,13 @@ function PhoneChatScreen() {
         }, delay),
       );
 
-      delay += message.direction === 'in' ? 1300 : 850;
+      if (message.kind === 'file' || message.kind === 'image') {
+        delay += 750;
+      } else if (message.direction === 'in') {
+        delay += 1100;
+      } else {
+        delay += 800;
+      }
     });
 
     return () => timers.forEach(clearTimeout);
@@ -153,14 +259,8 @@ function PhoneChatScreen() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.3, ease }}
-                  className={[
-                    'max-w-[86%] px-3 py-[7px] text-[11px] leading-[1.38] shadow-sm',
-                    message.direction === 'in'
-                      ? `rounded-[18px] bg-[#3A3A3C] text-white ${isGrouped ? 'rounded-tl-[4px]' : 'rounded-bl-[4px]'}`
-                      : `ml-auto rounded-[18px] bg-fern text-white ${isGrouped ? 'rounded-tr-[4px]' : 'rounded-br-[4px]'}`,
-                  ].join(' ')}
                 >
-                  {message.text}
+                  <ChatBubble message={message} isGrouped={isGrouped} />
                 </motion.div>
               );
             })}
