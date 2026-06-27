@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ChevronRight, Download } from 'lucide-react';
+import { ArrowRight, ChevronLeft, Download, Signal, Wifi } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
@@ -33,17 +33,57 @@ const CHAT_SCRIPT: ChatMessage[] = [
   { id: 'draft', text: 'and draft a follow-up to Sarah', direction: 'out' },
 ];
 
+function DarkDotFade() {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[42%] overflow-hidden" aria-hidden>
+      <div
+        className="absolute inset-0 opacity-50"
+        style={{
+          WebkitMaskImage: 'radial-gradient(circle, #000 32%, transparent 46%)',
+          maskImage: 'radial-gradient(circle, #000 32%, transparent 46%)',
+          WebkitMaskSize: '5px 5px',
+          maskSize: '5px 5px',
+          backgroundColor: 'rgba(107, 168, 46, 0.35)',
+          backgroundImage:
+            'radial-gradient(125% 95% at 50% 108%, rgba(107,168,46,0.55) 0%, rgba(107,168,46,0.25) 35%, transparent 78%)',
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(to top, transparent 0%, rgba(20,23,15,0.55) 55%, #14170f 100%)',
+        }}
+      />
+    </div>
+  );
+}
+
 function TypingIndicator() {
   return (
-    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-2xl rounded-tl-md bg-[#3A3A3C] px-3 py-2">
+    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-[18px] rounded-bl-[4px] bg-[#3A3A3C] px-3.5 py-2.5 shadow-sm">
       {[0, 1, 2].map((dot) => (
         <motion.span
           key={dot}
-          className="h-1.5 w-1.5 rounded-full bg-white/45"
-          animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}
+          className="size-1.5 rounded-full bg-white/50"
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
           transition={{ duration: 0.9, repeat: Infinity, delay: dot * 0.15, ease: 'easeInOut' }}
         />
       ))}
+    </div>
+  );
+}
+
+function PhoneStatusBar() {
+  return (
+    <div className="flex shrink-0 items-center justify-between px-5 pb-1 pt-3 text-[10px] font-semibold text-white">
+      <span className="tabular-nums">9:41</span>
+      <div className="flex items-center gap-1 text-white/90">
+        <Signal className="size-3" strokeWidth={2.5} aria-hidden />
+        <Wifi className="size-3" strokeWidth={2.5} aria-hidden />
+        <span className="ml-0.5 inline-flex h-2.5 w-[18px] rounded-[3px] border border-white/35 p-[1px]">
+          <span className="h-full w-[72%] rounded-[1px] bg-white" />
+        </span>
+      </div>
     </div>
   );
 }
@@ -60,11 +100,11 @@ function PhoneChatScreen() {
     if (reduceMotion) return;
 
     const timers: ReturnType<typeof setTimeout>[] = [];
-    let delay = 600;
+    let delay = 700;
 
     CHAT_SCRIPT.forEach((message, index) => {
       if (message.direction === 'in' && index > 0) {
-        timers.push(setTimeout(() => setShowTyping(true), delay - 400));
+        timers.push(setTimeout(() => setShowTyping(true), delay - 450));
       }
 
       timers.push(
@@ -74,7 +114,7 @@ function PhoneChatScreen() {
         }, delay),
       );
 
-      delay += message.direction === 'in' ? 1200 : 800;
+      delay += message.direction === 'in' ? 1300 : 850;
     });
 
     return () => timers.forEach(clearTimeout);
@@ -84,65 +124,72 @@ function PhoneChatScreen() {
     const viewport = viewportRef.current;
     const thread = threadRef.current;
     if (!viewport || !thread) return;
-
-    const overflow = Math.max(0, thread.scrollHeight - viewport.clientHeight);
-    setThreadOffset(overflow);
+    setThreadOffset(Math.max(0, thread.scrollHeight - viewport.clientHeight));
   }, [visibleCount, showTyping]);
 
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-black">
-      <div className="shrink-0 border-b border-white/10 bg-black px-3 pb-2 pt-8 text-center">
-        <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
-          <Image
-            src="/images/trooper-logomark.png"
-            alt=""
-            width={20}
-            height={20}
-            className="h-5 w-5 object-contain"
-            style={{ imageRendering: 'pixelated' }}
-          />
+    <div className="flex h-full min-h-0 flex-col bg-[#000000]">
+      <PhoneStatusBar />
+
+      <div className="shrink-0 border-b border-white/[0.06] px-3 pb-2.5 pt-1">
+        <div className="flex items-center gap-2">
+          <ChevronLeft className="size-4 text-[#0A84FF]" strokeWidth={2.5} aria-hidden />
+          <div className="mx-auto flex flex-col items-center -translate-x-2">
+            <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-white/10 ring-1 ring-white/12">
+              <Image
+                src="/images/trooper-logomark.png"
+                alt=""
+                width={22}
+                height={22}
+                className="size-[22px] object-contain"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            </div>
+            <p className="mt-0.5 text-[11px] font-medium text-white">Trooper</p>
+            <p className="text-[9px] text-white/35">AI workforce</p>
+          </div>
         </div>
-        <p className="mt-1 flex items-center justify-center gap-0.5 text-[11px] font-medium text-white">
-          Trooper
-          <ChevronRight className="h-3 w-3 text-white/40" strokeWidth={2} aria-hidden />
-        </p>
       </div>
 
       <div
         ref={viewportRef}
         className="relative min-h-0 flex-1 overflow-hidden"
         style={{
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 12%, black 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 12%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
         }}
       >
         <motion.div
           ref={threadRef}
-          className="flex min-h-full flex-col justify-end gap-1.5 px-3.5 pb-3 pt-1"
+          className="flex min-h-full flex-col justify-end gap-1 px-3.5 pb-2 pt-2"
           animate={{ y: reduceMotion ? 0 : -threadOffset }}
           transition={{ duration: 0.45, ease }}
         >
           <AnimatePresence initial={false} mode="popLayout">
-            {visibleMessages.map((message) => (
-              <motion.div
-                key={message.id}
-                layout
-                initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.28, ease }}
-                className={[
-                  'max-w-[88%] px-3 py-1.5 text-[10.5px] leading-[1.4] sm:text-[11px]',
-                  message.direction === 'in'
-                    ? 'rounded-2xl rounded-tl-md bg-[#3A3A3C] text-white'
-                    : 'ml-auto rounded-2xl rounded-tr-md bg-fern text-white',
-                ].join(' ')}
-              >
-                {message.text}
-              </motion.div>
-            ))}
+            {visibleMessages.map((message, i) => {
+              const prev = visibleMessages[i - 1];
+              const isGrouped = prev?.direction === message.direction;
+              return (
+                <motion.div
+                  key={message.id}
+                  layout
+                  initial={reduceMotion ? false : { opacity: 0, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.3, ease }}
+                  className={[
+                    'max-w-[86%] px-3 py-[7px] text-[11px] leading-[1.38] shadow-sm',
+                    message.direction === 'in'
+                      ? `rounded-[18px] bg-[#3A3A3C] text-white ${isGrouped ? 'rounded-tl-[4px]' : 'rounded-bl-[4px]'}`
+                      : `ml-auto rounded-[18px] bg-fern text-white ${isGrouped ? 'rounded-tr-[4px]' : 'rounded-br-[4px]'}`,
+                  ].join(' ')}
+                >
+                  {message.text}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
 
           {showTyping ? (
@@ -152,52 +199,55 @@ function PhoneChatScreen() {
           ) : null}
         </motion.div>
       </div>
+
+      <div className="shrink-0 border-t border-white/[0.06] px-3 py-2">
+        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1C1E] px-3 py-1.5">
+          <span className="flex-1 text-[11px] text-white/25">iMessage</span>
+          <span className="flex size-6 items-center justify-center rounded-full bg-fern text-[10px] font-bold text-white">
+            ↑
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
 
-/** Screen cutout aligned to public/images/iphone-frame.png (292×350). */
-const IPHONE_SCREEN_INSET = {
-  top: '12.57%',
-  right: '12.33%',
-  bottom: '5.14%',
-  left: '12.33%',
-} as const;
-
-function PhoneChatMockup() {
+function IphoneDevice() {
   return (
-    <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[320px]">
-      <div
-        className="pointer-events-none absolute left-1/2 top-[18%] -z-10 h-[55%] w-[90%] -translate-x-1/2 rounded-full bg-fern/20 blur-3xl"
-        aria-hidden
-      />
+    <div className="relative mx-auto w-full max-w-[272px] sm:max-w-[290px] lg:max-w-[300px]">
       <motion.div
-        className="relative aspect-[292/350] w-full"
-        initial={{ opacity: 0, y: 20 }}
+        className="relative"
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.65, ease }}
-        viewport={{ once: true, amount: 0.35 }}
+        transition={{ duration: 0.7, ease }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <div
-          className="absolute overflow-hidden bg-black"
-          style={{
-            top: IPHONE_SCREEN_INSET.top,
-            right: IPHONE_SCREEN_INSET.right,
-            bottom: IPHONE_SCREEN_INSET.bottom,
-            left: IPHONE_SCREEN_INSET.left,
-            borderRadius: '1.45rem',
-          }}
-        >
-          <PhoneChatScreen />
+          className="absolute left-1/2 top-[22%] -z-10 h-[65%] w-[110%] -translate-x-1/2 rounded-full bg-fern/20 blur-[56px]"
+          aria-hidden
+        />
+
+        <div className="relative rounded-[2.65rem] bg-gradient-to-b from-[#48484a] via-[#2c2c2e] to-[#1c1c1e] p-[2.5px] shadow-[0_48px_96px_-28px_rgba(0,0,0,0.75),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-white/[0.08]">
+          <div className="relative overflow-hidden rounded-[2.45rem] bg-black">
+            <div
+              className="pointer-events-none absolute left-1/2 top-2 z-30 h-[22px] w-[76px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+              aria-hidden
+            />
+
+            <div className="aspect-[9/19.2] w-full">
+              <PhoneChatScreen />
+            </div>
+
+            <div
+              className="pointer-events-none absolute inset-x-[38%] bottom-1.5 z-30 h-[4px] rounded-full bg-white/25"
+              aria-hidden
+            />
+          </div>
         </div>
 
-        <Image
-          src="/images/iphone-frame.png"
-          alt="Trooper conversation on iPhone"
-          fill
-          sizes="(max-width: 640px) 280px, 320px"
-          className="pointer-events-none z-10 select-none object-fill"
-          priority
+        <div
+          className="pointer-events-none absolute -inset-x-6 -bottom-8 h-16 bg-gradient-to-t from-split/80 to-transparent"
+          aria-hidden
         />
       </motion.div>
     </div>
@@ -208,36 +258,65 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
   return (
     <Link
       href={`/channels/${channelId}`}
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:border-white/20 hover:bg-white/[0.09] sm:px-3.5 sm:py-2 sm:text-sm"
+      className="group inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[13px] font-medium text-white/90 transition-all hover:border-white/16 hover:bg-white/[0.07] sm:px-3.5"
     >
-      <FieldCommsChannelIcon channelId={channelId} size={22} />
+      <FieldCommsChannelIcon channelId={channelId} size={20} />
       <span>{channelName}</span>
     </Link>
   );
 }
 
+function DarkMockCard({
+  title,
+  meta,
+  children,
+  footer,
+}: {
+  title: string;
+  meta?: string;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)] backdrop-blur-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3 sm:px-5">
+        <span className="text-[13px] font-semibold tracking-tight text-white sm:text-sm">{title}</span>
+        {meta ? (
+          <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-white/35">{meta}</span>
+        ) : null}
+      </div>
+      <div className="px-4 py-4 sm:px-5 sm:py-5">{children}</div>
+      {footer ? (
+        <div className="flex items-center justify-between gap-2 border-t border-white/[0.06] px-4 py-2.5 sm:px-5">
+          {footer}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function ConnectCard() {
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 sm:p-5">
-      <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5">
+    <DarkMockCard title="Save Trooper to your phone" meta="channel setup">
+      <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
         <div className="relative shrink-0">
-          <div className="overflow-hidden rounded-xl bg-white p-1.5 shadow-sm ring-1 ring-white/10">
+          <div className="overflow-hidden rounded-xl bg-white p-2 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] ring-1 ring-white/10">
             <Image
               src="/images/trooper-connect-qr.png"
               alt="QR code to open Trooper channel setup"
-              width={112}
-              height={112}
-              className="h-28 w-28"
+              width={108}
+              height={108}
+              className="size-[108px]"
             />
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-white shadow-sm ring-1 ring-slate-200">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-slate-200/80">
               <Image
                 src="/images/trooper-logomark.png"
                 alt=""
                 width={18}
                 height={18}
-                className="h-4 w-4 object-contain"
+                className="size-[18px] object-contain"
                 style={{ imageRendering: 'pixelated' }}
               />
             </div>
@@ -245,8 +324,7 @@ function ConnectCard() {
         </div>
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <p className="text-base font-semibold text-white sm:text-[1.05rem]">Save Trooper to your phone</p>
-          <p className="mt-1.5 text-sm leading-relaxed text-white/50">
+          <p className="text-sm leading-relaxed text-white/50">
             Scan to open channel setup — then message your workforce from the apps you already use.
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
@@ -256,20 +334,20 @@ function ConnectCard() {
               rel="noopener noreferrer"
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-split transition-colors hover:bg-white/92 sm:w-auto"
             >
-              <Download className="h-4 w-4" strokeWidth={2} aria-hidden />
+              <Download className="size-4" strokeWidth={2} aria-hidden />
               Connect channels
             </a>
             <Link
               href="/download"
-              className="inline-flex w-full items-center justify-center gap-1 text-sm font-medium text-white/55 transition-colors hover:text-white/80 sm:w-auto sm:px-2"
+              className="inline-flex w-full items-center justify-center gap-1 text-sm font-medium text-white/50 transition-colors hover:text-white/75 sm:w-auto sm:px-2"
             >
               Mobile apps
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              <ArrowRight className="size-3.5" aria-hidden />
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </DarkMockCard>
   );
 }
 
@@ -284,8 +362,18 @@ export default function MobileChannelsSection() {
         </span>
       </div>
 
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-14 xl:gap-20">
-        {/* Copy — first on mobile, right column on desktop */}
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12 xl:gap-16">
+        {/* Phone stage */}
+        <div className="relative order-2 flex justify-center lg:order-1 lg:justify-start">
+          <div className="relative w-full max-w-[340px] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] lg:max-w-none">
+            <DarkDotFade />
+            <div className="relative z-10 flex items-end justify-center px-4 pb-2 pt-8 sm:px-6 sm:pb-4 sm:pt-10 lg:px-8 lg:pb-6 lg:pt-12">
+              <IphoneDevice />
+            </div>
+          </div>
+        </div>
+
+        {/* Copy */}
         <motion.div
           className="order-1 flex flex-col gap-6 lg:order-2 lg:gap-7"
           initial={{ opacity: 0, y: 14 }}
@@ -311,31 +399,21 @@ export default function MobileChannelsSection() {
                 <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
               ))}
             </div>
-            <p className="text-xs text-white/35 sm:text-[13px]">+ {MORE_CHANNELS}</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/30">
+              + {MORE_CHANNELS}
+            </p>
           </div>
 
-          <div className="hidden lg:block">
-            <ConnectCard />
-          </div>
+          <ConnectCard />
 
           <Link
             href="/channels"
             className="mx-auto inline-flex items-center gap-1.5 text-sm font-medium text-fern transition-colors hover:text-fern-light lg:mx-0"
           >
             Browse all channels
-            <ArrowRight className="h-4 w-4" aria-hidden />
+            <ArrowRight className="size-4" aria-hidden />
           </Link>
         </motion.div>
-
-        {/* Phone — second on mobile, left column on desktop */}
-        <div className="order-2 flex justify-center lg:order-1 lg:justify-start">
-          <PhoneChatMockup />
-        </div>
-
-        {/* Connect card — mobile/tablet only, below phone */}
-        <div className="order-3 lg:hidden">
-          <ConnectCard />
-        </div>
       </div>
     </div>
   );

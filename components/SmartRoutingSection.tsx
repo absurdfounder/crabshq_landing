@@ -2,7 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 import { getFaviconUrl } from '@/lib/favicon';
-import PixelDitherGradient from './ui/PixelDitherGradient';
+import FeaturePeekStage from './ui/FeaturePeekStage';
 
 const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
 
@@ -54,21 +54,6 @@ function ResultMark({ pass }: { pass: boolean }) {
     <Check className="mx-auto size-4 text-emerald-600" strokeWidth={2.5} aria-label="Correct" />
   ) : (
     <X className="mx-auto size-4 text-red-500" strokeWidth={2.5} aria-label="Incorrect" />
-  );
-}
-
-function CapabilityVisualFrame({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative flex min-h-[320px] flex-col sm:min-h-[380px] lg:min-h-[500px]">
-      <PixelDitherGradient variant="warm" />
-      <div className="relative z-10 flex flex-1 items-stretch justify-center p-5 sm:p-7 md:p-9 lg:p-10">
-        <div className="flex w-full max-w-[min(100%,40rem)] min-h-0 flex-1 flex-col overflow-hidden rounded-xl bg-white shadow-[0_24px_48px_-16px_rgba(28,25,23,0.18),0_8px_16px_-8px_rgba(28,25,23,0.08)] ring-1 ring-black/[0.06]">
-          <div className="flex min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">
-            {children}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -160,8 +145,12 @@ function SmartRoutingVisual() {
   );
 }
 
+type SmartRoutingSectionProps = {
+  kicker?: string;
+};
+
 /** Same card shell as other capabilities — sits between sticky deck segments. */
-export default function SmartRoutingSection() {
+export default function SmartRoutingSection({ kicker = '09' }: SmartRoutingSectionProps) {
   return (
     <article
       aria-labelledby="smart-routing-heading"
@@ -170,7 +159,7 @@ export default function SmartRoutingSection() {
       <div className="grid lg:grid-cols-2 lg:items-stretch">
         <div className={`${sectionXPadding} flex flex-col justify-center py-8 sm:py-10 md:py-12 lg:py-14`}>
           <p className="kicker text-sm sm:text-base">
-            <span className="text-ink-faint/80">[09]</span>{' '}
+            <span className="text-ink-faint/80">[{kicker}]</span>{' '}
             <span className="normal-case">Smart Routing</span>
           </p>
           <h3
@@ -195,9 +184,9 @@ export default function SmartRoutingSection() {
         </div>
 
         <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
-          <CapabilityVisualFrame>
+          <FeaturePeekStage>
             <SmartRoutingVisual />
-          </CapabilityVisualFrame>
+          </FeaturePeekStage>
         </div>
       </div>
     </article>
