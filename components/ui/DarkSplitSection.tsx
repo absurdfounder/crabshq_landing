@@ -6,12 +6,12 @@ type DarkSplitSectionProps = {
   innerClassName?: string;
 };
 
-/** Full-bleed dark band with grid rails — Ferndesk/Bento-style split section. */
+/** Dark band contained within the max-w-7xl grid — background does not bleed past rails. */
 export default function DarkSplitSection({ children, className = '', innerClassName = '' }: DarkSplitSectionProps) {
   return (
-    <section className={`bg-split text-white ${className}`}>
+    <section className={className}>
       <div
-        className={`mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 sm:px-6 ${innerClassName}`}
+        className={`mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 text-white sm:px-6 ${innerClassName || 'bg-split'}`}
       >
         {children}
       </div>

@@ -227,7 +227,7 @@ const MockCard = ({
   <div className="w-full overflow-hidden rounded-2xl border border-black/[0.06] bg-white/90 shadow-[0_28px_64px_-28px_rgba(28,25,23,0.35)] ring-1 ring-black/[0.04] backdrop-blur-xl">
     <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 sm:px-5">
       <span className="truncate text-[13px] font-semibold tracking-tight text-slate-900 sm:text-sm">{title}</span>
-      {meta ? <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">{meta}</span> : null}
+      {meta ? <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-500">{meta}</span> : null}
     </div>
     {children}
   </div>
@@ -322,7 +322,7 @@ const IntegrationsVisual = () => {
         </div>
       </div>
       <MockFoot>
-        <span className="font-mono text-[10px] text-slate-400">Browser &amp; native APIs</span>
+        <span className="font-mono text-[10px] text-slate-500">Browser &amp; native APIs</span>
         <span className="inline-flex items-center gap-1.5">
           <span className="relative flex size-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-trooper-olive opacity-75" />
@@ -364,7 +364,7 @@ const ActionVisual = () => {
         ))}
       </ul>
       <MockFoot>
-        <span className="font-mono text-[10px] text-slate-400">3 / 6 subtasks</span>
+        <span className="font-mono text-[10px] text-slate-500">3 / 6 subtasks</span>
         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-trooper-700">
           <FileText className="size-3" strokeWidth={2} />
           index.html
@@ -677,7 +677,7 @@ const TicketVisual = () => {
         ))}
       </ul>
       <MockFoot>
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">Audit log</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">Audit log</span>
         <span className="font-mono text-[10px] text-trooper-700">47 events · fully traced</span>
       </MockFoot>
     </MockCard>
@@ -717,7 +717,7 @@ const GoalVisual = () => {
         ))}
       </ul>
       <MockFoot>
-        <span className="font-mono text-[10px] text-slate-400">company → project → agent → task</span>
+        <span className="font-mono text-[10px] text-slate-500">company → project → agent → task</span>
         <span className="font-mono text-[10px] text-trooper-700">Aligned</span>
       </MockFoot>
     </MockCard>
@@ -749,19 +749,22 @@ const BYOAVisual = () => {
               )}
             </span>
             <div className="flex min-w-0 items-center gap-2">
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-700">{m.role}</span>
-              <span className="truncate font-mono text-[11px] text-slate-400">{m.isYou ? 'You' : m.provider}</span>
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-800">{m.role}</span>
+              <span className="truncate font-mono text-[11px] text-slate-600">{m.isYou ? 'You' : m.provider}</span>
             </div>
             {m.recommended ? (
               <span className="rounded-full bg-trooper-600 px-2 py-0.5 text-[8px] uppercase tracking-[0.16em] text-white">Recommended</span>
             ) : (
-              <span className="text-[8px] uppercase tracking-[0.2em] text-slate-300">Active</span>
+              <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.14em] text-slate-500">
+                <span className="size-1.5 rounded-full bg-trooper" aria-hidden />
+                Active
+              </span>
             )}
           </li>
         ))}
       </ul>
       <MockFoot>
-        <span className="font-mono text-[10px] text-slate-400">20+ providers supported</span>
+        <span className="font-mono text-[10px] text-slate-500">20+ providers supported</span>
         <span className="font-mono text-[10px] text-trooper-700">Heartbeat = hired</span>
       </MockFoot>
     </MockCard>

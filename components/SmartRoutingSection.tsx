@@ -6,13 +6,8 @@ import FeaturePeekStage from './ui/FeaturePeekStage';
 
 const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
 
-const ROUTING_STEPS = [
-  'Models have different strengths — one is great at math, another at code, another at writing.',
-  'Give them all the same test and they each miss the questions outside their strengths.',
-  'If you take only the answers each one got right and combine them into one test,',
-  'That combined test outscores every individual model.',
-  'That is routing. Requests go to the model most likely to get it right, so the system as a whole beats any single model.',
-];
+const ROUTING_DESCRIPTION =
+  'Trooper routes each request to the model most likely to get it right — combining strengths so the system beats any single model.';
 
 type ModelId = 'gemini' | 'claude' | 'chatgpt';
 
@@ -49,7 +44,7 @@ const MockCard = ({
     <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3 sm:px-5">
       <span className="truncate text-[13px] font-semibold tracking-tight text-slate-900 sm:text-sm">{title}</span>
       {meta ? (
-        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-400">{meta}</span>
+        <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-slate-500">{meta}</span>
       ) : null}
     </div>
     {children}
@@ -194,19 +189,9 @@ export default function SmartRoutingSection({ kicker = '09' }: SmartRoutingSecti
           >
             No single model wins every query
           </h3>
-          <ol className="mt-5 divide-y divide-slate-200 border-t border-slate-200 sm:mt-6">
-            {ROUTING_STEPS.map((step, index) => (
-              <li
-                key={index}
-                className="flex gap-3 py-3 text-sm leading-relaxed text-ink-muted sm:gap-4 sm:py-3.5 sm:text-[15px] sm:leading-7"
-              >
-                <span className="shrink-0 font-mono text-xs tabular-nums text-slate-400 sm:text-sm">
-                  {index + 1}
-                </span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
+            {ROUTING_DESCRIPTION}
+          </p>
         </div>
 
         <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[500px] lg:border-t-0 lg:rounded-r-xl">
