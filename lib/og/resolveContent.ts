@@ -19,7 +19,7 @@ const HOME_OG: OgHeroContent = {
   description:
     'Trooper is your team — plans your roadmap, ships code, runs ads, replies to customers, closes deals, and posts your tweets.',
   showSetup: true,
-  singleLineHeadline: false,
+  singleLineHeadline: true,
   pageUrl: 'https://trooper.so',
 };
 

@@ -98,6 +98,77 @@ function truncate(text: string, max: number) {
   return `${text.slice(0, max - 1).trim()}…`;
 }
 
+function HeadlineBlock({ content }: { content: OgHeroContent }) {
+  const singleLine = content.singleLineHeadline !== false;
+  const headlineSize = content.headlineLead ? 50 : 58;
+  const headlineStyle = {
+    fontSize: headlineSize,
+    lineHeight: 1.08,
+    fontWeight: 700,
+    letterSpacing: '-0.03em',
+    fontFamily: 'Erode',
+  } as const;
+
+  const primaryAccent = (
+    <>
+      <span
+        style={{
+          ...headlineStyle,
+          color: '#0f172a',
+          marginRight: content.headlineAccent && singleLine ? 12 : 0,
+        }}
+      >
+        {content.headlinePrimary}
+      </span>
+      {content.headlineAccent ? (
+        <span
+          style={{
+            ...headlineStyle,
+            color: BRAND_GREEN,
+          }}
+        >
+          {content.headlineAccent}
+        </span>
+      ) : null}
+    </>
+  );
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 720 }}>
+      {content.headlineLead ? (
+        <div
+          style={{
+            ...headlineStyle,
+            color: '#0f172a',
+          }}
+        >
+          {content.headlineLead}
+        </div>
+      ) : null}
+      {singleLine ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'baseline',
+            marginTop: content.headlineLead ? 6 : 0,
+          }}
+        >
+          {primaryAccent}
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', marginTop: content.headlineLead ? 6 : 0 }}>
+          <div style={{ ...headlineStyle, color: '#0f172a' }}>{content.headlinePrimary}</div>
+          {content.headlineAccent ? (
+            <div style={{ ...headlineStyle, color: BRAND_GREEN, marginTop: 4 }}>{content.headlineAccent}</div>
+          ) : null}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function BadgeRow({ badges }: { badges: NonNullable<OgHeroContent['badgeIcons']> }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 20 }}>
@@ -137,8 +208,9 @@ function DecorativeGridPanel() {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        width: 340,
+        width: 300,
         flexShrink: 0,
+        alignSelf: 'stretch',
         borderLeft: `1px solid ${SLATE_200}`,
         background: SLATE_200,
         gap: 1,
@@ -164,7 +236,6 @@ function DecorativeGridPanel() {
 }
 
 export function OgHeroImage({ content }: { content: OgHeroContent }) {
-  const singleLine = content.singleLineHeadline !== false;
   const badges = mergeBadgeIcons(content.badgeIcons, content.description);
   const displayUrl = formatOgDisplayUrl(content.pageUrl || 'https://trooper.so');
 
@@ -217,14 +288,14 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
         </div>
 
         {/* Main body — content column + decorative grid panel */}
-        <div style={{ display: 'flex', flex: 1 }}>
+        <div style={{ display: 'flex', flex: 1, alignItems: 'stretch', minHeight: 0 }}>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               flex: 1,
-              padding: `28px ${FRAME_PAD_X}px 24px`,
-              justifyContent: 'space-between',
+              minWidth: 0,
+              padding: `24px ${FRAME_PAD_X}px 20px`,
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -240,105 +311,22 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                   />
                 ) : null}
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  {singleLine ? (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'baseline',
-                        maxWidth: 720,
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: 58,
-                          lineHeight: 1.08,
-                          fontWeight: 700,
-                          color: '#0f172a',
-                          letterSpacing: '-0.03em',
-                          fontFamily: 'Erode',
-                          marginRight: content.headlineAccent ? 14 : 0,
-                        }}
-                      >
-                        {content.headlinePrimary}
-                      </span>
-                      {content.headlineAccent ? (
-                        <span
-                          style={{
-                            fontSize: 58,
-                            lineHeight: 1.08,
-                            fontWeight: 700,
-                            color: BRAND_GREEN,
-                            letterSpacing: '-0.03em',
-                            fontFamily: 'Erode',
-                          }}
-                        >
-                          {content.headlineAccent}
-                        </span>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      {content.headlineLead ? (
-                        <div
-                          style={{
-                            fontSize: 58,
-                            lineHeight: 1.08,
-                            fontWeight: 700,
-                            color: '#0f172a',
-                            letterSpacing: '-0.03em',
-                            fontFamily: 'Erode',
-                          }}
-                        >
-                          {content.headlineLead}
-                        </div>
-                      ) : null}
-                      <div
-                        style={{
-                          fontSize: 58,
-                          lineHeight: 1.08,
-                          fontWeight: 700,
-                          color: '#0f172a',
-                          letterSpacing: '-0.03em',
-                          fontFamily: 'Erode',
-                          marginTop: content.headlineLead ? 4 : 0,
-                        }}
-                      >
-                        {content.headlinePrimary}
-                      </div>
-                      {content.headlineAccent ? (
-                        <div
-                          style={{
-                            fontSize: 58,
-                            lineHeight: 1.08,
-                            fontWeight: 700,
-                            color: BRAND_GREEN,
-                            letterSpacing: '-0.03em',
-                            fontFamily: 'Erode',
-                            marginTop: 4,
-                          }}
-                        >
-                          {content.headlineAccent}
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
+                  <HeadlineBlock content={content} />
                 </div>
               </div>
 
               {content.description ? (
                 <p
                   style={{
-                    marginTop: 18,
-                    maxWidth: 680,
-                    fontSize: 22,
-                    lineHeight: 1.45,
+                    marginTop: 14,
+                    maxWidth: 640,
+                    fontSize: 20,
+                    lineHeight: 1.4,
                     color: '#475569',
                     fontFamily: 'Erode',
                   }}
                 >
-                  {truncate(content.description, 160)}
+                  {truncate(content.description, 140)}
                 </p>
               ) : null}
 
@@ -347,13 +335,13 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
               {content.showSetup ? (
                 <div
                   style={{
-                    marginTop: 22,
+                    marginTop: 16,
                     display: 'flex',
                     alignItems: 'center',
                     maxWidth: 420,
                     border: `1px dashed ${SLATE_200}`,
                     borderRadius: 4,
-                    padding: '14px 18px',
+                    padding: '12px 16px',
                     background: '#ffffff',
                   }}
                 >
