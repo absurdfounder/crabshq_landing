@@ -1,17 +1,13 @@
 {
-  "generatedAt": "2026-06-24T09:59:50.404Z",
-  "count": 296,
+  "generatedAt": "2026-06-28T22:28:55.455Z",
+  "count": 1,
   "totals": {
-    "written": 0,
-    "skipped": 255,
-    "missing": 41,
+    "written": 1,
+    "skipped": 0,
+    "missing": 0,
     "failed": 0
   },
   "samples": [
-    "/og/prebuilt/home.png",
-    "/og/prebuilt/hub/loops.png",
-    "/og/prebuilt/hub/plugins.png",
-    "/og/prebuilt/hub/integration.png",
-    "/og/prebuilt/hub/channels.png"
+    "/og/prebuilt/home.png"
   ]
 }

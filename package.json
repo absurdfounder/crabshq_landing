@@ -10,7 +10,7 @@
     "validate:playbooks": "node scripts/validate-playbooks.mjs",
     "generate:og": "tsx scripts/generate-og-images.ts",
     "generate:og:home": "tsx scripts/generate-og-images.ts --home",
-    "build": "npm run validate:playbooks && next build",
+    "build": "npm run validate:playbooks && npm run generate:og:home -- --force && next build",
     "start": "next start",
     "lint": "next lint",
     "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,alternative,channel,loop,compare,showcase,legacy-integration"
