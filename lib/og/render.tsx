@@ -280,6 +280,20 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {content.headlineLead ? (
+                        <div
+                          style={{
+                            fontSize: 58,
+                            lineHeight: 1.08,
+                            fontWeight: 700,
+                            color: '#0f172a',
+                            letterSpacing: '-0.03em',
+                            fontFamily: 'Erode',
+                          }}
+                        >
+                          {content.headlineLead}
+                        </div>
+                      ) : null}
                       <div
                         style={{
                           fontSize: 58,
@@ -288,6 +302,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                           color: '#0f172a',
                           letterSpacing: '-0.03em',
                           fontFamily: 'Erode',
+                          marginTop: content.headlineLead ? 4 : 0,
                         }}
                       >
                         {content.headlinePrimary}

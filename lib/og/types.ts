@@ -23,6 +23,8 @@ export type OgHeroContent = {
   kind: OgKind;
   eyebrowIndex: string;
   eyebrowLabel: string;
+  /** Optional lead line above the main headline (e.g. home hero). */
+  headlineLead?: string;
   headlinePrimary: string;
   headlineAccent?: string;
   /** When true (default), primary + accent render on one line. */

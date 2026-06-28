@@ -13,6 +13,7 @@ const HOME_OG: OgHeroContent = {
   kind: 'home',
   eyebrowIndex: '01',
   eyebrowLabel: 'Mission briefing',
+  headlineLead: 'Agents + Humans',
   headlinePrimary: 'Whole Team.',
   headlineAccent: 'One App.',
   description:
