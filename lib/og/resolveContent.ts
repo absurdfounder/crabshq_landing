@@ -17,7 +17,7 @@ const HOME_OG: OgHeroContent = {
   headlinePrimary: 'Whole Team.',
   headlineAccent: 'One App.',
   description:
-    'Trooper is your team — plans your roadmap, ships code, runs ads, replies to customers, closes deals, and posts your tweets.',
+    'Fire all your employees. An AI workforce that does everything for you — code, commits, ads, deals, support. Powered by OpenClaw.',
   showSetup: true,
   singleLineHeadline: true,
   pageUrl: 'https://trooper.so',

@@ -41,11 +41,10 @@ export default function Hero() {
 
             <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
               <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
-                AI units that <b className="text-lime-700">write code</b>,{' '}
-                <b className="text-lime-700">make commits</b>, <b className="text-lime-700">browse the web</b>,{' '}
-                <b className="text-lime-700">send emails</b>, and{' '}
-                <b className="text-lime-700">execute real missions</b> — not just answer questions. You hold
-                command as the board of directors. Powered by{' '}
+                <b className="text-ink">Fire all your employees.</b> An AI workforce that{' '}
+                <b className="text-lime-700">writes code</b>, <b className="text-lime-700">makes commits</b>,{' '}
+                <b className="text-lime-700">runs ads</b>, <b className="text-lime-700">closes deals</b>, and{' '}
+                <b className="text-lime-700">handles support</b> — so you don&apos;t have to. Powered by{' '}
                 <span className="font-semibold text-ink text-red-600">OpenClaw</span>.
               </p>
 
