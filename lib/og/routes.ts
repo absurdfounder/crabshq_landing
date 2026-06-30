@@ -9,6 +9,7 @@ const VALID_KINDS = new Set<OgKind>([
   'use-case',
   'alternative',
   'channel',
+  'industry',
   'hub',
   'page',
   'loop',

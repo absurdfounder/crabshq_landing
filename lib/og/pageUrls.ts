@@ -8,6 +8,7 @@ const HUB_PATHS: Record<string, string> = {
   integration: '/integration',
   channels: '/channels',
   'use-cases': '/use-cases',
+  industries: '/industries',
   alternatives: '/alternatives',
   showcase: '/showcase',
 };
@@ -24,6 +25,7 @@ export function resolveOgPageUrl(kind: OgKind, slug?: string): string {
   if (kind === 'use-case' && slug) return `${ORIGIN}/use-cases/${slug}`;
   if (kind === 'alternative' && slug) return `${ORIGIN}/alternatives/${slug}`;
   if (kind === 'channel' && slug) return `${ORIGIN}/channels/${slug}`;
+  if (kind === 'industry' && slug) return `${ORIGIN}/industries/${slug}`;
   if (kind === 'compare' && slug) return `${ORIGIN}/compare-against/${slug}`;
   if (kind === 'showcase' && slug) return `${ORIGIN}/showcase/${slug}`;
   if (kind === 'legacy-integration' && slug) return `${ORIGIN}/integration/${slug}`;

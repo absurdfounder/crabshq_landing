@@ -1,6 +1,7 @@
 import { _loadFromJson, _loadFromJsonComparison, _loadSkills } from '@/app/utils/helper';
 import { allAlternativeSlugs } from '@/lib/alternativeContent';
 import { allChannelPageSlugs } from '@/lib/channelContent';
+import { allIndustrySlugs } from '@/lib/industryContent';
 import { getAllLoopSlugs } from '@/lib/loopCatalog';
 import { HUB_OG_PAGES, STATIC_OG_PAGES } from '@/lib/og/staticPages';
 import type { OgKind } from '@/lib/og/types';
@@ -30,6 +31,7 @@ export async function listAllOgImageTargets(): Promise<OgImageTarget[]> {
   for (const slug of allUseCaseSlugs()) pushSlug(targets, 'use-case', slug);
   for (const slug of allAlternativeSlugs()) pushSlug(targets, 'alternative', slug);
   for (const slug of allChannelPageSlugs()) pushSlug(targets, 'channel', slug);
+  for (const slug of allIndustrySlugs()) pushSlug(targets, 'industry', slug);
   for (const slug of getAllLoopSlugs()) pushSlug(targets, 'loop', slug);
 
   const skills = await _loadSkills();

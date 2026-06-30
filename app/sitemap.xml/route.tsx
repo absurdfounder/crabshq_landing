@@ -8,6 +8,7 @@ import { allRichTeamSlugs } from '@/lib/teamContent';
 import { allIntegrationPageSlugs } from '@/lib/integrationContent';
 import { allAlternativeSlugs } from '@/lib/alternativeContent';
 import { allUseCaseSlugs } from '@/lib/useCaseContent';
+import { allIndustrySlugs } from '@/lib/industryContent';
 import { getAllLoopSlugs } from '@/lib/loopCatalog';
 import { buildSkillRouteIndex, getSkillPagePath } from '@/lib/skillRoutes';
 
@@ -53,6 +54,7 @@ const staticPages = [
   { path: '/plugin', priority: '0.9', changefreq: 'daily' },
   { path: '/alternatives', priority: '0.8', changefreq: 'weekly' },
   { path: '/use-cases', priority: '0.8', changefreq: 'weekly' },
+  { path: '/industries', priority: '0.8', changefreq: 'weekly' },
   { path: '/pricing', priority: '0.8', changefreq: 'weekly' },
   { path: '/affiliate', priority: '0.6', changefreq: 'monthly' },
   { path: '/agency', priority: '0.6', changefreq: 'monthly' },
@@ -107,6 +109,7 @@ function generateSiteMap(
   const integrationSlugs = allIntegrationPageSlugs();
   const alternativeSlugs = allAlternativeSlugs();
   const useCaseSlugs = allUseCaseSlugs();
+  const industrySlugs = allIndustrySlugs();
 
   const staticEntries = staticPages.map(page => `
   <url>
@@ -164,6 +167,14 @@ function generateSiteMap(
     <priority>0.7</priority>
   </url>`).join('');
 
+  const industryEntries = industrySlugs.map(slug => `
+  <url>
+    <loc>${URL}/industries/${encodeURIComponent(slug)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('');
+
   const loopEntries = getAllLoopSlugs().map(slug => `
   <url>
     <loc>${URL}/loops/${encodeURIComponent(slug)}</loc>
@@ -184,7 +195,7 @@ function generateSiteMap(
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}${loopEntries}${skillEntries}
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">${staticEntries}${teamEntries}${channelEntries}${dynamicEntries}${pluginIntegrationEntries}${alternativeEntries}${useCaseEntries}${industryEntries}${loopEntries}${skillEntries}
 </urlset>`;
 }
 

@@ -1,5 +1,6 @@
 import { getAlternativePage } from '@/lib/alternativeContent';
 import { getChannelPage } from '@/lib/channelContent';
+import { getIndustryPage } from '@/lib/industryContent';
 import { getFeaturePage, getTeamPage } from '@/lib/subpageContent';
 import { getFeaturePageContent } from '@/lib/featureContent';
 import { getIntegrationPageByPageSlug } from '@/lib/integrationContent';
@@ -143,6 +144,19 @@ export function resolveOgContent(kind: OgKind, slug?: string): OgHeroContent | n
       if (!page) return null;
       return {
         kind: 'channel',
+        eyebrowIndex: '01',
+        eyebrowLabel: page.missionLabel,
+        headlinePrimary: page.title,
+        headlineAccent: page.titleAccent,
+        description: page.description,
+        watermark: 'trooper.',
+      };
+    }
+    case 'industry': {
+      const page = getIndustryPage(slug);
+      if (!page) return null;
+      return {
+        kind: 'industry',
         eyebrowIndex: '01',
         eyebrowLabel: page.missionLabel,
         headlinePrimary: page.title,

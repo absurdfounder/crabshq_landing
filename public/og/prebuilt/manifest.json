@@ -1,13 +1,17 @@
 {
-  "generatedAt": "2026-06-28T22:53:39.134Z",
-  "count": 1,
+  "generatedAt": "2026-06-30T17:50:17.713Z",
+  "count": 32,
   "totals": {
-    "written": 1,
+    "written": 32,
     "skipped": 0,
     "missing": 0,
     "failed": 0
   },
   "samples": [
-    "/og/prebuilt/home.png"
+    "/og/prebuilt/hub/loops.png",
+    "/og/prebuilt/hub/plugins.png",
+    "/og/prebuilt/hub/integration.png",
+    "/og/prebuilt/hub/channels.png",
+    "/og/prebuilt/hub/use-cases.png"
   ]
 }

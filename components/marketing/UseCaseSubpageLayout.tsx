@@ -8,7 +8,15 @@ import type { UseCasePageContent } from '@/lib/useCaseContent';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 
-export default function UseCaseSubpageLayout({ content }: { content: UseCasePageContent }) {
+export default function UseCaseSubpageLayout({
+  content,
+  hubHref = '/use-cases',
+  hubLabel = 'All use cases',
+}: {
+  content: UseCasePageContent;
+  hubHref?: string;
+  hubLabel?: string;
+}) {
   return (
     <>
       <div className="bg-white">
@@ -42,13 +50,13 @@ export default function UseCaseSubpageLayout({ content }: { content: UseCasePage
                 Deploy agents
               </PixelButton>
               <PixelButton
-                href="/use-cases"
+                href={hubHref}
                 size="lg"
                 variant="outline"
                 tone="dark"
                 icon={<ArrowRight className="h-4 w-4" />}
               >
-                All use cases
+                {hubLabel}
               </PixelButton>
             </div>
           </div>

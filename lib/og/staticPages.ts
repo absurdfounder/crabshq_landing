@@ -80,6 +80,13 @@ export const HUB_OG_PAGES: Record<string, OgHeroContent> = {
     'use cases',
     'Lead generation, sales research, CRM updates, code, browser automation, and support.',
   ),
+  industries: hub(
+    'industries',
+    'Industries',
+    'AI front office',
+    'by industry',
+    'Call handling, booking, and follow-up for HVAC, plumbing, pest control, and field service businesses.',
+  ),
   alternatives: hub(
     'alternatives',
     'Comparisons',

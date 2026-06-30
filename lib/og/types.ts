@@ -6,6 +6,7 @@ export type OgKind =
   | 'use-case'
   | 'alternative'
   | 'channel'
+  | 'industry'
   | 'hub'
   | 'page'
   | 'loop'
