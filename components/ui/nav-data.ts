@@ -87,6 +87,7 @@ export const primaryNavLinks = [
   { href: '/plugin', label: 'Plugins' },
   { href: '/integration', label: 'Skills' },
   { href: '/loops', label: 'Loops' },
+  { href: '/industries', label: 'Industries' },
   { href: '/download', label: 'Download' },
   { href: '/pricing', label: 'Pricing' },
 ] as const

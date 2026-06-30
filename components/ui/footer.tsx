@@ -94,6 +94,7 @@ const productColumn: FooterColumn = {
     {
       heading: 'Resources',
       links: [
+        { label: 'Industries', href: '/industries' },
         { label: 'Use Cases', href: '/use-cases' },
         { label: 'Alternatives', href: '/alternatives' },
         { label: 'Documentation', href: 'https://docs.openclaw.ai', external: true },
