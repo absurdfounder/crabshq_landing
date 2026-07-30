@@ -654,3 +654,13 @@ summary,
 .loading-shimmer {
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* Horizontal card rails (LoopRail) — scroll without a visible scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

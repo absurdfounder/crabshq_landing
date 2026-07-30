@@ -143,6 +143,58 @@ export function searchLoops(
   });
 }
 
+export type LoopRailItem = Pick<
+  LoopEntry,
+  'slug' | 'title' | 'description' | 'category' | 'trigger' | 'installs' | 'hardened'
+>;
+
+/**
+ * Slim, un-enriched loops for marketing rails.
+ *
+ * Deliberately skips `enrichLoop` (mermaid + kickoff prompt + related lookups)
+ * and returns only the fields a card renders, so a server component can hand
+ * these to a client rail without shipping the whole catalog to the browser.
+ *
+ * Picks the most-installed official loop from each category first so the rail
+ * shows breadth before depth, then backfills by installs.
+ */
+export function getLoopRailItems(limit = 12): LoopRailItem[] {
+  const toItem = (loop: LoopEntry): LoopRailItem => ({
+    slug: loop.slug,
+    title: loop.title,
+    description: loop.description,
+    category: loop.category,
+    trigger: loop.trigger,
+    installs: loop.installs,
+    hardened: loop.hardened,
+  });
+
+  const ranked = LOOPS.filter((loop) => loop.official).sort(
+    (a, b) => (b.installs || 0) - (a.installs || 0),
+  );
+
+  const picked: LoopEntry[] = [];
+  const seenCategories = new Set<string>();
+
+  for (const loop of ranked) {
+    if (seenCategories.has(loop.category)) continue;
+    seenCategories.add(loop.category);
+    picked.push(loop);
+    if (picked.length >= limit) break;
+  }
+
+  if (picked.length < limit) {
+    const chosen = new Set(picked.map((loop) => loop.slug));
+    for (const loop of ranked) {
+      if (chosen.has(loop.slug)) continue;
+      picked.push(loop);
+      if (picked.length >= limit) break;
+    }
+  }
+
+  return picked.map(toItem);
+}
+
 export function formatLoopCount(n: number) {
   const value = Number(n) || 0;
   if (value >= 1000) return `${(value / 1000).toFixed(1).replace(/\.0$/, '')}k`;

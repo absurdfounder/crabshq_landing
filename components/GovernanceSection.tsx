@@ -1,79 +1,117 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Check, KeyRound, Lock, ServerCog } from 'lucide-react';
 
-const actions = [
-  { label: 'Pause.', colorClass: 'text-amber-600' },
-  { label: 'Resume.', colorClass: 'text-trooper' },
-  { label: 'Override.', colorClass: 'text-slate-900' },
-  { label: 'Reassign.', colorClass: 'text-blue-600' },
-  { label: 'Terminate.', colorClass: 'text-red-700' },
+const controls = [
+  { label: 'Pause.', colorClass: 'text-amber-300' },
+  { label: 'Resume.', colorClass: 'text-fern-light' },
+  { label: 'Override.', colorClass: 'text-white' },
+  { label: 'Reassign.', colorClass: 'text-blue-300' },
+  { label: 'Terminate.', colorClass: 'text-red-300' },
 ] as const;
+
+const guarantees = [
+  {
+    icon: Check,
+    title: 'No action without approval',
+    body: 'Commits, replies and campaigns wait in Human Review until you release them. Autonomy is a privilege you grant, not a default.',
+  },
+  {
+    icon: KeyRound,
+    title: 'Your keys stay yours',
+    body: 'API keys are never stored on our servers. Every organization gets an isolated workspace with encrypted connections.',
+  },
+  {
+    icon: ServerCog,
+    title: 'Run it on your own hardware',
+    body: 'Self-host the whole workforce, or point it at local models. Enterprise adds SSO, private VPC and on-prem deployment.',
+  },
+  {
+    icon: Lock,
+    title: 'You are the board',
+    body: 'Troopers cannot hire other troopers, raise their own budgets, or run a strategy you have not reviewed.',
+  },
+] as const;
+
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Trust band.
+ *
+ * States the guarantee as a sentence, then backs it with four narrow claims —
+ * each one something the product actually does. Deliberately no compliance
+ * badges: nothing here should assert a certification the company has not
+ * published.
+ */
 export default function GovernanceSection() {
   return (
-    <div className="pb-8 md:pb-16 pt-2">
+    <div className="py-10 md:py-16">
       <motion.div
-        className="governance-header mb-6 md:mb-12 max-w-3xl"
+        className="max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="governance-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-slate-900 leading-[1.15]">
-          You&apos;re in charge.
+        <span className="type-eyebrow-num-dark">
+          <span className="text-white/40">[06]</span>
+          <span>&nbsp;</span>
+          Governance
+        </span>
+        <h2 className="mt-5 font-funneldisplay text-[1.65rem] leading-[1.12] tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+          Your troopers work for you.
+          <br />
+          Just you.
         </h2>
-        <p className="governance-sub text-sm sm:text-base text-slate-500 mt-3 leading-relaxed">
-          Approve hires. Approve strategy. Override anything.
-        </p>
       </motion.div>
 
-      <div className="governance-content grid grid-cols-1 lg:grid-cols-2 border border-slate-100 bg-white overflow-hidden">
-        <motion.div
-          className="governance-block p-4 sm:p-6 md:p-8 lg:border-r border-slate-100"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease }}
-          viewport={{ once: true, margin: '-20px' }}
-        >
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            You operate as the board of directors. Agents can&apos;t hire new agents without your approval.
-            The CEO can&apos;t execute a strategy you haven&apos;t reviewed. You can pause any agent, reassign
-            any task, adjust any budget — at any time.
-            <br />
-            <br />
-            You have full control over every agent in the org. Autonomy is a privilege you grant,
-            not a default.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="governance-block p-4 sm:p-6 md:p-8 flex items-center border-t lg:border-t-0 border-slate-100"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-20px' }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.07, delayChildren: 0.12 } },
-          }}
-        >
-          <p className="governance-actions flex flex-col gap-1 sm:gap-2">
-            {actions.map((action) => (
-              <motion.span
-                key={action.label}
-                variants={{
-                  hidden: { opacity: 0, y: 14 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
-                }}
-                className={`governance-action-line font-funneldisplay text-xl sm:text-3xl md:text-4xl tracking-tight ${action.colorClass}`}
-              >
-                {action.label}
-              </motion.span>
-            ))}
-          </p>
-        </motion.div>
+      <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
+        {guarantees.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <motion.article
+              key={item.title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.07, ease }}
+              viewport={{ once: true, margin: '-20px' }}
+              className="border-t border-white/15 pt-5"
+            >
+              <Icon className="h-7 w-7 text-white" strokeWidth={1.25} aria-hidden="true" />
+              <h3 className="mt-4 font-sans text-base text-white sm:text-lg">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-white/60">{item.body}</p>
+            </motion.article>
+          );
+        })}
       </div>
+
+      <motion.div
+        className="mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-white/15 pt-6 md:mt-14"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-20px' }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
+        }}
+      >
+        <span className="mr-2 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
+          At any time
+        </span>
+        {controls.map((control) => (
+          <motion.span
+            key={control.label}
+            variants={{
+              hidden: { opacity: 0, y: 12 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease } },
+            }}
+            className={`font-funneldisplay text-xl tracking-tight sm:text-2xl md:text-3xl ${control.colorClass}`}
+          >
+            {control.label}
+          </motion.span>
+        ))}
+      </motion.div>
     </div>
   );
 }

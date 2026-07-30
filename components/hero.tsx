@@ -7,10 +7,11 @@ import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroMarquee from './HeroMarquee';
 import HeroDownloadButtons from './HeroDownloadButtons';
+import TrooperStoryLine from './TrooperStoryLine';
 import PixelButton from './ui/PixelButton';
 import FernCircleCheckIcon from './ui/FernCircleCheckIcon';
 
-const TRUST_ITEMS = ['Free to start', 'No credit card', 'OpenClaw-powered'] as const;
+const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
 
 function HeroStackMarquee({ className = '' }: { className?: string }) {
   return (
@@ -36,16 +37,18 @@ export default function Hero() {
                 <HeroRotatingHeadline />
               </div>
 
+              <TrooperStoryLine className="mt-5 sm:mt-6" />
+
               <HeroStackMarquee className="mt-8 hidden sm:mt-10 lg:block" />
             </div>
 
             <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
               <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
-                <b className="text-ink">Fire all your employees.</b> An AI workforce that{' '}
-                <b className="text-lime-700">writes code</b>, <b className="text-lime-700">makes commits</b>,{' '}
-                <b className="text-lime-700">runs ads</b>, <b className="text-lime-700">closes deals</b>, and{' '}
-                <b className="text-lime-700">handles support</b> — so you don&apos;t have to. Powered by{' '}
-                <span className="font-semibold text-ink text-red-600">OpenClaw</span>.
+                <b className="text-ink">Hire a workforce, not a chatbot.</b> Troopers{' '}
+                <b className="text-lime-700">write code</b>, <b className="text-lime-700">ship commits</b>,{' '}
+                <b className="text-lime-700">run ads</b>, <b className="text-lime-700">answer support</b>, and{' '}
+                <b className="text-lime-700">file the paperwork</b> — each one running a loop you approved.
+                Powered by <span className="font-semibold text-ink text-red-600">OpenClaw</span>.
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:inline-flex lg:flex-nowrap">
