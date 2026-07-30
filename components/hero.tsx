@@ -76,7 +76,7 @@ export default function Hero() {
           </div>
 
           <div className="relative mt-8 hidden min-w-0 overflow-hidden sm:mt-10 lg:mt-14 lg:block">
-            <HeroArticleDemo />
+            <HeroArticleDemo rotate />
           </div>
         </div>
       </div>

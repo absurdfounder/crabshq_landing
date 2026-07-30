@@ -37,7 +37,7 @@ type IntegrationToolInput = {
   detail: string;
   agent: string;
   provider?: string;
-};
+} & Pick<DemoToolLog, 'durationMs' | 'result' | 'wrote'>;
 
 /** Build a demo tool log row that shows a Composio integration logo. */
 export function i(input: IntegrationToolInput): Omit<DemoToolLog, 'status'> {
@@ -50,5 +50,8 @@ export function i(input: IntegrationToolInput): Omit<DemoToolLog, 'status'> {
     agent: input.agent,
     provider: input.provider,
     integration: meta.slug,
+    durationMs: input.durationMs,
+    result: input.result,
+    wrote: input.wrote,
   };
 }

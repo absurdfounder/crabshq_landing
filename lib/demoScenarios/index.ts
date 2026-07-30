@@ -17,6 +17,9 @@ import { researchScenario } from './research';
 import { securityScenario } from './security';
 import { prScenario } from './pr';
 import { growthScenario } from './growth';
+import { browserWorkScenario } from './browserWork';
+import { videoEditScenario } from './videoEdit';
+import { deviceWorkScenario } from './deviceWork';
 import type { DemoScenario, DemoScenarioId } from './types';
 
 export type { DemoScenario, DemoScenarioId, DemoOrg, DemoKanbanTask, ChannelBrand } from './types';
@@ -41,6 +44,9 @@ const SCENARIOS: Record<DemoScenarioId, DemoScenario> = {
   security: securityScenario,
   pr: prScenario,
   growth: growthScenario,
+  'browser-work': browserWorkScenario,
+  'video-edit': videoEditScenario,
+  'device-work': deviceWorkScenario,
 };
 
 export function getDemoScenario(id: DemoScenarioId = 'launch'): DemoScenario {
@@ -48,3 +54,16 @@ export function getDemoScenario(id: DemoScenarioId = 'launch'): DemoScenario {
 }
 
 export const DEFAULT_DEMO_SCENARIO_ID: DemoScenarioId = 'launch';
+
+/**
+ * What the homepage hero cycles through, one scenario per loop. Ordered so a
+ * visitor who watches twice sees a different capability the second time —
+ * document work, then live browser work, then video, then desk work on a
+ * real machine.
+ */
+export const HERO_SCENARIO_ROTATION: DemoScenarioId[] = [
+  'launch',
+  'browser-work',
+  'video-edit',
+  'device-work',
+];

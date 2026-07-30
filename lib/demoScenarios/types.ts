@@ -1,8 +1,13 @@
 import type { DemoColumnId } from '@/components/demoTheme';
 import type {
   DemoArtifact,
+  DemoBrowserSession,
+  DemoDesktopSession,
+  DemoGenerationJob,
   DemoSubtask,
   DemoTag,
+  DemoVideoProject,
+  DemoWorkflowGraph,
   TaskExecStep,
 } from '@/components/demoTaskExecution';
 
@@ -74,7 +79,10 @@ export type DemoScenarioId =
   | 'research'
   | 'security'
   | 'pr'
-  | 'growth';
+  | 'growth'
+  | 'browser-work'
+  | 'video-edit'
+  | 'device-work';
 
 export type DemoScenario = {
   id: DemoScenarioId;
@@ -95,4 +103,10 @@ export type DemoScenario = {
   defaultChannel?: string;
   defaultSidebarTab?: 'channels' | 'menu';
   channelBrand?: ChannelBrand;
+  /** Capability workspaces this scenario drives, when it uses them. */
+  browserSession?: DemoBrowserSession;
+  videoProject?: DemoVideoProject;
+  generationJobs?: DemoGenerationJob[];
+  desktopSession?: DemoDesktopSession;
+  workflowGraph?: DemoWorkflowGraph;
 };

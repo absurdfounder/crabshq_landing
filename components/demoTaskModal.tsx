@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import {
   X, Check, Loader2, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
-  ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag,
+  ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag, Code,
 } from 'lucide-react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } from './demoTaskExecution';
@@ -19,6 +19,31 @@ import { DemoCanvasView } from './DemoCanvasView';
 import type { DemoWorkspaceMode } from './demoTaskExecution';
 import { DUR, EASE_OUT } from '@/lib/demoMotion';
 import type { CanvasRect } from '@/lib/demoGeometry';
+import { DemoBrowserStream } from './demo/workspaces/DemoBrowserStream';
+import { DemoVideoWorkspace } from './demo/workspaces/DemoVideoWorkspace';
+import { DemoDesktopWorkspace } from './demo/workspaces/DemoDesktopWorkspace';
+import { DemoGenerationCard } from './demo/workspaces/DemoGenerationCard';
+import { DemoNodeGraph } from './demo/workspaces/DemoNodeGraph';
+import type {
+  DemoBrowserSession, DemoDesktopSession, DemoGenerationJob, DemoVideoProject, DemoWorkflowGraph,
+} from './demoTaskExecution';
+
+const WORKSPACE_LABEL: Record<DemoWorkspaceMode, string> = {
+  ide: 'IDE',
+  canvas: 'Canvas',
+  browser: 'Browser',
+  video: 'Video',
+  desktop: 'Desktop',
+  nodes: 'Routine',
+};
+
+/** Live generation job passed down from the runner. */
+export type DemoGenerationState = {
+  job: DemoGenerationJob;
+  startedAt: number | null;
+  runMs: number;
+  done: boolean;
+};
 
 /** Matches the modal's `inset: 6` + `margin: 8` offset from the canvas origin. */
 const MODAL_INSET = 14;
@@ -102,8 +127,95 @@ type Turn = {
   id: string;
   agent: string;
   message?: { text: string; time: string; tags?: DemoTag[] };
+  reasoning?: string;
   tools: DemoToolLog[];
 };
+
+function formatDuration(ms?: number): string | null {
+  if (!ms || ms <= 0) return null;
+  return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
+}
+
+/**
+ * The app's reasoning block (TaskModal.jsx:1955) — amber, pulsing dot, and a
+ * "Show more" past a few lines. Without it the thread is all tool calls and no
+ * thinking, which is the part that makes an agent look like it has judgement.
+ */
+function ReasoningBlock({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = text.length > 190;
+  const shown = expanded || !isLong ? text : `${text.slice(0, 190).trimEnd()}…`;
+
+  return (
+    <div style={{
+      margin: '2px 0 8px', padding: '8px 11px', borderRadius: 10,
+      border: '1px solid rgba(245,158,11,0.24)', background: 'rgba(255,251,235,0.75)',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+        <span style={{ fontSize: 12, lineHeight: 1 }}>🧠</span>
+        <span style={{ fontSize: 9.5, fontWeight: 700, color: '#b45309', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Reasoning
+        </span>
+        <span className="demo-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#fbbf24' }} />
+      </div>
+      <div style={{ fontSize: 12, lineHeight: 1.6, color: 'rgba(120,53,15,0.86)', whiteSpace: 'pre-wrap' }}>{shown}</div>
+      {isLong && (
+        <button
+          type="button"
+          onClick={() => setExpanded(v => !v)}
+          style={{ marginTop: 5, border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontSize: 10.5, fontWeight: 600, color: '#d97706' }}
+        >
+          {expanded ? 'Show less' : 'Show more'}
+        </button>
+      )}
+    </div>
+  );
+}
+
+/** The app's chat artifact block — a page fanning out from behind the card. */
+function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string; onOpen?: () => void }) {
+  const [hover, setHover] = useState(false);
+  const isCode = !['md', 'txt', 'pdf', 'doc'].includes(String(ext || '').toLowerCase());
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen?.(); } }}
+      onPointerEnter={() => setHover(true)}
+      onPointerLeave={() => setHover(false)}
+      style={{
+        display: 'flex', width: '100%', maxWidth: 320, margin: '6px 0 2px',
+        borderRadius: 10, overflow: 'hidden', cursor: 'pointer', padding: '0 14px',
+        border: `1px solid ${hover ? 'rgba(214,211,209,0.9)' : 'rgba(214,211,209,0.4)'}`,
+        background: hover ? 'rgba(255,255,255,0.6)' : 'transparent',
+        transition: `background-color ${DUR.panel}ms ${EASE_OUT}, border-color ${DUR.panel}ms ${EASE_OUT}`,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-end', width: 56, position: 'relative', flexShrink: 0 }}>
+        <div style={{
+          position: 'absolute', right: 6, width: 40, height: 55,
+          borderRadius: '8px 8px 0 0', border: `1px solid ${C.border}`,
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 11,
+          background: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0))',
+          transform: `translateY(19%) rotate(${hover ? -3.7 : -5.7}deg) scale(${hover ? 1.035 : 1})`,
+          transformOrigin: 'bottom center',
+          transition: `transform ${DUR.panel}ms ${EASE_OUT}`,
+          willChange: 'transform',
+        }}>
+          {isCode ? <Code size={15} color="#a8a29e" /> : <FileText size={15} color="#a8a29e" />}
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '12px 0', minWidth: 0, flex: 1 }}>
+        <div style={{ fontSize: 12.5, lineHeight: 1.3, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
+        <div style={{ fontSize: 10.5, color: '#a8a29e' }}>
+          {isCode ? 'Code' : 'Document'}<span style={{ opacity: 0.5 }}> · </span>{(ext || 'file').toUpperCase()}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const THREAD_AVATAR = 28;
 const THREAD_GAP = 10;
@@ -120,6 +232,17 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
       });
       continue;
     }
+    if (item.kind === 'reasoning') {
+      const open = turns[turns.length - 1];
+      // Reasoning belongs to the agent's current turn when it has one, so a
+      // thought and the calls it leads to stay under one avatar.
+      if (open && open.agent === item.agent && !open.reasoning && !open.tools.length) {
+        open.reasoning = item.text;
+      } else {
+        turns.push({ id: `think-${item.id}`, agent: item.agent, reasoning: item.text, tools: [] });
+      }
+      continue;
+    }
     const last = turns[turns.length - 1];
     if (last && last.agent === item.agent) {
       last.tools.push(item);
@@ -130,14 +253,25 @@ function buildTurns(feed: DemoFeedItem[]): Turn[] {
   return turns;
 }
 
-function ToolTimelineRow({ log, isLast, isLatest }: { log: DemoToolLog; isLast: boolean; isLatest?: boolean }) {
+function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
+  log: DemoToolLog;
+  isLast: boolean;
+  isLatest?: boolean;
+  onOpenArtifact?: (name: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
   const running = log.status === 'running';
   const iconMeta = getToolIconMeta(log);
+  const duration = running ? null : formatDuration(log.durationMs);
+  const expandable = !running && Boolean(log.result?.length);
 
   return (
     <div
       className="demo-thread-tool-row"
       {...(isLatest ? { 'data-demo-target': 'modal-tool-latest' } : {})}
+      onPointerEnter={() => setHover(true)}
+      onPointerLeave={() => setHover(false)}
       style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0 }}>
@@ -157,38 +291,96 @@ function ToolTimelineRow({ log, isLast, isLatest }: { log: DemoToolLog; isLast: 
         </div>
         {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />}
       </div>
-      <div style={{
-        flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8,
-        paddingBottom: isLast ? 0 : 10, paddingTop: 1,
-      }}>
-        <span style={{
-          fontSize: 11.5, fontWeight: 600, color: C.text, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-          flexShrink: 0, lineHeight: 1.3,
-        }}>
-          {log.label}
-        </span>
-        {log.detail && (
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 0 : 10, paddingTop: 1 }}>
+        <div
+          role={expandable ? 'button' : undefined}
+          tabIndex={expandable ? 0 : undefined}
+          onClick={expandable ? () => setOpen(v => !v) : undefined}
+          onKeyDown={expandable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(v => !v); } } : undefined}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 8, minWidth: 0,
+            cursor: expandable ? 'pointer' : 'default',
+          }}
+        >
           <span style={{
-            fontSize: 11, color: C.textSubtle, lineHeight: 1.3,
-            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0,
+            fontSize: 11.5, fontWeight: 600, color: C.text, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+            flexShrink: 0, lineHeight: 1.3,
           }}>
-            {log.detail}
+            {log.label}
           </span>
+          {log.detail && (
+            <span style={{
+              fontSize: 11, color: C.textSubtle, lineHeight: 1.3,
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, minWidth: 0,
+            }}>
+              {log.detail}
+            </span>
+          )}
+          {/* Elapsed time reveals on hover, as it does in the app. */}
+          {duration && (
+            <span style={{
+              flexShrink: 0, marginLeft: 'auto', fontSize: 10, color: '#a8a29e',
+              fontVariantNumeric: 'tabular-nums',
+              opacity: hover ? 1 : 0, transition: `opacity ${DUR.panel}ms ${EASE_OUT}`,
+            }}>
+              {duration}
+            </span>
+          )}
+          {expandable && (
+            <ChevronUp
+              size={12}
+              color="#a8a29e"
+              style={{
+                flexShrink: 0,
+                transform: open ? 'none' : 'rotate(180deg)',
+                transition: `transform ${DUR.quick}ms ${EASE_OUT}`,
+              }}
+            />
+          )}
+          <span style={{
+            marginLeft: duration || expandable ? 0 : 'auto', flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18,
+          }}>
+            {running
+              ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
+              : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
+          </span>
+        </div>
+
+        {expandable && (
+          <div style={{
+            display: 'grid',
+            gridTemplateRows: open ? '1fr' : '0fr',
+            transition: `grid-template-rows ${DUR.panel}ms ${EASE_OUT}`,
+          }}>
+            <div style={{ overflow: 'hidden' }}>
+              <div style={{
+                marginTop: 6, borderRadius: 6, border: `1px solid ${C.borderWarm}`,
+                background: 'rgba(250,249,246,0.7)', padding: '6px 9px',
+                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                fontSize: 10.5, lineHeight: 1.65, color: C.textMuted,
+              }}>
+                {log.result?.map((line, i) => (
+                  <div key={i} style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{line}</div>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
-        <span style={{
-          marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          width: 18, height: 18, transition: 'opacity 0.25s ease',
-        }}>
-          {running
-            ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
-            : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
-        </span>
+
+        {log.wrote && !running && (
+          <ThreadArtifactBlock name={log.wrote.name} ext={log.wrote.ext} onOpen={() => onOpenArtifact?.(log.wrote!.name)} />
+        )}
       </div>
     </div>
   );
 }
 
-function AgentTurn({ turn, latestToolId }: { turn: Turn; latestToolId?: string | null }) {
+function AgentTurn({ turn, latestToolId, onOpenArtifact }: {
+  turn: Turn;
+  latestToolId?: string | null;
+  onOpenArtifact?: (name: string) => void;
+}) {
   const person = ALL_PEOPLE[turn.agent];
   const harnessProvider = turn.tools.find(t => t.provider)?.provider;
   return (
@@ -199,7 +391,7 @@ function AgentTurn({ turn, latestToolId }: { turn: Turn; latestToolId?: string |
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.tools.length ? 6 : 0,
+            display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.reasoning || turn.tools.length ? 6 : 0,
             minHeight: THREAD_AVATAR, flexWrap: 'wrap',
           }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{turn.agent}</span>
@@ -239,14 +431,16 @@ function AgentTurn({ turn, latestToolId }: { turn: Turn; latestToolId?: string |
               )}
             </>
           )}
+          {turn.reasoning && <ReasoningBlock text={turn.reasoning} />}
           {turn.tools.length > 0 && (
-            <div style={{ marginTop: turn.message ? 4 : 0 }}>
+            <div style={{ marginTop: turn.message || turn.reasoning ? 4 : 0 }}>
               {turn.tools.map((log, i) => (
                 <ToolTimelineRow
                   key={log.id}
                   log={log}
                   isLast={i === turn.tools.length - 1}
                   isLatest={log.id === latestToolId}
+                  onOpenArtifact={onOpenArtifact}
                 />
               ))}
             </div>
@@ -404,6 +598,18 @@ export function DemoTaskModal({
   canvasReview,
   canvasTileComments,
   originRect,
+  browserSession,
+  browserFrameCount = 0,
+  videoProject,
+  videoStage = 'storyboard',
+  videoPlayhead = 0,
+  videoScenesReady = 0,
+  desktopSession,
+  desktopLines = [],
+  desktopActivities = [],
+  workflowGraph,
+  activeNodeIds = [],
+  generationJob,
 }: {
   open: boolean;
   taskTitle: string;
@@ -426,6 +632,18 @@ export function DemoTaskModal({
   canvasTileComments?: Record<string, string>;
   /** Canvas-space rect of the card this modal was opened from. */
   originRect?: CanvasRect | null;
+  browserSession?: DemoBrowserSession;
+  browserFrameCount?: number;
+  videoProject?: DemoVideoProject;
+  videoStage?: 'storyboard' | 'timeline';
+  videoPlayhead?: number;
+  videoScenesReady?: number;
+  desktopSession?: DemoDesktopSession;
+  desktopLines?: string[];
+  desktopActivities?: string[];
+  workflowGraph?: DemoWorkflowGraph;
+  activeNodeIds?: string[];
+  generationJob?: DemoGenerationState | null;
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
@@ -459,6 +677,17 @@ export function DemoTaskModal({
       }`,
     };
   }, [originRect]);
+
+  // Only offer the workspaces this scenario actually drives, so a plain
+  // document task doesn't sprout an empty Video tab.
+  const availableModes = useMemo<DemoWorkspaceMode[]>(() => {
+    const modes: DemoWorkspaceMode[] = ['ide', 'canvas'];
+    if (browserSession) modes.push('browser');
+    if (videoProject) modes.push('video');
+    if (desktopSession) modes.push('desktop');
+    if (workflowGraph) modes.push('nodes');
+    return modes;
+  }, [browserSession, videoProject, desktopSession, workflowGraph]);
 
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
   const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#f0f5e6' : '#FFFBEB';
@@ -520,7 +749,14 @@ export function DemoTaskModal({
                   Assigned to <strong style={{ color: C.text }}>{assignee}</strong>
                 </div>
 
-                {turns.map((turn) => <AgentTurn key={turn.id} turn={turn} latestToolId={latestToolId} />)}
+                {turns.map((turn) => (
+                  <AgentTurn
+                    key={turn.id}
+                    turn={turn}
+                    latestToolId={latestToolId}
+                    onOpenArtifact={onSelectArtifact}
+                  />
+                ))}
 
                 {delivery && (
                   <div className="demo-thread-turn" style={{ marginBottom: 12 }}>
@@ -588,21 +824,22 @@ export function DemoTaskModal({
               borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
-                {(['ide', 'canvas'] as const).map(mode => (
+                {availableModes.map(mode => (
                   <button
                     key={mode}
                     type="button"
-                    data-demo-target={mode === 'ide' ? 'modal-workspace-ide' : 'modal-workspace-canvas'}
+                    data-demo-target={`modal-workspace-${mode}`}
                     onClick={() => onWorkspaceModeChange?.(mode)}
                     style={{
                       padding: '3px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',
-                      fontSize: 11, fontWeight: 600, textTransform: 'capitalize',
+                      fontSize: 11, fontWeight: 600,
                       background: workspaceMode === mode ? C.card : 'transparent',
                       color: workspaceMode === mode ? C.text : C.textSubtle,
                       boxShadow: workspaceMode === mode ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    {mode === 'ide' ? 'IDE' : 'Canvas'}
+                    {WORKSPACE_LABEL[mode]}
                   </button>
                 ))}
               </div>
@@ -610,7 +847,33 @@ export function DemoTaskModal({
                 <span style={{ fontSize: 10, color: C.textSubtle }}>{canvasArtifacts.length} open</span>
               )}
             </div>
-            {workspaceMode === 'canvas' ? (
+            {/* A live generation takes the panel while it runs — the app does
+                the same, surfacing the job over whatever was open. */}
+            {generationJob ? (
+              <DemoGenerationCard
+                job={generationJob.job}
+                startedAt={generationJob.startedAt}
+                runMs={generationJob.runMs}
+                done={generationJob.done}
+              />
+            ) : workspaceMode === 'browser' && browserSession ? (
+              <DemoBrowserStream session={browserSession} frameCount={browserFrameCount} />
+            ) : workspaceMode === 'video' && videoProject ? (
+              <DemoVideoWorkspace
+                project={videoProject}
+                stage={videoStage}
+                playhead={videoPlayhead}
+                scenesReady={videoScenesReady}
+              />
+            ) : workspaceMode === 'desktop' && desktopSession ? (
+              <DemoDesktopWorkspace
+                session={desktopSession}
+                lines={desktopLines}
+                activities={desktopActivities}
+              />
+            ) : workspaceMode === 'nodes' && workflowGraph ? (
+              <DemoNodeGraph graph={workflowGraph} activeIds={activeNodeIds} />
+            ) : workspaceMode === 'canvas' ? (
               <DemoCanvasView
                 artifacts={canvasArtifacts}
                 activeName={artifact?.name}
