@@ -2,29 +2,190 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Wonder — Discover Indie Games</title>
-  <meta name="description" content="Wonder.gg curates indie game launches. Find your next cozy adventure, roguelike, or narrative hit." />
+  <title>Wonder — Discover Indie Games on Product Hunt</title>
+  <meta name="description" content="Wonder.gg curates indie game launches. Cozy adventures, roguelikes, and narrative hits — updated daily." />
   <meta property="og:title" content="Wonder — Indie Game Discovery" />
   <meta property="og:description" content="Launch-day SEO optimized for Product Hunt." />
   <style>
-    * { box-sizing: border-box; margin: 0; }
-    body { font-family: Inter, system-ui, sans-serif; background: #0f0f12; color: #fafaf9; }
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .logo { font-weight: 800; font-size: 18px; letter-spacing: -0.03em; }
-    .hero { padding: 48px 28px; max-width: 520px; }
-    .badge { display: inline-block; background: rgba(63,107,0,0.2); color: #9db866; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-    h1 { font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 12px; }
-    p { font-size: 15px; color: #a8a29e; line-height: 1.6; }
-    .meta { margin-top: 24px; padding: 14px 16px; background: rgba(255,255,255,0.04); border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); font-size: 11px; color: #78716c; font-family: ui-monospace, monospace; line-height: 1.7; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; }
+    :root {
+      --bg: #0d0d10; --panel: #141419; --line: rgba(255,255,255,0.09);
+      --ink: #fafaf9; --muted: #a1a1aa; --faint: #71717a; --accent: #9ae66e;
+    }
+    body { font-family: Inter, -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+    nav { display: flex; align-items: center; gap: 26px; padding: 14px 28px; border-bottom: 1px solid var(--line); background: rgba(13,13,16,0.92); }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 17px; letter-spacing: -0.03em; }
+    .logo-mark { width: 20px; height: 20px; border-radius: 6px; background: linear-gradient(135deg, var(--accent), #4ade80); }
+    nav a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+    .ph-badge { display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,110,60,0.4); background: rgba(255,110,60,0.12); color: #ff9a6e; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 8px; }
+    .cta { background: var(--ink); color: #0a0a0a; font-size: 12.5px; font-weight: 700; padding: 7px 14px; border-radius: 8px; }
+
+    .hero { padding: 44px 28px 32px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; border-bottom: 1px solid var(--line); }
+    .badge { display: inline-block; background: rgba(154,230,110,0.14); color: var(--accent); font-size: 10px; font-weight: 800; padding: 5px 11px; border-radius: 999px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-size: 42px; line-height: 1.05; letter-spacing: -0.035em; margin-bottom: 14px; font-weight: 800; }
+    .sub { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 30rem; }
+    .hero-actions { display: flex; gap: 10px; margin-top: 22px; }
+    .btn-primary { background: var(--accent); color: #0a1400; font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 10px; }
+    .btn-ghost { border: 1px solid var(--line); color: var(--ink); font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 10px; }
+    .hero-art { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--panel); }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+    .stat { padding: 18px 28px; border-right: 1px solid var(--line); }
+    .stat:last-child { border-right: none; }
+    .stat b { display: block; font-size: 22px; letter-spacing: -0.02em; }
+    .stat span { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    section { padding: 30px 28px; border-bottom: 1px solid var(--line); }
+    .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+    h2 { font-size: 17px; letter-spacing: -0.02em; }
+    .sec-head span { font-size: 12px; color: var(--faint); }
+    .sec-head a { margin-left: auto; font-size: 12px; color: var(--accent); text-decoration: none; }
+
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+    .cover { height: 96px; display: block; width: 100%; }
+    .card-body { padding: 10px 12px 12px; }
+    .card h3 { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 3px; }
+    .card p { font-size: 11px; color: var(--faint); line-height: 1.5; }
+    .tags { display: flex; gap: 5px; margin-top: 9px; flex-wrap: wrap; }
+    .tag { font-size: 9.5px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); padding: 2px 7px; border-radius: 999px; }
+    .votes { float: right; font-size: 11px; font-weight: 700; color: var(--accent); }
+
+    footer { padding: 22px 28px 30px; display: flex; gap: 28px; align-items: flex-start; }
+    footer div { font-size: 11.5px; color: var(--faint); line-height: 1.9; }
+    footer b { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+    .copyright { margin-left: auto; text-align: right; }
   </style>
 </head>
 <body>
-  <nav><span class="logo">Wonder</span><span style="font-size:12px;color:#78716c">Launch day · PH</span></nav>
+  <nav>
+    <span class="logo"><span class="logo-mark"></span>Wonder</span>
+    <a href="#">Discover</a>
+    <a href="#">Cozy</a>
+    <a href="#">Roguelike</a>
+    <a href="#">Narrative</a>
+    <span class="nav-right">
+      <span class="ph-badge">▲ #3 on Product Hunt</span>
+      <span class="cta">Submit a game</span>
+    </span>
+  </nav>
+
   <div class="hero">
-    <span class="badge">Product Hunt launch</span>
-    <h1>Discover your next indie obsession</h1>
-    <p>Curated game launches, cozy adventures, and narrative hits — updated daily.</p>
-    <div class="meta">&lt;title&gt; Wonder — Discover Indie Games on Product Hunt<br/>&lt;meta description&gt; optimized · og:image updated</div>
+    <div>
+      <span class="badge">Product Hunt launch · today</span>
+      <h1>Discover your next<br />indie obsession</h1>
+      <p class="sub">Curated game launches, cozy adventures, and narrative hits — updated daily by people who actually finish them.</p>
+      <div class="hero-actions">
+        <span class="btn-primary">Browse this week</span>
+        <span class="btn-ghost">How curation works</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 420 220" width="100%" height="180" role="img" aria-label="Featured game artwork">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1b2a4a" /><stop offset="100%" stop-color="#3b2b52" />
+          </linearGradient>
+          <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2f6b4f" /><stop offset="100%" stop-color="#1d4433" />
+          </linearGradient>
+        </defs>
+        <rect width="420" height="220" fill="url(#sky)" />
+        <circle cx="330" cy="52" r="24" fill="#f7e3a1" opacity="0.92" />
+        <g fill="#ffffff" opacity="0.5">
+          <circle cx="46" cy="34" r="1.6" /><circle cx="104" cy="62" r="1.2" /><circle cx="168" cy="28" r="1.5" />
+          <circle cx="238" cy="70" r="1.1" /><circle cx="286" cy="24" r="1.4" /><circle cx="384" cy="96" r="1.2" />
+        </g>
+        <path d="M0 168 L84 116 L150 158 L228 100 L300 152 L364 122 L420 160 L420 220 L0 220 Z" fill="url(#hill)" />
+        <path d="M0 192 L70 164 L138 190 L214 158 L292 188 L360 162 L420 190 L420 220 L0 220 Z" fill="#14301f" />
+        <g fill="#0f2417">
+          <rect x="58" y="176" width="4" height="16" /><path d="M60 160 l12 20 h-24 z" />
+          <rect x="252" y="172" width="4" height="20" /><path d="M254 152 l14 24 h-28 z" />
+        </g>
+      </svg>
+    </div>
   </div>
+
+  <div class="stats">
+    <div class="stat"><b>2,418</b><span>Games curated</span></div>
+    <div class="stat"><b>61k</b><span>Monthly players</span></div>
+    <div class="stat"><b>142</b><span>Launched this week</span></div>
+    <div class="stat"><b>4.8★</b><span>Avg. curator score</span></div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2>Launching today</h2>
+      <span>Updated 4 minutes ago</span>
+      <a href="#">See all 142 →</a>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <svg class="cover" viewBox="0 0 200 96" preserveAspectRatio="none" role="img" aria-label="Lantern Hollow cover">
+          <rect width="200" height="96" fill="#243b2f" />
+          <circle cx="150" cy="26" r="14" fill="#f4d58d" opacity="0.85" />
+          <path d="M0 72 L46 50 L92 70 L140 46 L200 68 L200 96 L0 96 Z" fill="#152720" />
+          <rect x="30" y="58" width="10" height="14" fill="#e8b44a" />
+        </svg>
+        <div class="card-body">
+          <span class="votes">▲ 412</span>
+          <h3>Lantern Hollow</h3>
+          <p>A cozy farming sim about rebuilding a village after the lights go out.</p>
+          <div class="tags"><span class="tag">cozy</span><span class="tag">farming</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <svg class="cover" viewBox="0 0 200 96" preserveAspectRatio="none" role="img" aria-label="Null Vector cover">
+          <rect width="200" height="96" fill="#1b1436" />
+          <g stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.85">
+            <path d="M20 76 L52 44 L84 62 L118 30 L152 58 L184 32" />
+          </g>
+          <g fill="#c4b5fd"><circle cx="52" cy="44" r="3" /><circle cx="118" cy="30" r="3" /><circle cx="184" cy="32" r="3" /></g>
+        </svg>
+        <div class="card-body">
+          <span class="votes">▲ 388</span>
+          <h3>Null Vector</h3>
+          <p>Deck-building roguelike where every run rewrites your own source code.</p>
+          <div class="tags"><span class="tag">roguelike</span><span class="tag">deckbuilder</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <svg class="cover" viewBox="0 0 200 96" preserveAspectRatio="none" role="img" aria-label="The Long Reply cover">
+          <rect width="200" height="96" fill="#3a2320" />
+          <rect x="24" y="22" width="152" height="52" rx="6" fill="#f5e6d3" opacity="0.94" />
+          <g fill="#8a6a55"><rect x="36" y="34" width="92" height="4" rx="2" /><rect x="36" y="46" width="120" height="4" rx="2" /><rect x="36" y="58" width="68" height="4" rx="2" /></g>
+        </svg>
+        <div class="card-body">
+          <span class="votes">▲ 274</span>
+          <h3>The Long Reply</h3>
+          <p>An epistolary mystery told entirely through letters you choose to send.</p>
+          <div class="tags"><span class="tag">narrative</span><span class="tag">mystery</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <svg class="cover" viewBox="0 0 200 96" preserveAspectRatio="none" role="img" aria-label="Tidepool cover">
+          <rect width="200" height="96" fill="#123a45" />
+          <path d="M0 58 Q34 44 68 58 T136 58 T204 58 L204 96 L0 96 Z" fill="#1b5a68" />
+          <path d="M0 70 Q40 58 80 70 T160 70 T240 70 L240 96 L0 96 Z" fill="#0d2c35" />
+          <circle cx="146" cy="30" r="10" fill="#7dd3c0" opacity="0.7" />
+        </svg>
+        <div class="card-body">
+          <span class="votes">▲ 231</span>
+          <h3>Tidepool</h3>
+          <p>Photograph an entire reef ecosystem before the season turns.</p>
+          <div class="tags"><span class="tag">exploration</span><span class="tag">relaxing</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div><b>Discover</b>This week<br />Cozy picks<br />Hidden gems</div>
+    <div><b>For devs</b>Submit a game<br />Press kit<br />Curator guide</div>
+    <div><b>Company</b>About<br />Careers<br />Contact</div>
+    <div class="copyright">© 2026 Wonder<br />wonder.gg</div>
+  </footer>
 </body>
 </html>
