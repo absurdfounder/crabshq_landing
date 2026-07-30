@@ -70,9 +70,16 @@ export default function Header() {
             : `border-b border-[var(--color-line)] bg-canvas ${scrolled ? 'shadow-sm' : ''}`
         }`}
       >
+      {/* `.rail` so the header shares the page's exact measure, gutter and
+          side hairlines. It also brings `min-w-0`, without which the flex row
+          cannot shrink and paints its right-hand cluster past the hairline.
+          `overflow-x-clip` is a backstop: if this ever overflows sideways it
+          clips inside the rail instead of escaping. It must be clip on the x
+          axis only — `overflow-hidden` would also clip the mega-menu as it
+          descends out of the bar. */}
       <div
-        className={`mx-auto flex h-14 max-w-7xl items-center gap-3 border-l border-r px-3 sm:h-16 sm:gap-4 sm:px-6 ${
-          darkNav ? 'border-white/[0.06]' : 'border-[var(--color-line)]'
+        className={`rail flex h-14 items-center gap-3 overflow-x-clip sm:h-16 sm:gap-4 ${
+          darkNav ? '!border-white/[0.06]' : ''
         }`}
       >
         <TrooperLogo
@@ -86,7 +93,7 @@ export default function Header() {
 
         <nav
           ref={navRef}
-          className="hidden flex-1 items-center justify-center lg:flex"
+          className="relative hidden min-w-0 flex-1 items-center justify-center xl:flex"
           aria-label="Primary"
         >
           <ul className="flex items-center gap-1">
@@ -113,7 +120,7 @@ export default function Header() {
               dark={darkNav}
             />
             {primaryNavLinks.map((link) => (
-              <li key={link.href} className="relative z-[220]">
+              <li key={link.href} className="relative z-10">
                 <NavLink
                   href={link.href}
                   label={link.label}
@@ -125,10 +132,10 @@ export default function Header() {
           </ul>
         </nav>
 
-        <div className="relative z-[220] ml-auto flex items-center gap-2 sm:gap-3">
+        <div className="relative z-10 ml-auto flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
           <GitHubNavLink dark={darkNav} />
 
-          <div className={`hidden lg:block ${darkNav ? '[&_button]:!text-white/80 [&_button:hover]:!text-white' : ''}`}>
+          <div className={`hidden xl:block ${darkNav ? '[&_button]:!text-white/80 [&_button:hover]:!text-white' : ''}`}>
             <TranslateButton />
           </div>
 
@@ -138,7 +145,7 @@ export default function Header() {
             size="sm"
             variant="outline"
             tone="dark"
-            className={`hidden lg:inline-flex ${
+            className={`hidden shrink-0 xl:inline-flex ${
               darkNav
                 ? '!border-white/25 !text-white hover:!bg-white/10 focus-visible:!ring-offset-[#141a10]'
                 : ''
@@ -152,7 +159,7 @@ export default function Header() {
             external
             size="sm"
             tone="dark"
-            className={`hidden lg:inline-flex ${darkNav ? 'focus-visible:!ring-offset-split' : ''}`}
+            className={`hidden shrink-0 xl:inline-flex ${darkNav ? 'focus-visible:!ring-offset-split' : ''}`}
             icon={<ArrowRight className="h-3 w-3" strokeWidth={2.5} />}
           >
             Get started
@@ -201,8 +208,12 @@ function NavDropdownItem({
   onClose: () => void
   dark?: boolean
 }) {
+  // No `relative` here on purpose: the panel below anchors to the <nav>, which
+  // is centred in the rail, so it can never drift off-canvas the way it did
+  // when it was centred on this toggle. z-30 keeps an open panel above the
+  // sibling links and the action group, which both sit at z-10.
   return (
-    <li className="relative z-[210]">
+    <li className={isOpen ? 'z-30' : 'z-10'}>
       <button
         type="button"
         onClick={onToggle}
@@ -234,7 +245,7 @@ function NavDropdownItem({
 
       {isOpen ? (
         <div
-          className="absolute left-1/2 top-full z-[205] mt-2 w-[min(46rem,calc(100vw-2rem))] -translate-x-1/2"
+          className="absolute left-1/2 top-full z-20 mt-2 w-[min(46rem,100%)] -translate-x-1/2"
           role="menu"
           data-nav-dropdown-panel
         >

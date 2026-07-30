@@ -14,10 +14,12 @@ const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without y
 
 export default function Hero() {
   return (
-    // The local clip stays: HeroArticleDemo uses rotate + perspective and
-    // deliberately extends past the rail. Keeping it scoped to the hero means
-    // the rest of the page no longer hides misalignment behind a clip.
-    <section className="relative overflow-x-clip bg-canvas text-ink">
+    // No local clip. The comment that used to sit here claimed the demo "uses
+    // rotate + perspective and deliberately extends past the rail" — none of
+    // that is true. `rotate` only selects which scenario plays, there is no
+    // transform, and nothing bleeds. The page-level `hero-shell` already
+    // provides the one clip this page needs.
+    <section className="relative bg-canvas text-ink">
       <div className="rail">
         <div className="pb-0 pt-[calc(var(--site-header-height)+1.25rem)] sm:pt-[calc(var(--site-header-height)+1.75rem)] md:pt-[calc(var(--site-header-height)+2rem)]">
           <div className="grid min-w-0 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
@@ -65,7 +67,11 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative mt-8 hidden min-w-0 overflow-hidden sm:mt-10 lg:mt-14 lg:block">
+          {/* `.rail-bleed` is exactly the rail's gutter, so the demo band's
+              edges land on the hairlines by construction rather than by eye.
+              No top margin: the band's own py + full-width border-t is the
+              section rule; 104px of stacked gap is what made it look detached. */}
+          <div className="rail-bleed relative min-w-0">
             <HeroArticleDemo rotate />
           </div>
         </div>

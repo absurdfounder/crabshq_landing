@@ -103,6 +103,7 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
       <div style={{ height: scaledH, display: 'flex', justifyContent: 'center', width: '100%' }}>
         <div style={{ width: scaledW, height: scaledH, position: 'relative', flexShrink: 0 }}>
           <div
+            data-demo-canvas
             style={{
               width: DEMO_CANVAS_W,
               height: DEMO_CANVAS_H,
@@ -1181,9 +1182,17 @@ export default function TrooperDemo({
           trips React's text-content check. */}
       <style dangerouslySetInnerHTML={{ __html: DEMO_STYLES }} />
 
-      <div className="relative border-t border-slate-100 px-4 py-8 sm:px-6 sm:py-10 md:px-10 md:py-12">
+      {/* No horizontal padding: the package owns none of the host's chrome, and
+          this gutter sat *inside* the host's own, so the backdrop stopped short
+          of the page rail and left a strip of page background either side.
+          The `hidden lg:block` gate lives here rather than on the inner div —
+          below `lg` this band used to render as an empty coloured strip. */}
+      <div
+        data-hero-demo-band
+        className="relative hidden border-t border-slate-100 py-8 sm:py-10 md:py-12 lg:block"
+      >
         {backdrop}
-        <div className="Trooper-demo relative z-10 hidden lg:block" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
+        <div className="Trooper-demo relative z-10" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
         <DemoScaleFrame>
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",

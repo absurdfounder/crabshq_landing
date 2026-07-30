@@ -200,17 +200,22 @@ module.exports = {
        * Page measure.
        *
        * `max-w-7xl` is the shared rail used by SectionShell, the hero,
-       * DarkSplitSection and the footer — ~100 call sites. Overriding the token
-       * rather than editing those keeps every rail aligned (a narrowed section
-       * next to a full-width dark band would visibly step in and out) and keeps
-       * the change to one line.
+       * DarkSplitSection, the header and the footer — ~100 call sites.
+       * Overriding the token rather than editing those keeps every rail aligned
+       * (a narrowed section next to a full-width dark band would visibly step in
+       * and out) and keeps the change to one line.
        *
-       * Tailwind's default is 80rem/1280px. 72rem tightens the measure so the
-       * hairline grid reads as a spec sheet rather than a wide marketing page,
-       * without squeezing the 4-column board in the hero demo.
+       * This was 72rem, on the claim that it tightened the measure "without
+       * squeezing the 4-column board in the hero demo". It squeezed it. The demo
+       * is a fixed 1600px canvas scaled by min(1, width/1600); at 72rem it had
+       * 1022px to work with and rendered at 0.64x, so 14px card titles came out
+       * around 9px. 80rem gives it 1278px once the band bleeds to the hairlines
+       * — 0.80x. It also gives the header enough room to stop overflowing.
+       *
+       * 80rem is Tailwind's stock value, so this key now only documents intent.
        */
       maxWidth: {
-        '7xl': '72rem',
+        '7xl': '80rem',
       },
       minWidth: {
         '10': '2.5rem',

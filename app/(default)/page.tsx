@@ -48,7 +48,6 @@ import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
 import OldWays from '@/components/OldWays'
-import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
@@ -67,7 +66,6 @@ export default function Home() {
       {/* No page-level overflow clip: it hid misalignment instead of
           preventing it. The hero keeps a local one for its rotated demo. */}
       <div>
-      <FloatingScrollIndicator />
       <div className="hero-shell bg-canvas">
         <Header />
         <Hero />
