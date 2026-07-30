@@ -1,4 +1,4 @@
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 
 export type MarketingVisualId =
   | 'coding-harness'

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { MessageSquare, StickyNote } from 'lucide-react';
-import { DemoCursorGlyph } from '@/components/DemoCursorGlyph';
+import { DemoCursorGlyph } from '@trooper/demo';
 import type { CanvasWindow } from './CanvasDesktopVisual';
 import { CANVAS_STAGE_H, CANVAS_STAGE_W } from './CanvasDesktopVisual';
 import {

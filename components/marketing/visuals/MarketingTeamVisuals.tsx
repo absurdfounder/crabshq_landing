@@ -4,9 +4,9 @@ import type { ReactNode } from 'react';
 import {
   Check, Loader2, FileText, Megaphone, Palette, BookOpen, Play,
 } from 'lucide-react';
-import { DemoFavicon } from '@/components/DemoFavicon';
-import { DemoBrowserFrame } from '@/components/DemoBrowserChrome';
-import { assetPath, DEMO_MEDIA } from '@/lib/demoScenarioAssets/helpers';
+import { DemoFavicon } from '@trooper/demo';
+import { DemoBrowserFrame } from '@trooper/demo';
+import { demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
 import { VignetteChrome, ProviderChip } from './shared';
 import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 

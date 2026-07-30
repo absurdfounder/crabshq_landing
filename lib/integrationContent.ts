@@ -1,7 +1,7 @@
 import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { getPluginPlaybook } from '@/lib/playbookWorkflowContent';
 import type { SubpageBenefit } from '@/lib/subpageContent';
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 import {
   getPluginBySlug,
   allPluginPageSlugs,

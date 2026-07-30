@@ -1,5 +1,5 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 import type { RelatedLink, UseCasePageContent } from '@/lib/useCaseContent';
 
 export type IndustryPageContent = UseCasePageContent;

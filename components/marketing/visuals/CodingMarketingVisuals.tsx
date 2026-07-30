@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import {
   Check, Loader2, GitCommit, Terminal, FileText, Shield,
 } from 'lucide-react';
-import { DemoFavicon } from '@/components/DemoFavicon';
+import { DemoFavicon } from '@trooper/demo';
 import { VignetteChrome, ProviderChip } from './shared';
 import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 
