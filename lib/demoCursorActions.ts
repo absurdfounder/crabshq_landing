@@ -72,7 +72,19 @@ export function animateExecStepCursor(step: TaskExecStep, go: CursorGoFn, ctx: C
     case 'subtask':
       return go(`[data-demo-subtask-id="${step.id}"]`, { silent });
     case 'modalMsg':
+    case 'reasoning':
       return go('[data-demo-target="modal-thread"]');
+    case 'browserFrame':
+      return go('[data-demo-target="browser-stream"]', { silent });
+    case 'videoStage':
+    case 'videoProgress':
+      return go('[data-demo-target="video-workspace"]', { silent });
+    case 'desktopStep':
+      return go('[data-demo-target="desktop-workspace"]', { silent });
+    case 'nodeActive':
+      return go('[data-demo-target="node-graph"]', { silent });
+    case 'generate':
+      return Promise.resolve();
     case 'openArtifact':
       return go('[data-demo-target="modal-artifact-panel"]', { silent });
     case 'artifactReviewSelect': {
@@ -151,6 +163,13 @@ export function execStepCursorAfterApply(step: TaskExecStep): boolean {
     || step.type === 'tool'
     || step.type === 'toolDone'
     || step.type === 'subtask'
+    // Capability workspaces are mounted by the step itself, so the cursor has
+    // nothing to point at until after it applies.
+    || step.type === 'browserFrame'
+    || step.type === 'videoStage'
+    || step.type === 'videoProgress'
+    || step.type === 'desktopStep'
+    || step.type === 'nodeActive'
     || (step.type === 'setWorkspaceMode' && step.mode === 'canvas')
   );
 }

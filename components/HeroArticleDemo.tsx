@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
-import { DemoTaskModal } from './demoTaskModal';
+import { DemoTaskModal, type DemoGenerationState } from './demoTaskModal';
 import { DemoFavicon } from './DemoFavicon';
 import PixelDitherGradient from './ui/PixelDitherGradient';
 import {
@@ -18,6 +18,7 @@ import {
 import {
   getDemoScenario,
   DEFAULT_DEMO_SCENARIO_ID,
+  HERO_SCENARIO_ROTATION,
   type DemoScenarioId,
 } from '@/lib/demoScenarios';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
@@ -618,8 +619,21 @@ const DEMO_STYLES = `${DEMO_KEYFRAMES}
 * { box-sizing: border-box; }
 `;
 
-export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: { scenarioId?: DemoScenarioId }) {
-  const scenario = getDemoScenario(scenarioId);
+export default function TrooperDemo({
+  scenarioId,
+  rotate = false,
+}: {
+  scenarioId?: DemoScenarioId;
+  /** Cycle through HERO_SCENARIO_ROTATION on each loop instead of repeating. */
+  rotate?: boolean;
+}) {
+  // Rotation advances on loop, so a visitor who watches twice sees a different
+  // capability rather than the same reel again.
+  const [rotationIndex, setRotationIndex] = useState(0);
+  const activeScenarioId = rotate
+    ? HERO_SCENARIO_ROTATION[rotationIndex % HERO_SCENARIO_ROTATION.length]
+    : scenarioId ?? DEFAULT_DEMO_SCENARIO_ID;
+  const scenario = getDemoScenario(activeScenarioId);
   const CHAT_SCRIPT = scenario.chatScript;
   const TASK_EXEC_SCRIPT = scenario.taskExecScript;
   const PHASE1_TASKS = scenario.phase1Tasks;
@@ -650,6 +664,15 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [modalCanvasKeys, setModalCanvasKeys] = useState<string[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
+  // Capability workspace state — each is inert unless the scenario drives it.
+  const [browserFrameCount, setBrowserFrameCount] = useState(0);
+  const [videoStage, setVideoStage] = useState<'storyboard' | 'timeline'>('storyboard');
+  const [videoPlayhead, setVideoPlayhead] = useState(0);
+  const [videoScenesReady, setVideoScenesReady] = useState(0);
+  const [desktopLines, setDesktopLines] = useState<string[]>([]);
+  const [desktopActivities, setDesktopActivities] = useState<string[]>([]);
+  const [activeNodeIds, setActiveNodeIds] = useState<string[]>([]);
+  const [generationJob, setGenerationJob] = useState<DemoGenerationState | null>(null);
   const [artifactReview, setArtifactReview] = useState<ArtifactReviewState>(EMPTY_ARTIFACT_REVIEW);
   const [hasSavedArtifactReview, setHasSavedArtifactReview] = useState(false);
   const [canvasReview, setCanvasReview] = useState<CanvasReviewState | null>(null);
@@ -709,6 +732,14 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setHasSavedArtifactReview(false);
     setCanvasReview(null);
     setCanvasTileComments({});
+    setBrowserFrameCount(0);
+    setVideoStage('storyboard');
+    setVideoPlayhead(0);
+    setVideoScenesReady(0);
+    setDesktopLines([]);
+    setDesktopActivities([]);
+    setActiveNodeIds([]);
+    setGenerationJob(null);
     modalMsgCounter.current = 0;
   }, [scenario.initialSubtasks]);
 
@@ -750,7 +781,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   useEffect(() => {
     resetDemo();
     setMode('script');
-  }, [scenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [activeScenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Only chase the bottom when the reader is already there.
   useEffect(() => {
@@ -787,6 +818,42 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         modalMsgCounter.current += 1;
         setModalFeed(p => [...p, { kind: 'reasoning', id: `r${modalMsgCounter.current}`, agent: step.agent, text: step.text }]);
         break;
+      // Any workspace beat dismisses a finished generation card so the panel
+      // hands back to whatever the agent is doing next.
+      case 'browserFrame':
+        setGenerationJob(null);
+        setModalWorkspaceMode('browser');
+        setBrowserFrameCount(n => n + 1);
+        break;
+      case 'videoStage':
+        setGenerationJob(null);
+        setModalWorkspaceMode('video');
+        setVideoStage(step.stage);
+        break;
+      case 'videoProgress':
+        setGenerationJob(null);
+        setModalWorkspaceMode('video');
+        setVideoPlayhead(step.seconds);
+        // Scenes reveal in step with the playhead so the storyboard fills in.
+        setVideoScenesReady(n => Math.max(n, Math.ceil(step.seconds / 2)));
+        break;
+      case 'desktopStep':
+        setGenerationJob(null);
+        setModalWorkspaceMode('desktop');
+        setDesktopLines(p => [...p, ...step.lines]);
+        if (step.activity) setDesktopActivities(p => [...p, step.activity!]);
+        break;
+      case 'nodeActive':
+        setGenerationJob(null);
+        setModalWorkspaceMode('nodes');
+        setActiveNodeIds(p => (p.includes(step.nodeId) ? p : [...p, step.nodeId]));
+        break;
+      case 'generate': {
+        const job = scenario.generationJobs?.find(j => j.id === step.jobId);
+        if (!job) break;
+        setGenerationJob({ job, startedAt: performance.now(), runMs: step.runMs, done: false });
+        break;
+      }
       case 'tool':
         setModalFeed(p => [...p, { kind: 'tool', ...step.log, status: 'running' }]);
         break;
@@ -906,7 +973,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
       default:
         break;
     }
-  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey, handleTaskDrop]);
+  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey, scenario.generationJobs, handleTaskDrop]);
 
   /**
    * Step runner. Every beat now reads: wait → move the pointer → click →
@@ -923,6 +990,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         await sleep(5000);
         if (!alive) return;
         resetDemo();
+        if (rotate) setRotationIndex(n => n + 1);
         return;
       }
 
@@ -952,6 +1020,17 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         if (step.type === 'openTaskModal') {
           captureOrigin(step.taskId);
           setModalTask(tasks.find(t => t.id === step.taskId) ?? null);
+        }
+
+        // Generation is the one step that owns real elapsed time: apply it,
+        // let the counter run, then resolve the frame.
+        if (step.type === 'generate') {
+          applyTaskExecStep(step);
+          await sleep(step.runMs);
+          if (!alive) return;
+          setGenerationJob(j => (j ? { ...j, done: true } : j));
+          setScriptIndex(idx + 1);
+          return;
         }
 
         if (execStepCursorAfterApply(step)) {
@@ -1188,6 +1267,18 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               hasSavedArtifactReview={hasSavedArtifactReview}
               canvasReview={canvasReview}
               canvasTileComments={canvasTileComments}
+              browserSession={scenario.browserSession}
+              browserFrameCount={browserFrameCount}
+              videoProject={scenario.videoProject}
+              videoStage={videoStage}
+              videoPlayhead={videoPlayhead}
+              videoScenesReady={videoScenesReady}
+              desktopSession={scenario.desktopSession}
+              desktopLines={desktopLines}
+              desktopActivities={desktopActivities}
+              workflowGraph={scenario.workflowGraph}
+              activeNodeIds={activeNodeIds}
+              generationJob={generationJob}
               onClose={() => { handleActivity(); setTaskModalOpen(false); }}
               onSelectArtifact={(name) => {
                 const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);

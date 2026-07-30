@@ -19,6 +19,31 @@ import { DemoCanvasView } from './DemoCanvasView';
 import type { DemoWorkspaceMode } from './demoTaskExecution';
 import { DUR, EASE_OUT } from '@/lib/demoMotion';
 import type { CanvasRect } from '@/lib/demoGeometry';
+import { DemoBrowserStream } from './demo/workspaces/DemoBrowserStream';
+import { DemoVideoWorkspace } from './demo/workspaces/DemoVideoWorkspace';
+import { DemoDesktopWorkspace } from './demo/workspaces/DemoDesktopWorkspace';
+import { DemoGenerationCard } from './demo/workspaces/DemoGenerationCard';
+import { DemoNodeGraph } from './demo/workspaces/DemoNodeGraph';
+import type {
+  DemoBrowserSession, DemoDesktopSession, DemoGenerationJob, DemoVideoProject, DemoWorkflowGraph,
+} from './demoTaskExecution';
+
+const WORKSPACE_LABEL: Record<DemoWorkspaceMode, string> = {
+  ide: 'IDE',
+  canvas: 'Canvas',
+  browser: 'Browser',
+  video: 'Video',
+  desktop: 'Desktop',
+  nodes: 'Routine',
+};
+
+/** Live generation job passed down from the runner. */
+export type DemoGenerationState = {
+  job: DemoGenerationJob;
+  startedAt: number | null;
+  runMs: number;
+  done: boolean;
+};
 
 /** Matches the modal's `inset: 6` + `margin: 8` offset from the canvas origin. */
 const MODAL_INSET = 14;
@@ -573,6 +598,18 @@ export function DemoTaskModal({
   canvasReview,
   canvasTileComments,
   originRect,
+  browserSession,
+  browserFrameCount = 0,
+  videoProject,
+  videoStage = 'storyboard',
+  videoPlayhead = 0,
+  videoScenesReady = 0,
+  desktopSession,
+  desktopLines = [],
+  desktopActivities = [],
+  workflowGraph,
+  activeNodeIds = [],
+  generationJob,
 }: {
   open: boolean;
   taskTitle: string;
@@ -595,6 +632,18 @@ export function DemoTaskModal({
   canvasTileComments?: Record<string, string>;
   /** Canvas-space rect of the card this modal was opened from. */
   originRect?: CanvasRect | null;
+  browserSession?: DemoBrowserSession;
+  browserFrameCount?: number;
+  videoProject?: DemoVideoProject;
+  videoStage?: 'storyboard' | 'timeline';
+  videoPlayhead?: number;
+  videoScenesReady?: number;
+  desktopSession?: DemoDesktopSession;
+  desktopLines?: string[];
+  desktopActivities?: string[];
+  workflowGraph?: DemoWorkflowGraph;
+  activeNodeIds?: string[];
+  generationJob?: DemoGenerationState | null;
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
@@ -628,6 +677,17 @@ export function DemoTaskModal({
       }`,
     };
   }, [originRect]);
+
+  // Only offer the workspaces this scenario actually drives, so a plain
+  // document task doesn't sprout an empty Video tab.
+  const availableModes = useMemo<DemoWorkspaceMode[]>(() => {
+    const modes: DemoWorkspaceMode[] = ['ide', 'canvas'];
+    if (browserSession) modes.push('browser');
+    if (videoProject) modes.push('video');
+    if (desktopSession) modes.push('desktop');
+    if (workflowGraph) modes.push('nodes');
+    return modes;
+  }, [browserSession, videoProject, desktopSession, workflowGraph]);
 
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
   const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#f0f5e6' : '#FFFBEB';
@@ -764,21 +824,22 @@ export function DemoTaskModal({
               borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
-                {(['ide', 'canvas'] as const).map(mode => (
+                {availableModes.map(mode => (
                   <button
                     key={mode}
                     type="button"
-                    data-demo-target={mode === 'ide' ? 'modal-workspace-ide' : 'modal-workspace-canvas'}
+                    data-demo-target={`modal-workspace-${mode}`}
                     onClick={() => onWorkspaceModeChange?.(mode)}
                     style={{
                       padding: '3px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',
-                      fontSize: 11, fontWeight: 600, textTransform: 'capitalize',
+                      fontSize: 11, fontWeight: 600,
                       background: workspaceMode === mode ? C.card : 'transparent',
                       color: workspaceMode === mode ? C.text : C.textSubtle,
                       boxShadow: workspaceMode === mode ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    {mode === 'ide' ? 'IDE' : 'Canvas'}
+                    {WORKSPACE_LABEL[mode]}
                   </button>
                 ))}
               </div>
@@ -786,7 +847,33 @@ export function DemoTaskModal({
                 <span style={{ fontSize: 10, color: C.textSubtle }}>{canvasArtifacts.length} open</span>
               )}
             </div>
-            {workspaceMode === 'canvas' ? (
+            {/* A live generation takes the panel while it runs — the app does
+                the same, surfacing the job over whatever was open. */}
+            {generationJob ? (
+              <DemoGenerationCard
+                job={generationJob.job}
+                startedAt={generationJob.startedAt}
+                runMs={generationJob.runMs}
+                done={generationJob.done}
+              />
+            ) : workspaceMode === 'browser' && browserSession ? (
+              <DemoBrowserStream session={browserSession} frameCount={browserFrameCount} />
+            ) : workspaceMode === 'video' && videoProject ? (
+              <DemoVideoWorkspace
+                project={videoProject}
+                stage={videoStage}
+                playhead={videoPlayhead}
+                scenesReady={videoScenesReady}
+              />
+            ) : workspaceMode === 'desktop' && desktopSession ? (
+              <DemoDesktopWorkspace
+                session={desktopSession}
+                lines={desktopLines}
+                activities={desktopActivities}
+              />
+            ) : workspaceMode === 'nodes' && workflowGraph ? (
+              <DemoNodeGraph graph={workflowGraph} activeIds={activeNodeIds} />
+            ) : workspaceMode === 'canvas' ? (
               <DemoCanvasView
                 artifacts={canvasArtifacts}
                 activeName={artifact?.name}

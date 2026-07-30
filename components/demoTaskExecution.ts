@@ -68,7 +68,91 @@ export type DemoArtifact = {
   caption?: string;
 };
 
-export type DemoWorkspaceMode = 'ide' | 'canvas';
+/**
+ * Workspaces the ticket can show. `ide` and `canvas` mirror the app's file and
+ * board views; the rest mirror the surfaces the app opens when an agent is
+ * driving a browser, cutting video, or working on an enrolled machine.
+ */
+export type DemoWorkspaceMode = 'ide' | 'canvas' | 'browser' | 'video' | 'desktop' | 'nodes';
+
+/** One captured frame in a live browser session. */
+export type DemoBrowserFrameSpec = {
+  id: string;
+  /** Inline SVG markup — never a network fetch. */
+  svg: string;
+  /** What the agent was doing when the frame was taken. */
+  action: string;
+  url: string;
+  time: string;
+};
+
+export type DemoBrowserSession = {
+  domain: string;
+  /** "Chrome extension" / "Live browser" — the app's source label. */
+  source: string;
+  frames: DemoBrowserFrameSpec[];
+};
+
+export type DemoVideoScene = {
+  id: string;
+  title: string;
+  seconds: number;
+  svg: string;
+};
+
+export type DemoVideoClip = {
+  id: string;
+  track: number;
+  label: string;
+  /** Position and length in seconds along the timeline. */
+  start: number;
+  length: number;
+  kind: 'video' | 'audio' | 'text';
+};
+
+export type DemoVideoProject = {
+  name: string;
+  fps: number;
+  durationSeconds: number;
+  tracks: { id: number; label: string; kind: 'video' | 'audio' | 'text' }[];
+  scenes: DemoVideoScene[];
+  clips: DemoVideoClip[];
+};
+
+export type DemoGenerationJob = {
+  id: string;
+  prompt: string;
+  kind: 'image' | 'video';
+  seconds?: number;
+  model: string;
+  /** Result frame, inline SVG. */
+  svg: string;
+};
+
+export type DemoDesktopSession = {
+  deviceName: string;
+  os: string;
+  status: 'online' | 'busy' | 'idle';
+  /** The GUI the agent is looking at, inline SVG. */
+  screenSvg: string;
+  appName: string;
+  terminalLines: string[];
+  activities: { label: string; detail?: string }[];
+};
+
+export type DemoWorkflowNode = {
+  id: string;
+  label: string;
+  kind: 'trigger' | 'if' | 'then' | 'ai';
+  x: number;
+  y: number;
+};
+
+export type DemoWorkflowGraph = {
+  name: string;
+  nodes: DemoWorkflowNode[];
+  edges: { from: string; to: string; label?: string }[];
+};
 
 /** Scripted execution steps after kanban fill — drives modal + board updates */
 export type TaskExecStep =
@@ -76,6 +160,15 @@ export type TaskExecStep =
   | { type: 'openTaskModal'; taskId: number; delay: number }
   | { type: 'subtask'; id: string; status: DemoSubtaskStatus; delay: number }
   | { type: 'reasoning'; agent: string; text: string; delay: number }
+  /** Push the next captured frame into the live browser workspace. */
+  | { type: 'browserFrame'; delay: number }
+  /** Move the NLE playhead / reveal clips up to this second. */
+  | { type: 'videoProgress'; seconds: number; delay: number }
+  | { type: 'videoStage'; stage: 'storyboard' | 'timeline'; delay: number }
+  /** Start a generation job; it resolves after `runMs`. */
+  | { type: 'generate'; jobId: string; runMs: number; delay: number }
+  | { type: 'desktopStep'; lines: string[]; activity?: string; delay: number }
+  | { type: 'nodeActive'; nodeId: string; delay: number }
   | { type: 'tool'; log: Omit<DemoToolLog, 'status'>; delay: number }
   | { type: 'toolDone'; id: string; delay: number }
   | { type: 'modalMsg'; sender: string; text: string; time?: string; tags?: DemoTag[]; delay: number }
