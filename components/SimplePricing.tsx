@@ -660,8 +660,9 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
   const plans = [planProps.local, planProps.lifetime, planProps.cloud, planProps.enterprise];
 
   return (
-    <div className="w-full pb-8 md:pb-10">
-      <div className="flex flex-col gap-6 pb-8 pt-2 max-md:gap-5 max-md:pb-6 md:pt-4">
+    /* Vertical rhythm belongs to the SectionShell wrapping this. */
+    <div className="w-full">
+      <div className="flex flex-col gap-6 pb-8 max-md:gap-5 max-md:pb-6">
         <MarketingHeadline
           as="h2"
           size="section"

@@ -5,24 +5,12 @@ import { ArrowRight } from 'lucide-react';
 
 import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
-import HeroMarquee from './HeroMarquee';
 import HeroDownloadButtons from './HeroDownloadButtons';
 import TrooperStoryLine from './TrooperStoryLine';
 import PixelButton from './ui/PixelButton';
 import FernCircleCheckIcon from './ui/FernCircleCheckIcon';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
-
-function HeroStackMarquee({ className = '' }: { className?: string }) {
-  return (
-    <div className={className}>
-      <p className="mb-3 font-silkscreen text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
-        Built for your stack
-      </p>
-      <HeroMarquee />
-    </div>
-  );
-}
 
 export default function Hero() {
   return (
@@ -40,8 +28,6 @@ export default function Hero() {
               </div>
 
               <TrooperStoryLine className="mt-5 sm:mt-6" />
-
-              <HeroStackMarquee className="mt-8 hidden sm:mt-10 lg:block" />
             </div>
 
             <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
@@ -76,8 +62,6 @@ export default function Hero() {
                 ))}
               </ul>
             </div>
-
-            <HeroStackMarquee className="min-w-0 lg:col-span-7 lg:hidden" />
           </div>
 
           <div className="relative mt-8 hidden min-w-0 overflow-hidden sm:mt-10 lg:mt-14 lg:block">

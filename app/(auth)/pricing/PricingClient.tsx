@@ -233,18 +233,20 @@ const Pricing: React.FC = () => {
             <ExitIntentPopup isOpen={showExitPopup} onClose={() => setShowExitPopup(false)} />
             <Header />
 
-            <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
+            {/* `rhythm`: SimplePricing no longer pads itself. */}
+            <SectionShell rhythm eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-canvas" clearSiteHeader>
                 <SimplePricing showFullPricingLink={false} />
             </SectionShell>
 
-            <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-slate-50">
+            <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-canvas-warm">
                 <PricingCompareTable />
             </SectionShell>
 
-            <SectionShell eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12">
-                    <FAQSection />
-                </div>
+            {/* The inner max-w-7xl was nested inside the shell's own padded
+                max-w-7xl, so it could never reach that width and sat inset
+                from every other section's rail. */}
+            <SectionShell rhythm eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-canvas">
+                <FAQSection />
             </SectionShell>
         </div>
     );

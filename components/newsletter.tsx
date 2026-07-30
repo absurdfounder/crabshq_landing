@@ -4,11 +4,14 @@ import { ArrowRight, Download } from 'lucide-react';
 import PixelButton from './ui/PixelButton';
 
 export default function Newsletter() {
+  // Measure, gutter and rhythm belong to the SectionShell wrapping this in
+  // app/(default)/layout.tsx — this used to re-declare max-w-7xl inside the
+  // shell's own padded max-w-7xl, so it sat inset from every other rail.
   return (
-    <section className="bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section>
+      <div>
         <div className="pb-12 md:pb-16 pt-2">
-          <div className="border border-slate-200 bg-white px-6 sm:px-10 py-10 sm:py-12">
+          <div className="border border-slate-200 bg-canvas px-6 sm:px-10 py-10 sm:py-12">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
               <div className="max-w-xl">
                 <h3 className="text-2xl sm:text-3xl md:text-[2rem] font-funneldisplay tracking-tight text-slate-900 leading-tight">
