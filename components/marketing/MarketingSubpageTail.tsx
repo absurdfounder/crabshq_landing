@@ -1,4 +1,5 @@
 import SectionShell from '@/components/ui/SectionShell';
+import DarkSplitSection from '@/components/ui/DarkSplitSection';
 import GovernanceSection from '@/components/GovernanceSection';
 import SimplePricing from '@/components/SimplePricing';
 import FounderMessageSection from '@/components/FounderMessageSection';
@@ -8,9 +9,11 @@ import FAQ from '@/components/faq';
 export default function MarketingSubpageTail() {
   return (
     <>
-      <SectionShell eyebrow="Governance" eyebrowNumber="05" bgClass="bg-white">
-        <GovernanceSection />
-      </SectionShell>
+      {/* GovernanceSection is a dark trust band and renders its own eyebrow —
+          it must sit on the dark surface, not inside a white SectionShell. */}
+      <DarkSplitSection>
+        <GovernanceSection eyebrowNumber="05" />
+      </DarkSplitSection>
 
       <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
         <SimplePricing />

@@ -158,6 +158,22 @@ module.exports = {
         '9': '2.25rem',
         '10': '2.5rem',
       },
+      /*
+       * Page measure.
+       *
+       * `max-w-7xl` is the shared rail used by SectionShell, the hero,
+       * DarkSplitSection and the footer — ~100 call sites. Overriding the token
+       * rather than editing those keeps every rail aligned (a narrowed section
+       * next to a full-width dark band would visibly step in and out) and keeps
+       * the change to one line.
+       *
+       * Tailwind's default is 80rem/1280px. 72rem tightens the measure so the
+       * hairline grid reads as a spec sheet rather than a wide marketing page,
+       * without squeezing the 4-column board in the hero demo.
+       */
+      maxWidth: {
+        '7xl': '72rem',
+      },
       minWidth: {
         '10': '2.5rem',
         '48': '12rem',

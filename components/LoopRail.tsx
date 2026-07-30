@@ -137,7 +137,7 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
   }, [category, reduceMotion]);
 
   return (
-    <div className="pb-8 pt-2 md:pb-16">
+    <div>
       <motion.div
         className="mb-6 max-w-3xl md:mb-10"
         initial={{ opacity: 0, y: 16 }}

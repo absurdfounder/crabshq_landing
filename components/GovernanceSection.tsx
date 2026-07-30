@@ -44,9 +44,14 @@ const ease = [0.22, 1, 0.36, 1] as const;
  * badges: nothing here should assert a certification the company has not
  * published.
  */
-export default function GovernanceSection() {
+type GovernanceSectionProps = {
+  /** Position in the host page's numbered section rhythm. */
+  eyebrowNumber?: string;
+};
+
+export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSectionProps) {
   return (
-    <div className="py-10 md:py-16">
+    <div id="governance" className="scroll-mt-24 py-10 md:py-16">
       <motion.div
         className="max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
@@ -55,7 +60,7 @@ export default function GovernanceSection() {
         viewport={{ once: true, margin: '-40px' }}
       >
         <span className="type-eyebrow-num-dark">
-          <span className="text-white/40">[06]</span>
+          <span className="text-white/40">[{eyebrowNumber}]</span>
           <span>&nbsp;</span>
           Governance
         </span>
