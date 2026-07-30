@@ -1,6 +1,6 @@
 import { VIRALHOOKS_FAVICON } from '../lib/favicon';
 import { a } from '../assets/helpers';
-import { GENERATED, VIDEO_SCENES } from '../assets/svg';
+import { demoAsset, MEDIA } from '../lib/assets';
 import { i } from '../lib/demoIntegrations';
 import type { DemoScenario } from './types';
 
@@ -9,6 +9,23 @@ import type { DemoScenario } from './types';
  * on a real timeline, renders it, and posts. Exercises the storyboard, the NLE
  * and the generation card in one run.
  */
+
+/** Real footage from the app's own media library — the NLE strips these. */
+const HOOK = demoAsset(MEDIA.video.sintel);
+const MONTAGE = demoAsset(MEDIA.video.bigBuckBunny);
+const PROOF = demoAsset(MEDIA.video.elephantsDream);
+const CTA = demoAsset(MEDIA.video.tearsOfSteel);
+const BED = demoAsset(MEDIA.video.forBiggerBlazes);
+
+/**
+ * Stills to fall back to. The clips are H.264; browsers without that decoder
+ * (Firefox on some Linux builds, stripped Chromium) would otherwise show a
+ * timeline of black rectangles, which is worse than no timeline at all.
+ */
+const HOOK_STILL = demoAsset(MEDIA.image.abstract);
+const MONTAGE_STILL = demoAsset(MEDIA.image.city);
+const PROOF_STILL = demoAsset(MEDIA.image.mountains);
+const CTA_STILL = demoAsset(MEDIA.image.cityThumb);
 
 const ARTIFACTS = {
   'video/launch-recap.md': a({
@@ -79,25 +96,25 @@ export const videoEditScenario: DemoScenario = {
       { id: 3, label: 'A1', kind: 'audio' },
     ],
     scenes: [
-      { id: 'sc1', title: 'Hook', seconds: 6, svg: VIDEO_SCENES.hook },
-      { id: 'sc2', title: 'Product montage', seconds: 7, svg: VIDEO_SCENES.product },
-      { id: 'sc3', title: 'Social proof', seconds: 5, svg: VIDEO_SCENES.proof },
-      { id: 'sc4', title: 'Call to action', seconds: 6, svg: VIDEO_SCENES.cta },
+      { id: 'sc1', title: 'Hook', seconds: 6, src: HOOK, posterAt: 2.5, posterSrc: HOOK_STILL },
+      { id: 'sc2', title: 'Product montage', seconds: 7, src: MONTAGE, posterAt: 4, posterSrc: MONTAGE_STILL },
+      { id: 'sc3', title: 'Social proof', seconds: 5, src: PROOF, posterAt: 1.5, posterSrc: PROOF_STILL },
+      { id: 'sc4', title: 'Call to action', seconds: 6, src: CTA, posterAt: 3, posterSrc: CTA_STILL },
     ],
     clips: [
-      { id: 'c1', track: 1, label: 'hook.mp4', start: 0, length: 6, kind: 'video' },
-      { id: 'c2', track: 1, label: 'montage.mp4', start: 6, length: 7, kind: 'video' },
-      { id: 'c3', track: 1, label: 'proof.mp4', start: 13, length: 5, kind: 'video' },
-      { id: 'c4', track: 1, label: 'cta.mp4', start: 18, length: 6, kind: 'video' },
+      { id: 'c1', track: 1, label: 'hook.mp4', start: 0, length: 6, kind: 'video', src: HOOK, posterSrc: HOOK_STILL, sourceIn: 1 },
+      { id: 'c2', track: 1, label: 'montage.mp4', start: 6, length: 7, kind: 'video', src: MONTAGE, posterSrc: MONTAGE_STILL, sourceIn: 2 },
+      { id: 'c3', track: 1, label: 'proof.mp4', start: 13, length: 5, kind: 'video', src: PROOF, posterSrc: PROOF_STILL, sourceIn: 0.5 },
+      { id: 'c4', track: 1, label: 'cta.mp4', start: 18, length: 6, kind: 'video', src: CTA, posterSrc: CTA_STILL, sourceIn: 1.5 },
       { id: 't1', track: 2, label: '2,418 games', start: 0.5, length: 5, kind: 'text' },
       { id: 't2', track: 2, label: '#3 Product of the Day', start: 13.5, length: 4, kind: 'text' },
       { id: 't3', track: 2, label: 'wonder.gg', start: 19, length: 4.5, kind: 'text' },
-      { id: 'a1', track: 3, label: 'bed — upbeat-loop.wav', start: 0, length: 24, kind: 'audio' },
+      { id: 'a1', track: 3, label: 'bed — upbeat-loop.wav', start: 0, length: 24, kind: 'audio', src: BED },
     ],
   },
   generationJobs: [
-    { id: 'g-broll', prompt: 'Golden-hour landscape plate, slow drift, warm grade, no people — 4 seconds, seamless loop', kind: 'video', seconds: 4, model: 'Veo 3', svg: GENERATED.broll },
-    { id: 'g-thumb', prompt: 'YouTube thumbnail: bold "Launch day recap" over a deep indigo field with a green play button', kind: 'image', model: 'Imagen 4', svg: GENERATED.thumbnail },
+    { id: 'g-broll', prompt: 'Golden-hour landscape plate, slow drift, warm grade, no people — 4 seconds, seamless loop', kind: 'video', seconds: 4, model: 'Veo 3', src: demoAsset(MEDIA.video.forBiggerEscapes), posterSrc: demoAsset(MEDIA.image.mountains) },
+    { id: 'g-thumb', prompt: 'Thumbnail: a wide mountain range at golden hour, cinematic grade, no text', kind: 'image', model: 'Imagen 4', src: demoAsset(MEDIA.image.mountains) },
   ],
   chatScript: [
     { type: 'mention_tab', text: 'Vaibhav: @Ren launch recap video?', delay: 150 },

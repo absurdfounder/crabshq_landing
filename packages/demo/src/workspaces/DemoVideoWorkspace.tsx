@@ -1,28 +1,29 @@
 'use client';
 
-import { Clapperboard, Pencil, Plus, Scissors, Volume2, Type as TypeIcon, Eye } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Clapperboard, Pencil, Plus, Scissors } from 'lucide-react';
 import type { DemoVideoProject } from '../components/demoTaskExecution';
 import { DUR, EASE_OUT } from '../lib/demoMotion';
+import { extractFilmstrip, extractImageStrip, extractWaveform } from '../lib/mediaStrip';
 
 /**
  * Video workspace, mirroring the app's `video/board/StoryboardBoard.jsx` and
- * `video/timeline/TimelineCanvasNle.jsx` — the dark stage, scene artboards,
- * then a real NLE with a ruler, stacked tracks, clips and a playhead.
+ * `video/timeline/TimelineCanvasNle.jsx`.
+ *
+ * The timeline draws to a single canvas — ruler, tracks, clips, playhead —
+ * with real filmstrips tiled along video clips and real waveform peaks in the
+ * audio clip, pulled from the same media the product ships. That's what makes
+ * it read as an editor instead of as coloured rectangles.
  */
 
-const STAGE = '#121212';
+const STAGE = '#0e0e10';
 const BAR = '#161616';
 const LINE = 'rgba(255,255,255,0.07)';
 const ACCENT = '#37d178';
 const RULER_H = 32;
 const TRACK_H = 56;
-
-const TRACK_ICON = { video: Eye, audio: Volume2, text: TypeIcon } as const;
-const CLIP_TONE = {
-  video: { bg: 'rgba(55,209,120,0.16)', border: 'rgba(55,209,120,0.5)', text: '#9ff5c4' },
-  audio: { bg: 'rgba(129,140,248,0.16)', border: 'rgba(129,140,248,0.5)', text: '#c7cbfd' },
-  text: { bg: 'rgba(251,191,36,0.16)', border: 'rgba(251,191,36,0.5)', text: '#fde68a' },
-} as const;
+const HEAD_W = 84;
+const PX_PER_SECOND = 46;
 
 function Toolbar({ stage, project }: { stage: 'storyboard' | 'timeline'; project: DemoVideoProject }) {
   return (
@@ -59,6 +60,41 @@ function Toolbar({ stage, project }: { stage: 'storyboard' | 'timeline'; project
   );
 }
 
+/**
+ * A real frame from the source file, seeked once the scene is revealed. Falls
+ * back to the still if the browser has no decoder for the clip.
+ */
+function ScenePoster({ src, at, posterSrc, ready }: { src?: string; at?: number; posterSrc?: string; ready: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !ready || !src) return;
+    const seek = () => { try { el.currentTime = at ?? 0.5; } catch { /* ignore */ } };
+    const onError = () => setFailed(true);
+    if (el.readyState >= 2) seek();
+    else el.addEventListener('loadeddata', seek, { once: true });
+    el.addEventListener('error', onError, { once: true });
+    return () => {
+      el.removeEventListener('loadeddata', seek);
+      el.removeEventListener('error', onError);
+    };
+  }, [at, ready, src]);
+
+  if (!ready || (!src && !posterSrc)) {
+    return <div className="demo-shimmer" style={{ position: 'absolute', inset: 0, opacity: 0.16 }} />;
+  }
+
+  const cover: React.CSSProperties = {
+    position: 'absolute', inset: 0, width: '100%', height: '100%',
+    objectFit: 'cover', background: '#0a0a0c',
+  };
+
+  if (failed || !src) return <img src={posterSrc} alt="" style={cover} />;
+  return <video ref={ref} src={src} poster={posterSrc} muted playsInline preload="auto" style={cover} />;
+}
+
 function Storyboard({ project, revealed }: { project: DemoVideoProject; revealed: number }) {
   return (
     <div className="Trooper-scrollbar" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: 14, background: STAGE }}>
@@ -77,9 +113,7 @@ function Storyboard({ project, revealed }: { project: DemoVideoProject; revealed
               }}
             >
               <div style={{ position: 'relative', height: 96, background: '#141414' }}>
-                {ready
-                  ? <div style={{ position: 'absolute', inset: 0 }} dangerouslySetInnerHTML={{ __html: scene.svg }} />
-                  : <div className="demo-shimmer" style={{ position: 'absolute', inset: 0, opacity: 0.16 }} />}
+                <ScenePoster src={scene.src} at={scene.posterAt} posterSrc={scene.posterSrc} ready={ready} />
                 <span style={{
                   position: 'absolute', right: 6, bottom: 6, borderRadius: 4,
                   background: 'rgba(0,0,0,0.7)', padding: '1px 5px',
@@ -92,9 +126,7 @@ function Storyboard({ project, revealed }: { project: DemoVideoProject; revealed
                 <div style={{ fontSize: 11.5, fontWeight: 600, color: '#f4f4f5', marginBottom: 2 }}>
                   {i + 1}. {scene.title}
                 </div>
-                <div style={{ fontSize: 10, color: '#71717a' }}>
-                  {ready ? 'Ready' : 'Generating…'}
-                </div>
+                <div style={{ fontSize: 10, color: '#71717a' }}>{ready ? 'Ready' : 'Generating…'}</div>
               </div>
             </div>
           );
@@ -104,22 +136,222 @@ function Storyboard({ project, revealed }: { project: DemoVideoProject; revealed
   );
 }
 
+const CLIP_TONE = {
+  video: { border: 'rgba(55,209,120,0.55)', text: '#c9f7dd', fill: 'rgba(18,38,28,0.6)' },
+  audio: { border: 'rgba(129,140,248,0.55)', text: '#d3d6fd', fill: 'rgba(32,35,68,0.9)' },
+  text: { border: 'rgba(251,191,36,0.55)', text: '#fde68a', fill: 'rgba(58,46,16,0.9)' },
+} as const;
+
 function Timeline({ project, playhead }: { project: DemoVideoProject; playhead: number }) {
-  const pxPerSecond = 46;
-  const width = project.durationSeconds * pxPerSecond;
-  const ticks = Array.from({ length: project.durationSeconds + 1 }, (_, s) => s);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const monitorRef = useRef<HTMLVideoElement>(null);
+  const [strips, setStrips] = useState<Record<string, HTMLCanvasElement>>({});
+  const [peaks, setPeaks] = useState<Record<string, Float32Array>>({});
+  const [monitorFailed, setMonitorFailed] = useState(false);
+
+  const contentW = HEAD_W + project.durationSeconds * PX_PER_SECOND;
+  const height = RULER_H + project.tracks.length * TRACK_H;
+
+  /**
+   * Pull real frames and peaks. Filmstrip extraction reports progress so the
+   * clip fills in as cells land rather than staying empty until it finishes.
+   */
+  useEffect(() => {
+    let alive = true;
+    const audioSrcs = Array.from(new Set(project.clips.filter(c => c.kind === 'audio' && c.src).map(c => c.src!)));
+
+    project.clips.filter(c => c.kind === 'video' && c.src).forEach((clip) => {
+      const src = clip.src!;
+      extractFilmstrip(src, {
+        onProgress: (canvas) => { if (alive) setStrips(p => ({ ...p, [src]: canvas })); },
+      }).then(async (canvas) => {
+        if (!alive) return;
+        if (canvas) { setStrips(p => ({ ...p, [src]: canvas })); return; }
+        // No decoder for this clip — tile its poster so the track still reads.
+        if (clip.posterSrc) {
+          const fallback = await extractImageStrip(clip.posterSrc);
+          if (alive && fallback) setStrips(p => ({ ...p, [src]: fallback }));
+        }
+      });
+    });
+    audioSrcs.forEach((src) => {
+      extractWaveform(src).then((p) => { if (alive) setPeaks(prev => ({ ...prev, [src]: p })); });
+    });
+
+    return () => { alive = false; };
+  }, [project]);
+
+  // One canvas for the whole timeline, as TimelineCanvasNle does.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.max(1, Math.round(contentW * dpr));
+    canvas.height = Math.max(1, Math.round(height * dpr));
+    canvas.style.width = `${contentW}px`;
+    canvas.style.height = `${height}px`;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = STAGE;
+    ctx.fillRect(0, 0, contentW, height);
+
+    // Ruler
+    ctx.fillStyle = BAR;
+    ctx.fillRect(0, 0, contentW, RULER_H);
+    ctx.font = '9px ui-monospace, Menlo, monospace';
+    for (let s = 0; s <= project.durationSeconds; s += 1) {
+      const x = HEAD_W + s * PX_PER_SECOND;
+      ctx.strokeStyle = LINE;
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, s % 5 === 0 ? 0 : RULER_H - 9);
+      ctx.lineTo(x + 0.5, RULER_H);
+      ctx.stroke();
+      if (s % 2 === 0) {
+        ctx.fillStyle = '#71717a';
+        ctx.fillText(`${s}s`, x + 4, 11);
+      }
+    }
+
+    // Lanes and clips
+    project.tracks.forEach((track, ti) => {
+      const top = RULER_H + ti * TRACK_H;
+      if (ti % 2) {
+        ctx.fillStyle = 'rgba(255,255,255,0.015)';
+        ctx.fillRect(HEAD_W, top, contentW - HEAD_W, TRACK_H);
+      }
+      ctx.strokeStyle = LINE;
+      ctx.beginPath();
+      ctx.moveTo(0, top + TRACK_H + 0.5);
+      ctx.lineTo(contentW, top + TRACK_H + 0.5);
+      ctx.stroke();
+
+      project.clips.filter(c => c.track === track.id).forEach((clip) => {
+        const x = HEAD_W + clip.start * PX_PER_SECOND;
+        const w = clip.length * PX_PER_SECOND - 3;
+        const y = top + 6;
+        const h = TRACK_H - 12;
+        const tone = CLIP_TONE[clip.kind];
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 5);
+        ctx.clip();
+        ctx.fillStyle = tone.fill;
+        ctx.fillRect(x, y, w, h);
+
+        const strip = clip.src ? strips[clip.src] : null;
+        if (clip.kind === 'video' && strip) {
+          // The strip spans the whole source; scale it to the clip's width so
+          // frames read left-to-right across the clip.
+          const scale = h / strip.height;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(strip, 0, 0, strip.width, strip.height, x, y, Math.max(w, strip.width * scale * 0 + w), h);
+        } else if (clip.kind === 'audio' && clip.src && peaks[clip.src]) {
+          const p = peaks[clip.src];
+          const mid = y + h / 2;
+          ctx.strokeStyle = 'rgba(165,180,252,0.9)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          for (let px = 0; px < w; px += 1) {
+            const amp = (p[Math.floor((px / w) * p.length)] || 0) * (h / 2 - 3);
+            ctx.moveTo(x + px + 0.5, mid - amp);
+            ctx.lineTo(x + px + 0.5, mid + amp);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = tone.border;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(x + 0.5, y + 0.5, w - 1, h - 1, 5);
+        ctx.stroke();
+
+        // Label sits on a plate so it stays readable over footage.
+        ctx.font = '600 10px Inter, system-ui, sans-serif';
+        const plateW = Math.min(ctx.measureText(clip.label).width + 10, w - 8);
+        if (plateW > 22) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(x + 4, y + 4, plateW, 15, 3);
+          ctx.fillStyle = 'rgba(0,0,0,0.6)';
+          ctx.fill();
+          ctx.clip();
+          ctx.fillStyle = tone.text;
+          ctx.fillText(clip.label, x + 9, y + 12);
+          ctx.restore();
+        }
+      });
+    });
+
+    // Track heads last, so nothing bleeds under them.
+    ctx.fillStyle = BAR;
+    ctx.fillRect(0, 0, HEAD_W, height);
+    ctx.strokeStyle = LINE;
+    ctx.beginPath();
+    ctx.moveTo(HEAD_W + 0.5, 0);
+    ctx.lineTo(HEAD_W + 0.5, height);
+    ctx.stroke();
+    ctx.font = '600 10.5px Inter, system-ui, sans-serif';
+    ctx.fillStyle = '#a1a1aa';
+    project.tracks.forEach((track, ti) => {
+      ctx.fillText(track.label, 12, RULER_H + ti * TRACK_H + TRACK_H / 2);
+    });
+
+    // Playhead
+    const px = HEAD_W + playhead * PX_PER_SECOND;
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(px - 0.75, 0, 1.5, height);
+    ctx.beginPath();
+    ctx.roundRect(px - 5, 0, 10, 10, 2);
+    ctx.fill();
+  }, [project, playhead, strips, peaks, contentW, height]);
+
+  // Program monitor scrubs the real file, so the frame matches the timecode.
+  const monitorClip = useMemo(
+    () => project.clips.find(c => c.kind === 'video' && c.src && playhead >= c.start && playhead < c.start + c.length)
+      ?? project.clips.find(c => c.kind === 'video' && c.src),
+    [project, playhead],
+  );
+
+  useEffect(() => {
+    const el = monitorRef.current;
+    if (!el || !monitorClip) return;
+    const target = (monitorClip.sourceIn ?? 0) + Math.max(0, playhead - monitorClip.start);
+    const apply = () => { try { el.currentTime = target; } catch { /* ignore */ } };
+    if (el.readyState >= 1) apply();
+    else el.addEventListener('loadedmetadata', apply, { once: true });
+  }, [monitorClip, playhead]);
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', background: STAGE }}>
-      {/* Program monitor — the frame under the playhead */}
-      <div style={{ flexShrink: 0, height: 132, borderBottom: `1px solid ${LINE}`, background: '#0a0a0a', position: 'relative' }}>
-        {(() => {
-          const scene = project.scenes[Math.min(
-            project.scenes.length - 1,
-            Math.floor((playhead / Math.max(1, project.durationSeconds)) * project.scenes.length),
-          )];
-          return scene ? <div style={{ position: 'absolute', inset: 0 }} dangerouslySetInnerHTML={{ __html: scene.svg }} /> : null;
-        })()}
+      <div style={{ flexShrink: 0, height: 150, borderBottom: `1px solid ${LINE}`, background: '#000', position: 'relative' }}>
+        {monitorClip?.src && (
+          <video
+            ref={monitorRef}
+            key={monitorClip.src}
+            src={monitorClip.src}
+            poster={monitorClip.posterSrc}
+            muted
+            playsInline
+            preload="auto"
+            onError={() => setMonitorFailed(true)}
+            style={{
+              position: 'absolute', inset: 0, width: '100%', height: '100%',
+              objectFit: 'contain', opacity: monitorFailed ? 0 : 1,
+            }}
+          />
+        )}
+        {monitorFailed && monitorClip?.posterSrc && (
+          <img
+            src={monitorClip.posterSrc}
+            alt=""
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        )}
         <span style={{
           position: 'absolute', left: 8, bottom: 8, borderRadius: 5,
           background: 'rgba(0,0,0,0.72)', padding: '2px 7px',
@@ -131,80 +363,8 @@ function Timeline({ project, playhead }: { project: DemoVideoProject; playhead: 
         </span>
       </div>
 
-      <div className="Trooper-scrollbar" style={{ flex: 1, minHeight: 0, overflow: 'auto', position: 'relative' }}>
-        <div style={{ display: 'flex', minWidth: 'min-content' }}>
-          {/* Track head rail — mute/hide controls, as in the app */}
-          <div style={{ width: 84, flexShrink: 0, position: 'sticky', left: 0, zIndex: 2, background: BAR, borderRight: `1px solid ${LINE}` }}>
-            <div style={{ height: RULER_H, borderBottom: `1px solid ${LINE}` }} />
-            {project.tracks.map((track) => {
-              const Icon = TRACK_ICON[track.kind];
-              return (
-                <div key={track.id} style={{
-                  height: TRACK_H, display: 'flex', alignItems: 'center', gap: 6, padding: '0 9px',
-                  borderBottom: `1px solid ${LINE}`,
-                }}>
-                  <Icon size={12} color="#a1a1aa" strokeWidth={2} />
-                  <span style={{ fontSize: 10.5, fontWeight: 600, color: '#a1a1aa' }}>{track.label}</span>
-                </div>
-              );
-            })}
-          </div>
-
-          <div style={{ position: 'relative', width, flexShrink: 0 }}>
-            {/* Ruler */}
-            <div style={{ height: RULER_H, borderBottom: `1px solid ${LINE}`, position: 'relative', background: BAR }}>
-              {ticks.map((s) => (
-                <span key={s} style={{ position: 'absolute', left: s * pxPerSecond, top: 0, height: '100%', borderLeft: `1px solid ${LINE}` }}>
-                  <span style={{ position: 'absolute', left: 4, top: 8, fontSize: 9, color: '#71717a', fontVariantNumeric: 'tabular-nums' }}>
-                    {s}s
-                  </span>
-                </span>
-              ))}
-            </div>
-
-            {/* Tracks + clips */}
-            {project.tracks.map((track) => (
-              <div key={track.id} style={{ height: TRACK_H, borderBottom: `1px solid ${LINE}`, position: 'relative', background: track.id % 2 ? 'rgba(255,255,255,0.012)' : 'transparent' }}>
-                {ticks.map((s) => (
-                  <span key={s} style={{ position: 'absolute', left: s * pxPerSecond, top: 0, height: '100%', borderLeft: `1px solid rgba(255,255,255,0.035)` }} />
-                ))}
-                {project.clips.filter(c => c.track === track.id).map((clip) => {
-                  const tone = CLIP_TONE[clip.kind];
-                  const landed = clip.start <= playhead + 0.01;
-                  return (
-                    <div
-                      key={clip.id}
-                      style={{
-                        position: 'absolute', left: clip.start * pxPerSecond, top: 6,
-                        width: clip.length * pxPerSecond - 3, height: TRACK_H - 12,
-                        borderRadius: 5, border: `1px solid ${tone.border}`, background: tone.bg,
-                        display: 'flex', alignItems: 'center', padding: '0 7px', overflow: 'hidden',
-                        opacity: landed ? 1 : 0,
-                        transform: landed ? 'none' : 'translateY(4px)',
-                        transition: `opacity ${DUR.panel}ms ${EASE_OUT}, transform ${DUR.panel}ms ${EASE_OUT}`,
-                      }}
-                    >
-                      <span style={{ fontSize: 10, fontWeight: 600, color: tone.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {clip.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-
-            {/* Playhead */}
-            <div style={{
-              position: 'absolute', top: 0, bottom: 0, left: 0, width: 0, zIndex: 3,
-              transform: `translateX(${playhead * pxPerSecond}px)`,
-              transition: `transform ${DUR.panel}ms linear`,
-              pointerEvents: 'none',
-            }}>
-              <div style={{ position: 'absolute', top: 0, bottom: 0, width: 1.5, background: '#ef4444' }} />
-              <div style={{ position: 'absolute', top: 0, left: -5, width: 12, height: 10, borderRadius: '2px 2px 4px 4px', background: '#ef4444' }} />
-            </div>
-          </div>
-        </div>
+      <div className="Trooper-scrollbar" style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
+        <canvas ref={canvasRef} style={{ display: 'block' }} />
       </div>
 
       <div style={{

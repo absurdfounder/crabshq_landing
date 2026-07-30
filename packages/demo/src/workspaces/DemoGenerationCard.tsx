@@ -77,9 +77,25 @@ export function DemoGenerationCard({
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 0, position: 'relative', background: '#F5F5F4', overflow: 'hidden' }}>
+      <div style={{ flex: 1, minHeight: 0, position: 'relative', background: '#0a0a0c', overflow: 'hidden' }}>
         {done ? (
-          <div className="demo-enter" style={{ position: 'absolute', inset: 0 }} dangerouslySetInnerHTML={{ __html: job.svg }} />
+          <div className="demo-enter" style={{ position: 'absolute', inset: 0 }}>
+            {job.kind === 'video' ? (
+              // The produced asset itself, looping — a generation that resolves
+              // into a still frame never looks like a video model finished.
+              <video
+                src={job.src}
+                poster={job.posterSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <img src={job.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            )}
+          </div>
         ) : (
           <div className="demo-shimmer" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
         )}

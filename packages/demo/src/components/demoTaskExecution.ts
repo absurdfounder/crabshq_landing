@@ -97,7 +97,12 @@ export type DemoVideoScene = {
   id: string;
   title: string;
   seconds: number;
-  svg: string;
+  /** Real media this scene is cut from — poster frames come from the file. */
+  src?: string;
+  /** Seconds into `src` to use as the poster frame. */
+  posterAt?: number;
+  /** Still fallback when `src` can't be decoded. */
+  posterSrc?: string;
 };
 
 export type DemoVideoClip = {
@@ -108,6 +113,12 @@ export type DemoVideoClip = {
   start: number;
   length: number;
   kind: 'video' | 'audio' | 'text';
+  /** Media backing this clip; video clips strip it, audio clips waveform it. */
+  src?: string;
+  /** Still used when the browser can't decode `src` — keeps the clip legible. */
+  posterSrc?: string;
+  /** Offset into the source media where this clip starts. */
+  sourceIn?: number;
 };
 
 export type DemoVideoProject = {
@@ -125,8 +136,10 @@ export type DemoGenerationJob = {
   kind: 'image' | 'video';
   seconds?: number;
   model: string;
-  /** Result frame, inline SVG. */
-  svg: string;
+  /** The produced asset — a real image or video file. */
+  src: string;
+  /** Poster shown for video results before playback. */
+  posterSrc?: string;
 };
 
 export type DemoDesktopSession = {
