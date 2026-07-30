@@ -33,6 +33,7 @@ import {
   animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep, REACTION_MS,
 } from './lib/demoCursorActions';
 import { DEMO_KEYFRAMES, DRAG, DUR, EASE_OUT, typingDelayFor, usePrefersReducedMotion } from './lib/demoMotion';
+import { DemoOrb } from './lib/demoThinking';
 import { useDemoDrag } from './lib/useDemoDrag';
 import { rectInCanvas, type CanvasRect } from './lib/demoGeometry';
 
@@ -375,7 +376,14 @@ function DemoSidebarNav({
   );
 }
 
-/** The app's live-agent indicator: pulsing dot plus the sheened working badge. */
+/**
+ * The app's live-agent indicator: the sheened working badge, with the state the
+ * agent is actually in where the generic pulsing dot used to be.
+ *
+ * This is the demo's copy of `RunActivityContent.jsx:618`, which renders a
+ * 1.5px `animate-pulse` dot for every live run regardless of what the run is
+ * doing. Here the agent is mid-reply, so the orb composes.
+ */
 function DemoWorkingIndicator({ name }: { name: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0" }} className="demo-enter">
@@ -384,13 +392,12 @@ function DemoWorkingIndicator({ name }: { name: string }) {
         className="demo-working-badge"
         style={{
           display: "inline-flex", alignItems: "center", gap: 6,
-          padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 600,
+          padding: "2px 9px 2px 5px", borderRadius: 999, fontSize: 11, fontWeight: 600,
         }}
       >
-        <span
-          className="demo-live-dot"
-          style={{ position: "relative", zIndex: 1, width: 6, height: 6, borderRadius: "50%", background: "#d97706" }}
-        />
+        <span style={{ position: "relative", zIndex: 1, display: "flex" }}>
+          <DemoOrb state="composing" tone="light" title={`${name} is working`} />
+        </span>
         <span style={{ position: "relative", zIndex: 1 }}>{name} is working</span>
       </span>
     </div>

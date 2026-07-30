@@ -5,6 +5,7 @@ import { MousePointer2, Monitor } from 'lucide-react';
 import { TROOPER_DEMO as C } from '../components/demoTheme';
 import type { DemoBrowserSession } from '../components/demoTaskExecution';
 import { DUR, EASE_OUT } from '../lib/demoMotion';
+import { DemoOrb, orbStateForTool } from '../lib/demoThinking';
 
 /**
  * Live browser workspace, mirroring the app's `BrowserLiveArtifactPanel.jsx`:
@@ -75,9 +76,14 @@ export function DemoBrowserStream({
           position: 'absolute', left: 10, bottom: 10, right: 10,
           display: 'flex', alignItems: 'center', gap: 7,
           borderRadius: 8, background: 'rgba(28,25,23,0.82)', backdropFilter: 'blur(4px)',
-          padding: '6px 10px', color: '#fafaf9',
+          padding: '5px 10px 5px 6px', color: '#fafaf9',
         }}>
-          <span className="demo-live-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0 }} />
+          {/* Light ink — this bar sits on the dark scrim over the page capture. */}
+          <DemoOrb
+            state={current ? orbStateForTool(current.action, '', 'searching') : 'working'}
+            tone="dark"
+            title={current?.action}
+          />
           <span style={{ fontSize: 11, fontWeight: 500, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {current?.action || 'Waiting for browser activity'}
           </span>
