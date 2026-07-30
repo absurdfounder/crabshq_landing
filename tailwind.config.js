@@ -1,18 +1,3 @@
-/** Ferndesk-aligned marketing accent — darker sage than pastel lime */
-const fernAccent = {
-  DEFAULT: '#6BA82E',
-  light: '#8ECD44',
-  bright: '#72B833',
-  check: '#65a30d',
-  dark: '#4d7d1f',
-  muted: '#7aab38',
-  50: '#eef6e4',
-  100: '#dcecc8',
-  200: '#c5dda4',
-  700: '#5a9628',
-  800: '#4a7d22',
-};
-
 /** Trooper brand green #3f6b00 and derived shades */
 const brandGreen = {
   DEFAULT: '#3f6b00',
@@ -26,6 +11,54 @@ const brandGreen = {
   700: '#325600',
   800: '#284800',
   900: '#1f3800',
+  // 950 exists because the aliases below stand in for stock Tailwind ramps,
+  // and `lime-950` is in use (TopBar). Without it the class silently vanishes.
+  950: '#152600',
+};
+
+/*
+ * One accent green.
+ *
+ * `fern` used to be a second, lighter sage (#6BA82E) running alongside
+ * `trooper` (#3f6b00). Between them — plus the `emerald`/`teal` aliases below
+ * and a few raw hex literals — ~17 distinct greens rendered on the home page
+ * under four naming systems, and the eye had nowhere to land.
+ *
+ * `fern` is now an alias of the brand ramp. The key names are preserved so the
+ * ~60 existing `fern-*` call sites keep compiling; only the hue changes.
+ */
+const fernAccent = {
+  ...brandGreen,
+  light: brandGreen[400],
+  bright: brandGreen[400],
+  check: brandGreen.DEFAULT,
+  dark: brandGreen[700],
+  muted: brandGreen[300],
+};
+
+/*
+ * Warm neutral ramp.
+ *
+ * Tailwind's stock `slate` is blue-tinted (#f1f5f9, #64748b …). The page's
+ * canvas is warm (#FAFAF8), so every `slate-*` call site — ~100 of them, all
+ * semantically correct, meaning "hairline", "muted text", "heading ink" —
+ * rendered cool against a warm surface. Two hairline colours were competing
+ * head-to-head: 299 `slate-100` borders against 269 `--color-line` borders.
+ *
+ * Retargeting the ramp fixes the hue at every call site at once and preserves
+ * the lightness ladder, so no contrast relationship shifts.
+ */
+const warmSlate = {
+  50: '#FAFAF8',  // = canvas
+  100: '#e8e8e5', // = --color-line; collapses the two-hairline split
+  200: '#e0e0dc',
+  300: '#cfcfc9',
+  400: '#8f8f8a',
+  500: '#737373', // = ink-faint
+  600: '#525252', // = ink-muted
+  700: '#404040',
+  800: '#262626',
+  900: '#1a1a1a', // = ink; collapses the h2 colour split
 };
 
 /** @type {import('tailwindcss').Config} */
@@ -39,6 +72,7 @@ module.exports = {
     extend: {
       colors: {
         fern: fernAccent,
+        slate: warmSlate,
         canvas: {
           DEFAULT: '#FAFAF8',
           warm: '#F7F7F4',
@@ -57,7 +91,11 @@ module.exports = {
           'olive-mid': '#c4d9a0',
           'olive-strong': '#9db866',
         },
+        // Frozen aliases. `emerald`, `teal` and `lime` all resolve to the brand
+        // ramp so legacy subpage call sites keep working and cannot reintroduce
+        // a second green. Do not use them in new code — use `trooper`.
         emerald: { ...brandGreen },
+        lime: { ...brandGreen },
         gray: {
           100: '#FBFBFB',
           200: '#EAEAEA',

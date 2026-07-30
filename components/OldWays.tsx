@@ -356,7 +356,7 @@ const ActionVisual = () => {
               {r.a} <span className="text-slate-400">{r.d}</span>
             </span>
             {r.running ? (
-              <Loader2 className="size-3.5 animate-spin text-[#3f6b00]" strokeWidth={2.5} />
+              <Loader2 className="size-3.5 animate-spin text-trooper" strokeWidth={2.5} />
             ) : (
               <Check className="size-3.5 text-trooper" strokeWidth={2.5} />
             )}

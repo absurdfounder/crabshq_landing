@@ -47,10 +47,10 @@ export default function Hero() {
             <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
               <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
                 <b className="text-ink">Hire a workforce, not a chatbot.</b> Troopers{' '}
-                <b className="text-lime-700">write code</b>, <b className="text-lime-700">ship commits</b>,{' '}
-                <b className="text-lime-700">run ads</b>, <b className="text-lime-700">answer support</b>, and{' '}
-                <b className="text-lime-700">file the paperwork</b> — each one running a loop you approved.
-                Powered by <span className="font-semibold text-ink text-red-600">OpenClaw</span>.
+                <b className="text-trooper">write code</b>, <b className="text-trooper">ship commits</b>,{' '}
+                <b className="text-trooper">run ads</b>, <b className="text-trooper">answer support</b>, and{' '}
+                <b className="text-trooper">file the paperwork</b> — each one running a loop you approved.
+                Powered by <span className="font-semibold text-ink">OpenClaw</span>.
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:inline-flex lg:flex-nowrap">

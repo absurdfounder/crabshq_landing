@@ -90,8 +90,10 @@ function paintDither(
 
   const image = ctx.createImageData(width, height);
   const { data } = image;
-  const bayerShiftX = Math.floor(timeMs * 0.004) % 4;
-  const bayerShiftY = Math.floor(timeMs * 0.003) % 4;
+  // JS `%` keeps the sign of the dividend, so a negative timeMs would index
+  // BAYER_4 at -1 and throw. Normalise into [0, 4).
+  const bayerShiftX = ((Math.floor(timeMs * 0.004) % 4) + 4) % 4;
+  const bayerShiftY = ((Math.floor(timeMs * 0.003) % 4) + 4) % 4;
 
   for (let gy = 0; gy < GRID_H; gy += 1) {
     const gradientT = Math.min(1, Math.max(0, gy / (GRID_H - 1) + phase));
@@ -147,7 +149,9 @@ export default function PixelDitherGradient({
     let frame = 0;
 
     const tick = (now: number) => {
-      const elapsed = now - start;
+      // The rAF timestamp is the frame's start time, which can predate the
+      // `performance.now()` captured above — clamp so elapsed never goes negative.
+      const elapsed = Math.max(0, now - start);
       const phase = Math.sin(elapsed * 0.0005) * 0.04;
       paintDither(canvas, phase, elapsed, stops);
       frame = requestAnimationFrame(tick);
