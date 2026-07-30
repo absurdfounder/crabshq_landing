@@ -18,7 +18,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
  */
 export default function TrooperCastSection() {
   return (
-    <div className="pb-8 pt-2 md:pb-16">
+    <div>
       <motion.div
         className="mb-6 max-w-3xl md:mb-12"
         initial={{ opacity: 0, y: 16 }}
@@ -37,9 +37,10 @@ export default function TrooperCastSection() {
         </p>
       </motion.div>
 
-      {/* border-t/l on the frame + border-b/r per cell keeps the hairline grid
-          clean at 1, 2 or 3 columns without per-index border logic. */}
-      <div className="grid grid-cols-1 border-l border-t border-[var(--color-line)] bg-canvas-section sm:grid-cols-2 lg:grid-cols-3">
+      {/* Hairline grid: the 1px gap exposes the container's line colour and the
+          opaque cells cover the rest — correct at 1, 2 or 3 columns with no
+          per-cell border rules. */}
+      <div className="grid grid-cols-1 gap-px border border-[var(--color-line)] bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-3">
         {TROOPERS.map((trooper, index) => (
           <motion.article
             key={trooper.handle}
@@ -47,7 +48,7 @@ export default function TrooperCastSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.07, ease }}
             viewport={{ once: true, margin: '-20px' }}
-            className="flex flex-col border-b border-r border-[var(--color-line)] p-5 sm:p-6 md:p-7"
+            className="flex flex-col bg-canvas-section p-5 sm:p-6 md:p-7"
           >
             <div className="flex items-start gap-3">
               <TrooperAvatar trooper={trooper} size={44} />
@@ -97,7 +98,7 @@ export default function TrooperCastSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.28, ease }}
           viewport={{ once: true, margin: '-20px' }}
-          className="flex flex-col justify-between border-b border-r border-[var(--color-line)] bg-white p-5 sm:p-6 md:p-7"
+          className="flex flex-col justify-between bg-white p-5 sm:p-6 md:p-7"
         >
           <div>
             <span className="type-eyebrow-num">Open roles</span>

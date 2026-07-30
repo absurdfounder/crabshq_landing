@@ -71,11 +71,11 @@ export default function Home() {
         <YcQuoteSection />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="The Squad" eyebrowNumber="02">
+      <SectionShell rhythm eyebrow="The Squad" eyebrowNumber="02">
         <TrooperCastSection />
       </SectionShell>
 
-      <SectionShell eyebrow="How It Works" eyebrowNumber="03">
+      <SectionShell rhythm eyebrow="How It Works" eyebrowNumber="03">
         <HowItWorksSteps />
       </SectionShell>
 
@@ -85,7 +85,7 @@ export default function Home() {
         <OldWays />
       </SectionShell>
 
-      <SectionShell eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 

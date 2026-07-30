@@ -10,6 +10,13 @@ interface SectionShellProps {
   noBorderBottom?: boolean;
   /** First section below fixed site header — clears TopBar + nav overlap */
   clearSiteHeader?: boolean;
+  /**
+   * Let the shell own the section's vertical rhythm instead of the child.
+   *
+   * Opt-in: most callers still pad their own children, and stacking both would
+   * double the gap. Pass this only after removing the child's own padding.
+   */
+  rhythm?: boolean;
   children: React.ReactNode;
 }
 
@@ -30,6 +37,7 @@ export default function SectionShell({
   noBorder = false,
   noBorderBottom = true,
   clearSiteHeader = false,
+  rhythm = false,
   children,
 }: SectionShellProps) {
   const sectionClasses = [
@@ -44,12 +52,18 @@ export default function SectionShell({
   // Inner frame: left/right vertical hairlines + a top hairline closing the
   // box on top. The next SectionShell's own top border serves as this
   // section's bottom divider, so we omit border-b unless explicitly asked.
+  //
+  // The side rails are dropped below `sm`: at phone widths they sit hard
+  // against the viewport edge and read as a container box rather than as the
+  // page's own margin.
   const frameClasses = [
     'max-w-7xl mx-auto min-w-0 overflow-x-hidden border-[var(--color-line)]',
     'px-4 sm:px-6',
     bgClass || 'bg-canvas',
-    !noBorder ? 'border-t border-l border-r' : 'border-l border-r',
+    !noBorder ? 'border-t' : '',
+    'sm:border-l sm:border-r',
     !noBorderBottom ? 'border-b' : '',
+    rhythm ? 'py-10 md:py-14' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -58,7 +72,7 @@ export default function SectionShell({
     <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
         {eyebrow && (
-          <div className="pt-4 sm:pt-6 md:pt-8 pb-2">
+          <div className={rhythm ? 'pb-6 md:pb-8' : 'pt-4 sm:pt-6 md:pt-8 pb-2'}>
             <span className="type-eyebrow-num">
               {eyebrowNumber && (
                 <span className="text-ink-faint">[{eyebrowNumber}]</span>

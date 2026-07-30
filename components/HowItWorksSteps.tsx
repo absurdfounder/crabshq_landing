@@ -24,7 +24,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function HowItWorksSteps() {
   return (
-    <div className="pb-8 md:pb-16 pt-2">
+    <div>
       <motion.div
         className="how-it-works-header mb-6 md:mb-12 max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
@@ -39,7 +39,10 @@ export default function HowItWorksSteps() {
         </h2>
       </motion.div>
 
-      <div className="steps-grid grid grid-cols-1 md:grid-cols-3 border border-[var(--color-line)] bg-canvas-section overflow-hidden">
+      {/* Hairline grid: the 1px gap exposes the container's line colour and the
+          opaque cells cover the rest. Correct at any row/column count, so no
+          per-index border math and nothing to re-tune per breakpoint. */}
+      <div className="steps-grid grid grid-cols-1 gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)] md:grid-cols-3">
         {steps.map((step, index) => (
           <motion.div
             key={step.number}
@@ -47,12 +50,7 @@ export default function HowItWorksSteps() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.08, ease }}
             viewport={{ once: true, margin: '-20px' }}
-            className={[
-              'step-card p-4 sm:p-6 md:p-8',
-              index < steps.length - 1 ? 'border-b md:border-b-0 md:border-r border-[var(--color-line)]' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
+            className="step-card bg-canvas-section p-4 sm:p-6 md:p-8"
           >
             <span className="step-number block font-mono text-2xl sm:text-3xl text-slate-300 tabular-nums">
               {step.number}
