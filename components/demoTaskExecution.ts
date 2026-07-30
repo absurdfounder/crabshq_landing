@@ -29,6 +29,12 @@ export type DemoToolLog = {
   provider?: string;
   /** Composio integration slug — shows integration logo in tool timeline. */
   integration?: string;
+  /** Wall time, revealed on hover like the app's tool rows. */
+  durationMs?: number;
+  /** Output lines shown when the row is expanded. */
+  result?: string[];
+  /** File this call produced — renders the app's artifact block in the thread. */
+  wrote?: { name: string; ext?: string };
 };
 
 export type DemoModalMessage = {
@@ -40,6 +46,7 @@ export type DemoModalMessage = {
 
 export type DemoFeedItem =
   | { kind: 'message'; id: string; sender: string; text: string; time: string; tags?: DemoTag[] }
+  | { kind: 'reasoning'; id: string; agent: string; text: string }
   | ({ kind: 'tool' } & DemoToolLog);
 
 export type DemoArtifactKind = 'code' | 'diff' | 'markdown' | 'html' | 'image' | 'video';
@@ -68,6 +75,7 @@ export type TaskExecStep =
   | { type: 'moveTask'; taskId: number; col: DemoColumnId; delay: number }
   | { type: 'openTaskModal'; taskId: number; delay: number }
   | { type: 'subtask'; id: string; status: DemoSubtaskStatus; delay: number }
+  | { type: 'reasoning'; agent: string; text: string; delay: number }
   | { type: 'tool'; log: Omit<DemoToolLog, 'status'>; delay: number }
   | { type: 'toolDone'; id: string; delay: number }
   | { type: 'modalMsg'; sender: string; text: string; time?: string; tags?: DemoTag[]; delay: number }

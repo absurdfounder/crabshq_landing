@@ -783,6 +783,10 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
       case 'subtask':
         setModalSubtasks(p => p.map(s => s.id === step.id ? { ...s, status: step.status } : s));
         break;
+      case 'reasoning':
+        modalMsgCounter.current += 1;
+        setModalFeed(p => [...p, { kind: 'reasoning', id: `r${modalMsgCounter.current}`, agent: step.agent, text: step.text }]);
+        break;
       case 'tool':
         setModalFeed(p => [...p, { kind: 'tool', ...step.log, status: 'running' }]);
         break;
