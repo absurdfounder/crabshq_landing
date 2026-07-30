@@ -5,6 +5,7 @@ import {
   X, Check, Loader2, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
   ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag, Code,
 } from 'lucide-react';
+import { BorderBeam } from 'border-beam';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } from './demoTaskExecution';
 import { getToolIconName } from './demoTaskExecution';
@@ -17,7 +18,8 @@ import { getProviderDomain } from '../lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
 import { DemoCanvasView } from './DemoCanvasView';
 import type { DemoWorkspaceMode } from './demoTaskExecution';
-import { DUR, EASE_OUT } from '../lib/demoMotion';
+import { DUR, EASE_OUT, usePrefersReducedMotion } from '../lib/demoMotion';
+import { DemoOrb, orbStateForTool } from '../lib/demoThinking';
 import type { CanvasRect } from '../lib/demoGeometry';
 import { DemoBrowserStream } from '../workspaces/DemoBrowserStream';
 import { DemoVideoWorkspace } from '../workspaces/DemoVideoWorkspace';
@@ -339,10 +341,16 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
           )}
           <span style={{
             marginLeft: duration || expandable ? 0 : 'auto', flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20,
           }}>
+            {/*
+              A running call says what kind of work it is, not just that work is
+              happening: browsing sweeps a globe, writing undulates, shelling out
+              scrambles and clicks back. One spinner for every tool was the whole
+              problem — the row already knows the tool name.
+            */}
             {running
-              ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
+              ? <DemoOrb state={orbStateForTool(log.tool, log.label)} tone="light" title={`${log.label} running`} />
               : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
           </span>
         </div>
@@ -654,6 +662,26 @@ export function DemoTaskModal({
     }
     return null;
   }, [feed]);
+  /**
+   * Is an agent producing into the workspace pane right now?
+   *
+   * Bound to the running *subtask*, not the running tool call. Individual tool
+   * calls in the reel resolve in 280–450ms (`launch.ts:203`), and the beam's
+   * fade-in alone is 600ms — tying it to tools meant it faded up from zero and
+   * was switched off before it ever arrived on screen. A subtask spans many
+   * calls and lasts seconds, which is both visible and the truer claim.
+   */
+  const workRunning = useMemo(
+    () => subtasks.some(s => s.status === 'running'),
+    [subtasks],
+  );
+  /**
+   * border-beam ships reduced-motion handling for its pulse types only; `line`
+   * is in the rotate family, which the README says defers to the consumer. It
+   * does — verified: under `prefers-reduced-motion: reduce` the beam layer
+   * still animated to 0.3 opacity. So the gate is ours to hold.
+   */
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = threadRef.current;
@@ -819,9 +847,32 @@ export function DemoTaskModal({
 
           {/* Right: IDE or Canvas workspace */}
           <div data-demo-target="modal-workspace" style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+            {/*
+              A light travels the bottom edge of the workspace toolbar while a
+              tool is running — the seam between "the agent is producing" and
+              the pane the output lands in. The strip is a plain rectangle with
+              no shadow, so border-beam's `overflow: hidden` container costs
+              nothing here; wrapping a card would have clipped its shadow.
+              `line` is pure CSS keyframes, so an idle modal spends no frames.
+            */}
+            <BorderBeam
+              size="line"
+              colorVariant="sunset"
+              theme="light"
+              active={workRunning && !reducedMotion}
+              borderRadius={0}
+              // The light-theme presets are tuned for white; a warm glow on the
+              // app's warm #FAFAF9 chrome needs the extra brightness and
+              // saturation to register at all at 1x.
+              strength={1}
+              brightness={2.1}
+              saturation={1.7}
+              duration={3.2}
+              style={{ flexShrink: 0 }}
+            >
             <div style={{
               display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px',
-              borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
+              borderBottom: `1px solid ${C.border}`, background: '#FAFAF9',
             }}>
               <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
                 {availableModes.map(mode => (
@@ -847,6 +898,7 @@ export function DemoTaskModal({
                 <span style={{ fontSize: 10, color: C.textSubtle }}>{canvasArtifacts.length} open</span>
               )}
             </div>
+            </BorderBeam>
             {/* A live generation takes the panel while it runs — the app does
                 the same, surfacing the job over whatever was open. */}
             {generationJob ? (

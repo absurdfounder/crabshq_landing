@@ -5,6 +5,7 @@ import { Sparkles, Image as ImageIcon, Film } from 'lucide-react';
 import { TROOPER_DEMO as C } from '../components/demoTheme';
 import type { DemoGenerationJob } from '../components/demoTaskExecution';
 import { DUR, EASE_OUT } from '../lib/demoMotion';
+import { DemoOrb, orbStateForGeneration } from '../lib/demoThinking';
 
 /**
  * Image / video generation, mirroring `video/AiGenerateDialog.jsx`: the prompt,
@@ -97,7 +98,21 @@ export function DemoGenerationCard({
             )}
           </div>
         ) : (
-          <div className="demo-shimmer" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
+          // A grey shimmer reads as a skeleton waiting on a network call. A
+          // model producing a frame is doing something, and at 64px the orb is
+          // large enough to say which: `shaping` an image, `composing` a video.
+          <div style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <DemoOrb
+              state={orbStateForGeneration(job.kind)}
+              size={64}
+              tone="dark"
+              title={job.kind === 'video' ? 'Generating video' : 'Generating image'}
+              style={{ opacity: running ? 1 : 0.35, transition: `opacity ${DUR.panel}ms ${EASE_OUT}` }}
+            />
+          </div>
         )}
         {running && (
           <div style={{
