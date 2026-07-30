@@ -2,6 +2,7 @@
 
 import { TROOPER_DEMO as C } from './demoTheme';
 import { lineHighlightStyle } from '@/lib/demoArtifactReview';
+import { DUR, EASE_OUT } from '@/lib/demoMotion';
 
 export function DemoReviewComposer({
   draftText,
@@ -26,7 +27,7 @@ export function DemoReviewComposer({
         background: C.card,
         boxShadow: '0 8px 24px -8px rgba(28,25,23,0.22)',
         padding: compact ? '6px 8px' : '8px 10px',
-        animation: 'demoThreadEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
+        animation: `demoFadeInUp ${DUR.enter}ms ${EASE_OUT} both`,
         pointerEvents: 'none',
         zIndex: 5,
       }}

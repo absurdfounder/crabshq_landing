@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, type ReactNode, type RefObject } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode, type RefObject, type PointerEvent as ReactPointerEvent } from "react";
 import {
   RotateCcw, Pause, Play, Lock, Bell, Hash, LayoutGrid, Activity, Home, ListTodo, Plus, Search,
   Target, HardDrive, Brain, Users, Laptop, Settings, Shapes, Clock,
-  ChevronDown, Columns3, List, MessageCircle, MessageSquarePlus, ArrowUp,
-  MessagesSquare, ArrowLeftRight, SlidersHorizontal, Mic, Heart,
+  ChevronDown, Columns3, List, MessageSquarePlus, ArrowUp,
+  MessagesSquare, ArrowLeftRight, SlidersHorizontal, Mic, Heart, MessageCircle,
 } from "lucide-react";
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 import { DemoMainPage, DEMO_AGENTS } from './demoPages';
@@ -22,13 +22,19 @@ import {
 } from '@/lib/demoScenarios';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from '@/lib/demoScenarios/types';
 import { DemoClickCursor, useDemoCursor } from './DemoClickCursor';
+import { DemoKanbanColumn, DemoDragOverlay, DEMO_KANBAN_COL_W, DEMO_KANBAN_GAP } from './DemoKanban';
 import {
   EMPTY_ARTIFACT_REVIEW,
   defaultArtifactReviewComment,
   getArtifactReviewLines,
   type ArtifactReviewState,
 } from '@/lib/demoArtifactReview';
-import { animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep } from '@/lib/demoCursorActions';
+import {
+  animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep, REACTION_MS,
+} from '@/lib/demoCursorActions';
+import { DEMO_KEYFRAMES, DRAG, DUR, EASE_OUT, typingDelayFor, usePrefersReducedMotion } from '@/lib/demoMotion';
+import { useDemoDrag } from '@/lib/useDemoDrag';
+import { rectInCanvas, type CanvasRect } from '@/lib/demoGeometry';
 
 type CanvasReviewState = ArtifactReviewState & { artifactName: string };
 
@@ -44,17 +50,28 @@ type Task = DemoKanbanTask;
 type Message = { sender: string; role: string; text: string; isHuman: boolean; time: string; reaction?: { emoji: string; count: number } };
 type SidebarTab = 'menu' | 'channels';
 type DemoPageId = 'home' | 'tasks' | 'goals' | 'routines' | 'files' | 'agents' | 'devices' | 'memory' | 'skills' | 'settings';
+/** `script` = the reel drives; `user` = the visitor has taken the wheel. */
+type DemoMode = 'script' | 'user';
 
 const SPLIT_PAGES: DemoPageId[] = ['tasks'];
 
-/** Design canvas — scaled to fit hero width so the full app (4 kanban cols + chat) is visible */
-const DEMO_CANVAS_W = 1360;
+/** How long the demo waits after the visitor stops before picking the reel back up. */
+const RESUME_AFTER_MS = 6000;
+
+/**
+ * Design canvas — sized so the board renders at the app's real density
+ * (224px columns, 14px card titles) rather than shrunken stand-in values.
+ * `DemoScaleFrame` scales the whole canvas down to the available width.
+ *
+ * 1600 − 52 rail − 236 sidebar − 372 chat = 940 board pane;
+ * less 24px padding = 916 ≥ 4×224 + 3×6 = 914.
+ */
+const DEMO_CANVAS_W = 1600;
 const DEMO_APP_H = 680;
 const DEMO_CHROME_H = 44;
 const DEMO_CANVAS_H = DEMO_APP_H + DEMO_CHROME_H;
 const DEMO_SIDEBAR_W = 236;
-const DEMO_CHAT_W = 392;
-const DEMO_KANBAN_COL_W = 162;
+const DEMO_CHAT_W = 372;
 
 function DemoScaleFrame({ children }: { children: ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -103,9 +120,13 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
+function avatarFor(name: string): string | undefined {
   const p = ALL_PEOPLE[name as keyof typeof ALL_PEOPLE];
-  const src = p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
+  return p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
+}
+
+function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
+  const src = avatarFor(name);
   return <img src={src} alt={name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: border ? `1.5px solid ${C.card}` : "none", flexShrink: 0, display: "block" }} />;
 }
 
@@ -132,12 +153,12 @@ function renderMentionParts(text: string, chip = false) {
   });
 }
 
-function ComposerTag({ children, icon: Icon }: { children: ReactNode; icon?: typeof ArrowLeftRight }) {
+function ComposerTag({ children, icon: Icon, onClick }: { children: ReactNode; icon?: typeof ArrowLeftRight; onClick?: () => void }) {
   return (
-    <button type="button" style={{
+    <button type="button" onClick={onClick} className="demo-hoverable demo-chip" style={{
       display: "inline-flex", alignItems: "center", gap: 4, height: 28, padding: "0 8px",
       borderRadius: 8, border: `1px solid ${C.border}`, background: C.card,
-      fontSize: 11, fontWeight: 500, color: C.textMuted, cursor: "default", whiteSpace: "nowrap",
+      fontSize: 11, fontWeight: 500, color: C.textMuted, cursor: "pointer", whiteSpace: "nowrap",
     }}>
       {Icon ? <Icon size={12} strokeWidth={1.75} /> : null}
       {children}
@@ -146,75 +167,7 @@ function ComposerTag({ children, icon: Icon }: { children: ReactNode; icon?: typ
   );
 }
 
-function DemoTaskCard({ task, index, highlighted }: { task: Task; index: number; highlighted?: boolean }) {
-  return (
-    <div
-      data-demo-target="task-card"
-      data-task-id={task.id}
-      style={{
-      background: C.card, borderRadius: 10,
-      border: highlighted ? `2px solid ${C.brand}` : `1px solid ${C.border}`,
-      padding: "10px 11px", marginBottom: 6,
-      boxShadow: highlighted ? `0 0 0 3px rgba(0,122,90,0.12), 0 1px 2px rgba(28,25,23,0.04)` : "0 1px 2px rgba(28,25,23,0.04)",
-      animation: `cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) ${index * 90}ms both`,
-      transition: "border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
-      transform: highlighted ? "translateY(-1px)" : "translateY(0)",
-    }}>
-      <div style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.45, marginBottom: 8 }}>{task.title}</div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
-        {task.tags.slice(0, 2).map(t => (
-          <span key={t} style={{ fontSize: 10, fontWeight: 500, color: C.textMuted, background: C.bg, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>{t}</span>
-        ))}
-      </div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex" }}>
-          {task.watchers.slice(0, 3).map((n, i) => (
-            <div key={n} style={{ marginLeft: i > 0 ? -5 : 0 }}><Av name={n} size={16} /></div>
-          ))}
-        </div>
-        {task.comments > 0 && (
-          <div style={{ display: "flex", alignItems: "center", gap: 3, color: C.textSubtle }}>
-            <MessageCircle size={11} strokeWidth={1.75} />
-            <span style={{ fontSize: 10, fontWeight: 600 }}>{task.comments}</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function DemoKanbanColumn({ colKey, tasks, highlightedTaskId }: { colKey: DemoColumnId; tasks: Task[]; highlightedTaskId?: number | null }) {
-  const col = KANBAN_COLUMNS[colKey];
-  return (
-    <div data-demo-target={`kanban-${colKey}`} style={{ width: DEMO_KANBAN_COL_W, minWidth: DEMO_KANBAN_COL_W, flexShrink: 0, display: "flex", flexDirection: "column", height: "100%" }}>
-      <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "8px 12px", borderRadius: 8, marginBottom: 4, background: col.headerBg, color: col.headerText,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-          <span style={{ fontSize: 16, lineHeight: 1 }}>{col.emoji}</span>
-          <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>{col.label}</span>
-        </div>
-        <span style={{
-          fontSize: 11, fontWeight: 600, padding: "2px 6px", borderRadius: 999,
-          background: "rgba(255,255,255,0.6)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.06)",
-          transition: "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
-          display: "inline-block",
-        }}>{tasks.length}</span>
-      </div>
-      <div className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", borderRadius: 8, padding: 8, background: col.bodyBg }}>
-        {tasks.length === 0 ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: 8, border: `1px dashed ${C.border}`, background: "rgba(255,255,255,0.8)", padding: "16px 10px", textAlign: "center" }}>
-            <p style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, margin: 0 }}>Nothing here yet</p>
-            <p style={{ fontSize: 10, color: C.textSubtle, margin: "4px 0 0", lineHeight: 1.4 }}>Drop a task here or add one with +</p>
-          </div>
-        ) : tasks.map((t, i) => <DemoTaskCard key={t.id} task={t} index={i} highlighted={highlightedTaskId === t.id} />)}
-      </div>
-    </div>
-  );
-}
-
-function DemoSidebarRail({ org }: { org: DemoOrg }) {
+function DemoSidebarRail({ org, onActivity }: { org: DemoOrg; onActivity: () => void }) {
   return (
     <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
@@ -223,7 +176,7 @@ function DemoSidebarRail({ org }: { org: DemoOrg }) {
         <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
           <DemoFavicon src={org.icon} size={24} rounded="md" alt={org.name} />
         </div>
-        <button type="button" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "default" }}>
+        <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "pointer" }}>
           <Plus size={16} strokeWidth={1.5} />
         </button>
       </div>
@@ -254,7 +207,7 @@ const MENU_NAV = {
 };
 
 function DemoSidebarNav({
-  sidebarTab, setSidebarTab, activePage, onNavigate, activeChannel, onSelectChannel, onUserInteract,
+  sidebarTab, setSidebarTab, activePage, onNavigate, activeChannel, onSelectChannel, onActivity,
   channels, org,
 }: {
   sidebarTab: SidebarTab;
@@ -263,7 +216,7 @@ function DemoSidebarNav({
   onNavigate: (id: DemoPageId) => void;
   activeChannel: string;
   onSelectChannel: (id: string) => void;
-  onUserInteract: () => void;
+  onActivity: () => void;
   channels: DemoChannel[];
   org: DemoOrg;
 }) {
@@ -274,7 +227,8 @@ function DemoSidebarNav({
       <button
         type="button"
         data-demo-target={tab === 'channels' ? 'sidebar-channels-tab' : undefined}
-        onClick={() => { onUserInteract(); setSidebarTab(tab); }}
+        className="demo-hoverable demo-row"
+        onClick={() => { onActivity(); setSidebarTab(tab); }}
         style={{
           display: "inline-flex", alignItems: "center", gap: 6, height: 32, padding: active ? "0 10px" : 0,
           width: active ? "auto" : 32, borderRadius: 16, border: "none", cursor: "pointer",
@@ -299,7 +253,8 @@ function DemoSidebarNav({
         key={item.id}
         type="button"
         data-demo-target={item.id === 'tasks' ? 'nav-tasks' : undefined}
-        onClick={() => { onUserInteract(); onNavigate(item.id); }}
+        className="demo-hoverable demo-row"
+        onClick={() => { onActivity(); onNavigate(item.id); }}
         style={{
           display: "flex", alignItems: "center", gap: 12, padding: "8px 12px", borderRadius: 16, marginBottom: 2,
           width: "100%", border: "none", cursor: "pointer", textAlign: "left",
@@ -325,7 +280,8 @@ function DemoSidebarNav({
       <button
         key={ch.id}
         type="button"
-        onClick={() => { onUserInteract(); onSelectChannel(ch.id); onNavigate('tasks'); }}
+        className="demo-hoverable demo-row"
+        onClick={() => { onActivity(); onSelectChannel(ch.id); onNavigate('tasks'); }}
         style={{
           display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 16, marginBottom: 4,
           width: "100%", border: "none", cursor: "pointer", textAlign: "left",
@@ -353,7 +309,7 @@ function DemoSidebarNav({
         {tabBtn('menu', LayoutGrid, 'Menu')}
         {tabBtn('channels', MessagesSquare, 'Channels')}
         <div style={{ flex: 1 }} />
-        <button type="button" onClick={onUserInteract} style={{ width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, color: C.textMuted, boxShadow: "0 1px 3px rgba(28,25,23,0.06)", border: "none", cursor: "default" }}>
+        <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, color: C.textMuted, boxShadow: "0 1px 3px rgba(28,25,23,0.06)", border: "none", cursor: "pointer" }}>
           <Search size={16} strokeWidth={1.35} />
         </button>
       </div>
@@ -366,7 +322,7 @@ function DemoSidebarNav({
             <div style={{ marginTop: 8, padding: "0 4px" }}>
               <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "8px 4px 6px" }}>Direct messages</div>
               {DEMO_AGENTS.slice(0, 3).map(a => (
-                <button key={a.name} type="button" onClick={() => { onUserInteract(); onNavigate('tasks'); }} style={{
+                <button key={a.name} type="button" onClick={() => { onActivity(); onNavigate('tasks'); }} className="demo-hoverable demo-row" style={{
                   display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 14, marginBottom: 4,
                   width: "100%", border: "none", cursor: "pointer", background: "transparent", textAlign: "left",
                 }}>
@@ -400,13 +356,13 @@ function DemoSidebarNav({
       <div style={{ padding: "8px 12px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.bg }}>
         <div style={{ display: "flex", gap: 4, marginBottom: 8, background: C.card, borderRadius: 16, padding: 4, boxShadow: "0 1px 3px rgba(28,25,23,0.06)" }}>
           {[{ icon: Activity, label: "Activity" }, { icon: Bell, label: "Attention" }, { icon: Pause, label: "Pause" }].map(({ icon: Icon, label }) => (
-            <button key={label} type="button" onClick={onUserInteract} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "8px 2px", borderRadius: 12, color: C.textMuted, border: "none", background: "transparent", cursor: "default" }}>
+            <button key={label} type="button" onClick={onActivity} className="demo-hoverable demo-row" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "8px 2px", borderRadius: 12, color: C.textMuted, border: "none", background: "transparent", cursor: "pointer" }}>
               <Icon size={18} strokeWidth={1.5} />
               <span style={{ fontSize: 10, fontWeight: 500 }}>{label}</span>
             </button>
           ))}
         </div>
-        <button type="button" onClick={() => { onUserInteract(); setSidebarTab('channels'); onNavigate('tasks'); }} style={{
+        <button type="button" onClick={() => { onActivity(); setSidebarTab('channels'); onNavigate('tasks'); }} className="demo-hoverable demo-row" style={{
           display: "flex", alignItems: "center", gap: 10, height: 44, padding: "0 14px", width: "100%",
           borderRadius: 16, border: `1px solid ${C.border}`, background: C.card,
           boxShadow: "0 1px 2px rgba(28,25,23,0.04)", fontSize: 14, fontWeight: 500, color: C.text, cursor: "pointer",
@@ -419,9 +375,31 @@ function DemoSidebarNav({
   );
 }
 
+/** The app's live-agent indicator: pulsing dot plus the sheened working badge. */
+function DemoWorkingIndicator({ name }: { name: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0" }} className="demo-enter">
+      <Av name={name} size={20} />
+      <span
+        className="demo-working-badge"
+        style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 600,
+        }}
+      >
+        <span
+          className="demo-live-dot"
+          style={{ position: "relative", zIndex: 1, width: 6, height: 6, borderRadius: "50%", background: "#d97706" }}
+        />
+        <span style={{ position: "relative", zIndex: 1 }}>{name} is working</span>
+      </span>
+    </div>
+  );
+}
+
 function DemoChatPane({
   messages, inputText, mentionTab, agentTyping, activeChannel, composerPlaceholder, chatRef,
-  channels, org, channelBrand = 'trooper',
+  channels, org, channelBrand = 'trooper', onActivity,
 }: {
   messages: Message[];
   inputText: string;
@@ -433,6 +411,7 @@ function DemoChatPane({
   channels: DemoChannel[];
   org: DemoOrg;
   channelBrand?: ChannelBrand;
+  onActivity: () => void;
 }) {
   const channelName = channels.find(c => c.id === activeChannel)?.name || 'general';
   const headerAccent = channelBrand === 'slack' ? '#611f69' : channelBrand === 'whatsapp' ? '#128C7E' : C.textMuted;
@@ -442,12 +421,12 @@ function DemoChatPane({
     <div style={{ width: DEMO_CHAT_W, minWidth: DEMO_CHAT_W, flexShrink: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
       <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: channelBrand === 'slack' ? '#f8f5fb' : channelBrand === 'whatsapp' ? '#f0faf4' : C.card }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-          <button type="button" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "default", fontSize: 14, fontWeight: 600, color: "#525252" }}>
+          <button type="button" onClick={onActivity} className="demo-hoverable" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#525252" }}>
             <ChannelIcon size={14} strokeWidth={1.75} color={headerAccent} />
             {channelName}
             <ChevronDown size={14} strokeWidth={2} color="#a3a3a3" />
           </button>
-          <button type="button" style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px", borderRadius: 8, border: `1px solid rgba(231,229,228,0.8)`, background: C.card, fontSize: 12, fontWeight: 500, color: "#525252", boxShadow: "0 1px 2px rgba(28,25,23,0.04)" }}>
+          <button type="button" onClick={onActivity} className="demo-hoverable demo-chip" style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px", borderRadius: 8, border: `1px solid rgba(231,229,228,0.8)`, background: C.card, fontSize: 12, fontWeight: 500, color: "#525252", boxShadow: "0 1px 2px rgba(28,25,23,0.04)", cursor: "pointer" }}>
             <MessageSquarePlus size={14} strokeWidth={1.75} />
             New session
           </button>
@@ -463,7 +442,9 @@ function DemoChatPane({
 
       <div ref={chatRef} data-demo-target="chat-thread" className="Trooper-scrollbar" style={{ flex: 1, overflowY: "auto", padding: "12px 16px", background: C.card }}>
         {messages.map((msg, i) => (
-          <div key={i} style={{ marginBottom: 16, animation: `msgIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both` }}>
+          // Only the newest message animates in; re-running the entry on every
+          // message each render is what made the thread feel like a slideshow.
+          <div key={i} className={i === messages.length - 1 ? 'demo-enter' : undefined} style={{ marginBottom: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
               <Av name={msg.sender} size={24} />
               <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{msg.sender}</span>
@@ -476,7 +457,7 @@ function DemoChatPane({
             <div style={{ marginLeft: 32, fontSize: 14, lineHeight: 1.55, color: C.textMuted }}>{renderMentionParts(msg.text)}</div>
             {msg.reaction && (
               <div style={{ marginLeft: 32, marginTop: 6 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: C.card, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>
+                <span className="demo-pop" style={{ display: "inline-flex", alignItems: "center", gap: 3, fontSize: 11, background: C.card, border: `1px solid ${C.border}`, padding: "2px 7px", borderRadius: 999 }}>
                   <span>{msg.reaction.emoji}</span>
                   <span style={{ fontSize: 10, color: C.textSubtle, fontWeight: 600 }}>{msg.reaction.count}</span>
                 </span>
@@ -484,26 +465,7 @@ function DemoChatPane({
             )}
           </div>
         ))}
-        {agentTyping && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0", animation: "fadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
-            <Av name="Jordan" size={20} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: C.textSubtle }}>Jordan is typing</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 3, marginLeft: 2 }} aria-hidden>
-              {[0, 1, 2].map((dot) => (
-                <span
-                  key={dot}
-                  style={{
-                    width: 4,
-                    height: 4,
-                    borderRadius: "50%",
-                    background: C.textSubtle,
-                    animation: `dotBounce 1.2s ease-in-out ${dot * 0.15}s infinite`,
-                  }}
-                />
-              ))}
-            </span>
-          </div>
-        )}
+        {agentTyping && <DemoWorkingIndicator name="Jordan" />}
       </div>
 
       <div style={{ padding: "10px 16px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.card }}>
@@ -512,27 +474,28 @@ function DemoChatPane({
             {inputText ? (
               <>
                 {renderMentionParts(inputText, true)}
-                <span style={{ display: "inline-block", width: 1.5, height: 16, background: C.text, marginLeft: 1, verticalAlign: "text-bottom", animation: "blink 1s infinite" }} />
+                <span className="demo-blink" style={{ display: "inline-block", width: 1.5, height: 16, background: C.text, marginLeft: 1, verticalAlign: "text-bottom" }} />
               </>
             ) : composerPlaceholder}
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, padding: "6px 10px 8px", borderTop: `1px solid ${C.borderWarm}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", minWidth: 0 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle, border: `1px solid ${C.border}`, background: C.card }}>
+              <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 28, height: 28, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer" }}>
                 <Plus size={16} strokeWidth={1.75} />
-              </div>
-              <ComposerTag>
+              </button>
+              <ComposerTag onClick={onActivity}>
                 <DemoFavicon src={org.icon} size={14} rounded="sm" alt={org.name} />
                 {org.name}
               </ComposerTag>
-              <ComposerTag>Auto</ComposerTag>
+              <ComposerTag onClick={onActivity}>Auto</ComposerTag>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+              <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle, border: "none", background: "transparent", cursor: "pointer" }}>
                 <Mic size={16} strokeWidth={1.75} />
-              </div>
+              </button>
               <div
                 data-demo-target="composer-send"
+                className="demo-hoverable demo-send"
                 style={{
                   width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
                   background: inputText ? C.brand : "rgba(28,25,23,0.09)", color: inputText ? "white" : C.textSubtle,
@@ -544,42 +507,116 @@ function DemoChatPane({
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 8, overflowX: "auto" }}>
-          <ComposerTag icon={ArrowLeftRight}>All Devices</ComposerTag>
-          <ComposerTag icon={SlidersHorizontal}>Smart Approve</ComposerTag>
+          <ComposerTag icon={ArrowLeftRight} onClick={onActivity}>All Devices</ComposerTag>
+          <ComposerTag icon={SlidersHorizontal} onClick={onActivity}>Smart Approve</ComposerTag>
         </div>
       </div>
     </div>
   );
 }
 
-function DemoBoardPane({ tasks, highlightedTaskId }: { tasks: Task[]; highlightedTaskId?: number | null }) {
+function DemoBoardPane({
+  tasks, highlightedTaskId, draggingTaskId, overCol, interactive, onOpenTask, onDragStart, onActivity,
+}: {
+  tasks: Task[];
+  highlightedTaskId?: number | null;
+  draggingTaskId?: number | null;
+  overCol?: DemoColumnId | null;
+  interactive?: boolean;
+  onOpenTask?: (task: Task) => void;
+  onDragStart?: (task: Task, event: ReactPointerEvent<HTMLDivElement>) => void;
+  onActivity: () => void;
+}) {
+  const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns');
   const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
   tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
+
+  const toggle = (mode: 'columns' | 'list', icon: ReactNode, label: string) => (
+    <button
+      type="button"
+      onClick={() => { onActivity(); setViewMode(mode); }}
+      className="demo-hoverable"
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6,
+        border: "none", cursor: "pointer",
+        background: viewMode === mode ? "rgba(231,229,228,0.9)" : "transparent",
+        fontSize: 11, fontWeight: 500, color: viewMode === mode ? C.text : C.textMuted,
+      }}
+    >
+      {icon} {label}
+    </button>
+  );
 
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", background: C.card, padding: "10px 12px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexShrink: 0 }}>
         <div style={{ display: "inline-flex", height: 32, alignItems: "center", borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, padding: 1, boxShadow: "0 1px 2px rgba(28,25,23,0.04)" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, background: "rgba(231,229,228,0.9)", fontSize: 11, fontWeight: 500, color: C.text }}>
-            <Columns3 size={14} strokeWidth={1.5} /> Columns
-          </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6, fontSize: 11, fontWeight: 500, color: C.textMuted }}>
-            <List size={14} strokeWidth={1.5} /> List
-          </div>
+          {toggle('columns', <Columns3 size={14} strokeWidth={1.5} />, 'Columns')}
+          {toggle('list', <List size={14} strokeWidth={1.5} />, 'List')}
         </div>
         <div style={{ flex: 1 }} />
-        <button type="button" style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid rgba(28,25,23,0.9)", background: "#1c1917", color: "white", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button type="button" onClick={onActivity} className="demo-hoverable" style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid rgba(28,25,23,0.9)", background: "#1c1917", color: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Plus size={14} strokeWidth={2} />
         </button>
       </div>
-      <div className="Trooper-scrollbar" style={{ display: "flex", gap: 10, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
+      <div className="Trooper-scrollbar" style={{ display: "flex", gap: DEMO_KANBAN_GAP, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
         {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
-          <DemoKanbanColumn key={k} colKey={k} tasks={cols[k]} highlightedTaskId={highlightedTaskId} />
+          <DemoKanbanColumn
+            key={k}
+            colKey={k}
+            tasks={cols[k]}
+            avatarFor={avatarFor}
+            highlightedTaskId={highlightedTaskId}
+            draggingTaskId={draggingTaskId}
+            isOver={overCol === k}
+            interactive={interactive}
+            onOpenTask={onOpenTask}
+            onDragStart={onDragStart}
+          />
         ))}
       </div>
     </div>
   );
 }
+
+/** Chrome pill telling the visitor whether the reel or they are driving. */
+function DemoModePill({ mode, resumeIn }: { mode: DemoMode; resumeIn: number | null }) {
+  const driving = mode === 'user';
+  return (
+    <div style={{
+      display: "inline-flex", alignItems: "center", gap: 6, height: 24, padding: "0 10px",
+      borderRadius: 999, fontSize: 10.5, fontWeight: 600, whiteSpace: "nowrap",
+      background: driving ? C.brandTint : C.bg,
+      border: `1px solid ${driving ? 'rgba(63,107,0,0.25)' : C.border}`,
+      color: driving ? C.brandHover : C.textSubtle,
+      transition: `background-color ${DUR.panel}ms ${EASE_OUT}, color ${DUR.panel}ms ${EASE_OUT}, border-color ${DUR.panel}ms ${EASE_OUT}`,
+    }}>
+      <span
+        className={driving ? undefined : 'demo-live-dot'}
+        style={{ width: 6, height: 6, borderRadius: '50%', background: driving ? C.brand : '#a8a29e' }}
+      />
+      {driving
+        ? (resumeIn !== null ? `You're driving · resuming in ${resumeIn}s` : "You're driving")
+        : 'Live demo — click anything'}
+    </div>
+  );
+}
+
+/** Chat timestamps roll over properly instead of producing "14:60". */
+function clockFrom(base: string, addMinutes: number): string {
+  const [h, m] = base.split(':').map(Number);
+  const total = (h * 60 + m + addMinutes) % (24 * 60);
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+}
+
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+const DEMO_STYLES = `${DEMO_KEYFRAMES}
+@keyframes modalBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+.demo-thread-turn { animation: demoFadeInUp ${DUR.enter}ms ${EASE_OUT} both; }
+.demo-thread-tool-row { animation: demoFadeInUp ${DUR.enter}ms ${EASE_OUT} both; }
+* { box-sizing: border-box; }
+`;
 
 export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: { scenarioId?: DemoScenarioId }) {
   const scenario = getDemoScenario(scenarioId);
@@ -590,6 +627,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const DEMO_ARTIFACTS = scenario.artifacts;
   const SPOTLIGHT_TASK_ID = scenario.spotlightTaskId;
 
+  const reducedMotion = usePrefersReducedMotion();
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [inputText, setInputText] = useState("");
@@ -599,8 +638,11 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const [sidebarTab, setSidebarTab] = useState<SidebarTab>(scenario.defaultSidebarTab ?? "channels");
   const [activeChannel, setActiveChannel] = useState(scenario.defaultChannel ?? "general");
   const [scriptIndex, setScriptIndex] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
+  const [mode, setMode] = useState<DemoMode>('script');
+  const [resumeIn, setResumeIn] = useState<number | null>(null);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
+  const [modalOrigin, setModalOrigin] = useState<CanvasRect | null>(null);
+  const [modalTask, setModalTask] = useState<Task | null>(null);
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(scenario.initialSubtasks);
   const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
   const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(null);
@@ -617,32 +659,45 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
   const canvasReviewRef = useRef<CanvasReviewState | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const typeRef = useRef<NodeJS.Timeout | null>(null);
   const modalMsgCounter = useRef(0);
-  const { cursor, goTo, hide: hideCursor } = useDemoCursor(demoCanvasRef);
+  const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
+    useDemoCursor(demoCanvasRef, { reducedMotion });
+
+  const handleTaskDrop = useCallback((taskId: number, col: DemoColumnId) => {
+    setTasks((p) => p.map((t) => (t.id === taskId ? { ...t, col } : t)));
+    setHighlightedTaskId(taskId);
+  }, []);
+
+  const { drag, overCol, runScriptedMove, startUserDrag, reset: resetDrag } = useDemoDrag({
+    canvasRef: demoCanvasRef,
+    reducedMotion,
+    onDrop: handleTaskDrop,
+  });
 
   const modalCanvasArtifacts = modalCanvasKeys
     .map(k => DEMO_ARTIFACTS[k])
     .filter(Boolean) as DemoArtifact[];
 
-  useEffect(() => {
-    modalArtifactRef.current = modalArtifact;
-  }, [modalArtifact]);
-
-  useEffect(() => {
-    artifactReviewRef.current = artifactReview;
-  }, [artifactReview]);
-
-  useEffect(() => {
-    canvasReviewRef.current = canvasReview;
-  }, [canvasReview]);
+  useEffect(() => { modalArtifactRef.current = modalArtifact; }, [modalArtifact]);
+  useEffect(() => { artifactReviewRef.current = artifactReview; }, [artifactReview]);
+  useEffect(() => { canvasReviewRef.current = canvasReview; }, [canvasReview]);
 
   const totalScriptLength = CHAT_SCRIPT.length + TASK_EXEC_SCRIPT.length;
   const spotlightTask = tasks.find(t => t.id === SPOTLIGHT_TASK_ID);
 
+  /** Card rect in canvas space, so the modal can grow out of the card clicked. */
+  const captureOrigin = useCallback((taskId: number) => {
+    const root = demoCanvasRef.current;
+    if (!root) return;
+    const el = root.querySelector(`[data-demo-target="task-card"][data-task-id="${taskId}"]`);
+    setModalOrigin(el ? rectInCanvas(root, el) : null);
+  }, []);
+
   const resetTaskModal = useCallback(() => {
     setTaskModalOpen(false);
+    setModalTask(null);
+    setModalOrigin(null);
     setModalSubtasks(scenario.initialSubtasks.map(s => ({ ...s, status: 'pending' as const })));
     setModalFeed([]);
     setModalArtifact(null);
@@ -661,32 +716,58 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
     setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
     setActivePage("tasks"); setSidebarTab(scenario.defaultSidebarTab ?? "channels"); setActiveChannel(scenario.defaultChannel ?? "general");
     resetTaskModal();
+    resetDrag();
     setScriptIndex(0);
     hideCursor();
-  }, [resetTaskModal, scenario.defaultChannel, scenario.defaultSidebarTab, hideCursor]);
+  }, [resetTaskModal, resetDrag, scenario.defaultChannel, scenario.defaultSidebarTab, hideCursor]);
 
-  const pauseDemo = useCallback(() => setIsRunning(false), []);
+  /**
+   * The visitor touched something. Hand them the wheel rather than killing the
+   * reel outright — it picks itself back up once they stop.
+   */
+  const handleActivity = useCallback(() => {
+    setMode('user');
+    clearCursorTimers();
+    restCursor();
+    setResumeIn(Math.ceil(RESUME_AFTER_MS / 1000));
+    if (idleTimer.current) clearInterval(idleTimer.current);
+    let left = Math.ceil(RESUME_AFTER_MS / 1000);
+    idleTimer.current = setInterval(() => {
+      left -= 1;
+      if (left <= 0) {
+        if (idleTimer.current) clearInterval(idleTimer.current);
+        idleTimer.current = null;
+        setResumeIn(null);
+        setMode('script');
+      } else {
+        setResumeIn(left);
+      }
+    }, 1000);
+  }, [clearCursorTimers, restCursor]);
+
+  useEffect(() => () => { if (idleTimer.current) clearInterval(idleTimer.current); }, []);
 
   useEffect(() => {
     resetDemo();
-    setIsRunning(true);
+    setMode('script');
   }, [scenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Only chase the bottom when the reader is already there.
   useEffect(() => {
-    if (!chatRef.current) return;
-    chatRef.current.scrollTo({ top: chatRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, agentTyping]);
-
-  const cleanUp = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    if (typeRef.current) clearInterval(typeRef.current);
-  }, []);
+    const el = chatRef.current;
+    if (!el) return;
+    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+    if (!nearBottom) return;
+    const raf = requestAnimationFrame(() => {
+      el.scrollTo({ top: el.scrollHeight, behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [messages, agentTyping, reducedMotion]);
 
   const applyTaskExecStep = useCallback((step: TaskExecStep) => {
     switch (step.type) {
       case 'moveTask':
-        setTasks(p => p.map(t => t.id === step.taskId ? { ...t, col: step.col } : t));
-        setHighlightedTaskId(step.taskId);
+        handleTaskDrop(step.taskId, step.col);
         break;
       case 'openTaskModal':
         setTaskModalOpen(true);
@@ -710,7 +791,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
         break;
       case 'modalMsg': {
         modalMsgCounter.current += 1;
-        const t = step.time || `14:${57 + modalMsgCounter.current}`;
+        const t = step.time || clockFrom('14:57', modalMsgCounter.current);
         setModalFeed(p => [...p, {
           kind: 'message',
           id: `m${modalMsgCounter.current}`,
@@ -767,10 +848,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
           ?? (step.key ? canvasReviewRef.current?.draftText : artifactReviewRef.current.draftText)
           ?? (art ? defaultArtifactReviewComment(art.content, art.name) : '');
         modalMsgCounter.current += 1;
-        const t = `14:${57 + modalMsgCounter.current}`;
-        const threadText = art
-          ? `${commentText} — on ${art.name}`
-          : commentText;
+        const t = clockFrom('14:57', modalMsgCounter.current);
+        const threadText = art ? `${commentText} — on ${art.name}` : commentText;
         setModalFeed((p) => [...p, {
           kind: 'message',
           id: `m${modalMsgCounter.current}`,
@@ -823,102 +902,179 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
       default:
         break;
     }
-  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey]);
+  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey, handleTaskDrop]);
 
-  const processStep = useCallback((idx: number) => {
-    if (idx >= totalScriptLength) {
-      timerRef.current = setTimeout(() => {
+  /**
+   * Step runner. Every beat now reads: wait → move the pointer → click →
+   * *then* change state. The old runner fired the state change on a timer while
+   * the cursor was still gliding, so effects landed before their causes.
+   */
+  useEffect(() => {
+    if (mode !== 'script') return;
+    let alive = true;
+    const idx = scriptIndex;
+
+    const run = async () => {
+      if (idx >= totalScriptLength) {
+        await sleep(5000);
+        if (!alive) return;
         resetDemo();
-        setIsRunning(true);
-      }, 5000);
-      return;
-    }
-
-    if (idx >= CHAT_SCRIPT.length) {
-      const execStep = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
-      const ctx = cursorContextForStep(execStep, DEMO_ARTIFACTS);
-      if (!execStepCursorAfterApply(execStep)) {
-        animateExecStepCursor(execStep, goTo, ctx);
-      }
-      timerRef.current = setTimeout(() => {
-        if (execStepCursorAfterApply(execStep)) {
-          applyTaskExecStep(execStep);
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => animateExecStepCursor(execStep, goTo, ctx));
-          });
-        } else {
-          applyTaskExecStep(execStep);
-        }
-        setScriptIndex(idx + 1);
-      }, execStep.delay);
-      return;
-    }
-
-    const s = CHAT_SCRIPT[idx];
-    animateChatStepCursor(s, goTo);
-    timerRef.current = setTimeout(() => {
-      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); setScriptIndex(idx + 1); return; }
-      if (s.type === "typing") {
-        setMentionTab(""); let ci = 0; setInputText("");
-        typeRef.current = setInterval(() => { ci++; setInputText((s.text || "").slice(0, ci)); if (ci >= (s.text || "").length) { if (typeRef.current) clearInterval(typeRef.current); typeRef.current = null; setScriptIndex(idx + 1); } }, 28);
         return;
       }
-      if (s.type === "send") { setInputText(""); setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: true, time: "14:52" }]); setScriptIndex(idx + 1); return; }
-      if (s.type === "nick_typing") { setAgentTyping(true); setActivePage("tasks"); setScriptIndex(idx + 1); return; }
-      if (s.type === "response") {
+
+      if (idx >= CHAT_SCRIPT.length) {
+        const step = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
+        await sleep(step.delay);
+        if (!alive) return;
+        const ctx = cursorContextForStep(step, DEMO_ARTIFACTS);
+
+        if (step.type === 'moveTask') {
+          const task = tasks.find(t => t.id === step.taskId);
+          if (task) {
+            await goTo(`[data-demo-target="task-card"][data-task-id="${step.taskId}"]`, { click: true });
+            if (!alive) return;
+            const move = runScriptedMove(task, step.col);
+            // The pointer carries the card rather than watching it fly alone.
+            setTimeout(() => { if (alive) goTo(`[data-demo-target="kanban-body-${step.col}"]`); }, DRAG.lift);
+            await move;
+          } else {
+            applyTaskExecStep(step);
+          }
+          if (!alive) return;
+          setScriptIndex(idx + 1);
+          return;
+        }
+
+        if (step.type === 'openTaskModal') {
+          captureOrigin(step.taskId);
+          setModalTask(tasks.find(t => t.id === step.taskId) ?? null);
+        }
+
+        if (execStepCursorAfterApply(step)) {
+          // Target doesn't exist until the step has run — mutate, then point.
+          applyTaskExecStep(step);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => { if (alive) animateExecStepCursor(step, goTo, ctx); });
+          });
+        } else {
+          await animateExecStepCursor(step, goTo, ctx);
+          if (!alive) return;
+          await sleep(REACTION_MS);
+          if (!alive) return;
+          applyTaskExecStep(step);
+        }
+        if (!alive) return;
+        setScriptIndex(idx + 1);
+        return;
+      }
+
+      const s = CHAT_SCRIPT[idx];
+      await sleep(s.delay);
+      if (!alive) return;
+
+      if (s.type === 'typing') {
+        // Hands move to the keyboard — the pointer rests instead of hovering
+        // over the composer for the whole string.
+        setMentionTab("");
+        restCursor();
+        const text = s.text || "";
+        for (let i = 1; i <= text.length; i++) {
+          setInputText(text.slice(0, i));
+          await sleep(reducedMotion ? 6 : typingDelayFor(text, i - 1));
+          if (!alive) return;
+        }
+        setScriptIndex(idx + 1);
+        return;
+      }
+
+      // `send` and `mention_tab` are clicks — wait for the pointer to land.
+      // The rest are glances; let the cursor drift over while the beat plays.
+      if (s.type === 'send' || s.type === 'mention_tab') {
+        await animateChatStepCursor(s, goTo);
+        if (!alive) return;
+        await sleep(REACTION_MS);
+        if (!alive) return;
+      } else {
+        animateChatStepCursor(s, goTo);
+      }
+
+      if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); }
+      else if (s.type === "send") {
+        setInputText("");
+        setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: true, time: "14:52" }]);
+      }
+      else if (s.type === "nick_typing") { setAgentTyping(true); setActivePage("tasks"); }
+      else if (s.type === "response") {
         setAgentTyping(false);
         setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: false, time: s.time || "" }]);
         setActivePage("tasks");
-        setScriptIndex(idx + 1);
-        return;
       }
-      if (s.type === "reaction") { setMessages(p => { const c = [...p]; if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } }; return c; }); setScriptIndex(idx + 1); return; }
-      if (s.type === "addTasks") {
-        const newTasks = s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS;
-        newTasks.forEach((task, taskIndex) => {
-          setTimeout(() => {
-            setTasks((p) => [...p, task]);
-          }, taskIndex * 110);
+      else if (s.type === "reaction") {
+        setMessages(p => {
+          const c = [...p];
+          if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } };
+          return c;
         });
-        setActivePage("tasks");
-        setScriptIndex(idx + 1);
-        return;
       }
-    }, s.delay);
-  }, [applyTaskExecStep, resetDemo, totalScriptLength, CHAT_SCRIPT, TASK_EXEC_SCRIPT, PHASE1_TASKS, PHASE2_TASKS, goTo]);
+      else if (s.type === "addTasks") {
+        const newTasks = s.phase === 1 ? PHASE1_TASKS : PHASE2_TASKS;
+        for (const task of newTasks) {
+          setTasks((p) => [...p, task]);
+          await sleep(reducedMotion ? 0 : 110);
+          if (!alive) return;
+        }
+        setActivePage("tasks");
+      }
 
-  useEffect(() => { if (!isRunning) return; processStep(scriptIndex); return cleanUp; }, [scriptIndex, isRunning, processStep, cleanUp]);
+      if (!alive) return;
+      setScriptIndex(idx + 1);
+    };
+
+    run();
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scriptIndex, mode]);
+
+  const clearIdleTimer = () => {
+    if (idleTimer.current) { clearInterval(idleTimer.current); idleTimer.current = null; }
+    setResumeIn(null);
+  };
+
+  /** Hand the reel back the wheel without losing the visitor's place. */
+  const resumeScript = () => {
+    clearIdleTimer();
+    setMode('script');
+  };
 
   const restart = () => {
-    cleanUp();
+    clearCursorTimers();
+    clearIdleTimer();
     resetDemo();
-    setIsRunning(true);
+    setMode('script');
   };
+
+  const openTaskFromBoard = useCallback((task: Task) => {
+    handleActivity();
+    captureOrigin(task.id);
+    setModalTask(task);
+    setHighlightedTaskId(task.id);
+    setTaskModalOpen(true);
+  }, [captureOrigin, handleActivity]);
+
+  const beginUserDrag = useCallback((task: Task, event: ReactPointerEvent<HTMLDivElement>) => {
+    handleActivity();
+    startUserDrag(task, event);
+  }, [handleActivity, startUserDrag]);
 
   const composerPlaceholder = inputText ? "" : (messages.length > 0 ? "Send follow-up" : "Do anything with AI…");
   const showSplit = SPLIT_PAGES.includes(activePage);
+  const activeModalTask = modalTask ?? spotlightTask ?? null;
 
   return (
     <>
-      <style>{`
-        @keyframes cardIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
-        @keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes dotBounce { 0%,80%,100%{transform:translateY(0);opacity:.35} 40%{transform:translateY(-4px);opacity:1} }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes modalIn { from { opacity:0; transform: scale(0.985); } to { opacity:1; transform: scale(1); } }
-        @keyframes modalBackdropIn { from { opacity:0; } to { opacity:1; } }
-        @keyframes demoCursorRipple { from { opacity: 0.85; transform: scale(0.35); } to { opacity: 0; transform: scale(2.2); } }
-        @keyframes demoThreadEnter { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
-        .demo-thread-turn { animation: demoThreadEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .demo-thread-tool-row { animation: demoThreadEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .demo-spin { animation: spin 1s linear infinite; }
-        .Trooper-scrollbar::-webkit-scrollbar{width:5px;height:5px}
-        .Trooper-scrollbar::-webkit-scrollbar-track{background:rgba(231,229,228,0.35);border-radius:4px}
-        .Trooper-scrollbar::-webkit-scrollbar-thumb{background:${C.textSubtle};border-radius:4px}
-        *{box-sizing:border-box}
-      `}</style>
+      {/* Injected as raw HTML — a CSS text child hydrates as a text node and
+          trips React's text-content check. */}
+      <style dangerouslySetInnerHTML={{ __html: DEMO_STYLES }} />
 
       <div className="relative border-t border-slate-100 px-4 py-8 sm:px-6 sm:py-10 md:px-10 md:py-12">
         <PixelDitherGradient />
@@ -935,25 +1091,36 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#febc2e" }} />
               <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#28c840" }} />
             </div>
-            <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", gap: 10 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 5, background: C.bg, borderRadius: 999, padding: "4px 16px", fontSize: 11.5, color: C.textSubtle, border: `1px solid ${C.border}`, maxWidth: 280, width: "100%", justifyContent: "center" }}>
                 <Lock size={10} strokeWidth={2.5} />
                 app.trooper.so
               </div>
+              <DemoModePill mode={mode} resumeIn={resumeIn} />
             </div>
             <div style={{ display: "flex", gap: 5 }}>
-              <button type="button" onClick={() => setIsRunning(p => !p)} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
-                {isRunning ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
+              <button type="button" onClick={() => (mode === 'script' ? handleActivity() : resumeScript())} className="demo-hoverable demo-icon-btn" style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+                {mode === 'script' ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
               </button>
-              <button type="button" onClick={restart} style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
+              <button type="button" onClick={restart} className="demo-hoverable demo-icon-btn" style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
                 <RotateCcw size={12} strokeWidth={2} />
               </button>
             </div>
           </div>
 
           <div ref={demoCanvasRef} style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
-            <DemoClickCursor state={cursor} />
-            <DemoSidebarRail org={scenario.org} />
+            <DemoClickCursor state={cursor} dimmed={mode === 'user'} />
+            {drag && (
+              <DemoDragOverlay
+                task={drag.task}
+                x={drag.x}
+                y={drag.y}
+                width={drag.width}
+                avatarFor={avatarFor}
+                animateMs={drag.animateMs}
+              />
+            )}
+            <DemoSidebarRail org={scenario.org} onActivity={handleActivity} />
             <DemoSidebarNav
               sidebarTab={sidebarTab}
               setSidebarTab={setSidebarTab}
@@ -961,7 +1128,7 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               onNavigate={setActivePage}
               activeChannel={activeChannel}
               onSelectChannel={setActiveChannel}
-              onUserInteract={pauseDemo}
+              onActivity={handleActivity}
               channels={scenario.channels}
               org={scenario.org}
             />
@@ -979,8 +1146,18 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
                   channels={scenario.channels}
                   org={scenario.org}
                   channelBrand={scenario.channelBrand}
+                  onActivity={handleActivity}
                 />
-                <DemoBoardPane tasks={tasks} highlightedTaskId={highlightedTaskId} />
+                <DemoBoardPane
+                  tasks={tasks}
+                  highlightedTaskId={highlightedTaskId}
+                  draggingTaskId={drag?.task.id ?? null}
+                  overCol={overCol}
+                  interactive
+                  onOpenTask={openTaskFromBoard}
+                  onDragStart={beginUserDrag}
+                  onActivity={handleActivity}
+                />
               </>
             ) : (
               <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
@@ -990,7 +1167,8 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
 
             <DemoTaskModal
               open={taskModalOpen}
-              taskTitle={spotlightTask?.title || scenario.phase1Tasks[0]?.title || 'Task'}
+              originRect={modalOrigin}
+              taskTitle={activeModalTask?.title || scenario.phase1Tasks[0]?.title || 'Task'}
               assignee={scenario.spotlightAssignee}
               subtasks={modalSubtasks}
               feed={modalFeed}
@@ -999,14 +1177,14 @@ export default function TrooperDemo({ scenarioId = DEFAULT_DEMO_SCENARIO_ID }: {
               workspaceMode={modalWorkspaceMode}
               onWorkspaceModeChange={setModalWorkspaceMode}
               delivery={modalDelivery}
-              statusCol={spotlightTask?.col === 'review' || spotlightTask?.col === 'done' ? spotlightTask.col : 'in_progress'}
+              statusCol={activeModalTask?.col === 'review' || activeModalTask?.col === 'done' ? activeModalTask.col : 'in_progress'}
               taskTags={scenario.spotlightTaskTags}
               org={scenario.org}
               artifactReview={artifactReview}
               hasSavedArtifactReview={hasSavedArtifactReview}
               canvasReview={canvasReview}
               canvasTileComments={canvasTileComments}
-              onClose={() => { pauseDemo(); setTaskModalOpen(false); }}
+              onClose={() => { handleActivity(); setTaskModalOpen(false); }}
               onSelectArtifact={(name) => {
                 const key = Object.keys(DEMO_ARTIFACTS).find(k => DEMO_ARTIFACTS[k].name === name);
                 if (key) setModalArtifact(DEMO_ARTIFACTS[key]);

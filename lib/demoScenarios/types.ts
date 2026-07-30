@@ -14,6 +14,11 @@ export type DemoChannel = {
   system?: boolean;
 };
 
+export type DemoTaskPriority = 'urgent' | 'high' | 'medium' | 'low';
+
+/** Mirrors TaskCard.jsx's `executionPhase` + `executionSteps` progress block. */
+export type DemoTaskProgress = 'planning' | { done: number; total: number };
+
 export type DemoKanbanTask = {
   id: number;
   title: string;
@@ -21,6 +26,16 @@ export type DemoKanbanTask = {
   tags: string[];
   watchers: string[];
   comments: number;
+  /** Optional card fields mirroring the app's TaskCard. Derived when omitted. */
+  priority?: DemoTaskPriority;
+  /** Falls back to the first watcher. */
+  assignee?: string;
+  /** Relative-age label, e.g. "about 2 hours". Derived from id when omitted. */
+  age?: string;
+  progress?: DemoTaskProgress;
+  linkedProject?: string;
+  linkedGoal?: string;
+  artifactCount?: number;
 };
 
 export type ChatScriptStep =
