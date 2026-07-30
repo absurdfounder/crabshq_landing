@@ -92,12 +92,13 @@ export default function Home() {
         </div>
       </SectionShell>
 
-      {/* Two dark bands in a row, both bg-split — they read as one continuous
-          surface instead of meeting at a visible seam. */}
-      <DarkSplitSection>
+      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="05">
         <MobileChannelsSection />
-      </DarkSplitSection>
+      </SectionShell>
 
+      {/* The page's second and last dark band. Governance is the only one down
+          here now — when Field Comms was dark too, the two butted together with
+          no divider and read as a single slab. */}
       <DarkSplitSection>
         <GovernanceSection eyebrowNumber="06" />
       </DarkSplitSection>

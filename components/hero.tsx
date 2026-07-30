@@ -22,10 +22,15 @@ export default function Hero() {
     <section className="relative bg-canvas text-ink">
       <div className="rail">
         <div className="pb-0 pt-[calc(var(--site-header-height)+1.25rem)] sm:pt-[calc(var(--site-header-height)+1.75rem)] md:pt-[calc(var(--site-header-height)+2rem)]">
+          {/* The kicker sits above the grid, not inside the left column. It
+              used to live in that column, which made the headline start lower
+              than the paragraph beside it — and the right column compensated
+              with `lg:pt-8 xl:pt-10`, i.e. alignment faked by padding. Lifted
+              out, both columns share a real grid line at every breakpoint. */}
+          <p className="reveal reveal__kicker kicker mb-4 sm:mb-5">AI workforce</p>
+
           <div className="grid min-w-0 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
             <div className="min-w-0 lg:col-span-7">
-              <p className="reveal reveal__kicker kicker mb-4 sm:mb-5">AI workforce</p>
-
               <div className="reveal reveal__usp">
                 <HeroRotatingHeadline />
               </div>
@@ -33,7 +38,7 @@ export default function Hero() {
               <TrooperStoryLine className="mt-5 sm:mt-6" />
             </div>
 
-            <div className="min-w-0 lg:col-span-5 lg:pt-8 xl:pt-10">
+            <div className="min-w-0 lg:col-span-5">
               <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
                 <b className="text-ink">Hire a workforce, not a chatbot.</b> Troopers{' '}
                 <b className="text-trooper">write code</b>, <b className="text-trooper">ship commits</b>,{' '}
