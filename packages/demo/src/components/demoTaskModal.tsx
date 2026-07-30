@@ -13,6 +13,7 @@ import { launchScenario } from '../scenarios/launch';
 import type { DemoOrg } from '../scenarios/types';
 import type { ArtifactReviewState } from '../lib/demoArtifactReview';
 import { DemoFavicon } from './DemoFavicon';
+import { DemoTagBadge } from './DemoTagBadge';
 import { getToolIconMeta } from '../lib/demoToolFavicon';
 import { getProviderDomain } from '../lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
@@ -86,43 +87,6 @@ function ToolIcon({ tool }: { tool: string }) {
 function Av({ name, size = 24 }: { name: string; size?: number }) {
   const src = ALL_PEOPLE[name]?.img || `https://i.pravatar.cc/150?u=${name}`;
   return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />;
-}
-
-const TAG_COLORS: Record<DemoTag['type'], { bg: string; border: string; color: string }> = {
-  channel: { bg: '#F5F5F4', border: '#E7E5E4', color: '#57534E' },
-  goal: { bg: '#f0f5e6', border: '#c4d9a0', color: '#284800' },
-  site: { bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
-  topic: { bg: '#EFF6FF', border: '#BFDBFE', color: '#1E40AF' },
-};
-
-export function DemoTagBadge({ tag, size = 'sm' }: { tag: DemoTag; size?: 'sm' | 'xs' }) {
-  const palette = TAG_COLORS[tag.type];
-  const compact = size === 'xs';
-  const iconSize = compact ? 10 : 11;
-  const padY = compact ? 1 : 2;
-  const padX = compact ? 5 : 7;
-  const fontSize = compact ? 9 : 10;
-
-  return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center', gap: compact ? 3 : 4,
-      padding: `${padY}px ${padX}px`, borderRadius: 999,
-      background: palette.bg, border: `1px solid ${palette.border}`,
-      color: palette.color, fontSize, fontWeight: 600, lineHeight: 1.2,
-      whiteSpace: 'nowrap', flexShrink: 0,
-    }}>
-      {tag.type === 'site' && tag.domain ? (
-        <DemoFavicon domain={tag.domain} size={iconSize + 2} rounded="sm" />
-      ) : tag.type === 'channel' ? (
-        <Hash size={iconSize} strokeWidth={2.25} />
-      ) : tag.type === 'goal' ? (
-        <Target size={iconSize} strokeWidth={2.25} />
-      ) : (
-        <Tag size={iconSize} strokeWidth={2.25} />
-      )}
-      {tag.type === 'channel' ? `#${tag.label}` : tag.label}
-    </span>
-  );
 }
 
 type Turn = {

@@ -1,4 +1,5 @@
 import catalogData from '@/public/loops_catalog.json';
+import { toolTagsFor, type LoopTag } from '@/lib/loopTagIcons';
 import { buildKickoffPrompt, buildLoopMermaid } from '@/lib/loopMermaid';
 import { getLoopCapabilityRequirements } from '@/lib/loopCapabilityRequirements';
 
@@ -146,7 +147,10 @@ export function searchLoops(
 export type LoopRailItem = Pick<
   LoopEntry,
   'slug' | 'title' | 'description' | 'category' | 'trigger' | 'installs' | 'hardened'
->;
+> & {
+  /** Allowlisted tool tags only — see lib/loopTagIcons.ts for why. */
+  tags: LoopTag[];
+};
 
 /**
  * Slim, un-enriched loops for marketing rails.
@@ -158,7 +162,7 @@ export type LoopRailItem = Pick<
  * Picks the most-installed official loop from each category first so the rail
  * shows breadth before depth, then backfills by installs.
  */
-export function getLoopRailItems(limit = 12): LoopRailItem[] {
+export function getLoopRailItems(categories = 4, perCategory = 3): LoopRailItem[] {
   const toItem = (loop: LoopEntry): LoopRailItem => ({
     slug: loop.slug,
     title: loop.title,
@@ -167,32 +171,36 @@ export function getLoopRailItems(limit = 12): LoopRailItem[] {
     trigger: loop.trigger,
     installs: loop.installs,
     hardened: loop.hardened,
+    tags: toolTagsFor(loop.tags),
   });
 
-  const ranked = LOOPS.filter((loop) => loop.official).sort(
-    (a, b) => (b.installs || 0) - (a.installs || 0),
+  const official = LOOPS.filter((loop) => loop.official);
+
+  const byCategory = new Map<string, LoopEntry[]>();
+  for (const loop of official) {
+    const bucket = byCategory.get(loop.category) ?? [];
+    bucket.push(loop);
+    byCategory.set(loop.category, bucket);
+  }
+
+  // Only categories that can fill a whole row, ranked by total installs. The
+  // previous version took the top loop from every category, which meant every
+  // filter chip except "All" returned exactly one card — fine in a scroller,
+  // a lone orphan in a grid row.
+  const totalInstalls = (loops: LoopEntry[]) =>
+    loops.reduce((n: number, l: LoopEntry) => n + (l.installs || 0), 0);
+
+  const eligible = Array.from(byCategory.values())
+    .filter((loops) => loops.length >= perCategory)
+    .sort((a, b) => totalInstalls(b) - totalInstalls(a))
+    .slice(0, categories);
+
+  return eligible.flatMap((loops) =>
+    [...loops]
+      .sort((a, b) => (b.installs || 0) - (a.installs || 0))
+      .slice(0, perCategory)
+      .map(toItem),
   );
-
-  const picked: LoopEntry[] = [];
-  const seenCategories = new Set<string>();
-
-  for (const loop of ranked) {
-    if (seenCategories.has(loop.category)) continue;
-    seenCategories.add(loop.category);
-    picked.push(loop);
-    if (picked.length >= limit) break;
-  }
-
-  if (picked.length < limit) {
-    const chosen = new Set(picked.map((loop) => loop.slug));
-    for (const loop of ranked) {
-      if (chosen.has(loop.slug)) continue;
-      picked.push(loop);
-      if (picked.length >= limit) break;
-    }
-  }
-
-  return picked.map(toItem);
 }
 
 export function formatLoopCount(n: number) {
