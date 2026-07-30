@@ -14,6 +14,8 @@ import {
   type DiffFile,
 } from '@/lib/demoDiffPreview';
 import { DemoBrowserFrame } from './DemoBrowserChrome';
+import { DemoMarkdownBody } from './DemoMarkdownPreview';
+import DemoCodeHighlight from './DemoCodeHighlight.jsx';
 
 type ArtifactTab = 'browser' | 'preview' | 'diff' | 'code' | 'ide';
 
@@ -384,14 +386,27 @@ function TerminalPreview({
 function CodePreview({
   content,
   review,
+  lang,
 }: {
   content: string;
   review?: ArtifactReviewState | null;
+  lang?: string;
 }) {
   const lines = content.split('\n');
   const selectedLines = review && review.phase !== 'idle' ? review.selectedLines : [];
   const selectedSet = new Set(selectedLines);
   const showComposer = review?.phase === 'composing';
+  const reviewing = Boolean(review && review.phase !== 'idle');
+
+  // Reviewing needs per-line hit targets for the selection overlay, so the
+  // highlighter steps aside while a comment is being drafted.
+  if (!reviewing) {
+    return (
+      <div data-demo-target="modal-artifact-content" style={{ position: 'relative', height: '100%', display: 'flex' }}>
+        <DemoCodeHighlight code={content} lang={lang} className="flex-1" />
+      </div>
+    );
+  }
 
   return (
     <div data-demo-target="modal-artifact-content" style={{ position: 'relative' }}>
@@ -434,6 +449,16 @@ function MarkdownPreview({
   const selectedLines = review && review.phase !== 'idle' ? review.selectedLines : [];
   const selectedSet = new Set(selectedLines);
   const showComposer = review?.phase === 'composing';
+
+  // Same trade as CodePreview: the rich renderer collapses source lines, so the
+  // line-addressed review overlay falls back to the raw line list.
+  if (!review || review.phase === 'idle') {
+    return (
+      <div data-demo-target="modal-artifact-content" style={{ padding: '16px 18px', position: 'relative' }}>
+        <DemoMarkdownBody content={content} />
+      </div>
+    );
+  }
 
   return (
     <div data-demo-target="modal-artifact-content" style={{ padding: 16, fontSize: 12, lineHeight: 1.65, color: C.text, position: 'relative' }}>
@@ -507,13 +532,13 @@ function ArtifactBody({
 
   if (kind === 'diff') {
     if (tab === 'code' || (review && review.phase !== 'idle')) {
-      return <CodePreview content={artifact.content} review={review} />;
+      return <CodePreview content={artifact.content} review={review} lang="diff" />;
     }
     return <UnifiedDiffPreview content={artifact.content} compact={compact} />;
   }
 
   if (kind === 'html') {
-    if (tab === 'code') return <CodePreview content={artifact.content} review={review} />;
+    if (tab === 'code') return <CodePreview content={artifact.content} review={review} lang="html" />;
     if (tab === 'browser' || tab === 'preview') {
       return <HtmlPreview artifact={artifact} mode={tab === 'browser' ? 'browser' : 'preview'} compact={compact} />;
     }
@@ -527,7 +552,7 @@ function ArtifactBody({
       if (artifact.ext === 'log' || artifact.name.endsWith('.log')) {
         return <TerminalPreview content={artifact.content} review={review} />;
       }
-      return <CodePreview content={artifact.content} review={review} />;
+      return <CodePreview content={artifact.content} review={review} lang={artifact.ext} />;
   }
 }
 
@@ -541,11 +566,17 @@ export function DemoArtifactTilePreview({ artifact, canvasTile }: { artifact: De
     return <HtmlPreview artifact={artifact} mode={artifact.browserUrl ? 'browser' : 'preview'} compact />;
   }
   if (kind === 'markdown') {
+    // Same renderer as the panel, scaled down \u2014 the app shares one markdown
+    // surface between ArtifactPanel and Canvas for exactly this reason.
     return (
-      <div style={{ padding: canvasTile ? 10 : 8, fontSize: canvasTile ? 10 : 9, lineHeight: 1.55, color: C.textMuted }}>
-        {artifact.content.split('\n').slice(0, canvasTile ? 10 : 6).map((line, i) => (
-          <div key={i} style={{ marginBottom: 2, wordBreak: 'break-word' }}>{line.replace(/^#+\s*/, '') || '\u00A0'}</div>
-        ))}
+      <div style={{
+        padding: canvasTile ? 10 : 8,
+        transform: `scale(${canvasTile ? 0.78 : 0.62})`,
+        transformOrigin: 'top left',
+        width: `${canvasTile ? 128 : 161}%`,
+        pointerEvents: 'none',
+      }}>
+        <DemoMarkdownBody content={artifact.content} />
       </div>
     );
   }

@@ -39,15 +39,34 @@ const ARTIFACTS = {
     kind: 'markdown',
     content: `# Launch keyword map
 
-## Primary
-- wonder.gg launch
-- indie game discovery platform
-- product hunt games 2026
+Pulled from Product Hunt launch data for the top 40 indie-game launches of the
+last 18 months, cross-checked against **wonder.gg**'s current rankings.
 
-## Secondary
-- cozy games steam alternative
-- narrative adventure indie
-- wonder.gg seo`,
+## Primary cluster
+
+| Keyword | Volume | Difficulty | We rank |
+|---|---|---|---|
+| indie game discovery | 8,100 | 34 | — |
+| product hunt games 2026 | 2,900 | 21 | #38 |
+| wonder.gg | 1,300 | 4 | #1 |
+| new indie games this week | 6,600 | 41 | — |
+
+## Secondary cluster
+
+| Keyword | Volume | Difficulty | Intent |
+|---|---|---|---|
+| cozy games like stardew | 12,100 | 52 | discovery |
+| narrative adventure indie | 3,600 | 29 | discovery |
+| steam alternative storefront | 1,900 | 44 | comparison |
+
+## Where they go
+
+1. \`indie game discovery\` → homepage \`<title>\` and H1
+2. \`product hunt games 2026\` → launch-day banner + OG description
+3. \`cozy games like stardew\` → category landing page (not built yet)
+
+> Difficulty is Ahrefs KD. Anything under 35 is winnable inside a quarter with
+> the content we already have.`,
   }),
   'index.html.diff': a({ name: 'index.html.diff', ext: 'diff', kind: 'diff', content: HERO_DIFF }),
   'seo-launch-report.md': a({
@@ -56,20 +75,57 @@ const ARTIFACTS = {
     kind: 'markdown',
     content: `# Wonder SEO Launch Report
 
+**Status:** ready to deploy · **Owner:** Aria · **Reviewed by:** Ren, Leo
+
 ## Executive summary
-Wonder.gg is ready for Product Hunt launch with updated meta, OG tags, and a keyword map aligned to gaming discovery terms.
 
-## Keyword clusters
-- **Launch day**: indie game launch, wonder.gg, product hunt games
-- **Discovery**: cozy games, narrative adventure, steam alternative
+wonder.gg is launch-ready. Homepage meta, OG tags and the sitemap are updated
+against a keyword map built from the last 18 months of Product Hunt game
+launches. Baseline SERP positions are captured so launch-day movement is
+measurable rather than anecdotal.
 
-## Changes shipped
-- Homepage \`title\` + \`description\` optimized
-- OG tags updated for social previews
-- SERP baseline captured for launch day tracking
+## What shipped
+
+| Change | File | Status |
+|---|---|---|
+| \`<title>\` + meta description | \`index.html\` | shipped |
+| OG title / description / image | \`index.html\` | shipped |
+| Sitemap regenerated (42 URLs) | \`sitemap.xml\` | shipped |
+| Category landing pages | — | **not started** |
+
+- [x] Audit baseline and competitors
+- [x] Research launch keywords
+- [x] Capture meta gaps on wonder.gg
+- [x] Update meta, OG, sitemap
+- [x] Commit and deploy
+- [ ] Category landing pages (next sprint)
+
+## Before / after
+
+\`\`\`html
+<!-- before -->
+<title>Wonder — Indie Games</title>
+<meta name="description" content="Browse indie games." />
+
+<!-- after -->
+<title>Wonder — Discover Indie Games on Product Hunt</title>
+<meta name="description" content="Wonder.gg curates indie game launches.
+  Cozy adventures, roguelikes, and narrative hits." />
+\`\`\`
+
+## Baseline to beat
+
+| Metric | Before | Target (30d) |
+|---|---|---|
+| Indexed pages | 18 | 42 |
+| Ranking keywords | 6 | 40 |
+| Avg. position | 71 | < 30 |
 
 ## Review gate
-Approve meta + copy before deploy.`,
+
+Approve meta + copy before deploy. The only judgement call is the homepage H1 —
+*"Discover your next indie obsession"* tests better than the keyword-exact
+*"Indie game discovery"*, and I picked the former. Flag it if you disagree.`,
   }),
 };
 
