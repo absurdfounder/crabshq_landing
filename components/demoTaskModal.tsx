@@ -17,6 +17,11 @@ import { getProviderDomain } from '@/lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
 import { DemoCanvasView } from './DemoCanvasView';
 import type { DemoWorkspaceMode } from './demoTaskExecution';
+import { DUR, EASE_OUT } from '@/lib/demoMotion';
+import type { CanvasRect } from '@/lib/demoGeometry';
+
+/** Matches the modal's `inset: 6` + `margin: 8` offset from the canvas origin. */
+const MODAL_INSET = 14;
 
 const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Vaibhav: { img: 'https://avatars.githubusercontent.com/u/25829699?v=4' },
@@ -288,6 +293,13 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
   const total = subtasks.length;
   const running = subtasks.find(s => s.status === 'running');
   const allDone = done === total;
+  const hasStarted = subtasks.some(s => s.status !== 'pending');
+
+  // Reveal the checklist as soon as work begins, so the visitor watches the
+  // steps tick over instead of a collapsed summary counter.
+  useEffect(() => {
+    if (hasStarted) setOpen(true);
+  }, [hasStarted]);
 
   return (
     <div
@@ -322,9 +334,15 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
             {running ? running.title : allDone ? 'All steps complete' : 'Task checklist'}
           </div>
         </div>
-        <ChevronUp size={14} color={C.textSubtle} style={{ transform: open ? 'none' : 'rotate(180deg)', transition: 'transform 0.2s' }} />
+        <ChevronUp size={14} color={C.textSubtle} style={{ transform: open ? 'none' : 'rotate(180deg)', transition: `transform ${DUR.quick}ms ${EASE_OUT}` }} />
       </button>
-      {open && (
+      {/* TaskModal.jsx:1922 — grid-rows 0fr→1fr, so the panel actually expands. */}
+      <div style={{
+        display: 'grid',
+        gridTemplateRows: open ? '1fr' : '0fr',
+        transition: `grid-template-rows ${DUR.panel}ms ${EASE_OUT}`,
+      }}>
+        <div style={{ overflow: 'hidden' }}>
         <div style={{ borderTop: `1px solid ${C.border}`, padding: '8px 14px 10px' }}>
           {subtasks.map(s => {
             const isDone = s.status === 'done';
@@ -359,7 +377,8 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
             );
           })}
         </div>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -384,6 +403,7 @@ export function DemoTaskModal({
   hasSavedArtifactReview,
   canvasReview,
   canvasTileComments,
+  originRect,
 }: {
   open: boolean;
   taskTitle: string;
@@ -404,6 +424,8 @@ export function DemoTaskModal({
   hasSavedArtifactReview?: boolean;
   canvasReview?: (ArtifactReviewState & { artifactName: string }) | null;
   canvasTileComments?: Record<string, string>;
+  /** Canvas-space rect of the card this modal was opened from. */
+  originRect?: CanvasRect | null;
 }) {
   const threadRef = useRef<HTMLDivElement>(null);
   const turns = useMemo(() => buildTurns(feed), [feed]);
@@ -420,6 +442,24 @@ export function DemoTaskModal({
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
   }, [feed, delivery, artifact]);
 
+  // Keyframes that scale/translate the panel out of the originating card.
+  const openFrom = useMemo(() => {
+    const name = 'demoModalIn';
+    if (!originRect) {
+      return {
+        name,
+        css: `@keyframes ${name} { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: none; } }`,
+      };
+    }
+    return {
+      name,
+      css: `@keyframes ${name} {
+        from { opacity: 0; transform: translate(${Math.round(originRect.x - MODAL_INSET)}px, ${Math.round(originRect.y - MODAL_INSET)}px) scale(0.22); }
+        to { opacity: 1; transform: none; }
+      }`,
+    };
+  }, [originRect]);
+
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
   const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#f0f5e6' : '#FFFBEB';
   const statusColor = statusCol === 'review' ? '#78350F' : statusCol === 'done' ? '#284800' : '#B45309';
@@ -432,14 +472,18 @@ export function DemoTaskModal({
       display: 'flex', flexDirection: 'column',
       background: 'rgba(28,25,23,0.4)', backdropFilter: 'blur(3px)',
       borderRadius: 10,
-      animation: 'modalBackdropIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both',
+      animation: `modalBackdropIn ${DUR.panel}ms ${EASE_OUT} both`,
     }}>
       <div style={{
         position: 'relative', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column',
         margin: 8, borderRadius: 12, border: `1px solid ${C.border}`, background: C.card,
         boxShadow: '0 20px 40px -12px rgba(28,25,23,0.28)',
-        overflow: 'hidden', animation: 'modalIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
+        overflow: 'hidden',
+        // Grows out of the card that was clicked, so opening reads as caused by
+        // the click rather than as an unrelated panel fading in.
+        animation: `${openFrom.name} ${DUR.panel}ms ${EASE_OUT} both`,
       }}>
+        <style>{openFrom.css}</style>
         <button
           type="button"
           data-demo-target="modal-close"

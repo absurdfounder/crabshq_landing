@@ -1,9 +1,12 @@
-/** Trooper app chrome — aligned with src/index.css + KanbanBoard.jsx */
+/** Trooper app chrome — values mirror the app's `src/index.css` custom properties. */
 export const TROOPER_DEMO = {
   brand: '#3f6b00',
   brandHover: '#325600',
+  /** `--color-primary-light` — neutral surface, despite the legacy name. */
   brandLight: '#F5F5F4',
   brandSoft: '#E7E5E4',
+  /** Actual brand tint (trooper-50) — `bg-emerald-50` under the landing palette remap. */
+  brandTint: '#f0f5e6',
   bg: '#FAF9F6',
   card: '#FFFFFF',
   cardWarm: '#FDFCFB',
@@ -19,7 +22,12 @@ export const TROOPER_DEMO = {
   radiusSm: 8,
 } as const;
 
-/** Matches KanbanBoard.jsx column config */
+/**
+ * Mirrors the `columns` array in KanbanBoard.jsx. The app expresses these as
+ * Tailwind classes (`bg-stone-100`, `bg-amber-50`, `bg-emerald-50`); the hex
+ * values below are those classes resolved through the landing palette, where
+ * `emerald` is remapped to Trooper green in tailwind.config.js.
+ */
 export const KANBAN_COLUMNS = {
   inbox: {
     id: 'inbox',
