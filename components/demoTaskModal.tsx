@@ -2,9 +2,10 @@
 
 import { useMemo, useState, useEffect, useRef } from 'react';
 import {
-  X, Check, Loader2, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
+  X, Check, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
   ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag, Code,
 } from 'lucide-react';
+import { ThinkingOrb } from 'thinking-orbs';
 import { TROOPER_DEMO as C } from './demoTheme';
 import type { DemoArtifact, DemoFeedItem, DemoSubtask, DemoTag, DemoToolLog } from './demoTaskExecution';
 import { getToolIconName } from './demoTaskExecution';
@@ -339,10 +340,12 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
           )}
           <span style={{
             marginLeft: duration || expandable ? 0 : 'auto', flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20,
           }}>
+            {/* An orb, not a spinner. A spinner says "loading"; this is an
+                agent deciding what to do, which is the thing being sold. */}
             {running
-              ? <Loader2 size={14} strokeWidth={2.5} className="demo-spin" color={C.brand} />
+              ? <ThinkingOrb state="working" size={20} theme="light" />
               : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
           </span>
         </div>
@@ -543,9 +546,9 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
             const isRunning = s.status === 'running';
             return (
               <div key={s.id} data-demo-subtask-id={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
-                <div style={{ marginTop: 2, flexShrink: 0 }}>
+                <div style={{ marginTop: 1, flexShrink: 0, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
-                    : isRunning ? <Loader2 size={14} className="demo-spin" color="#B45309" />
+                    : isRunning ? <ThinkingOrb state="working" size={20} theme="light" />
                       : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
