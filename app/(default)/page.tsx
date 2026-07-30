@@ -58,7 +58,7 @@ import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function Home() {
-  const loopRailItems = getLoopRailItems(4, 3)
+  const loopRailItems = getLoopRailItems(22)
   const integrationTiles = getIntegrationTiles(36)
   const voices = getVoices()
 
