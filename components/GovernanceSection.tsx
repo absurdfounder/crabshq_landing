@@ -64,7 +64,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
           <span>&nbsp;</span>
           Governance
         </span>
-        <h2 className="mt-5 font-funneldisplay text-[1.65rem] leading-[1.12] tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+        <h2 className="mt-5 h2-section-dark">
           Your troopers work for you.
           <br />
           Just you.

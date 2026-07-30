@@ -121,14 +121,18 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
       <div id="google_translate_element" className="fixed -z-50 top-0 left-0 opacity-0 pointer-events-none" />
 
       {/* Main Content */}
-      <main className="grow bg-gray-50">
+      {/* bg-canvas, not bg-gray-50: the `gray` override below 100 falls through
+          to stock #f9fafb, a cool white. Outside the max-w-7xl rail that put
+          ~100px of blue-tinted gutter either side of a warm #FAFAF8 page. */}
+      <main className="grow bg-canvas">
         {children}
       </main>
 
+      {/* No eyebrowNumber — the newsletter is site chrome, not a numbered
+          section, and it used to render a third [08] after the page's own. */}
       <SectionShell
         eyebrow="Deploy Orders"
-        eyebrowNumber="08"
-        bgClass="bg-white"
+        bgClass="bg-canvas"
         noBorderBottom={false}
       >
         <Newsletter />

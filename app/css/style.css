@@ -16,6 +16,35 @@
   }
 }
 
+/* Scroll-driven integration rail (duplicated list, so -50% is one full loop) */
+@keyframes railDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@supports not (animation-timeline: view()) {
+  .rail-track {
+    animation: none;
+    transform: translateX(var(--rail-x, 0px));
+  }
+}
+
+/*
+ * Motion off, but nothing hidden: the track freezes while its wrapper keeps
+ * overflow-x-auto, so every tile is still reachable by scrolling by hand.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .rail-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .flex[style*="heroMarqueeScroll"],
+  [data-marquee] > * {
+    animation: none !important;
+  }
+}
+
 /* Hero marquee scroll animation (2× tag list) */
 @keyframes heroMarqueeScroll {
   0% { transform: translateX(0); }
@@ -127,11 +156,11 @@
   text-transform: uppercase;
   color: var(--color-fern);
   padding: 0.4rem 0.75rem;
-  border: 1px solid rgba(107, 168, 46, 0.35);
+  border: 1px solid rgba(63, 107, 0, 0.35);
   background: linear-gradient(180deg, #fafaf8 0%, #f4fbe8 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 1px 0 rgba(107, 168, 46, 0.1);
+    0 1px 0 rgba(63, 107, 0, 0.1);
   clip-path: polygon(
     4px 0, 100% 0, 100% calc(100% - 4px),
     calc(100% - 4px) 100%, 0 100%, 0 4px
@@ -141,7 +170,7 @@
 .army-mission-tag__sep {
   width: 1px;
   height: 10px;
-  background: rgba(107, 168, 46, 0.28);
+  background: rgba(63, 107, 0, 0.28);
 }
 
 
@@ -150,9 +179,9 @@
   --color-canvas: #fafaf8;
   --color-ink: #1a1a1a;
   --color-ink-muted: #525252;
-  --color-fern: #6ba82e;
-  --color-fern-bright: #72b833;
-  --color-fern-check: #65a30d;
+  --color-fern: #3f6b00;
+  --color-fern-bright: #7aa824;
+  --color-fern-check: #3f6b00;
   --color-split: #14170f;
   --color-quote-gold: #c4a882;
   --color-line: #e8e8e5;
@@ -183,7 +212,7 @@
 
 /* Top promo strip — solid lime (no pixel tile background) */
 .site-top-bar {
-  background-color: #8cc352;
+  background-color: #7aa824;
 }
 
 .pixel-surface__clouds {
@@ -227,7 +256,7 @@
   text-transform: uppercase;
   color: var(--color-fern);
   padding: 0.25rem 0.5rem;
-  border: 1px solid rgba(107, 168, 46, 0.3);
+  border: 1px solid rgba(63, 107, 0, 0.3);
   background: linear-gradient(180deg, #fafaf8 0%, #f4fbe8 100%);
   clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
 }
@@ -251,7 +280,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-fern);
-  border: 1px solid rgba(107, 168, 46, 0.28);
+  border: 1px solid rgba(63, 107, 0, 0.28);
   background: rgba(238, 246, 228, 0.95);
   clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
 }
@@ -326,32 +355,83 @@ body > iframe.goog-te-menu-frame {
     @apply font-medium;
   }
 
-  .type-h1 {
-    @apply font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl;
+  /*
+   * Section typography.
+   *
+   * These replace a .type-h1/.type-h2/.type-h3/.type-body/.type-caption/
+   * .type-label/.type-code block that had ZERO usages anywhere in the repo
+   * while the Tailwind config still advertised it. Reviving it would have
+   * shrunk every headline on the site — its .type-h2 was text-2xl sm:text-3xl,
+   * matching no heading actually in use.
+   *
+   * What is here instead encodes the string the page had already converged on:
+   * three sections shared it byte-for-byte and two more differed only in class
+   * order or a hundredth of line-height. This documents reality rather than
+   * redesigning it.
+   */
+  .h2-section {
+    @apply font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem];
   }
 
-  .type-h2 {
-    @apply font-display text-2xl font-medium tracking-tight text-ink sm:text-3xl;
+  .h2-section-dark {
+    @apply font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem];
   }
 
-  .type-h3 {
-    @apply font-display text-xl font-medium tracking-tight text-ink sm:text-2xl;
+  .h3-card {
+    @apply font-sans text-base leading-snug text-ink sm:text-lg;
   }
 
-  .type-body {
-    @apply font-sans text-base leading-relaxed text-ink-muted;
+  /* Standfirst under an h2-section. */
+  .lede {
+    @apply mt-3 text-sm leading-relaxed text-ink-muted sm:text-base;
   }
 
-  .type-caption {
-    @apply font-sans text-sm text-ink-faint;
+  /*
+   * The one text-link treatment.
+   *
+   * Nine different ones were in use; this is the only one that was already
+   * reused (5 call sites), so it wins. Use .link-mono-dark on dark bands.
+   */
+  /* Add `group` at the call site — @apply rejects it (it's a marker, not a utility). */
+  .link-mono {
+    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink;
   }
 
-  .type-label {
-    @apply font-brand text-xs lowercase tracking-tight text-fern-700 sm:text-sm;
+  .link-mono-dark {
+    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/50 transition-colors hover:border-current hover:text-white;
   }
 
-  .type-code {
-    @apply font-mono text-sm text-slate-700;
+  /*
+   * Scroll-driven rail.
+   *
+   * `animation-timeline: view()` binds the animation's progress to the
+   * element's own passage through the viewport — it literally moves as the
+   * page is scrolled, with no scroll listener and no main-thread work.
+   * Chrome/Edge 115+, Safari 26+.
+   *
+   * The @supports branch is the Firefox/older-Safari path: a rAF loop writes
+   * --rail-x instead, and only while the row is on screen.
+   */
+  .rail-track {
+    width: max-content;
+    animation: railDrift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+
+  .rail-track--reverse {
+    animation-direction: reverse;
+  }
+
+  /* Edge fade so tiles enter and leave rather than being cut off. */
+  .rail-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+
+  /* The one tab/chip idiom. Pair with .tab-mono--active. */
+  .tab-mono {
+    @apply shrink-0 border-r border-[var(--color-line)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors sm:px-5;
   }
 
   .kicker {
@@ -366,7 +446,7 @@ body > iframe.goog-te-menu-frame {
   .type-eyebrow-num {
     @apply inline-flex items-center gap-2 font-silkscreen text-[11px] font-bold uppercase tracking-[0.22em] text-fern;
     padding: 0.3rem 0.55rem;
-    border: 1px solid rgba(107, 168, 46, 0.35);
+    border: 1px solid rgba(63, 107, 0, 0.35);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(238, 246, 228, 0.92));
     clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
   }
@@ -378,7 +458,7 @@ body > iframe.goog-te-menu-frame {
   .type-eyebrow-num-dark {
     @apply inline-flex items-center gap-2 font-silkscreen text-[11px] font-bold uppercase tracking-[0.22em] text-fern;
     padding: 0.3rem 0.55rem;
-    border: 1px solid rgba(107, 168, 46, 0.35);
+    border: 1px solid rgba(63, 107, 0, 0.35);
     background: rgba(255, 255, 255, 0.04);
     clip-path: polygon(3px 0, 100% 0, 100% calc(100% - 3px), calc(100% - 3px) 100%, 0 100%, 0 3px);
   }
@@ -407,8 +487,47 @@ body > iframe.goog-te-menu-frame {
     @apply border border-neutral-200 bg-white p-6 transition-colors hover:border-fern-200;
   }
 
+  /*
+   * The page rail.
+   *
+   * One definition for the shared measure + gutter + side hairlines. Four
+   * places used to hand-roll this geometry and produced three different
+   * results — a full 4-sided frame here, a relocated gutter there, a second
+   * max-w-7xl nested inside the first somewhere else.
+   *
+   * The side hairlines drop below `sm`: at phone widths they sit hard against
+   * the viewport edge and read as a container box rather than the page margin.
+   */
+  .rail {
+    @apply mx-auto max-w-7xl min-w-0 border-[var(--color-line)] px-4 sm:border-l sm:border-r sm:px-6;
+  }
+
+  /*
+   * The only sanctioned way to run edge-to-edge inside a rail.
+   *
+   * It mirrors `.rail`'s gutter at both breakpoints. Negative margins that
+   * *don't* match the gutter are precisely what broke the grid before: a
+   * `sm:-mx-6` against a `px-4 sm:px-6` parent bleeds correctly at one
+   * breakpoint and wrongly at the other.
+   */
+  .rail-bleed {
+    margin-inline: -1rem;
+  }
+
+  @media (min-width: 640px) {
+    .rail-bleed {
+      margin-inline: -1.5rem;
+    }
+  }
+
+  /*
+   * `clip` rather than `hidden`: overflow-x-hidden creates a scroll container,
+   * which silently disables `position: sticky` on every descendant and clips
+   * absolutely-positioned children like the header's mega-menu. `clip` stops
+   * the horizontal scrollbar without either side effect.
+   */
   .hero-shell {
-    @apply overflow-x-hidden bg-canvas text-ink;
+    @apply overflow-x-clip bg-canvas text-ink;
   }
 
   /* Offset fixed TopBar + nav — use on the first block after .site-header */

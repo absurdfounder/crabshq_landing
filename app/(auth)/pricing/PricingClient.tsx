@@ -167,8 +167,10 @@ const FAQSection: React.FC = () => {
     const [activeTab, setActiveTab] = useState("Pricing");
 
     return (
-        <div className="mt-20 max-w-7xl">
-            <div className="px-4">
+        // Measure and gutter come from the SectionShell — this nested a second
+        // max-w-7xl plus its own px-4 inside the shell's padded rail.
+        <div>
+            <div>
                 <div className="text-start mb-10">
                     <h2 className="font-funneldisplay text-2xl md:text-3xl font-bold text-slate-900 mb-3">
                         Frequently Asked Questions
@@ -233,18 +235,20 @@ const Pricing: React.FC = () => {
             <ExitIntentPopup isOpen={showExitPopup} onClose={() => setShowExitPopup(false)} />
             <Header />
 
-            <SectionShell eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
+            {/* `rhythm`: SimplePricing no longer pads itself. */}
+            <SectionShell rhythm eyebrow="PRICING" eyebrowNumber="01" bgClass="bg-canvas" clearSiteHeader>
                 <SimplePricing showFullPricingLink={false} />
             </SectionShell>
 
-            <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-slate-50">
+            <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-canvas-warm">
                 <PricingCompareTable />
             </SectionShell>
 
-            <SectionShell eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12">
-                    <FAQSection />
-                </div>
+            {/* The inner max-w-7xl was nested inside the shell's own padded
+                max-w-7xl, so it could never reach that width and sat inset
+                from every other section's rail. */}
+            <SectionShell rhythm eyebrow="FAQ" eyebrowNumber="03" bgClass="bg-canvas">
+                <FAQSection />
             </SectionShell>
         </div>
     );

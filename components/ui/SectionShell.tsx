@@ -57,11 +57,12 @@ export default function SectionShell({
   // against the viewport edge and read as a container box rather than as the
   // page's own margin.
   const frameClasses = [
-    'max-w-7xl mx-auto min-w-0 overflow-x-hidden border-[var(--color-line)]',
-    'px-4 sm:px-6',
+    // `.rail` owns measure + gutter + side hairlines (app/css/style.css).
+    // No overflow-x-hidden: it was clipping misalignment rather than
+    // preventing it, and it disables `position: sticky` on descendants.
+    'rail',
     bgClass || 'bg-canvas',
     !noBorder ? 'border-t' : '',
-    'sm:border-l sm:border-r',
     !noBorderBottom ? 'border-b' : '',
     rhythm ? 'py-10 md:py-14' : '',
   ]

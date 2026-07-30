@@ -112,9 +112,12 @@ function resolveTone(variant: Variant, tone: Tone): ToneStyles {
   }
   if (variant === 'solid' && tone === 'dark') {
     return {
-      fill: 'bg-neutral-950 hover:bg-neutral-900',
+      // bg-ink, not bg-neutral-950: outline buttons resolve their border to
+      // `ink` and LoopRail's own dark CTA uses bg-ink, so all three agree on
+      // one black instead of three near-blacks.
+      fill: 'bg-ink hover:bg-neutral-800',
       text: 'text-white',
-      outlineBorder: 'border-neutral-950',
+      outlineBorder: 'border-ink',
       outlineBg: 'bg-transparent',
       outlineHover: 'hover:bg-neutral-50',
     };

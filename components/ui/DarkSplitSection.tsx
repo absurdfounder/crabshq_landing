@@ -11,7 +11,9 @@ export default function DarkSplitSection({ children, className = '', innerClassN
   return (
     <section className={className}>
       <div
-        className={`mx-auto max-w-7xl min-w-0 overflow-x-hidden border-x border-white/[0.06] px-4 text-white sm:px-6 ${innerClassName || 'bg-split'}`}
+        // `.rail` for the shared geometry; the border colour is overridden
+        // because --color-line is a light-surface hairline.
+        className={`rail border-x border-white/[0.06] text-white ${innerClassName || 'bg-split'}`}
       >
         {children}
       </div>

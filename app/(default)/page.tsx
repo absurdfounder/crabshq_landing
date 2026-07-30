@@ -40,11 +40,13 @@ export const metadata = {
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import HowItWorksSteps from '@/components/HowItWorksSteps'
-import TrooperCastSection from '@/components/TrooperCastSection'
 import LoopRail from '@/components/LoopRail'
-import QuickStartSection from '@/components/QuickStartSection'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
-import BrowserCapabilitySection from '@/components/BrowserCapabilitySection'
+import IntegrationScroller from '@/components/IntegrationScroller'
+import { getIntegrationTiles } from '@/lib/integrationScroller'
+import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
+import VoicesSection from '@/components/VoicesSection'
+import { getVoices } from '@/lib/voices'
 import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
@@ -52,16 +54,19 @@ import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
 import MobileChannelsSection from '@/components/MobileChannelsSection'
-import YcQuoteSection from '@/components/YcQuoteSection'
 import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function Home() {
   const loopRailItems = getLoopRailItems(9)
+  const integrationTiles = getIntegrationTiles(36)
+  const voices = getVoices()
 
   return (
     <>
-      <div className="overflow-x-hidden">
+      {/* No page-level overflow clip: it hid misalignment instead of
+          preventing it. The hero keeps a local one for its rotated demo. */}
+      <div>
       <FloatingScrollIndicator />
       <div className="hero-shell bg-canvas">
         <Header />
@@ -69,48 +74,45 @@ export default function Home() {
       </div>
 
       <DarkSplitSection>
-        <YcQuoteSection />
+        <VoicesSection voices={voices} eyebrowNumber="01" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="The Squad" eyebrowNumber="02">
-        <TrooperCastSection />
-      </SectionShell>
-
-      <SectionShell rhythm eyebrow="How It Works" eyebrowNumber="03">
+      <SectionShell rhythm eyebrow="How It Works" eyebrowNumber="02">
         <HowItWorksSteps />
       </SectionShell>
 
-      <BrowserCapabilitySection />
-
-      <SectionShell eyebrow="Capabilities" eyebrowNumber="04">
+      <SectionShell rhythm eyebrow="Capabilities" eyebrowNumber="03">
         <OldWays />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
-        <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
+      {/* Works with everything: what it connects to (scroll-driven rails over
+          the real plugin catalog), then what it does (the loop rail). */}
+      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="04" bgClass="bg-canvas-warm">
+        <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
+        <div className="mt-12 border-t border-[var(--color-line)] pt-10 md:mt-16 md:pt-12">
+          <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
+        </div>
       </SectionShell>
 
-      <DarkSplitSection innerClassName="bg-gray-900">
+      {/* Two dark bands in a row, both bg-split — they read as one continuous
+          surface instead of meeting at a visible seam. */}
+      <DarkSplitSection>
         <MobileChannelsSection />
       </DarkSplitSection>
 
       <DarkSplitSection>
-        <GovernanceSection />
+        <GovernanceSection eyebrowNumber="06" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Quick Start" eyebrowNumber="07">
-        <QuickStartSection />
-      </SectionShell>
-
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="08">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="07">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="09">
+      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="08">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>

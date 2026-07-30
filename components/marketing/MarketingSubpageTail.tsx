@@ -15,15 +15,18 @@ export default function MarketingSubpageTail() {
         <GovernanceSection eyebrowNumber="05" />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-white">
+      {/* `rhythm` is required here, not optional: SimplePricing,
+          FounderMessageSection and FAQ no longer pad themselves, so the shell
+          owns their vertical spacing on every page that renders them. */}
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-canvas">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-white">
+      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-canvas">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-gray-50">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
     </>

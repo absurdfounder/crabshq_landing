@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function TopBar() {
   return (
-    <div className="site-top-bar bg-[#8cc352]">
+    <div className="site-top-bar bg-trooper-400">
       <Link
         href="/download/mac"
         className="group relative flex h-10 w-full items-center justify-center gap-2 px-4 text-sm font-medium text-lime-950/80 transition-colors hover:text-lime-950 sm:gap-2.5"

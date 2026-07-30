@@ -32,7 +32,7 @@ export default function HowItWorksSteps() {
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="how-it-works-heading font-funneldisplay text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.75rem] tracking-tight text-ink leading-[1.15]">
+        <h2 className="how-it-works-heading h2-section">
           Manage business goals
           <br />
           not pull requests.
@@ -58,7 +58,7 @@ export default function HowItWorksSteps() {
             <h3 className="step-title font-sans text-lg sm:text-xl font-semibold text-ink mt-4 mb-3">
               {step.title}
             </h3>
-            <p className="step-example text-sm sm:text-base text-slate-500 leading-relaxed">
+            <p className="step-example text-sm sm:text-base text-ink-muted leading-relaxed">
               {step.example}
             </p>
           </motion.div>

@@ -4,12 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Download, FileSpreadsheet, FileText, Signal, Wifi } from 'lucide-react';
+import { ArrowRight, FileSpreadsheet, FileText, Signal, Wifi } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const CHANNEL_SETUP_URL = 'https://app.trooper.so/settings/channels';
 
 const FEATURED_CHANNEL_IDS = ['imessage', 'telegram', 'whatsapp', 'email'] as const;
 
@@ -340,97 +339,22 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
   );
 }
 
-function DarkMockCard({
-  title,
-  meta,
-  children,
-  footer,
-}: {
-  title: string;
-  meta?: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-}) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5)] backdrop-blur-sm">
-      <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3 sm:px-5">
-        <span className="text-[13px] font-semibold tracking-tight text-white sm:text-sm">{title}</span>
-        {meta ? (
-          <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.12em] text-white/35">{meta}</span>
-        ) : null}
-      </div>
-      <div className="px-4 py-4 sm:px-5 sm:py-5">{children}</div>
-      {footer ? (
-        <div className="flex items-center justify-between gap-2 border-t border-white/[0.06] px-4 py-2.5 sm:px-5">
-          {footer}
-        </div>
-      ) : null}
-    </div>
-  );
-}
+type MobileChannelsSectionProps = {
+  /** Position in the host page's numbered section rhythm. */
+  eyebrowNumber?: string;
+};
 
-function ConnectCard() {
+/**
+ * Dark band, so it renders its own eyebrow on the dark surface rather than
+ * taking one from SectionShell. The number is a prop: it used to be hardcoded
+ * to `[04]`, which collided with the shell's own `[04]` two sections earlier.
+ */
+export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileChannelsSectionProps) {
   return (
-    <DarkMockCard title="Save Trooper to your phone" meta="channel setup">
-      <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-        <div className="relative shrink-0">
-          <div className="overflow-hidden rounded-xl bg-white p-2 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] ring-1 ring-white/10">
-            <Image
-              src="/images/trooper-connect-qr.png"
-              alt="QR code to open Trooper channel setup"
-              width={108}
-              height={108}
-              className="size-[108px]"
-            />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-slate-200/80">
-              <Image
-                src="/images/trooper-logomark.png"
-                alt=""
-                width={18}
-                height={18}
-                className="size-[18px] object-contain"
-                style={{ imageRendering: 'pixelated' }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="min-w-0 flex-1 text-center sm:text-left">
-          <p className="text-sm leading-relaxed text-white/50">
-            Scan to open channel setup — then message your workforce from the apps you already use.
-          </p>
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
-            <a
-              href={CHANNEL_SETUP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-split transition-colors hover:bg-white/92 sm:w-auto"
-            >
-              <Download className="size-4" strokeWidth={2} aria-hidden />
-              Connect channels
-            </a>
-            <Link
-              href="/download"
-              className="inline-flex w-full items-center justify-center gap-1 text-sm font-medium text-white/50 transition-colors hover:text-white/75 sm:w-auto sm:px-2"
-            >
-              Mobile apps
-              <ArrowRight className="size-3.5" aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </DarkMockCard>
-  );
-}
-
-export default function MobileChannelsSection() {
-  return (
-    <div className="py-10 md:py-14 lg:py-16">
+    <div className="py-10 md:py-16">
       <div className="mb-8 lg:mb-10">
         <span className="type-eyebrow-num-dark">
-          <span className="text-white/40">[04]</span>
+          <span className="text-white/40">[{eyebrowNumber}]</span>
           <span>&nbsp;</span>
           Field Comms
         </span>
@@ -455,7 +379,7 @@ export default function MobileChannelsSection() {
           viewport={{ once: true, margin: '-40px' }}
         >
           <div className="space-y-4 text-center lg:text-left">
-            <h2 className="font-funneldisplay text-[1.75rem] leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.65rem] lg:leading-[1.08]">
+            <h2 className="h2-section-dark">
               Chat with your workforce,
               <br className="hidden sm:block" />
               <span className="sm:whitespace-nowrap"> on the go.</span>
@@ -477,14 +401,12 @@ export default function MobileChannelsSection() {
             </p>
           </div>
 
-          <ConnectCard />
-
           <Link
             href="/channels"
-            className="mx-auto inline-flex items-center gap-1.5 text-sm font-medium text-fern transition-colors hover:text-fern-light lg:mx-0"
+            className="group link-mono-dark mx-auto lg:mx-0"
           >
-            Browse all channels
-            <ArrowRight className="size-4" aria-hidden />
+            <span>Browse all channels</span>
+            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
           </Link>
         </motion.div>
       </div>
