@@ -376,8 +376,8 @@ export default function OldWays() {
   return (
     <div className="grid grid-cols-1 gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)]">
       {cards.map((card) => (
-        <article key={card.tag} className="bg-white">
-          <div className="grid lg:grid-cols-2 lg:items-stretch">
+        <article key={card.tag} className="min-w-0 bg-white">
+          <div className="grid min-w-0 lg:grid-cols-2 lg:items-stretch">
             <div className="flex flex-col justify-center px-5 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12">
               <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint">
                 {card.tag}
@@ -391,7 +391,7 @@ export default function OldWays() {
               </p>
             </div>
 
-            <div className="relative min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[440px] lg:border-l lg:border-t-0">
+            <div className="relative min-w-0 min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[440px] lg:border-l lg:border-t-0">
               <PixelFramedVisual>{card.visual}</PixelFramedVisual>
             </div>
           </div>

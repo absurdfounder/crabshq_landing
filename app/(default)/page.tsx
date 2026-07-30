@@ -48,6 +48,7 @@ import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
 import OldWays from '@/components/OldWays'
+import WhereTheyWorkSection from '@/components/WhereTheyWorkSection'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
@@ -83,16 +84,24 @@ export default function Home() {
         <OldWays />
       </SectionShell>
 
+      {/* Capabilities says what they do; this says where they run; the next
+          says what they connect to. Three scenes in one section on purpose —
+          desktop, browser and devices answer the same question, and the page
+          had just come down from 13 sections to 10. */}
+      <SectionShell rhythm eyebrow="Where they work" eyebrowNumber="04">
+        <WhereTheyWorkSection />
+      </SectionShell>
+
       {/* Works with everything: what it connects to (scroll-driven rails over
           the real plugin catalog), then what it does (the loop rail). */}
-      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="04" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="05" bgClass="bg-canvas-warm">
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
         <div className="mt-12 border-t border-[var(--color-line)] pt-10 md:mt-16 md:pt-12">
           <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
         </div>
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="05">
+      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="06">
         <MobileChannelsSection />
       </SectionShell>
 
@@ -100,18 +109,18 @@ export default function Home() {
           here now — when Field Comms was dark too, the two butted together with
           no divider and read as a single slab. */}
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="06" />
+        <GovernanceSection eyebrowNumber="07" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="07">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="08">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="08">
+      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="09">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>
