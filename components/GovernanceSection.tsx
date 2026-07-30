@@ -51,7 +51,7 @@ type GovernanceSectionProps = {
 
 export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSectionProps) {
   return (
-    <div className="py-10 md:py-16">
+    <div id="governance" className="scroll-mt-24 py-10 md:py-16">
       <motion.div
         className="max-w-3xl"
         initial={{ opacity: 0, y: 16 }}

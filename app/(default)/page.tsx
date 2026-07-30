@@ -42,6 +42,7 @@ import Header from '@/components/ui/header'
 import HowItWorksSteps from '@/components/HowItWorksSteps'
 import TrooperCastSection from '@/components/TrooperCastSection'
 import LoopRail from '@/components/LoopRail'
+import QuickStartSection from '@/components/QuickStartSection'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import BrowserCapabilitySection from '@/components/BrowserCapabilitySection'
 import OldWays from '@/components/OldWays'
@@ -97,15 +98,19 @@ export default function Home() {
         <GovernanceSection />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="07">
+      <SectionShell rhythm eyebrow="Quick Start" eyebrowNumber="07">
+        <QuickStartSection />
+      </SectionShell>
+
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="08">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="08">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="09">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-canvas-warm">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>
