@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { DemoFavicon } from '@/components/DemoFavicon';
-import { getProviderDomain } from '@/lib/demoProviders';
+import { DemoFavicon } from '@trooper/demo';
+import { getProviderDomain } from '@trooper/demo';
 import { getFaviconUrl } from '@/lib/favicon';
 
 export function VignetteChrome({ label, children }: { label: string; children: ReactNode }) {

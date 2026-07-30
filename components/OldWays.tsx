@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Terminal, Globe, FileText, Check, Loader2, Sparkles, Braces, Database, Box, MessageSquare, ArrowRight } from "lucide-react";
 import { getFaviconUrl } from "@/lib/favicon";
-import { TROOPER_DEMO as T } from './demoTheme';
+import { TROOPER_DEMO as T } from '@trooper/demo';
 import FeaturePeekStage from './ui/FeaturePeekStage';
 import SmartRoutingSection from './SmartRoutingSection';
 import DataSourcesSection from './DataSourcesSection';

@@ -1,5 +1,5 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 
 const SOCIAL_IMAGE = 'https://dazzling-cat.netlify.app/trooper_social.png';
 

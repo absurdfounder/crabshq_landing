@@ -3,9 +3,9 @@
 import {
   Check, Loader2, FileText, Terminal, Hash, Play,
 } from 'lucide-react';
-import { DemoFavicon } from '@/components/DemoFavicon';
-import { DemoBrowserFrame } from '@/components/DemoBrowserChrome';
-import { assetPath, DEMO_MEDIA } from '@/lib/demoScenarioAssets/helpers';
+import { DemoFavicon } from '@trooper/demo';
+import { DemoBrowserFrame } from '@trooper/demo';
+import { demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
 import { VignetteChrome, TrooperMark } from './shared';
 import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 import {

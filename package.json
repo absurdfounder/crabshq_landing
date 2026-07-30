@@ -10,10 +10,11 @@
     "validate:playbooks": "node scripts/validate-playbooks.mjs",
     "generate:og": "tsx scripts/generate-og-images.ts",
     "generate:og:home": "tsx scripts/generate-og-images.ts --home",
-    "build": "npm run validate:playbooks && npm run generate:og:home -- --force && next build",
+    "build": "npm run sync:demo-assets && npm run validate:playbooks && npm run generate:og:home -- --force && next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,industry,alternative,channel,loop,compare,showcase,legacy-integration"
+    "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,industry,alternative,channel,loop,compare,showcase,legacy-integration",
+    "sync:demo-assets": "rm -rf public/demo && mkdir -p public/demo && cp -r packages/demo/assets/* public/demo/"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -48,5 +49,8 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
     "tsx": "^4.22.4"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown, Copy } from 'lucide-react';
-import { DemoFavicon } from '@/components/DemoFavicon';
+import { DemoFavicon } from '@trooper/demo';
 import {
   DEFAULT_SETUP_TARGET_ID,
   SETUP_TARGETS,
