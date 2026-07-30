@@ -407,8 +407,47 @@ body > iframe.goog-te-menu-frame {
     @apply border border-neutral-200 bg-white p-6 transition-colors hover:border-fern-200;
   }
 
+  /*
+   * The page rail.
+   *
+   * One definition for the shared measure + gutter + side hairlines. Four
+   * places used to hand-roll this geometry and produced three different
+   * results — a full 4-sided frame here, a relocated gutter there, a second
+   * max-w-7xl nested inside the first somewhere else.
+   *
+   * The side hairlines drop below `sm`: at phone widths they sit hard against
+   * the viewport edge and read as a container box rather than the page margin.
+   */
+  .rail {
+    @apply mx-auto max-w-7xl min-w-0 border-[var(--color-line)] px-4 sm:border-l sm:border-r sm:px-6;
+  }
+
+  /*
+   * The only sanctioned way to run edge-to-edge inside a rail.
+   *
+   * It mirrors `.rail`'s gutter at both breakpoints. Negative margins that
+   * *don't* match the gutter are precisely what broke the grid before: a
+   * `sm:-mx-6` against a `px-4 sm:px-6` parent bleeds correctly at one
+   * breakpoint and wrongly at the other.
+   */
+  .rail-bleed {
+    margin-inline: -1rem;
+  }
+
+  @media (min-width: 640px) {
+    .rail-bleed {
+      margin-inline: -1.5rem;
+    }
+  }
+
+  /*
+   * `clip` rather than `hidden`: overflow-x-hidden creates a scroll container,
+   * which silently disables `position: sticky` on every descendant and clips
+   * absolutely-positioned children like the header's mega-menu. `clip` stops
+   * the horizontal scrollbar without either side effect.
+   */
   .hero-shell {
-    @apply overflow-x-hidden bg-canvas text-ink;
+    @apply overflow-x-clip bg-canvas text-ink;
   }
 
   /* Offset fixed TopBar + nav — use on the first block after .site-header */

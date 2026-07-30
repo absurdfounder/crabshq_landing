@@ -164,7 +164,9 @@ function CompareCell({ cell }: { cell: ComparisonCell }) {
 
 function DesktopCompareTable() {
   return (
-    <div className="hidden overflow-hidden border-b border-slate-200 lg:block">
+    // `overflow-clip`, not `hidden`: hidden makes this a scroll container,
+    // which silently disabled the `sticky top-16` header cells below.
+    <div className="hidden overflow-clip border-b border-slate-200 lg:block">
       <div className={DESKTOP_GRID}>
         <div className={compareHeaderCellClass()}>
           <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Features</span>

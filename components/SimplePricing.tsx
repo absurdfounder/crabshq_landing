@@ -681,7 +681,10 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         />
       </div>
 
-      <div className="border-t border-slate-100 sm:-mx-6">
+      {/* No `sm:-mx-6`: it cancelled the shell's sm:px-6 only at sm and up, so
+          the table ran to the rail hairline while its own headline stayed
+          inset — the section disagreed with itself about where the edge was. */}
+      <div className="border-t border-slate-100">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}

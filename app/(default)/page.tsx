@@ -58,7 +58,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="overflow-x-hidden">
+      {/* No page-level overflow clip: it hid misalignment instead of
+          preventing it. The hero keeps a local one for its rotated demo. */}
+      <div>
       <FloatingScrollIndicator />
       <div className="hero-shell bg-canvas">
         <Header />

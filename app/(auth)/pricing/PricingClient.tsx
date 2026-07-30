@@ -167,8 +167,10 @@ const FAQSection: React.FC = () => {
     const [activeTab, setActiveTab] = useState("Pricing");
 
     return (
-        <div className="mt-20 max-w-7xl">
-            <div className="px-4">
+        // Measure and gutter come from the SectionShell — this nested a second
+        // max-w-7xl plus its own px-4 inside the shell's padded rail.
+        <div>
+            <div>
                 <div className="text-start mb-10">
                     <h2 className="font-funneldisplay text-2xl md:text-3xl font-bold text-slate-900 mb-3">
                         Frequently Asked Questions

@@ -159,7 +159,7 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
         <div className="flex shrink-0 flex-col gap-5 lg:w-[15rem]">
           <div
-            className="scrollbar-hide -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0 lg:flex-wrap"
+            className="flex flex-wrap gap-2"
             role="group"
             aria-label="Filter loops by category"
           >
@@ -197,7 +197,11 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
           <div
             ref={scrollerRef}
             onScroll={updateProgress}
-            className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
+            /* The one sanctioned bleed on the page: the card rail runs
+               edge-to-edge on phones so it reads as scrollable. `.rail-bleed`
+               mirrors the rail's gutter at both breakpoints rather than
+               guessing at one of them. */
+            className="scrollbar-hide rail-bleed flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
           >
             {/* Describe-your-own card leads the rail: the fastest way to show
                 that the catalog is a starting point, not a ceiling. */}
