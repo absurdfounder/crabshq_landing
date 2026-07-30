@@ -40,6 +40,9 @@ export const metadata = {
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import HowItWorksSteps from '@/components/HowItWorksSteps'
+import TrooperCastSection from '@/components/TrooperCastSection'
+import LoopRail from '@/components/LoopRail'
+import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import BrowserCapabilitySection from '@/components/BrowserCapabilitySection'
 import OldWays from '@/components/OldWays'
 import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
@@ -53,6 +56,8 @@ import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function Home() {
+  const loopRailItems = getLoopRailItems(9)
+
   return (
     <>
       <div className="overflow-x-hidden">
@@ -66,33 +71,41 @@ export default function Home() {
         <YcQuoteSection />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="How It Works" eyebrowNumber="02">
+      <SectionShell eyebrow="The Squad" eyebrowNumber="02">
+        <TrooperCastSection />
+      </SectionShell>
+
+      <SectionShell eyebrow="How It Works" eyebrowNumber="03">
         <HowItWorksSteps />
       </SectionShell>
 
       <BrowserCapabilitySection />
 
-      <SectionShell eyebrow="Capabilities" eyebrowNumber="03">
+      <SectionShell eyebrow="Capabilities" eyebrowNumber="04">
         <OldWays />
+      </SectionShell>
+
+      <SectionShell eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
+        <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
       <DarkSplitSection innerClassName="bg-gray-900">
         <MobileChannelsSection />
       </DarkSplitSection>
 
-      <SectionShell eyebrow="Governance" eyebrowNumber="05">
+      <DarkSplitSection>
         <GovernanceSection />
-      </SectionShell>
+      </DarkSplitSection>
 
-      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="06">
+      <SectionShell eyebrow="Deployment Plans" eyebrowNumber="07">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell eyebrow="Message from the founder" eyebrowNumber="07">
+      <SectionShell eyebrow="Message from the founder" eyebrowNumber="08">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-canvas-warm">
+      <SectionShell eyebrow="Intel Brief" eyebrowNumber="09" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>
