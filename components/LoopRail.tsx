@@ -145,12 +145,12 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+        <h2 className="h2-section">
           Troopers work from a loop,
           <br />
           not a prompt.
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
+        <p className="lede">
           A loop has a goal, a check command and an exit condition — so a trooper knows when the
           job is actually done. Start from {totalCount} of them, or describe your own.
         </p>
@@ -186,7 +186,7 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
 
           <Link
             href="/loops"
-            className="group hidden items-center gap-1.5 self-start border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink lg:inline-flex"
+            className="group link-mono hidden self-start lg:inline-flex"
           >
             <span>Browse all {totalCount} loops</span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -197,10 +197,11 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
           <div
             ref={scrollerRef}
             onScroll={updateProgress}
-            /* The one sanctioned bleed on the page: the card rail runs
-               edge-to-edge on phones so it reads as scrollable. `.rail-bleed`
-               mirrors the rail's gutter at both breakpoints rather than
-               guessing at one of them. */
+            /* The one sanctioned bleed on the page. `.rail-bleed` matches the
+               rail's own gutter exactly (that is the whole point — a negative
+               margin that doesn't match is what broke the grid elsewhere), and
+               `sm:mx-0 sm:px-0` opts back in to the gutter above phones, where
+               the rail's side hairlines exist and cards shouldn't touch them. */
             className="scrollbar-hide rail-bleed flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
           >
             {/* Describe-your-own card leads the rail: the fastest way to show

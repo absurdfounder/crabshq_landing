@@ -326,32 +326,55 @@ body > iframe.goog-te-menu-frame {
     @apply font-medium;
   }
 
-  .type-h1 {
-    @apply font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl;
+  /*
+   * Section typography.
+   *
+   * These replace a .type-h1/.type-h2/.type-h3/.type-body/.type-caption/
+   * .type-label/.type-code block that had ZERO usages anywhere in the repo
+   * while the Tailwind config still advertised it. Reviving it would have
+   * shrunk every headline on the site — its .type-h2 was text-2xl sm:text-3xl,
+   * matching no heading actually in use.
+   *
+   * What is here instead encodes the string the page had already converged on:
+   * three sections shared it byte-for-byte and two more differed only in class
+   * order or a hundredth of line-height. This documents reality rather than
+   * redesigning it.
+   */
+  .h2-section {
+    @apply font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem];
   }
 
-  .type-h2 {
-    @apply font-display text-2xl font-medium tracking-tight text-ink sm:text-3xl;
+  .h2-section-dark {
+    @apply font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-white sm:text-3xl md:text-4xl lg:text-[2.75rem];
   }
 
-  .type-h3 {
-    @apply font-display text-xl font-medium tracking-tight text-ink sm:text-2xl;
+  .h3-card {
+    @apply font-sans text-base leading-snug text-ink sm:text-lg;
   }
 
-  .type-body {
-    @apply font-sans text-base leading-relaxed text-ink-muted;
+  /* Standfirst under an h2-section. */
+  .lede {
+    @apply mt-3 text-sm leading-relaxed text-ink-muted sm:text-base;
   }
 
-  .type-caption {
-    @apply font-sans text-sm text-ink-faint;
+  /*
+   * The one text-link treatment.
+   *
+   * Nine different ones were in use; this is the only one that was already
+   * reused (5 call sites), so it wins. Use .link-mono-dark on dark bands.
+   */
+  /* Add `group` at the call site — @apply rejects it (it's a marker, not a utility). */
+  .link-mono {
+    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink;
   }
 
-  .type-label {
-    @apply font-brand text-xs lowercase tracking-tight text-fern-700 sm:text-sm;
+  .link-mono-dark {
+    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/50 transition-colors hover:border-current hover:text-white;
   }
 
-  .type-code {
-    @apply font-mono text-sm text-slate-700;
+  /* The one tab/chip idiom. Pair with .tab-mono--active. */
+  .tab-mono {
+    @apply shrink-0 border-r border-[var(--color-line)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors sm:px-5;
   }
 
   .kicker {

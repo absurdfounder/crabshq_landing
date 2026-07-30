@@ -379,7 +379,7 @@ export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileCh
           viewport={{ once: true, margin: '-40px' }}
         >
           <div className="space-y-4 text-center lg:text-left">
-            <h2 className="font-funneldisplay text-[1.75rem] leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.65rem] lg:leading-[1.08]">
+            <h2 className="h2-section-dark">
               Chat with your workforce,
               <br className="hidden sm:block" />
               <span className="sm:whitespace-nowrap"> on the go.</span>
@@ -403,7 +403,7 @@ export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileCh
 
           <Link
             href="/channels"
-            className="group mx-auto inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/50 transition-colors hover:border-current hover:text-white lg:mx-0"
+            className="group link-mono-dark mx-auto lg:mx-0"
           >
             <span>Browse all channels</span>
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />

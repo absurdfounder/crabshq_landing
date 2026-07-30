@@ -108,10 +108,10 @@ const FAQCell: React.FC<FAQ> = ({ question, answer }) => {
 const FAQ: React.FC = () => (
   <div>
     <div className="max-w-2xl">
-      <h2 className="font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+      <h2 className="h2-section">
         Intel brief.
       </h2>
-      <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base">
+      <p className="lede">
         Missing intel? Transmit your question to{' '}
         <a
           href="mailto:vaibhav@trooper.so"
