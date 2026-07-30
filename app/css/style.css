@@ -16,6 +16,35 @@
   }
 }
 
+/* Scroll-driven integration rail (duplicated list, so -50% is one full loop) */
+@keyframes railDrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@supports not (animation-timeline: view()) {
+  .rail-track {
+    animation: none;
+    transform: translateX(var(--rail-x, 0px));
+  }
+}
+
+/*
+ * Motion off, but nothing hidden: the track freezes while its wrapper keeps
+ * overflow-x-auto, so every tile is still reachable by scrolling by hand.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .rail-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .flex[style*="heroMarqueeScroll"],
+  [data-marquee] > * {
+    animation: none !important;
+  }
+}
+
 /* Hero marquee scroll animation (2× tag list) */
 @keyframes heroMarqueeScroll {
   0% { transform: translateX(0); }
@@ -370,6 +399,34 @@ body > iframe.goog-te-menu-frame {
 
   .link-mono-dark {
     @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/50 transition-colors hover:border-current hover:text-white;
+  }
+
+  /*
+   * Scroll-driven rail.
+   *
+   * `animation-timeline: view()` binds the animation's progress to the
+   * element's own passage through the viewport — it literally moves as the
+   * page is scrolled, with no scroll listener and no main-thread work.
+   * Chrome/Edge 115+, Safari 26+.
+   *
+   * The @supports branch is the Firefox/older-Safari path: a rAF loop writes
+   * --rail-x instead, and only while the row is on screen.
+   */
+  .rail-track {
+    width: max-content;
+    animation: railDrift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+
+  .rail-track--reverse {
+    animation-direction: reverse;
+  }
+
+  /* Edge fade so tiles enter and leave rather than being cut off. */
+  .rail-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
   }
 
   /* The one tab/chip idiom. Pair with .tab-mono--active. */
