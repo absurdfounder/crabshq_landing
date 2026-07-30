@@ -523,7 +523,9 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       {COMMON_PLAN_FEATURES.map((feature) => (
         <FeatureItem key={feature}>{feature}</FeatureItem>
       ))}
-      <FeatureItem>Install on Mac, Windows, or Linux</FeatureItem>
+      {/* Not Linux: the product ships build-dmg.yml and build-windows.yml and
+          nothing else, so a Linux desktop install was never buildable. */}
+      <FeatureItem>Install on Mac or Windows</FeatureItem>
       <FeatureItem>Bring your own API keys</FeatureItem>
     </>
   );

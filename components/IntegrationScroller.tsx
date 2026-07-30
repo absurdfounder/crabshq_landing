@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 import type { IntegrationTile } from '@/lib/integrationScroller';
+import { useScrollDrivenRail } from './useScrollDrivenRail';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -49,54 +50,11 @@ function Tile({ tile, cloned }: { tile: IntegrationTile; cloned?: boolean }) {
 }
 
 function Row({ tiles, reverse = false }: { tiles: IntegrationTile[]; reverse?: boolean }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  // Fallback for engines without animation-timeline (Firefox, older Safari).
-  // Returns immediately where the CSS handles it, and only runs a rAF loop
-  // while the row is actually on screen.
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    if (typeof CSS !== 'undefined' && CSS.supports?.('animation-timeline', 'view()')) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let raf = 0;
-    let running = false;
-
-    const step = () => {
-      const rect = track.getBoundingClientRect();
-      const total = window.innerHeight + rect.height;
-      // 0 as the row enters the viewport, 1 as it leaves.
-      const progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total));
-      const distance = track.scrollWidth / 2;
-      const x = reverse ? -distance * (1 - progress) : -distance * progress;
-      track.style.setProperty('--rail-x', `${x}px`);
-      raf = requestAnimationFrame(step);
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !running) {
-        running = true;
-        raf = requestAnimationFrame(step);
-      } else if (!entry.isIntersecting && running) {
-        running = false;
-        cancelAnimationFrame(raf);
-      }
-    });
-
-    observer.observe(track);
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, [reverse]);
+  const trackRef = useScrollDrivenRail<HTMLDivElement>(reverse);
 
   return (
     <div className="rail-fade scrollbar-hide overflow-x-auto">
-      <div
-        ref={trackRef}
-        className={`rail-track flex gap-3 ${reverse ? 'rail-track--reverse' : ''}`}
-      >
+      <div ref={trackRef} className="rail-track flex gap-3">
         {tiles.map((tile) => (
           <Tile key={tile.slug} tile={tile} />
         ))}

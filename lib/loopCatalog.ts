@@ -1,5 +1,4 @@
 import catalogData from '@/public/loops_catalog.json';
-import { toolTagsFor, type LoopTag } from '@/lib/loopTagIcons';
 import { buildKickoffPrompt, buildLoopMermaid } from '@/lib/loopMermaid';
 import { getLoopCapabilityRequirements } from '@/lib/loopCapabilityRequirements';
 
@@ -146,61 +145,68 @@ export function searchLoops(
 
 export type LoopRailItem = Pick<
   LoopEntry,
-  'slug' | 'title' | 'description' | 'category' | 'trigger' | 'installs' | 'hardened'
-> & {
-  /** Allowlisted tool tags only — see lib/loopTagIcons.ts for why. */
-  tags: LoopTag[];
-};
+  'slug' | 'title' | 'category' | 'exitCondition'
+>;
 
 /**
- * Slim, un-enriched loops for marketing rails.
+ * A loop whose title and copy were written by a person.
+ *
+ * 82 of the 119 catalog entries get their title by appending " on Autopilot"
+ * to a company tagline, which truncates into things like "The tiny computer
+ * built for on Autopilot" and "AI Agents for the supply on Autopilot". Those
+ * are fine on /loops, where each one sits behind a search box and has a page
+ * that explains it. Six inches high in a rail on the home page they read as
+ * exactly what they are, and no amount of spacing fixes that.
+ *
+ * The survivors share a naming convention — "X Until Green", "Lint Until
+ * Clean", "Docs Until Accurate" — which is the product's actual voice.
+ */
+const isHandAuthored = (loop: LoopEntry) =>
+  loop.official && !loop.inspiredBy && !/ on Autopilot$/.test(loop.title);
+
+/**
+ * Slim, un-enriched loops for the home rail.
  *
  * Deliberately skips `enrichLoop` (mermaid + kickoff prompt + related lookups)
- * and returns only the fields a card renders, so a server component can hand
- * these to a client rail without shipping the whole catalog to the browser.
+ * and returns only the four fields a card renders, so a server component can
+ * hand these to a client rail without shipping the whole catalog to the
+ * browser.
  *
- * Picks the most-installed official loop from each category first so the rail
- * shows breadth before depth, then backfills by installs.
+ * Ordering is round-robin across categories rather than grouped by them: the
+ * rail's job is to show range, and four Testing cards in a row reads as a
+ * narrow catalog even when it isn't.
  */
-export function getLoopRailItems(categories = 4, perCategory = 3): LoopRailItem[] {
+export function getLoopRailItems(limit = 24): LoopRailItem[] {
   const toItem = (loop: LoopEntry): LoopRailItem => ({
     slug: loop.slug,
     title: loop.title,
-    description: loop.description,
     category: loop.category,
-    trigger: loop.trigger,
-    installs: loop.installs,
-    hardened: loop.hardened,
-    tags: toolTagsFor(loop.tags),
+    exitCondition: loop.exitCondition,
   });
 
-  const official = LOOPS.filter((loop) => loop.official);
-
   const byCategory = new Map<string, LoopEntry[]>();
-  for (const loop of official) {
+  for (const loop of LOOPS.filter(isHandAuthored)) {
     const bucket = byCategory.get(loop.category) ?? [];
     bucket.push(loop);
     byCategory.set(loop.category, bucket);
   }
 
-  // Only categories that can fill a whole row, ranked by total installs. The
-  // previous version took the top loop from every category, which meant every
-  // filter chip except "All" returned exactly one card — fine in a scroller,
-  // a lone orphan in a grid row.
-  const totalInstalls = (loops: LoopEntry[]) =>
-    loops.reduce((n: number, l: LoopEntry) => n + (l.installs || 0), 0);
+  // Most-installed first within each category, so if `limit` cuts the tail it
+  // cuts the least interesting loops.
+  const buckets = Array.from(byCategory.values())
+    .map((loops) => [...loops].sort((a, b) => (b.installs || 0) - (a.installs || 0)))
+    .sort((a, b) => (b[0].installs || 0) - (a[0].installs || 0));
 
-  const eligible = Array.from(byCategory.values())
-    .filter((loops) => loops.length >= perCategory)
-    .sort((a, b) => totalInstalls(b) - totalInstalls(a))
-    .slice(0, categories);
-
-  return eligible.flatMap((loops) =>
-    [...loops]
-      .sort((a, b) => (b.installs || 0) - (a.installs || 0))
-      .slice(0, perCategory)
-      .map(toItem),
-  );
+  const out: LoopRailItem[] = [];
+  for (let depth = 0; out.length < limit; depth += 1) {
+    const round = buckets.filter((bucket) => bucket[depth]);
+    if (round.length === 0) break;
+    for (const bucket of round) {
+      if (out.length >= limit) break;
+      out.push(toItem(bucket[depth]));
+    }
+  }
+  return out;
 }
 
 export function formatLoopCount(n: number) {
