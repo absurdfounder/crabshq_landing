@@ -48,7 +48,6 @@ import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
 import OldWays from '@/components/OldWays'
-import FloatingScrollIndicator from '@/components/FloatingScrollIndicator'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
@@ -58,7 +57,7 @@ import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function Home() {
-  const loopRailItems = getLoopRailItems(9)
+  const loopRailItems = getLoopRailItems(4, 3)
   const integrationTiles = getIntegrationTiles(36)
   const voices = getVoices()
 
@@ -67,7 +66,6 @@ export default function Home() {
       {/* No page-level overflow clip: it hid misalignment instead of
           preventing it. The hero keeps a local one for its rotated demo. */}
       <div>
-      <FloatingScrollIndicator />
       <div className="hero-shell bg-canvas">
         <Header />
         <Hero />
@@ -94,12 +92,13 @@ export default function Home() {
         </div>
       </SectionShell>
 
-      {/* Two dark bands in a row, both bg-split — they read as one continuous
-          surface instead of meeting at a visible seam. */}
-      <DarkSplitSection>
+      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="05">
         <MobileChannelsSection />
-      </DarkSplitSection>
+      </SectionShell>
 
+      {/* The page's second and last dark band. Governance is the only one down
+          here now — when Field Comms was dark too, the two butted together with
+          no divider and read as a single slab. */}
       <DarkSplitSection>
         <GovernanceSection eyebrowNumber="06" />
       </DarkSplitSection>

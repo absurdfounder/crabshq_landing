@@ -33,6 +33,8 @@ export { DEMO_KEYFRAMES } from './lib/demoMotion';
  * genuinely shared, so they stay part of the public surface rather than being
  * duplicated on the host side.
  */
+export { DemoTagBadge, TAG_COLORS } from './components/DemoTagBadge';
+export type { DemoTag } from './components/demoTaskExecution';
 export { DemoFavicon } from './components/DemoFavicon';
 export { DemoBrowserFrame, DemoBrowserTitleBar } from './components/DemoBrowserChrome';
 export { DemoCursorGlyph } from './components/DemoCursorGlyph';

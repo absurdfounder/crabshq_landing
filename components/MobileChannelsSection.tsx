@@ -287,7 +287,7 @@ function PhoneChatScreen() {
 
 function IphoneDevice() {
   return (
-    <div className="relative mx-auto w-full max-w-[272px] sm:max-w-[290px] lg:max-w-[300px]">
+    <div className="relative mx-auto w-full max-w-[272px] sm:max-w-[290px] lg:max-w-[280px]">
       <motion.div
         className="relative"
         initial={{ opacity: 0, y: 24 }}
@@ -295,12 +295,7 @@ function IphoneDevice() {
         transition={{ duration: 0.7, ease }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div
-          className="absolute left-1/2 top-[22%] -z-10 h-[65%] w-[110%] -translate-x-1/2 rounded-full bg-fern/20 blur-[56px]"
-          aria-hidden
-        />
-
-        <div className="relative rounded-[2.65rem] bg-gradient-to-b from-[#48484a] via-[#2c2c2e] to-[#1c1c1e] p-[2.5px] shadow-[0_48px_96px_-28px_rgba(0,0,0,0.75),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-white/[0.08]">
+        <div className="relative rounded-[2.65rem] bg-gradient-to-b from-[#48484a] via-[#2c2c2e] to-[#1c1c1e] p-[2.5px] shadow-[0_32px_64px_-24px_rgba(26,26,26,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/5">
           <div className="relative overflow-hidden rounded-[2.45rem] bg-black">
             <div
               className="pointer-events-none absolute left-1/2 top-2 z-30 h-[22px] w-[76px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
@@ -317,11 +312,6 @@ function IphoneDevice() {
             />
           </div>
         </div>
-
-        <div
-          className="pointer-events-none absolute -inset-x-6 -bottom-8 h-16 bg-gradient-to-t from-split/80 to-transparent"
-          aria-hidden
-        />
       </motion.div>
     </div>
   );
@@ -331,7 +321,7 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
   return (
     <Link
       href={`/channels/${channelId}`}
-      className="group inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[13px] font-medium text-white/90 transition-all hover:border-white/16 hover:bg-white/[0.07] sm:px-3.5"
+      className="group inline-flex items-center gap-2 border border-[var(--color-line)] bg-white px-3 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/25 hover:bg-canvas-warm sm:px-3.5"
     >
       <FieldCommsChannelIcon channelId={channelId} size={20} />
       <span>{channelName}</span>
@@ -339,31 +329,22 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
   );
 }
 
-type MobileChannelsSectionProps = {
-  /** Position in the host page's numbered section rhythm. */
-  eyebrowNumber?: string;
-};
-
 /**
- * Dark band, so it renders its own eyebrow on the dark surface rather than
- * taking one from SectionShell. The number is a prop: it used to be hardcoded
- * to `[04]`, which collided with the shell's own `[04]` two sections earlier.
+ * A light section now, so the eyebrow and vertical rhythm come from the
+ * SectionShell wrapping it. This used to be a dark band sitting immediately
+ * against Governance, and with no divider between them the two read as one
+ * continuous slab rather than two sections.
+ *
+ * The phone screen itself stays black — it is a device, and a black iOS
+ * screen on a light page is what a phone actually looks like.
  */
-export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileChannelsSectionProps) {
+export default function MobileChannelsSection() {
   return (
-    <div className="py-10 md:py-16">
-      <div className="mb-8 lg:mb-10">
-        <span className="type-eyebrow-num-dark">
-          <span className="text-white/40">[{eyebrowNumber}]</span>
-          <span>&nbsp;</span>
-          Field Comms
-        </span>
-      </div>
-
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-12 xl:gap-16">
+    <div>
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-12 xl:gap-16">
         {/* Phone stage */}
         <div className="relative order-2 flex justify-center lg:order-1 lg:justify-start">
-          <div className="relative w-full max-w-[340px] overflow-hidden rounded-2xl lg:max-w-none">
+          <div className="relative w-full max-w-[320px] lg:max-w-none">
             <div>
               <IphoneDevice />
             </div>
@@ -379,12 +360,12 @@ export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileCh
           viewport={{ once: true, margin: '-40px' }}
         >
           <div className="space-y-4 text-center lg:text-left">
-            <h2 className="h2-section-dark">
+            <h2 className="h2-section">
               Chat with your workforce,
               <br className="hidden sm:block" />
               <span className="sm:whitespace-nowrap"> on the go.</span>
             </h2>
-            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-white/50 sm:text-base lg:mx-0 lg:max-w-lg">
+            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-ink-muted sm:text-base lg:mx-0 lg:max-w-lg">
               Text your agents from iMessage, WhatsApp, Telegram, or email — the same channels your
               team already checks.
             </p>
@@ -396,14 +377,14 @@ export default function MobileChannelsSection({ eyebrowNumber = '05' }: MobileCh
                 <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
               ))}
             </div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/30">
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
               + {MORE_CHANNELS}
             </p>
           </div>
 
           <Link
             href="/channels"
-            className="group link-mono-dark mx-auto lg:mx-0"
+            className="group link-mono mx-auto lg:mx-0"
           >
             <span>Browse all channels</span>
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />

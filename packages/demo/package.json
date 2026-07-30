@@ -2,12 +2,13 @@
   "name": "@trooper/demo",
   "version": "0.1.0",
   "private": true,
-  "description": "The interactive Trooper product demo — a faithful replica of the app, built and iterated on standalone.",
+  "description": "The interactive Trooper product demo \u2014 a faithful replica of the app, built and iterated on standalone.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./assets/*": "./src/assets/*"
+    "./assets/*": "./src/assets/*",
+    "./tag-badge": "./src/components/DemoTagBadge.tsx"
   },
   "files": [
     "src"

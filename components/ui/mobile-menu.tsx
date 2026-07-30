@@ -100,7 +100,7 @@ export default function MobileMenu({ dark = false }: { dark?: boolean }) {
   }, [])
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         onClick={() => setIsOpen(true)}
@@ -120,7 +120,7 @@ export default function MobileMenu({ dark = false }: { dark?: boolean }) {
           type="button"
           aria-label="Close menu"
           onClick={close}
-          className="fixed inset-0 z-[250] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out] lg:hidden"
+          className="fixed inset-0 z-[250] cursor-default bg-slate-900/50 backdrop-blur-[2px] animate-[fadeIn_.18s_ease-out] xl:hidden"
         />
       ) : null}
 
@@ -130,7 +130,7 @@ export default function MobileMenu({ dark = false }: { dark?: boolean }) {
         aria-modal="true"
         aria-label="Site navigation"
         aria-hidden={!isOpen}
-        className="fixed inset-y-0 right-0 z-[260] flex h-[100dvh] w-[min(88vw,320px)] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 lg:hidden"
+        className="fixed inset-y-0 right-0 z-[260] flex h-[100dvh] w-[min(88vw,320px)] max-w-sm flex-col bg-white shadow-2xl transition-transform duration-300 ease-out translate-x-0 xl:hidden"
       >
         <div className="flex h-14 items-center justify-between border-b border-slate-100 bg-white px-4">
           <span className="font-display text-base font-bold text-slate-900">Menu</span>
