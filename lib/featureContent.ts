@@ -1,6 +1,6 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import { getFeaturePage, FEATURE_DEMO_MAP, allFeatureSlugs } from '@/lib/subpageContent';
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
 import type { PlaybookWorkflowContent } from '@/lib/playbookWorkflow';
 import { canvasFeatureSection, marketingCanvasFeatureSection } from '@/lib/marketingFeatures';

@@ -1,0 +1,36 @@
+{
+  "name": "@trooper/demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The interactive Trooper product demo — a faithful replica of the app, built and iterated on standalone.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./assets/*": "./src/assets/*"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite --config harness/vite.config.ts",
+    "build:harness": "vite build --config harness/vite.config.ts",
+    "shots": "node harness/scripts/shots.mjs",
+    "capture:pages": "node harness/scripts/capture-pages.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "border-beam": ">=1.3",
+    "framer-motion": ">=11",
+    "lucide-react": ">=0.3",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "react-markdown": ">=10",
+    "remark-gfm": ">=4",
+    "thinking-orbs": ">=0.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}

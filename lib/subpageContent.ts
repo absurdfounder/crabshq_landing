@@ -1,5 +1,5 @@
 import { featureNavItems, teamNavItems } from '@/components/ui/nav-data';
-import type { DemoScenarioId } from '@/lib/demoScenarios';
+import type { DemoScenarioId } from '@trooper/demo';
 
 export type SubpageBenefit = {
   title: string;
