@@ -23,7 +23,32 @@ export type IntegrationTile = {
 };
 
 /**
- * The nine priority integrations first, then real installable ones to fill.
+ * Names a reader recognises, in a deliberate order.
+ *
+ * Every slug below is verified present, installable and icon-bearing in
+ * plugins_catalog.json. The order interleaves categories — comms, code, CRM,
+ * design, data — so a glance at any part of the rail says "it covers my
+ * stack" rather than "it covers one thing well".
+ *
+ * This list exists because the obvious implementation (priority slugs, then
+ * backfill from getAllPlugins()) fills the rail alphabetically: 21risk, 2chat,
+ * Ably, Abstract, AbuseIPDB, Abyssale, Accredible… That is a wall of names
+ * nobody recognises, which is the same "too much, unfocused" problem this
+ * whole pass is removing.
+ */
+const FEATURED_SLUGS = [
+  'github', 'gmail', 'slack', 'notion', 'linear', 'figma',
+  'hubspot', 'stripe', 'salesforce', 'googlesheets', 'jira', 'airtable',
+  'zendesk', 'shopify', 'discord', 'intercom', 'asana', 'googledocs',
+  'linkedin', 'trello', 'gitlab', 'sentry', 'calendly', 'dropbox',
+  'clickup', 'openai', 'supabase', 'vercel', 'zoom', 'mailchimp',
+  'confluence', 'posthog', 'canva', 'telegram', 'whatsapp', 'quickbooks',
+  'datadog', 'segment', 'miro', 'typeform', 'pipedrive', 'cloudflare',
+] as const;
+
+/**
+ * Featured names first, then the priority slugs, then any installable
+ * icon-bearing plugin to fill.
  *
  * Filtering on `iconUrl` matters: pluginLogoUrl falls back to a generic
  * favicon when a plugin has no icon, and a rail of identical grey globes is
@@ -35,6 +60,7 @@ export function getIntegrationTiles(limit = 36): IntegrationTile[] {
 
   const push = (plugin: ReturnType<typeof getPluginBySlug>) => {
     if (!plugin || seen.has(plugin.slug) || picked.length >= limit) return;
+    if (!plugin.iconUrl) return;
     seen.add(plugin.slug);
     picked.push({
       slug: plugin.slug,
@@ -44,6 +70,7 @@ export function getIntegrationTiles(limit = 36): IntegrationTile[] {
     });
   };
 
+  for (const slug of FEATURED_SLUGS) push(getPluginBySlug(slug));
   for (const slug of PRIORITY_INTEGRATION_SLUGS) push(getPluginBySlug(slug));
 
   for (const plugin of getAllPlugins()) {
