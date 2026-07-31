@@ -91,11 +91,7 @@ export default function VoicesSection({ voices, eyebrowNumber = '01' }: VoicesSe
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <span className="type-eyebrow-num-dark">
-          <span className="text-white/40">[{eyebrowNumber}]</span>
-          <span>&nbsp;</span>
-          What people say
-        </span>
+        <span className="kicker-dark">What people say</span>
       </motion.div>
 
       {voices.length === 1 ? (

@@ -33,9 +33,7 @@ function sliderProgress(value: number) {
 function SectionEyebrow({ index, label }: { index: string; label: string }) {
   return (
     <div className="border-b border-slate-200 px-4 py-3 sm:px-6 lg:px-8">
-      <span className="type-eyebrow-num">
-        <span className="text-slate-400">[{index}]</span>&nbsp;{label}
-      </span>
+      <span className="kicker">{label}</span>
     </div>
   );
 }

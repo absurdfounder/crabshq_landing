@@ -124,9 +124,7 @@ const ecosystemColumn: FooterColumn = {
 
 function CellHeader({ number, eyebrow }: { number: string; eyebrow: string }) {
   return (
-    <div className="font-silkscreen text-[11px] uppercase tracking-[0.18em] text-slate-500">
-      <span className="text-slate-400">[{number}]</span> {eyebrow}
-    </div>
+    <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{eyebrow}</div>
   );
 }
 

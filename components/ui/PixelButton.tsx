@@ -43,110 +43,71 @@ interface ButtonProps extends BasePropsCommon, ButtonRest {
 
 type PixelButtonProps = AnchorProps | ButtonProps;
 
-type PixelSize = {
-  labelMin: string;
-  padX: string;
-  padY: string;
-  text: string;
-  /** rest: notch on top-left + bottom-right */
-  clipRest: string;
-  /** hover: notch swaps to top-right + bottom-left */
-  clipHover: string;
+/**
+ * The site's one button: a double-shell bezel.
+ *
+ * An outer shell carries the gradient and 2px of padding; an inner face
+ * carries its own border. That 2px reveal is what makes it read as a physical
+ * control rather than a filled rectangle. See docs/design-system.md §6.
+ *
+ * This used to render stair-stepped clip-path polygons with ALL-CAPS mono
+ * labels at `tracking-[0.14em]` — "GET STARTED", "DOWNLOAD FOR MAC". Uppercase
+ * mono is ~30% wider than sentence case for the same word, reads as a terminal
+ * prompt rather than an invitation, and the notched corners fought every
+ * rounded surface around them. The name is kept because 53 call sites import
+ * it and its API is unchanged; only the rendering moved.
+ */
+
+type SizeSpec = {
+  /** Inner face padding + type. */
+  face: string;
+  minHeight: string;
 };
 
-/**
- * Stair-stepped polygons. Each diagonal corner has a 2-pixel stair (each pixel
- * 2px × 2px) so the corners read as pixel-art edges, not as missing chunks.
- * Rest state notches the TL+BR diagonal; hover snaps the notches to TR+BL.
- */
-const PIXEL_SIZE: Record<Size, PixelSize> = {
-  sm: {
-    labelMin: 'min-h-[28px]',
-    padX: 'px-3',
-    padY: 'py-2.5',
-    text: 'text-[10px] sm:text-[11px]',
-    clipRest:
-      '[clip-path:polygon(4px_0,100%_0,100%_calc(100%-4px),calc(100%-2px)_calc(100%-4px),calc(100%-2px)_calc(100%-2px),calc(100%-4px)_calc(100%-2px),calc(100%-4px)_100%,0_100%,0_4px,2px_4px,2px_2px,4px_2px)]',
-    clipHover:
-      'group-hover:[clip-path:polygon(0_0,calc(100%-4px)_0,calc(100%-4px)_2px,calc(100%-2px)_2px,calc(100%-2px)_4px,100%_4px,100%_100%,4px_100%,4px_calc(100%-2px),2px_calc(100%-2px),2px_calc(100%-4px),0_calc(100%-4px))] group-focus-visible:[clip-path:polygon(0_0,calc(100%-4px)_0,calc(100%-4px)_2px,calc(100%-2px)_2px,calc(100%-2px)_4px,100%_4px,100%_100%,4px_100%,4px_calc(100%-2px),2px_calc(100%-2px),2px_calc(100%-4px),0_calc(100%-4px))]',
-  },
-  md: {
-    labelMin: 'min-h-[36px]',
-    padX: 'px-4',
-    padY: 'py-3',
-    text: 'text-[11px] sm:text-xs',
-    clipRest:
-      '[clip-path:polygon(6px_0,100%_0,100%_calc(100%-6px),calc(100%-3px)_calc(100%-6px),calc(100%-3px)_calc(100%-3px),calc(100%-6px)_calc(100%-3px),calc(100%-6px)_100%,0_100%,0_6px,3px_6px,3px_3px,6px_3px)]',
-    clipHover:
-      'group-hover:[clip-path:polygon(0_0,calc(100%-6px)_0,calc(100%-6px)_3px,calc(100%-3px)_3px,calc(100%-3px)_6px,100%_6px,100%_100%,6px_100%,6px_calc(100%-3px),3px_calc(100%-3px),3px_calc(100%-6px),0_calc(100%-6px))] group-focus-visible:[clip-path:polygon(0_0,calc(100%-6px)_0,calc(100%-6px)_3px,calc(100%-3px)_3px,calc(100%-3px)_6px,100%_6px,100%_100%,6px_100%,6px_calc(100%-3px),3px_calc(100%-3px),3px_calc(100%-6px),0_calc(100%-6px))]',
-  },
-  lg: {
-    labelMin: 'min-h-[40px]',
-    padX: 'px-5',
-    padY: 'py-3.5',
-    text: 'text-xs sm:text-sm',
-    clipRest:
-      '[clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-4px)_calc(100%-8px),calc(100%-4px)_calc(100%-4px),calc(100%-8px)_calc(100%-4px),calc(100%-8px)_100%,0_100%,0_8px,4px_8px,4px_4px,8px_4px)]',
-    clipHover:
-      'group-hover:[clip-path:polygon(0_0,calc(100%-8px)_0,calc(100%-8px)_4px,calc(100%-4px)_4px,calc(100%-4px)_8px,100%_8px,100%_100%,8px_100%,8px_calc(100%-4px),4px_calc(100%-4px),4px_calc(100%-8px),0_calc(100%-8px))] group-focus-visible:[clip-path:polygon(0_0,calc(100%-8px)_0,calc(100%-8px)_4px,calc(100%-4px)_4px,calc(100%-4px)_8px,100%_8px,100%_100%,8px_100%,8px_calc(100%-4px),4px_calc(100%-4px),4px_calc(100%-8px),0_calc(100%-8px))]',
-  },
+const SIZE: Record<Size, SizeSpec> = {
+  sm: { face: 'px-3.5 py-1.5 text-[13px]', minHeight: '2.25rem' },
+  md: { face: 'px-5 py-2.5 text-[15px]', minHeight: '2.75rem' },
+  lg: { face: 'px-6 py-3 text-base', minHeight: '3rem' },
 };
 
 type ToneStyles = {
-  fill: string;
-  text: string;
-  outlineBorder: string;
-  outlineBg: string;
-  outlineHover: string;
+  /** Outer shell: the bezel edge. */
+  shell: string;
+  /** Inner face: the surface the label sits on. */
+  face: string;
 };
 
 function resolveTone(variant: Variant, tone: Tone): ToneStyles {
-  if (variant === 'solid' && tone === 'brand') {
+  // Outline and light both resolve to the secondary treatment: a white face
+  // inside a hairline ring. There is no third button on this site.
+  if (variant === 'outline' || tone === 'light') {
     return {
-      fill: 'bg-trooper hover:bg-trooper-700',
-      text: 'text-white',
-      outlineBorder: 'border-slate-900',
-      outlineBg: 'bg-transparent',
-      outlineHover: 'hover:bg-slate-50',
+      shell: 'border border-white bg-white text-neutral-700 shadow-xs ring-1 ring-black/[0.08]',
+      face: 'border-none bg-transparent hover:bg-neutral-50',
     };
   }
-  if (variant === 'solid' && tone === 'dark') {
+
+  if (tone === 'brand') {
     return {
-      // bg-ink, not bg-neutral-950: outline buttons resolve their border to
-      // `ink` and LoopRail's own dark CTA uses bg-ink, so all three agree on
-      // one black instead of three near-blacks.
-      fill: 'bg-ink hover:bg-neutral-800',
-      text: 'text-white',
-      outlineBorder: 'border-ink',
-      outlineBg: 'bg-transparent',
-      outlineHover: 'hover:bg-neutral-50',
+      shell: 'bg-gradient-to-b from-trooper to-trooper-700 text-white',
+      face: 'border-white/20 bg-gradient-to-b from-trooper to-trooper',
     };
   }
-  if (variant === 'solid' && tone === 'light') {
-    return {
-      fill: 'bg-slate-200',
-      text: 'text-slate-900',
-      outlineBorder: 'border-slate-900',
-      outlineBg: 'bg-transparent',
-      outlineHover: 'hover:bg-slate-100',
-    };
-  }
+
   return {
-    fill: 'bg-transparent',
-    text: 'text-slate-900',
-    outlineBorder: 'border-slate-900',
-    outlineBg: 'bg-transparent',
-    outlineHover: 'hover:bg-slate-50',
+    shell: 'bg-gradient-to-b from-neutral-900 to-neutral-950 text-white',
+    face: 'border-neutral-700/80 bg-gradient-to-b from-neutral-900 to-neutral-900',
   };
 }
 
-function buildShellClass(className?: string, disabled?: boolean) {
+function buildShellClass(shellTone: string, className?: string, disabled?: boolean) {
   const wantsFullWidth = className?.includes('w-full');
   return [
-    'group relative inline-flex items-stretch select-none',
+    'group relative flex select-none rounded-[10px] p-0.5',
+    'transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]',
     wantsFullWidth ? '' : 'w-fit',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
-    'active:translate-x-px active:translate-y-px',
+    shellTone,
     disabled ? 'pointer-events-none opacity-60' : '',
     className,
   ]
@@ -167,37 +128,23 @@ export default function PixelButton(props: PixelButtonProps) {
     disabled,
   } = props;
 
-  const px = PIXEL_SIZE[size];
+  const sizing = SIZE[size];
   const toneStyles = resolveTone(variant, tone);
-  const isPixelSolid = variant === 'solid';
 
-  const shellClassName = buildShellClass(className, disabled);
+  const shellClassName = buildShellClass(toneStyles.shell, className, disabled);
 
-  const labelClassName = [
-    'inline-flex flex-1 items-center justify-center gap-2 self-stretch',
-    'font-mono font-semibold uppercase leading-none tracking-[0.14em] whitespace-nowrap',
-    px.padX,
-    px.padY,
-    px.text,
-    px.labelMin,
-    toneStyles.text,
-    'border',
-    isPixelSolid
-      ? [
-          'border-transparent',
-          toneStyles.fill,
-          px.clipRest,
-          px.clipHover,
-          'transition-none',
-        ].join(' ')
-      : [toneStyles.outlineBorder, toneStyles.outlineBg, toneStyles.outlineHover].join(' '),
+  const faceClassName = [
+    'flex h-full w-full items-center justify-center gap-2 whitespace-nowrap',
+    'rounded-[8px] border font-semibold leading-none transition-colors duration-200',
+    sizing.face,
+    toneStyles.face,
     labelClassNameProp,
   ]
     .filter(Boolean)
     .join(' ');
 
   const content = (
-    <span className={labelClassName}>
+    <span className={faceClassName} style={{ minHeight: sizing.minHeight }}>
       <span>{children}</span>
       {icon ? <span className="inline-flex shrink-0 items-center">{icon}</span> : null}
     </span>

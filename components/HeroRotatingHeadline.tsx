@@ -7,12 +7,11 @@ type HeroRotatingHeadlineProps = {
 export default function HeroRotatingHeadline({ className = '' }: HeroRotatingHeadlineProps) {
   return (
     <h1
-      className={`max-w-full font-display font-medium text-[2rem] leading-[1.12] tracking-tight sm:text-4xl md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[1.08] xl:text-[3.5rem] ${className}`}
+      className={`max-w-full text-balance font-display text-[2.25rem] font-medium leading-[1.08] tracking-tight text-neutral-800 sm:text-5xl lg:text-6xl ${className}`}
     >
-      <span className="block text-balance text-ink">Give the order.</span>
-      <span className="mt-1 block text-balance sm:mt-2">
-        <span className="text-ink">Your troopers </span>
-        <span className="text-fern">ship it.</span>
+      <span className="block">Give the order.</span>
+      <span className="mt-1 block sm:mt-2">
+        Your troopers <span className="text-fern-700">ship it.</span>
       </span>
     </h1>
   );

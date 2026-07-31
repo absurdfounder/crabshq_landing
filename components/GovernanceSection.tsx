@@ -59,11 +59,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <span className="type-eyebrow-num-dark">
-          <span className="text-white/40">[{eyebrowNumber}]</span>
-          <span>&nbsp;</span>
-          Governance
-        </span>
+        <span className="kicker-dark">Governance</span>
         <h2 className="mt-5 h2-section-dark">
           Your troopers work for you.
           <br />
