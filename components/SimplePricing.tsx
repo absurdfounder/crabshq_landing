@@ -52,10 +52,10 @@ function PlanBadge({ children, featured = false }: { children: React.ReactNode; 
   return (
     <span
       className={[
-        'rounded-md px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset',
+        'border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]',
         featured
-          ? 'bg-trooper-50 text-trooper ring-trooper-200'
-          : 'bg-neutral-100 text-neutral-600 ring-black/5',
+          ? 'border-trooper-200 bg-trooper-50 text-trooper'
+          : 'border-slate-100 bg-slate-100 text-slate-600',
       ].join(' ')}
     >
       {children}
@@ -111,7 +111,7 @@ function AllowanceStepper({
 }) {
   const atMax = disableIncrease || value >= max;
   return (
-    <div className="flex items-center justify-between gap-2 rounded-lg bg-white px-3 py-2.5 shadow-xs ring-1 ring-black/5">
+    <div className="flex items-center justify-between gap-2 border border-slate-100 bg-white px-3 py-2.5">
       <div className="min-w-0">
         <p className="text-sm font-medium text-slate-900">{label}</p>
         <p className="mt-0.5 text-[11px] leading-snug text-slate-500">{helper}</p>
@@ -119,7 +119,7 @@ function AllowanceStepper({
       <div className="flex shrink-0 items-center gap-1" role="group" aria-label={`${label} quantity`}>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-white text-neutral-700 shadow-xs ring-1 ring-black/5 transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
           aria-label={`Decrease ${label.toLowerCase()}`}
@@ -129,7 +129,7 @@ function AllowanceStepper({
         <span className="w-8 text-center text-sm font-medium tabular-nums text-slate-900">{value}</span>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-white text-neutral-700 shadow-xs ring-1 ring-black/5 transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={atMax}
           onClick={() => onChange(Math.min(max, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
@@ -153,7 +153,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
   return (
     <TierRail>
       <div
-        className="grid w-fit gap-1 rounded-xl bg-neutral-100/70 p-1"
+        className="grid w-fit gap-1 rounded-sm border border-slate-100/90 bg-slate-50/60 p-1"
         role="radiogroup"
         aria-label="Hosting mode"
       >
@@ -163,7 +163,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
           aria-checked={selected}
           tabIndex={-1}
           className={[
-            'h-8 cursor-default rounded-lg px-3 py-2 xl:px-3',
+            'h-8 cursor-default rounded-sm px-3 py-2 xl:px-3',
             selected ? 'bg-white text-slate-600 ring-1 ring-slate-200/80' : 'text-slate-400',
           ].join(' ')}
         >
@@ -184,7 +184,7 @@ function CloudTierTabs({
   return (
     <TierRail>
       <div
-        className="grid w-full grid-cols-2 gap-1 rounded-xl bg-neutral-100/70 p-1"
+        className="grid w-full grid-cols-2 gap-1 rounded-sm border border-slate-300 bg-slate-100 p-1 shadow-sm"
         role="radiogroup"
         aria-label="Trooper Cloud tier"
       >
@@ -199,7 +199,7 @@ function CloudTierTabs({
               aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
               onClick={() => onChange(tier.id)}
               className={[
-                'flex h-8 items-center justify-center gap-1 rounded-lg px-2 transition-all duration-150 xl:gap-1.5 xl:px-2.5',
+                'flex h-8 items-center justify-center gap-1 rounded-sm px-2 transition-all duration-150 xl:gap-1.5 xl:px-2.5',
                 selected
                   ? 'bg-trooper text-white shadow-sm ring-1 ring-trooper/40'
                   : 'text-slate-600 hover:bg-white hover:text-slate-900',
@@ -335,17 +335,14 @@ function DesktopPlanColumn({
   allowance,
   features,
   cta,
+  isLast = false,
 }: DesktopPlanColumnProps) {
   return (
     <article
       className={[
-        // Four separate cards, not four columns of one table. `overflow-hidden`
-        // is what lets the subgrid cells — which paint their own `bg-white` —
-        // stop at the rounded corner instead of squaring it off.
-        'relative grid grid-rows-subgrid overflow-hidden rounded-2xl bg-white [grid-row:1/-1]',
-        featured
-          ? 'z-[1] shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-trooper-500/25'
-          : 'shadow-xs ring-1 ring-black/5',
+        'relative grid grid-rows-subgrid bg-white [grid-row:1/-1]',
+        !isLast ? 'border-r border-slate-100' : '',
+        featured ? 'z-[1] shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-emerald-500/25' : '',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -693,7 +690,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
           viewport={{ once: true }}
-          className="hidden lg:grid lg:grid-cols-4 lg:gap-4"
+          className="hidden overflow-hidden border-b border-slate-100 bg-slate-200 lg:grid lg:grid-cols-4"
           style={{ gridTemplateRows: PRICING_GRID_TEMPLATE_ROWS }}
         >
           {plans.map((plan, idx) => (
