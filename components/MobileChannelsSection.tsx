@@ -285,31 +285,51 @@ function PhoneChatScreen() {
   );
 }
 
+/**
+ * Cropped + tilted phone stage — full device still renders (so the chat
+ * animation has room), but the viewport only shows Dynamic Island through
+ * mid-chat, with a soft fade implying the rest continues below.
+ */
 function IphoneDevice() {
   return (
-    <div className="relative mx-auto w-full max-w-[272px] sm:max-w-[290px] lg:max-w-[280px]">
+    <div
+      className="relative mx-auto w-full max-w-[230px] sm:max-w-[250px]"
+      style={{ perspective: '1100px' }}
+    >
       <motion.div
-        className="relative"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease }}
-        viewport={{ once: true, amount: 0.3 }}
+        className="relative origin-top"
+        initial={{ opacity: 0, y: 24, rotateY: -18, rotateX: 10 }}
+        whileInView={{ opacity: 1, y: 0, rotateY: -14, rotateX: 7 }}
+        transition={{ duration: 0.75, ease }}
+        viewport={{ once: true, amount: 0.35 }}
+        style={{ transformStyle: 'preserve-3d' }}
       >
-        <div className="relative rounded-[2.65rem] bg-gradient-to-b from-[#48484a] via-[#2c2c2e] to-[#1c1c1e] p-[2.5px] shadow-[0_32px_64px_-24px_rgba(26,26,26,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] ring-1 ring-black/5">
-          <div className="relative overflow-hidden rounded-[2.45rem] bg-black">
-            <div
-              className="pointer-events-none absolute left-1/2 top-2 z-30 h-[22px] w-[76px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
-              aria-hidden
-            />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[8%] h-[70%] w-[92%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(122,168,36,0.16)_0%,transparent_70%)] blur-2xl"
+        />
 
-            <div className="aspect-[9/19.2] w-full">
-              <PhoneChatScreen />
+        {/* Crop window: show Island → mid-chat, fade the rest */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            maxHeight: '19.5rem',
+            WebkitMaskImage:
+              'linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%)',
+          }}
+        >
+          <div className="relative rounded-[2.5rem] bg-gradient-to-b from-[#5a5a5c] via-[#2c2c2e] to-[#141416] p-[2.5px] shadow-[0_36px_70px_-28px_rgba(26,26,26,0.45),0_10px_24px_-10px_rgba(26,26,26,0.22),inset_0_1px_0_rgba(255,255,255,0.14)] ring-1 ring-black/10 sm:rounded-[2.65rem]">
+            <div className="relative overflow-hidden rounded-[2.3rem] bg-black sm:rounded-[2.45rem]">
+              <div
+                className="pointer-events-none absolute left-1/2 top-2 z-30 h-[22px] w-[76px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:top-2.5 sm:h-[24px] sm:w-[84px]"
+                aria-hidden
+              />
+
+              <div className="aspect-[9/19.2] w-full">
+                <PhoneChatScreen />
+              </div>
             </div>
-
-            <div
-              className="pointer-events-none absolute inset-x-[38%] bottom-1.5 z-30 h-[4px] rounded-full bg-black/25"
-              aria-hidden
-            />
           </div>
         </div>
       </motion.div>
@@ -330,66 +350,46 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
 }
 
 /**
- * A light section now, so the eyebrow and vertical rhythm come from the
- * SectionShell wrapping it. This used to be a dark band sitting immediately
- * against Governance, and with no divider between them the two read as one
- * continuous slab rather than two sections.
- *
- * The phone screen itself stays black — it is a device, and a black iOS
- * screen on a light page is what a phone actually looks like.
+ * Field Comms — a centered composition with the phone as the showcase.
+ * Copy sits above; the device is the focal object on the axis; channels
+ * and the browse link stay centered under it.
  */
 export default function MobileChannelsSection() {
   return (
-    <div>
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-12 xl:gap-16">
-        {/* Phone stage */}
-        <div className="relative order-2 flex justify-center lg:order-1 lg:justify-start">
-          <div className="relative w-full max-w-[320px] lg:max-w-none">
-            <div>
-              <IphoneDevice />
-            </div>
-          </div>
+    <div className="mx-auto flex max-w-3xl flex-col items-center">
+      <motion.div
+        className="w-full text-center"
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease }}
+        viewport={{ once: true, margin: '-40px' }}
+      >
+        <h2 className="h2-section mx-auto">
+          Chat with your workforce,
+          <br className="hidden sm:block" />
+          <span className="sm:whitespace-nowrap"> on the go.</span>
+        </h2>
+        <p className="lede mx-auto max-w-lg">
+          Text your agents from iMessage, WhatsApp, Telegram, or email — the same channels your
+          team already checks.
+        </p>
+      </motion.div>
+
+      <div className="mt-8 w-full sm:mt-10">
+        <IphoneDevice />
+      </div>
+
+      <div className="mt-8 flex w-full flex-col items-center gap-3 sm:mt-9">
+        <div className="flex flex-wrap justify-center gap-2">
+          {featuredChannels.map((channel) => (
+            <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
+          ))}
         </div>
-
-        {/* Copy */}
-        <motion.div
-          className="order-1 flex flex-col gap-6 lg:order-2 lg:gap-7"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease }}
-          viewport={{ once: true, margin: '-40px' }}
-        >
-          <div className="space-y-4 text-center lg:text-left">
-            <h2 className="h2-section">
-              Chat with your workforce,
-              <br className="hidden sm:block" />
-              <span className="sm:whitespace-nowrap"> on the go.</span>
-            </h2>
-            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-ink-muted sm:text-base lg:mx-0 lg:max-w-lg">
-              Text your agents from iMessage, WhatsApp, Telegram, or email — the same channels your
-              team already checks.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center gap-3 lg:items-start">
-            <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
-              {featuredChannels.map((channel) => (
-                <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
-              ))}
-            </div>
-            <p className="text-sm text-neutral-500">
-              + {MORE_CHANNELS}
-            </p>
-          </div>
-
-          <Link
-            href="/channels"
-            className="group link-mono mx-auto lg:mx-0"
-          >
-            <span>Browse all channels</span>
-            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-          </Link>
-        </motion.div>
+        <p className="text-sm text-neutral-500">+ {MORE_CHANNELS}</p>
+        <Link href="/channels" className="group link-mono mt-1">
+          <span>Browse all channels</span>
+          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        </Link>
       </div>
     </div>
   );

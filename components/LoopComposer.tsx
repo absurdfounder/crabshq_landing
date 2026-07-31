@@ -197,23 +197,6 @@ export default function LoopComposer() {
           </span>
 
           <div className="flex min-w-0 flex-1 items-center justify-end gap-1 overflow-hidden sm:gap-1.5">
-            {/* Hosted usage ring */}
-            <span className="relative hidden h-8 w-8 shrink-0 items-center justify-center sm:inline-flex">
-              <svg width="30" height="30" viewBox="0 0 30 30" className="-rotate-90" aria-hidden>
-                <circle className="fill-none stroke-neutral-200" cx="15" cy="15" r="13.625" strokeWidth="2.75" />
-                <circle
-                  className="fill-none stroke-trooper"
-                  cx="15"
-                  cy="15"
-                  r="13.625"
-                  strokeWidth="2.75"
-                  strokeDasharray="85.6"
-                  strokeDashoffset="75.3"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-
             <ToolbarPill>
               <span className="max-w-[8rem] truncate">Trooper Auto</span>
             </ToolbarPill>

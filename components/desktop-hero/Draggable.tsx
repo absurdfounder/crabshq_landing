@@ -2,6 +2,8 @@
 
 import React, { useRef, useState } from 'react';
 
+const STAGE_W = 1600;
+
 /**
  * A desktop object the visitor can pick up and move.
  *
@@ -9,6 +11,9 @@ import React, { useRef, useState } from 'react';
  * authored left/top, so server and first client render agree (delta starts at
  * 0,0) and the scripted layout is the resting state. `touch-action: none` so
  * a finger drag moves the object instead of scrolling the page.
+ *
+ * Delta is kept in **stage pixels** (dividing out the `.dh-stage` scale) so
+ * choreography `getBoundingClientRect` math and the drag stay in the same space.
  *
  * The wrapper — not the child — owns pointer events, because the whole scene
  * layer is `pointer-events-none` (it must never block the hero copy or CTAs).
@@ -37,6 +42,13 @@ export default function Draggable({
   const [dragging, setDragging] = useState(false);
   const origin = useRef({ px: 0, py: 0, x: 0, y: 0 });
 
+  const stageScale = (el: HTMLElement) => {
+    const stage = el.closest('.dh-stage');
+    if (!stage) return 1;
+    const w = stage.getBoundingClientRect().width;
+    return w > 0 ? w / STAGE_W : 1;
+  };
+
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     // Ignore secondary buttons; leave right-click alone.
     if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -47,9 +59,10 @@ export default function Draggable({
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging) return;
+    const s = stageScale(e.currentTarget);
     setDelta({
-      x: origin.current.x + e.clientX - origin.current.px,
-      y: origin.current.y + e.clientY - origin.current.py,
+      x: origin.current.x + (e.clientX - origin.current.px) / s,
+      y: origin.current.y + (e.clientY - origin.current.py) / s,
     });
   };
 

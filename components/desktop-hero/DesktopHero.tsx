@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Github } from 'lucide-react';
 
 import HeroRotatingHeadline from '../HeroRotatingHeadline';
-import HeroArticleDemo from '../HeroArticleDemo';
 import HeroDownloadButtons from '../HeroDownloadButtons';
 import PixelButton from '../ui/PixelButton';
 import FernCircleCheckIcon from '../ui/FernCircleCheckIcon';
@@ -12,6 +11,7 @@ import Draggable from './Draggable';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
 const GITHUB_URL = 'https://github.com/Trooper-AI';
+const OPENCLAW_URL = 'https://openclaw.ai';
 
 /** Authored desktop width. Windows sit near the edges; the headline owns the middle. */
 const STAGE_W = 1600;
@@ -173,20 +173,14 @@ function MacDock() {
       aria-hidden
       className="dh-dock pointer-events-none absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 items-end gap-[5px] rounded-[16px] px-2.5 py-1.5"
     >
-      {DOCK_APPS.map((app, i) => {
-        const hasBg = 'bg' in app && Boolean(app.bg);
-        const padded = 'pad' in app && Boolean(app.pad);
-        return (
+      {DOCK_APPS.map((app, i) => (
           <React.Fragment key={app.id}>
             {app.id === 'trash' ? <span className="dh-dock-sep mx-0.5 mb-1 h-8 w-px self-center" /> : null}
             <div
               data-dh={app.id === 'trash' ? 'trash' : undefined}
               className="relative flex size-9 items-center justify-center"
             >
-              <span
-                className="flex size-9 items-center justify-center overflow-hidden rounded-[9px] shadow-[0_1px_3px_rgba(26,26,26,0.22)]"
-                style={{ backgroundColor: hasBg ? app.bg : 'transparent' }}
-              >
+              <span className="flex size-9 items-center justify-center overflow-hidden rounded-[9px] shadow-[0_1px_3px_rgba(26,26,26,0.22)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={app.src}
@@ -194,14 +188,13 @@ function MacDock() {
                   width={36}
                   height={36}
                   draggable={false}
-                  className={`pointer-events-none select-none ${padded ? 'size-[22px] object-contain' : 'size-9 object-cover'}`}
+                  className="pointer-events-none size-9 select-none object-cover"
                 />
               </span>
             </div>
             {i === 0 ? <span className="dh-dock-sep mx-0.5 mb-1 h-8 w-px self-center" /> : null}
           </React.Fragment>
-        );
-      })}
+      ))}
     </div>
   );
 }
@@ -553,11 +546,6 @@ function ClaudeCodeMock() {
 /* Agent cursors                                                       */
 /* ------------------------------------------------------------------ */
 
-/**
- * Center copy owns the middle. Agents / chrome stay in side gutters only.
- */
-const LANE = { leftMax: 380, rightMin: 1220 } as const;
-
 const AGENTS = [
   {
     id: 'aria',
@@ -566,7 +554,6 @@ const AGENTS = [
     arrow: '#8fc63f',
     pillBg: '#eef6df',
     pillText: '#4a7a08',
-    lane: 'left' as const,
     home: [140, 100] as const,
   },
   {
@@ -576,7 +563,6 @@ const AGENTS = [
     arrow: '#ffa04d',
     pillBg: '#fff0e0',
     pillText: '#b45309',
-    lane: 'right' as const,
     home: [1420, 120] as const,
   },
   {
@@ -586,39 +572,28 @@ const AGENTS = [
     arrow: '#6aa6ff',
     pillBg: '#e7efff',
     pillText: '#2b5fd9',
-    lane: 'left' as const,
     // Resting on Claude Code (bottom-left).
     home: [180, 420] as const,
   },
 ];
 
-function clampToLane(x: number, lane: 'left' | 'right'): number {
-  return lane === 'left' ? Math.min(x, LANE.leftMax) : Math.max(x, LANE.rightMin);
+/** Keep cursors on the stage when a target is dragged way off-canvas. */
+function clampToStage(x: number, y: number): [number, number] {
+  return [Math.max(-40, Math.min(STAGE_W - 20, x)), Math.max(-20, Math.min(820, y))];
 }
 
-function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
+/** Invisible stage anchors — choreography still tracks positions for file carry / FX. */
+function AgentCursorAnchor({ agent }: { agent: (typeof AGENTS)[number] }) {
   return (
     <div
       data-dh={`cursor-${agent.id}`}
       className="dh-cursor"
-      style={{ transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)` }}
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" className="drop-shadow-[0_2px_4px_rgba(26,26,26,0.18)]" aria-hidden>
-        <path
-          d="M4.2 3.4 Q4 2.6 4.8 2.9 L20.3 9.8 Q21.1 10.2 20.2 10.7 L13.6 12.6 L11.1 19 Q10.7 19.9 10.3 19.1 Z"
-          fill={agent.arrow}
-          stroke="#fff"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <span
-        className="ml-4 mt-0.5 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-sm ring-1 ring-black/5"
-        style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
-      >
-        {agent.name} · {agent.role}
-      </span>
-    </div>
+      style={{
+        transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)`,
+        opacity: 0,
+      }}
+      aria-hidden
+    />
   );
 }
 
@@ -642,7 +617,7 @@ type Step = {
   fx?: string;
 };
 
-/** Each agent only visits targets in its lane — never the center copy band. */
+/** Scripts resolve targets from live element positions every frame. */
 const SCRIPTS: Record<string, Step[]> = {
   aria: [
     // Open brief.pdf → read → close, then file the refunds csv.
@@ -737,6 +712,25 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       el.classList.add('dh-bounce');
     };
 
+    const posOf = (t: StepTarget, off: readonly [number, number] = [0, 0]): [number, number] => {
+      if (Array.isArray(t)) return clampToStage(t[0] + off[0], t[1] + off[1]);
+      const el = q(t as string);
+      const sr = stage.getBoundingClientRect();
+      const s = sr.width / STAGE_W;
+      if (!el || s <= 0) return clampToStage(STAGE_W / 2 + off[0], 360 + off[1]);
+      // Hidden / dimmed targets still have a layout box — use it so agents
+      // keep aiming at where the user left the window.
+      const r = el.getBoundingClientRect();
+      return clampToStage((r.left - sr.left) / s + off[0], (r.top - sr.top) / s + off[1]);
+    };
+
+    const placePreviewAt = (win: HTMLElement | null, targetId: string) => {
+      if (!win) return;
+      const [x, y] = posOf(targetId, [0, 0]);
+      win.style.left = `${x}px`;
+      win.style.top = `${y}px`;
+    };
+
     const openPreview = (win: HTMLElement | null, bar: HTMLElement | null) => {
       if (!win) return;
       win.classList.remove('dh-preview-closed', 'dh-preview-closing');
@@ -794,7 +788,8 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       openBrief: () => {
         bounceIcon('file-brief');
         later(() => {
-          // Replace the corner window — don't stack a second frame on it.
+          // Open on the sheet's *live* spot (follows a user drag).
+          placePreviewAt(preview, 'win-sheet');
           q('win-sheet')?.classList.add('dh-win-dim');
           openPreview(preview, readbar);
         }, 180);
@@ -807,6 +802,7 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       openCode: () => {
         bounceIcon('file-app');
         later(() => {
+          placePreviewAt(codeWin, 'win-pr');
           q('win-pr')?.classList.add('dh-win-dim');
           openPreview(codeWin, readbarCode);
         }, 180);
@@ -818,16 +814,6 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       },
     };
 
-    const posOf = (t: StepTarget, off: readonly [number, number] = [0, 0]): [number, number] => {
-      if (Array.isArray(t)) return [t[0] + off[0], t[1] + off[1]];
-      const el = q(t as string);
-      const sr = stage.getBoundingClientRect();
-      const s = sr.width / STAGE_W;
-      if (!el || s <= 0) return [STAGE_W / 2 + off[0], 360 + off[1]];
-      const r = el.getBoundingClientRect();
-      return [(r.left - sr.left) / s + off[0], (r.top - sr.top) / s + off[1]];
-    };
-
     const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 
     type CursorState = {
@@ -837,7 +823,6 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       phase: 'move' | 'dwell';
       t0: number;
       from: [number, number];
-      lane: 'left' | 'right';
     };
     const cursors: CursorState[] = AGENTS.map((a, k) => ({
       el: q(`cursor-${a.id}`),
@@ -847,7 +832,6 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       // Staggered starts so the three agents never move in lockstep.
       t0: performance.now() + k * 500,
       from: [a.home[0], a.home[1]],
-      lane: a.lane,
     }));
 
     let raf = 0;
@@ -855,12 +839,13 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       for (const c of cursors) {
         if (!c.el) continue;
         const st = c.steps[c.i];
+        // Live target every frame — if the visitor dragged the window/file,
+        // the cursor retargets mid-flight and mid-dwell.
+        const tp = posOf(st.to, st.off);
         if (c.phase === 'move') {
           const p = Math.min(1, Math.max(0, (now - c.t0) / st.move));
-          const raw = posOf(st.to, st.off);
-          const tp: [number, number] = [clampToLane(raw[0], c.lane), raw[1]];
           const e = ease(p);
-          const x = clampToLane(c.from[0] + (tp[0] - c.from[0]) * e, c.lane);
+          const x = c.from[0] + (tp[0] - c.from[0]) * e;
           const y = c.from[1] + (tp[1] - c.from[1]) * e;
           c.el.style.transform = `translate(${x}px, ${y}px)`;
           if (st.carry && fileEl && !fileEl.classList.contains('dh-hide')) {
@@ -872,10 +857,17 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
             c.t0 = now;
             if (st.fx) FX[st.fx]?.();
           }
-        } else if (now - c.t0 >= (st.dwell ?? 300)) {
-          c.i = (c.i + 1) % c.steps.length;
-          c.phase = 'move';
-          c.t0 = now;
+        } else {
+          c.from = tp;
+          c.el.style.transform = `translate(${tp[0]}px, ${tp[1]}px)`;
+          if (st.carry && fileEl && !fileEl.classList.contains('dh-hide')) {
+            fileEl.style.transform = `translate(${tp[0] - 30 - FILE_HOME[0]}px, ${tp[1] - 28 - FILE_HOME[1]}px)`;
+          }
+          if (now - c.t0 >= (st.dwell ?? 300)) {
+            c.i = (c.i + 1) % c.steps.length;
+            c.phase = 'move';
+            c.t0 = now;
+          }
         }
       }
       raf = requestAnimationFrame(frame);
@@ -1001,9 +993,9 @@ export default function DesktopHero() {
             </MacWindow>
 
             <MacWindow
-              x={1360}
+              x={1288}
               y={410}
-              w={220}
+              w={300}
               dataId="win-term"
               title="deploy — zsh"
               caption="trooper-cli"
@@ -1014,7 +1006,7 @@ export default function DesktopHero() {
             <MacWindow
               x={24}
               y={400}
-              w={260}
+              w={387}
               dataId="win-claude"
               title="claude — zsh"
               caption="Claude Code CLI"
@@ -1024,9 +1016,9 @@ export default function DesktopHero() {
               </div>
             </MacWindow>
 
-            {/* Left icon column — right of left windows, clear gaps. */}
+            {/* Left icons — brief beside the sheet; invoices clear of Claude (ends ~x411). */}
             <DesktopFile x={292} y={56} name="brief.pdf" kind="pdf" dataId="file-brief" />
-            <FolderIcon x={292} y={560} name="invoices" dataId="folder-inv" />
+            <FolderIcon x={430} y={560} name="invoices" dataId="folder-inv" />
 
             {/* Right icon column — left of right windows, clear gaps. */}
             <DesktopFile x={1195} y={56} name="App.tsx" kind="code" dataId="file-app" />
@@ -1055,34 +1047,34 @@ export default function DesktopHero() {
             <MacDock />
 
             {AGENTS.map((agent) => (
-              <AgentCursor key={agent.id} agent={agent} />
+              <AgentCursorAnchor key={agent.id} agent={agent} />
             ))}
           </div>
         </div>
       </div>
 
-      {/* Copy high in the sky band, center only — no card behind it. */}
-      <div className="rail rail-open pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+1.75rem)] text-center lg:h-[50rem] lg:pb-0 lg:pt-[calc(var(--site-header-height)+1.5rem)] xl:h-[52rem]">
-        <div className="dh-hero-copy pointer-events-auto mx-auto max-w-md lg:max-w-[26rem] xl:max-w-md">
+      {/* Copy — top of the sky band; side windows keep the gutters. */}
+      <div className="rail rail-open pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+1.5rem)] text-center lg:h-[50rem] lg:pb-0 lg:pt-[calc(var(--site-header-height)+1.25rem)] xl:h-[52rem]">
+        <div className="dh-hero-copy pointer-events-auto mx-auto mt-10 w-full max-w-xl">
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-sans text-sm font-medium tracking-tight text-fern-700 transition-colors hover:text-fern-800 sm:text-base"
+            className="inline-flex items-center gap-1.5 rounded-lg p-2 px-6 font-sans text-sm font-medium tracking-tight text-fern-900 transition-colors hover:text-fern-800"
           >
             <Github className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
             Open source
           </a>
 
-          <HeroRotatingHeadline className="mx-auto mt-3 text-center !text-neutral-900" />
+          <HeroRotatingHeadline className="mx-auto mt-2.5 text-center !text-neutral-900 !text-[2rem] sm:!text-4xl lg:!text-[2.35rem] xl:!text-5xl" />
 
-          <p className="lede mx-auto !mt-3 max-w-md text-center !text-neutral-700 sm:text-lg">
+          <p className="lede mx-auto !mt-2.5 max-w-[32rem] text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
             <b className="font-semibold text-neutral-900">Hire a workforce, not a chatbot.</b>{' '}
             Troopers write code, ship commits, run ads, answer support and file the paperwork —
             each one running a loop you approved.
           </p>
 
-          <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
             <PixelButton
               href="https://app.trooper.so?ref=herolanding"
               external
@@ -1096,28 +1088,29 @@ export default function DesktopHero() {
             <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
           </div>
 
-          <ul className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="Product highlights">
+          <ul className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-1.5" aria-label="Product highlights">
             {TRUST_ITEMS.map((item) => (
-              <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-700">
-                <FernCircleCheckIcon className="h-4 w-4 shrink-0 text-fern-600" />
+              <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-700">
+                <FernCircleCheckIcon className="h-3.5 w-3.5 shrink-0 text-fern-600" />
                 <span>{item}</span>
               </li>
             ))}
           </ul>
+
+          <p className="mt-4 text-[13px] text-neutral-500">
+            Powered by{' '}
+            <a
+              href={OPENCLAW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[#c47865] transition-colors hover:text-[#b26552]"
+            >
+              OpenClaw
+            </a>
+          </p>
         </div>
       </div>
 
-      {/*
-        The product, on the tinted pixel surface. No white card around it: the
-        demo window already carries its own border, radius and shadow, and a
-        second frame plus the band's internal padding read as a grey mat
-        around the product. `flush` strips the band's own padding too.
-      */}
-      <div className="hero-surface relative hidden border-t border-black/5 lg:block">
-        <div className="rail rail-open py-10 lg:py-14">
-          <HeroArticleDemo rotate flush />
-        </div>
-      </div>
     </section>
   );
 }
@@ -1131,18 +1124,26 @@ function DhStyles() {
     <style>{`
 .dh-wallpaper{
   position:absolute;
-  background-color:#e4e9e2;
+  /* Solid canvas ground; the photo sits translucent on top. */
+  background-color:#eef2e6;
+}
+.dh-wallpaper::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
   background-image:url('/images/desktop/wallpaper.png');
   background-repeat:no-repeat;
   background-position:center 22%;
   background-size:cover;
+  opacity:0.42;
 }
 /* Soft upper lift for copy contrast — full-width fade, not a center box. */
 .dh-wallpaper::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(240,243,236,0.55) 0%, rgba(240,243,236,0.2) 28%, transparent 48%);
+  background:linear-gradient(180deg, rgba(240,243,236,0.65) 0%, rgba(240,243,236,0.28) 28%, transparent 52%);
   pointer-events:none;
 }
 

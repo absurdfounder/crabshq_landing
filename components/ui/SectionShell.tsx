@@ -4,6 +4,8 @@ interface SectionShellProps {
   id?: string;
   eyebrow?: string;
   eyebrowNumber?: string;
+  /** Default left. Use center when the section body is a centered composition. */
+  eyebrowAlign?: 'left' | 'center';
   className?: string;
   bgClass?: string;
   noBorder?: boolean;
@@ -32,6 +34,7 @@ export default function SectionShell({
   id,
   eyebrow,
   eyebrowNumber,
+  eyebrowAlign = 'left',
   className = '',
   bgClass = 'bg-canvas',
   noBorder = false,
@@ -66,7 +69,11 @@ export default function SectionShell({
     <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
         {eyebrow && (
-          <div className={rhythm ? 'pb-4' : 'pb-4 pt-12 sm:pt-20'}>
+          <div
+            className={`${rhythm ? 'pb-4' : 'pb-4 pt-12 sm:pt-20'} ${
+              eyebrowAlign === 'center' ? 'text-center' : ''
+            }`}
+          >
             {/*
               `eyebrowNumber` is accepted and ignored. It used to print
               `[02]` before the label, numbering the page like a parts

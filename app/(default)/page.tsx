@@ -46,6 +46,7 @@ import { getIntegrationTiles } from '@/lib/integrationScroller'
 import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
+import DashboardShowcaseSection from '@/components/DashboardShowcaseSection'
 import OldWays from '@/components/OldWays'
 import WhereTheyWorkSection from '@/components/WhereTheyWorkSection'
 import SimplePricing from '@/components/SimplePricing'
@@ -75,29 +76,35 @@ export default function Home() {
         <VoicesSection voices={voices} eyebrowNumber="01" />
       </DarkSplitSection>
 
-      {/* What it connects to, right after the social proof — the old "How it
-          works" steps said in three boxes what the hero demo already shows. */}
-      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="02">
+      {/* Ferndesk-style product frame: chat + board coordination after social proof.
+          Owns its own section so the dither demo band can run edge-to-edge. */}
+      <DashboardShowcaseSection />
+
+      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="03">
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Capabilities" eyebrowNumber="03">
+      <SectionShell rhythm eyebrowNumber="04">
         <OldWays />
       </SectionShell>
 
-      {/* Capabilities says what they do; this says where they run; the next
-          says what they connect to. Three scenes in one section on purpose —
-          desktop, browser and devices answer the same question, and the page
-          had just come down from 13 sections to 10. */}
-      <SectionShell rhythm eyebrow="Where they work" eyebrowNumber="04">
+      {/* Capabilities says what they do; this says where they run. Three scenes
+          in one section — desktop, browser and devices answer the same question. */}
+      <SectionShell rhythm eyebrow="Where they work" eyebrowNumber="05">
         <WhereTheyWorkSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
+      <SectionShell
+        rhythm
+        eyebrow="Loops"
+        eyebrowNumber="06"
+        eyebrowAlign="center"
+        bgClass="bg-canvas-warm"
+      >
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="06">
+      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="07" eyebrowAlign="center">
         <MobileChannelsSection />
       </SectionShell>
 
@@ -105,18 +112,18 @@ export default function Home() {
           here now — when Field Comms was dark too, the two butted together with
           no divider and read as a single slab. */}
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="07" />
+        <GovernanceSection eyebrowNumber="08" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="08">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="09">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="09">
+      <SectionShell rhythm eyebrowNumber="10">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>

@@ -21,7 +21,7 @@ import {
   type DemoScenarioId,
 } from './scenarios/index';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from './scenarios/types';
-import { DemoClickCursor, useDemoCursor } from './components/DemoClickCursor';
+import { useDemoCursor } from './components/DemoClickCursor';
 import { DemoKanbanColumn, DemoDragOverlay, DEMO_KANBAN_COL_W, DEMO_KANBAN_GAP } from './components/DemoKanban';
 import {
   EMPTY_ARTIFACT_REVIEW,
@@ -708,7 +708,8 @@ export default function TrooperDemo({
   const demoCanvasRef = useRef<HTMLDivElement>(null);
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
+  // Cursor motion still drives script timing; the green pointer glyph is not shown.
+  const { goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
     useDemoCursor(demoCanvasRef, { reducedMotion });
 
   const handleTaskDrop = useCallback((taskId: number, col: DemoColumnId) => {
@@ -1231,7 +1232,6 @@ export default function TrooperDemo({
           </div>
 
           <div ref={demoCanvasRef} style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
-            <DemoClickCursor state={cursor} dimmed={mode === 'user'} />
             {drag && (
               <DemoDragOverlay
                 task={drag.task}
