@@ -19,6 +19,7 @@ export default function Draggable({
   className = '',
   rotate = 0,
   label,
+  dataId,
   children,
 }: {
   /** Resting position, in stage pixels. */
@@ -28,6 +29,8 @@ export default function Draggable({
   rotate?: number;
   /** Accessible name for the movable object; decor passes none and stays hidden. */
   label?: string;
+  /** data-dh id so the choreography engine can resolve this object's live position. */
+  dataId?: string;
   children: React.ReactNode;
 }) {
   const [delta, setDelta] = useState({ x: 0, y: 0 });
@@ -54,6 +57,7 @@ export default function Draggable({
 
   return (
     <div
+      data-dh={dataId}
       aria-hidden={label ? undefined : true}
       aria-label={label}
       className={`absolute select-none ${dragging ? 'z-30 cursor-grabbing' : 'cursor-grab'} ${className}`}
