@@ -2,57 +2,138 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, FileSpreadsheet, FileText, Signal, Wifi } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  FileText,
+  Mic,
+  Signal,
+  Video,
+  Wifi,
+} from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
-import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
+import PixelButton from '@/components/ui/PixelButton';
+import { PLATFORM_DOWNLOADS } from '@/lib/platformDownload';
+
+const CHANNEL_BADGES: { id: string; name: string }[] = [
+  { id: 'imessage', name: 'iMessage' },
+  { id: 'whatsapp', name: 'WhatsApp' },
+  { id: 'telegram', name: 'Telegram' },
+  { id: 'email', name: 'Gmail' },
+  { id: 'sms', name: 'SMS' },
+  { id: 'slack', name: 'Slack' },
+  { id: 'discord', name: 'Discord' },
+  { id: 'teams', name: 'Teams' },
+];
+
+const WORKFORCE_AVATARS = [
+  { name: 'Jordan', src: 'https://i.pravatar.cc/150?u=agent-jordan' },
+  { name: 'Aria', src: 'https://i.pravatar.cc/150?u=agent-aria' },
+  { name: 'Ren', src: 'https://i.pravatar.cc/150?u=agent-ren' },
+  { name: 'Leo', src: 'https://i.pravatar.cc/150?u=agent-leo' },
+] as const;
+
+function WorkforceAvatarStack() {
+  return (
+    <span className="mx-1.5 inline-flex translate-y-[-0.05em] items-center align-middle" aria-hidden>
+      {WORKFORCE_AVATARS.map((agent, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={agent.name}
+          src={agent.src}
+          alt=""
+          width={32}
+          height={32}
+          className="relative size-6 rounded-full object-cover ring-[2px] ring-canvas sm:size-7 lg:size-8"
+          style={{ marginLeft: i === 0 ? 0 : -8, zIndex: WORKFORCE_AVATARS.length - i }}
+        />
+      ))}
+    </span>
+  );
+}
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const IMESSAGE_BLUE = '#007AFF';
 
-const FEATURED_CHANNEL_IDS = ['imessage', 'telegram', 'whatsapp', 'email'] as const;
-
-const featuredChannels = FEATURED_CHANNEL_IDS.map(
-  (id) => OPENCLAW_CHANNELS.find((channel) => channel.id === id)!,
-);
-
-const MORE_CHANNELS = 'SMS, Slack, Discord, WebChat';
+/* ─── One Vanta story across both phones ─── */
 
 type ChatMessage =
   | { id: string; direction: 'in' | 'out'; kind: 'text'; text: string }
-  | { id: string; direction: 'in' | 'out'; kind: 'image' }
-  | { id: string; direction: 'in' | 'out'; kind: 'file'; name: string; meta: string; fileKind: 'doc' | 'sheet' | 'pdf' };
+  | { id: string; direction: 'in' | 'out'; kind: 'chart' }
+  | { id: string; direction: 'in' | 'out'; kind: 'photo' }
+  | {
+      id: string;
+      direction: 'in' | 'out';
+      kind: 'file';
+      name: string;
+      meta: string;
+      fileKind: 'doc' | 'pdf';
+    };
 
 const CHAT_SCRIPT: ChatMessage[] = [
-  { id: 'leads', kind: 'text', text: '23 leads came in overnight — enriched and scored.', direction: 'in' },
-  { id: 'demo', kind: 'text', text: 'Top one is Series B HR tech. Wants a demo this week.', direction: 'in' },
-  { id: 'sarah', kind: 'text', text: 'Sarah at Vanta replied to your outreach.', direction: 'in' },
-  { id: 'book', kind: 'text', text: 'book the demo for Thursday', direction: 'out' },
-  { id: 'draft', kind: 'text', text: 'and draft a follow-up to Sarah', direction: 'out' },
-  { id: 'confirm', kind: 'text', text: 'Done — demo booked Thu 2pm PT. Pulling assets now.', direction: 'in' },
-  { id: 'chart', kind: 'image', direction: 'in' },
-  { id: 'doc', kind: 'file', name: 'vanta-follow-up.docx', meta: 'DOCX · 18 KB', fileKind: 'doc', direction: 'in' },
-  { id: 'csv', kind: 'file', name: 'lead-scores-jan.csv', meta: 'CSV · 42 KB', fileKind: 'sheet', direction: 'in' },
-  { id: 'deck', kind: 'file', name: 'demo-deck-vanta.pdf', meta: 'PDF · 1.2 MB', fileKind: 'pdf', direction: 'in' },
-  { id: 'ready', kind: 'text', text: 'Follow-up + deck attached. Review before I send to Sarah.', direction: 'in' },
+  { id: 'leads', kind: 'text', text: '23 leads overnight — enriched and scored.', direction: 'in' },
+  {
+    id: 'demo',
+    kind: 'text',
+    text: 'Top one is Vanta. Series B. Wants a demo this week.',
+    direction: 'in',
+  },
+  {
+    id: 'book',
+    kind: 'text',
+    text: 'Book Thursday and draft a follow-up to Sarah.',
+    direction: 'out',
+  },
+  { id: 'confirm', kind: 'text', text: 'Done — Thu 2pm PT. Assets + PR ready.', direction: 'in' },
+  { id: 'chart', kind: 'chart', direction: 'in' },
+  { id: 'photo', kind: 'photo', direction: 'in' },
+  {
+    id: 'doc',
+    kind: 'file',
+    name: 'vanta-follow-up.docx',
+    meta: 'DOCX · 18 KB',
+    fileKind: 'doc',
+    direction: 'in',
+  },
+  {
+    id: 'deck',
+    kind: 'file',
+    name: 'demo-deck-vanta.pdf',
+    meta: 'PDF · 1.2 MB',
+    fileKind: 'pdf',
+    direction: 'in',
+  },
+  {
+    id: 'ready',
+    kind: 'text',
+    text: 'PR for the Vanta demo page is up — merge when ready.',
+    direction: 'in',
+  },
 ];
 
-function LeadChartImage() {
+function LeadChartCard() {
   return (
-    <div className="overflow-hidden rounded-[14px] bg-white ring-1 ring-black/10">
-      <div className="border-b border-black/[0.07] px-2.5 py-1.5">
-        <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-400">Lead score breakdown</p>
+    <div className="overflow-hidden rounded-[18px] bg-white ring-1 ring-black/10">
+      <div className="border-b border-black/[0.06] px-3 py-2">
+        <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-neutral-400">
+          Lead score breakdown
+        </p>
       </div>
-      <div className="space-y-1.5 p-2.5">
+      <div className="space-y-2 p-3">
         {[
           { label: 'Vanta', w: '92%' },
           { label: 'Rippling', w: '78%' },
           { label: 'Gusto', w: '64%' },
         ].map((row) => (
-          <div key={row.label} className="grid grid-cols-[52px_1fr] items-center gap-2">
-            <span className="truncate font-mono text-[9px] text-neutral-500">{row.label}</span>
-            <div className="h-2 overflow-hidden rounded-full bg-black/10">
-              <div className="h-full rounded-full bg-gradient-to-r from-fern to-fern-light" style={{ width: row.w }} />
+          <div key={row.label} className="grid grid-cols-[54px_1fr] items-center gap-2">
+            <span className="truncate text-[10px] font-medium text-neutral-600">{row.label}</span>
+            <div className="h-[7px] overflow-hidden rounded-full bg-neutral-100">
+              <div className="h-full rounded-full bg-[#34C759]" style={{ width: row.w }} />
             </div>
           </div>
         ))}
@@ -61,56 +142,98 @@ function LeadChartImage() {
   );
 }
 
-function FileAttachment({ name, meta, fileKind }: { name: string; meta: string; fileKind: 'doc' | 'sheet' | 'pdf' }) {
-  const icon =
-    fileKind === 'sheet' ? (
-      <FileSpreadsheet className="size-4 text-emerald-600" strokeWidth={2} />
-    ) : (
-      <FileText className={`size-4 ${fileKind === 'pdf' ? 'text-red-500' : 'text-blue-600'}`} strokeWidth={2} />
-    );
-
+function PhotoBubble() {
   return (
-    <div className="flex items-center gap-2.5 rounded-[14px] bg-neutral-100 px-2.5 py-2 ring-1 ring-black/5">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white shadow-xs ring-1 ring-black/5">{icon}</span>
-      <div className="min-w-0">
-        <p className="truncate text-[11px] font-medium text-neutral-900">{name}</p>
-        <p className="font-mono text-[9px] text-neutral-400">{meta}</p>
+    <div className="overflow-hidden rounded-[18px] ring-1 ring-black/10">
+      <div className="relative aspect-[4/3] w-full min-w-[160px]">
+        <Image
+          src="/images/desktop/wallpaper.png"
+          alt=""
+          fill
+          className="object-cover"
+          sizes="200px"
+        />
       </div>
     </div>
   );
 }
 
+function FileBubble({
+  name,
+  meta,
+  fileKind,
+}: {
+  name: string;
+  meta: string;
+  fileKind: 'doc' | 'pdf';
+}) {
+  return (
+    <div className="flex min-w-[168px] items-center gap-2.5 rounded-[18px] bg-white px-2.5 py-2 ring-1 ring-black/10">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-[10px] bg-[#F2F2F7]">
+        <FileText
+          className={`size-5 ${fileKind === 'pdf' ? 'text-[#FF3B30]' : 'text-[#007AFF]'}`}
+          strokeWidth={1.75}
+        />
+      </span>
+      <div className="min-w-0 pr-1">
+        <p className="truncate text-[13px] font-medium leading-tight text-neutral-900">{name}</p>
+        <p className="mt-0.5 text-[11px] text-neutral-400">{meta}</p>
+      </div>
+    </div>
+  );
+}
+
+function bubbleRadius(direction: 'in' | 'out', isFirst: boolean, isLast: boolean) {
+  // iOS Messages: big outer corners, tight corners when grouped
+  if (direction === 'out') {
+    return [
+      'rounded-[18px]',
+      isFirst ? 'rounded-tr-[18px]' : 'rounded-tr-[6px]',
+      isLast ? 'rounded-br-[6px]' : 'rounded-br-[6px]',
+      'rounded-tl-[18px] rounded-bl-[18px]',
+    ].join(' ');
+  }
+  return [
+    'rounded-[18px]',
+    isFirst ? 'rounded-tl-[18px]' : 'rounded-tl-[6px]',
+    isLast ? 'rounded-bl-[6px]' : 'rounded-bl-[6px]',
+    'rounded-tr-[18px] rounded-br-[18px]',
+  ].join(' ');
+}
+
 function ChatBubble({
   message,
-  isGrouped,
+  isFirst,
+  isLast,
 }: {
   message: ChatMessage;
-  isGrouped: boolean;
+  isFirst: boolean;
+  isLast: boolean;
 }) {
-  const isIn = message.direction === 'in';
-  const shell = [
-    'max-w-[88%] shadow-sm',
-    isIn ? 'rounded-[18px]' : 'ml-auto rounded-[18px] bg-fern text-white',
-    isIn && isGrouped ? 'rounded-tl-[4px]' : '',
-    isIn && !isGrouped ? 'rounded-bl-[4px]' : '',
-    !isIn && isGrouped ? 'rounded-tr-[4px]' : '',
-    !isIn && !isGrouped ? 'rounded-br-[4px]' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const isOut = message.direction === 'out';
+  const align = isOut ? 'ml-auto' : '';
+  const radius = bubbleRadius(message.direction, isFirst, isLast);
 
-  if (message.kind === 'image') {
+  if (message.kind === 'chart') {
     return (
-      <div className={`${shell} overflow-hidden p-1`}>
-        <LeadChartImage />
+      <div className={`${align} w-[86%] max-w-[220px]`}>
+        <LeadChartCard />
+      </div>
+    );
+  }
+
+  if (message.kind === 'photo') {
+    return (
+      <div className={`${align} w-[78%] max-w-[200px]`}>
+        <PhotoBubble />
       </div>
     );
   }
 
   if (message.kind === 'file') {
     return (
-      <div className={shell}>
-        <FileAttachment name={message.name} meta={message.meta} fileKind={message.fileKind} />
+      <div className={align}>
+        <FileBubble name={message.name} meta={message.meta} fileKind={message.fileKind} />
       </div>
     );
   }
@@ -118,9 +241,10 @@ function ChatBubble({
   return (
     <div
       className={[
-        shell,
-        'px-3 py-[7px] text-[11px] leading-[1.38]',
-        isIn ? 'bg-[#E9E9EB] text-neutral-900' : '',
+        align,
+        'max-w-[82%] px-[12px] py-[8px] text-[15px] leading-[1.25] tracking-[-0.01em]',
+        radius,
+        isOut ? 'bg-[#007AFF] text-white' : 'bg-[#E9E9EB] text-neutral-900',
       ].join(' ')}
     >
       {message.text}
@@ -128,29 +252,14 @@ function ChatBubble({
   );
 }
 
-function TypingIndicator() {
+function StatusBar() {
   return (
-    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-[18px] rounded-bl-[4px] bg-[#E9E9EB] px-3.5 py-2.5 shadow-sm">
-      {[0, 1, 2].map((dot) => (
-        <motion.span
-          key={dot}
-          className="size-1.5 rounded-full bg-neutral-500/60"
-          animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
-          transition={{ duration: 0.9, repeat: Infinity, delay: dot * 0.15, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function PhoneStatusBar() {
-  return (
-    <div className="mt-2 flex shrink-0 items-center justify-between px-3 pb-1 pt-3 text-[10px] font-semibold text-neutral-900">
-      <span className="tabular-nums opacity-50">9:41</span>
-      <div className="flex items-center gap-1 text-neutral-900/90 opacity-60">
+    <div className="flex shrink-0 items-center justify-between px-5 pb-0.5 pt-1 text-[12px] font-semibold text-neutral-900">
+      <span className="tabular-nums tracking-tight">9:41</span>
+      <div className="flex items-center gap-1 text-neutral-900">
         <Signal className="size-3" strokeWidth={2.5} aria-hidden />
-        <Wifi className="size-3" strokeWidth={2.5} aria-hidden />
-        <span className="ml-0.5 inline-flex h-2.5 w-[18px] rounded-[3px] border border-neutral-900/35 p-[1px]">
+        <Wifi className="size-3.5" strokeWidth={2.5} aria-hidden />
+        <span className="ml-0.5 inline-flex h-[11px] w-[22px] items-center rounded-[3px] border border-neutral-900/80 p-[1.5px]">
           <span className="h-full w-[72%] rounded-[1px] bg-neutral-900" />
         </span>
       </div>
@@ -158,65 +267,88 @@ function PhoneStatusBar() {
   );
 }
 
-function PhoneChatScreen() {
+function ImessageScreen({ play }: { play: boolean }) {
   const reduceMotion = useReducedMotion();
   const [visibleCount, setVisibleCount] = useState(reduceMotion ? CHAT_SCRIPT.length : 0);
-  const [showTyping, setShowTyping] = useState(!reduceMotion);
   const [threadOffset, setThreadOffset] = useState(0);
+  const [cycle, setCycle] = useState(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const threadRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (!play) {
+      setVisibleCount(reduceMotion ? CHAT_SCRIPT.length : 0);
+      return;
+    }
+    if (reduceMotion) {
+      setVisibleCount(CHAT_SCRIPT.length);
+      return;
+    }
 
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    let delay = 700;
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const clear = () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
+    const schedule = (fn: () => void, ms: number) => {
+      clear();
+      timeoutId = setTimeout(fn, ms);
+    };
 
-    CHAT_SCRIPT.forEach((message, index) => {
-      const prev = CHAT_SCRIPT[index - 1];
-      const showTypingBefore =
-        message.direction === 'in' && index > 0 && prev?.direction === 'out';
+    const runCycle = () => {
+      if (cancelled) return;
+      setVisibleCount(0);
+      setCycle((c) => c + 1);
 
-      if (showTypingBefore) {
-        timers.push(setTimeout(() => setShowTyping(true), delay - 500));
-      }
+      const step = (index: number) => {
+        if (cancelled) return;
+        if (index > CHAT_SCRIPT.length) {
+          schedule(runCycle, 2800);
+          return;
+        }
+        setVisibleCount(index);
+        const msg = CHAT_SCRIPT[index - 1];
+        const wait =
+          msg?.kind === 'text' ? (msg.direction === 'out' ? 800 : 1000) : msg?.kind === 'photo' ? 900 : 750;
+        schedule(() => step(index + 1), wait);
+      };
+      schedule(() => step(1), 450);
+    };
 
-      timers.push(
-        setTimeout(() => {
-          setShowTyping(false);
-          setVisibleCount(index + 1);
-        }, delay),
-      );
-
-      if (message.kind === 'file' || message.kind === 'image') {
-        delay += 750;
-      } else if (message.direction === 'in') {
-        delay += 1100;
-      } else {
-        delay += 800;
-      }
-    });
-
-    return () => timers.forEach(clearTimeout);
-  }, [reduceMotion]);
+    runCycle();
+    return () => {
+      cancelled = true;
+      clear();
+    };
+  }, [play, reduceMotion]);
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
     const thread = threadRef.current;
     if (!viewport || !thread) return;
     setThreadOffset(Math.max(0, thread.scrollHeight - viewport.clientHeight));
-  }, [visibleCount, showTyping]);
+  }, [visibleCount]);
 
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-white">
-      <PhoneStatusBar />
+    <div className="flex h-full min-h-0 flex-col bg-white font-[system-ui] text-neutral-900">
+      <StatusBar />
 
-      <div className="shrink-0 border-b border-black/[0.07] px-3 pb-2.5 pt-1">
-        <div className="flex items-center gap-2">
-          <div className="mx-auto flex flex-col items-center">
-            <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-neutral-100 ring-1 ring-black/10">
+      {/* Nav — matches real Messages: back circle, avatar + blue name pill, FaceTime */}
+      <div className="relative z-10 shrink-0 px-3 pb-2 pt-1">
+        <div className="grid grid-cols-[40px_1fr_40px] items-start">
+          <button
+            type="button"
+            tabIndex={-1}
+            className="mt-1 flex size-8 items-center justify-center rounded-full bg-black/[0.06]"
+            aria-hidden
+          >
+            <ChevronLeft className="size-5 text-[#007AFF]" strokeWidth={2.5} />
+          </button>
+
+          <div className="flex flex-col items-center">
+            <div className="flex size-10 items-center justify-center overflow-hidden rounded-full bg-[#F2F2F7] ring-1 ring-black/5">
               <Image
                 src="/images/trooper-logomark.png"
                 alt=""
@@ -226,171 +358,424 @@ function PhoneChatScreen() {
                 style={{ imageRendering: 'pixelated' }}
               />
             </div>
-            <p className="mt-0.5 text-[11px] font-medium text-neutral-900">Trooper</p>
-            <p className="text-[9px] text-neutral-400">AI workforce</p>
+            <span
+              className="mt-1 inline-flex items-center rounded-full px-2.5 py-[3px] text-[11px] font-semibold text-white"
+              style={{ background: IMESSAGE_BLUE }}
+            >
+              Trooper
+            </span>
           </div>
+
+          <button
+            type="button"
+            tabIndex={-1}
+            className="mt-1 ml-auto flex size-8 items-center justify-center rounded-full bg-black/[0.06]"
+            aria-hidden
+          >
+            <Video className="size-4 text-[#007AFF]" strokeWidth={2.25} />
+          </button>
         </div>
       </div>
 
-      <div
-        ref={viewportRef}
-        className="relative min-h-0 flex-1 overflow-hidden"
-        style={{
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-        }}
-      >
+      <div ref={viewportRef} className="relative min-h-0 flex-1 overflow-hidden bg-white">
         <motion.div
           ref={threadRef}
-          className="flex min-h-full flex-col justify-end gap-1 px-3.5 pb-2 pt-2"
+          className="flex min-h-full flex-col justify-end gap-[3px] px-3 pb-2 pt-2"
           animate={{ y: reduceMotion ? 0 : -threadOffset }}
-          transition={{ duration: 0.45, ease }}
+          transition={{ duration: 0.4, ease }}
         >
           <AnimatePresence initial={false} mode="popLayout">
             {visibleMessages.map((message, i) => {
               const prev = visibleMessages[i - 1];
-              const isGrouped = prev?.direction === message.direction;
+              const next = visibleMessages[i + 1];
+              const isFirst = prev?.direction !== message.direction;
+              const isLast = next?.direction !== message.direction;
               return (
                 <motion.div
-                  key={message.id}
+                  key={`${cycle}-${message.id}`}
                   layout
-                  initial={reduceMotion ? false : { opacity: 0, y: 10, scale: 0.97 }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 8, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3, ease }}
+                  transition={{ duration: 0.26, ease }}
+                  className={isFirst && i > 0 ? 'mt-2' : ''}
                 >
-                  <ChatBubble message={message} isGrouped={isGrouped} />
+                  <ChatBubble message={message} isFirst={isFirst} isLast={isLast} />
                 </motion.div>
               );
             })}
           </AnimatePresence>
 
-          {showTyping ? (
-            <motion.div layout initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <TypingIndicator />
-            </motion.div>
+          {visibleCount >= CHAT_SCRIPT.length ? (
+            <p className="mt-0.5 pr-1 text-right text-[11px] text-neutral-400">Read</p>
           ) : null}
         </motion.div>
       </div>
 
-      <div className="mb-4 shrink-0 border-t border-black/[0.07] px-3 py-2">
-        <div className="flex items-center gap-2 rounded-full border border-black/15 bg-white px-3 py-1.5">
-          <span className="flex-1 text-[11px] text-neutral-400">iMessage</span>
-          <span className="flex size-6 items-center justify-center rounded-full bg-fern text-[10px] font-bold text-white">
-            ↑
+      {/* Composer — + | iMessage pill with mic (real Messages, not green send) */}
+      <div className="shrink-0 bg-white px-2.5 pb-3 pt-1.5">
+        <div className="flex items-center gap-2">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#E9E9EB] text-[20px] font-light leading-none text-neutral-500">
+            +
           </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Cropped + tilted phone stage — full device still renders (so the chat
- * animation has room), but the viewport only shows Dynamic Island through
- * mid-chat, with a soft fade implying the rest continues below.
- */
-function IphoneDevice() {
-  return (
-    <div
-      className="relative mx-auto w-full max-w-[230px] sm:max-w-[250px]"
-      style={{ perspective: '1100px' }}
-    >
-      <motion.div
-        className="relative origin-top"
-        initial={{ opacity: 0, y: 24, rotateY: -18, rotateX: 10 }}
-        whileInView={{ opacity: 1, y: 0, rotateY: -14, rotateX: 7 }}
-        transition={{ duration: 0.75, ease }}
-        viewport={{ once: true, amount: 0.35 }}
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[8%] h-[70%] w-[92%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(122,168,36,0.16)_0%,transparent_70%)] blur-2xl"
-        />
-
-        {/* Crop window: show Island → mid-chat, fade the rest */}
-        <div
-          className="relative overflow-hidden"
-          style={{
-            maxHeight: '19.5rem',
-            WebkitMaskImage:
-              'linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%)',
-          }}
-        >
-          <div className="relative rounded-[2.5rem] bg-gradient-to-b from-[#5a5a5c] via-[#2c2c2e] to-[#141416] p-[2.5px] shadow-[0_36px_70px_-28px_rgba(26,26,26,0.45),0_10px_24px_-10px_rgba(26,26,26,0.22),inset_0_1px_0_rgba(255,255,255,0.14)] ring-1 ring-black/10 sm:rounded-[2.65rem]">
-            <div className="relative overflow-hidden rounded-[2.3rem] bg-black sm:rounded-[2.45rem]">
-              <div
-                className="pointer-events-none absolute left-1/2 top-2 z-30 h-[22px] w-[76px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:top-2.5 sm:h-[24px] sm:w-[84px]"
-                aria-hidden
-              />
-
-              <div className="aspect-[9/19.2] w-full">
-                <PhoneChatScreen />
-              </div>
-            </div>
+          <div className="flex min-h-[36px] flex-1 items-center rounded-full border border-black/10 bg-white pl-3.5 pr-2.5">
+            <span className="flex-1 text-[15px] text-neutral-400">iMessage</span>
+            <Mic className="size-5 text-neutral-400" strokeWidth={1.75} aria-hidden />
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
 
-function ChannelChip({ channelId, channelName }: { channelId: string; channelName: string }) {
-  return (
-    <Link
-      href={`/channels/${channelId}`}
-      className="group inline-flex items-center gap-2 rounded-lg bg-white px-2.5 py-1.5 text-[13px] font-medium text-neutral-700 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50 sm:px-3"
-    >
-      <FieldCommsChannelIcon channelId={channelId} size={20} />
-      <span>{channelName}</span>
-    </Link>
-  );
-}
+/* ─── Trooper app — same Vanta PR ─── */
 
-/**
- * Field Comms — a centered composition with the phone as the showcase.
- * Copy sits above; the device is the focal object on the axis; channels
- * and the browse link stay centered under it.
- */
-export default function MobileChannelsSection() {
+function TrooperAppScreen({ play }: { play: boolean }) {
+  const reduceMotion = useReducedMotion();
+  const [step, setStep] = useState(reduceMotion ? 4 : 0);
+
+  useEffect(() => {
+    if (!play) {
+      setStep(reduceMotion ? 4 : 0);
+      return;
+    }
+    if (reduceMotion) {
+      setStep(4);
+      return;
+    }
+
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const clear = () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+    };
+    const schedule = (fn: () => void, ms: number) => {
+      clear();
+      timeoutId = setTimeout(fn, ms);
+    };
+
+    const run = () => {
+      if (cancelled) return;
+      setStep(0);
+      schedule(() => {
+        if (cancelled) return;
+        setStep(1);
+        schedule(() => {
+          if (cancelled) return;
+          setStep(2);
+          schedule(() => {
+            if (cancelled) return;
+            setStep(3);
+            schedule(() => {
+              if (cancelled) return;
+              setStep(4);
+              schedule(run, 3200);
+            }, 700);
+          }, 700);
+        }, 650);
+      }, 400);
+    };
+
+    run();
+    return () => {
+      cancelled = true;
+      clear();
+    };
+  }, [play, reduceMotion]);
+
   return (
-    <div className="mx-auto flex max-w-3xl flex-col items-center">
-      <motion.div
-        className="w-full text-center"
-        initial={{ opacity: 0, y: 14 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease }}
-        viewport={{ once: true, margin: '-40px' }}
-      >
-        <h2 className="h2-section mx-auto">
-          Chat with your workforce,
-          <br className="hidden sm:block" />
-          <span className="sm:whitespace-nowrap"> on the go.</span>
-        </h2>
-        <p className="lede mx-auto max-w-lg">
-          Text your agents from iMessage, WhatsApp, Telegram, or email — the same channels your
-          team already checks.
+    <div className="flex h-full min-h-0 flex-col bg-[#0c0b09] font-[system-ui] text-[#f2f0ea]">
+      <div className="shrink-0 px-4 pb-2 pt-1">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7a776e]">
+          Trooper
         </p>
-      </motion.div>
-
-      <div className="mt-8 w-full sm:mt-10">
-        <IphoneDevice />
       </div>
 
-      <div className="mt-8 flex w-full flex-col items-center gap-3 sm:mt-9">
-        <div className="flex flex-wrap justify-center gap-2">
-          {featuredChannels.map((channel) => (
-            <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
-          ))}
-        </div>
-        <p className="text-sm text-neutral-500">+ {MORE_CHANNELS}</p>
-        <Link href="/channels" className="group link-mono mt-1">
-          <span>Browse all channels</span>
-          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-        </Link>
+      <div className="min-h-0 flex-1 space-y-3 overflow-hidden px-4 pb-4">
+        <AnimatePresence mode="sync">
+          {step >= 1 ? (
+            <motion.div
+              key="title"
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease }}
+            >
+              <h2 className="text-[16px] font-medium leading-[1.25] tracking-[-0.02em]">
+                Add Vanta demo page + follow-up assets
+              </h2>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-[#9a978e]">
+                <span className="rounded-full bg-[rgba(61,214,140,0.14)] px-2 py-0.5 font-medium text-[#3dd68c]">
+                  Open
+                </span>
+                <span className="text-[#3dd68c]">+48</span>
+                <span className="text-[#f09595]">−6</span>
+                <span>3 Files</span>
+              </div>
+            </motion.div>
+          ) : null}
+
+          {step >= 2 ? (
+            <motion.div
+              key="merge"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, ease }}
+              className="rounded-[14px] border border-white/[0.09] bg-[#171612] p-3.5"
+            >
+              <p className="mb-2.5 text-[13px] font-medium">Ready to Merge</p>
+              <div className="mb-3 flex items-center gap-2">
+                <motion.span
+                  className="flex size-6 items-center justify-center rounded-full bg-[#3dd68c] text-black"
+                  initial={reduceMotion ? false : { scale: 0.6 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+                >
+                  <Check className="size-3.5" strokeWidth={3} />
+                </motion.span>
+                <span className="text-[11px] text-[#c8c4b8]">All required checks passed</span>
+              </div>
+              <button
+                type="button"
+                disabled
+                className="h-9 w-full rounded-[11px] bg-[#f2f0ea] text-[13px] font-semibold text-[#0c0b09]"
+              >
+                Squash & Merge
+              </button>
+            </motion.div>
+          ) : null}
+
+          {step >= 3 ? (
+            <motion.div
+              key="demo"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, ease }}
+            >
+              <p className="mb-1.5 text-[11px] text-[#7a776e]">Demos</p>
+              <div className="overflow-hidden rounded-[14px] border border-white/[0.09] bg-[#171612]">
+                <div className="relative aspect-[16/9]">
+                  <Image
+                    src="/images/desktop/wallpaper.png"
+                    alt=""
+                    fill
+                    className="object-cover opacity-90"
+                    sizes="220px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <motion.div
+                    className="absolute left-1/2 top-1/2 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/35 backdrop-blur-sm"
+                    animate={reduceMotion ? undefined : { scale: [1, 1.06, 1] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <span className="ml-0.5 text-[11px] text-white">▶</span>
+                  </motion.div>
+                  <div className="absolute inset-x-3 bottom-2.5">
+                    <p className="text-[12px] font-semibold text-white">Vanta walkthrough</p>
+                    <p className="text-[10px] text-white/65">og-image · demo assets</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : null}
+
+          {step >= 4 ? (
+            <motion.div
+              key="files"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.32, ease }}
+              className="space-y-3"
+            >
+              <div>
+                <p className="mb-1.5 text-[11px] text-[#7a776e]">Files</p>
+                <div className="overflow-hidden rounded-[14px] border border-white/[0.09] bg-[#171612]">
+                  <div className="flex items-center gap-2 border-b border-white/[0.09] px-3 py-2">
+                    <ChevronDown className="size-3.5 text-[#9a978e]" />
+                    <span className="min-w-0 flex-1 truncate font-mono text-[11px]">
+                      app/demos/vanta.tsx
+                    </span>
+                    <span className="text-[11px] text-[#3dd68c]">+48</span>
+                    <span className="text-[11px] text-[#f09595]">−6</span>
+                  </div>
+                  <div className="font-mono text-[10px] leading-[1.55]">
+                    <div className="grid grid-cols-[28px_1fr] bg-[rgba(240,149,149,0.14)]">
+                      <span className="px-1 text-right text-[#9a978e]/70">18</span>
+                      <span className="px-1 text-[#f09595]">- title: &quot;Generic demo&quot;</span>
+                    </div>
+                    <div className="grid grid-cols-[28px_1fr] bg-[rgba(61,214,140,0.14)]">
+                      <span className="px-1 text-right text-[#9a978e]/70">18</span>
+                      <span className="px-1 text-[#3dd68c]">+ title: &quot;Vanta · Thu 2pm&quot;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-[14px] border border-white/[0.09] bg-[#171612] px-3 py-2">
+                <Check className="size-3.5 text-[#3dd68c]" strokeWidth={3} />
+                <span className="min-w-0 flex-1 truncate text-[11px] text-[#c8c4b8]">
+                  Marketing preview live
+                </span>
+                <span className="text-[10px] text-[#9a978e]">1m</span>
+                <ArrowUpRight className="size-3.5 text-[#9a978e]" />
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+function PhoneDevice({
+  children,
+  screenBg,
+  label,
+}: {
+  children: ReactNode;
+  screenBg: string;
+  label: string;
+}) {
+  return (
+    <div className="relative w-full max-w-[255px]">
+      <p className="mb-2.5 text-center text-[12px] font-medium tracking-wide text-neutral-500">
+        {label}
+      </p>
+      <div
+        className="relative rounded-[2.55rem] p-[3px] shadow-[0_28px_56px_-20px_rgba(26,26,26,0.35)]"
+        style={{
+          background: 'linear-gradient(160deg, #d4d4d6 0%, #8e8e93 38%, #3a3a3c 100%)',
+        }}
+      >
+        <div
+          className="relative aspect-[9/19.4] w-full overflow-hidden rounded-[2.35rem]"
+          style={{ background: screenBg }}
+        >
+          <div
+            className="pointer-events-none absolute left-1/2 top-[10px] z-30 h-[26px] w-[96px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+            aria-hidden
+          />
+          <div className="absolute inset-0 flex min-h-0 flex-col pt-10 [&>*]:min-h-0 [&>*]:flex-1">
+            {children}
+          </div>
+          <div
+            className="pointer-events-none absolute inset-x-[36%] bottom-2 z-30 h-[4px] rounded-full bg-black/15"
+            aria-hidden
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PhonePair() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [play, setPlay] = useState(false);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setPlay(e.isIntersecting), { threshold: 0.28 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={rootRef}
+      className="relative mx-auto flex w-full max-w-[36rem] items-end justify-center gap-5 sm:gap-6 lg:max-w-none lg:justify-end lg:gap-7"
+      aria-label="iMessage chat and Trooper app on iPhone"
+    >
+      <div className="w-[48%] max-w-[255px]">
+        <PhoneDevice screenBg="#ffffff" label="iMessage">
+          <ImessageScreen play={play} />
+        </PhoneDevice>
+      </div>
+      <div className="w-[48%] max-w-[255px]">
+        <PhoneDevice screenBg="#0c0b09" label="Trooper app">
+          <TrooperAppScreen play={play} />
+        </PhoneDevice>
+      </div>
+    </div>
+  );
+}
+
+function ChannelBadge({ id, name }: { id: string; name: string }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-[13px] font-medium text-neutral-600">
+      <FieldCommsChannelIcon channelId={id} size={22} />
+      <span>{name}</span>
+    </span>
+  );
+}
+
+export default function MobileChannelsSection() {
+  const ios = PLATFORM_DOWNLOADS.ios;
+  const android = PLATFORM_DOWNLOADS.android;
+
+  return (
+    <section className="relative bg-canvas">
+      <div className="rail border-t border-[var(--color-line)] px-4 py-14 sm:px-6 sm:py-20">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-14">
+          <div className="max-w-md">
+            <span className="kicker">Field Comms</span>
+            <h2 className="h2-section mt-3 text-balance">
+              Chat with your{' '}
+              <span className="inline sm:whitespace-nowrap">
+                workforce
+                <WorkforceAvatarStack />
+              </span>{' '}
+              on the go.
+            </h2>
+            <p className="lede mt-3 max-w-sm">
+              Text your agents from the apps you already live in. Review work and ship from the
+              Trooper app.
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+              {CHANNEL_BADGES.map((channel) => (
+                <ChannelBadge key={channel.id} id={channel.id} name={channel.name} />
+              ))}
+            </div>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <PixelButton href={ios.href} external={ios.external} size="sm" tone="dark">
+                <span className="inline-flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={ios.iconSrc}
+                    alt=""
+                    aria-hidden
+                    className="h-4 w-4 object-contain brightness-0 invert"
+                  />
+                  {ios.label}
+                </span>
+              </PixelButton>
+              <PixelButton
+                href={android.href}
+                external={android.external}
+                size="sm"
+                variant="outline"
+                tone="dark"
+              >
+                <span className="inline-flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={android.iconSrc} alt="" aria-hidden className="h-4 w-4 object-contain" />
+                  {android.label}
+                </span>
+              </PixelButton>
+            </div>
+
+            <Link href="/channels" className="group link-mono mt-5 inline-flex">
+              <span>Browse all channels</span>
+              <ArrowRight
+                className="size-3.5 transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </Link>
+          </div>
+
+          <PhonePair />
+        </div>
+      </div>
+    </section>
   );
 }

@@ -52,7 +52,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   },
   {
     id: 'codex',
-    label: 'ChatGPT Codex',
+    label: 'Codex',
     iconDomain: 'openai.com',
     command: TROOPER_CLI_COMMAND,
     prompt:

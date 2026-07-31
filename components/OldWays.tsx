@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import Link from 'next/link';
 import {
   FileText,
   Check,
@@ -11,8 +12,15 @@ import {
   Globe,
   Terminal,
 } from 'lucide-react';
+import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { DotMatrixFade } from './ui/FeaturePeekStage';
 import { BubbleExchange } from './ui/ChatBubble';
+import PixelButton from './ui/PixelButton';
+import {
+  BrowserScene,
+  DesktopScene,
+  DevicesScene,
+} from './where-they-work/WorkSurfaceScenes';
 
 /* ─── Shared shell ─── */
 const MockShell = ({
@@ -652,9 +660,9 @@ function TicketVisual({ focused }: { focused: boolean }) {
 }
 
 /**
- * The window's "screen". FeaturePeekStage's 500px-tall canvas left the mock
- * floating small in a sea of empty white — this keeps the wash and the
- * dot-matrix fade but hugs the content.
+ * The window's "screen" for smaller card mocks — padded canvas + max-width so
+ * org/ticket/etc. visuals stay consistent. Full product screens (browser /
+ * desktop / devices) render flush under the traffic-light bar instead.
  */
 const PixelFramedVisual = ({ children }: { children: ReactNode }) => (
   <div className="relative flex min-h-[300px] flex-col overflow-hidden sm:min-h-[340px] lg:min-h-[400px]">
@@ -667,7 +675,30 @@ const PixelFramedVisual = ({ children }: { children: ReactNode }) => (
 );
 
 /* ─── Cards ─── */
-const cards = [
+type CapabilityCard = {
+  tag: string;
+  ask: string;
+  reply: string;
+  window: string;
+  title: string;
+  highlight?: string;
+  description: string;
+  Visual: (props: { focused: boolean }) => JSX.Element | null;
+  /** Full-bleed product screen — no padded canvas around the mock. */
+  screen?: boolean;
+  meta?: string;
+  cta?: { label: string; href: string; external?: boolean };
+  secondary?: { label: string; href: string };
+  ctaIcon?: { src: string; invert?: boolean };
+};
+
+const WORK_SCENE: Record<(typeof WORK_SURFACES)[number]['id'], () => JSX.Element | null> = {
+  desktop: DesktopScene,
+  browser: BrowserScene,
+  devices: DevicesScene,
+};
+
+const cards: CapabilityCard[] = [
   {
     tag: 'AI organizations',
     ask: 'trooper, I need a growth team on this launch',
@@ -712,48 +743,105 @@ const cards = [
       'You communicate with agents through tickets. Every instruction, every response, every tool call and decision is recorded with full tracing. Nothing happens in the dark.',
     Visual: TicketVisual,
   },
+  // Desktop / browser / devices — same rhythm as the rows above, not a second section.
+  ...WORK_SURFACES.map((surface) => {
+    const Scene = WORK_SCENE[surface.id];
+    return {
+      tag: surface.id,
+      ask: surface.ask,
+      reply: surface.reply,
+      window: surface.window,
+      title: surface.title,
+      highlight: surface.highlight,
+      description: surface.body,
+      meta: surface.meta,
+      cta: surface.cta,
+      secondary: surface.secondary,
+      ctaIcon: surface.ctaIcon,
+      screen: true,
+      Visual: () => <Scene />,
+    };
+  }),
 ];
 
 /**
- * Capability rows: typed ask bubble → green reply, and the matching product
- * surface simulates that ask beside the copy. Focus-on-scroll dims the rest.
+ * Capability rows (orgs, action, memory, tickets, then desktop / browser /
+ * devices): typed ask → green reply, product frame beside. One scroll-focus
+ * dims every other row — including where agents run.
  */
 export default function OldWays() {
   const rowRefs = useRef<Array<HTMLElement | null>>([]);
-  // -1: nothing measured yet; -2: reduced motion, dimming off.
+  const activeRef = useRef(-1);
+  // -1: nothing measured yet; -2: reduced motion (all rows stay fully on).
   const [active, setActive] = useState(-1);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setActive(-2);
-      return;
-    }
+    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktopMq = window.matchMedia('(min-width: 1024px)');
     let raf = 0;
+
+    /** Tall stacked cards: score near the reading band, not geometric center. */
+    const focusY = (r: DOMRect, desktop: boolean) =>
+      desktop ? r.top + r.height / 2 : r.top + Math.min(160, r.height * 0.22);
+
+    const distance = (el: HTMLElement, band: number, desktop: boolean) =>
+      Math.abs(focusY(el.getBoundingClientRect(), desktop) - band);
+
     const update = () => {
       raf = 0;
-      const mid = window.innerHeight / 2;
+      if (reduceMq.matches) {
+        activeRef.current = -2;
+        setActive(-2);
+        return;
+      }
+
+      const desktop = desktopMq.matches;
+      // Mobile reading line sits higher — bubbles live at the top of each row.
+      const band = window.innerHeight * (desktop ? 0.5 : 0.34);
       let best = -1;
       let bestD = Infinity;
+
       rowRefs.current.forEach((el, i) => {
         if (!el) return;
-        const r = el.getBoundingClientRect();
-        const d = Math.abs(r.top + r.height / 2 - mid);
+        const d = distance(el, band, desktop);
         if (d < bestD) {
           bestD = d;
           best = i;
         }
       });
-      setActive(best);
+
+      // Hysteresis so focus doesn't chatter while scrolling tall mobile rows.
+      const prev = activeRef.current;
+      let next = best;
+      if (prev >= 0 && prev !== best) {
+        const prevEl = rowRefs.current[prev];
+        if (prevEl) {
+          const prevD = distance(prevEl, band, desktop);
+          const slack = desktop ? 56 : 96;
+          if (prevD < bestD + slack) next = prev;
+        }
+      }
+
+      if (next !== prev) {
+        activeRef.current = next;
+        setActive(next);
+      }
     };
+
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
+
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
+    reduceMq.addEventListener('change', onScroll);
+    desktopMq.addEventListener('change', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      reduceMq.removeEventListener('change', onScroll);
+      desktopMq.removeEventListener('change', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -772,8 +860,11 @@ export default function OldWays() {
               rowRefs.current[i] = el;
             }}
             className={[
-              'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-out lg:grid-cols-2 lg:gap-12',
-              dimmed ? 'scale-[0.985] opacity-40 blur-[1.5px]' : '',
+              'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
+              // Soft fade on mobile (no blur); desktop keeps the stronger stage light.
+              dimmed
+                ? 'opacity-[0.38] max-lg:opacity-[0.48] lg:scale-[0.985] lg:opacity-40 lg:blur-[1.5px]'
+                : 'opacity-100',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -792,6 +883,47 @@ export default function OldWays() {
               <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
                 {card.description}
               </p>
+
+              {card.meta ? (
+                <p className="mt-3 text-sm text-neutral-500">{card.meta}</p>
+              ) : null}
+
+              {card.cta ? (
+                <div className="mt-5 flex flex-wrap items-center gap-4">
+                  <PixelButton
+                    href={card.cta.href}
+                    external={card.cta.external}
+                    size="sm"
+                    tone="dark"
+                    icon={
+                      card.ctaIcon ? undefined : <ArrowRight className="h-3.5 w-3.5" />
+                    }
+                  >
+                    {card.ctaIcon ? (
+                      <span className="inline-flex items-center gap-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={card.ctaIcon.src}
+                          alt=""
+                          aria-hidden
+                          className={`h-4 w-4 object-contain ${
+                            card.ctaIcon.invert ? 'brightness-0 invert' : ''
+                          }`}
+                        />
+                        {card.cta.label}
+                      </span>
+                    ) : (
+                      card.cta.label
+                    )}
+                  </PixelButton>
+                  {card.secondary ? (
+                    <Link href={card.secondary.href} className="group link-mono">
+                      <span>{card.secondary.label}</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
 
             <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
@@ -804,9 +936,15 @@ export default function OldWays() {
                     {card.window}
                   </span>
                 </div>
-                <PixelFramedVisual>
-                  <Visual focused={focused} />
-                </PixelFramedVisual>
+                {card.screen ? (
+                  <div className="overflow-hidden">
+                    <Visual focused={focused} />
+                  </div>
+                ) : (
+                  <PixelFramedVisual>
+                    <Visual focused={focused} />
+                  </PixelFramedVisual>
+                )}
               </div>
             </div>
           </article>

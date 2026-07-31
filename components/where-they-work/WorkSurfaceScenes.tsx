@@ -67,21 +67,21 @@ export function BrowserScene() {
   const active = CLAIM_TABS[Math.min(tick, CLAIM_TABS.length - 1)];
 
   return (
-    <div ref={ref} className="flex h-[22rem] w-full flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/10 sm:h-[26rem]">
-      {/* Chrome tab strip */}
-      <div className="flex items-end gap-0.5 border-b border-neutral-200 bg-[#DEE1E6] px-2 pt-1.5">
+    <div ref={ref} className="flex h-[22rem] w-full flex-col overflow-hidden bg-white sm:h-[26rem]">
+      {/* Chrome tab strip — flush to the capability window chrome above */}
+      <div className="flex items-end gap-0.5 border-b border-neutral-200 bg-[#DEE1E6] px-1.5 pt-1.5">
         {CLAIM_TABS.map((tab) => {
           const isActive = tab.id === active.id;
           return (
             <div
               key={tab.id}
-              className={`relative mb-[-1px] flex max-w-[128px] items-center gap-1.5 rounded-t-lg px-2.5 py-1.5 text-[11px] ${
+              className={`relative mb-[-1px] flex max-w-[120px] items-center gap-1.5 rounded-t-lg px-2 py-1.5 text-[11px] ${
                 isActive
                   ? 'bg-white text-neutral-900 shadow-[0_-1px_0_#fff]'
                   : 'bg-[#D3D6DB] text-neutral-600'
               }`}
             >
-              <TabFavicon tabId={tab.id} size={16} />
+              <TabFavicon tabId={tab.id} size={14} />
               <span className="truncate font-medium">{tab.title}</span>
               {isActive ? (
                 <span className="ml-0.5 size-1.5 shrink-0 rounded-full bg-[#3f6b00]" title="Claimed" />
@@ -92,12 +92,12 @@ export function BrowserScene() {
       </div>
 
       {/* Address bar */}
-      <div className="flex items-center gap-2 border-b border-neutral-200 bg-white px-2.5 py-1.5">
+      <div className="flex items-center gap-2 border-b border-neutral-200 bg-white px-2 py-1.5">
         <span className="inline-flex items-center gap-1 rounded-full bg-[#f0f5e6] px-2 py-0.5 text-[10px] font-semibold text-[#325600] ring-1 ring-[#c4d9a0]">
           Claimed
         </span>
         <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] text-neutral-600">
-          <TabFavicon tabId={active.id} size={16} />
+          <TabFavicon tabId={active.id} size={14} />
           <span className="truncate font-mono">{active.url}</span>
         </div>
         <button
@@ -109,15 +109,15 @@ export function BrowserScene() {
         </button>
       </div>
 
-      {/* Page */}
-      <div className="relative min-h-0 flex-1 overflow-hidden bg-neutral-100">
+      {/* Page — edge to edge under the chrome chrome */}
+      <div className="relative min-h-0 flex-1 overflow-hidden bg-white">
         <div key={active.id} className="absolute inset-0">
           <BrowserClaimPage tabId={active.id} />
         </div>
-        <div className="absolute inset-x-2 bottom-2 flex items-center gap-2 rounded-lg bg-neutral-900/85 px-2.5 py-1.5 text-[11px] text-white backdrop-blur-sm">
+        <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-neutral-950/90 px-3 py-1.5 text-[11px] text-white">
           <Loader2 className="size-3.5 shrink-0 animate-spin text-[#a3e635]" strokeWidth={2.5} />
           <span className="min-w-0 truncate font-medium">{active.action}</span>
-          <span className="ml-auto shrink-0 tabular-nums text-white/50">09:14:0{tick}</span>
+          <span className="ml-auto shrink-0 tabular-nums text-white/45">09:14:0{tick}</span>
         </div>
       </div>
     </div>
@@ -151,7 +151,7 @@ export function DesktopScene() {
   return (
     <div
       ref={ref}
-      className="flex h-[22rem] w-full flex-col overflow-hidden rounded-xl bg-[#1c1c1e] shadow-sm ring-1 ring-black/20 sm:h-[26rem]"
+      className="flex h-[22rem] w-full flex-col overflow-hidden bg-[#1c1c1e] sm:h-[26rem]"
     >
       <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
         <div className="flex items-center gap-2 text-[12px] text-white/90">
@@ -164,10 +164,10 @@ export function DesktopScene() {
         </span>
       </div>
 
-      <div className="relative min-h-0 flex-1 bg-[#2c2c2e] p-2.5">
+      <div className="relative min-h-0 flex-1 bg-[#2c2c2e]">
         <div
-          className={`flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-lg transition-opacity duration-500 ${
-            sheetOpen ? 'opacity-100' : 'opacity-40'
+          className={`flex h-full flex-col overflow-hidden bg-white transition-opacity duration-500 ${
+            sheetOpen ? 'opacity-100' : 'opacity-55'
           }`}
         >
           <div className="flex items-center gap-2 border-b border-neutral-200 bg-[#F5F5F5] px-3 py-1.5">
@@ -226,9 +226,9 @@ export function DesktopScene() {
       </div>
 
       <div className="border-t border-white/10 bg-black px-3 py-2 font-mono text-[10px] leading-relaxed text-[#a3e635]">
-        <div className="mb-1 flex items-center gap-2 text-[10px] text-white/40">
+        <div className="mb-1 flex items-center gap-1.5 text-[10px] text-white/45">
           <Terminal className="size-3" strokeWidth={2} />
-          Terminal 1
+          Terminal
         </div>
         {lines.map((line) => (
           <div key={line} className={line.startsWith('$') ? 'text-white' : 'text-[#a3e635]/85'}>
@@ -317,7 +317,7 @@ export function DevicesScene() {
   return (
     <div
       ref={ref}
-      className="flex h-[22rem] w-full flex-col overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/10 sm:h-[26rem]"
+      className="flex h-[22rem] w-full flex-col overflow-hidden bg-white sm:h-[26rem]"
     >
       <div className="border-b border-[#E7E5E4] bg-[#FAFAF9] px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">

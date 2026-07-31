@@ -48,7 +48,6 @@ import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
 import DashboardShowcaseSection from '@/components/DashboardShowcaseSection'
 import OldWays from '@/components/OldWays'
-import WhereTheyWorkSection from '@/components/WhereTheyWorkSection'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
@@ -84,46 +83,38 @@ export default function Home() {
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
+      {/* Orgs / action / memory / tickets, then desktop / browser / devices —
+          one Capabilities rhythm, not a second section. */}
       <SectionShell rhythm eyebrowNumber="04">
         <OldWays />
-      </SectionShell>
-
-      {/* Capabilities says what they do; this says where they run. Three scenes
-          in one section — desktop, browser and devices answer the same question. */}
-      <SectionShell rhythm eyebrow="Where they work" eyebrowNumber="05">
-        <WhereTheyWorkSection />
       </SectionShell>
 
       <SectionShell
         rhythm
         eyebrow="Loops"
-        eyebrowNumber="06"
+        eyebrowNumber="05"
         eyebrowAlign="center"
         bgClass="bg-canvas-warm"
       >
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="07" eyebrowAlign="center">
-        <MobileChannelsSection />
-      </SectionShell>
+      {/* Field Comms — channels + phone pair on the page rail. */}
+      <MobileChannelsSection />
 
-      {/* The page's second and last dark band. Governance is the only one down
-          here now — when Field Comms was dark too, the two butted together with
-          no divider and read as a single slab. */}
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="08" />
+        <GovernanceSection eyebrowNumber="07" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="09">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="08">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="10">
+      <SectionShell rhythm eyebrowNumber="09">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>

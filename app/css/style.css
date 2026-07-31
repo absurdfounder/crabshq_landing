@@ -196,9 +196,9 @@
   background-position: top;
 }
 
-/* Top promo strip — solid lime (no pixel tile background) */
+/* Top promo strip — solid lime; dark ink for readable contrast on mobile */
 .site-top-bar {
-  background-color: #7aa824;
+  background-color: #8fc63f;
 }
 
 .pixel-surface__clouds {
@@ -517,18 +517,15 @@ body > iframe.goog-te-menu-frame {
    * The page column.
    *
    * Centred measure, gutter, and the side hairlines that form the containerized
-   * grid below the hero. Side borders drop below `sm`: on a phone they sit hard
-   * against the viewport edge and read as a boxed container rather than as the
-   * page's own margin.
-   *
-   * The hero opts out with `.rail-open` so its desktop scene can run edge to
-   * edge while every section under it — through the footer — stays on the grid.
+   * grid. Side borders drop below `sm`: on a phone they sit hard against the
+   * viewport edge and read as a boxed container rather than as the page's own
+   * margin. The hero uses the same `.rail` as every section under it.
    */
   .rail {
     @apply mx-auto min-w-0 max-w-7xl border-[var(--color-line)] px-4 sm:border-l sm:border-r sm:px-6;
   }
 
-  /* Measure + gutter only. Used by the hero so it does not draw the side rails. */
+  /* Measure + gutter only — reserved for rare full-bleed exceptions. */
   .rail-open {
     @apply border-l-0 border-r-0;
   }
@@ -761,37 +758,6 @@ body > iframe.goog-te-menu-frame {
 }
 
 /*custom css for the website here*/
-
-/* Global Trooper cursor — bright green gradient pointer */
-:root {
-  --trooper-cursor-default: url('/images/custom-cursor.svg') 4 4, auto;
-  --trooper-cursor-pointer: url('/images/custom-cursor.svg') 4 4, pointer;
-}
-
-html {
-  cursor: var(--trooper-cursor-default);
-}
-
-body,
-body *:not(input):not(textarea):not(select):not(option) {
-  cursor: inherit;
-}
-
-input,
-textarea,
-select,
-[contenteditable='true'] {
-  cursor: text;
-}
-
-a[href],
-button:not(:disabled),
-[role='button'],
-label[for],
-summary,
-.cursor-pointer {
-  cursor: var(--trooper-cursor-pointer);
-}
 
 .bg-orange-700 {
   background-color: #faad5e;

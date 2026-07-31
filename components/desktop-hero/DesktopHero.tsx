@@ -10,11 +10,12 @@ import FernCircleCheckIcon from '../ui/FernCircleCheckIcon';
 import Draggable from './Draggable';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
-const GITHUB_URL = 'https://github.com/Trooper-AI';
+const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core';
 const OPENCLAW_URL = 'https://openclaw.ai';
 
-/** Authored desktop width. Windows sit near the edges; the headline owns the middle. */
+/** Authored desktop size. Scaled to fit the page rail; headline owns the middle. */
 const STAGE_W = 1600;
+const STAGE_H = 780;
 
 /* ------------------------------------------------------------------ */
 /* Small pieces                                                        */
@@ -133,7 +134,7 @@ function FolderIcon({
   dataId: string;
 }) {
   return (
-    <Draggable x={x} y={y} dataId={dataId} className="w-[72px] text-center">
+    <Draggable x={x} y={y} dataId={dataId} className="z-[5] w-[72px] text-center">
       <div data-dh={`${dataId}-icon`}>
         <RemoteIcon
           src="/images/desktop/folder.png"
@@ -149,38 +150,172 @@ function FolderIcon({
   );
 }
 
+const CLI_IDS = ['claude', 'codex', 'cursor', 'grok'] as const;
+type CliId = (typeof CLI_IDS)[number];
+
+type CliConfig = {
+  label: string;
+  src: string;
+  title: string;
+  caption: string;
+  accent: string;
+  version: string;
+  model: string;
+  prompt: string;
+  toolLine: string;
+  checks: readonly [string, string, string];
+  followUp: string;
+  done: string;
+  next: string;
+  /** Authored resting spot — each CLI sits slightly differently so a switch feels like a new window. */
+  x: number;
+  y: number;
+  w: number;
+};
+
+const CLI_APPS: Record<CliId, CliConfig> = {
+  claude: {
+    label: 'Claude Code',
+    src: '/images/desktop/dock/claude.png',
+    title: 'claude — zsh',
+    caption: 'Claude Code CLI',
+    accent: '#d97757',
+    version: 'Claude Code v2.1.190',
+    model: 'Sonnet 4.6 · high effort · ~/trooper-app',
+    prompt: 'ship the auth middleware fix',
+    toolLine: 'Reading src/middleware.ts · running checks',
+    checks: ['Rewrote session guard', '12 tests green', 'PR #482 ready for review'],
+    followUp: 'Want me to request review from Jordan?',
+    done: '* Done in 8s',
+    next: 'check pipeline status…',
+    x: 24,
+    y: 410,
+    w: 360,
+  },
+  codex: {
+    label: 'Codex',
+    src: '/images/desktop/dock/codex.png',
+    title: 'codex — zsh',
+    caption: 'OpenAI Codex',
+    accent: '#10a37f',
+    version: 'Codex CLI',
+    model: 'GPT-5 · ~/trooper-app',
+    prompt: 'add a refunds ledger migration',
+    toolLine: 'Planning · applying schema in db/migrations',
+    checks: ['Created 2026_07_refunds.sql', 'Backfilled 1.2k rows', 'Migration dry-run clean'],
+    followUp: 'Should I open the PR against main?',
+    done: '* Finished in 14s',
+    next: 'run migrate --check…',
+    x: 36,
+    y: 398,
+    w: 372,
+  },
+  cursor: {
+    label: 'Cursor',
+    src: '/images/desktop/dock/cursor.png',
+    title: 'cursor agent — zsh',
+    caption: 'Cursor Agent',
+    accent: '#8fc63f',
+    version: 'Cursor Agent',
+    model: 'Composer · ~/trooper-app',
+    prompt: 'tighten the desktop hero choreography',
+    toolLine: 'Editing DesktopHero.tsx · reviewing motion paths',
+    checks: ['Staggered agent starts', 'Live target tracking OK', 'No overlap on dock'],
+    followUp: 'Want a pass on reduced-motion next?',
+    done: '* Applied in 6s',
+    next: 'snapshot the hero layout…',
+    x: 18,
+    y: 418,
+    w: 352,
+  },
+  grok: {
+    label: 'Grok',
+    src: '/images/desktop/dock/grok.png',
+    title: 'grok — zsh',
+    caption: 'Grok CLI',
+    accent: '#c4e08a',
+    version: 'Grok CLI',
+    model: 'Grok 4 · ~/trooper-app',
+    prompt: 'draft the deploy checklist for #482',
+    toolLine: 'Scanning PR diff · writing ops notes',
+    checks: ['Smoke paths listed', 'Rollback steps added', 'On-call ping drafted'],
+    followUp: 'Drop this in #ship before Jordan merges?',
+    done: '* Wrapped in 5s',
+    next: 'post checklist to Slack…',
+    x: 42,
+    y: 404,
+    w: 368,
+  },
+};
+
 const DOCK_APPS = [
-  { id: 'finder', label: 'Finder', src: '/images/desktop/dock/finder.png' },
-  { id: 'claude', label: 'Claude', src: '/images/desktop/dock/claude.png' },
-  { id: 'codex', label: 'Codex', src: '/images/desktop/dock/codex.png' },
-  { id: 'cursor', label: 'Cursor', src: '/images/desktop/dock/cursor.png' },
-  { id: 'grok', label: 'Grok', src: '/images/desktop/dock/grok.png' },
-  { id: 'spotify', label: 'Spotify', src: '/images/desktop/dock/spotify.png' },
-  { id: 'chrome', label: 'Chrome', src: '/images/desktop/dock/chrome.png' },
-  { id: 'figma', label: 'Figma', src: '/images/desktop/dock/figma.png' },
-  { id: 'whatsapp', label: 'WhatsApp', src: '/images/desktop/dock/whatsapp.png' },
-  { id: 'trash', label: 'Trash', src: '/images/desktop/dock/trash.png' },
+  { id: 'finder', label: 'Finder', src: '/images/desktop/dock/finder.png', kind: 'finder' as const },
+  { id: 'claude', label: 'Claude Code', src: '/images/desktop/dock/claude.png', kind: 'cli' as const },
+  { id: 'codex', label: 'Codex', src: '/images/desktop/dock/codex.png', kind: 'cli' as const },
+  { id: 'cursor', label: 'Cursor', src: '/images/desktop/dock/cursor.png', kind: 'cli' as const },
+  { id: 'grok', label: 'Grok', src: '/images/desktop/dock/grok.png', kind: 'cli' as const },
+  { id: 'spotify', label: 'Spotify', src: '/images/desktop/dock/spotify.png', kind: 'app' as const },
+  { id: 'chrome', label: 'Chrome', src: '/images/desktop/dock/chrome.png', kind: 'app' as const },
+  { id: 'figma', label: 'Figma', src: '/images/desktop/dock/figma.png', kind: 'app' as const },
+  { id: 'whatsapp', label: 'WhatsApp', src: '/images/desktop/dock/whatsapp.png', kind: 'app' as const },
+  { id: 'trash', label: 'Trash', src: '/images/desktop/dock/trash.png', kind: 'app' as const },
 ] as const;
 
 /**
- * Decorative macOS dock — not interactive. Small glass shelf, no focus rings,
- * no hover lift. Trash sits past a hairline divider on the right.
+ * macOS dock — Finder opens over deploy; CLI icons switch the agent terminal.
+ * Trash sits past a hairline divider on the right.
  */
-function MacDock() {
+function MacDock({
+  activeCli,
+  onSelectCli,
+  onOpenFinder,
+}: {
+  activeCli: CliId;
+  onSelectCli: (id: CliId) => void;
+  onOpenFinder: () => void;
+}) {
   return (
     <div
       data-dh="dock"
-      aria-hidden
-      className="dh-dock pointer-events-none absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 items-end gap-[5px] rounded-[16px] px-2.5 py-1.5"
+      className="dh-dock pointer-events-auto absolute bottom-1.5 left-1/2 z-30 flex -translate-x-1/2 items-end gap-[5px] rounded-[16px] px-2.5 py-1.5"
     >
-      {DOCK_APPS.map((app, i) => (
+      {DOCK_APPS.map((app, i) => {
+        const isCli = app.kind === 'cli';
+        const isFinder = app.kind === 'finder';
+        const isActive = isCli && app.id === activeCli;
+        const interactive = isCli || isFinder;
+        return (
           <React.Fragment key={app.id}>
-            {app.id === 'trash' ? <span className="dh-dock-sep mx-0.5 mb-1 h-8 w-px self-center" /> : null}
-            <div
-              data-dh={app.id === 'trash' ? 'trash' : undefined}
-              className="relative flex size-9 items-center justify-center"
+            {app.id === 'trash' ? (
+              <span className="dh-dock-sep mx-0.5 mb-1 h-8 w-px self-center" />
+            ) : null}
+            <button
+              type="button"
+              data-dh={
+                isCli ? `dock-${app.id}` : isFinder ? 'dock-finder' : app.id === 'trash' ? 'trash' : undefined
+              }
+              aria-label={
+                isCli ? `Open ${app.label}` : isFinder ? 'Open Finder' : app.label
+              }
+              aria-pressed={isCli ? isActive : undefined}
+              disabled={!interactive}
+              onClick={() => {
+                if (isCli) onSelectCli(app.id as CliId);
+                if (isFinder) onOpenFinder();
+              }}
+              className={[
+                'relative flex size-9 items-center justify-center rounded-[9px]',
+                interactive
+                  ? 'cursor-pointer transition-transform hover:-translate-y-0.5 active:translate-y-0'
+                  : 'cursor-default disabled:opacity-100',
+              ].join(' ')}
             >
-              <span className="flex size-9 items-center justify-center overflow-hidden rounded-[9px] shadow-[0_1px_3px_rgba(26,26,26,0.22)]">
+              <span
+                className={[
+                  'flex size-9 items-center justify-center overflow-hidden rounded-[9px] shadow-[0_1px_3px_rgba(26,26,26,0.22)]',
+                  isActive ? 'ring-2 ring-[#8fc63f] ring-offset-1 ring-offset-white/50' : '',
+                ].join(' ')}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={app.src}
@@ -191,10 +326,14 @@ function MacDock() {
                   className="pointer-events-none size-9 select-none object-cover"
                 />
               </span>
-            </div>
+              {isActive ? (
+                <span className="absolute -bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-[#8fc63f]" />
+              ) : null}
+            </button>
             {i === 0 ? <span className="dh-dock-sep mx-0.5 mb-1 h-8 w-px self-center" /> : null}
           </React.Fragment>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -213,7 +352,7 @@ function DesktopFile({
   dataId?: string;
 }) {
   return (
-    <Draggable x={x} y={y} dataId={dataId} className="w-[72px] text-center">
+    <Draggable x={x} y={y} dataId={dataId} className="z-[5] w-[72px] text-center">
       <FileGlyph kind={kind} className="mx-auto h-[52px] w-[44px] drop-shadow-sm" />
       <span className="dh-icon-label mt-1 block truncate text-[11px] font-medium leading-4">
         {name}
@@ -241,7 +380,7 @@ function MacWindow({
   children: React.ReactNode;
 }) {
   return (
-    <Draggable x={x} y={y} dataId={dataId}>
+    <Draggable x={x} y={y} dataId={dataId} className="z-[12]">
       <div style={{ width: w }}>
         <div className="overflow-hidden rounded-[10px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.75)_inset,0_2px_4px_rgba(26,26,26,0.04),0_12px_32px_-8px_rgba(26,26,26,0.22),0_32px_64px_-16px_rgba(26,26,26,0.16)] ring-1 ring-black/[0.08]">
           <div className="flex items-center gap-1.5 border-b border-black/[0.05] bg-gradient-to-b from-neutral-50 to-neutral-100/90 px-3 py-2">
@@ -303,6 +442,121 @@ function PreviewCodeMock() {
   );
 }
 
+/** Quick Look from Finder — Jordan scans a PDF before shipping. */
+function PreviewFinderFileMock() {
+  return (
+    <div className="relative px-4 py-3 text-[11px] leading-[1.55] text-neutral-600">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+        PDF · 4 pages
+      </p>
+      <p className="mt-2 font-semibold text-neutral-800">Q3 refunds audit</p>
+      <p className="mt-2">
+        Matched Stripe payouts to the sheet. Four open disputes still need sign-off before close.
+      </p>
+      <ul className="mt-2 space-y-1 text-[10px] text-neutral-500">
+        <li>· 18 refunds · $2,117.50 total</li>
+        <li>· 0 chargebacks pending</li>
+        <li>· Ledger export attached on p.3</li>
+      </ul>
+      <span
+        data-dh="fx-readbar-finder"
+        className="dh-readbar pointer-events-none absolute left-2 right-2 h-4 rounded-sm bg-amber-200/50"
+      />
+    </div>
+  );
+}
+
+/**
+ * Compact macOS Finder — sidebar + icon grid. Opens over deploy — zsh so Jordan
+ * can check folders/files, then the terminal comes back.
+ */
+function FinderMock() {
+  const side = [
+    { label: 'Recents', active: false },
+    { label: 'Applications', active: false },
+    { label: 'Downloads', active: false },
+    { label: 'Desktop', active: false },
+    { label: 'Documents', active: false },
+    { label: 'iCloud Drive', active: true },
+  ] as const;
+
+  const items: {
+    id: string;
+    name: string;
+    kind: 'folder' | 'img' | 'pdf';
+    selected?: boolean;
+  }[] = [
+    { id: 'finder-item-desktop', name: 'Desktop', kind: 'folder' },
+    { id: 'finder-item-docs', name: 'Documents', kind: 'folder' },
+    { id: 'finder-item-receipts', name: 'Receipts', kind: 'folder' },
+    { id: 'finder-item-pdf', name: 'Q3-audit.pdf', kind: 'pdf', selected: true },
+    { id: 'finder-item-photo', name: 'Malibu.jpeg', kind: 'img' },
+  ];
+
+  return (
+    <div className="flex h-[248px] select-none bg-[#ececec] text-[10px] text-neutral-700">
+      <aside className="w-[108px] shrink-0 border-r border-black/[0.06] bg-[#e8e8e8]/px-1.5 py-2">
+        <p className="px-1.5 pb-1 text-[8px] font-semibold uppercase tracking-[0.08em] text-neutral-400">
+          Favorites
+        </p>
+        <ul className="space-y-0.5">
+          {side.map((row) => (
+            <li
+              key={row.label}
+              className={[
+                'truncate rounded-md px-1.5 py-1 font-medium',
+                row.active ? 'bg-white text-neutral-900 shadow-sm ring-1 ring-black/[0.04]' : 'text-neutral-600',
+              ].join(' ')}
+            >
+              {row.label}
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col bg-[#f6f6f6]">
+        <div className="flex items-center gap-2 border-b border-black/[0.06] bg-gradient-to-b from-white to-[#f3f3f3] px-2.5 py-1.5">
+          <span className="text-[11px] text-neutral-400">‹</span>
+          <span className="text-[11px] text-neutral-300">›</span>
+          <span className="ml-1 truncate text-[11px] font-semibold text-neutral-700">iCloud Drive</span>
+          <span className="ml-auto rounded border border-black/10 bg-white px-1.5 py-0.5 text-[8px] font-semibold text-neutral-500">
+            Icons
+          </span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-x-2 gap-y-3 overflow-hidden px-3 py-3">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              data-dh={item.id}
+              className={[
+                'flex flex-col items-center rounded-lg px-1 py-1 text-center',
+                item.selected ? 'bg-[#d6e4f5] ring-1 ring-[#7aa7d9]/40' : '',
+              ].join(' ')}
+            >
+              {item.kind === 'folder' ? (
+                <RemoteIcon
+                  src="/images/desktop/folder.png"
+                  size={40}
+                  className="h-10 w-10 object-contain"
+                  fallback={<FolderSvg className="h-9 w-[44px]" />}
+                />
+              ) : item.kind === 'img' ? (
+                <span className="flex h-10 w-10 overflow-hidden rounded-[5px] bg-gradient-to-br from-[#9ec5e8] via-[#c5d6a4] to-[#e8c99e] shadow-sm ring-1 ring-black/10" />
+              ) : (
+                <FileGlyph kind="pdf" className="h-10 w-8" />
+              )}
+              <span className="mt-1 w-full truncate text-[9px] font-medium leading-tight text-neutral-700">
+                {item.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /** Closed by default; choreography opens → reads → closes. */
 function TransientWindow({
   x,
@@ -311,6 +565,7 @@ function TransientWindow({
   dataId,
   title,
   dark,
+  zClass = 'z-[25]',
   children,
 }: {
   x: number;
@@ -319,12 +574,13 @@ function TransientWindow({
   dataId: string;
   title: string;
   dark?: boolean;
+  zClass?: string;
   children: React.ReactNode;
 }) {
   return (
     <div
       data-dh={dataId}
-      className="dh-preview dh-preview-closed absolute z-[25]"
+      className={`dh-preview dh-preview-closed absolute ${zClass}`}
       style={{ left: x, top: y, width: w }}
     >
       <div
@@ -456,86 +712,75 @@ function TerminalMock() {
 }
 
 /**
- * Claude Code CLI chat — not a web bubble UI. Matches the real terminal:
- * orange-framed header, grey user bar, monospace reply, block cursor.
+ * Agent CLI chat — Claude / Codex / Cursor / Grok each run a different session.
+ * Choreography hooks (fx-claude-*) stay stable across brands.
  */
-function ClaudeCodeMock() {
-  const accent = '#d97757';
+function CliTerminalMock({ cli }: { cli: CliId }) {
+  const cfg = CLI_APPS[cli];
+  const accent = cfg.accent;
   return (
     <div className="select-none bg-[#1a1a1a] font-mono text-[9px] leading-[1.45] text-[#eceae6]">
-      {/* Branded session header */}
-      <div className="mx-2 mt-2 rounded-sm px-2.5 py-2" style={{ border: `1px solid ${accent}` }}>
+      <div className="mx-2 mt-2 px-1 py-2">
         <div className="flex items-start gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/claude-code-logo.png"
+            src={cfg.src}
             alt=""
             width={28}
             height={28}
             draggable={false}
-            className="mt-0.5 size-7 shrink-0 object-contain"
-            style={{ imageRendering: 'pixelated' }}
+            className="mt-0.5 size-7 shrink-0 rounded-[6px] object-cover"
           />
           <div className="min-w-0 flex-1">
-            <p className="text-[9px] font-medium" style={{ color: accent }}>
-              Claude Code v2.1.190
+            <p className="text-[9px] font-medium text-white/70">
+              {cfg.version}
             </p>
             <p className="text-[10px] font-medium text-white">Welcome back Vaibhav!</p>
-            <p className="mt-0.5 truncate text-[8px] text-white/45">
-              Sonnet 4.6 · high effort · ~/trooper-app
-            </p>
+            <p className="mt-0.5 truncate text-[8px] text-white/45">{cfg.model}</p>
           </div>
         </div>
       </div>
 
-      {/* Conversation */}
       <div className="mt-2.5">
-        {/* User turn — full-width grey bar */}
         <div className="bg-white/[0.07] px-3 py-1.5">
           <p className="text-[10px] text-white/90">
-            <span className="text-white/50">&gt;</span> ship the auth middleware fix
+            <span className="text-white/50">&gt;</span> {cfg.prompt}
           </p>
         </div>
 
-        {/* Assistant turn */}
         <div
           data-dh="fx-claude-1"
           className="dh-fx space-y-1.5 px-3 py-2.5 text-[9px] leading-[1.5]"
         >
-          <p className="text-white/85">I&apos;ll dig into the auth middleware and get this shipped.</p>
-          <p className="text-white/40">Called github-mcp · reading src/middleware.ts</p>
+          <p className="text-white/85">On it — working through this now.</p>
+          <p className="text-white/40">{cfg.toolLine}</p>
           <div className="pt-0.5 text-white/80">
-            <p>
-              <span style={{ color: accent }}>✓</span> Rewrote session guard
-            </p>
-            <p>
-              <span style={{ color: accent }}>✓</span> 12 tests green
-            </p>
-            <p>
-              <span style={{ color: accent }}>✓</span> PR #482 ready for review
-            </p>
+            {cfg.checks.map((line) => (
+              <p key={line}>
+                <span style={{ color: accent }}>✓</span> {line}
+              </p>
+            ))}
           </div>
-          <p className="pt-0.5 text-white/75">Want me to request review from Jordan?</p>
-          <p className="text-white/35">* Sautéed for 8s</p>
+          <p className="pt-0.5 text-white/75">{cfg.followUp}</p>
+          <p className="text-white/35">{cfg.done}</p>
         </div>
       </div>
 
-      {/* Input + footer */}
       <div className="border-t border-white/10 px-3 pb-2 pt-2">
         <p className="flex items-center gap-1.5 text-[10px]">
           <span className="text-white/70">&gt;</span>
           <span
             data-dh="fx-claude-2"
             className="dh-type text-white/55"
-            style={{ '--dh-w': '24ch' } as React.CSSProperties}
+            style={{ '--dh-w': `${Math.max(18, cfg.next.length)}ch` } as React.CSSProperties}
           >
-            check pipeline status…
+            {cfg.next}
           </span>
           <span className="inline-block h-[11px] w-[7px] animate-pulse bg-white/90" aria-hidden />
         </p>
         <div className="mt-1.5 flex justify-between text-[8px] text-white/30">
           <span>? for shortcuts</span>
-          <span>← for agents</span>
+          <span>{cfg.label}</span>
         </div>
       </div>
     </div>
@@ -560,18 +805,18 @@ const AGENTS = [
     id: 'jordan',
     name: 'Jordan',
     role: 'Chief of staff',
-    arrow: '#ffa04d',
-    pillBg: '#fff0e0',
-    pillText: '#b45309',
+    arrow: '#6a9a28',
+    pillBg: '#e2efd0',
+    pillText: '#3a6808',
     home: [1420, 120] as const,
   },
   {
     id: 'leo',
     name: 'Leo',
     role: 'Finance',
-    arrow: '#6aa6ff',
-    pillBg: '#e7efff',
-    pillText: '#2b5fd9',
+    arrow: '#a8d45c',
+    pillBg: '#f3f9e8',
+    pillText: '#5a8a14',
     // Resting on Claude Code (bottom-left).
     home: [180, 420] as const,
   },
@@ -579,21 +824,56 @@ const AGENTS = [
 
 /** Keep cursors on the stage when a target is dragged way off-canvas. */
 function clampToStage(x: number, y: number): [number, number] {
-  return [Math.max(-40, Math.min(STAGE_W - 20, x)), Math.max(-20, Math.min(820, y))];
+  return [Math.max(-40, Math.min(STAGE_W - 20, x)), Math.max(-20, Math.min(STAGE_H - 20, y))];
 }
 
-/** Invisible stage anchors — choreography still tracks positions for file carry / FX. */
-function AgentCursorAnchor({ agent }: { agent: (typeof AGENTS)[number] }) {
+/** Fit the authored stage inside the rail scene without stretching. */
+function useRailStageScale(sceneRef: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = sceneRef.current;
+    if (!el) return;
+    const apply = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width <= 0 || height <= 0) return;
+      const scale = Math.min(width / STAGE_W, height / STAGE_H, 1);
+      el.style.setProperty('--dh-scale', String(scale));
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [sceneRef]);
+}
+
+function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
   return (
     <div
       data-dh={`cursor-${agent.id}`}
       className="dh-cursor"
-      style={{
-        transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)`,
-        opacity: 0,
-      }}
-      aria-hidden
-    />
+      style={{ transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)` }}
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        className="drop-shadow-[0_2px_4px_rgba(26,26,26,0.18)]"
+        aria-hidden
+      >
+        <path
+          d="M4.2 3.4 Q4 2.6 4.8 2.9 L20.3 9.8 Q21.1 10.2 20.2 10.7 L13.6 12.6 L11.1 19 Q10.7 19.9 10.3 19.1 Z"
+          fill={agent.arrow}
+          stroke="#fff"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <span
+        className="ml-4 mt-0.5 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-sm ring-1 ring-black/5"
+        style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
+      >
+        {agent.name} · {agent.role}
+      </span>
+    </div>
   );
 }
 
@@ -611,41 +891,62 @@ type Step = {
   move: number;
   /** Pause on arrival in ms. */
   dwell?: number;
-  /** The file rides under the cursor for this leg. */
-  carry?: boolean;
+  /** data-dh id of a desktop file that rides under the cursor for this leg. */
+  carry?: string;
   /** Effect fired on arrival. */
   fx?: string;
+  /** Switch the agent CLI window to this brand on arrival (Leo clicks the dock). */
+  cli?: CliId;
+};
+
+/** Authored left/top for each carryable desktop file (stage px). */
+const CARRY_HOMES: Record<string, readonly [number, number]> = {
+  // Left icon column, above every CLI resting box (CLI tops sit ~372+).
+  file: [292, 200],
+  'file-junk': [372, 200],
 };
 
 /** Scripts resolve targets from live element positions every frame. */
 const SCRIPTS: Record<string, Step[]> = {
   aria: [
-    // Open brief.pdf → read → close, then file the refunds csv.
+    // Open brief.pdf → read → close, file the refunds csv, then trash the scratch file.
     { to: 'file-brief', off: [24, 28], move: 1800, dwell: 350, fx: 'openBrief' },
     { to: 'win-preview', off: [130, 90], move: 1400, fx: 'readBrief', dwell: 2400 },
     { to: 'win-preview', off: [28, 14], move: 700, fx: 'closeBrief', dwell: 450 },
     { to: 'file', off: [24, 28], move: 1800, dwell: 400 },
-    { to: 'folder-inv', off: [24, 28], move: 2200, carry: true, fx: 'drop', dwell: 700 },
+    { to: 'folder-inv', off: [24, 28], move: 2200, carry: 'file', fx: 'drop', dwell: 700 },
+    { to: 'file-junk', off: [24, 28], move: 1600, dwell: 400 },
+    { to: 'trash', off: [18, 18], move: 2400, carry: 'file-junk', fx: 'trash', dwell: 800 },
     { to: 'win-sheet', off: [120, 100], move: 2000, fx: 'flash', dwell: 600 },
   ],
   jordan: [
-    // Open App.tsx → skim → close, then ship the PR / deploy.
+    // Open App.tsx → skim → close, then Finder over deploy, check a file, close, ship.
     { to: 'file-app', off: [24, 28], move: 1800, dwell: 350, fx: 'openCode' },
     { to: 'win-code', off: [120, 80], move: 1400, fx: 'readCode', dwell: 2200 },
     { to: 'win-code', off: [28, 14], move: 700, fx: 'closeCode', dwell: 450 },
+    { to: 'dock-finder', off: [18, 18], move: 1600, dwell: 400, fx: 'openFinder' },
+    { to: 'finder-item-receipts', off: [28, 36], move: 1400, dwell: 500 },
+    { to: 'finder-item-pdf', off: [28, 36], move: 1200, dwell: 380, fx: 'openFinderFile' },
+    { to: 'win-finder-preview', off: [120, 90], move: 1300, fx: 'readFinderFile', dwell: 2200 },
+    { to: 'win-finder-preview', off: [28, 14], move: 700, fx: 'closeFinderFile', dwell: 400 },
+    { to: 'win-finder', off: [20, 12], move: 800, fx: 'closeFinder', dwell: 500 },
     { to: 'win-pr', off: [140, 100], move: 2000, fx: 'approve', dwell: 700 },
     { to: 'win-term', off: [120, 60], move: 2200, fx: 'deploy', dwell: 1000 },
     { to: 'folder-shots', off: [24, 28], move: 2000, dwell: 1400 },
   ],
   leo: [
-    { to: 'win-claude', off: [120, 80], move: 2200, fx: 'claude', dwell: 700 },
-    { to: 'win-sheet', off: [100, 160], move: 2600, dwell: 1400 },
-    { to: 'win-claude', off: [150, 50], move: 2200, dwell: 1600 },
+    // Cycle CLIs via the dock — click icon, then work in the shifted window.
+    { to: 'dock-claude', off: [18, 18], move: 1600, dwell: 380, cli: 'claude' },
+    { to: 'win-claude', off: [130, 78], move: 1900, fx: 'claude', dwell: 1500 },
+    { to: 'dock-codex', off: [18, 18], move: 1500, dwell: 360, cli: 'codex' },
+    { to: 'win-claude', off: [150, 64], move: 1800, fx: 'claude', dwell: 1600 },
+    { to: 'win-sheet', off: [100, 160], move: 2200, dwell: 1100 },
+    { to: 'dock-cursor', off: [18, 18], move: 1500, dwell: 360, cli: 'cursor' },
+    { to: 'win-claude', off: [110, 88], move: 1800, fx: 'claude', dwell: 1600 },
+    { to: 'dock-grok', off: [18, 18], move: 1500, dwell: 360, cli: 'grok' },
+    { to: 'win-claude', off: [142, 56], move: 1800, fx: 'claude', dwell: 1700 },
   ],
 };
-
-/** Where the file chip rests, in stage px (also its authored left/top). */
-const FILE_HOME = [292, 200] as const;
 
 /**
  * Runs the three cursors with requestAnimationFrame instead of CSS keyframes.
@@ -661,7 +962,14 @@ const FILE_HOME = [292, 200] as const;
  * when its agent has actually arrived. Base styles are the completed state:
  * with the engine off (reduced motion, no JS) everything is simply visible.
  */
-function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
+function useAgentChoreography(
+  stageRef: React.RefObject<HTMLDivElement | null>,
+  onSwitchCli: (id: CliId) => void,
+  finderOpenRef: React.MutableRefObject<(() => void) | null>,
+) {
+  const switchCliRef = useRef(onSwitchCli);
+  switchCliRef.current = onSwitchCli;
+
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -669,6 +977,24 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
 
     const q = (id: string) => stage.querySelector<HTMLElement>(`[data-dh="${id}"]`);
     const fileEl = q('file');
+    const junkEl = q('file-junk');
+
+    const moveCarried = (carryId: string | undefined, x: number, y: number) => {
+      if (!carryId) return;
+      const el = q(carryId);
+      const home = CARRY_HOMES[carryId];
+      if (!el || !home || el.classList.contains('dh-hide')) return;
+      el.style.transform = `translate(${x - 30 - home[0]}px, ${y - 28 - home[1]}px)`;
+    };
+
+    const swallowFile = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.add('dh-hide');
+      later(() => {
+        el.style.transform = '';
+        later(() => el.classList.remove('dh-hide'), 900);
+      }, 500);
+    };
 
     const timeouts = new Set<number>();
     const later = (fn: () => void, ms: number) => {
@@ -681,21 +1007,30 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
 
     // The story starts with these not yet done; the engine reveals them.
     const check = q('fx-check');
-    const c1 = q('fx-claude-1');
-    const c2 = q('fx-claude-2');
     const t2 = q('fx-t2');
     const t3 = q('fx-t3');
     const preview = q('win-preview');
     const codeWin = q('win-code');
+    const finderWin = q('win-finder');
+    const finderPreview = q('win-finder-preview');
     const readbar = q('fx-readbar');
     const readbarCode = q('fx-readbar-code');
+    const readbarFinder = q('fx-readbar-finder');
     check?.classList.add('dh-off');
-    c1?.classList.add('dh-off');
-    c2?.classList.add('dh-t-idle');
+    // CLI reply nodes remount when Leo switches brands — always re-query.
+    const hideCliFx = () => {
+      q('fx-claude-1')?.classList.add('dh-off');
+      const c2 = q('fx-claude-2');
+      c2?.classList.remove('dh-typing');
+      c2?.classList.add('dh-t-idle');
+    };
+    hideCliFx();
     t2?.classList.add('dh-t-idle');
     t3?.classList.add('dh-t-idle');
     preview?.classList.add('dh-preview-closed');
     codeWin?.classList.add('dh-preview-closed');
+    finderWin?.classList.add('dh-preview-closed');
+    finderPreview?.classList.add('dh-preview-closed');
 
     const typeLine = (el: HTMLElement | null) => {
       if (!el) return;
@@ -710,6 +1045,13 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       el.classList.remove('dh-bounce');
       void el.offsetWidth;
       el.classList.add('dh-bounce');
+    };
+
+    const switchCli = (id: CliId) => {
+      switchCliRef.current(id);
+      bounceIcon(`dock-${id}`);
+      // Wait for React to remount the CLI body, then reset FX to “not yet done”.
+      later(hideCliFx, 40);
     };
 
     const posOf = (t: StepTarget, off: readonly [number, number] = [0, 0]): [number, number] => {
@@ -760,13 +1102,11 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
     const FX: Record<string, () => void> = {
       drop: () => {
         bounceIcon('folder-inv-icon');
-        if (fileEl) {
-          fileEl.classList.add('dh-hide');
-          later(() => {
-            fileEl.style.transform = '';
-            later(() => fileEl.classList.remove('dh-hide'), 800);
-          }, 500);
-        }
+        swallowFile(fileEl);
+      },
+      trash: () => {
+        bounceIcon('trash');
+        swallowFile(junkEl);
       },
       flash: () => {
         const rows = stage.querySelectorAll('.dh-row');
@@ -782,8 +1122,15 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
         later(() => typeLine(t3), 1100);
       },
       claude: () => {
-        c1?.classList.remove('dh-off');
-        later(() => typeLine(c2), 600);
+        // Re-query — nodes remount whenever the active CLI changes.
+        q('fx-claude-1')?.classList.add('dh-off');
+        const c2 = q('fx-claude-2');
+        c2?.classList.remove('dh-typing');
+        c2?.classList.add('dh-t-idle');
+        later(() => {
+          q('fx-claude-1')?.classList.remove('dh-off');
+          later(() => typeLine(q('fx-claude-2')), 600);
+        }, 120);
       },
       openBrief: () => {
         bounceIcon('file-brief');
@@ -812,6 +1159,49 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
         closePreview(codeWin, readbarCode);
         later(() => q('win-pr')?.classList.remove('dh-win-dim'), 280);
       },
+      openFinder: () => {
+        bounceIcon('dock-finder');
+        later(() => {
+          // Cover deploy — zsh, but pull inward so Finder isn’t jammed in the corner.
+          placePreviewAt(finderWin, 'win-term');
+          if (finderWin) {
+            const left = parseFloat(finderWin.style.left || '0');
+            const top = parseFloat(finderWin.style.top || '0');
+            finderWin.style.left = `${Math.max(980, left - 160)}px`;
+            finderWin.style.top = `${Math.max(300, top - 55)}px`;
+          }
+          q('win-term')?.classList.add('dh-win-dim');
+          openPreview(finderWin, null);
+        }, 180);
+      },
+      openFinderFile: () => {
+        bounceIcon('finder-item-pdf');
+        later(() => {
+          placePreviewAt(finderPreview, 'win-finder');
+          if (finderPreview) {
+            const left = parseFloat(finderPreview.style.left || '0');
+            const top = parseFloat(finderPreview.style.top || '0');
+            // Quick Look floats over the Finder content area, not the outer edge.
+            finderPreview.style.left = `${left + 128}px`;
+            finderPreview.style.top = `${top + 48}px`;
+          }
+          openPreview(finderPreview, readbarFinder);
+        }, 180);
+      },
+      readFinderFile: () => readPreview(readbarFinder),
+      closeFinderFile: () => {
+        closePreview(finderPreview, readbarFinder);
+      },
+      closeFinder: () => {
+        closePreview(finderWin, null);
+        later(() => q('win-term')?.classList.remove('dh-win-dim'), 280);
+      },
+    };
+
+    // Dock Finder click uses the same open path as Jordan’s choreography.
+    finderOpenRef.current = () => FX.openFinder();
+    const clearFinderApi = () => {
+      finderOpenRef.current = null;
     };
 
     const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
@@ -848,21 +1238,18 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
           const x = c.from[0] + (tp[0] - c.from[0]) * e;
           const y = c.from[1] + (tp[1] - c.from[1]) * e;
           c.el.style.transform = `translate(${x}px, ${y}px)`;
-          if (st.carry && fileEl && !fileEl.classList.contains('dh-hide')) {
-            fileEl.style.transform = `translate(${x - 30 - FILE_HOME[0]}px, ${y - 28 - FILE_HOME[1]}px)`;
-          }
+          moveCarried(st.carry, x, y);
           if (p >= 1) {
             c.from = tp;
             c.phase = 'dwell';
             c.t0 = now;
+            if (st.cli) switchCli(st.cli);
             if (st.fx) FX[st.fx]?.();
           }
         } else {
           c.from = tp;
           c.el.style.transform = `translate(${tp[0]}px, ${tp[1]}px)`;
-          if (st.carry && fileEl && !fileEl.classList.contains('dh-hide')) {
-            fileEl.style.transform = `translate(${tp[0] - 30 - FILE_HOME[0]}px, ${tp[1] - 28 - FILE_HOME[1]}px)`;
-          }
+          moveCarried(st.carry, tp[0], tp[1]);
           if (now - c.t0 >= (st.dwell ?? 300)) {
             c.i = (c.i + 1) % c.steps.length;
             c.phase = 'move';
@@ -894,24 +1281,37 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
       if (raf) cancelAnimationFrame(raf);
       io.disconnect();
       timeouts.forEach((t) => window.clearTimeout(t));
+      clearFinderApi();
       // Leave the page in the completed, everything-visible state.
       check?.classList.remove('dh-off');
-      c1?.classList.remove('dh-off');
-      c2?.classList.remove('dh-t-idle', 'dh-typing');
+      q('fx-claude-1')?.classList.remove('dh-off');
+      q('fx-claude-2')?.classList.remove('dh-t-idle', 'dh-typing');
       t2?.classList.remove('dh-t-idle', 'dh-typing');
       t3?.classList.remove('dh-t-idle', 'dh-typing');
       preview?.classList.add('dh-preview-closed');
       preview?.classList.remove('dh-preview-open', 'dh-preview-closing');
       codeWin?.classList.add('dh-preview-closed');
       codeWin?.classList.remove('dh-preview-open', 'dh-preview-closing');
+      finderWin?.classList.add('dh-preview-closed');
+      finderWin?.classList.remove('dh-preview-open', 'dh-preview-closing');
+      finderPreview?.classList.add('dh-preview-closed');
+      finderPreview?.classList.remove('dh-preview-open', 'dh-preview-closing');
       readbar?.classList.remove('dh-reading');
       readbarCode?.classList.remove('dh-reading');
+      readbarFinder?.classList.remove('dh-reading');
+      q('win-sheet')?.classList.remove('dh-win-dim');
+      q('win-pr')?.classList.remove('dh-win-dim');
+      q('win-term')?.classList.remove('dh-win-dim');
       if (fileEl) {
         fileEl.style.transform = '';
         fileEl.classList.remove('dh-hide');
       }
+      if (junkEl) {
+        junkEl.style.transform = '';
+        junkEl.classList.remove('dh-hide');
+      }
     };
-  }, [stageRef]);
+  }, [stageRef, finderOpenRef]);
 }
 
 /* ------------------------------------------------------------------ */
@@ -931,9 +1331,9 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
  * Below the scene, the real product demo band (as before this hero existed).
  *
  * Engineering notes:
- * - The scene lives on a fixed STAGE_W stage centred in the viewport (scaled
- *   down below xl) so authored coordinates hold at every width. Windows sit
- *   near the edges — the middle third is reserved for the headline.
+ * - The scene lives on a fixed STAGE_W × STAGE_H stage, scaled to fit the page
+ *   rail and centred so the dock sits on the desktop floor. Windows sit near
+ *   the edges — the middle third is reserved for the headline.
  * - Cursors run on a rAF engine (see useAgentChoreography); in-window effects
  *   are class toggles whose base styles are the completed state, so with the
  *   engine off (reduced motion, no JS) nothing is hidden.
@@ -942,29 +1342,40 @@ function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
  */
 export default function DesktopHero() {
   const stageRef = useRef<HTMLDivElement>(null);
-  useAgentChoreography(stageRef);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const finderOpenRef = useRef<(() => void) | null>(null);
+  const [activeCli, setActiveCli] = useState<CliId>('claude');
+  const cli = CLI_APPS[activeCli];
+  useAgentChoreography(stageRef, setActiveCli, finderOpenRef);
+  useRailStageScale(sceneRef);
 
   return (
-    <section className="band relative overflow-hidden text-ink">
+    <section className="band relative bg-canvas text-ink">
       <DhStyles />
-      {/* Wallpaper below the solid site header. */}
-      <div
-        className="dh-wallpaper pointer-events-none absolute inset-x-0 top-[var(--site-header-height)] h-[calc(100%-var(--site-header-height))] lg:h-[calc(50rem-var(--site-header-height))] xl:h-[calc(52rem-var(--site-header-height))]"
-        aria-hidden
-      />
 
-      {/* Desktop scene — clear of the header, corners only. */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-[calc(var(--site-header-height)+24px)] hidden lg:block lg:h-[calc(50rem-var(--site-header-height)-24px)] xl:h-[calc(52rem-var(--site-header-height)-24px)]"
-        aria-hidden
-      >
+      {/* Same page rail as every section below — side hairlines + max-w-7xl. */}
+      <div className="rail relative overflow-hidden lg:h-[50rem] xl:h-[52rem]">
+        {/* Wallpaper clipped to the rail (not full viewport). */}
         <div
-          className="absolute left-1/2 top-0 h-full -translate-x-1/2"
-          style={{ width: STAGE_W }}
+          className="dh-wallpaper pointer-events-none absolute inset-x-0 top-[var(--site-header-height)] bottom-0"
+          aria-hidden
+        />
+
+        {/* Desktop scene — pinned to rail bottom so the dock sits on the wallpaper edge. */}
+        <div
+          ref={sceneRef}
+          className="pointer-events-none absolute inset-x-0 top-[calc(var(--site-header-height)+16px)] bottom-0 hidden lg:flex lg:items-end lg:justify-center"
+          aria-hidden
         >
           <div
             ref={stageRef}
-            className="dh-stage h-full w-full origin-top scale-[0.7] min-[1100px]:scale-[0.78] xl:scale-[0.9] 2xl:scale-100"
+            className="dh-stage relative shrink-0"
+            style={{
+              width: STAGE_W,
+              height: STAGE_H,
+              transform: 'scale(var(--dh-scale, 0.75))',
+              transformOrigin: 'bottom center',
+            }}
           >
             {/*
               Clean four-corner grid. Icons sit in the side columns only —
@@ -1004,25 +1415,29 @@ export default function DesktopHero() {
             </MacWindow>
 
             <MacWindow
-              x={24}
-              y={400}
-              w={387}
+              key={activeCli}
+              x={cli.x}
+              y={cli.y}
+              w={cli.w}
               dataId="win-claude"
-              title="claude — zsh"
-              caption="Claude Code CLI"
+              title={cli.title}
+              caption={cli.caption}
             >
-              <div className="max-h-[240px] overflow-hidden">
-                <ClaudeCodeMock />
+              <div className="dh-cli-body max-h-[240px] overflow-hidden">
+                <CliTerminalMock cli={activeCli} />
               </div>
             </MacWindow>
 
-            {/* Left icons — brief beside the sheet; invoices clear of Claude (ends ~x411). */}
+            {/*
+              Side-column icons only — kept clear of every CLI resting box
+              (CLIs sit ~x18–410, y398–670) and of the center copy band.
+            */}
             <DesktopFile x={292} y={56} name="brief.pdf" kind="pdf" dataId="file-brief" />
-            <FolderIcon x={430} y={560} name="invoices" dataId="folder-inv" />
+            <FolderIcon x={480} y={580} name="invoices" dataId="folder-inv" />
 
             {/* Right icon column — left of right windows, clear gaps. */}
             <DesktopFile x={1195} y={56} name="App.tsx" kind="code" dataId="file-app" />
-            <FolderIcon x={1195} y={560} name="screenshots" dataId="folder-shots" />
+            <FolderIcon x={1180} y={580} name="screenshots" dataId="folder-shots" />
 
             {/* Preview readers — same corner as the window they replace. */}
             <TransientWindow x={24} y={48} w={248} dataId="win-preview" title="brief.pdf">
@@ -1032,85 +1447,120 @@ export default function DesktopHero() {
               <PreviewCodeMock />
             </TransientWindow>
 
-            {/* Aria's file — in the left icon column between the two windows. */}
+            {/* Finder replaces deploy — zsh while open; Quick Look sits above it. */}
+            <TransientWindow
+              x={1080}
+              y={330}
+              w={460}
+              dataId="win-finder"
+              title="iCloud Drive"
+              zClass="z-[26]"
+            >
+              <FinderMock />
+            </TransientWindow>
+            <TransientWindow
+              x={1208}
+              y={378}
+              w={268}
+              dataId="win-finder-preview"
+              title="Q3-audit.pdf"
+              zClass="z-[27]"
+            >
+              <PreviewFinderFileMock />
+            </TransientWindow>
+
+            {/* Aria's files — refunds goes to invoices; scratch gets trashed. */}
             <div
               data-dh="file"
               className="dh-file w-[72px] text-center"
-              style={{ left: FILE_HOME[0], top: FILE_HOME[1] }}
+              style={{ left: CARRY_HOMES.file[0], top: CARRY_HOMES.file[1] }}
             >
               <FileGlyph kind="csv" className="mx-auto h-[52px] w-[44px] drop-shadow-sm" />
               <span className="dh-icon-label mt-1 block truncate text-[11px] font-medium leading-4">
                 refunds-q3.csv
               </span>
             </div>
+            <div
+              data-dh="file-junk"
+              className="dh-file w-[72px] text-center"
+              style={{ left: CARRY_HOMES['file-junk'][0], top: CARRY_HOMES['file-junk'][1] }}
+            >
+              <FileGlyph kind="doc" className="mx-auto h-[52px] w-[44px] drop-shadow-sm" />
+              <span className="dh-icon-label mt-1 block truncate text-[11px] font-medium leading-4">
+                scratch.txt
+              </span>
+            </div>
 
-            <MacDock />
+            <MacDock
+              activeCli={activeCli}
+              onSelectCli={setActiveCli}
+              onOpenFinder={() => finderOpenRef.current?.()}
+            />
 
             {AGENTS.map((agent) => (
-              <AgentCursorAnchor key={agent.id} agent={agent} />
+              <AgentCursor key={agent.id} agent={agent} />
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Copy — top of the sky band; side windows keep the gutters. */}
-      <div className="rail rail-open pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+1.5rem)] text-center lg:h-[50rem] lg:pb-0 lg:pt-[calc(var(--site-header-height)+1.25rem)] xl:h-[52rem]">
-        <div className="dh-hero-copy pointer-events-auto mx-auto mt-10 w-full max-w-xl">
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg p-2 px-6 font-sans text-sm font-medium tracking-tight text-fern-900 transition-colors hover:text-fern-800"
-          >
-            <Github className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-            Open source
-          </a>
-
-          <HeroRotatingHeadline className="mx-auto mt-2.5 text-center !text-neutral-900 !text-[2rem] sm:!text-4xl lg:!text-[2.35rem] xl:!text-5xl" />
-
-          <p className="lede mx-auto !mt-2.5 max-w-[32rem] text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
-            <b className="font-semibold text-neutral-900">Hire a workforce, not a chatbot.</b>{' '}
-            Troopers write code, ship commits, run ads, answer support and file the paperwork —
-            each one running a loop you approved.
-          </p>
-
-          <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
-            <PixelButton
-              href="https://app.trooper.so?ref=herolanding"
-              external
-              size="lg"
-              tone="dark"
-              className="w-full shrink-0 sm:w-auto"
-              icon={<ArrowRight className="h-4 w-4" />}
-            >
-              Get started free
-            </PixelButton>
-            <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
-          </div>
-
-          <ul className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-1.5" aria-label="Product highlights">
-            {TRUST_ITEMS.map((item) => (
-              <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-700">
-                <FernCircleCheckIcon className="h-3.5 w-3.5 shrink-0 text-fern-600" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-4 text-[13px] text-neutral-500">
-            Powered by{' '}
+        {/* Copy — same rail as the scene; no full-bleed rail-open. */}
+        <div className="pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+1.5rem)] text-center lg:pb-0 lg:pt-[calc(var(--site-header-height)+1.25rem)]">
+          <div className="dh-hero-copy pointer-events-auto mx-auto mt-10 w-full max-w-xl">
             <a
-              href={OPENCLAW_URL}
+              href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-[#c47865] transition-colors hover:text-[#b26552]"
+              className="inline-flex items-center gap-1.5 rounded-lg p-2 px-6 font-sans text-sm font-medium tracking-tight text-fern-900 transition-colors hover:text-fern-800"
             >
-              OpenClaw
+              <Github className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+              Open source
             </a>
-          </p>
+
+            <HeroRotatingHeadline className="mx-auto mt-2.5 text-center !text-neutral-900 !text-[2rem] sm:!text-4xl lg:!text-[2.35rem] xl:!text-5xl" />
+
+            <p className="lede mx-auto !mt-2.5 max-w-[32rem] text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
+              <b className="font-semibold text-neutral-900">Hire a workforce, not a chatbot.</b>{' '}
+              Troopers write code, ship commits, run ads, answer support and file the paperwork —
+              each one running a loop you approved.
+            </p>
+
+            <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
+              <PixelButton
+                href="https://app.trooper.so?ref=herolanding"
+                external
+                size="lg"
+                tone="dark"
+                className="w-full shrink-0 sm:w-auto"
+                icon={<ArrowRight className="h-4 w-4" />}
+              >
+                Get started free
+              </PixelButton>
+              <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+            </div>
+
+            <ul className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-1.5" aria-label="Product highlights">
+              {TRUST_ITEMS.map((item) => (
+                <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-700">
+                  <FernCircleCheckIcon className="h-3.5 w-3.5 shrink-0 text-fern-600" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-[13px] text-neutral-500">
+              Powered by{' '}
+              <a
+                href={OPENCLAW_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-[#c47865] transition-colors hover:text-[#b26552]"
+              >
+                OpenClaw
+              </a>
+            </p>
+          </div>
         </div>
       </div>
-
     </section>
   );
 }
@@ -1124,8 +1574,8 @@ function DhStyles() {
     <style>{`
 .dh-wallpaper{
   position:absolute;
-  /* Solid canvas ground; the photo sits translucent on top. */
-  background-color:#eef2e6;
+  /* Soft fern tint under the photo — reads as desktop atmosphere, not flat white. */
+  background-color:#e6ecd8;
 }
 .dh-wallpaper::before{
   content:'';
@@ -1136,23 +1586,27 @@ function DhStyles() {
   background-repeat:no-repeat;
   background-position:center 22%;
   background-size:cover;
-  opacity:0.42;
+  opacity:0.38;
 }
-/* Soft upper lift for copy contrast — full-width fade, not a center box. */
+/* Tint wash + system dot grid on top of the photo. */
 .dh-wallpaper::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(240,243,236,0.65) 0%, rgba(240,243,236,0.28) 28%, transparent 52%);
   pointer-events:none;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(40, 56, 24, 0.11) 1px, transparent 0),
+    linear-gradient(180deg, rgba(230,236,216,0.78) 0%, rgba(230,236,216,0.42) 30%, rgba(230,236,216,0.16) 55%, transparent 72%);
+  background-size:16px 16px, 100% 100%;
+  background-repeat:repeat, no-repeat;
 }
 
 .dh-hero-copy{
-  text-shadow:0 1px 0 rgba(240,243,236,0.7);
+  text-shadow:none;
 }
 .dh-icon-label{
   color:#1a1a1a;
-  text-shadow: 0 1px 2px rgba(250,248,240,0.95), 0 0 8px rgba(250,248,240,0.8);
+  text-shadow:none;
 }
 .dh-stage [data-dh="win-sheet"],
 .dh-stage [data-dh="win-pr"]{
@@ -1161,6 +1615,14 @@ function DhStyles() {
 .dh-win-dim{
   opacity:0 !important;
   pointer-events:none;
+}
+
+.dh-cli-body{
+  animation:dh-cli-in .3s ease;
+}
+@keyframes dh-cli-in{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
 }
 
 .dh-dock{
@@ -1177,7 +1639,7 @@ function DhStyles() {
 .dh-dock *:focus,.dh-dock *:focus-visible{outline:none !important; box-shadow:none !important;}
 
 .dh-cursor{position:absolute;left:0;top:0;z-index:40;pointer-events:none;will-change:transform;}
-.dh-file{position:absolute;z-index:10;pointer-events:none;transition:opacity .45s ease;}
+.dh-file{position:absolute;z-index:5;pointer-events:none;transition:opacity .45s ease;}
 .dh-file.dh-hide{opacity:0;}
 
 .dh-bounce{animation:dh-bounce .55s ease;}
@@ -1233,7 +1695,7 @@ function DhStyles() {
 @keyframes dh-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 @media (prefers-reduced-motion: reduce){
-  .dh-float,.dh-bounce,.dh-readbar.dh-reading{animation:none !important;}
+  .dh-float,.dh-bounce,.dh-readbar.dh-reading,.dh-cli-body{animation:none !important;}
   .dh-preview{transition:none !important;}
 }
 `}</style>

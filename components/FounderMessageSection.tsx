@@ -18,13 +18,13 @@ function TrafficLights() {
 }
 
 /**
- * One folder peeking behind the notes window — a soft vertical bounce,
- * not a trail of clones.
+ * One folder peeking behind the notes window — desktop/tablet only.
+ * On mobile it clips and looks broken, so it stays off.
  */
 function PeekingFolder() {
   return (
     <div
-      className="founder-peek-folder pointer-events-none absolute -right-6 -top-8 z-0 sm:-right-10 sm:-top-10"
+      className="founder-peek-folder pointer-events-none absolute -right-6 -top-8 z-0 hidden sm:block sm:-right-10 sm:-top-10"
       aria-hidden
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -49,6 +49,24 @@ function PeekingFolder() {
         }
       `}</style>
     </div>
+  );
+}
+
+function FounderAvatar({ size = 'sm' }: { size?: 'sm' | 'md' }) {
+  const dim = size === 'md' ? 'size-12' : 'size-10';
+  return (
+    <span
+      className={`relative ${dim} shrink-0 overflow-hidden rounded-full bg-[#eef5e6] ring-1 ring-black/[0.08]`}
+    >
+      <Image
+        src="/images/founder-portrait.png"
+        alt=""
+        fill
+        className="object-cover object-[center_18%]"
+        sizes="48px"
+        aria-hidden
+      />
+    </span>
   );
 }
 
@@ -77,19 +95,18 @@ export default function FounderMessageSection() {
 
   return (
     <div>
-      {/* Centred section head — same pattern as Loops. */}
-      <div className="mx-auto max-w-3xl text-center">
+      <div className="mx-auto max-w-3xl px-1 text-center sm:px-0">
         <p className="kicker">Message from the founder</p>
-        <h2 className="h2-section mx-auto mt-3">
-          the dream.
-        </h2>
+        <h2 className="h2-section mx-auto mt-3">the dream.</h2>
       </div>
 
-      <div className="relative mx-auto mt-10 max-w-3xl sm:mt-12">
-        {/* Notes + preview composition */}
-        <div className="relative z-[2] flex flex-col items-center gap-5 sm:flex-row sm:items-end sm:justify-center sm:gap-0">
-          {/* Compact Preview — secondary to the message */}
-          <div className="relative z-[1] w-[9.5rem] shrink-0 sm:mb-6 sm:w-[11rem] sm:-mr-4 lg:w-[12rem] lg:-mr-5">
+      <div className="relative mx-auto mt-8 max-w-3xl overflow-x-clip sm:mt-12 sm:overflow-visible">
+        {/*
+          Mobile: one notes card with avatar in the signature — no orphaned Preview window.
+          Desktop: Preview beside notes with a peeking folder.
+        */}
+        <div className="relative z-[2] flex flex-col items-center sm:flex-row sm:items-end sm:justify-center sm:gap-0">
+          <div className="relative z-[1] mb-0 hidden w-[11rem] shrink-0 sm:mb-6 sm:block sm:-mr-4 lg:w-[12rem] lg:-mr-5">
             <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_18px_40px_-16px_rgba(26,26,26,0.38)] ring-1 ring-black/[0.08]">
               <div className="flex items-center gap-1.5 border-b border-black/[0.05] bg-neutral-50 px-2 py-1.5">
                 <span className="size-2 rounded-full bg-[#ff5f57]" />
@@ -122,11 +139,10 @@ export default function FounderMessageSection() {
             </div>
           </div>
 
-          {/* Notes — the main event, with one folder peeking behind */}
           <div className="relative z-[2] w-full max-w-xl sm:max-w-[34rem]">
             <PeekingFolder />
-            <div className="relative z-[1] overflow-hidden rounded-[18px] bg-[#fbf8f1] shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-20px_rgba(26,26,26,0.42)] ring-1 ring-black/[0.08]">
-              <div className="flex items-center gap-2 border-b border-black/[0.05] bg-[#f3eee4] px-3.5 py-2.5">
+            <div className="relative z-[1] overflow-hidden rounded-[16px] bg-[#fbf8f1] shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-20px_rgba(26,26,26,0.42)] ring-1 ring-black/[0.08] sm:rounded-[18px]">
+              <div className="flex items-center gap-2 border-b border-black/[0.05] bg-[#f3eee4] px-3 py-2 sm:px-3.5 sm:py-2.5">
                 <TrafficLights />
                 <span className="mx-auto flex items-center gap-1.5 text-[12px] font-medium text-neutral-500">
                   <svg viewBox="0 0 16 14" className="h-3.5 w-3.5 text-amber-700/70" aria-hidden>
@@ -140,8 +156,8 @@ export default function FounderMessageSection() {
                 <span className="w-[42px]" aria-hidden />
               </div>
 
-              <div className="px-7 pb-8 pt-9 sm:px-10 sm:pb-10 sm:pt-11">
-                <p className="font-sans text-[18px] leading-[1.7] tracking-[-0.015em] text-neutral-600 sm:text-[20px] sm:leading-[1.72]">
+              <div className="px-5 pb-6 pt-6 sm:px-10 sm:pb-10 sm:pt-11">
+                <p className="font-sans text-[15px] leading-[1.65] tracking-[-0.015em] text-neutral-600 sm:text-[20px] sm:leading-[1.72]">
                   everyone deserves a fully powered agentic system that does real work for them. that
                   power should not sit only in the hands of big corporations — so we built trooper for
                   you, and made it free for anyone to use. the goal is simple:{' '}
@@ -151,16 +167,31 @@ export default function FounderMessageSection() {
                   <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[2px] animate-pulse bg-neutral-400 align-baseline" />
                 </p>
 
-                <div className="mt-10 flex items-end justify-between gap-4 border-t border-black/[0.04] pt-5 sm:mt-12">
-                  <div>
-                    <p className="text-[15px] font-semibold lowercase tracking-tight text-neutral-800">
-                      — vaibhav
-                    </p>
-                    <p className="mt-0.5 text-[13px] lowercase text-neutral-400">founder, trooper</p>
+                <div className="mt-7 flex items-center justify-between gap-3 border-t border-black/[0.04] pt-4 sm:mt-12 sm:items-end sm:gap-4 sm:pt-5">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="sm:hidden">
+                      <FounderAvatar size="sm" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[14px] font-semibold lowercase tracking-tight text-neutral-800 sm:text-[15px]">
+                        — vaibhav
+                      </p>
+                      <a
+                        href="https://twitter.com/absurdfounder"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-0.5 block text-[12px] lowercase text-neutral-400 transition-colors hover:text-fern-700 sm:hidden sm:text-[13px]"
+                      >
+                        @absurdfounder
+                      </a>
+                      <p className="mt-0.5 hidden text-[12px] lowercase text-neutral-400 sm:block sm:text-[13px]">
+                        founder, trooper
+                      </p>
+                    </div>
                   </div>
                   <p
                     aria-hidden
-                    className="select-none font-display text-3xl font-medium lowercase leading-none tracking-tight text-neutral-900/90"
+                    className="select-none font-display text-2xl font-medium lowercase leading-none tracking-tight text-neutral-900/90 sm:text-3xl"
                   >
                     trooper.
                   </p>
@@ -170,7 +201,7 @@ export default function FounderMessageSection() {
           </div>
         </div>
 
-        <div className="relative z-[2] mt-10 flex justify-center sm:mt-12">
+        <div className="relative z-[2] mt-8 flex justify-center sm:mt-12">
           <PixelButton
             size="lg"
             variant="outline"
