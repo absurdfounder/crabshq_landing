@@ -39,7 +39,6 @@ export const metadata = {
 
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
-import HowItWorksSteps from '@/components/HowItWorksSteps'
 import LoopRail from '@/components/LoopRail'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import IntegrationScroller from '@/components/IntegrationScroller'
@@ -76,8 +75,10 @@ export default function Home() {
         <VoicesSection voices={voices} eyebrowNumber="01" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="How It Works" eyebrowNumber="02">
-        <HowItWorksSteps />
+      {/* What it connects to, right after the social proof — the old "How it
+          works" steps said in three boxes what the hero demo already shows. */}
+      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="02">
+        <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
       <SectionShell rhythm eyebrow="Capabilities" eyebrowNumber="03">
@@ -92,13 +93,8 @@ export default function Home() {
         <WhereTheyWorkSection />
       </SectionShell>
 
-      {/* Works with everything: what it connects to (scroll-driven rails over
-          the real plugin catalog), then what it does (the loop rail). */}
-      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="05" bgClass="bg-canvas-warm">
-        <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
-        <div className="mt-12 border-t border-[var(--color-line)] pt-10 md:mt-16 md:pt-12">
-          <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
-        </div>
+      <SectionShell rhythm eyebrow="Loops" eyebrowNumber="05" bgClass="bg-canvas-warm">
+        <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
       <SectionShell rhythm eyebrow="Field Comms" eyebrowNumber="06">

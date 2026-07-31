@@ -679,14 +679,14 @@ export default function DesktopHero() {
       </div>
 
       {/*
-        The product, on a tinted pixel surface — the demo band the desktop
-        scene sits above, not instead of.
+        The product, on the tinted pixel surface. No white card around it: the
+        demo window already carries its own border, radius and shadow, and a
+        second frame plus the band's internal padding read as a grey mat
+        around the product. `flush` strips the band's own padding too.
       */}
       <div className="hero-surface relative hidden border-t border-black/5 lg:block">
         <div className="rail py-10 lg:py-14">
-          <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
-            <HeroArticleDemo rotate />
-          </div>
+          <HeroArticleDemo rotate flush />
         </div>
       </div>
     </section>

@@ -12,12 +12,14 @@ import PixelDitherGradient from './ui/PixelDitherGradient';
 export default function HeroArticleDemo({
   scenarioId,
   rotate = false,
+  flush = false,
 }: {
   scenarioId?: DemoScenarioId;
   rotate?: boolean;
+  flush?: boolean;
 }) {
   // No backdrop. The demo used to carry its own blue dither field, which now
   // sits inside the hero's tinted surface — two competing textures, in two
   // different hues, one on top of the other. The band owns the ground.
-  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} />;
+  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} flush={flush} />;
 }
