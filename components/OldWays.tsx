@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FileText, Check, Loader2, Sparkles, Braces, Database, Box, MessageSquare, ArrowRight } from "lucide-react";
 import { DotMatrixFade } from './ui/FeaturePeekStage';
-import ChatBubble from './ui/ChatBubble';
+import { BubbleExchange } from './ui/ChatBubble';
 
 /* ─── Trooper pixel character (replaces 🦀 in avatars) ─── */
 const TrooperChar = ({ className = "" }: { className?: string }) => (
@@ -389,8 +389,8 @@ const cards = [
 
 /**
  * Capability rows in the reference site's "feat" idiom: each capability opens
- * with a spoken ask (waveform + chat bubble), the agent picks it up, and the
- * work happens in a mac window beside the copy — sides alternate per row.
+ * with a typed ask bubble, then a green reply underneath, and the work
+ * happens in a mac window beside the copy — sides alternate per row.
  *
  * Focus-on-scroll: the row whose centre is nearest the viewport centre is in
  * focus; the others dim, blur slightly and step back, so the reader always
@@ -462,18 +462,8 @@ export default function OldWays() {
                 visualFirst ? 'lg:order-2' : ''
               }`}
             >
-              {/* The ask: a spoken request, then the agent picking it up. */}
-              <span className="flex h-7 items-center gap-[3px] text-neutral-300" aria-hidden>
-                {[46, 100, 35, 93, 49, 33, 46, 58, 37, 88, 33, 100, 72].map((h, j) => (
-                  <i key={j} className="w-[4px] rounded-full bg-current" style={{ height: `${h}%` }} />
-                ))}
-              </span>
-              <div className="mt-4 flex flex-col items-start gap-3.5">
-                <ChatBubble kind="ask">{card.ask}</ChatBubble>
-                <ChatBubble kind="reply" className="ml-9">
-                  {card.reply}
-                </ChatBubble>
-              </div>
+              {/* Ask types out first; green reply appears underneath after. */}
+              <BubbleExchange ask={card.ask} reply={card.reply} focused={active === i || active === -2} />
 
               <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
                 {card.title}{' '}

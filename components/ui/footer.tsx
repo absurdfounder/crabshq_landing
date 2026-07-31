@@ -201,8 +201,10 @@ function FooterColumnCell({
 export default function Footer() {
   const linkColumns = [featureColumn, productColumn, ecosystemColumn];
   return (
-    <footer className="border-t border-slate-100 bg-white">
-      <div className="mx-auto max-w-7xl border-l border-r border-slate-100">
+    <footer className="border-t border-[var(--color-line)] bg-white">
+      {/* Same measure + side hairlines as `.rail`, without the gutter — footer
+          cells own their own padding so content can run to the line. */}
+      <div className="mx-auto min-w-0 max-w-7xl border-[var(--color-line)] sm:border-l sm:border-r">
         {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}

@@ -112,7 +112,7 @@ export default function Home() {
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="09">
+      <SectionShell rhythm eyebrowNumber="09">
         <FounderMessageSection />
       </SectionShell>
 

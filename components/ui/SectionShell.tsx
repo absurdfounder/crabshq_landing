@@ -49,16 +49,21 @@ export default function SectionShell({
     .filter(Boolean)
     .join(' ');
 
-  // The band separator sits on the <section>, not on an inner frame, so it
-  // runs the full width of the viewport. `.rail` is now measure + gutter only
-  // — it draws no side edges (app/css/style.css).
-  const frameClasses = ['rail', rhythm ? 'py-12 sm:py-20' : ''].filter(Boolean).join(' ');
+  // `.rail` owns measure + gutter + side hairlines. Top hairline closes the
+  // box on the frame so vertical and horizontal lines meet at the corners;
+  // the next section's top border serves as this one's bottom divider.
+  const frameClasses = [
+    'rail',
+    bgClass || 'bg-canvas',
+    !noBorder ? 'border-t' : '',
+    !noBorderBottom ? 'border-b' : '',
+    rhythm ? 'py-12 sm:py-20' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <section
-      id={id}
-      className={[sectionClasses, !noBorder ? 'band' : ''].filter(Boolean).join(' ')}
-    >
+    <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
         {eyebrow && (
           <div className={rhythm ? 'pb-4' : 'pb-4 pt-12 sm:pt-20'}>

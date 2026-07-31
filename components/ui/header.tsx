@@ -22,7 +22,6 @@ const GITHUB_URL = 'https://github.com/Trooper-AI'
 
 export default function Header() {
   const pathname = usePathname()
-  const isHome = pathname === '/'
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
@@ -64,7 +63,7 @@ export default function Header() {
     >
       <TopBar />
       <div
-        className={`transition-colors duration-200 transition-shadow duration-200 ${
+        className={`relative transition-[background,box-shadow,border-color] duration-200 ${
           darkNav
             ? 'border-b border-white/[0.06] bg-split'
             : `border-b border-[var(--color-line)] bg-canvas ${scrolled ? 'shadow-sm' : ''}`
@@ -78,7 +77,7 @@ export default function Header() {
           axis only — `overflow-hidden` would also clip the mega-menu as it
           descends out of the bar. */}
       <div
-        className={`rail flex h-14 items-center gap-3 overflow-x-clip sm:h-16 sm:gap-4 ${
+        className={`rail relative flex h-14 items-center gap-3 overflow-x-clip sm:h-16 sm:gap-4 ${
           darkNav ? '!border-white/[0.06]' : ''
         }`}
       >

@@ -7,13 +7,9 @@ type DarkSplitSectionProps = {
 };
 
 /**
- * A dark band.
- *
- * The background bleeds the full width of the viewport and the content sits in
- * the centred column, same as every other section. It used to paint `bg-split`
- * on the `.rail` itself with `border-x border-white/[0.06]`, which made the
- * dark stop at 80rem and drew a visible vertical edge down both sides — a
- * black box floating on the page rather than a band running through it.
+ * Dark band contained within the max-w-7xl grid — background does not bleed
+ * past the side rails. Border colour is overridden because `--color-line` is a
+ * light-surface hairline.
  */
 export default function DarkSplitSection({
   children,
@@ -21,8 +17,12 @@ export default function DarkSplitSection({
   innerClassName = '',
 }: DarkSplitSectionProps) {
   return (
-    <section className={`band-dark ${innerClassName || 'bg-split'} ${className}`}>
-      <div className="rail text-white">{children}</div>
+    <section className={className}>
+      <div
+        className={`rail border-x border-white/[0.06] text-white ${innerClassName || 'bg-split'}`}
+      >
+        {children}
+      </div>
     </section>
   );
 }

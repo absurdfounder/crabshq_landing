@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Download } from 'lucide-react';
 
 import PixelButton from '@/components/ui/PixelButton';
 import { detectPlatform, getPlatformDownload, type Platform } from '@/lib/platformDownload';
@@ -13,6 +12,10 @@ function PlatformIcon({ src, className = '' }: { src: string; className?: string
   );
 }
 
+/**
+ * One download CTA for the visitor's OS (Mac / Windows / iOS / Android).
+ * Detects after mount so SSR stays stable; falls back to the apps page on web.
+ */
 export default function HeroDownloadButtons({ className = '' }: { className?: string }) {
   const [platform, setPlatform] = useState<Platform>('mac');
 
@@ -30,15 +33,11 @@ export default function HeroDownloadButtons({ className = '' }: { className?: st
       variant="outline"
       tone="dark"
       className={`max-sm:active:translate-x-0 max-sm:active:translate-y-0 ${className}`}
-      icon={
-        download.external ? (
-          <PlatformIcon src={download.iconSrc} />
-        ) : (
-          <Download className="h-4 w-4" strokeWidth={2} />
-        )
-      }
     >
-      {download.label}
+      <span className="inline-flex items-center gap-2">
+        <PlatformIcon src={download.iconSrc} />
+        {download.label}
+      </span>
     </PixelButton>
   );
 }

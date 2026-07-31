@@ -22,7 +22,7 @@ export default function MarketingSubpageTail() {
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Message from the founder" eyebrowNumber="07" bgClass="bg-canvas">
+      <SectionShell rhythm eyebrowNumber="07" bgClass="bg-canvas">
         <FounderMessageSection />
       </SectionShell>
 

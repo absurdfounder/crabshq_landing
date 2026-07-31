@@ -516,21 +516,21 @@ body > iframe.goog-te-menu-frame {
   /*
    * The page column.
    *
-   * A centred measure and a gutter. Nothing else — no side borders.
+   * Centred measure, gutter, and the side hairlines that form the containerized
+   * grid below the hero. Side borders drop below `sm`: on a phone they sit hard
+   * against the viewport edge and read as a boxed container rather than as the
+   * page's own margin.
    *
-   * This used to draw `border-l` and `border-r`, which put a boxed rectangle
-   * around all fourteen sections of the home page. Stacked down a long page
-   * that reads as a stack of containers rather than a document, and it is what
-   * produced "there are so many grids that it takes focus away from the right
-   * content" and "it feels so fucking lost".
-   *
-   * Sections are horizontal BANDS now: full-bleed background, a `border-b` at
-   * 5% black to separate them, and this column holding the content. See
-   * docs/design-system.md §1. The class keeps its name because ~90 call sites
-   * use it and the geometry it owns (measure + gutter) is unchanged.
+   * The hero opts out with `.rail-open` so its desktop scene can run edge to
+   * edge while every section under it — through the footer — stays on the grid.
    */
   .rail {
-    @apply mx-auto min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto min-w-0 max-w-7xl border-[var(--color-line)] px-4 sm:border-l sm:border-r sm:px-6;
+  }
+
+  /* Measure + gutter only. Used by the hero so it does not draw the side rails. */
+  .rail-open {
+    @apply border-l-0 border-r-0;
   }
 
   /*

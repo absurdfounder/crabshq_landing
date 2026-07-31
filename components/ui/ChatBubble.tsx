@@ -3,18 +3,8 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 
 /**
- * The reference site's chat bubbles, reproduced from their real geometry.
- *
- * Each bubble is a stretched-to-fit SVG behind the text: a rounded rect whose
- * bottom corner is replaced by an organic speech tail, filled with a vertical
- * gradient and outlined with a gradient stroke. The tail construction is
- * lifted point-for-point from the reference markup (an ask bubble at 288×110
- * and a reply bubble at 92×53 resolve to identical constants relative to the
- * anchored corner), so the path generator here produces exactly their shape
- * at whatever size the text needs.
- *
- * The box is measured with a ResizeObserver and the path regenerated at the
- * real size — no preserveAspectRatio="none" squashing of corner radii.
+ * Classic iOS-style chat bubbles: saturated blue ask, saturated green reply,
+ * white type, soft gloss. SVG path scales with the text box.
  */
 
 const f = (n: number) => +n.toFixed(3);
@@ -50,48 +40,64 @@ function replyPath(w: number, h: number) {
   );
 }
 
+/** Saturated iOS Message look — white type on vivid blue / green. */
 const STYLES = {
   ask: {
     path: askPath,
     fill: [
-      ['0', '#d6e6ff'],
-      ['0.42', '#9ec5ff'],
-      ['1', '#d2f1f7'],
+      ['0', '#5eb0ff'],
+      ['0.5', '#1a8cff'],
+      ['1', '#0071e3'],
     ],
     stroke: [
-      ['0', '#221898'],
-      ['1', '#626262'],
+      ['0', '#3a9aef'],
+      ['1', '#005fc4'],
     ],
-    text: 'text-[#101a4d]',
+    text: 'text-white',
+    shadow: 'drop-shadow-[0_4px_10px_rgba(0,113,227,0.28)]',
   },
   reply: {
     path: replyPath,
     fill: [
-      ['0', '#ffe9d6'],
-      ['0.42', '#ffc999'],
-      ['1', '#ffe9d6'],
+      ['0', '#6ee7a0'],
+      ['0.5', '#34d16a'],
+      ['1', '#22c55e'],
     ],
     stroke: [
-      ['0', '#9a5518'],
-      ['1', '#626262'],
+      ['0', '#3dce6e'],
+      ['1', '#16a34a'],
     ],
-    text: 'text-[#4a2b0f]',
+    text: 'text-white',
+    shadow: 'drop-shadow-[0_4px_10px_rgba(34,197,94,0.28)]',
   },
 } as const;
+
+const TYPE_MS = 26;
 
 export default function ChatBubble({
   kind,
   className = '',
   children,
+  typing = false,
+  active = true,
+  onTyped,
 }: {
   kind: keyof typeof STYLES;
   className?: string;
-  children: React.ReactNode;
+  children: string;
+  /** Type characters in one by one when `active` becomes true. */
+  typing?: boolean;
+  /** Gate for the typewriter — false keeps the bubble hidden/empty. */
+  active?: boolean;
+  onTyped?: () => void;
 }) {
   const uid = useId();
   const ref = useRef<HTMLDivElement>(null);
-  // Nominal size for the server render; corrected to the measured box on mount.
+  const onTypedRef = useRef(onTyped);
+  onTypedRef.current = onTyped;
   const [dim, setDim] = useState({ w: 320, h: 46 });
+  const [shown, setShown] = useState(() => (typing ? '' : children));
+  const doneRef = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -102,23 +108,69 @@ export default function ChatBubble({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [shown]);
+
+  useEffect(() => {
+    doneRef.current = false;
+
+    if (!typing) {
+      setShown(children);
+      return;
+    }
+
+    if (!active) {
+      setShown('');
+      return;
+    }
+
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      setShown(children);
+      if (!doneRef.current) {
+        doneRef.current = true;
+        onTypedRef.current?.();
+      }
+      return;
+    }
+
+    setShown('');
+    let i = 0;
+    const id = window.setInterval(() => {
+      i += 1;
+      setShown(children.slice(0, i));
+      if (i >= children.length) {
+        window.clearInterval(id);
+        if (!doneRef.current) {
+          doneRef.current = true;
+          onTypedRef.current?.();
+        }
+      }
+    }, TYPE_MS);
+
+    return () => window.clearInterval(id);
+  }, [typing, active, children]);
+
+  if (typing && !active && !shown) return null;
 
   const s = STYLES[kind];
   const fillId = `bub-f-${uid}`;
   const strokeId = `bub-s-${uid}`;
+  const label = shown || (typing && active ? '\u00a0' : children);
 
   return (
     <div
       ref={ref}
       className={`relative w-max max-w-full ${
-        kind === 'ask' ? 'px-5 py-2.5' : 'px-4 py-2'
+        kind === 'ask' ? 'px-5 py-3 sm:px-6 sm:py-3.5' : 'px-4 py-2.5 sm:px-5 sm:py-3'
       } ${className}`}
     >
       <svg
-        className="absolute left-0 top-0 drop-shadow-[0_2px_3px_rgba(26,26,26,0.10)]"
-        style={{ width: dim.w, height: dim.h + 9 }}
-        viewBox={`0 0 ${dim.w} ${dim.h + 9}`}
+        className={`absolute left-0 top-0 ${s.shadow}`}
+        style={{ width: dim.w, height: dim.h + 10 }}
+        viewBox={`0 0 ${dim.w} ${dim.h + 10}`}
         aria-hidden
       >
         <defs>
@@ -137,20 +189,97 @@ export default function ChatBubble({
           d={s.path(dim.w, dim.h)}
           fill={`url(#${fillId})`}
           stroke={`url(#${strokeId})`}
-          strokeWidth="1"
+          strokeWidth="1.25"
           strokeLinejoin="round"
         />
       </svg>
-      {/* soft glass sheen along the top, like the reference's gloss layer */}
+      {/* glossy highlight — keeps white type readable on saturated fill */}
       <span
-        className="pointer-events-none absolute inset-x-4 top-[3px] h-[34%] rounded-full bg-white/45 blur-[5px]"
+        className="pointer-events-none absolute inset-x-3 top-[2px] h-[38%] rounded-full bg-white/40 blur-[4px]"
         aria-hidden
       />
       <span
-        className={`relative z-[1] block text-[15px] font-medium leading-snug sm:text-base ${s.text}`}
+        className={`relative z-[1] block text-[15px] font-semibold leading-snug tracking-[-0.01em] sm:text-[16px] ${s.text}`}
+        style={{ textShadow: '0 1px 0 rgba(0,0,0,0.12)' }}
       >
-        {children}
+        {label}
+        {typing && active && shown.length < children.length ? (
+          <span className="ml-0.5 inline-block w-[0.55ch] animate-pulse text-white/90">|</span>
+        ) : null}
       </span>
+    </div>
+  );
+}
+
+/**
+ * Ask types, then reply. Only runs while `focused` — other capability rows
+ * stay idle so background sections don't keep typing while you read another.
+ */
+export function BubbleExchange({
+  ask,
+  reply,
+  focused = true,
+  className = '',
+}: {
+  ask: string;
+  reply: string;
+  /** When false, typing is paused/reset. Driven by the parent scroll focus. */
+  focused?: boolean;
+  className?: string;
+}) {
+  const [askOn, setAskOn] = useState(false);
+  const [replyOn, setReplyOn] = useState(false);
+  const [cycle, setCycle] = useState(0);
+  const replyDelayRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const clearReplyDelay = () => {
+      if (replyDelayRef.current != null) {
+        window.clearTimeout(replyDelayRef.current);
+        replyDelayRef.current = null;
+      }
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setAskOn(true);
+      setReplyOn(true);
+      return clearReplyDelay;
+    }
+
+    if (focused) {
+      setAskOn(true);
+    } else {
+      clearReplyDelay();
+      setAskOn(false);
+      setReplyOn(false);
+      setCycle((c) => c + 1);
+    }
+
+    return clearReplyDelay;
+  }, [focused]);
+
+  const handleAskTyped = () => {
+    if (!focused) return;
+    if (replyDelayRef.current != null) window.clearTimeout(replyDelayRef.current);
+    replyDelayRef.current = window.setTimeout(() => setReplyOn(true), 280);
+  };
+
+  return (
+    <div className={`flex flex-col items-start gap-3.5 ${className}`}>
+      <ChatBubble
+        key={`ask-${cycle}`}
+        kind="ask"
+        typing
+        active={askOn && focused}
+        onTyped={handleAskTyped}
+      >
+        {ask}
+      </ChatBubble>
+      {replyOn && focused ? (
+        <ChatBubble key={`reply-${cycle}`} kind="reply" className="ml-8 sm:ml-10" typing active>
+          {reply}
+        </ChatBubble>
+      ) : null}
     </div>
   );
 }
