@@ -161,11 +161,11 @@ export default function LoopComposer() {
   return (
     <div
       data-mock-ui
-      className="w-full min-w-0 rounded-2xl border border-neutral-200/70 bg-white"
+      className="w-full min-w-0 rounded-2xl border border-neutral-200/70 bg-white shadow-[0_10px_28px_-18px_rgba(26,26,26,0.25)]"
     >
-      <div className="flex flex-col gap-0 p-1">
-        <div className="relative px-3 pb-0 pt-3 sm:px-3.5">
-          <div className="relative text-[15px] leading-[1.45] text-neutral-900 sm:text-base sm:leading-[1.65]">
+      <div className="flex flex-col gap-0 p-1.5">
+        <div className="relative px-4 pb-2 pt-4 sm:px-5 sm:pb-3 sm:pt-5">
+          <div className="relative text-base leading-[1.5] text-neutral-900 sm:text-[17px] sm:leading-[1.65]">
             <p className="invisible" aria-hidden>
               {plain(longest)}
             </p>
@@ -191,7 +191,7 @@ export default function LoopComposer() {
         </div>
 
         {/* Toolbar — mirrors the product's control row. */}
-        <div className="flex min-w-0 items-center justify-between gap-1 px-1.5 py-1 sm:px-2 sm:py-1.5">
+        <div className="flex min-w-0 items-center justify-between gap-1 px-2 py-2 sm:px-2.5 sm:py-2.5">
           <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 sm:h-8 sm:w-8">
             <Plus className="h-4 w-4" aria-hidden />
           </span>
