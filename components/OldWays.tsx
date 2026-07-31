@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { FileText, Check, Loader2, Sparkles, Braces, Database, Box, MessageSquare, ArrowRight } from "lucide-react";
 import FeaturePeekStage from './ui/FeaturePeekStage';
 
@@ -327,6 +328,9 @@ const PixelFramedVisual = ({ children, wide = false }: { children: React.ReactNo
 const cards = [
   {
     tag: 'AI organizations',
+    ask: 'trooper, I need a growth team on this launch',
+    reply: 'on it — spinning up 3 troopers',
+    window: 'Trooper HQ — org chart',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
     description:
@@ -335,6 +339,9 @@ const cards = [
   },
   {
     tag: 'Action, not answers',
+    ask: 'trooper, ship the og-image fix to prod',
+    reply: 'on it!',
+    window: 'Task run — wonder.so',
     title: 'AI that takes',
     highlight: 'action, not just questions.',
     description:
@@ -343,6 +350,9 @@ const cards = [
   },
   {
     tag: 'Infinite memory',
+    ask: 'trooper, what did we decide on refunds last month?',
+    reply: 'pulling it from memory',
+    window: 'Memory graph',
     title: 'Persistent memory across',
     highlight: 'tasks, projects, and time.',
     description:
@@ -351,6 +361,9 @@ const cards = [
   },
   {
     tag: 'Ticket system',
+    ask: 'trooper, why did the deploy break?',
+    reply: 'tracing every step',
+    window: 'Ticket #1042',
     title: 'Every conversation traced.',
     highlight: 'Every decision explained.',
     description:
@@ -362,30 +375,96 @@ const cards = [
 /* ─── Main ─── */
 
 /**
- * The stacking-card deck this used to render never actually ran: every card
- * sits under an `overflow-x-hidden` ancestor, which creates a scroll container
- * and silently disables `position: sticky` on descendants. The rAF/transform
- * machinery driving it was dead code, so rather than revive a scroll-jacking
- * animation nobody has ever seen, the cards are plain.
+ * Capability rows in the reference site's "feat" idiom: each capability opens
+ * with a spoken ask (waveform + chat bubble), the agent picks it up, and the
+ * work happens in a mac window beside the copy — sides alternate per row.
  *
- * Padding and measure belong to the SectionShell wrapping this — the old
- * `px-4 sm:px-6 lg:px-8` applied a second gutter inside the shell's own, so
- * this copy sat narrower than every other section from `lg` up.
+ * Focus-on-scroll: the row whose centre is nearest the viewport centre is in
+ * focus; the others dim, blur slightly and step back, so the reader always
+ * knows which capability the page is talking about. Driven by one passive
+ * rAF-throttled scroll listener updating a single index — no per-row
+ * observers, no layout thrash (getBoundingClientRect only inside the rAF).
+ * Under prefers-reduced-motion nothing dims and nothing moves.
  */
 export default function OldWays() {
+  const rowRefs = useRef<Array<HTMLElement | null>>([]);
+  // -1: nothing measured yet (no row dimmed); -2: reduced motion, dimming off.
+  const [active, setActive] = useState(-1);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setActive(-2);
+      return;
+    }
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const mid = window.innerHeight / 2;
+      let best = -1;
+      let bestD = Infinity;
+      rowRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      });
+      setActive(best);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    // See HowItWorksSteps for why the `gap-px` hairline table is gone.
-    // Seven full-width 2-ups sharing edges inside one outer rectangle was the
-    // longest such run on the page.
-    <div className="grid grid-cols-1 gap-4">
-      {cards.map((card) => (
-        <article key={card.tag} className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5">
-          <div className="grid min-w-0 lg:grid-cols-2 lg:items-stretch">
-            <div className="flex flex-col justify-center px-5 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12">
-              <span className="kicker-sm">
-                {card.tag}
+    <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24">
+      {cards.map((card, i) => {
+        const visualFirst = i % 2 === 1;
+        const dimmed = active >= 0 && i !== active;
+        return (
+          <article
+            key={card.tag}
+            ref={(el) => {
+              rowRefs.current[i] = el;
+            }}
+            className={[
+              'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-out lg:grid-cols-2 lg:gap-12',
+              dimmed ? 'scale-[0.985] opacity-40 blur-[1.5px]' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            <div
+              className={`flex min-w-0 flex-col lg:max-w-md lg:justify-self-center ${
+                visualFirst ? 'lg:order-2' : ''
+              }`}
+            >
+              {/* The ask: a spoken request, then the agent picking it up. */}
+              <span className="flex h-6 items-end gap-[3px] text-neutral-300" aria-hidden>
+                {[10, 16, 8, 20, 12, 22, 9, 15, 18, 8, 13, 6].map((h, j) => (
+                  <i key={j} className="w-[3px] rounded-full bg-current" style={{ height: h }} />
+                ))}
               </span>
-              <h3 className="mt-4 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+              <div className="mt-3 flex flex-col items-start gap-2.5">
+                <p className="rounded-2xl rounded-bl-md bg-gradient-to-b from-[#dbe9ff] to-[#aecdff] px-4 py-2.5 text-[15px] font-medium leading-snug text-[#1c2f66] shadow-xs ring-1 ring-black/5">
+                  {card.ask}
+                </p>
+                <p className="ml-8 rounded-2xl rounded-tl-md bg-gradient-to-b from-trooper-50 to-trooper-100 px-3.5 py-2 text-sm font-medium text-trooper-800 shadow-xs ring-1 ring-black/5">
+                  {card.reply}
+                </p>
+              </div>
+
+              <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
                 {card.title}{' '}
                 {card.highlight ? <span className="text-ink-muted">{card.highlight}</span> : null}
               </h3>
@@ -394,12 +473,23 @@ export default function OldWays() {
               </p>
             </div>
 
-            <div className="relative min-w-0 min-h-[260px] border-t border-neutral-200 sm:min-h-[300px] lg:min-h-[340px] lg:border-l lg:border-t-0">
-              <PixelFramedVisual>{card.visual}</PixelFramedVisual>
+            {/* The agent doing the work, in its own window. */}
+            <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
+              <div className="overflow-hidden rounded-xl bg-white shadow-[0_28px_56px_-24px_rgba(26,26,26,0.4)] ring-1 ring-black/10">
+                <div className="relative flex items-center gap-1.5 border-b border-black/5 bg-neutral-50 px-3 py-2">
+                  <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+                  <span className="size-2.5 rounded-full bg-[#febc2e]" />
+                  <span className="size-2.5 rounded-full bg-[#28c840]" />
+                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
+                    {card.window}
+                  </span>
+                </div>
+                <PixelFramedVisual>{card.visual}</PixelFramedVisual>
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   );
 }
