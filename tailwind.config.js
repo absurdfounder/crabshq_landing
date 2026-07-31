@@ -91,6 +91,21 @@ module.exports = {
           'olive-mid': '#c4d9a0',
           'olive-strong': '#9db866',
         },
+        /*
+         * `stone` is the same retarget `slate` gets, for the same reason.
+         *
+         * 224 call sites — nearly all of them in components/marketing/visuals
+         * — reached for Tailwind's stock stone ramp, which is warm but not
+         * *this* warm: stone-600 is #57534e and stone-900 #1c1917, against
+         * #525252 and #1a1a1a here. Rendered side by side on one page that is
+         * four neutral families (neutral, slate, stone, gray) reading as four
+         * slightly different greys, which is exactly the kind of drift that
+         * makes a page look assembled rather than designed.
+         *
+         * Aliasing fixes every call site at once and preserves the lightness
+         * ladder, so no contrast relationship moves.
+         */
+        stone: { ...warmSlate, 950: '#0f0f0e' },
         // Frozen aliases. `emerald`, `teal` and `lime` all resolve to the brand
         // ramp so legacy subpage call sites keep working and cannot reintroduce
         // a second green. Do not use them in new code — use `trooper`.
@@ -159,17 +174,37 @@ module.exports = {
         funneldisplay: ['var(--font-erode)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         silkscreen: ['var(--font-silkscreen)', 'monospace'],
       },
+      /*
+       * The type ramp is stock Tailwind, and the pairs are the point.
+       *
+       * This block used to be ten bare strings. Two things followed from that.
+       * First, the sizes drifted off the reference design's scale — `3xl` was
+       * 2rem against 1.875, `4xl` 2.625 against 2.25, `5xl` 3.25 against 3, and
+       * `6xl` 5.5rem against 3.75, so the hero headline rendered at 88px where
+       * the reference sets 48. Second, and worse: a bare string emits
+       * `font-size` with **no** `line-height`, so every `text-sm`/`text-base`
+       * on the site inherited leading from whatever ancestor last set it. A
+       * census of the home page found 14px running at 21px, 19.25px and 19.2px
+       * in three different places, and 12px at 19.5px, 19.2px and 18px. That is
+       * the mechanism behind "the text size" reading as wrong: not one bad
+       * value, but the same value set six ways.
+       *
+       * Restoring the stock pairs fixes both at once and costs no call sites —
+       * `text-4xl` still means "the fourth step up", it just lands where the
+       * reference puts it.
+       */
       fontSize: {
-        xs: '0.75rem',
-        sm: '0.875rem',
-        base: '1rem',
-        lg: '1.125rem',
-        xl: '1.25rem',
-        '2xl': '1.5rem',
-        '3xl': '2rem',
-        '4xl': '2.625rem',
-        '5xl': '3.25rem',
-        '6xl': '5.5rem',
+        xs: ['0.75rem', { lineHeight: '1rem' }],
+        sm: ['0.875rem', { lineHeight: '1.25rem' }],
+        base: ['1rem', { lineHeight: '1.5rem' }],
+        lg: ['1.125rem', { lineHeight: '1.75rem' }],
+        xl: ['1.25rem', { lineHeight: '1.75rem' }],
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+        '5xl': ['3rem', { lineHeight: '1' }],
+        '6xl': ['3.75rem', { lineHeight: '1' }],
+        '7xl': ['4.5rem', { lineHeight: '1' }],
       },
       inset: {
         '1/2': '50%',

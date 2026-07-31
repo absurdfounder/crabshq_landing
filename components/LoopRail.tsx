@@ -69,22 +69,22 @@ function LoopCard({ loop, cloned }: { loop: LoopRailItem; cloned?: boolean }) {
       href={`/loops/${loop.slug}`}
       aria-hidden={cloned || undefined}
       tabIndex={cloned ? -1 : undefined}
-      className="group flex h-[7.5rem] w-[17rem] shrink-0 flex-col justify-between border border-[var(--color-line)] bg-white px-4 py-3 transition-colors hover:border-ink/25 hover:bg-canvas-section"
+      className="group flex h-[7.5rem] w-[17rem] shrink-0 flex-col justify-between rounded-xl bg-white px-4 py-3.5 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
     >
       <div className="flex items-start gap-2.5">
-        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center border border-[var(--color-line)] bg-canvas-section text-ink-muted transition-colors group-hover:border-ink/20">
-          <Icon className="h-3.5 w-3.5" />
+        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-trooper-50 text-trooper-700">
+          <Icon className="h-4 w-4" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[10px] uppercase leading-none tracking-[0.12em] text-ink-faint">
+          <p className="text-[13px] font-medium text-neutral-500">
             {loop.category}
           </p>
-          <p className="mt-1.5 truncate text-sm font-medium leading-snug text-ink">{loop.title}</p>
+          <p className="mt-0.5 truncate text-sm font-medium leading-snug text-neutral-800">{loop.title}</p>
         </div>
       </div>
 
-      <p className="line-clamp-2 text-[12px] leading-relaxed text-ink-muted">
-        <span className="text-ink-faint">Runs until </span>
+      <p className="line-clamp-2 text-[13px] leading-relaxed text-neutral-500">
+        <span className="text-neutral-400">Runs until </span>
         {loop.exitCondition}
       </p>
     </Link>

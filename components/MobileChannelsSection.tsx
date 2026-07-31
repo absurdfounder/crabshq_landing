@@ -321,7 +321,7 @@ function ChannelChip({ channelId, channelName }: { channelId: string; channelNam
   return (
     <Link
       href={`/channels/${channelId}`}
-      className="group inline-flex items-center gap-2 border border-[var(--color-line)] bg-white px-3 py-2 text-[13px] font-medium text-ink transition-colors hover:border-ink/25 hover:bg-canvas-warm sm:px-3.5"
+      className="group inline-flex items-center gap-2 rounded-lg bg-white px-2.5 py-1.5 text-[13px] font-medium text-neutral-700 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50 sm:px-3"
     >
       <FieldCommsChannelIcon channelId={channelId} size={20} />
       <span>{channelName}</span>
@@ -377,7 +377,7 @@ export default function MobileChannelsSection() {
                 <ChannelChip key={channel.id} channelId={channel.id} channelName={channel.name} />
               ))}
             </div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+            <p className="text-sm text-neutral-500">
               + {MORE_CHANNELS}
             </p>
           </div>

@@ -26,7 +26,12 @@ function Tile({ tile, cloned }: { tile: IntegrationTile; cloned?: boolean }) {
       // be reachable by keyboard or announced twice.
       aria-hidden={cloned || undefined}
       tabIndex={cloned ? -1 : undefined}
-      className="inline-flex h-14 shrink-0 items-center gap-2.5 border border-[var(--color-line)] bg-white px-4 transition-colors hover:border-ink/25 hover:bg-canvas-section"
+      // A chip, not a cell: rounded, lifted off the page by a ring and a 1px
+      // shadow rather than boxed in by a full-strength hairline. Seventy-two of
+      // these run across the widest part of the page, so whatever they are, the
+      // eye reads it as the site's basic unit — and 72 hard-edged rectangles in
+      // a row is the single loudest "assembled by a machine" signal on the page.
+      className="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg bg-white px-3 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
     >
       {!broken && (
         // Plain <img>: 36 remote logos through the image optimiser is server
@@ -34,15 +39,15 @@ function Tile({ tile, cloned }: { tile: IntegrationTile; cloned?: boolean }) {
         <img
           src={tile.logo}
           alt=""
-          width={20}
-          height={20}
+          width={18}
+          height={18}
           loading="lazy"
           decoding="async"
-          className="h-5 w-5 shrink-0 object-contain"
+          className="size-[18px] shrink-0 rounded-[3px] object-contain"
           onError={() => setBroken(true)}
         />
       )}
-      <span className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted">
+      <span className="whitespace-nowrap text-[13px] font-medium text-neutral-700">
         {tile.name}
       </span>
     </Link>

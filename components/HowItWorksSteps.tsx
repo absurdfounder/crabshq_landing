@@ -39,10 +39,17 @@ export default function HowItWorksSteps() {
         </h2>
       </motion.div>
 
-      {/* Hairline grid: the 1px gap exposes the container's line colour and the
-          opaque cells cover the rest. Correct at any row/column count, so no
-          per-index border math and nothing to re-tune per breakpoint. */}
-      <div className="steps-grid grid grid-cols-1 gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)] md:grid-cols-3">
+      {/*
+        Cards with a real gap, not a hairline table.
+        This was `gap-px` over a line-coloured background — a trick that gets
+        the borders right at any row/column count, which is why it spread to
+        six sections. What it draws, though, is a spreadsheet: cells sharing
+        edges inside one hard outer rectangle. Stacked down a page it is the
+        specific thing that reads as machine-made. The reference design has no
+        shared edges anywhere — every card is a separate rounded surface with
+        air around it.
+      */}
+      <div className="steps-grid grid grid-cols-1 gap-4 md:grid-cols-3">
         {steps.map((step, index) => (
           <motion.div
             key={step.number}
@@ -50,9 +57,9 @@ export default function HowItWorksSteps() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.08, ease }}
             viewport={{ once: true, margin: '-20px' }}
-            className="step-card bg-canvas-section p-4 sm:p-6 md:p-8"
+            className="step-card rounded-2xl bg-white p-6 shadow-xs ring-1 ring-black/5 sm:p-7"
           >
-            <span className="step-number block font-mono text-2xl sm:text-3xl text-slate-300 tabular-nums">
+            <span className="step-number block font-display text-2xl sm:text-3xl text-neutral-300 tabular-nums">
               {step.number}
             </span>
             <h3 className="step-title font-sans text-lg sm:text-xl font-semibold text-ink mt-4 mb-3">

@@ -16,9 +16,12 @@ export default function PixelFramedVisual({ children, variant = 'default' }: Pix
     );
   }
 
+  // The min-heights were 320/420 with the copy column vertically centred beside
+  // them, which left the text floating in the middle of a 500px card with the
+  // top and bottom thirds empty. 260/320 lets the visual size the row.
   return (
-    <div className="relative h-full flex flex-col p-2 sm:p-4 lg:p-6 bg-slate-50/70 sm:bg-slate-100/80 min-h-[320px] lg:min-h-[420px]">
-      <div className="relative flex-1 flex flex-col border border-slate-200 bg-white overflow-hidden shadow-sm min-h-0">
+    <div className="relative h-full flex flex-col p-3 sm:p-4 lg:p-6 bg-neutral-100/70 min-h-[260px] lg:min-h-[320px]">
+      <div className="relative flex-1 flex flex-col rounded-xl bg-white overflow-hidden shadow-xs ring-1 ring-black/5 min-h-0">
         {children}
       </div>
     </div>
