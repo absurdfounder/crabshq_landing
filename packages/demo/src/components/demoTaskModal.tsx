@@ -798,12 +798,12 @@ export function DemoTaskModal({
           <X size={14} strokeWidth={2} />
         </button>
 
-        {/* Split body — always visible */}
+        {/* Split body — equal chat / artifact panes */}
         <div style={{ display: 'flex', flex: 1, minHeight: 0, overflow: 'hidden' }}>
           {/* Left: thread */}
-          <div style={{ flex: '0 0 54%', minWidth: 0, display: 'flex', flexDirection: 'column', borderRight: `1px solid ${C.border}` }}>
+          <div style={{ flex: '1 1 50%', width: '50%', minWidth: 0, display: 'flex', flexDirection: 'column', borderRight: `1px solid ${C.border}` }}>
             <div ref={threadRef} data-demo-target="modal-thread" className="Trooper-scrollbar" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
-              <div style={{ padding: '14px 18px 8px', maxWidth: 480, margin: '0 auto' }}>
+              <div style={{ padding: '14px 16px 8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
                   <span style={{ fontSize: 9, fontWeight: 700, color: statusColor, background: statusBg, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: 0.4 }}>
                     {statusLabel}
@@ -862,37 +862,35 @@ export function DemoTaskModal({
 
             {/* Composer + slim checklist — no hairline fence; chat bleeds into the input. */}
             <div style={{ flexShrink: 0, background: C.card, padding: '4px 14px 10px' }}>
-              <div style={{ maxWidth: 480, margin: '0 auto' }}>
-                <ComposerTodoAccordion subtasks={subtasks} />
-                <div style={{
-                  borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg,
-                  padding: '7px 10px 6px',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, flexWrap: 'wrap' }}>
-                    <DemoTagBadge tag={{ label: org.name.toLowerCase(), type: 'site', domain: org.domain }} size="xs" />
-                    {taskTags[0]?.type === 'channel' && (
-                      <DemoTagBadge tag={taskTags[0]} size="xs" />
-                    )}
+              <ComposerTodoAccordion subtasks={subtasks} />
+              <div style={{
+                borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg,
+                padding: '7px 10px 6px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, flexWrap: 'wrap' }}>
+                  <DemoTagBadge tag={{ label: org.name.toLowerCase(), type: 'site', domain: org.domain }} size="xs" />
+                  {taskTags[0]?.type === 'channel' && (
+                    <DemoTagBadge tag={taskTags[0]} size="xs" />
+                  )}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
+                  <div style={{ flex: 1, fontSize: 12, color: C.textSubtle, minHeight: 20, padding: '2px 2px 4px' }}>
+                    Do anything with AI…
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-                    <div style={{ flex: 1, fontSize: 12, color: C.textSubtle, minHeight: 20, padding: '2px 2px 4px' }}>
-                      Do anything with AI…
-                    </div>
-                    <div style={{
-                      width: 26, height: 26, borderRadius: '50%', background: C.card, flexShrink: 0,
-                      border: `1px solid ${C.border}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.textSubtle,
-                    }}>
-                      <ArrowUp size={13} strokeWidth={2.25} />
-                    </div>
+                  <div style={{
+                    width: 26, height: 26, borderRadius: '50%', background: C.card, flexShrink: 0,
+                    border: `1px solid ${C.border}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.textSubtle,
+                  }}>
+                    <ArrowUp size={13} strokeWidth={2.25} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right: IDE or Canvas workspace */}
-          <div data-demo-target="modal-workspace" style={{ flex: '1 1 46%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+          {/* Right: IDE / Canvas / browser workspace */}
+          <div data-demo-target="modal-workspace" style={{ flex: '1 1 50%', width: '50%', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
             {/*
               A light travels the bottom edge of the workspace toolbar while a
               tool is running — the seam between "the agent is producing" and

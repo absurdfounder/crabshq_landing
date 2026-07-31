@@ -83,8 +83,9 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
     if (!el) return;
     const update = () => {
       const w = el.clientWidth;
-      // Strict fit only — never paint wider than the host (that was the crop).
-      setScale(w > 0 ? Math.min(1, w / DEMO_CANVAS_W) : 1);
+      // Fit the host exactly — scale down on narrow hosts and up on wide ones
+      // so we never leave empty gutters beside a 1× canvas.
+      setScale(w > 0 ? w / DEMO_CANVAS_W : 1);
     };
     update();
     const ro = new ResizeObserver(update);
