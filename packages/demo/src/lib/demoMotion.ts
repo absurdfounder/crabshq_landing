@@ -101,6 +101,10 @@ export const DEMO_KEYFRAMES = `
 @keyframes demoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes demoBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes demoCursorRipple { from { opacity: 0.85; transform: scale(0.35); } to { opacity: 0; transform: scale(2.2); } }
+@keyframes demoTypingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
 
 .demo-enter { animation: demoFadeInUp ${DUR.enter}ms ${EASE_OUT} both; }
 .demo-pop { animation: demoPop 160ms ${EASE_OUT} both; }
@@ -132,6 +136,17 @@ export const DEMO_KEYFRAMES = `
   animation: demoWorkingSheen 3.2s ${EASE_IN_OUT} infinite;
 }
 
+/* Channel reply pending — bounce dots, not a spinner. */
+.demo-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78716c;
+  animation: demoTypingDot 1.2s ${EASE_IN_OUT} infinite;
+}
+.demo-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.demo-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
 .demo-shimmer {
   background: linear-gradient(90deg, #e7e5e4 25%, #f5f5f4 50%, #e7e5e4 75%);
   background-size: 200% 100%;
@@ -158,6 +173,7 @@ export const DEMO_KEYFRAMES = `
   .demo-enter, .demo-pop, .demo-count-bump { animation: none; opacity: 1; transform: none; }
   .demo-live-dot { animation: none; opacity: 0.85; }
   .demo-working-badge::after { animation: none; opacity: 0; }
+  .demo-typing-dot { animation: none; opacity: 0.55; }
   .demo-shimmer { animation: none; }
   .demo-pulse { animation: none; }
 }

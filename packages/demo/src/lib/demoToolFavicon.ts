@@ -1,16 +1,21 @@
 import type { DemoToolLog } from '../components/demoTaskExecution';
 import { getProviderDomain } from './demoProviders';
-import { integrationLogo } from './demoIntegrations';
+import {
+  DEMO_INTEGRATIONS,
+  INTEGRATION_DOMAINS,
+  type DemoIntegrationKey,
+} from './demoIntegrations';
 
 export type ToolIconMeta = {
   domain: string | null;
   logoSrc: string | null;
 };
 
-/** Resolve favicon domain or integration logo for a tool row. */
+/** Resolve favicon domain for a tool row — prefer real site icons over slug logos. */
 export function getToolIconMeta(log: Pick<DemoToolLog, 'tool' | 'detail' | 'faviconDomain' | 'provider' | 'integration'>): ToolIconMeta {
-  if (log.integration) {
-    return { domain: null, logoSrc: integrationLogo(log.integration) };
+  if (log.integration && log.integration in DEMO_INTEGRATIONS) {
+    const key = log.integration as DemoIntegrationKey;
+    return { domain: INTEGRATION_DOMAINS[key], logoSrc: null };
   }
   return { domain: getToolFaviconDomain(log), logoSrc: null };
 }
@@ -27,7 +32,7 @@ export function getToolFaviconDomain(log: Pick<DemoToolLog, 'tool' | 'detail' | 
   const urlMatch = detail.match(/https?:\/\/(?:www\.)?([^/\s]+)/i);
   if (urlMatch) return urlMatch[1];
 
-  if (lower.includes('wonder.gg') || /\bwonder\b/.test(lower)) return 'wonder.gg';
+  if (lower.includes('wonderdesk.ai') || /\bwonder\b/.test(lower)) return 'wonderdesk.ai';
   if (lower.includes('github.com') || lower.includes('github') || log.tool.includes('git')) return 'github.com';
   if (lower.includes('product hunt') || lower.includes('producthunt')) return 'producthunt.com';
   if (lower.includes('google.com') || (log.tool.includes('search') && lower.includes('google'))) return 'google.com';
@@ -41,7 +46,7 @@ export function getToolFaviconDomain(log: Pick<DemoToolLog, 'tool' | 'detail' | 
     }
   }
 
-  if (log.tool.includes('search') && lower.includes('wonder')) return 'wonder.gg';
+  if (log.tool.includes('search') && lower.includes('wonder')) return 'wonderdesk.ai';
   if (log.tool.includes('search')) return 'google.com';
 
   return null;

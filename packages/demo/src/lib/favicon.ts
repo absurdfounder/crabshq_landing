@@ -21,6 +21,7 @@ const BLOCKED_GOOGLE_FAVICON_DOMAINS = new Set(['wonder.gg', 'wonderdesk.ai']);
 
 const CUSTOM_FAVICON_URLS: Record<string, string> = {
   'viralhooks.org': VIRALHOOKS_FAVICON,
+  'wonderdesk.ai': VIRALHOOKS_FAVICON,
 };
 
 export function getFaviconUrl(domain: string, size = 64): string {

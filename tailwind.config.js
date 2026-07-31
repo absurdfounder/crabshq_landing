@@ -67,6 +67,8 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
+    // Demo package hosts the shared browser claim panes (Gmail/Stripe/QBO/Notion).
+    './packages/demo/src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {

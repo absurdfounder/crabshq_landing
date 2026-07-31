@@ -19,9 +19,16 @@ export { setDemoAssetBase } from './lib/favicon';
 // Workspaces — mounted directly by the harness.
 export { DemoBrowserStream } from './workspaces/DemoBrowserStream';
 export { DemoVideoWorkspace } from './workspaces/DemoVideoWorkspace';
+export { default as VideoEditorCapabilityVisual } from './workspaces/VideoEditorCapabilityVisual';
 export { DemoDesktopWorkspace } from './workspaces/DemoDesktopWorkspace';
 export { DemoGenerationCard } from './workspaces/DemoGenerationCard';
 export { DemoNodeGraph } from './workspaces/DemoNodeGraph';
+export {
+  CLAIM_TABS,
+  BrowserClaimPage,
+  TabFavicon,
+  type ClaimTabId,
+} from './workspaces/BrowserClaimPanes';
 export { DemoTaskModal } from './components/demoTaskModal';
 export { DemoKanbanColumn, DemoTaskCard } from './components/DemoKanban';
 

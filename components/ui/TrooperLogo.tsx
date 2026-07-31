@@ -1,4 +1,4 @@
-const characterSrc = '/images/trooper-logomark.png'
+import { TROOPER_LOGOMARK, TROOPER_LOGOMARK_SRCSET } from '@/lib/trooperLogomark'
 
 type TrooperLogoProps = {
   className?: string
@@ -21,11 +21,13 @@ export default function TrooperLogo({
   const content = (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <img
-        src={characterSrc}
+        src={TROOPER_LOGOMARK.w128}
+        srcSet={TROOPER_LOGOMARK_SRCSET}
+        sizes="(min-width: 640px) 48px, 44px"
         alt=""
-        width={1024}
-        height={1024}
-        className={`bg-transparent pixel-render ${characterClassName}`}
+        width={128}
+        height={128}
+        className={`bg-transparent ${characterClassName}`}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
         aria-hidden

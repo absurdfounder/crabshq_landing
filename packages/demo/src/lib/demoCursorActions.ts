@@ -48,7 +48,8 @@ export function animateChatStepCursor(step: ChatScriptStep, go: CursorGoFn): Pro
     case 'response':
       return go('[data-demo-target="chat-thread"]');
     case 'addTasks':
-      return go('[data-demo-target="kanban-inbox"]');
+      // TODO column is hidden in the showcase — new cards land in In Progress.
+      return go('[data-demo-target="kanban-in_progress"]');
     case 'mention_tab':
       return go('[data-demo-target="sidebar-channels-tab"]', { click: true });
     default:
@@ -75,7 +76,12 @@ export function animateExecStepCursor(step: TaskExecStep, go: CursorGoFn, ctx: C
     case 'reasoning':
       return go('[data-demo-target="modal-thread"]');
     case 'browserFrame':
-      return go('[data-demo-target="browser-stream"]', { silent });
+      // Click the active Chrome tab, then land on the in-page hotspot so the
+      // reel shows a hand driving the claimed browser — not just the panel.
+      return runSequence(go, [
+        { selector: '[data-demo-target="browser-tab"][data-active="true"]', click: true, silent },
+        { selector: '[data-demo-target="browser-hotspot"]', click: true },
+      ]);
     case 'videoStage':
     case 'videoProgress':
       return go('[data-demo-target="video-workspace"]', { silent });

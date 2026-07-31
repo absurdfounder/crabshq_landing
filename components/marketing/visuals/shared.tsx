@@ -26,11 +26,11 @@ export function ProviderChip({ provider, size = 16 }: { provider: string; size?:
   if (provider === 'Trooper' || domain === 'trooper.so') {
     return (
       <img
-        src="/images/trooper-logomark.png"
+        src="/images/trooper-logomark-64.webp"
         alt=""
         width={size}
         height={size}
-        className="inline-block flex-shrink-0 object-contain pixel-render"
+        className="inline-block flex-shrink-0 object-contain"
       />
     );
   }
@@ -43,9 +43,11 @@ export function ProviderChip({ provider, size = 16 }: { provider: string; size?:
 export function TrooperMark({ className = '' }: { className?: string }) {
   return (
     <img
-      src="/images/trooper-logomark.png"
+      src="/images/trooper-logomark.webp"
+      srcSet="/images/trooper-logomark-64.webp 64w, /images/trooper-logomark-128.webp 128w, /images/trooper-logomark-256.webp 256w, /images/trooper-logomark.webp 512w"
+      sizes="(max-width: 640px) 48px, 64px"
       alt="Trooper"
-      className={`object-contain pixel-render ${className}`}
+      className={`object-contain ${className}`}
     />
   );
 }

@@ -3,6 +3,7 @@ export const VIRALHOOKS_FAVICON = '/images/viralhooks-favicon.png';
 
 const CUSTOM_FAVICON_URLS: Record<string, string> = {
   'viralhooks.org': VIRALHOOKS_FAVICON,
+  'wonderdesk.ai': VIRALHOOKS_FAVICON,
 };
 
 /** Domains whose Google favicon cache returns wrong/generic icons in the demo UI. */

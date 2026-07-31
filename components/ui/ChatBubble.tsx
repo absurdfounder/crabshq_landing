@@ -276,7 +276,7 @@ export function BubbleExchange({
         {ask}
       </ChatBubble>
       {replyOn && focused ? (
-        <ChatBubble key={`reply-${cycle}`} kind="reply" className="ml-8 sm:ml-10" typing active>
+        <ChatBubble key={`reply-${cycle}`} kind="reply" typing active>
           {reply}
         </ChatBubble>
       ) : null}

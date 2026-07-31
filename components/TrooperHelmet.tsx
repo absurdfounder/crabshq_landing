@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
- * The Trooper character — the 3D helmet from `trooper-logomark.png`, given a
- * slow idle float so it reads as a mascot rather than a pasted-on logo.
+ * The Trooper character — optimized WebP helmet logomark, given a slow idle
+ * float so it reads as a mascot rather than a pasted-on logo.
  */
 export default function TrooperHelmet({
   size = 200,
@@ -36,7 +36,7 @@ export default function TrooperHelmet({
         transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity }}
       >
         <Image
-          src="/images/trooper-logomark.png"
+          src="/images/trooper-logomark.webp"
           alt=""
           width={size}
           height={size}

@@ -82,7 +82,8 @@ export type DemoScenarioId =
   | 'growth'
   | 'browser-work'
   | 'video-edit'
-  | 'device-work';
+  | 'device-work'
+  | 'content-work';
 
 export type DemoScenario = {
   id: DemoScenarioId;

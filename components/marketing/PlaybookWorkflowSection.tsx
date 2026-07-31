@@ -34,11 +34,11 @@ function NodeIcon({ node }: { node: PlaybookWorkflowNode }) {
   if (node.iconDomain === 'trooper') {
     return (
       <img
-        src="/images/trooper-logomark.png"
+        src="/images/trooper-logomark-64.webp"
         alt=""
         width={16}
         height={16}
-        className="pixel-render shrink-0 object-contain"
+        className="shrink-0 object-contain"
       />
     );
   }

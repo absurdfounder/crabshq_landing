@@ -75,11 +75,19 @@ export type DemoArtifact = {
  */
 export type DemoWorkspaceMode = 'ide' | 'canvas' | 'browser' | 'video' | 'desktop' | 'nodes';
 
+/** Shared claim-pane tabs — same surfaces as the marketing browser scene. */
+export type DemoBrowserClaimTabId = 'gmail' | 'stripe' | 'qbo' | 'notion';
+
 /** One captured frame in a live browser session. */
 export type DemoBrowserFrameSpec = {
   id: string;
-  /** Inline SVG markup — never a network fetch. */
-  svg: string;
+  /**
+   * Prefer a real claim pane (Gmail / Stripe / QuickBooks / Notion) over the
+   * old inline SVG stubs — same UI the marketing capability already ships.
+   */
+  claimTab?: DemoBrowserClaimTabId;
+  /** Inline SVG markup fallback when `claimTab` is unset. */
+  svg?: string;
   /** What the agent was doing when the frame was taken. */
   action: string;
   url: string;

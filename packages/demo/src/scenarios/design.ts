@@ -22,7 +22,27 @@ const ARTIFACTS = {
     kind: 'html',
     browserUrl: 'https://northstar.io/brand-preview',
     faviconDomain: 'northstar.io',
-    content: '<!-- Brand refresh hero mockup -->',
+    content: `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><title>Northstar brand preview</title>
+<style>
+*{box-sizing:border-box;margin:0}body{font-family:Inter,system-ui,sans-serif;background:#faf9f6;color:#1c1917}
+.bar{height:40px;background:#fff;border-bottom:1px solid #e7e5e4;display:flex;align-items:center;padding:0 16px;font-size:12px;font-weight:600}
+.hero{padding:28px 24px;background:linear-gradient(135deg,#f0f5e6,#fff 55%);min-height:180px}
+.kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3f6b00;font-weight:700}
+h1{font-size:26px;letter-spacing:-.02em;margin:10px 0 8px;max-width:320px;line-height:1.15}
+p{font-size:13px;color:#57534e;max-width:340px;line-height:1.55}
+.swatches{display:flex;gap:8px;padding:16px 24px}
+.swatch{width:48px;height:48px;border-radius:10px;border:1px solid rgba(0,0,0,.08)}
+</style></head><body>
+<div class="bar">Brand preview · northstar.io</div>
+<div class="hero"><div class="kicker">Q2 brand refresh</div>
+<h1>Fern-first. Calm. Command-ready.</h1>
+<p>Hero, carousel, and token patch — ready for stakeholder sign-off.</p></div>
+<div class="swatches">
+<div class="swatch" style="background:#3f6b00"></div>
+<div class="swatch" style="background:#284800"></div>
+<div class="swatch" style="background:#faf9f6"></div>
+<div class="swatch" style="background:#1c1917"></div>
+</div></body></html>`,
   }),
   'design/hero-carousel.png': a({
     name: 'design/hero-carousel.png',

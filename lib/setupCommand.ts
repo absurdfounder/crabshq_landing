@@ -21,7 +21,7 @@ export const SETUP_TARGETS: SetupTarget[] = [
   {
     id: 'trooper',
     label: 'Trooper CLI',
-    iconSrc: '/images/trooper-logomark.png',
+    iconSrc: '/images/trooper-logomark-64.webp',
     command: TROOPER_CLI_COMMAND,
     prompt:
       'Install Trooper on your machine, then open the app and connect your API keys:\n\nnpx -y trooper-cli',

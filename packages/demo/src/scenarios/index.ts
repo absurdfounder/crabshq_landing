@@ -20,6 +20,7 @@ import { growthScenario } from './growth';
 import { browserWorkScenario } from './browserWork';
 import { videoEditScenario } from './videoEdit';
 import { deviceWorkScenario } from './deviceWork';
+import { contentWorkScenario } from './contentWork';
 import type { DemoScenario, DemoScenarioId } from './types';
 
 export type { DemoScenario, DemoScenarioId, DemoOrg, DemoKanbanTask, ChannelBrand } from './types';
@@ -47,6 +48,7 @@ const SCENARIOS: Record<DemoScenarioId, DemoScenario> = {
   'browser-work': browserWorkScenario,
   'video-edit': videoEditScenario,
   'device-work': deviceWorkScenario,
+  'content-work': contentWorkScenario,
 };
 
 export function getDemoScenario(id: DemoScenarioId = 'launch'): DemoScenario {
@@ -56,14 +58,14 @@ export function getDemoScenario(id: DemoScenarioId = 'launch'): DemoScenario {
 export const DEFAULT_DEMO_SCENARIO_ID: DemoScenarioId = 'launch';
 
 /**
- * What the homepage hero cycles through, one scenario per loop. Ordered so a
- * visitor who watches twice sees a different capability the second time —
- * document work, then live browser work, then video, then desk work on a
- * real machine.
+ * What the homepage showcase cycles through. All Wonder-org so #general can
+ * carry across loops — desk work still appears, but no cold “morning” reset
+ * into a different company story mid-watch.
  */
 export const HERO_SCENARIO_ROTATION: DemoScenarioId[] = [
   'launch',
   'browser-work',
+  'content-work',
   'video-edit',
   'device-work',
 ];

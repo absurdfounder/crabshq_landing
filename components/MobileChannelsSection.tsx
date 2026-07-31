@@ -350,12 +350,11 @@ function ImessageScreen({ play }: { play: boolean }) {
           <div className="flex flex-col items-center">
             <div className="flex size-10 items-center justify-center overflow-hidden rounded-full bg-[#F2F2F7] ring-1 ring-black/5">
               <Image
-                src="/images/trooper-logomark.png"
+                src="/images/trooper-logomark-64.webp"
                 alt=""
                 width={22}
                 height={22}
                 className="size-[22px] object-contain"
-                style={{ imageRendering: 'pixelated' }}
               />
             </div>
             <span

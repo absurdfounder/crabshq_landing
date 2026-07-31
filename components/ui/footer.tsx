@@ -334,7 +334,7 @@ export default function Footer() {
                 className="h-3.5 w-3.5 rounded-sm"
                 loading="lazy"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/trooper-logomark.png';
+                  (e.target as HTMLImageElement).src = '/images/trooper-logomark-64.webp';
                 }}
               />
               <span className="font-semibold text-slate-700">OpenClaw</span>

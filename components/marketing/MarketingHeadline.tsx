@@ -51,11 +51,13 @@ function InlineTrooperMark({ size }: { size: MarketingHeadlineProps['size'] }) {
   return (
     <span className="inline-flex mx-1.5 sm:mx-2 align-[-0.15em]" aria-hidden>
       <img
-        src="/images/trooper-logomark.png"
+        src="/images/trooper-logomark-64.webp"
+        srcSet="/images/trooper-logomark-64.webp 64w, /images/trooper-logomark-128.webp 128w"
+        sizes="36px"
         alt=""
         width={36}
         height={36}
-        className={`pixel-render ${markSize} object-contain inline-block`}
+        className={`${markSize} object-contain inline-block`}
         decoding="async"
       />
     </span>

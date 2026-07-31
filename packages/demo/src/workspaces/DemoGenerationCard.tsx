@@ -5,7 +5,6 @@ import { Sparkles, Image as ImageIcon, Film } from 'lucide-react';
 import { TROOPER_DEMO as C } from '../components/demoTheme';
 import type { DemoGenerationJob } from '../components/demoTaskExecution';
 import { DUR, EASE_OUT } from '../lib/demoMotion';
-import { DemoOrb, orbStateForGeneration } from '../lib/demoThinking';
 
 /**
  * Image / video generation, mirroring `video/AiGenerateDialog.jsx`: the prompt,
@@ -25,15 +24,26 @@ export function DemoGenerationCard({
   done: boolean;
 }) {
   const [elapsed, setElapsed] = useState(0);
+  const [barProgress, setBarProgress] = useState(0);
 
   useEffect(() => {
-    if (startedAt === null || done) return;
-    const id = setInterval(() => setElapsed(Math.floor((performance.now() - startedAt) / 1000)), 250);
+    if (startedAt === null || done) {
+      if (done) setBarProgress(1);
+      return;
+    }
+    const tick = () => {
+      const ms = performance.now() - startedAt;
+      setElapsed(Math.floor(ms / 1000));
+      setBarProgress(Math.min(1, ms / Math.max(1, runMs)));
+    };
+    tick();
+    const id = setInterval(tick, 100);
     return () => clearInterval(id);
-  }, [startedAt, done]);
+  }, [startedAt, done, runMs]);
 
   const running = startedAt !== null && !done;
-  const progress = running ? Math.min(1, (elapsed * 1000) / Math.max(1, runMs)) : done ? 1 : 0;
+
+  const preview = job.posterSrc || job.src;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, background: C.card }}>
@@ -79,11 +89,36 @@ export function DemoGenerationCard({
       </div>
 
       <div style={{ flex: 1, minHeight: 0, position: 'relative', background: '#0a0a0c', overflow: 'hidden' }}>
-        {done ? (
+        {/* Poster / progressive preview sits under the progress plate so generation
+            never reads as an empty black void + abstract spinner. */}
+        {!done && preview && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={preview}
+            alt=""
+            style={{
+              position: 'absolute', inset: 0, width: '100%', height: '100%',
+              objectFit: 'cover',
+              filter: 'saturate(0.85) brightness(0.55)',
+              transform: `scale(${1.02 + barProgress * 0.03})`,
+              transition: `transform ${DUR.panel}ms ${EASE_OUT}`,
+            }}
+          />
+        )}
+        {!done && (
+          <div
+            className="demo-shimmer"
+            style={{
+              position: 'absolute', inset: 0,
+              opacity: preview ? 0.22 : 0.35,
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+
+        {done && (
           <div className="demo-enter" style={{ position: 'absolute', inset: 0 }}>
             {job.kind === 'video' ? (
-              // The produced asset itself, looping — a generation that resolves
-              // into a still frame never looks like a video model finished.
               <video
                 src={job.src}
                 poster={job.posterSrc}
@@ -94,27 +129,13 @@ export function DemoGenerationCard({
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             ) : (
+              // eslint-disable-next-line @next/next/no-img-element
               <img src={job.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
           </div>
-        ) : (
-          // A grey shimmer reads as a skeleton waiting on a network call. A
-          // model producing a frame is doing something, and at 64px the orb is
-          // large enough to say which: `shaping` an image, `composing` a video.
-          <div style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <DemoOrb
-              state={orbStateForGeneration(job.kind)}
-              size={64}
-              tone="dark"
-              title={job.kind === 'video' ? 'Generating video' : 'Generating image'}
-              style={{ opacity: running ? 1 : 0.35, transition: `opacity ${DUR.panel}ms ${EASE_OUT}` }}
-            />
-          </div>
         )}
-        {running && (
+
+        {(running || (!done && !preview)) && (
           <div style={{
             position: 'absolute', left: 12, right: 12, bottom: 12,
             borderRadius: 9, background: 'rgba(28,25,23,0.84)', backdropFilter: 'blur(4px)',
@@ -126,16 +147,26 @@ export function DemoGenerationCard({
                 {job.kind === 'video' ? 'Generating video…' : 'Generating image…'}
               </span>
               <span style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(250,250,249,0.65)', fontVariantNumeric: 'tabular-nums' }}>
-                {elapsed}s{job.kind === 'video' ? ' · video can take up to a minute' : ''}
+                {elapsed}s{job.kind === 'video' ? ' · up to ~1 min' : ''}
               </span>
             </div>
             <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.16)', overflow: 'hidden' }}>
               <div style={{
                 height: '100%', borderRadius: 999, background: '#fbbf24',
-                width: `${Math.round(progress * 100)}%`,
+                width: `${Math.round(barProgress * 100)}%`,
                 transition: `width ${DUR.panel}ms ${EASE_OUT}`,
               }} />
             </div>
+          </div>
+        )}
+
+        {done && (
+          <div style={{
+            position: 'absolute', left: 12, bottom: 12,
+            borderRadius: 7, background: 'rgba(28,25,23,0.78)',
+            padding: '4px 8px', fontSize: 10.5, fontWeight: 600, color: '#e7e5e4',
+          }}>
+            Ready
           </div>
         )}
       </div>

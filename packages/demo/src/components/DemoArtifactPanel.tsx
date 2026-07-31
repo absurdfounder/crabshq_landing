@@ -35,6 +35,7 @@ function defaultTab(artifact: DemoArtifact, kind: DemoArtifactKind): ArtifactTab
   if (kind === 'diff') return 'diff';
   if (kind === 'html' && artifact.browserUrl) return 'browser';
   if (kind === 'html') return 'preview';
+  if (kind === 'image' && artifact.browserUrl) return 'browser';
   return 'ide';
 }
 
@@ -44,6 +45,7 @@ function availableTabs(artifact: DemoArtifact, kind: DemoArtifactKind): Artifact
     if (artifact.browserUrl) return ['browser', 'preview', 'code'];
     return ['preview', 'code'];
   }
+  if (kind === 'image' && artifact.browserUrl) return ['browser', 'preview'];
   return ['ide'];
 }
 
@@ -216,33 +218,50 @@ function UnifiedDiffPreview({ content, compact }: { content: string; compact?: b
 function HtmlPreview({ artifact, mode, compact }: { artifact: DemoArtifact; mode: 'browser' | 'preview'; compact?: boolean }) {
   const src = artifact.src;
   const browserUrl = artifact.browserUrl;
-
-  if (mode === 'browser' && (browserUrl || src)) {
-    return (
-      <DemoBrowserFrame
-        src={src || undefined}
-        addressUrl={browserUrl}
-        faviconDomain={artifact.faviconDomain}
-        compact={compact}
-        title={artifact.name}
-      />
-    );
-  }
+  // Prefer srcDoc so the iframe never loads /demo-assets off localhost (404 page
+  // while the address bar fakes an external host). Fall back to src only when
+  // there is no inline HTML.
+  const hasDoc = Boolean(artifact.content && artifact.content.trim().length > 0);
+  const addressUrl = browserUrl || (mode === 'browser' ? src : undefined) || artifact.name;
 
   return (
     <DemoBrowserFrame
-      srcDoc={artifact.content || undefined}
-      src={!artifact.content && src ? src : undefined}
-      addressUrl={browserUrl || artifact.name}
+      srcDoc={hasDoc ? artifact.content : undefined}
+      src={!hasDoc && src ? src : undefined}
+      addressUrl={addressUrl}
       faviconDomain={artifact.faviconDomain}
       compact={compact}
       title={artifact.name}
+      showTabStrip={mode === 'browser'}
     />
   );
 }
 
-function ImagePreview({ artifact }: { artifact: DemoArtifact }) {
+function ImagePreview({ artifact, mode = 'card' }: { artifact: DemoArtifact; mode?: 'card' | 'browser' }) {
   const src = artifact.src;
+  // Claimed-browser captures: full-bleed screenshot in Chrome chrome — never a
+  // coded HTML mock of an external site.
+  if (mode === 'browser' && src) {
+    return (
+      <DemoBrowserFrame
+        addressUrl={artifact.browserUrl || artifact.name}
+        faviconDomain={artifact.faviconDomain}
+        title={artifact.name.replace(/\.(png|jpe?g|webp|gif)$/i, '')}
+        showTabStrip
+        claimed
+      >
+        <div style={{ position: 'absolute', inset: 0, overflow: 'auto', background: '#f5f5f4' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={artifact.caption ?? artifact.name}
+            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', objectPosition: 'top center' }}
+          />
+        </div>
+      </DemoBrowserFrame>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 16, height: '100%', background: 'linear-gradient(135deg, #F5F5F4 0%, #FAF9F6 100%)' }}>
       <div style={{
@@ -545,7 +564,13 @@ function ArtifactBody({
   }
 
   switch (kind) {
-    case 'image': return <ImagePreview artifact={artifact} />;
+    case 'image':
+      return (
+        <ImagePreview
+          artifact={artifact}
+          mode={tab === 'browser' || (tab === 'preview' && Boolean(artifact.browserUrl)) ? 'browser' : 'card'}
+        />
+      );
     case 'video': return <VideoPreview artifact={artifact} />;
     case 'markdown': return <MarkdownPreview content={artifact.content} review={review} />;
     default:
@@ -564,6 +589,9 @@ export function DemoArtifactTilePreview({ artifact, canvasTile }: { artifact: De
   }
   if (kind === 'html') {
     return <HtmlPreview artifact={artifact} mode={artifact.browserUrl ? 'browser' : 'preview'} compact />;
+  }
+  if (kind === 'image' && artifact.browserUrl) {
+    return <ImagePreview artifact={artifact} mode="browser" />;
   }
   if (kind === 'markdown') {
     // Same renderer as the panel, scaled down \u2014 the app shares one markdown

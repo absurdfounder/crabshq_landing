@@ -335,22 +335,16 @@ function DesktopPlanColumn({
   allowance,
   features,
   cta,
-  isLast = false,
 }: DesktopPlanColumnProps) {
   return (
     <article
       className={[
-        'relative grid grid-rows-subgrid bg-white [grid-row:1/-1]',
-        !isLast ? 'border-r border-slate-100' : '',
-        featured ? 'z-[1] shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-emerald-500/25' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        'relative grid grid-rows-subgrid overflow-hidden rounded-xl bg-white shadow-xs [grid-row:1/-1]',
+        featured
+          ? 'z-[1] shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-2 ring-trooper'
+          : 'ring-1 ring-black/5',
+      ].join(' ')}
     >
-      {featured ? (
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-emerald-500" aria-hidden />
-      ) : null}
-
       <div className={`${planCellClass()} border-b border-slate-100 py-5`}>
         <PlanHeader
           index={index}
@@ -398,22 +392,16 @@ function MobilePlanCard({
   allowance,
   features,
   cta,
-  isLast = false,
 }: DesktopPlanColumnProps) {
   return (
     <section
       className={[
-        'relative flex min-w-0 flex-col bg-white',
-        !isLast ? 'border-b border-slate-100' : '',
-        featured ? 'shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-1 ring-emerald-500/25' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
+        'relative flex min-w-0 flex-col overflow-hidden rounded-xl bg-white shadow-xs',
+        featured
+          ? 'shadow-[0_8px_28px_rgba(15,23,42,0.08)] ring-2 ring-trooper'
+          : 'ring-1 ring-black/5',
+      ].join(' ')}
     >
-      {featured ? (
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-emerald-500" aria-hidden />
-      ) : null}
-
       <div className="border-b border-slate-100 px-4 py-4 sm:px-5 sm:py-5">
         <PlanHeader
           index={index}
@@ -681,16 +669,13 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         />
       </div>
 
-      {/* No `sm:-mx-6`: it cancelled the shell's sm:px-6 only at sm and up, so
-          the table ran to the rail hairline while its own headline stayed
-          inset — the section disagreed with itself about where the edge was. */}
-      <div className="border-t border-slate-100">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
           viewport={{ once: true }}
-          className="hidden overflow-hidden border-b border-slate-100 bg-slate-200 lg:grid lg:grid-cols-4"
+          className="hidden gap-4 lg:grid lg:grid-cols-4"
           style={{ gridTemplateRows: PRICING_GRID_TEMPLATE_ROWS }}
         >
           {plans.map((plan, idx) => (
@@ -698,14 +683,14 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           ))}
         </motion.div>
 
-        <div className="border-b border-slate-100 bg-white lg:hidden">
+        <div className="flex flex-col gap-4 lg:hidden">
           {plans.map((plan, idx) => (
             <MobilePlanCard key={plan.title} {...plan} isLast={idx === plans.length - 1} />
           ))}
         </div>
 
         {showFullPricingLink ? (
-          <div className="border-t border-slate-100 bg-trooper-50/80">
+          <div className="mt-4 overflow-hidden rounded-xl bg-trooper-50/80 shadow-xs ring-1 ring-black/5">
             <Link
               href="/pricing"
               className="group flex w-full items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium text-trooper transition-colors hover:text-trooper-700 sm:py-4 md:py-5"

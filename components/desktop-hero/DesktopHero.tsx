@@ -412,16 +412,25 @@ function MacWindow({
 /** Transient Preview window — opens when an agent double-clicks a desktop file. */
 function PreviewDocMock() {
   return (
-    <div className="relative px-4 py-3 text-[11px] leading-[1.55] text-neutral-600">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">Launch brief</p>
-      <p className="mt-2 font-semibold text-neutral-800">Q3 growth push — refunds + ads</p>
-      <p className="mt-2">
-        Match Stripe refunds to the sheet, then hand Aria the creative for the retargeting set.
-      </p>
-      <p className="mt-1.5 text-neutral-500">
-        Exit when four matched rows land and the PR is green. Jordan approves before deploy.
-      </p>
-      <span data-dh="fx-readbar" className="dh-readbar pointer-events-none absolute left-2 right-2 h-5 rounded-sm bg-amber-200/50" />
+    <div className="relative overflow-hidden text-[11px] leading-[1.45] text-neutral-600">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/desktop/cats-monet-preview.jpg"
+        alt=""
+        className="h-[108px] w-full object-cover"
+      />
+      <div className="relative px-3.5 py-2.5">
+        <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
+          Article · Markdown
+        </p>
+        <p className="mt-1 font-semibold text-neutral-800">
+          Six cats in Monet’s light
+        </p>
+        <p className="mt-1 line-clamp-3 text-[10px] text-neutral-500">
+          Persian, Siamese, Maine Coon — Impressionist breed studies. Editorial playbook before publish.
+        </p>
+        <span data-dh="fx-readbar" className="dh-readbar pointer-events-none absolute left-2 right-2 h-5 rounded-sm bg-amber-200/50" />
+      </div>
     </div>
   );
 }
@@ -490,7 +499,7 @@ function FinderMock() {
     { id: 'finder-item-docs', name: 'Documents', kind: 'folder' },
     { id: 'finder-item-receipts', name: 'Receipts', kind: 'folder' },
     { id: 'finder-item-pdf', name: 'Q3-audit.pdf', kind: 'pdf', selected: true },
-    { id: 'finder-item-photo', name: 'Malibu.jpeg', kind: 'img' },
+    { id: 'finder-item-photo', name: 'persian.jpg', kind: 'img' },
   ];
 
   return (
@@ -542,7 +551,12 @@ function FinderMock() {
                   fallback={<FolderSvg className="h-9 w-[44px]" />}
                 />
               ) : item.kind === 'img' ? (
-                <span className="flex h-10 w-10 overflow-hidden rounded-[5px] bg-gradient-to-br from-[#9ec5e8] via-[#c5d6a4] to-[#e8c99e] shadow-sm ring-1 ring-black/10" />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src="/demo-assets/content/persian.jpg"
+                  alt=""
+                  className="h-10 w-10 rounded-[5px] object-cover shadow-sm ring-1 ring-black/10"
+                />
               ) : (
                 <FileGlyph kind="pdf" className="h-10 w-8" />
               )}
@@ -909,7 +923,7 @@ const CARRY_HOMES: Record<string, readonly [number, number]> = {
 /** Scripts resolve targets from live element positions every frame. */
 const SCRIPTS: Record<string, Step[]> = {
   aria: [
-    // Open brief.pdf → read → close, file the refunds csv, then trash the scratch file.
+    // Open cats-monet.md → read → close, file the refunds csv, then trash the scratch file.
     { to: 'file-brief', off: [24, 28], move: 1800, dwell: 350, fx: 'openBrief' },
     { to: 'win-preview', off: [130, 90], move: 1400, fx: 'readBrief', dwell: 2400 },
     { to: 'win-preview', off: [28, 14], move: 700, fx: 'closeBrief', dwell: 450 },
@@ -1432,7 +1446,7 @@ export default function DesktopHero() {
               Side-column icons only — kept clear of every CLI resting box
               (CLIs sit ~x18–410, y398–670) and of the center copy band.
             */}
-            <DesktopFile x={292} y={56} name="brief.pdf" kind="pdf" dataId="file-brief" />
+            <DesktopFile x={292} y={56} name="cats-monet.md" kind="doc" dataId="file-brief" />
             <FolderIcon x={480} y={580} name="invoices" dataId="folder-inv" />
 
             {/* Right icon column — left of right windows, clear gaps. */}
@@ -1440,7 +1454,7 @@ export default function DesktopHero() {
             <FolderIcon x={1180} y={580} name="screenshots" dataId="folder-shots" />
 
             {/* Preview readers — same corner as the window they replace. */}
-            <TransientWindow x={24} y={48} w={248} dataId="win-preview" title="brief.pdf">
+            <TransientWindow x={24} y={48} w={248} dataId="win-preview" title="cats-monet.md">
               <PreviewDocMock />
             </TransientWindow>
             <TransientWindow x={1345} y={48} w={240} dataId="win-code" title="App.tsx" dark>

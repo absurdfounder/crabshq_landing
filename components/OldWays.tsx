@@ -12,7 +12,9 @@ import {
   Globe,
   Terminal,
 } from 'lucide-react';
+import { DEMO_KEYFRAMES, DemoNodeGraph, type DemoWorkflowGraph } from '@trooper/demo';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
+import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { DotMatrixFade } from './ui/FeaturePeekStage';
 import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
@@ -21,6 +23,7 @@ import {
   DesktopScene,
   DevicesScene,
 } from './where-they-work/WorkSurfaceScenes';
+import VideoEditorCapabilityVisual from './VideoEditorCapabilityVisual';
 
 /* ─── Shared shell ─── */
 const MockShell = ({
@@ -105,7 +108,10 @@ function useSimPhase(focused: boolean, delays: readonly number[]) {
 const ORG_DELAYS = [400, 1100, 1800, 2600] as const;
 const ACTION_DELAYS = [500, 1200, 2000, 2800] as const;
 const MEMORY_DELAYS = [400, 1400, 2200, 3000] as const;
-const TICKET_DELAYS = [450, 1100, 1800, 2600] as const;
+/** 0 idle → light each workflow node in order */
+const WORKFLOW_DELAYS = [400, 900, 1400, 1900, 2400, 2900] as const;
+/** 0 idle → 1 Fn → 2 user marks → 3 agent labels → 4 explains */
+const SCREEN_CONTEXT_DELAYS = [400, 900, 2100, 2900] as const;
 
 function OrgVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, ORG_DELAYS);
@@ -545,123 +551,325 @@ function MemoryVisual({ focused }: { focused: boolean }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
- * 4. Ticket — chat asks why deploy broke → live audit trace
+ * 4. Workflows — chat asks to run a playbook → flowchart lights up
  * ═══════════════════════════════════════════════════════════════ */
-function TicketVisual({ focused }: { focused: boolean }) {
-  const phase = useSimPhase(focused, TICKET_DELAYS);
-  const steps = [
-    { fn: 'run_tests()', detail: '12 passed', status: 'passed' as const },
-    { fn: 'deploy_to_staging()', detail: 'staging green', status: 'passed' as const },
-    { fn: 'smoke_test()', detail: 'pricing page 200', status: 'passed' as const },
-    {
-      fn: 'deploy_to_production()',
-      detail: phase >= 4 ? 'env: STRIPE_KEY missing' : 'rolling out…',
-      status: (phase >= 4 ? 'failed' : 'running') as 'failed' | 'running' | 'passed',
-    },
-  ];
+const REFUND_PLAYBOOK: DemoWorkflowGraph = {
+  name: 'Refund playbook',
+  nodes: [
+    { id: 'n1', label: 'Refund requested', kind: 'trigger', x: 16, y: 8 },
+    { id: 'n2', label: 'Amount over $200?', kind: 'if', x: 16, y: 92 },
+    { id: 'n3', label: 'Collect evidence', kind: 'then', x: 16, y: 176 },
+    { id: 'n4', label: 'Apply refund SOP', kind: 'ai', x: 188, y: 176 },
+    { id: 'n5', label: 'Human review gate', kind: 'then', x: 188, y: 92 },
+    { id: 'n6', label: 'Issue refund', kind: 'then', x: 188, y: 8 },
+  ],
+  edges: [
+    { from: 'n1', to: 'n2' },
+    { from: 'n2', to: 'n3', label: 'yes' },
+    { from: 'n3', to: 'n4' },
+    { from: 'n4', to: 'n5' },
+    { from: 'n5', to: 'n6' },
+  ],
+};
+
+const WORKFLOW_NODE_ORDER = REFUND_PLAYBOOK.nodes.map((n) => n.id);
+
+function WorkflowVisual({ focused }: { focused: boolean }) {
+  const phase = useSimPhase(focused, WORKFLOW_DELAYS);
+  const activeIds = WORKFLOW_NODE_ORDER.slice(0, phase);
 
   return (
-    <MockShell>
-      <div className="border-b border-[#E7E5E4] bg-[#FAFAF9] px-3.5 py-2.5">
-        <div className="flex items-center justify-between gap-2">
-          <p className="truncate text-[13px] font-semibold text-neutral-900">
-            Ticket #1042 · Deploy pricing page
-          </p>
-          <span
-            className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 ${
-              phase >= 4
-                ? 'bg-red-50 text-red-700 ring-red-200'
-                : 'bg-amber-50 text-amber-800 ring-amber-200'
-            }`}
-          >
-            {phase >= 4 ? 'Failed' : 'Tracing'}
-          </span>
-        </div>
-        <p className="mt-1 text-[11px] text-neutral-500">
-          {phase >= 1 ? (
-            <>
-              Investigating · <span className="font-medium text-neutral-700">why did the deploy break?</span>
-            </>
-          ) : (
-            'Opening audit log…'
-          )}
-        </p>
-      </div>
+    <>
+      {/* Node graph live-dot / transitions — same keyframes as the product demo. */}
+      <style dangerouslySetInnerHTML={{ __html: DEMO_KEYFRAMES }} />
+      <MockShell className="flex h-[300px] flex-col sm:h-[320px] lg:h-[340px]">
+        <DemoNodeGraph graph={REFUND_PLAYBOOK} activeIds={activeIds} />
+      </MockShell>
+    </>
+  );
+}
 
-      <ul className="px-3 py-3">
-        {steps.map((t, i) => {
-          const revealed = phase >= i + 1;
-          const isCurrent = phase === i + 1 || (phase >= 4 && i === 3);
-          const failed = t.status === 'failed';
-          const running = t.status === 'running' && revealed;
-          return (
-            <li
-              key={t.fn}
-              className={`flex items-start gap-2.5 rounded-xl px-2 py-2 transition-all ${
-                !revealed ? 'opacity-30' : ''
-              } ${isCurrent && failed ? 'bg-red-50/80 ring-1 ring-red-100' : ''} ${
-                isCurrent && running ? 'bg-amber-50/70 ring-1 ring-amber-100' : ''
-              }`}
-            >
-              <div className="relative flex w-5 shrink-0 flex-col items-center self-stretch">
-                {i < steps.length - 1 ? (
-                  <span
-                    aria-hidden
-                    className={`absolute left-1/2 top-4 bottom-[-6px] w-px -translate-x-1/2 ${
-                      revealed && !failed && t.status === 'passed' ? 'bg-[#c4d9a0]' : 'bg-[#E7E5E4]'
-                    }`}
+/* ═══════════════════════════════════════════════════════════════
+ * 5. Screen context — Fn → user marks biology diagram → agent explains
+ * ═══════════════════════════════════════════════════════════════ */
+const SC_LABEL_TITLE = 'deltoid';
+const SC_LABEL_BODY = 'lifts & rotates the arm at the shoulder';
+
+function ScreenContextVisual({ focused }: { focused: boolean }) {
+  const phase = useSimPhase(focused, SCREEN_CONTEXT_DELAYS);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [typedTitle, setTypedTitle] = useState('');
+  const [typedBody, setTypedBody] = useState('');
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduceMotion(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  const effective = reduceMotion ? SCREEN_CONTEXT_DELAYS.length : phase;
+  const fnDown = effective >= 1;
+  const userMarking = effective >= 2;
+  const agentMarked = effective >= 3;
+
+  // Type the agent tooltip once the green mark lands.
+  useEffect(() => {
+    let titleTimer: number | undefined;
+    let bodyTimer: number | undefined;
+
+    if (!agentMarked) {
+      setTypedTitle('');
+      setTypedBody('');
+      return;
+    }
+
+    if (reduceMotion) {
+      setTypedTitle(SC_LABEL_TITLE);
+      setTypedBody(SC_LABEL_BODY);
+      return;
+    }
+
+    setTypedTitle('');
+    setTypedBody('');
+    let i = 0;
+    titleTimer = window.setInterval(() => {
+      i += 1;
+      setTypedTitle(SC_LABEL_TITLE.slice(0, i));
+      if (i >= SC_LABEL_TITLE.length) {
+        window.clearInterval(titleTimer);
+        let j = 0;
+        bodyTimer = window.setInterval(() => {
+          j += 1;
+          setTypedBody(SC_LABEL_BODY.slice(0, j));
+          if (j >= SC_LABEL_BODY.length) window.clearInterval(bodyTimer);
+        }, 18);
+      }
+    }, 48);
+
+    return () => {
+      if (titleTimer) window.clearInterval(titleTimer);
+      if (bodyTimer) window.clearInterval(bodyTimer);
+    };
+  }, [agentMarked, reduceMotion]);
+
+  return (
+    <div className="relative flex h-[22rem] w-full flex-col overflow-visible sm:h-[26rem]">
+      <div
+        className="absolute inset-0 overflow-hidden rounded-b-xl bg-[#b9c9a8]"
+        style={{
+          backgroundImage: `
+            linear-gradient(180deg, rgba(210,222,190,0.85) 0%, rgba(170,190,150,0.4) 55%, rgba(120,150,100,0.55) 100%),
+            radial-gradient(circle at 1px 1px, rgba(40,56,24,0.1) 1px, transparent 0)
+          `,
+          backgroundSize: 'auto, 16px 16px',
+        }}
+        aria-hidden
+      />
+
+      <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-visible p-3 sm:p-4 sm:pr-10">
+        {/* Preview chrome — overflow visible so the agent tooltip can float out */}
+        <div className="relative w-full max-w-[22rem] overflow-visible sm:max-w-[24rem]">
+          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_18px_48px_-16px_rgba(26,26,26,0.45)] ring-1 ring-black/10">
+            <div className="relative flex items-center gap-1.5 border-b border-black/5 bg-neutral-50 px-3 py-2">
+              <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+              <span className="size-2.5 rounded-full bg-[#febc2e]" />
+              <span className="size-2.5 rounded-full bg-[#28c840]" />
+              <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
+                Preview — shoulder anatomy
+              </span>
+            </div>
+
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/screen-context/shoulder-anatomy.png"
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-center grayscale"
+                draggable={false}
+              />
+
+              <svg
+                className="pointer-events-none absolute inset-0 h-full w-full"
+                viewBox="0 0 400 300"
+                preserveAspectRatio="xMidYMid slice"
+                aria-hidden
+              >
+                {/* User mark — fades out the moment the agent takes over */}
+                <path
+                  className={`sc-user-lasso ${
+                    userMarking && !agentMarked ? 'sc-user-lasso--draw' : ''
+                  } ${agentMarked ? 'sc-user-lasso--out' : ''}`}
+                  d="M168 78 C198 52, 248 48, 278 72 C302 92, 308 128, 292 158 C274 186, 232 198, 198 188 C168 178, 148 148, 152 112 C154 96, 158 86, 168 78 Z"
+                  fill="rgba(244,63,94,0.07)"
+                  stroke="#f43f5e"
+                  strokeWidth="2.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  pathLength={100}
+                />
+                <ellipse
+                  className={`sc-agent-mark ${agentMarked ? 'sc-agent-mark--on' : ''}`}
+                  cx="228"
+                  cy="118"
+                  rx="52"
+                  ry="48"
+                  fill="none"
+                  stroke="#16a34a"
+                  strokeWidth="2.25"
+                  strokeDasharray="5 3.5"
+                  pathLength={100}
+                />
+              </svg>
+
+              <div
+                className={`sc-cursor pointer-events-none absolute z-10 ${
+                  userMarking && !agentMarked ? 'sc-cursor--mark' : ''
+                } ${agentMarked ? 'sc-cursor--hide' : ''}`}
+                aria-hidden
+              >
+                <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
+                  <path
+                    d="M1 1.2L1 17.4L5.2 13.6L8.4 20.2L11.2 18.9L8 12.4L13.6 12.4L1 1.2Z"
+                    fill="#111"
+                    stroke="#fff"
+                    strokeWidth="1.1"
+                    strokeLinejoin="round"
                   />
-                ) : null}
-                {failed ? (
-                  <span className="relative z-10 mt-1.5 size-3.5 rounded-full bg-red-500 ring-2 ring-red-100" />
-                ) : running ? (
-                  <span className="relative z-10 mt-1.5 flex size-3.5 items-center justify-center">
-                    <span className="absolute size-3.5 animate-ping rounded-full bg-amber-400/50" />
-                    <span className="relative size-2.5 rounded-full bg-amber-500 ring-2 ring-amber-100" />
-                  </span>
-                ) : (
-                  <span className="relative z-10 mt-1.5 flex size-3.5 items-center justify-center rounded-full bg-[#3f6b00] text-white">
-                    <Check className="size-2.5" strokeWidth={3} />
-                  </span>
-                )}
+                </svg>
               </div>
-              <div className="min-w-0 flex-1 pt-0.5">
-                <p className="font-mono text-[12px] font-medium text-neutral-800">{t.fn}</p>
-                <p className={`text-[11px] ${failed ? 'font-medium text-red-700' : 'text-neutral-500'}`}>
-                  {revealed ? t.detail : '—'}
+
+              <div className="absolute inset-x-0 bottom-2.5 z-20 flex justify-center px-3">
+                <div
+                  className={`inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-[11px] font-medium shadow-md ring-1 backdrop-blur-md transition-colors duration-300 ${
+                    fnDown
+                      ? 'bg-neutral-900/90 text-white ring-white/10'
+                      : 'bg-white/90 text-neutral-700 ring-black/10'
+                  }`}
+                >
+                  <kbd
+                    className={`inline-flex h-5 min-w-[1.65rem] items-center justify-center rounded-[5px] px-1 font-mono text-[10px] font-bold tracking-wide ring-1 transition-colors ${
+                      fnDown
+                        ? 'bg-fern-500 text-white ring-fern-400 shadow-[0_0_0_3px_rgba(122,168,36,0.35)]'
+                        : 'bg-neutral-100 text-neutral-800 ring-neutral-200'
+                    }`}
+                  >
+                    Fn
+                  </kbd>
+                  <span>
+                    {!fnDown
+                      ? 'Click Fn to mark on screen'
+                      : userMarking && !agentMarked
+                        ? 'Outline what you want explained…'
+                        : agentMarked
+                          ? 'Trooper marked it for you'
+                          : 'Marking mode on'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Agent tooltip — outside Preview overflow so it can float over the desktop */}
+          <div
+            className={`pointer-events-none absolute z-30 w-[10.5rem] transition-all duration-300 ease-out sm:w-[11.5rem] ${
+              agentMarked
+                ? 'translate-x-0 opacity-100'
+                : 'translate-x-1 opacity-0'
+            }`}
+            style={{ left: '72%', top: '22%' }}
+          >
+            <div className="relative">
+              <span className="absolute -left-1.5 top-3 h-0 w-0 border-y-[6px] border-r-[7px] border-y-transparent border-r-[#16a34a]" />
+              <div className="rounded-[8px] bg-[#16a34a] px-2.5 py-1.5 text-white shadow-[0_10px_28px_-10px_rgba(22,163,74,0.65)] ring-1 ring-black/10">
+                <p className="min-h-[11px] text-[11px] font-semibold leading-none tracking-tight">
+                  {typedTitle}
+                  {agentMarked && typedTitle.length < SC_LABEL_TITLE.length ? (
+                    <span className="ml-0.5 inline-block h-[0.9em] w-[1.5px] animate-pulse bg-white/80 align-[-1px]" />
+                  ) : null}
+                </p>
+                <p className="mt-1 min-h-[2.4em] text-[10px] leading-snug text-white/90">
+                  {typedBody}
+                  {agentMarked &&
+                  typedTitle.length >= SC_LABEL_TITLE.length &&
+                  typedBody.length < SC_LABEL_BODY.length ? (
+                    <span className="ml-0.5 inline-block h-[0.9em] w-[1.5px] animate-pulse bg-white/70 align-[-1px]" />
+                  ) : null}
                 </p>
               </div>
-              <span
-                className={`mt-0.5 shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] ${
-                  failed
-                    ? 'bg-red-100 text-red-700'
-                    : running
-                      ? 'bg-amber-100 text-amber-800'
-                      : revealed
-                        ? 'bg-[#f0f5e6] text-[#325600]'
-                        : 'bg-neutral-100 text-neutral-400'
-                }`}
-              >
-                {failed ? 'Failed' : running ? 'Running' : revealed ? 'Passed' : '—'}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-
-      <div className="flex items-center justify-between border-t border-[#E7E5E4] bg-[#FAFAF9]/60 px-3.5 py-2 text-[11px]">
-        <span className="font-medium uppercase tracking-[0.1em] text-neutral-400">Audit log</span>
-        <span className="font-medium text-[#325600]">
-          {phase >= 4 ? 'Root cause found · 47 events' : '47 events · tracing…'}
-        </span>
+            </div>
+          </div>
+        </div>
       </div>
-    </MockShell>
+
+      <style>{`
+        .sc-user-lasso {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          opacity: 0;
+          transition: opacity 0.35s ease;
+        }
+        .sc-user-lasso--draw {
+          opacity: 1;
+          animation: scUserLasso 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .sc-user-lasso--out {
+          stroke-dashoffset: 0;
+          opacity: 0 !important;
+          animation: none;
+          transition: opacity 0.28s ease;
+        }
+        @keyframes scUserLasso {
+          to { stroke-dashoffset: 0; }
+        }
+        .sc-agent-mark {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          opacity: 0;
+        }
+        .sc-agent-mark--on {
+          opacity: 1;
+          animation: scAgentMark 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes scAgentMark {
+          to { stroke-dashoffset: 0; }
+        }
+        .sc-cursor {
+          left: 36%;
+          top: 42%;
+          opacity: 0;
+        }
+        .sc-cursor--mark {
+          opacity: 1;
+          animation: scMarkPath 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .sc-cursor--hide {
+          opacity: 0;
+          transition: opacity 0.25s ease;
+        }
+        @keyframes scMarkPath {
+          0%   { left: 40%; top: 28%; }
+          20%  { left: 58%; top: 18%; }
+          45%  { left: 70%; top: 36%; }
+          70%  { left: 58%; top: 58%; }
+          100% { left: 42%; top: 48%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sc-user-lasso--draw, .sc-agent-mark--on, .sc-cursor--mark { animation: none !important; }
+          .sc-user-lasso--draw { stroke-dashoffset: 0; opacity: 1; }
+          .sc-user-lasso--out { opacity: 0 !important; }
+          .sc-agent-mark--on { stroke-dashoffset: 0; opacity: 1; }
+          .sc-cursor--mark { opacity: 0; }
+        }
+      `}</style>
+    </div>
   );
 }
 
 /**
  * The window's "screen" for smaller card mocks — padded canvas + max-width so
- * org/ticket/etc. visuals stay consistent. Full product screens (browser /
+ * org/workflow/etc. visuals stay consistent. Full product screens (browser /
  * desktop / devices) render flush under the traffic-light bar instead.
  */
 const PixelFramedVisual = ({ children }: { children: ReactNode }) => (
@@ -686,6 +894,8 @@ type CapabilityCard = {
   Visual: (props: { focused: boolean }) => JSX.Element | null;
   /** Full-bleed product screen — no padded canvas around the mock. */
   screen?: boolean;
+  /** Let tooltips / marks float outside the window chrome. */
+  overflowVisible?: boolean;
   meta?: string;
   cta?: { label: string; href: string; external?: boolean };
   secondary?: { label: string; href: string };
@@ -733,15 +943,45 @@ const cards: CapabilityCard[] = [
     Visual: MemoryVisual,
   },
   {
-    tag: 'Ticket system',
-    ask: 'trooper, why did the deploy break?',
-    reply: 'tracing every step',
-    window: 'Ticket #1042',
-    title: 'Every conversation traced.',
-    highlight: 'Every decision explained.',
+    tag: 'Workflows',
+    ask: 'trooper, run the refund playbook for Acme',
+    reply: 'on it — following the SOP',
+    window: 'Workflow — Refund playbook',
+    title: 'Workflows you define.',
+    highlight: 'Reliable decisions, every time.',
     description:
-      'You communicate with agents through tickets. Every instruction, every response, every tool call and decision is recorded with full tracing. Nothing happens in the dark.',
-    Visual: TicketVisual,
+      'Create SOPs as workflows agents follow end to end — triggers, checks, AI steps, and human gates. The same playbook every time, so work stays consistent and nothing happens off-script.',
+    Visual: WorkflowVisual,
+  },
+  {
+    tag: 'Screen context',
+    ask: "trooper, what's this muscle called?",
+    reply: 'deltoid — it lifts your arm',
+    window: 'Screen — studio-mac',
+    title: 'Use your screen as context.',
+    highlight: 'Hold Fn. Mark. Ask.',
+    description:
+      'Hold Fn and outline anything on your Mac — a diagram, an error, a design. Troopers see what you mark and explain it. No screenshots to upload.',
+    Visual: ScreenContextVisual,
+    screen: true,
+    overflowVisible: true,
+    meta: 'macOS 12+ · Hold Fn to mark on screen',
+    cta: { label: 'Download for Mac', href: MAC_DMG_URL, external: true },
+    ctaIcon: { src: '/images/platforms/apple.svg', invert: true },
+  },
+  {
+    tag: 'Video editor',
+    ask: 'trooper, cut the fillers and pull the highlights',
+    reply: 'on it — opening the editor',
+    window: 'Editor — Demo Project',
+    title: 'AI video editor,',
+    highlight: 'not a timeline grind.',
+    description:
+      'Ask Troopers to remove fillers, find highlights, generate motion graphics, and score the cut. The timeline updates while you watch — same workflow as chatting your edit.',
+    Visual: VideoEditorCapabilityVisual,
+    screen: true,
+    meta: 'Cuts · motion graphics · score',
+    cta: { label: 'Get started free', href: 'https://app.trooper.so?ref=video-editor', external: true },
   },
   // Desktop / browser / devices — same rhythm as the rows above, not a second section.
   ...WORK_SURFACES.map((surface) => {
@@ -765,9 +1005,9 @@ const cards: CapabilityCard[] = [
 ];
 
 /**
- * Capability rows (orgs, action, memory, tickets, then desktop / browser /
- * devices): typed ask → green reply, product frame beside. One scroll-focus
- * dims every other row — including where agents run.
+ * Capability rows (orgs, action, memory, workflows, screen context, video
+ * editor, then desktop / browser / devices): typed ask → green reply,
+ * product frame beside. One scroll-focus dims every other row.
  */
 export default function OldWays() {
   const rowRefs = useRef<Array<HTMLElement | null>>([]);
@@ -927,8 +1167,12 @@ export default function OldWays() {
             </div>
 
             <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
-              <div className="overflow-hidden rounded-xl bg-white shadow-[0_28px_56px_-24px_rgba(26,26,26,0.4)] ring-1 ring-black/10">
-                <div className="relative flex items-center gap-1.5 border-b border-black/5 bg-neutral-50 px-3 py-2">
+              <div
+                className={`rounded-xl bg-white shadow-[0_28px_56px_-24px_rgba(26,26,26,0.4)] ring-1 ring-black/10 ${
+                  card.overflowVisible ? 'overflow-visible' : 'overflow-hidden'
+                }`}
+              >
+                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-xl border-b border-black/5 bg-neutral-50 px-3 py-2">
                   <span className="size-2.5 rounded-full bg-[#ff5f57]" />
                   <span className="size-2.5 rounded-full bg-[#febc2e]" />
                   <span className="size-2.5 rounded-full bg-[#28c840]" />
@@ -937,7 +1181,13 @@ export default function OldWays() {
                   </span>
                 </div>
                 {card.screen ? (
-                  <div className="overflow-hidden">
+                  <div
+                    className={
+                      card.overflowVisible
+                        ? 'overflow-visible rounded-b-xl'
+                        : 'overflow-hidden'
+                    }
+                  >
                     <Visual focused={focused} />
                   </div>
                 ) : (

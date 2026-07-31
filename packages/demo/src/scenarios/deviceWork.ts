@@ -53,7 +53,7 @@ $ export → PDF
 
 export const deviceWorkScenario: DemoScenario = {
   id: 'device-work',
-  org: { name: 'Wonder', domain: 'viralhooks.org', icon: VIRALHOOKS_FAVICON },
+  org: { name: 'Wonder', domain: 'wonderdesk.ai', icon: VIRALHOOKS_FAVICON },
   channels: [
     { id: 'general', name: 'general', preview: 'Leo: Studio-Mac is awake…', time: '07:02', system: false },
     { id: 'finance', name: 'finance', preview: 'Routine: Q3 forecast refresh', time: '07:00', system: false },
@@ -104,17 +104,17 @@ export const deviceWorkScenario: DemoScenario = {
     ],
   },
   chatScript: [
-    { type: 'mention_tab', text: 'Routine: Monthly forecast refresh', delay: 150 },
-    { type: 'typing', text: 'morning @Leo — is the Q3 forecast ready for the board pack?', delay: 200 },
-    { type: 'send', sender: 'Vaibhav', role: 'Founder', text: 'morning @Leo — is the Q3 forecast ready for the board pack?', delay: 300 },
+    { type: 'mention_tab', text: 'Vaibhav: @Leo board pack forecast?', delay: 150 },
+    { type: 'typing', text: 'hey @Leo — board pack still needs the Q3 forecast. can you pull it from Studio-Mac?', delay: 200 },
+    { type: 'send', sender: 'Vaibhav', role: 'Founder', text: 'hey @Leo — board pack still needs the Q3 forecast. can you pull it from Studio-Mac?', delay: 300 },
     { type: 'nick_typing', delay: 700 },
-    { type: 'response', sender: 'Leo', role: 'Operations & Finance', text: "the routine already fired at 07:00. Studio-Mac is awake and Numbers is open — the model has linked sheets that don't survive export, so this one runs on the machine.", time: '07:02', delay: 1400 },
+    { type: 'response', sender: 'Leo', role: 'Operations & Finance', text: "on it — waking Studio-Mac. The Numbers model has linked sheets that don't survive export, so this one runs on the machine.", time: '16:52', delay: 1400 },
     { type: 'addTasks', phase: 1, delay: 500 },
     { type: 'reaction', emoji: '🖥️', count: 2, delay: 450 },
     { type: 'typing', text: 'perfect. flag anything that looks off', delay: 700 },
     { type: 'send', sender: 'Vaibhav', role: 'Founder', text: 'perfect. flag anything that looks off', delay: 300 },
     { type: 'nick_typing', delay: 650 },
-    { type: 'response', sender: 'Leo', role: 'Operations & Finance', text: 'will do — reading the regions now.', time: '07:03', delay: 1000 },
+    { type: 'response', sender: 'Leo', role: 'Operations & Finance', text: 'will do — reading the regions now.', time: '16:53', delay: 1000 },
     { type: 'addTasks', phase: 2, delay: 500 },
   ],
   spotlightTaskId: 1,

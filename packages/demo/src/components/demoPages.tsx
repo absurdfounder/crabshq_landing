@@ -147,7 +147,7 @@ export function DemoHomePage() {
               <div style={{ display: 'flex', gap: 6 }}>
                 <div style={{ width: 28, height: 28, borderRadius: 8, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Plus size={14} color={C.textSubtle} /></div>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, height: 28, padding: '0 8px', borderRadius: 8, border: `1px solid ${C.border}`, fontSize: 11, color: C.textMuted }}>
-                  <img src="/images/trooper-logomark.png" alt="" style={{ width: 14, height: 14, imageRendering: 'pixelated' }} /> Trooper Auto
+                  <img src="/images/trooper-logomark-64.webp" alt="" style={{ width: 14, height: 14 }} /> Trooper Auto
                 </span>
               </div>
               <div style={{ display: 'flex', gap: 4 }}>

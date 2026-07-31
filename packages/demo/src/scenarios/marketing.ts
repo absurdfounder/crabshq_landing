@@ -2,6 +2,7 @@ import { VIRALHOOKS_FAVICON } from '../lib/favicon';
 import { a, assetPath, DEMO_MEDIA } from '../assets/helpers';
 import { i } from '../lib/demoIntegrations';
 import type { DemoScenario } from './types';
+import { CAMPAIGN_HTML } from './_campaignHtml';
 
 const VIDEO_TRANSCRIPT = `[00:00] Hook — "Stop tab-switching between agents"
 [00:05] Screen: Trooper board with kanban columns
@@ -17,7 +18,7 @@ const ARTIFACTS = {
     src: assetPath('marketing', 'campaign.html'),
     browserUrl: 'https://northstar.io/q2',
     faviconDomain: 'northstar.io',
-    content: '',
+    content: CAMPAIGN_HTML,
   }),
   'creative/linkedin-carousel.png': a({
     name: 'creative/linkedin-carousel.png',

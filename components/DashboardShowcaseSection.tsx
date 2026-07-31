@@ -61,7 +61,7 @@ export default function DashboardShowcaseSection() {
           transition={{ duration: 0.65, delay: 0.08, ease }}
           viewport={{ once: true, margin: '-60px' }}
         >
-          <div className="hero-surface rail-bleed relative border-y border-black/5 px-4 py-10 sm:px-6 lg:py-14">
+          <div className="hero-surface rail-bleed relative border-y border-black/5 px-3 py-8 sm:px-4 lg:px-5 lg:py-10">
             <HeroArticleDemo rotate flush />
           </div>
         </motion.div>

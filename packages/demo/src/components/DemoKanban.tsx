@@ -14,7 +14,7 @@ import { DUR, EASE_OUT } from '../lib/demoMotion';
  * and the DragOverlay in `src/components/KanbanBoard.jsx`.
  */
 
-export const DEMO_KANBAN_COL_W = 224; // app: sm:min-w-[14rem]
+export const DEMO_KANBAN_COL_W = 200; // showcase board pane is tighter than full desktop
 export const DEMO_KANBAN_GAP = 6;
 
 /** TaskCard.jsx `priorityDots` */

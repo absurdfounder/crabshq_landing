@@ -21,7 +21,7 @@ import {
   type DemoScenarioId,
 } from './scenarios/index';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from './scenarios/types';
-import { useDemoCursor } from './components/DemoClickCursor';
+import { DemoClickCursor, useDemoCursor } from './components/DemoClickCursor';
 import { DemoKanbanColumn, DemoDragOverlay, DEMO_KANBAN_COL_W, DEMO_KANBAN_GAP } from './components/DemoKanban';
 import {
   EMPTY_ARTIFACT_REVIEW,
@@ -33,7 +33,6 @@ import {
   animateChatStepCursor, animateExecStepCursor, execStepCursorAfterApply, cursorContextForStep, REACTION_MS,
 } from './lib/demoCursorActions';
 import { DEMO_KEYFRAMES, DRAG, DUR, EASE_OUT, typingDelayFor, usePrefersReducedMotion } from './lib/demoMotion';
-import { DemoOrb } from './lib/demoThinking';
 import { useDemoDrag } from './lib/useDemoDrag';
 import { rectInCanvas, type CanvasRect } from './lib/demoGeometry';
 
@@ -60,19 +59,20 @@ const SPLIT_PAGES: DemoPageId[] = ['tasks'];
 const RESUME_AFTER_MS = 6000;
 
 /**
- * Design canvas — sized so the board renders at the app's real density
- * (224px columns, 14px card titles) rather than shrunken stand-in values.
- * `DemoScaleFrame` scales the whole canvas down to the available width.
+ * Design canvas for the landing showcase.
  *
- * 1600 − 52 rail − 236 sidebar − 372 chat = 940 board pane;
- * less 24px padding = 916 ≥ 4×224 + 3×6 = 914.
+ * Narrower than a real desktop shell so fit-scale stays near 1 (readable text
+ * without a crop-zoom hack). Chat is intentionally wide; the board takes the
+ * remaining pane and scrolls horizontally for extra columns.
+ *
+ * 1320 − 52 rail − 216 sidebar − 440 chat = 612 board pane.
  */
-const DEMO_CANVAS_W = 1600;
-const DEMO_APP_H = 680;
+const DEMO_CANVAS_W = 1320;
+const DEMO_APP_H = 700;
 const DEMO_CHROME_H = 44;
 const DEMO_CANVAS_H = DEMO_APP_H + DEMO_CHROME_H;
-const DEMO_SIDEBAR_W = 236;
-const DEMO_CHAT_W = 372;
+const DEMO_SIDEBAR_W = 216;
+const DEMO_CHAT_W = 440;
 
 function DemoScaleFrame({ children }: { children: ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -83,7 +83,8 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
     if (!el) return;
     const update = () => {
       const w = el.clientWidth;
-      setScale(Math.min(1, w / DEMO_CANVAS_W));
+      // Strict fit only — never paint wider than the host (that was the crop).
+      setScale(w > 0 ? Math.min(1, w / DEMO_CANVAS_W) : 1);
     };
     update();
     const ro = new ResizeObserver(update);
@@ -173,7 +174,7 @@ function DemoSidebarRail({ org, onActivity }: { org: DemoOrg; onActivity: () => 
   return (
     <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
-        <img src="/images/trooper-logomark.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", imageRendering: "pixelated" }} />
+        <img src="/images/trooper-logomark-64.webp" alt="" style={{ width: 32, height: 32, objectFit: "contain" }} />
         <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
         <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
           <DemoFavicon src={org.icon} size={24} rounded="md" alt={org.name} />
@@ -323,18 +324,35 @@ function DemoSidebarNav({
             {channels.map(channelRow)}
             <div style={{ marginTop: 8, padding: "0 4px" }}>
               <div style={{ fontSize: 11, fontWeight: 500, color: C.textMuted, padding: "8px 4px 6px" }}>Direct messages</div>
-              {DEMO_AGENTS.slice(0, 3).map(a => (
-                <button key={a.name} type="button" onClick={() => { onActivity(); onNavigate('tasks'); }} className="demo-hoverable demo-row" style={{
-                  display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 14, marginBottom: 4,
-                  width: "100%", border: "none", cursor: "pointer", background: "transparent", textAlign: "left",
-                }}>
-                  <img src={a.img} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{a.name}</div>
-                    <div style={{ fontSize: 10, color: C.textSubtle }}>{a.role}</div>
-                  </div>
-                </button>
-              ))}
+              {DEMO_AGENTS.slice(0, 3).map(a => {
+                const dmId = `dm-${a.name.toLowerCase()}`;
+                const active = activeChannel === dmId;
+                return (
+                  <button
+                    key={a.name}
+                    type="button"
+                    onClick={() => {
+                      onActivity();
+                      onSelectChannel(dmId);
+                      onNavigate('tasks');
+                    }}
+                    className="demo-hoverable demo-row"
+                    style={{
+                      display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 14, marginBottom: 4,
+                      width: "100%", border: "none", cursor: "pointer", textAlign: "left",
+                      background: active ? C.card : "transparent",
+                      boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={a.img} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: active ? 600 : 500, color: C.text }}>{a.name}</div>
+                      <div style={{ fontSize: 10, color: C.textSubtle }}>{a.role}</div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </>
         ) : (
@@ -378,41 +396,47 @@ function DemoSidebarNav({
 }
 
 /**
- * The app's live-agent indicator: the sheened working badge, with the state the
- * agent is actually in where the generic pulsing dot used to be.
- *
- * This is the demo's copy of `RunActivityContent.jsx:618`, which renders a
- * 1.5px `animate-pulse` dot for every live run regardless of what the run is
- * doing. Here the agent is mid-reply, so the orb composes.
+ * Channel typing indicator — same row shape as a real message, with bounce
+ * dots instead of a spinner badge. Reads as "agent is typing a reply."
  */
-function DemoWorkingIndicator({ name }: { name: string }) {
+function DemoTypingIndicator({ name }: { name: string }) {
+  const role = ALL_PEOPLE[name]?.role || 'Agent';
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0" }} className="demo-enter">
-      <Av name={name} size={20} />
-      <span
-        className="demo-working-badge"
-        style={{
-          display: "inline-flex", alignItems: "center", gap: 6,
-          padding: "2px 9px 2px 5px", borderRadius: 999, fontSize: 11, fontWeight: 600,
-        }}
-      >
-        <span style={{ position: "relative", zIndex: 1, display: "flex" }}>
-          <DemoOrb state="composing" tone="light" title={`${name} is working`} />
+    <div className="demo-enter" style={{ marginBottom: 8 }} aria-live="polite" aria-label={`${name} is typing`}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+        <Av name={name} size={24} />
+        <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{name}</span>
+        <span style={{ fontSize: 9, fontWeight: 600, color: C.text, background: C.brandLight, padding: "2px 6px", borderRadius: 4, height: 16, display: "inline-flex", alignItems: "center" }}>Manager</span>
+        <span style={{ fontSize: 12, color: C.textSubtle }}>— {role}</span>
+      </div>
+      <div style={{ marginLeft: 32, display: "inline-flex", alignItems: "center", gap: 10 }}>
+        <span
+          className="demo-typing-bubble"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            height: 32, padding: "0 12px", borderRadius: 16,
+            background: C.bg, border: `1px solid ${C.border}`,
+          }}
+        >
+          <span className="demo-typing-dot" />
+          <span className="demo-typing-dot" />
+          <span className="demo-typing-dot" />
         </span>
-        <span style={{ position: "relative", zIndex: 1 }}>{name} is working</span>
-      </span>
+        <span style={{ fontSize: 12, color: C.textSubtle }}>{name} is typing…</span>
+      </div>
     </div>
   );
 }
 
 function DemoChatPane({
-  messages, inputText, mentionTab, agentTyping, activeChannel, composerPlaceholder, chatRef,
+  messages, inputText, mentionTab, agentTyping, typingName, activeChannel, composerPlaceholder, chatRef,
   channels, org, channelBrand = 'trooper', onActivity,
 }: {
   messages: Message[];
   inputText: string;
   mentionTab: string;
   agentTyping: boolean;
+  typingName: string;
   activeChannel: string;
   composerPlaceholder: string;
   chatRef: RefObject<HTMLDivElement>;
@@ -421,7 +445,10 @@ function DemoChatPane({
   channelBrand?: ChannelBrand;
   onActivity: () => void;
 }) {
-  const channelName = channels.find(c => c.id === activeChannel)?.name || 'general';
+  const dmMatch = /^dm-(.+)$/.exec(activeChannel);
+  const channelName = dmMatch
+    ? dmMatch[1].replace(/^\w/, c => c.toUpperCase())
+    : (channels.find(c => c.id === activeChannel)?.name || 'general');
   const headerAccent = channelBrand === 'slack' ? '#611f69' : channelBrand === 'whatsapp' ? '#128C7E' : C.textMuted;
   const ChannelIcon = channelBrand === 'whatsapp' ? MessageCircle : Hash;
 
@@ -473,7 +500,7 @@ function DemoChatPane({
             )}
           </div>
         ))}
-        {agentTyping && <DemoWorkingIndicator name="Jordan" />}
+        {agentTyping && <DemoTypingIndicator name={typingName} />}
       </div>
 
       <div style={{ padding: "10px 16px 12px", borderTop: `1px solid ${C.borderWarm}`, background: C.card }}>
@@ -523,6 +550,9 @@ function DemoChatPane({
   );
 }
 
+/** Showcase board — TODO is hidden; only the active work columns stay. */
+const BOARD_COLUMN_IDS: DemoColumnId[] = ['in_progress', 'review', 'done'];
+
 function DemoBoardPane({
   tasks, highlightedTaskId, draggingTaskId, overCol, interactive, onOpenTask, onDragStart, onActivity,
 }: {
@@ -537,7 +567,11 @@ function DemoBoardPane({
 }) {
   const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns');
   const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
-  tasks.forEach((t) => { if (cols[t.col]) cols[t.col].push(t); });
+  tasks.forEach((t) => {
+    // Fold inbox into In Progress so cards aren't lost when TODO is hidden.
+    const col = t.col === 'inbox' ? 'in_progress' : t.col;
+    if (cols[col]) cols[col].push(t);
+  });
 
   const toggle = (mode: 'columns' | 'list', icon: ReactNode, label: string) => (
     <button
@@ -568,7 +602,7 @@ function DemoBoardPane({
         </button>
       </div>
       <div className="Trooper-scrollbar" style={{ display: "flex", gap: DEMO_KANBAN_GAP, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
-        {(Object.keys(KANBAN_COLUMNS) as DemoColumnId[]).map((k) => (
+        {BOARD_COLUMN_IDS.map((k) => (
           <DemoKanbanColumn
             key={k}
             colKey={k}
@@ -576,7 +610,7 @@ function DemoBoardPane({
             avatarFor={avatarFor}
             highlightedTaskId={highlightedTaskId}
             draggingTaskId={draggingTaskId}
-            isOver={overCol === k}
+            isOver={overCol === k || (k === 'in_progress' && overCol === 'inbox')}
             interactive={interactive}
             onOpenTask={onOpenTask}
             onDragStart={onDragStart}
@@ -667,18 +701,23 @@ export default function TrooperDemo({
 
   const reducedMotion = usePrefersReducedMotion();
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  /** Per-channel / per-DM threads — switching agents must not wipe history. */
+  const [threads, setThreads] = useState<Record<string, Message[]>>({});
   const [tasks, setTasks] = useState<Task[]>([]);
   const [inputText, setInputText] = useState("");
   const [mentionTab, setMentionTab] = useState("");
   const [agentTyping, setAgentTyping] = useState(false);
+  const [typingName, setTypingName] = useState('Jordan');
   const [activePage, setActivePage] = useState<DemoPageId>("tasks");
   const [sidebarTab, setSidebarTab] = useState<SidebarTab>(scenario.defaultSidebarTab ?? "channels");
   const [activeChannel, setActiveChannel] = useState(scenario.defaultChannel ?? "general");
+  const activeChannelRef = useRef(activeChannel);
+  const lastAgentRef = useRef<string | null>(null);
   const [scriptIndex, setScriptIndex] = useState(startStep);
   const [mode, setMode] = useState<DemoMode>('script');
   const [resumeIn, setResumeIn] = useState<number | null>(null);
   const [taskModalOpen, setTaskModalOpen] = useState(false);
+  const taskModalOpenRef = useRef(false);
   const [modalOrigin, setModalOrigin] = useState<CanvasRect | null>(null);
   const [modalTask, setModalTask] = useState<Task | null>(null);
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(scenario.initialSubtasks);
@@ -690,7 +729,7 @@ export default function TrooperDemo({
   const [highlightedTaskId, setHighlightedTaskId] = useState<number | null>(null);
   // Capability workspace state — each is inert unless the scenario drives it.
   const [browserFrameCount, setBrowserFrameCount] = useState(0);
-  const [videoStage, setVideoStage] = useState<'storyboard' | 'timeline'>('storyboard');
+  const [videoStage, setVideoStage] = useState<'storyboard' | 'timeline'>('timeline');
   const [videoPlayhead, setVideoPlayhead] = useState(0);
   const [videoScenesReady, setVideoScenesReady] = useState(0);
   const [desktopLines, setDesktopLines] = useState<string[]>([]);
@@ -708,8 +747,7 @@ export default function TrooperDemo({
   const demoCanvasRef = useRef<HTMLDivElement>(null);
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Cursor motion still drives script timing; the green pointer glyph is not shown.
-  const { goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
+  const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
     useDemoCursor(demoCanvasRef, { reducedMotion });
 
   const handleTaskDrop = useCallback((taskId: number, col: DemoColumnId) => {
@@ -730,6 +768,48 @@ export default function TrooperDemo({
   useEffect(() => { modalArtifactRef.current = modalArtifact; }, [modalArtifact]);
   useEffect(() => { artifactReviewRef.current = artifactReview; }, [artifactReview]);
   useEffect(() => { canvasReviewRef.current = canvasReview; }, [canvasReview]);
+  useEffect(() => { activeChannelRef.current = activeChannel; }, [activeChannel]);
+  useEffect(() => { taskModalOpenRef.current = taskModalOpen; }, [taskModalOpen]);
+
+  const messages = threads[activeChannel] ?? [];
+
+  /** Append into a thread; agent messages also mirror to that agent's DM. */
+  const appendToChannel = useCallback((channelId: string, msg: Message) => {
+    setThreads(prev => {
+      const next: Record<string, Message[]> = { ...prev };
+      const target = [...(prev[channelId] ?? [])];
+
+      if (!msg.isHuman && msg.sender) {
+        if (lastAgentRef.current && lastAgentRef.current !== msg.sender) {
+          const handoff: Message = {
+            sender: 'Trooper',
+            role: 'System',
+            text: `${lastAgentRef.current} handed off to ${msg.sender} — continuing in this thread.`,
+            isHuman: false,
+            time: msg.time,
+          };
+          if (channelId === 'general') {
+            target.push(handoff);
+          } else {
+            next.general = [...(prev.general ?? []), handoff];
+          }
+        }
+        lastAgentRef.current = msg.sender;
+        const dmId = `dm-${msg.sender.toLowerCase()}`;
+        if (dmId !== channelId) {
+          next[dmId] = [...(prev[dmId] ?? []), msg];
+        }
+      }
+
+      target.push(msg);
+      next[channelId] = target;
+      return next;
+    });
+  }, []);
+
+  const appendActiveMessage = useCallback((msg: Message) => {
+    appendToChannel(activeChannelRef.current, msg);
+  }, [appendToChannel]);
 
   const totalScriptLength = CHAT_SCRIPT.length + TASK_EXEC_SCRIPT.length;
   const spotlightTask = tasks.find(t => t.id === SPOTLIGHT_TASK_ID);
@@ -758,7 +838,7 @@ export default function TrooperDemo({
     setCanvasReview(null);
     setCanvasTileComments({});
     setBrowserFrameCount(0);
-    setVideoStage('storyboard');
+    setVideoStage('timeline');
     setVideoPlayhead(0);
     setVideoScenesReady(0);
     setDesktopLines([]);
@@ -769,8 +849,54 @@ export default function TrooperDemo({
   }, [scenario.initialSubtasks]);
 
   const resetDemo = useCallback(() => {
-    setMessages([]); setTasks([]); setInputText(""); setMentionTab(""); setAgentTyping(false);
-    setActivePage("tasks"); setSidebarTab(scenario.defaultSidebarTab ?? "channels"); setActiveChannel(scenario.defaultChannel ?? "general");
+    setThreads({});
+    setTasks([]);
+    setInputText("");
+    setMentionTab("");
+    setAgentTyping(false);
+    setTypingName('Jordan');
+    lastAgentRef.current = null;
+    setActivePage("tasks");
+    setSidebarTab(scenario.defaultSidebarTab ?? "channels");
+    setActiveChannel(scenario.defaultChannel ?? "general");
+    resetTaskModal();
+    resetDrag();
+    setScriptIndex(0);
+    hideCursor();
+  }, [resetTaskModal, resetDrag, scenario.defaultChannel, scenario.defaultSidebarTab, hideCursor]);
+
+  /**
+   * Same-org rotate: keep #general (and DMs) so the reel doesn't read as a
+   * brand-new morning chat after the previous Wonder ticket just finished.
+   */
+  const softResetForNextScenario = useCallback(() => {
+    setThreads(prev => {
+      const general = prev.general ?? [];
+      if (general.length === 0) return prev;
+      const last = general[general.length - 1];
+      if (last?.role === 'System' && last.text.startsWith('—')) return prev;
+      return {
+        ...prev,
+        general: [
+          ...general,
+          {
+            sender: 'Trooper',
+            role: 'System',
+            text: '— continuing in #general —',
+            isHuman: false,
+            time: '',
+          },
+        ],
+      };
+    });
+    setTasks([]);
+    setInputText('');
+    setMentionTab('');
+    setAgentTyping(false);
+    setTypingName('Jordan');
+    setActivePage('tasks');
+    setSidebarTab(scenario.defaultSidebarTab ?? 'channels');
+    setActiveChannel(scenario.defaultChannel ?? 'general');
     resetTaskModal();
     resetDrag();
     setScriptIndex(0);
@@ -803,8 +929,26 @@ export default function TrooperDemo({
 
   useEffect(() => () => { if (idleTimer.current) clearInterval(idleTimer.current); }, []);
 
+  const prevScenarioIdRef = useRef<DemoScenarioId | null>(null);
+
   useEffect(() => {
-    resetDemo();
+    const prevId = prevScenarioIdRef.current;
+    prevScenarioIdRef.current = activeScenarioId;
+
+    if (prevId === null) {
+      resetDemo();
+      setMode('script');
+      return;
+    }
+    if (prevId === activeScenarioId) return;
+
+    const prevOrg = getDemoScenario(prevId).org.domain;
+    const nextOrg = scenario.org.domain;
+    if (prevOrg === nextOrg) {
+      softResetForNextScenario();
+    } else {
+      resetDemo();
+    }
     setMode('script');
   }, [activeScenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -993,12 +1137,19 @@ export default function TrooperDemo({
         setTaskModalOpen(false);
         break;
       case 'chatMsg':
-        setMessages(p => [...p, { sender: step.sender, role: step.role, text: step.text, isHuman: false, time: step.time }]);
+        // Status updates always land in #general so ticket work doesn't wipe the channel.
+        appendToChannel('general', {
+          sender: step.sender,
+          role: step.role,
+          text: step.text,
+          isHuman: false,
+          time: step.time,
+        });
         break;
       default:
         break;
     }
-  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey, scenario.generationJobs, handleTaskDrop]);
+  }, [DEMO_ARTIFACTS, scenario.deliverArtifactKey, scenario.generationJobs, handleTaskDrop, appendToChannel]);
 
   /**
    * Step runner. Every beat now reads: wait → move the pointer → click →
@@ -1017,8 +1168,12 @@ export default function TrooperDemo({
       if (idx >= totalScriptLength) {
         await sleep(5000);
         if (!alive) return;
-        resetDemo();
-        if (rotate) setRotationIndex(n => n + 1);
+        if (rotate) {
+          // Scenario-change effect owns soft/hard reset so same-org threads survive.
+          setRotationIndex(n => n + 1);
+        } else {
+          resetDemo();
+        }
         return;
       }
 
@@ -1031,12 +1186,23 @@ export default function TrooperDemo({
         if (step.type === 'moveTask') {
           const task = tasks.find(t => t.id === step.taskId);
           if (task) {
-            await goTo(`[data-demo-target="task-card"][data-task-id="${step.taskId}"]`, { click: true });
-            if (!alive) return;
-            const move = runScriptedMove(task, step.col);
-            // The pointer carries the card rather than watching it fly alone.
-            setTimeout(() => { if (alive) goTo(`[data-demo-target="kanban-body-${step.col}"]`); }, DRAG.lift);
-            await move;
+            // TODO is hidden and folded into In Progress — inbox→in_progress is a
+            // no-op visually, so skip the flight (also avoids ghost cards over chat).
+            const sameVisualCol =
+              task.col === step.col ||
+              (task.col === 'inbox' && step.col === 'in_progress');
+            // Never fly a card over an open ticket — the drag overlay sits above
+            // the modal (z-index) and reads as a ghost card mid-work.
+            if (taskModalOpenRef.current || sameVisualCol) {
+              handleTaskDrop(task.id, step.col);
+            } else {
+              await goTo(`[data-demo-target="task-card"][data-task-id="${step.taskId}"]`, { click: true });
+              if (!alive) return;
+              const move = runScriptedMove(task, step.col);
+              // The pointer carries the card rather than watching it fly alone.
+              setTimeout(() => { if (alive) goTo(`[data-demo-target="kanban-body-${step.col}"]`); }, DRAG.lift);
+              await move;
+            }
           } else {
             applyTaskExecStep(step);
           }
@@ -1064,8 +1230,15 @@ export default function TrooperDemo({
         if (execStepCursorAfterApply(step)) {
           // Target doesn't exist until the step has run — mutate, then point.
           applyTaskExecStep(step);
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => { if (alive) animateExecStepCursor(step, goTo, ctx); });
+          await new Promise<void>((resolve) => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                void (async () => {
+                  if (alive) await animateExecStepCursor(step, goTo, ctx);
+                  resolve();
+                })();
+              });
+            });
           });
         } else {
           await animateExecStepCursor(step, goTo, ctx);
@@ -1112,19 +1285,44 @@ export default function TrooperDemo({
       if (s.type === "mention_tab") { setMentionTab(s.text || ""); setSidebarTab("channels"); }
       else if (s.type === "send") {
         setInputText("");
-        setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: true, time: "14:52" }]);
+        appendActiveMessage({
+          sender: s.sender || "",
+          role: s.role || "",
+          text: s.text || "",
+          isHuman: true,
+          time: "14:52",
+        });
       }
-      else if (s.type === "nick_typing") { setAgentTyping(true); setActivePage("tasks"); }
+      else if (s.type === "nick_typing") {
+        const next = CHAT_SCRIPT[idx + 1];
+        const name = next?.type === 'response' && next.sender ? next.sender : 'Jordan';
+        setTypingName(name);
+        setAgentTyping(true);
+        setActivePage("tasks");
+      }
       else if (s.type === "response") {
         setAgentTyping(false);
-        setMessages(p => [...p, { sender: s.sender || "", role: s.role || "", text: s.text || "", isHuman: false, time: s.time || "" }]);
+        if (s.sender) setTypingName(s.sender);
+        appendActiveMessage({
+          sender: s.sender || "",
+          role: s.role || "",
+          text: s.text || "",
+          isHuman: false,
+          time: s.time || "",
+        });
         setActivePage("tasks");
       }
       else if (s.type === "reaction") {
-        setMessages(p => {
-          const c = [...p];
-          if (c.length) c[c.length - 1] = { ...c[c.length - 1], reaction: { emoji: s.emoji || "", count: s.count || 0 } };
-          return c;
+        const channelId = activeChannelRef.current;
+        setThreads(prev => {
+          const c = [...(prev[channelId] ?? [])];
+          if (c.length) {
+            c[c.length - 1] = {
+              ...c[c.length - 1],
+              reaction: { emoji: s.emoji || "", count: s.count || 0 },
+            };
+          }
+          return { ...prev, [channelId]: c };
         });
       }
       else if (s.type === "addTasks") {
@@ -1201,7 +1399,7 @@ export default function TrooperDemo({
         }
       >
         {backdrop}
-        <div className="Trooper-demo relative z-10" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>
+        <div className="Trooper-demo relative z-10" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 14 }}>
         <DemoScaleFrame>
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
@@ -1232,6 +1430,7 @@ export default function TrooperDemo({
           </div>
 
           <div ref={demoCanvasRef} style={{ position: "relative", display: "flex", height: DEMO_APP_H, background: C.bg }}>
+            <DemoClickCursor state={cursor} />
             {drag && (
               <DemoDragOverlay
                 task={drag.task}
@@ -1262,6 +1461,7 @@ export default function TrooperDemo({
                   inputText={inputText}
                   mentionTab={mentionTab}
                   agentTyping={agentTyping}
+                  typingName={typingName}
                   activeChannel={activeChannel}
                   composerPlaceholder={composerPlaceholder}
                   chatRef={chatRef}

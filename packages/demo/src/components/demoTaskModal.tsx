@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, useRef } from 'react';
 import {
-  X, Check, Loader2, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
+  X, Check, Globe, Search, FileText, GitCommit, MessageSquare, Terminal, Wrench,
   ChevronUp, Layers, Download, ArrowUp, ListTodo, Hash, Target, Tag, Code,
 } from 'lucide-react';
 import { BorderBeam } from 'border-beam';
@@ -15,12 +15,12 @@ import type { ArtifactReviewState } from '../lib/demoArtifactReview';
 import { DemoFavicon } from './DemoFavicon';
 import { DemoTagBadge } from './DemoTagBadge';
 import { getToolIconMeta } from '../lib/demoToolFavicon';
+import { humanizeToolLabel } from '../lib/demoIntegrations';
 import { getProviderDomain } from '../lib/demoProviders';
 import { DemoArtifactPanel } from './DemoArtifactPanel';
 import { DemoCanvasView } from './DemoCanvasView';
 import type { DemoWorkspaceMode } from './demoTaskExecution';
-import { DUR, EASE_OUT, usePrefersReducedMotion } from '../lib/demoMotion';
-import { DemoOrb, orbStateForTool } from '../lib/demoThinking';
+import { DUR, EASE_OUT, typingDelayFor, usePrefersReducedMotion } from '../lib/demoMotion';
 import type { CanvasRect } from '../lib/demoGeometry';
 import { DemoBrowserStream } from '../workspaces/DemoBrowserStream';
 import { DemoVideoWorkspace } from '../workspaces/DemoVideoWorkspace';
@@ -63,7 +63,7 @@ function ProviderChip({ provider, size = 14 }: { provider: string; size?: number
   const domain = getProviderDomain(provider);
   if (domain === 'trooper.so') {
     return (
-      <img src="/images/trooper-logomark.png" alt="" width={size} height={size} style={{ objectFit: 'contain', imageRendering: 'pixelated' }} />
+      <img src="/images/trooper-logomark-64.webp" alt="" width={size} height={size} style={{ objectFit: 'contain' }} />
     );
   }
   if (domain) return <DemoFavicon domain={domain} size={size + 2} rounded="sm" />;
@@ -103,38 +103,53 @@ function formatDuration(ms?: number): string | null {
 }
 
 /**
- * The app's reasoning block (TaskModal.jsx:1955) — amber, pulsing dot, and a
- * "Show more" past a few lines. Without it the thread is all tool calls and no
- * thinking, which is the part that makes an agent look like it has judgement.
+ * Agent thought as normal chat copy — types in like a reply, no yellow "REASONING" box.
  */
-function ReasoningBlock({ text }: { text: string }) {
-  const [expanded, setExpanded] = useState(false);
-  const isLong = text.length > 190;
-  const shown = expanded || !isLong ? text : `${text.slice(0, 190).trimEnd()}…`;
+function TypedChatText({ text }: { text: string }) {
+  const reduced = usePrefersReducedMotion();
+  const [shown, setShown] = useState(() => (reduced ? text : ''));
+
+  useEffect(() => {
+    if (reduced) {
+      setShown(text);
+      return;
+    }
+    setShown('');
+    let i = 0;
+    let alive = true;
+    let timer = 0;
+    const tick = () => {
+      if (!alive) return;
+      // Burst a few chars so long thoughts don't crawl.
+      const step = text.length > 220 ? 3 : 2;
+      i = Math.min(text.length, i + step);
+      setShown(text.slice(0, i));
+      if (i < text.length) {
+        timer = window.setTimeout(tick, Math.max(8, typingDelayFor(text, i - 1) / step));
+      }
+    };
+    timer = window.setTimeout(tick, 40);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, [text, reduced]);
+
+  const typing = shown.length < text.length;
 
   return (
-    <div style={{
-      margin: '2px 0 8px', padding: '8px 11px', borderRadius: 10,
-      border: '1px solid rgba(245,158,11,0.24)', background: 'rgba(255,251,235,0.75)',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-        <span style={{ fontSize: 12, lineHeight: 1 }}>🧠</span>
-        <span style={{ fontSize: 9.5, fontWeight: 700, color: '#b45309', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          Reasoning
-        </span>
-        <span className="demo-pulse" style={{ width: 5, height: 5, borderRadius: '50%', background: '#fbbf24' }} />
-      </div>
-      <div style={{ fontSize: 12, lineHeight: 1.6, color: 'rgba(120,53,15,0.86)', whiteSpace: 'pre-wrap' }}>{shown}</div>
-      {isLong && (
-        <button
-          type="button"
-          onClick={() => setExpanded(v => !v)}
-          style={{ marginTop: 5, border: 'none', background: 'none', padding: 0, cursor: 'pointer', fontSize: 10.5, fontWeight: 600, color: '#d97706' }}
-        >
-          {expanded ? 'Show less' : 'Show more'}
-        </button>
+    <p style={{ fontSize: 13, lineHeight: 1.65, color: C.text, margin: '0 0 8px', whiteSpace: 'pre-wrap' }}>
+      {shown}
+      {typing && (
+        <span
+          className="demo-blink"
+          style={{
+            display: 'inline-block', width: 1.5, height: 14, marginLeft: 1,
+            background: C.text, verticalAlign: 'text-bottom',
+          }}
+        />
       )}
-    </div>
+    </p>
   );
 }
 
@@ -231,6 +246,7 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
   const iconMeta = getToolIconMeta(log);
   const duration = running ? null : formatDuration(log.durationMs);
   const expandable = !running && Boolean(log.result?.length);
+  const title = humanizeToolLabel(log.tool || log.label, log.integration);
 
   return (
     <div
@@ -238,10 +254,9 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
       {...(isLatest ? { 'data-demo-target': 'modal-tool-latest' } : {})}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
-      style={{ display: 'flex', gap: 10, alignItems: 'stretch', minHeight: 34 }}
+      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', minHeight: 28 }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0 }}>
-        <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0, alignSelf: 'stretch' }}>
         <div style={{
           width: 22, height: 22, borderRadius: 6, flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -255,24 +270,24 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
             <ToolIcon tool={log.tool} />
           )}
         </div>
-        {!isLast && <div style={{ width: 1, flex: 1, background: C.border, minHeight: 4 }} />}
+        {!isLast && <div style={{ width: 1, flex: 1, minHeight: 10, background: C.border }} />}
       </div>
-      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 0 : 10, paddingTop: 1 }}>
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 0 : 10 }}>
         <div
           role={expandable ? 'button' : undefined}
           tabIndex={expandable ? 0 : undefined}
           onClick={expandable ? () => setOpen(v => !v) : undefined}
           onKeyDown={expandable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(v => !v); } } : undefined}
           style={{
-            display: 'flex', alignItems: 'center', gap: 8, minWidth: 0,
+            display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 22,
             cursor: expandable ? 'pointer' : 'default',
           }}
         >
           <span style={{
-            fontSize: 11.5, fontWeight: 600, color: C.text, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-            flexShrink: 0, lineHeight: 1.3,
+            fontSize: 12, fontWeight: 600, color: C.text,
+            flexShrink: 0, lineHeight: '22px',
           }}>
-            {log.label}
+            {title}
           </span>
           {log.detail && (
             <span style={{
@@ -305,16 +320,11 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
           )}
           <span style={{
             marginLeft: duration || expandable ? 0 : 'auto', flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            minWidth: 20, height: 20,
           }}>
-            {/*
-              A running call says what kind of work it is, not just that work is
-              happening: browsing sweeps a globe, writing undulates, shelling out
-              scrambles and clicks back. One spinner for every tool was the whole
-              problem — the row already knows the tool name.
-            */}
             {running
-              ? <DemoOrb state={orbStateForTool(log.tool, log.label)} tone="light" title={`${log.label} running`} />
+              ? <TypingDots size={4} color="#b45309" />
               : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
           </span>
         </div>
@@ -403,7 +413,7 @@ function AgentTurn({ turn, latestToolId, onOpenArtifact }: {
               )}
             </>
           )}
-          {turn.reasoning && <ReasoningBlock text={turn.reasoning} />}
+          {turn.reasoning && <TypedChatText text={turn.reasoning} />}
           {turn.tools.length > 0 && (
             <div style={{ marginTop: turn.message || turn.reasoning ? 4 : 0 }}>
               {turn.tools.map((log, i) => (
@@ -453,96 +463,143 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
   );
 }
 
+function TypingDots({ size = 5, color = '#78716c' }: { size?: number; color?: string }) {
+  return (
+    <span className="demo-typing-bubble" style={{ display: 'inline-flex', alignItems: 'center', gap: Math.max(3, size - 1) }} aria-hidden>
+      <span className="demo-typing-dot" style={{ width: size, height: size, background: color }} />
+      <span className="demo-typing-dot" style={{ width: size, height: size, background: color }} />
+      <span className="demo-typing-dot" style={{ width: size, height: size, background: color }} />
+    </span>
+  );
+}
+
+/** Ticket-thread typing row — same shape as an AgentTurn, bounce dots instead of a spinner. */
+function ThreadTypingIndicator({ name }: { name: string }) {
+  const person = ALL_PEOPLE[name];
+  return (
+    <div className="demo-enter demo-thread-turn" style={{ marginBottom: 18 }} aria-live="polite" aria-label={`${name} is typing`}>
+      <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
+        <div style={{ flexShrink: 0, paddingTop: 1 }}>
+          <Av name={name} size={THREAD_AVATAR} />
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6,
+            minHeight: THREAD_AVATAR, flexWrap: 'wrap',
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{name}</span>
+            {person?.title && (
+              <span style={{
+                fontSize: 10, color: C.textSubtle, padding: '1px 6px', borderRadius: 4,
+                background: C.bg, border: `1px solid ${C.borderWarm}`, lineHeight: 1.3,
+              }}>
+                {person.title}
+              </span>
+            )}
+            <span style={{ fontSize: 11, color: C.textSubtle }}>typing…</span>
+          </div>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            height: 30, padding: '0 12px', borderRadius: 14,
+            background: C.bg, border: `1px solid ${C.border}`,
+          }}>
+            <TypingDots size={5} color="#78716c" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SubtaskRow({ s }: { s: DemoSubtask }) {
+  const isDone = s.status === 'done';
+  const isRunning = s.status === 'running';
+  return (
+    <div data-demo-subtask-id={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
+      <div style={{ marginTop: 2, flexShrink: 0, width: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
+          : isRunning ? <TypingDots size={3.5} color="#B45309" />
+            : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <span style={{
+          fontSize: 12, lineHeight: 1.45, display: 'block',
+          color: isDone ? C.textSubtle : isRunning ? C.text : C.textMuted,
+          fontWeight: isRunning ? 600 : 400,
+          textDecoration: isDone ? 'line-through' : 'none',
+        }}>
+          {s.title}
+        </span>
+        {s.provider ? (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 3,
+            fontSize: 10, fontWeight: 600, color: C.textSubtle,
+          }}>
+            <ProviderChip provider={s.provider} size={11} />
+            {s.provider}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
   const [open, setOpen] = useState(false);
   const done = subtasks.filter(s => s.status === 'done').length;
   const total = subtasks.length;
   const running = subtasks.find(s => s.status === 'running');
-  const allDone = done === total;
-  const hasStarted = subtasks.some(s => s.status !== 'pending');
+  const allDone = done === total && total > 0;
+  const focusStep = running || (!allDone ? subtasks.find(s => s.status === 'pending') : undefined);
+  const summary = allDone
+    ? 'All steps complete'
+    : focusStep
+      ? focusStep.title
+      : 'Task checklist';
 
-  // Reveal the checklist as soon as work begins, so the visitor watches the
-  // steps tick over instead of a collapsed summary counter.
-  useEffect(() => {
-    if (hasStarted) setOpen(true);
-  }, [hasStarted]);
-
+  // One slim row by default — full list only expands on click. No nested card
+  // eating chat height above the composer.
   return (
-    <div
-      data-demo-target="modal-subtasks"
-      style={{
-        marginBottom: 8, borderRadius: 12, border: `1px solid ${C.border}`,
-        background: C.card, boxShadow: '0 1px 2px rgba(0,0,0,0.03)', overflow: 'hidden',
-      }}
-    >
+    <div data-demo-target="modal-subtasks" style={{ marginBottom: 6 }}>
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
         style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-          padding: '10px 14px', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left',
+          width: '100%', display: 'flex', alignItems: 'center', gap: 8,
+          padding: '4px 2px', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left',
         }}
       >
-        <div style={{
-          width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: allDone ? '#FEF2F2' : running ? '#FFFBEB' : '#F5F5F4',
-          border: allDone ? '1px solid #FECACA' : running ? '1px solid #FDE68A' : `1px solid ${C.border}`,
-          color: allDone ? '#B91C1C' : running ? '#B45309' : C.textSubtle,
+        <ListTodo size={13} strokeWidth={1.75} color={allDone ? '#325600' : running ? '#B45309' : C.textSubtle} />
+        <span style={{ fontSize: 11.5, fontWeight: 600, color: C.text, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+          {done}/{total}
+        </span>
+        <span style={{
+          flex: 1, minWidth: 0, fontSize: 11.5, color: C.textSubtle,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         }}>
-          <ListTodo size={15} strokeWidth={1.75} />
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>
-            {done}/{total} tasks
-          </div>
-          <div style={{ fontSize: 11, color: C.textSubtle, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {running ? running.title : allDone ? 'All steps complete' : 'Task checklist'}
-          </div>
-        </div>
-        <ChevronUp size={14} color={C.textSubtle} style={{ transform: open ? 'none' : 'rotate(180deg)', transition: `transform ${DUR.quick}ms ${EASE_OUT}` }} />
+          {summary}
+        </span>
+        {running && (
+          <span style={{ flexShrink: 0, fontSize: 10, fontWeight: 600, color: '#B45309' }}>
+            {running.agent}
+          </span>
+        )}
+        <ChevronUp
+          size={12}
+          color={C.textSubtle}
+          style={{ flexShrink: 0, transform: open ? 'none' : 'rotate(180deg)', transition: `transform ${DUR.quick}ms ${EASE_OUT}` }}
+        />
       </button>
-      {/* TaskModal.jsx:1922 — grid-rows 0fr→1fr, so the panel actually expands. */}
+
       <div style={{
         display: 'grid',
         gridTemplateRows: open ? '1fr' : '0fr',
         transition: `grid-template-rows ${DUR.panel}ms ${EASE_OUT}`,
       }}>
         <div style={{ overflow: 'hidden' }}>
-        <div style={{ borderTop: `1px solid ${C.border}`, padding: '8px 14px 10px' }}>
-          {subtasks.map(s => {
-            const isDone = s.status === 'done';
-            const isRunning = s.status === 'running';
-            return (
-              <div key={s.id} data-demo-subtask-id={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
-                <div style={{ marginTop: 2, flexShrink: 0 }}>
-                  {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
-                    : isRunning ? <Loader2 size={14} className="demo-spin" color="#B45309" />
-                      : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{
-                    fontSize: 12, lineHeight: 1.45, display: 'block',
-                    color: isDone ? C.textSubtle : isRunning ? C.text : C.textMuted,
-                    fontWeight: isRunning ? 600 : 400,
-                    textDecoration: isDone ? 'line-through' : 'none',
-                  }}>
-                    {s.title}
-                  </span>
-                  {s.provider && (
-                    <span style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 3,
-                      fontSize: 10, fontWeight: 600, color: C.textSubtle,
-                    }}>
-                      <ProviderChip provider={s.provider} size={11} />
-                      {s.provider}
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+          <div style={{ padding: '2px 0 4px 22px' }}>
+            {subtasks.map(s => <SubtaskRow key={s.id} s={s} />)}
+          </div>
         </div>
       </div>
     </div>
@@ -626,6 +683,17 @@ export function DemoTaskModal({
     }
     return null;
   }, [feed]);
+  const runningTool = useMemo(() => {
+    for (let i = feed.length - 1; i >= 0; i--) {
+      const item = feed[i];
+      if (item.kind === 'tool' && item.status === 'running') return item;
+    }
+    return null;
+  }, [feed]);
+  const runningSubtask = useMemo(
+    () => subtasks.find(s => s.status === 'running'),
+    [subtasks],
+  );
   /**
    * Is an agent producing into the workspace pane right now?
    *
@@ -635,10 +703,21 @@ export function DemoTaskModal({
    * was switched off before it ever arrived on screen. A subtask spans many
    * calls and lasts seconds, which is both visible and the truer claim.
    */
-  const workRunning = useMemo(
-    () => subtasks.some(s => s.status === 'running'),
-    [subtasks],
-  );
+  const workRunning = Boolean(runningSubtask);
+  /**
+   * Thread typing when the agent is mid-turn but isn't already represented by a
+   * running tool row (those get their own dots). Also covers the empty beat
+   * right after the ticket opens.
+   */
+  const threadTypingName = useMemo(() => {
+    if (delivery) return null;
+    if (runningTool) return null;
+    const last = feed[feed.length - 1];
+    if (last?.kind === 'reasoning') return null;
+    if (runningSubtask) return runningSubtask.agent;
+    if (feed.length === 0) return assignee;
+    return null;
+  }, [delivery, runningTool, runningSubtask, feed, assignee]);
   /**
    * border-beam ships reduced-motion handling for its pulse types only; `line`
    * is in the rotate family, which the README says defers to the consumer. It
@@ -750,6 +829,8 @@ export function DemoTaskModal({
                   />
                 ))}
 
+                {threadTypingName && <ThreadTypingIndicator name={threadTypingName} />}
+
                 {delivery && (
                   <div className="demo-thread-turn" style={{ marginBottom: 12 }}>
                     <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
@@ -772,33 +853,34 @@ export function DemoTaskModal({
                   </div>
                 )}
 
-                {turns.length === 0 && !delivery && (
+                {turns.length === 0 && !delivery && !threadTypingName && (
                   <p style={{ fontSize: 12, color: C.textSubtle, textAlign: 'center', padding: 20 }}>Agents coordinating…</p>
                 )}
                 <div style={{ height: 8 }} />
               </div>
             </div>
 
-            {/* Composer + checklist */}
-            <div style={{ flexShrink: 0, borderTop: `1px solid ${C.borderWarm}`, background: C.card, padding: '8px 14px 10px' }}>
+            {/* Composer + slim checklist — no hairline fence; chat bleeds into the input. */}
+            <div style={{ flexShrink: 0, background: C.card, padding: '4px 14px 10px' }}>
               <div style={{ maxWidth: 480, margin: '0 auto' }}>
                 <ComposerTodoAccordion subtasks={subtasks} />
                 <div style={{
-                  borderRadius: 12, border: `1px solid ${C.border}`, background: C.card,
-                  padding: '8px 10px 6px',
+                  borderRadius: 12, border: `1px solid ${C.border}`, background: C.bg,
+                  padding: '7px 10px 6px',
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, flexWrap: 'wrap' }}>
                     <DemoTagBadge tag={{ label: org.name.toLowerCase(), type: 'site', domain: org.domain }} size="xs" />
                     {taskTags[0]?.type === 'channel' && (
                       <DemoTagBadge tag={taskTags[0]} size="xs" />
                     )}
                   </div>
-                  <div style={{ fontSize: 12, color: C.textSubtle, minHeight: 24, padding: '2px 4px' }}>
-                    Do anything with AI…
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
+                    <div style={{ flex: 1, fontSize: 12, color: C.textSubtle, minHeight: 20, padding: '2px 2px 4px' }}>
+                      Do anything with AI…
+                    </div>
                     <div style={{
-                      width: 26, height: 26, borderRadius: '50%', background: '#F5F5F4',
+                      width: 26, height: 26, borderRadius: '50%', background: C.card, flexShrink: 0,
+                      border: `1px solid ${C.border}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.textSubtle,
                     }}>
                       <ArrowUp size={13} strokeWidth={2.25} />
