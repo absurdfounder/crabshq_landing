@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
-import TrooperHelmet from '@/components/TrooperHelmet';
 import type { Voice } from '@/lib/voices';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -65,35 +64,20 @@ function Attribution({ voice, compact = false }: { voice: Voice; compact?: boole
 }
 
 /**
- * What people say.
+ * Social proof quote band.
  *
  * Layout is a function of how many quotes exist, so adding one is a data-only
  * change in lib/voices.ts:
- *   1   → the featured single quote, with the helmet
+ *   1   → the featured single quote
  *   2   → two-up
  *   3+  → hairline-gap grid, which is count- and breakpoint-independent
- *
- * Borderless by design: this follows GovernanceSection's idiom — top hairlines
- * only, no card frames. That section was the calmest thing on the page and the
- * one this is modelled on. A boxed quote inside a boxed band inside a boxed
- * rail was three frames deep.
  */
-export default function VoicesSection({ voices, eyebrowNumber = '01' }: VoicesSectionProps) {
+export default function VoicesSection({ voices }: VoicesSectionProps) {
   const featured = voices[0];
   if (!featured) return null;
 
   return (
     <div className="py-10 md:py-16">
-      <motion.div
-        className="mb-8 lg:mb-10"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease }}
-        viewport={{ once: true, margin: '-40px' }}
-      >
-        <span className="kicker-dark">What people say</span>
-      </motion.div>
-
       {voices.length === 1 ? (
         <motion.figure
           className="relative"
@@ -102,26 +86,7 @@ export default function VoicesSection({ voices, eyebrowNumber = '01' }: VoicesSe
           transition={{ duration: 0.5, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          {/* The page's one piece of warmth. Hidden below lg so it never
-              crowds the quote on a narrow screen. */}
-          <div className="pointer-events-none absolute -top-8 right-0 hidden items-start gap-3 lg:flex">
-            <motion.p
-              className="relative mt-7 whitespace-nowrap rounded-sm bg-white px-3.5 py-2 font-display text-[13px] font-medium leading-snug tracking-tight text-ink shadow-[0_10px_24px_-8px_rgba(0,0,0,0.55)]"
-              initial={{ opacity: 0, scale: 0.9, y: 6 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.4, ease, delay: 0.25 }}
-              viewport={{ once: true, margin: '-40px' }}
-            >
-              Mission accomplished! 🎉
-              <span
-                className="absolute right-[-5px] top-1/2 size-2.5 -translate-y-1/2 rotate-45 bg-white"
-                aria-hidden
-              />
-            </motion.p>
-            <TrooperHelmet size={124} tilt={8} />
-          </div>
-
-          <blockquote className="border-l-2 border-[var(--color-quote-gold)] pl-4 sm:pl-5 lg:max-w-[62%]">
+          <blockquote className="border-l-2 border-[var(--color-quote-gold)] pl-4 sm:pl-5 lg:max-w-3xl">
             <p className="font-display text-[1.125rem] font-medium leading-[1.4] tracking-tight text-white sm:text-xl lg:text-[1.65rem] lg:leading-[1.35]">
               {featured.quote}
             </p>
