@@ -97,7 +97,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
           visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
         }}
       >
-        <span className="mr-2 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
+        <span className="mr-2 text-sm font-medium text-neutral-400">
           At any time
         </span>
         {controls.map((control) => (

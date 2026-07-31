@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import { formatUsd, PRICING_USD } from '@/lib/pricing';
 
 interface FAQ {
@@ -64,21 +65,21 @@ const FAQCell: React.FC<FAQ> = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative group bg-white">
+    <div className="relative group h-fit rounded-xl bg-white shadow-xs ring-1 ring-black/5">
       <button
-        className="w-full text-left px-4 py-4 sm:px-6 sm:py-6 flex items-start gap-3 sm:gap-4"
+        className="w-full text-left px-5 py-4 sm:px-6 sm:py-5 flex items-start gap-3 sm:gap-4"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
-        <span className="flex-1 font-semibold text-ink text-[14px] sm:text-base leading-snug">
+        <span className="flex-1 font-semibold text-neutral-800 text-[15px] sm:text-base leading-snug">
           {question}
         </span>
-        <span
-          className="font-mono text-ink-faint text-base leading-none mt-0.5 select-none"
+        {/* Was `[+]` / `[−]` in monospace — ASCII-art affordances belong in a
+            terminal, not on a marketing page. */}
+        <ChevronDown
+          className={`mt-0.5 size-4 shrink-0 text-neutral-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
-        >
-          {isOpen ? '[−]' : '[+]'}
-        </span>
+        />
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -125,12 +126,9 @@ const FAQ: React.FC = () => (
       </p>
     </div>
 
-    {/*
-      Hairline grid via `gap-px` over a line-coloured background: the gaps are
-      the rules, so the cells need no per-index border math and the result is
-      correct at any count and any breakpoint.
-    */}
-    <div className="mt-8 grid grid-cols-1 gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)] md:grid-cols-2">
+    {/* Cards with a real gap — see the note in HowItWorksSteps on why the
+        `gap-px` hairline table is gone. */}
+    <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
       {FAQS.map((faq) => (
         <FAQCell key={faq.question} question={faq.question} answer={faq.answer} />
       ))}

@@ -392,16 +392,27 @@ body > iframe.goog-te-menu-frame {
   /*
    * The one text-link treatment.
    *
-   * Nine different ones were in use; this is the only one that was already
-   * reused (5 call sites), so it wins. Use .link-mono-dark on dark bands.
+   * This was 11px monospace, uppercase, at 0.12em tracking, with a border-bottom
+   * that appeared on hover. Nine different link treatments were in use and this
+   * one won on call-site count — but winning a vote is not the same as being
+   * right. A census of the rendered home page found 217 monospace text nodes and
+   * 178 uppercased ones, against effectively zero in the reference design, which
+   * uses monospace for code and nothing else. Uppercase 11px mono is terminal
+   * chrome; applied to ordinary prose links it makes a product page read like a
+   * status console, and at 11px it is genuinely hard to read.
+   *
+   * The replacement is the reference's own link idiom: sentence case, 14px,
+   * medium, accent-coloured, darkening on hover. The class keeps its (now
+   * inaccurate) name because ~8 call sites use it and renaming them is churn
+   * with no visual result.
    */
   /* Add `group` at the call site — @apply rejects it (it's a marker, not a utility). */
   .link-mono {
-    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-fern-700 transition-colors hover:text-fern-800;
   }
 
   .link-mono-dark {
-    @apply inline-flex items-center gap-1.5 border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/50 transition-colors hover:border-current hover:text-white;
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-neutral-300 transition-colors hover:text-white;
   }
 
   /*
@@ -428,13 +439,21 @@ body > iframe.goog-te-menu-frame {
     mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
   }
 
-  /* The one tab/chip idiom. Pair with .tab-mono--active. */
+  /*
+   * The one tab/chip idiom. Pair with .tab-mono--active.
+   *
+   * Was a hard-edged cell divided by a right-hand rule — a segmented control
+   * drawn as a table. The reference uses free-standing rounded chips that tint
+   * on hover, which is also what lets a wrapped row of them breathe.
+   */
   .tab-mono {
-    @apply shrink-0 border-r border-[var(--color-line)] px-4 py-3 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors sm:px-5;
+    @apply shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-800;
   }
 
+  /* Alias of .kicker — see the note there. Both were pixel-font, uppercase,
+     wide-tracked labels; neither is now. */
   .type-eyebrow {
-    @apply font-silkscreen text-[11px] font-bold uppercase tracking-[0.15em] text-fern;
+    @apply block font-sans text-base font-medium normal-case tracking-tight text-fern-700 sm:text-lg;
   }
 
   /*
@@ -453,6 +472,19 @@ body > iframe.goog-te-menu-frame {
   .type-eyebrow-num,
   .kicker {
     @apply block font-sans text-base font-medium normal-case tracking-tight text-fern-700 sm:text-lg;
+  }
+
+  /*
+   * The card-level kicker: the same voice as .kicker one step down, for a label
+   * that introduces an h3 rather than an h2.
+   *
+   * Every one of these was `font-mono text-[11px] uppercase tracking-[0.16em]`.
+   * Six of them stack down the page above six headlines, and at that size and
+   * tracking they read as machine labels stamped on the content rather than as
+   * something written.
+   */
+  .kicker-sm {
+    @apply block font-sans text-sm font-medium tracking-tight text-fern-700;
   }
 
   .type-eyebrow-num-dark,

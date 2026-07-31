@@ -33,7 +33,7 @@ export default function FounderMessageSection() {
   return (
     /* Vertical rhythm belongs to the SectionShell wrapping this. */
     <div>
-      <div className="overflow-hidden border border-slate-100 bg-white">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5">
         <div className="flex flex-col lg:flex-row lg:items-stretch">
           <div className="relative h-52 w-full shrink-0 overflow-hidden border-b-4 border-trooper bg-white sm:h-60 lg:h-auto lg:w-48 lg:border-b-0 lg:border-r lg:border-r-slate-200 xl:w-52">
             <Image
@@ -60,14 +60,14 @@ export default function FounderMessageSection() {
                 <p className="font-funneldisplay text-base font-bold text-slate-900 sm:text-base md:text-lg">
                   Vaibhav
                 </p>
-                <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500">
+                <p className="mt-0.5 text-sm text-neutral-500">
                   Founder, Trooper
                 </p>
                 <a
                   href="https://twitter.com/absurdfounder"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 inline-block font-mono text-[11px] uppercase tracking-[0.14em] text-trooper transition-colors hover:text-trooper-700"
+                  className="mt-1 inline-block text-sm font-medium text-fern-700 transition-colors hover:text-fern-800"
                 >
                   @absurdfounder
                 </a>

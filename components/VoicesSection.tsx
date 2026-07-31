@@ -37,7 +37,7 @@ function Attribution({ voice, compact = false }: { voice: Voice; compact?: boole
             />
           </div>
         ) : (
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 font-mono text-sm text-white/70 sm:h-12 sm:w-12">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm font-semibold text-white/70 sm:h-12 sm:w-12">
             {voice.author.charAt(0)}
           </div>
         )}
@@ -132,14 +132,14 @@ export default function VoicesSection({ voices, eyebrowNumber = '01' }: VoicesSe
       ) : (
         <div
           className={[
-            'grid gap-px border border-white/10 bg-white/10',
+            'grid gap-4',
             voices.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3',
           ].join(' ')}
         >
           {voices.map((voice, index) => (
             <motion.figure
               key={voice.id}
-              className="flex flex-col justify-between bg-split p-5 sm:p-6"
+              className="flex flex-col justify-between rounded-2xl bg-white/[0.04] p-5 ring-1 ring-white/10 sm:p-6"
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.07, ease }}

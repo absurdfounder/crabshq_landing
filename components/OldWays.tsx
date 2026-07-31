@@ -326,7 +326,7 @@ const PixelFramedVisual = ({ children, wide = false }: { children: React.ReactNo
  */
 const cards = [
   {
-    tag: 'AI ORGANIZATIONS',
+    tag: 'AI organizations',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
     description:
@@ -334,7 +334,7 @@ const cards = [
     visual: <OrgVisual key="org" />,
   },
   {
-    tag: 'ACTION, NOT ANSWERS',
+    tag: 'Action, not answers',
     title: 'AI that takes',
     highlight: 'action, not just questions.',
     description:
@@ -342,7 +342,7 @@ const cards = [
     visual: <ActionVisual key="act" />,
   },
   {
-    tag: 'INFINITE MEMORY',
+    tag: 'Infinite memory',
     title: 'Persistent memory across',
     highlight: 'tasks, projects, and time.',
     description:
@@ -350,7 +350,7 @@ const cards = [
     visual: <MemoryVisual key="mem" />,
   },
   {
-    tag: 'TICKET SYSTEM',
+    tag: 'Ticket system',
     title: 'Every conversation traced.',
     highlight: 'Every decision explained.',
     description:
@@ -374,12 +374,15 @@ const cards = [
  */
 export default function OldWays() {
   return (
-    <div className="grid grid-cols-1 gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)]">
+    // See HowItWorksSteps for why the `gap-px` hairline table is gone.
+    // Seven full-width 2-ups sharing edges inside one outer rectangle was the
+    // longest such run on the page.
+    <div className="grid grid-cols-1 gap-4">
       {cards.map((card) => (
-        <article key={card.tag} className="min-w-0 bg-white">
+        <article key={card.tag} className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5">
           <div className="grid min-w-0 lg:grid-cols-2 lg:items-stretch">
             <div className="flex flex-col justify-center px-5 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12">
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint">
+              <span className="kicker-sm">
                 {card.tag}
               </span>
               <h3 className="mt-4 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:mt-5 sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
@@ -391,7 +394,7 @@ export default function OldWays() {
               </p>
             </div>
 
-            <div className="relative min-w-0 min-h-[320px] border-t border-[var(--color-line)] sm:min-h-[380px] lg:min-h-[440px] lg:border-l lg:border-t-0">
+            <div className="relative min-w-0 min-h-[260px] border-t border-neutral-200 sm:min-h-[300px] lg:min-h-[340px] lg:border-l lg:border-t-0">
               <PixelFramedVisual>{card.visual}</PixelFramedVisual>
             </div>
           </div>

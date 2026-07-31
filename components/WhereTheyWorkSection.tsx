@@ -135,19 +135,19 @@ function DevicesScene() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <div className="flex h-[22rem] w-full flex-col justify-center border border-[var(--color-line)] bg-canvas-section p-4 sm:h-[26rem] sm:p-6">
-      <div className="mb-3 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+    <div className="flex h-[22rem] w-full flex-col justify-center rounded-xl bg-canvas-section p-4 ring-1 ring-black/5 sm:h-[26rem] sm:p-6">
+      <div className="mb-3 flex items-center justify-between text-[13px] font-medium text-neutral-500">
         <span>Devices</span>
         <span>4 paired · 3 online</span>
       </div>
 
-      <div className="grid grid-cols-1 gap-px border border-[var(--color-line)] bg-[var(--color-line)]">
+      <div className="grid grid-cols-1 gap-2">
         {DEVICES.map((device, index) => {
           const Icon = device.icon;
           return (
             <motion.div
               key={device.name}
-              className="flex items-center gap-3 bg-white px-3 py-3 sm:px-4"
+              className="flex items-center gap-3 rounded-xl bg-white px-3 py-3 shadow-xs ring-1 ring-black/5 sm:px-4"
               initial={reduceMotion ? false : { opacity: 0, x: -8 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: index * 0.08, ease }}
@@ -158,12 +158,12 @@ function DevicesScene() {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-ink">{device.name}</p>
-                <p className="truncate font-mono text-[10px] uppercase tracking-[0.1em] text-ink-faint">
+                <p className="truncate text-[13px] text-neutral-500">
                   {device.os} · {device.note}
                 </p>
               </div>
               <span
-                className={`shrink-0 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] ${STATUS_STYLE[device.status]}`}
+                className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${STATUS_STYLE[device.status]}`}
               >
                 {device.status}
               </span>
@@ -172,7 +172,7 @@ function DevicesScene() {
         })}
       </div>
 
-      <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+      <p className="mt-3 text-[13px] text-neutral-500">
         Devices → Connect this Mac
       </p>
     </div>
@@ -219,7 +219,7 @@ export default function WhereTheyWorkSection() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-px border border-[var(--color-line)] bg-[var(--color-line)]">
+      <div className="grid grid-cols-1 gap-4">
         {WORK_SURFACES.map((surface, index) => {
           const Scene = SCENE[surface.id];
           // Alternate which side the visual sits on so three stacked 2-ups
@@ -227,14 +227,14 @@ export default function WhereTheyWorkSection() {
           const visualFirst = index % 2 === 1;
 
           return (
-            <article key={surface.id} className="min-w-0 bg-white">
+            <article key={surface.id} className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5">
               <div className="grid min-w-0 lg:grid-cols-2 lg:items-center">
                 <div
                   className={`flex min-w-0 flex-col justify-center px-5 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12 ${
                     visualFirst ? 'lg:order-2' : ''
                   }`}
                 >
-                  <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint">
+                  <span className="kicker-sm">
                     {surface.kicker}
                   </span>
 
@@ -260,7 +260,7 @@ export default function WhereTheyWorkSection() {
                   </ul>
 
                   {surface.meta && (
-                    <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-faint">
+                    <p className="mt-5 text-sm text-neutral-500">
                       {surface.meta}
                     </p>
                   )}
