@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { FileText, Check, Loader2, Sparkles, Braces, Database, Box, MessageSquare, ArrowRight } from "lucide-react";
-import FeaturePeekStage from './ui/FeaturePeekStage';
+import { DotMatrixFade } from './ui/FeaturePeekStage';
+import ChatBubble from './ui/ChatBubble';
 
 /* ─── Trooper pixel character (replaces 🦀 in avatars) ─── */
 const TrooperChar = ({ className = "" }: { className?: string }) => (
@@ -308,8 +309,20 @@ const TicketVisual = () => {
 };
 
 
-const PixelFramedVisual = ({ children, wide = false }: { children: React.ReactNode; wide?: boolean }) => (
-  <FeaturePeekStage framed={false} wide={wide}>{children}</FeaturePeekStage>
+/**
+ * The window's "screen". FeaturePeekStage's 500px-tall canvas left the mock
+ * floating small in a sea of empty white — this keeps the wash and the
+ * dot-matrix fade but hugs the content: shorter minimum, wider column,
+ * tighter padding, so the window frames the work instead of dwarfing it.
+ */
+const PixelFramedVisual = ({ children }: { children: React.ReactNode }) => (
+  <div className="relative flex min-h-[300px] flex-col overflow-hidden sm:min-h-[340px] lg:min-h-[400px]">
+    <div className="absolute inset-0 bg-gradient-to-br from-canvas via-canvas to-slate-100/50" />
+    <DotMatrixFade />
+    <div className="relative z-10 flex flex-1 items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-[min(100%,27rem)]">{children}</div>
+    </div>
+  </div>
 );
 /* ─── Cards ─── */
 
@@ -450,18 +463,16 @@ export default function OldWays() {
               }`}
             >
               {/* The ask: a spoken request, then the agent picking it up. */}
-              <span className="flex h-6 items-end gap-[3px] text-neutral-300" aria-hidden>
-                {[10, 16, 8, 20, 12, 22, 9, 15, 18, 8, 13, 6].map((h, j) => (
-                  <i key={j} className="w-[3px] rounded-full bg-current" style={{ height: h }} />
+              <span className="flex h-7 items-center gap-[3px] text-neutral-300" aria-hidden>
+                {[46, 100, 35, 93, 49, 33, 46, 58, 37, 88, 33, 100, 72].map((h, j) => (
+                  <i key={j} className="w-[4px] rounded-full bg-current" style={{ height: `${h}%` }} />
                 ))}
               </span>
-              <div className="mt-3 flex flex-col items-start gap-2.5">
-                <p className="rounded-2xl rounded-bl-md bg-gradient-to-b from-[#dbe9ff] to-[#aecdff] px-4 py-2.5 text-[15px] font-medium leading-snug text-[#1c2f66] shadow-xs ring-1 ring-black/5">
-                  {card.ask}
-                </p>
-                <p className="ml-8 rounded-2xl rounded-tl-md bg-gradient-to-b from-trooper-50 to-trooper-100 px-3.5 py-2 text-sm font-medium text-trooper-800 shadow-xs ring-1 ring-black/5">
+              <div className="mt-4 flex flex-col items-start gap-3.5">
+                <ChatBubble kind="ask">{card.ask}</ChatBubble>
+                <ChatBubble kind="reply" className="ml-9">
                   {card.reply}
-                </p>
+                </ChatBubble>
               </div>
 
               <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">

@@ -39,9 +39,9 @@ const CHAT_SCRIPT: ChatMessage[] = [
 
 function LeadChartImage() {
   return (
-    <div className="overflow-hidden rounded-[14px] bg-[#2C2C2E]">
-      <div className="border-b border-white/10 px-2.5 py-1.5">
-        <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-white/45">Lead score breakdown</p>
+    <div className="overflow-hidden rounded-[14px] bg-white ring-1 ring-black/10">
+      <div className="border-b border-black/[0.07] px-2.5 py-1.5">
+        <p className="font-mono text-[8px] uppercase tracking-[0.12em] text-neutral-400">Lead score breakdown</p>
       </div>
       <div className="space-y-1.5 p-2.5">
         {[
@@ -50,8 +50,8 @@ function LeadChartImage() {
           { label: 'Gusto', w: '64%' },
         ].map((row) => (
           <div key={row.label} className="grid grid-cols-[52px_1fr] items-center gap-2">
-            <span className="truncate font-mono text-[9px] text-white/55">{row.label}</span>
-            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <span className="truncate font-mono text-[9px] text-neutral-500">{row.label}</span>
+            <div className="h-2 overflow-hidden rounded-full bg-black/10">
               <div className="h-full rounded-full bg-gradient-to-r from-fern to-fern-light" style={{ width: row.w }} />
             </div>
           </div>
@@ -64,17 +64,17 @@ function LeadChartImage() {
 function FileAttachment({ name, meta, fileKind }: { name: string; meta: string; fileKind: 'doc' | 'sheet' | 'pdf' }) {
   const icon =
     fileKind === 'sheet' ? (
-      <FileSpreadsheet className="size-4 text-emerald-400" strokeWidth={2} />
+      <FileSpreadsheet className="size-4 text-emerald-600" strokeWidth={2} />
     ) : (
-      <FileText className={`size-4 ${fileKind === 'pdf' ? 'text-red-400' : 'text-blue-400'}`} strokeWidth={2} />
+      <FileText className={`size-4 ${fileKind === 'pdf' ? 'text-red-500' : 'text-blue-600'}`} strokeWidth={2} />
     );
 
   return (
-    <div className="flex items-center gap-2.5 rounded-[14px] bg-[#2C2C2E] px-2.5 py-2 ring-1 ring-white/10">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white/10">{icon}</span>
+    <div className="flex items-center gap-2.5 rounded-[14px] bg-neutral-100 px-2.5 py-2 ring-1 ring-black/5">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white shadow-xs ring-1 ring-black/5">{icon}</span>
       <div className="min-w-0">
-        <p className="truncate text-[11px] font-medium text-white">{name}</p>
-        <p className="font-mono text-[9px] text-white/45">{meta}</p>
+        <p className="truncate text-[11px] font-medium text-neutral-900">{name}</p>
+        <p className="font-mono text-[9px] text-neutral-400">{meta}</p>
       </div>
     </div>
   );
@@ -120,7 +120,7 @@ function ChatBubble({
       className={[
         shell,
         'px-3 py-[7px] text-[11px] leading-[1.38]',
-        isIn ? 'bg-[#3A3A3C] text-white' : '',
+        isIn ? 'bg-[#E9E9EB] text-neutral-900' : '',
       ].join(' ')}
     >
       {message.text}
@@ -130,11 +130,11 @@ function ChatBubble({
 
 function TypingIndicator() {
   return (
-    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-[18px] rounded-bl-[4px] bg-[#3A3A3C] px-3.5 py-2.5 shadow-sm">
+    <div className="inline-flex max-w-[78%] items-center gap-1 rounded-[18px] rounded-bl-[4px] bg-[#E9E9EB] px-3.5 py-2.5 shadow-sm">
       {[0, 1, 2].map((dot) => (
         <motion.span
           key={dot}
-          className="size-1.5 rounded-full bg-white/50"
+          className="size-1.5 rounded-full bg-neutral-500/60"
           animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
           transition={{ duration: 0.9, repeat: Infinity, delay: dot * 0.15, ease: 'easeInOut' }}
         />
@@ -145,13 +145,13 @@ function TypingIndicator() {
 
 function PhoneStatusBar() {
   return (
-    <div className="mt-2 flex shrink-0 items-center justify-between px-3 pb-1 pt-3 text-[10px] font-semibold text-white">
+    <div className="mt-2 flex shrink-0 items-center justify-between px-3 pb-1 pt-3 text-[10px] font-semibold text-neutral-900">
       <span className="tabular-nums opacity-50">9:41</span>
-      <div className="flex items-center gap-1 text-white/90 opacity-50">
+      <div className="flex items-center gap-1 text-neutral-900/90 opacity-60">
         <Signal className="size-3" strokeWidth={2.5} aria-hidden />
         <Wifi className="size-3" strokeWidth={2.5} aria-hidden />
-        <span className="ml-0.5 inline-flex h-2.5 w-[18px] rounded-[3px] border border-white/35 p-[1px]">
-          <span className="h-full w-[72%] rounded-[1px] bg-white" />
+        <span className="ml-0.5 inline-flex h-2.5 w-[18px] rounded-[3px] border border-neutral-900/35 p-[1px]">
+          <span className="h-full w-[72%] rounded-[1px] bg-neutral-900" />
         </span>
       </div>
     </div>
@@ -210,13 +210,13 @@ function PhoneChatScreen() {
   const visibleMessages = CHAT_SCRIPT.slice(0, visibleCount);
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-[#000000]">
+    <div className="flex h-full min-h-0 flex-col bg-white">
       <PhoneStatusBar />
 
-      <div className="shrink-0 border-b border-white/[0.06] px-3 pb-2.5 pt-1">
+      <div className="shrink-0 border-b border-black/[0.07] px-3 pb-2.5 pt-1">
         <div className="flex items-center gap-2">
           <div className="mx-auto flex flex-col items-center">
-            <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-white/10 ring-1 ring-white/12">
+            <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-neutral-100 ring-1 ring-black/10">
               <Image
                 src="/images/trooper-logomark.png"
                 alt=""
@@ -226,8 +226,8 @@ function PhoneChatScreen() {
                 style={{ imageRendering: 'pixelated' }}
               />
             </div>
-            <p className="mt-0.5 text-[11px] font-medium text-white">Trooper</p>
-            <p className="text-[9px] text-white/35">AI workforce</p>
+            <p className="mt-0.5 text-[11px] font-medium text-neutral-900">Trooper</p>
+            <p className="text-[9px] text-neutral-400">AI workforce</p>
           </div>
         </div>
       </div>
@@ -273,9 +273,9 @@ function PhoneChatScreen() {
         </motion.div>
       </div>
 
-      <div className="mb-4 shrink-0 border-t border-white/[0.06] px-3 py-2">
-        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1C1E] px-3 py-1.5">
-          <span className="flex-1 text-[11px] text-white/25">iMessage</span>
+      <div className="mb-4 shrink-0 border-t border-black/[0.07] px-3 py-2">
+        <div className="flex items-center gap-2 rounded-full border border-black/15 bg-white px-3 py-1.5">
+          <span className="flex-1 text-[11px] text-neutral-400">iMessage</span>
           <span className="flex size-6 items-center justify-center rounded-full bg-fern text-[10px] font-bold text-white">
             ↑
           </span>
@@ -307,7 +307,7 @@ function IphoneDevice() {
             </div>
 
             <div
-              className="pointer-events-none absolute inset-x-[38%] bottom-1.5 z-30 h-[4px] rounded-full bg-white/25"
+              className="pointer-events-none absolute inset-x-[38%] bottom-1.5 z-30 h-[4px] rounded-full bg-black/25"
               aria-hidden
             />
           </div>

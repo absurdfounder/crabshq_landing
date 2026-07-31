@@ -630,6 +630,7 @@ export default function TrooperDemo({
   scenarioId,
   rotate = false,
   backdrop = null,
+  flush = false,
   speed = 1,
   startStep = 0,
   onStepChange,
@@ -637,6 +638,9 @@ export default function TrooperDemo({
   scenarioId?: DemoScenarioId;
   /** Cycle through HERO_SCENARIO_ROTATION on each loop instead of repeating. */
   rotate?: boolean;
+  /** Drop the band's own rule and vertical padding — for hosts that already
+   *  frame the demo (the landing hero mats it otherwise). */
+  flush?: boolean;
   /** Host-supplied background behind the frame — the landing passes its dither
    *  gradient. Kept a slot so the package owns none of the host's chrome. */
   backdrop?: ReactNode;
@@ -1189,7 +1193,11 @@ export default function TrooperDemo({
           below `lg` this band used to render as an empty coloured strip. */}
       <div
         data-hero-demo-band
-        className="relative hidden border-t border-slate-100 py-8 sm:py-10 md:py-12 lg:block"
+        className={
+          flush
+            ? 'relative hidden lg:block'
+            : 'relative hidden border-t border-slate-100 py-8 sm:py-10 md:py-12 lg:block'
+        }
       >
         {backdrop}
         <div className="Trooper-demo relative z-10" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 13 }}>

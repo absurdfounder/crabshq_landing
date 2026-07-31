@@ -132,32 +132,37 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
 
   return (
     <div>
+      {/* Centred, like a launch screen: headline, lede, then the composer as
+          the single focal object with real air around it, the catalog rows
+          under it, and the browse link on the axis. */}
       <motion.div
-        className="mb-6 max-w-3xl md:mb-8"
+        className="mx-auto max-w-3xl text-center"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="h2-section">
+        <h2 className="h2-section mx-auto">
           Troopers work from a loop,
           <br />
           not a prompt.
         </h2>
-        <p className="lede">
+        <p className="lede mx-auto">
           A loop has a goal, a check command and an exit condition — so a trooper knows when the
           job is actually done. Describe one, or start from {totalCount}.
         </p>
       </motion.div>
 
-      <LoopComposer />
+      <div className="mx-auto mt-8 w-full max-w-[52rem] sm:mt-10">
+        <LoopComposer />
+      </div>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-8 flex flex-col gap-3 sm:mt-10">
         <LoopRow loops={top} />
         <LoopRow loops={bottom} reverse />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8 flex justify-center">
         <Link href="/loops" className="group link-mono">
           <span>Browse all {totalCount} loops</span>
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
