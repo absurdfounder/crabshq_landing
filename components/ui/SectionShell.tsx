@@ -49,38 +49,27 @@ export default function SectionShell({
     .filter(Boolean)
     .join(' ');
 
-  // Inner frame: left/right vertical hairlines + a top hairline closing the
-  // box on top. The next SectionShell's own top border serves as this
-  // section's bottom divider, so we omit border-b unless explicitly asked.
-  //
-  // The side rails are dropped below `sm`: at phone widths they sit hard
-  // against the viewport edge and read as a container box rather than as the
-  // page's own margin.
-  const frameClasses = [
-    // `.rail` owns measure + gutter + side hairlines (app/css/style.css).
-    // No overflow-x-hidden: it was clipping misalignment rather than
-    // preventing it, and it disables `position: sticky` on descendants.
-    'rail',
-    bgClass || 'bg-canvas',
-    !noBorder ? 'border-t' : '',
-    !noBorderBottom ? 'border-b' : '',
-    rhythm ? 'py-10 md:py-14' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  // The band separator sits on the <section>, not on an inner frame, so it
+  // runs the full width of the viewport. `.rail` is now measure + gutter only
+  // — it draws no side edges (app/css/style.css).
+  const frameClasses = ['rail', rhythm ? 'py-12 sm:py-20' : ''].filter(Boolean).join(' ');
 
   return (
-    <section id={id} className={sectionClasses}>
+    <section
+      id={id}
+      className={[sectionClasses, !noBorder ? 'band' : ''].filter(Boolean).join(' ')}
+    >
       <div className={frameClasses}>
         {eyebrow && (
-          <div className={rhythm ? 'pb-6 md:pb-8' : 'pt-4 sm:pt-6 md:pt-8 pb-2'}>
-            <span className="type-eyebrow-num">
-              {eyebrowNumber && (
-                <span className="text-ink-faint">[{eyebrowNumber}]</span>
-              )}
-              {eyebrowNumber && <span>&nbsp;</span>}
-              {eyebrow}
-            </span>
+          <div className={rhythm ? 'pb-4' : 'pb-4 pt-12 sm:pt-20'}>
+            {/*
+              `eyebrowNumber` is accepted and ignored. It used to print
+              `[02]` before the label, numbering the page like a parts
+              catalogue — which tells a reader how many more of these they
+              have left to sit through. 75 call sites pass it; rather than
+              touch all of them, the shell stops rendering it.
+            */}
+            <span className="kicker">{eyebrow}</span>
           </div>
         )}
         {children}

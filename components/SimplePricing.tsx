@@ -81,9 +81,7 @@ function PlanHeader({
   return (
     <>
       <div className="flex items-start justify-between gap-3">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
-          <span className="text-slate-400">[{index}]</span> {eyebrow}
-        </span>
+        <span className="kicker text-base">{eyebrow}</span>
         <PlanBadge featured={featured}>{badge}</PlanBadge>
       </div>
       <div className="mt-4 flex items-center gap-2.5">

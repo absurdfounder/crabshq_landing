@@ -121,7 +121,11 @@ module.exports = {
         teal: { ...brandGreen },
       },
       boxShadow: {
-        xs: '0 0 0 1px rgba(0, 0, 0, 0.16)',
+        // The card elevation. Pairs with `ring-1 ring-black/5` — the ring draws
+        // the edge, this lifts it off the page. It used to be
+        // `0 0 0 1px rgba(0,0,0,0.16)`, i.e. a hard border wearing a shadow's
+        // name, which double-drew against the ring. No call sites relied on it.
+        xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
         sm: '0 1px 2px 0 rgba(0, 0, 0, 0.16)',
         default: '0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',

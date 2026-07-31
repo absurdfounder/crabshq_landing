@@ -6,77 +6,81 @@ import { ArrowRight } from 'lucide-react';
 import HeroRotatingHeadline from './HeroRotatingHeadline';
 import HeroArticleDemo from './HeroArticleDemo';
 import HeroDownloadButtons from './HeroDownloadButtons';
-import TrooperStoryLine from './TrooperStoryLine';
 import PixelButton from './ui/PixelButton';
 import FernCircleCheckIcon from './ui/FernCircleCheckIcon';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
 
+/**
+ * The hero.
+ *
+ * Copy stacks in one column — kicker, headline, lede, actions, reassurances —
+ * at a capped measure, then the product fills the width below on a tinted
+ * surface.
+ *
+ * It used to split the copy across a 7/5 grid, which put the paragraph and the
+ * primary CTA to the *right of* the headline rather than under it, so the eye
+ * had to travel sideways to find the thing to click. And the demo sat on flat
+ * `bg-canvas`: a white UI on a near-white ground, which is why it read as
+ * washed out at any size. A tinted ground and a real elevation fix that
+ * without touching the demo itself.
+ */
 export default function Hero() {
   return (
-    // No local clip. The comment that used to sit here claimed the demo "uses
-    // rotate + perspective and deliberately extends past the rail" — none of
-    // that is true. `rotate` only selects which scenario plays, there is no
-    // transform, and nothing bleeds. The page-level `hero-shell` already
-    // provides the one clip this page needs.
-    <section className="relative bg-canvas text-ink">
-      <div className="rail">
-        <div className="pb-0 pt-[calc(var(--site-header-height)+1.25rem)] sm:pt-[calc(var(--site-header-height)+1.75rem)] md:pt-[calc(var(--site-header-height)+2rem)]">
-          {/* The kicker sits above the grid, not inside the left column. It
-              used to live in that column, which made the headline start lower
-              than the paragraph beside it — and the right column compensated
-              with `lg:pt-8 xl:pt-10`, i.e. alignment faked by padding. Lifted
-              out, both columns share a real grid line at every breakpoint. */}
-          <p className="reveal reveal__kicker kicker mb-4 sm:mb-5">AI workforce</p>
+    <section className="band relative bg-canvas text-ink">
+      <div className="rail pt-[calc(var(--site-header-height)+2rem)] sm:pt-[calc(var(--site-header-height)+3rem)]">
+        <div className="max-w-3xl">
+          <p className="kicker">AI workforce</p>
 
-          <div className="grid min-w-0 items-start gap-8 sm:gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16">
-            <div className="min-w-0 lg:col-span-7">
-              <div className="reveal reveal__usp">
-                <HeroRotatingHeadline />
-              </div>
-
-              <TrooperStoryLine className="mt-5 sm:mt-6" />
-            </div>
-
-            <div className="min-w-0 lg:col-span-5">
-              <p className="max-w-full text-[15px] leading-relaxed text-ink-muted sm:text-base sm:leading-7">
-                <b className="text-ink">Hire a workforce, not a chatbot.</b> Troopers{' '}
-                <b className="text-trooper">write code</b>, <b className="text-trooper">ship commits</b>,{' '}
-                <b className="text-trooper">run ads</b>, <b className="text-trooper">answer support</b>, and{' '}
-                <b className="text-trooper">file the paperwork</b> — each one running a loop you approved.
-                Powered by <span className="font-semibold text-ink">OpenClaw</span>.
-              </p>
-
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:inline-flex lg:flex-nowrap">
-                <PixelButton
-                  href="https://app.trooper.so?ref=herolanding"
-                  external
-                  size="lg"
-                  tone="dark"
-                  className="w-full shrink-0 sm:w-auto"
-                  icon={<ArrowRight className="h-4 w-4" />}
-                >
-                  Get Started
-                </PixelButton>
-                <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
-              </div>
-
-              <ul className="fern-trust-row mt-5" aria-label="Product highlights">
-                {TRUST_ITEMS.map((item) => (
-                  <li key={item} className="fern-trust-row__item">
-                    <FernCircleCheckIcon className="fern-trust-row__check" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="mt-4">
+            <HeroRotatingHeadline />
           </div>
 
-          {/* `.rail-bleed` is exactly the rail's gutter, so the demo band's
-              edges land on the hairlines by construction rather than by eye.
-              No top margin: the band's own py + full-width border-t is the
-              section rule; 104px of stacked gap is what made it look detached. */}
-          <div className="rail-bleed relative min-w-0">
+          <p className="lede max-w-2xl sm:text-lg">
+            <b className="font-semibold text-neutral-800">Hire a workforce, not a chatbot.</b>{' '}
+            Troopers write code, ship commits, run ads, answer support and file the paperwork —
+            each one running a loop you approved.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <PixelButton
+              href="https://app.trooper.so?ref=herolanding"
+              external
+              size="lg"
+              tone="dark"
+              className="w-full shrink-0 sm:w-auto"
+              icon={<ArrowRight className="h-4 w-4" />}
+            >
+              Get started free
+            </PixelButton>
+            <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+          </div>
+
+          <ul
+            className="mt-6 flex flex-wrap gap-x-5 gap-y-2"
+            aria-label="Product highlights"
+          >
+            {TRUST_ITEMS.map((item) => (
+              <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-500">
+                <FernCircleCheckIcon className="h-4 w-4 shrink-0 text-fern-600" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/*
+        The product, on a tinted pixel surface.
+
+        Full-bleed rather than inside the rail: the surface is the band, and a
+        band has no side edges. The demo itself sits on top as an elevated,
+        rounded card so the white UI reads as lifted off the tint instead of
+        dissolving into it.
+      */}
+      <div className="hero-surface relative mt-12 hidden border-t border-black/5 sm:mt-16 lg:block">
+        <div className="rail py-10 lg:py-14">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
             <HeroArticleDemo rotate />
           </div>
         </div>

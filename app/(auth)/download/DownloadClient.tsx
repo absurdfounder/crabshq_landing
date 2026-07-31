@@ -236,9 +236,7 @@ export default function DownloadClient() {
 
         <section className="overflow-hidden rounded-sm bg-white shadow-sm ring-1 ring-black/5">
           <div className="border-b border-[var(--color-line)] px-4 py-3 sm:px-6 lg:px-8">
-            <span className="type-eyebrow-num">
-              <span className="text-ink-faint">[02]</span>&nbsp;Choose how you work
-            </span>
+            <span className="kicker">Choose how you work</span>
           </div>
 
           <div className="border-b border-[var(--color-line)]">

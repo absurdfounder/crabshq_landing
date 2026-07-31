@@ -16,5 +16,8 @@ export default function HeroArticleDemo({
   scenarioId?: DemoScenarioId;
   rotate?: boolean;
 }) {
-  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} backdrop={<PixelDitherGradient />} />;
+  // No backdrop. The demo used to carry its own blue dither field, which now
+  // sits inside the hero's tinted surface — two competing textures, in two
+  // different hues, one on top of the other. The band owns the ground.
+  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} />;
 }
