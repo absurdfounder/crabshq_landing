@@ -656,6 +656,19 @@ body > iframe.goog-te-menu-frame {
    * dither ramp is the same device the reference design uses behind its own
    * product imagery.
    */
+  /*
+   * The tinted ground under the hero's product demo band. A white UI on the
+   * near-white canvas read as washed out at any size; the 8px dither ramp is
+   * the same device the reference design uses behind its own product imagery.
+   */
+  .hero-surface {
+    background-color: #eef2e6;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(63, 107, 0, 0.09) 1px, transparent 0),
+      linear-gradient(180deg, #f2f5ec 0%, #e7ecdc 100%);
+    background-size: 8px 8px, 100% 100%;
+  }
+
   .dot-grid-dark {
     background-color: #0f120b;
     background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);

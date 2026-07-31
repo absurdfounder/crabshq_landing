@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 import HeroRotatingHeadline from '../HeroRotatingHeadline';
+import HeroArticleDemo from '../HeroArticleDemo';
 import HeroDownloadButtons from '../HeroDownloadButtons';
 import PixelButton from '../ui/PixelButton';
 import FernCircleCheckIcon from '../ui/FernCircleCheckIcon';
@@ -68,12 +69,9 @@ function FolderSvg({ className = '' }: { className?: string }) {
     <svg viewBox="0 0 64 50" className={className} aria-hidden>
       <path
         d="M6 8a4 4 0 0 1 4-4h14l6 6h28a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4Z"
-        fill="#3d9be9"
+        fill="#59aef2"
       />
-      <path
-        d="M6 16h52v26a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4Z"
-        fill="#6cb9f5"
-      />
+      <path d="M6 16h52v26a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4Z" fill="#8ccafd" />
     </svg>
   );
 }
@@ -81,11 +79,11 @@ function FolderSvg({ className = '' }: { className?: string }) {
 function PageSvg({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 40" className={className} aria-hidden>
-      <path d="M3 3a3 3 0 0 1 3-3h16l7 7v30a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z" fill="#fff" stroke="#d4d4d4" />
-      <path d="M22 0l7 7h-5a2 2 0 0 1-2-2Z" fill="#e5e5e5" />
-      <rect x="8" y="14" width="16" height="2" rx="1" fill="#9db866" />
-      <rect x="8" y="20" width="16" height="2" rx="1" fill="#d4d4d4" />
-      <rect x="8" y="26" width="10" height="2" rx="1" fill="#d4d4d4" />
+      <path d="M3 3a3 3 0 0 1 3-3h16l7 7v30a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z" fill="#fff" stroke="#e2e2e0" />
+      <path d="M22 0l7 7h-5a2 2 0 0 1-2-2Z" fill="#ededeb" />
+      <rect x="8" y="14" width="16" height="2" rx="1" fill="#b9d68a" />
+      <rect x="8" y="20" width="16" height="2" rx="1" fill="#e2e2e0" />
+      <rect x="8" y="26" width="10" height="2" rx="1" fill="#e2e2e0" />
     </svg>
   );
 }
@@ -94,23 +92,23 @@ function FolderIcon({
   x,
   y,
   name,
-  className = '',
+  dataId,
 }: {
   x: number;
   y: number;
   name: string;
-  className?: string;
+  dataId: string;
 }) {
   return (
-    <Draggable x={x} y={y} className="w-16 text-center">
-      <div className={className}>
+    <Draggable x={x} y={y} dataId={dataId} className="w-16 text-center">
+      <div data-dh={`${dataId}-icon`}>
         <RemoteIcon
           src={`${HC}/sysicon1.avif`}
           size={52}
           className="mx-auto h-[52px] w-[52px] object-contain"
           fallback={<FolderSvg className="mx-auto h-[46px] w-[56px]" />}
         />
-        <span className="mt-0.5 block truncate text-[11px] leading-4 text-neutral-600">{name}</span>
+        <span className="mt-0.5 block truncate text-[11px] leading-4 text-neutral-500">{name}</span>
       </div>
     </Draggable>
   );
@@ -123,6 +121,7 @@ function MacWindow({
   w,
   title,
   caption,
+  dataId,
   children,
 }: {
   x: number;
@@ -130,18 +129,19 @@ function MacWindow({
   w: number;
   title?: string;
   caption?: string;
+  dataId: string;
   children: React.ReactNode;
 }) {
   return (
-    <Draggable x={x} y={y}>
+    <Draggable x={x} y={y} dataId={dataId}>
       <div style={{ width: w }}>
-        <div className="overflow-hidden rounded-lg bg-white shadow-[0_16px_36px_-14px_rgba(26,26,26,0.4)] ring-1 ring-black/10">
+        <div className="overflow-hidden rounded-lg bg-white shadow-[0_14px_30px_-16px_rgba(26,26,26,0.25)] ring-1 ring-black/[0.08]">
           <div className="flex items-center gap-1.5 border-b border-black/5 bg-neutral-50 px-2.5 py-1.5">
             <span className="size-2.5 rounded-full bg-[#ff5f57]" />
             <span className="size-2.5 rounded-full bg-[#febc2e]" />
             <span className="size-2.5 rounded-full bg-[#28c840]" />
             {title ? (
-              <span className="ml-1.5 truncate text-[10px] font-medium text-neutral-500">{title}</span>
+              <span className="ml-1.5 truncate text-[10px] font-medium text-neutral-400">{title}</span>
             ) : null}
           </div>
           {children}
@@ -173,9 +173,9 @@ function SpreadsheetMock() {
         <div className="bg-neutral-50 px-1.5 py-0.5 font-semibold text-neutral-500">Status</div>
         {rows.map(([id, amt, st], i) => (
           <React.Fragment key={id}>
-            <div className={`bg-white px-1.5 py-0.5 ${i === 2 ? 'dh-row-flash' : ''}`}>{id}</div>
-            <div className={`bg-white px-1.5 py-0.5 tabular-nums ${i === 2 ? 'dh-row-flash' : ''}`}>{amt}</div>
-            <div className={`bg-white px-1.5 py-0.5 ${i === 2 ? 'dh-row-flash' : ''}`}>
+            <div className={`bg-white px-1.5 py-0.5 ${i === 2 ? 'dh-row' : ''}`}>{id}</div>
+            <div className={`bg-white px-1.5 py-0.5 tabular-nums ${i === 2 ? 'dh-row' : ''}`}>{amt}</div>
+            <div className={`bg-white px-1.5 py-0.5 ${i === 2 ? 'dh-row' : ''}`}>
               <span className={st === 'review' ? 'text-amber-600' : 'text-trooper-600'}>{st}</span>
             </div>
           </React.Fragment>
@@ -191,14 +191,14 @@ function PrReviewMock() {
       <p className="font-semibold text-neutral-800">fix: retry failed webhooks</p>
       <p className="text-neutral-400">#482 · trooper-app</p>
       <div className="mt-1.5 rounded bg-neutral-50 p-1.5 font-mono text-[9px] leading-4">
-        <p className="text-red-600">- retries = 0</p>
-        <p className="text-trooper-700">+ retries = 3</p>
-        <p className="text-trooper-700">+ backoff = exp(2)</p>
+        <p className="text-red-500">- retries = 0</p>
+        <p className="text-trooper-600">+ retries = 3</p>
+        <p className="text-trooper-600">+ backoff = exp(2)</p>
       </div>
       <div className="mt-1.5 flex items-center gap-1.5">
         <span className="relative inline-flex size-2">
-          <span className="absolute inset-0 rounded-full bg-amber-400" />
-          <span className="dh-check-on absolute inset-0 rounded-full bg-trooper-500" />
+          <span className="absolute inset-0 rounded-full bg-amber-300" />
+          <span data-dh="fx-check" className="dh-fx absolute inset-0 rounded-full bg-trooper-400" />
         </span>
         <span className="text-neutral-500">All checks passed</span>
         <span className="ml-auto rounded bg-trooper-50 px-1.5 py-0.5 font-medium text-trooper-700">
@@ -211,10 +211,24 @@ function PrReviewMock() {
 
 function TerminalMock() {
   return (
-    <div className="bg-[#161813] p-2.5 font-mono text-[10px] leading-5 text-neutral-200">
-      <p>$ trooper deploy --prod</p>
-      <p className="dh-type dh-t2 text-neutral-400">bundling 42 modules…</p>
-      <p className="dh-type dh-t3 text-[#9db866]">✓ live on prod — 12s</p>
+    <div className="bg-white p-2.5 font-mono text-[10px] leading-5 text-neutral-600">
+      <p>
+        <span className="text-trooper-600">$</span> trooper deploy --prod
+      </p>
+      <p
+        data-dh="fx-t2"
+        className="dh-type text-neutral-400"
+        style={{ '--dh-w': '20ch' } as React.CSSProperties}
+      >
+        bundling 42 modules…
+      </p>
+      <p
+        data-dh="fx-t3"
+        className="dh-type text-trooper-600"
+        style={{ '--dh-w': '20ch' } as React.CSSProperties}
+      >
+        ✓ live on prod — 12s
+      </p>
     </div>
   );
 }
@@ -231,11 +245,11 @@ function ChatMock() {
         </p>
       </div>
       <div className="flex justify-end">
-        <p className="rounded-lg rounded-tr-sm bg-trooper-600 px-2 py-1 text-white">
+        <p className="rounded-lg rounded-tr-sm bg-gradient-to-b from-[#dbe9ff] to-[#b3d0ff] px-2 py-1 font-medium text-[#1c2f66]">
           Scheduled the 9am posts
         </p>
       </div>
-      <div className="dh-pop flex items-start gap-1.5">
+      <div data-dh="fx-bubble" className="dh-fx flex items-start gap-1.5">
         <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-trooper-100 text-[7px] font-semibold text-trooper-700">
           L
         </span>
@@ -251,36 +265,281 @@ function ChatMock() {
 /* Agent cursors                                                       */
 /* ------------------------------------------------------------------ */
 
-function AgentCursor({
-  name,
-  role,
-  color,
-  animClass,
-}: {
-  name: string;
-  role: string;
-  color: string;
-  animClass: string;
-}) {
+const AGENTS = [
+  {
+    id: 'aria',
+    name: 'Aria',
+    role: 'Growth',
+    arrow: '#8fc63f',
+    pillBg: '#eef6df',
+    pillText: '#4a7a08',
+    home: [150, 300] as const,
+  },
+  {
+    id: 'jordan',
+    name: 'Jordan',
+    role: 'Chief of staff',
+    arrow: '#ffa04d',
+    pillBg: '#fff0e0',
+    pillText: '#b45309',
+    home: [1080, 320] as const,
+  },
+  {
+    id: 'leo',
+    name: 'Leo',
+    role: 'Finance',
+    arrow: '#6aa6ff',
+    pillBg: '#e7efff',
+    pillText: '#2b5fd9',
+    home: [210, 520] as const,
+  },
+];
+
+function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
   return (
-    <div className={`dh-cursor ${animClass}`}>
-      <svg width="18" height="18" viewBox="0 0 24 24" className="drop-shadow-sm" aria-hidden>
+    <div
+      data-dh={`cursor-${agent.id}`}
+      className="dh-cursor"
+      style={{ transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)` }}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" className="drop-shadow-[0_2px_4px_rgba(26,26,26,0.18)]" aria-hidden>
         <path
           d="M4.2 3.4 Q4 2.6 4.8 2.9 L20.3 9.8 Q21.1 10.2 20.2 10.7 L13.6 12.6 L11.1 19 Q10.7 19.9 10.3 19.1 Z"
-          fill={color}
+          fill={agent.arrow}
           stroke="#fff"
-          strokeWidth="1.3"
+          strokeWidth="1.4"
           strokeLinejoin="round"
         />
       </svg>
       <span
-        className="ml-4 block w-max rounded-full px-2 py-0.5 text-[11px] font-medium leading-4 text-white shadow-sm"
-        style={{ backgroundColor: color }}
+        className="ml-4 mt-0.5 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-sm ring-1 ring-black/5"
+        style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
       >
-        {name} · {role}
+        {agent.name} · {agent.role}
       </span>
     </div>
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* The choreography engine                                             */
+/* ------------------------------------------------------------------ */
+
+type StepTarget = string | readonly [number, number];
+type Step = {
+  /** Element id (data-dh) or absolute stage point. */
+  to: StepTarget;
+  /** Offset from the target element's top-left corner, in stage px. */
+  off?: readonly [number, number];
+  /** Travel time in ms. */
+  move: number;
+  /** Pause on arrival in ms. */
+  dwell?: number;
+  /** The file rides under the cursor for this leg. */
+  carry?: boolean;
+  /** Effect fired on arrival. */
+  fx?: string;
+};
+
+const SCRIPTS: Record<string, Step[]> = {
+  aria: [
+    { to: 'file', off: [30, 28], move: 2000, dwell: 450 },
+    { to: 'folder-inv', off: [30, 30], move: 2600, carry: true, fx: 'drop', dwell: 700 },
+    { to: 'win-sheet', off: [116, 96], move: 2400, fx: 'flash', dwell: 600 },
+    { to: 'file', off: [72, -30], move: 2600, dwell: 2400 },
+  ],
+  jordan: [
+    { to: 'win-pr', off: [128, 96], move: 2200, fx: 'approve', dwell: 700 },
+    { to: 'win-term', off: [118, 62], move: 2600, fx: 'deploy', dwell: 1000 },
+    { to: 'helmet', off: [-38, 66], move: 2400, dwell: 1900 },
+    { to: 'win-pr', off: [190, 168], move: 2200, dwell: 1300 },
+  ],
+  leo: [
+    { to: 'win-chat', off: [118, 86], move: 2400, fx: 'post', dwell: 700 },
+    { to: 'win-sheet', off: [66, 188], move: 2800, dwell: 1600 },
+    { to: 'win-chat', off: [188, 44], move: 2400, dwell: 1700 },
+  ],
+};
+
+/** Where the file chip rests, in stage px (also its authored left/top). */
+const FILE_HOME = [96, 336] as const;
+
+/**
+ * Runs the three cursors with requestAnimationFrame instead of CSS keyframes.
+ *
+ * The crucial difference from a keyframed timeline: a target's position is
+ * resolved from its element's **live** bounding rect on every frame, so when
+ * the visitor drags a window or a folder somewhere else, the agents follow it
+ * there — mid-flight, even. Fixed keyframes kept clicking where the window
+ * used to be.
+ *
+ * The engine also owns the in-window effects (row flash, check flip, terminal
+ * typing, chat bubble) by toggling classes, so an effect can only ever fire
+ * when its agent has actually arrived. Base styles are the completed state:
+ * with the engine off (reduced motion, no JS) everything is simply visible.
+ */
+function useAgentChoreography(stageRef: React.RefObject<HTMLDivElement>) {
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const q = (id: string) => stage.querySelector<HTMLElement>(`[data-dh="${id}"]`);
+    const fileEl = q('file');
+
+    const timeouts = new Set<number>();
+    const later = (fn: () => void, ms: number) => {
+      const t = window.setTimeout(() => {
+        timeouts.delete(t);
+        fn();
+      }, ms);
+      timeouts.add(t);
+    };
+
+    // The story starts with these not yet done; the engine reveals them.
+    const check = q('fx-check');
+    const bubble = q('fx-bubble');
+    const t2 = q('fx-t2');
+    const t3 = q('fx-t3');
+    check?.classList.add('dh-off');
+    bubble?.classList.add('dh-off');
+    t2?.classList.add('dh-t-idle');
+    t3?.classList.add('dh-t-idle');
+
+    const typeLine = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.remove('dh-typing', 'dh-t-idle');
+      void el.offsetWidth;
+      el.classList.add('dh-typing');
+    };
+
+    const FX: Record<string, () => void> = {
+      drop: () => {
+        const icon = q('folder-inv-icon');
+        if (icon) {
+          icon.classList.remove('dh-bounce');
+          void icon.offsetWidth;
+          icon.classList.add('dh-bounce');
+        }
+        if (fileEl) {
+          fileEl.classList.add('dh-hide');
+          later(() => {
+            fileEl.style.transform = '';
+            later(() => fileEl.classList.remove('dh-hide'), 800);
+          }, 500);
+        }
+      },
+      flash: () => {
+        const rows = stage.querySelectorAll('.dh-row');
+        rows.forEach((el) => el.classList.add('dh-hl'));
+        later(() => rows.forEach((el) => el.classList.remove('dh-hl')), 1700);
+      },
+      approve: () => {
+        check?.classList.remove('dh-off');
+        later(() => check?.classList.add('dh-off'), 9000);
+      },
+      deploy: () => {
+        typeLine(t2);
+        later(() => typeLine(t3), 1100);
+      },
+      post: () => {
+        bubble?.classList.remove('dh-off');
+        later(() => bubble?.classList.add('dh-off'), 9000);
+      },
+    };
+
+    const posOf = (t: StepTarget, off: readonly [number, number] = [0, 0]): [number, number] => {
+      if (Array.isArray(t)) return [t[0] + off[0], t[1] + off[1]];
+      const el = q(t as string);
+      const sr = stage.getBoundingClientRect();
+      const s = sr.width / 1280;
+      if (!el || s <= 0) return [640 + off[0], 360 + off[1]];
+      const r = el.getBoundingClientRect();
+      return [(r.left - sr.left) / s + off[0], (r.top - sr.top) / s + off[1]];
+    };
+
+    const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+
+    type CursorState = {
+      el: HTMLElement | null;
+      steps: Step[];
+      i: number;
+      phase: 'move' | 'dwell';
+      t0: number;
+      from: [number, number];
+    };
+    const cursors: CursorState[] = AGENTS.map((a, k) => ({
+      el: q(`cursor-${a.id}`),
+      steps: SCRIPTS[a.id],
+      i: 0,
+      phase: 'move',
+      // Staggered starts so the three agents never move in lockstep.
+      t0: performance.now() + k * 500,
+      from: [a.home[0], a.home[1]],
+    }));
+
+    let raf = 0;
+    const frame = (now: number) => {
+      for (const c of cursors) {
+        if (!c.el) continue;
+        const st = c.steps[c.i];
+        if (c.phase === 'move') {
+          const p = Math.min(1, Math.max(0, (now - c.t0) / st.move));
+          const tp = posOf(st.to, st.off);
+          const e = ease(p);
+          const x = c.from[0] + (tp[0] - c.from[0]) * e;
+          const y = c.from[1] + (tp[1] - c.from[1]) * e;
+          c.el.style.transform = `translate(${x}px, ${y}px)`;
+          if (st.carry && fileEl && !fileEl.classList.contains('dh-hide')) {
+            fileEl.style.transform = `translate(${x - 30 - FILE_HOME[0]}px, ${y - 28 - FILE_HOME[1]}px)`;
+          }
+          if (p >= 1) {
+            c.from = tp;
+            c.phase = 'dwell';
+            c.t0 = now;
+            if (st.fx) FX[st.fx]?.();
+          }
+        } else if (now - c.t0 >= (st.dwell ?? 300)) {
+          c.i = (c.i + 1) % c.steps.length;
+          c.phase = 'move';
+          c.t0 = now;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    };
+
+    // Pause the whole choreography while the hero is off screen.
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (!raf) {
+          const now = performance.now();
+          cursors.forEach((c) => {
+            c.t0 = now;
+          });
+          raf = requestAnimationFrame(frame);
+        }
+      } else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+    io.observe(stage);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
+      timeouts.forEach((t) => window.clearTimeout(t));
+      // Leave the page in the completed, everything-visible state.
+      check?.classList.remove('dh-off');
+      bubble?.classList.remove('dh-off');
+      t2?.classList.remove('dh-t-idle', 'dh-typing');
+      t3?.classList.remove('dh-t-idle', 'dh-typing');
+      if (fileEl) {
+        fileEl.style.transform = '';
+        fileEl.classList.remove('dh-hide');
+      }
+    };
+  }, [stageRef]);
 }
 
 /* ------------------------------------------------------------------ */
@@ -293,59 +552,69 @@ function AgentCursor({
  * The claim of the product is “AI employees doing real multi-window work on a
  * real computer”, so the hero shows exactly that: a dot-grid desktop with the
  * headline in the middle and, around it, mac windows a squad of named agent
- * cursors is actually working — one reconciles refunds and files the CSV into
- * a folder, one approves a PR and deploys from a terminal, one posts back in
- * the launch channel. Every window, folder and sticker can be picked up and
- * dragged.
+ * cursors is actually working. Every window, folder and sticker can be picked
+ * up and dragged — and because the choreography resolves targets from live
+ * element positions, the agents follow wherever you put things.
+ *
+ * Below the scene, the real product demo band (as before this hero existed).
  *
  * Engineering notes:
- * - The scene lives on a fixed 1280px stage centred in the viewport, so the
- *   cursor keyframes and their pixel targets stay in register at every width;
- *   the whole stage scales 0.8 at lg and 1.0 from xl.
- * - Cursors, the carried file, and every in-window effect (row highlight, PR
- *   check flip, terminal typing, chat bubble) share one 24s CSS timeline, so
- *   the choreography stays in sync with zero JS per frame.
+ * - The scene lives on a fixed 1280px stage centred in the viewport (scaled
+ *   0.82 at lg, 1.0 from xl) so authored coordinates hold at every width.
+ * - Cursors run on a rAF engine (see useAgentChoreography); in-window effects
+ *   are class toggles whose base styles are the completed state, so with the
+ *   engine off (reduced motion, no JS) nothing is hidden.
  * - The scene is decorative: aria-hidden, hidden below lg, pointer-events off
- *   except on draggable objects, and every animation stops under
- *   prefers-reduced-motion (base styles are the completed state).
+ *   except on draggable objects.
  */
 export default function DesktopHero() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  useAgentChoreography(stageRef);
+
   return (
     <section className="band relative overflow-hidden bg-canvas text-ink">
       <DhStyles />
-      <div className="dh-dots pointer-events-none absolute inset-0" aria-hidden />
+      <div
+        className="dh-dots pointer-events-none absolute inset-x-0 top-0 h-full lg:h-[46rem] xl:h-[48rem]"
+        aria-hidden
+      />
 
       {/* The desktop scene */}
-      <div className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden>
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 hidden lg:block lg:h-[46rem] xl:h-[48rem]"
+        aria-hidden
+      >
         <div className="absolute left-1/2 top-0 h-full w-[1280px] -translate-x-1/2">
-          <div className="dh-stage h-full w-full origin-top scale-[0.82] xl:scale-100">
-            <MacWindow x={40} y={138} w={244} title="refunds — Q3" caption="reconcile-refunds.numbers">
+          <div ref={stageRef} className="dh-stage h-full w-full origin-top scale-[0.82] xl:scale-100">
+            <MacWindow x={40} y={138} w={244} dataId="win-sheet" title="refunds — Q3" caption="reconcile-refunds.numbers">
               <SpreadsheetMock />
             </MacWindow>
-            <MacWindow x={980} y={134} w={268} title="Pull request" caption="pr-482.diff">
+            <MacWindow x={980} y={134} w={268} dataId="win-pr" title="Pull request" caption="pr-482.diff">
               <PrReviewMock />
             </MacWindow>
-            <MacWindow x={960} y={500} w={276} title="deploy — zsh" caption="trooper-cli">
+            <MacWindow x={960} y={500} w={276} dataId="win-term" title="deploy — zsh" caption="trooper-cli">
               <TerminalMock />
             </MacWindow>
-            <MacWindow x={52} y={500} w={252} title="#launch-week" caption="field-comms">
+            <MacWindow x={52} y={500} w={252} dataId="win-chat" title="#launch-week" caption="field-comms">
               <ChatMock />
             </MacWindow>
 
-            <FolderIcon x={540} y={664} name="invoices" className="dh-folder-invoices" />
-            <FolderIcon x={690} y={664} name="screenshots" />
+            <FolderIcon x={540} y={664} name="invoices" dataId="folder-inv" />
+            <FolderIcon x={690} y={664} name="screenshots" dataId="folder-shots" />
 
             {/* The file Aria picks up and drops into “invoices” */}
-            <div className="dh-file absolute left-0 top-0 z-10 w-16 text-center">
+            <div
+              data-dh="file"
+              className="dh-file w-16 text-center"
+              style={{ left: FILE_HOME[0], top: FILE_HOME[1] }}
+            >
               <PageSvg className="mx-auto h-10 w-8" />
-              <span className="mt-0.5 block truncate text-[10px] leading-4 text-neutral-600">
+              <span className="mt-0.5 block truncate text-[10px] leading-4 text-neutral-500">
                 refunds-q3.csv
               </span>
             </div>
 
-            <Draggable x={1128} y={300} rotate={8} className="w-[96px]">
-              {/* Plain <img>: TrooperHelmet's whileInView never fires inside this
-                  scene, so it stayed at opacity 0. The float is CSS. */}
+            <Draggable x={1128} y={300} rotate={8} dataId="helmet" className="w-[96px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/trooper-logomark.png"
@@ -353,7 +622,7 @@ export default function DesktopHero() {
                 width={96}
                 height={96}
                 draggable={false}
-                className="dh-float size-24 object-contain drop-shadow-[0_18px_28px_rgba(26,26,26,0.25)]"
+                className="dh-float size-24 object-contain drop-shadow-[0_10px_18px_rgba(26,26,26,0.16)]"
               />
             </Draggable>
 
@@ -361,9 +630,9 @@ export default function DesktopHero() {
               <RemoteIcon src={`${HC}/beachball.svg`} size={22} className="size-[22px]" />
             </div>
 
-            <AgentCursor name="Aria" role="Growth" color="#3f6b00" animClass="dh-cur-aria" />
-            <AgentCursor name="Jordan" role="Chief of staff" color="#b45309" animClass="dh-cur-jordan" />
-            <AgentCursor name="Leo" role="Finance" color="#1d4ed8" animClass="dh-cur-leo" />
+            {AGENTS.map((agent) => (
+              <AgentCursor key={agent.id} agent={agent} />
+            ))}
           </div>
         </div>
       </div>
@@ -374,38 +643,50 @@ export default function DesktopHero() {
           is interactive again. */}
       <div className="rail pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+2.5rem)] text-center lg:h-[46rem] lg:pb-0 xl:h-[48rem]">
         <div className="pointer-events-auto mx-auto max-w-3xl">
-        <p className="kicker">AI workforce</p>
+          <p className="kicker">AI workforce</p>
 
-        <HeroRotatingHeadline className="mx-auto mt-4 text-center" />
+          <HeroRotatingHeadline className="mx-auto mt-4 text-center" />
 
-        <p className="lede mx-auto max-w-2xl text-center sm:text-lg">
-          <b className="font-semibold text-neutral-800">Hire a workforce, not a chatbot.</b>{' '}
-          Troopers write code, ship commits, run ads, answer support and file the paperwork —
-          each one running a loop you approved.
-        </p>
+          <p className="lede mx-auto max-w-2xl text-center sm:text-lg">
+            <b className="font-semibold text-neutral-800">Hire a workforce, not a chatbot.</b>{' '}
+            Troopers write code, ship commits, run ads, answer support and file the paperwork —
+            each one running a loop you approved.
+          </p>
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <PixelButton
-            href="https://app.trooper.so?ref=herolanding"
-            external
-            size="lg"
-            tone="dark"
-            className="w-full shrink-0 sm:w-auto"
-            icon={<ArrowRight className="h-4 w-4" />}
-          >
-            Get started free
-          </PixelButton>
-          <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <PixelButton
+              href="https://app.trooper.so?ref=herolanding"
+              external
+              size="lg"
+              tone="dark"
+              className="w-full shrink-0 sm:w-auto"
+              icon={<ArrowRight className="h-4 w-4" />}
+            >
+              Get started free
+            </PixelButton>
+            <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+          </div>
+
+          <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="Product highlights">
+            {TRUST_ITEMS.map((item) => (
+              <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-500">
+                <FernCircleCheckIcon className="h-4 w-4 shrink-0 text-fern-600" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
+      </div>
 
-        <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="Product highlights">
-          {TRUST_ITEMS.map((item) => (
-            <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-500">
-              <FernCircleCheckIcon className="h-4 w-4 shrink-0 text-fern-600" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+      {/*
+        The product, on a tinted pixel surface — the demo band the desktop
+        scene sits above, not instead of.
+      */}
+      <div className="hero-surface relative hidden border-t border-black/5 lg:block">
+        <div className="rail py-10 lg:py-14">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
+            <HeroArticleDemo rotate />
+          </div>
         </div>
       </div>
     </section>
@@ -413,91 +694,39 @@ export default function DesktopHero() {
 }
 
 /* ------------------------------------------------------------------ */
-/* The 24-second timeline                                              */
+/* Scene styles                                                        */
 /* ------------------------------------------------------------------ */
 
 function DhStyles() {
   return (
     <style>{`
-.dh-dots{background-image:radial-gradient(rgba(26,26,26,0.09) 1.1px,transparent 1.6px);background-size:22px 22px;}
+.dh-dots{background-image:radial-gradient(rgba(26,26,26,0.06) 1.1px,transparent 1.6px);background-size:24px 24px;}
 
-.dh-cursor{position:absolute;left:0;top:0;z-index:40;pointer-events:none;animation-duration:24s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;will-change:transform;}
-.dh-cur-aria{transform:translate(150px,300px);animation-name:dh-cur-aria;}
-.dh-cur-jordan{transform:translate(1080px,320px);animation-name:dh-cur-jordan;}
-.dh-cur-leo{transform:translate(210px,520px);animation-name:dh-cur-leo;}
+.dh-cursor{position:absolute;left:0;top:0;z-index:40;pointer-events:none;will-change:transform;}
+.dh-file{position:absolute;z-index:10;pointer-events:none;transition:opacity .45s ease;}
+.dh-file.dh-hide{opacity:0;}
 
-.dh-file{transform:translate(96px,336px);animation:dh-file 24s ease-in-out infinite;will-change:transform,opacity;pointer-events:none;}
-.dh-folder-invoices{animation:dh-folder-pop 24s ease-in-out infinite;}
-.dh-row-flash{animation:dh-row-flash 24s ease-in-out infinite;}
-.dh-check-on{animation:dh-check 24s linear infinite;}
-.dh-pop{animation:dh-pop 24s ease-in-out infinite;}
+.dh-bounce{animation:dh-bounce .55s ease;}
+@keyframes dh-bounce{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
+
+.dh-row{transition:background-color .5s ease;}
+.dh-row.dh-hl{background-color:rgba(122,168,36,0.16) !important;}
+
+.dh-fx{transition:opacity .35s ease,transform .35s ease;}
+.dh-fx.dh-off{opacity:0;transform:translateY(4px) scale(.95);}
+
 .dh-type{overflow:hidden;white-space:nowrap;}
-.dh-t2{animation:dh-type2 24s steps(20,end) infinite;}
-.dh-t3{animation:dh-type3 24s steps(20,end) infinite;}
-.dh-spin{animation:dh-spin 7s linear infinite;}
-.dh-float{animation:dh-float 6s ease-in-out infinite;}
+.dh-type.dh-t-idle{width:0;}
+.dh-type.dh-typing{width:0;animation:dh-typeonce 1s steps(22,end) forwards;}
+@keyframes dh-typeonce{from{width:0}to{width:var(--dh-w,20ch)}}
 
-@keyframes dh-cur-aria{
-  0%{transform:translate(150px,300px)}
-  6%,8%{transform:translate(110px,352px)}
-  20%,22%{transform:translate(562px,688px)}
-  30%,35%{transform:translate(140px,205px)}
-  36%{transform:translate(140px,205px) scale(.85)}
-  37%,44%{transform:translate(140px,205px)}
-  52%,100%{transform:translate(150px,300px)}
-}
-@keyframes dh-cur-jordan{
-  0%,4%{transform:translate(1080px,320px)}
-  10%,17%{transform:translate(1090px,190px)}
-  18%{transform:translate(1090px,190px) scale(.85)}
-  19%,28%{transform:translate(1090px,190px)}
-  34%,62%{transform:translate(1060px,560px)}
-  74%{transform:translate(1140px,430px)}
-  100%{transform:translate(1080px,320px)}
-}
-@keyframes dh-cur-leo{
-  0%,4%{transform:translate(210px,520px)}
-  12%,19%{transform:translate(170px,545px)}
-  20%{transform:translate(170px,545px) scale(.85)}
-  21%,34%{transform:translate(170px,545px)}
-  44%,64%{transform:translate(100px,260px)}
-  78%{transform:translate(170px,410px)}
-  100%{transform:translate(210px,520px)}
-}
-@keyframes dh-file{
-  0%,8%{transform:translate(96px,336px);opacity:1}
-  20%{transform:translate(548px,674px);opacity:1}
-  21%,94%{transform:translate(548px,674px);opacity:0}
-  95%{transform:translate(96px,336px);opacity:0}
-  97%,100%{transform:translate(96px,336px);opacity:1}
-}
-@keyframes dh-folder-pop{
-  0%,19.5%{transform:scale(1)}
-  21.5%{transform:scale(1.14)}
-  24%,100%{transform:scale(1)}
-}
-@keyframes dh-row-flash{
-  0%,35%{background-color:rgba(63,107,0,0)}
-  38%,46%{background-color:rgba(63,107,0,0.12)}
-  52%,100%{background-color:rgba(63,107,0,0)}
-}
-@keyframes dh-check{
-  0%,18%{opacity:0}
-  20%,93%{opacity:1}
-  96%,100%{opacity:0}
-}
-@keyframes dh-pop{
-  0%,20%{opacity:0;transform:translateY(4px) scale(.92)}
-  23%,93%{opacity:1;transform:none}
-  96%,100%{opacity:0;transform:translateY(4px) scale(.92)}
-}
-@keyframes dh-type2{0%,41%{width:0}46%,96%{width:20ch}100%{width:0}}
-@keyframes dh-type3{0%,50%{width:0}55%,96%{width:20ch}100%{width:0}}
+.dh-spin{animation:dh-spin 7s linear infinite;}
 @keyframes dh-spin{to{transform:rotate(360deg)}}
+.dh-float{animation:dh-float 6s ease-in-out infinite;}
 @keyframes dh-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 @media (prefers-reduced-motion: reduce){
-  .dh-cursor,.dh-file,.dh-folder-invoices,.dh-row-flash,.dh-check-on,.dh-pop,.dh-t2,.dh-t3,.dh-spin,.dh-float{animation:none !important;}
+  .dh-spin,.dh-float,.dh-bounce{animation:none !important;}
 }
 `}</style>
   );
