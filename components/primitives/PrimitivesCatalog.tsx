@@ -88,7 +88,7 @@ export default function PrimitivesCatalog() {
           <div className="mt-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:max-h-[calc(100vh-15rem)] md:overflow-y-auto"> <CategoryNav selected={selectedCategory} onSelect={setSelectedCategory} /></div>
         </aside>
 
-        <div className="min-w-0 flex-1 bg-canvas-warm">
+        <div className="min-h-[calc(100vh-var(--site-header-height))] min-w-0 flex-1 bg-canvas-warm [overflow-anchor:none]">
           {selectedCategory === 'All' && !query ? (
             <section className="border-b border-[var(--color-line)]">
               <div className="border-b border-[var(--color-line)] px-5 py-6 md:px-8 md:py-8">

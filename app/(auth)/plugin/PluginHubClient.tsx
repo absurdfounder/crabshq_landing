@@ -87,7 +87,7 @@ export default function PluginHubClient({ plugins }: PluginHubClientProps) {
         <div className="mt-3 flex gap-2 overflow-x-auto border-t border-slate-100 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:block md:max-h-[calc(100vh-16rem)] md:overflow-y-auto">{filterButtons}</div>
       </aside>
 
-      <section className="min-w-0">
+      <section className="min-h-[calc(100vh-var(--site-header-height))] min-w-0 [overflow-anchor:none]">
         <div className="border-b border-slate-200 px-5 py-6 md:px-8 md:py-8">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500"><span className="font-semibold text-slate-900 tabular-nums">{filtered.length.toLocaleString()}</span>{filtered.length === plugins.length ? ' integrations' : ` of ${plugins.length.toLocaleString()} integrations`}</p>
           <h2 className="mt-3 font-funneldisplay text-2xl tracking-tight text-slate-950 md:text-3xl">{selectedCategory === 'All' ? 'All integrations' : selectedCategory}</h2>

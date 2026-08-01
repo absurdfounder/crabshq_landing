@@ -1,5 +1,8 @@
 html {
     scroll-behavior: smooth;
+    /* Category changes can make a catalogue shorter than the viewport. Keep
+       the scrollbar rail reserved so the page never widens as it updates. */
+    scrollbar-gutter: stable;
 }
 
 .form-input:focus,
