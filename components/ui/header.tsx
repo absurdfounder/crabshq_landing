@@ -25,7 +25,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
-  const darkNav = pathname.startsWith('/primitives')
+  const darkNav = false
 
   useEffect(() => {
     setOpenDropdown(null)
