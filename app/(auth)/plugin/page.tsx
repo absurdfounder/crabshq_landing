@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
+import CatalogHero from '@/components/marketing/CatalogHero';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import {
   integrationHubMeta,
@@ -25,42 +25,23 @@ export default function PluginHubPage() {
   const allPlugins = getAllPlugins();
 
   return (
-    <div className="bg-white">
+    <div className="bg-canvas">
       <Header />
-      <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
-        <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-10">
-          <PixelMissionTag index="01" label="Plugin catalog" className="mb-4" />
-          <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] tracking-tight text-slate-900 max-w-3xl">
-            AI Agent Integrations
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
-            Connect HubSpot, Gmail, GitHub, Slack, Notion, Linear, Stripe, and {PLUGIN_CATALOG_COUNT.toLocaleString()}+ tools
-            to your Trooper AI workforce. Deploy agents that execute real work through OpenClaw plugins.
-          </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
-            <PixelButton
-              href="https://app.trooper.so"
-              external
-              size="lg"
-              tone="brand"
-              icon={<ArrowRight className="h-4 w-4" />}
-            >
-              Connect plugins
-            </PixelButton>
-            <PixelButton
-              href="/integration"
-              size="lg"
-              variant="outline"
-              tone="dark"
-              icon={<ArrowRight className="h-4 w-4" />}
-            >
-              OpenClaw skills
-            </PixelButton>
-          </div>
-        </div>
-      </section>
+      <CatalogHero
+        label="Plugin catalog"
+        title="AI agent integrations"
+        description={`Connect HubSpot, Gmail, GitHub, Slack, Notion, Linear, Stripe, and ${PLUGIN_CATALOG_COUNT.toLocaleString()}+ tools to your Trooper AI workforce. Deploy agents that execute real work through OpenClaw plugins.`}
+        actions={<>
+          <PixelButton href="https://app.trooper.so" external size="lg" tone="dark" icon={<ArrowRight className="h-4 w-4" />}>
+            Connect plugins
+          </PixelButton>
+          <PixelButton href="/integration" size="lg" variant="outline" tone="dark" icon={<ArrowRight className="h-4 w-4" />}>
+            Browse skills
+          </PixelButton>
+        </>}
+      />
 
-      <SectionShell eyebrow="Priority" eyebrowNumber="02" bgClass="bg-slate-50">
+      <SectionShell eyebrow="Priority" eyebrowNumber="02" bgClass="bg-canvas-warm">
         <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
           <p className="mb-6 text-sm text-slate-600">
             Most-deployed integrations for sales, engineering, and ops teams.
@@ -97,7 +78,7 @@ export default function PluginHubPage() {
         </div>
       </SectionShell>
 
-      <SectionShell eyebrow="Catalog" eyebrowNumber="03" bgClass="bg-white">
+      <SectionShell eyebrow="Catalog" eyebrowNumber="03" bgClass="bg-canvas">
         <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
           <p className="mb-8 text-slate-600 max-w-2xl leading-relaxed">
             Browse all {PLUGIN_CATALOG_COUNT.toLocaleString()} Trooper app plugins — Composio, Codex, OpenClaw channels,

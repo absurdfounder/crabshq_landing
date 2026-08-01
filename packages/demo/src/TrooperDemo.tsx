@@ -745,6 +745,12 @@ export default function TrooperDemo({
   const artifactReviewRef = useRef<ArtifactReviewState>(EMPTY_ARTIFACT_REVIEW);
   const canvasReviewRef = useRef<CanvasReviewState | null>(null);
   const chatRef = useRef<HTMLDivElement>(null);
+  // Once a visitor takes over the thread's scroll position, scripted messages
+  // must not pull it back to the latest message. This is intentionally kept
+  // outside React state so appending a message never causes a render loop.
+  const chatAutoFollowRef = useRef(true);
+  const chatProgrammaticScrollRef = useRef(false);
+  const chatProgrammaticScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -953,16 +959,63 @@ export default function TrooperDemo({
     setMode('script');
   }, [activeScenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Only chase the bottom when the reader is already there.
+  // Follow new messages only while the reader is at the bottom. A wheel/touch
+  // gesture immediately hands control to the visitor; scrolling back to the
+  // bottom opts back into following. This prevents the demo reel from
+  // hijacking the user's scroll while they inspect earlier messages.
   useEffect(() => {
     const el = chatRef.current;
     if (!el) return;
+    const interactionRoot = demoCanvasRef.current ?? el;
+
+    const distanceFromBottom = () => el.scrollHeight - el.scrollTop - el.clientHeight;
+    const onUserScrollIntent = () => {
+      chatAutoFollowRef.current = false;
+      if (chatProgrammaticScrollTimer.current) {
+        clearTimeout(chatProgrammaticScrollTimer.current);
+        chatProgrammaticScrollTimer.current = null;
+      }
+      chatProgrammaticScrollRef.current = false;
+    };
+    const onScroll = () => {
+      if (!chatProgrammaticScrollRef.current && distanceFromBottom() <= 8) {
+        chatAutoFollowRef.current = true;
+      }
+    };
+
+    // Listen on the whole demo surface: the visitor may be scrolling the page
+    // while the pointer is over the kanban/artifact side of the dashboard,
+    // not directly over the chat thread.
+    interactionRoot.addEventListener('wheel', onUserScrollIntent, { passive: true });
+    interactionRoot.addEventListener('touchstart', onUserScrollIntent, { passive: true });
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      interactionRoot.removeEventListener('wheel', onUserScrollIntent);
+      interactionRoot.removeEventListener('touchstart', onUserScrollIntent);
+      el.removeEventListener('scroll', onScroll);
+      if (chatProgrammaticScrollTimer.current) clearTimeout(chatProgrammaticScrollTimer.current);
+    };
+  }, []);
+
+  // Only chase the bottom when the reader is already there and has not taken
+  // control of the scroll position.
+  useEffect(() => {
+    const el = chatRef.current;
+    if (!el || !chatAutoFollowRef.current) return;
     const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
     if (!nearBottom) return;
+    chatProgrammaticScrollRef.current = true;
     const raf = requestAnimationFrame(() => {
       el.scrollTo({ top: el.scrollHeight, behavior: reducedMotion ? 'auto' : 'smooth' });
+      chatProgrammaticScrollTimer.current = setTimeout(() => {
+        chatProgrammaticScrollRef.current = false;
+        chatProgrammaticScrollTimer.current = null;
+      }, reducedMotion ? 0 : 450);
     });
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      if (chatProgrammaticScrollTimer.current) clearTimeout(chatProgrammaticScrollTimer.current);
+    };
   }, [messages, agentTyping, reducedMotion]);
 
   const applyTaskExecStep = useCallback((step: TaskExecStep) => {
