@@ -79,13 +79,15 @@ export default function PluginHubPage() {
       </SectionShell>
 
       <SectionShell eyebrow="Catalog" eyebrowNumber="03" bgClass="bg-canvas">
-        <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
-          <p className="mb-8 text-slate-600 max-w-2xl leading-relaxed">
+        <div className="pt-2 pb-16 md:pb-24">
+          <p className="mb-8 max-w-2xl px-0 text-slate-600 leading-relaxed">
             Browse all {PLUGIN_CATALOG_COUNT.toLocaleString()} Trooper app plugins — Composio, Codex, OpenClaw channels,
             and native integrations. Each has a dedicated SEO page at{' '}
             <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded font-mono">/plugin/ai_agent_for_[plugin]</code>.
           </p>
-          <PluginHubClient plugins={allPlugins} />
+          <div className="rail-bleed">
+            <PluginHubClient plugins={allPlugins} />
+          </div>
         </div>
       </SectionShell>
     </div>

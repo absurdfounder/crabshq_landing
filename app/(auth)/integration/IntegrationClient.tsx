@@ -117,11 +117,18 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
     }
     return 'All'
   })
+  const [query, setQuery] = useState('')
 
   const filteredSkills = useMemo(() => {
-    if (selectedCategory === 'All') return skills
-    return skills.filter(s => s.category === selectedCategory)
-  }, [skills, selectedCategory])
+    const normalizedQuery = query.trim().toLowerCase()
+    return skills.filter((skill) => {
+      if (selectedCategory !== 'All' && skill.category !== selectedCategory) return false
+      return !normalizedQuery || [skill.name, skill.description, skill.category]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedQuery)
+    })
+  }, [skills, selectedCategory, query])
 
   const skillCountByCategory = useMemo(() => {
     const counts: Record<string, number> = { 'All': skills.length }
@@ -133,82 +140,48 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
 
   const skillRouteIndex = useMemo(() => buildSkillRouteIndex(skills), [skills])
 
+  const filterButtons = categories.map((cat) => {
+    const isActive = selectedCategory === cat
+    const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
+    const count = skillCountByCategory[cat] || 0
+    return (
+      <button
+        key={cat}
+        type="button"
+        onClick={() => setSelectedCategory(cat)}
+        aria-pressed={isActive}
+        className={`flex w-48 shrink-0 items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors md:w-full ${
+          isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+        }`}
+      >
+        <CategoryIcon className="h-3.5 w-3.5 shrink-0 opacity-70" aria-hidden />
+        <span className="min-w-0 flex-1 truncate">{cat}</span>
+        <span className={`font-mono text-[10px] ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>{count.toLocaleString()}</span>
+      </button>
+    )
+  })
+
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="mb-6 sm:mb-8">
-        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
-          <span className="font-semibold text-slate-900 tabular-nums">{skills.length.toLocaleString()}</span>{' '}
-          skills available
-        </p>
-      </div>
+    <div className="mx-auto max-w-7xl border-y border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)] md:border-x">
+      <aside className="border-b border-slate-200 p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:border-b-0 md:border-r md:p-6">
+        <label className="relative block">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search skills…" className="w-full border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-slate-500" />
+        </label>
+        <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">Filter by category</p>
+        <div className="mt-3 flex gap-2 overflow-x-auto border-t border-slate-100 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:block md:max-h-[calc(100vh-16rem)] md:overflow-y-auto">{filterButtons}</div>
+      </aside>
 
-      <div className="mb-10 sm:mb-12">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400 mb-3 sm:mb-4">
-          Filter by category
-        </p>
-        <div className="-mx-4 sm:mx-0">
-          <div
-            className="overflow-x-auto px-4 sm:px-0 pb-1 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            role="group"
-            aria-label="Skill category filters"
-          >
-            <div className="flex flex-nowrap sm:flex-wrap gap-x-2.5 gap-y-3 sm:gap-x-3 sm:gap-y-3 min-w-0 sm:min-w-full">
-              {categories.map(cat => {
-                const isActive = selectedCategory === cat
-                const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
-                const count = skillCountByCategory[cat] || 0
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat)}
-                    aria-pressed={isActive}
-                    className={`inline-flex items-center gap-2.5 shrink-0 px-3.5 py-2 min-h-[36px] rounded-sm text-sm font-medium transition-colors duration-150 border ${
-                      isActive
-                        ? 'bg-slate-900 text-white border-slate-900'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                    }`}
-                  >
-                    <CategoryIcon className="w-3.5 h-3.5 flex-shrink-0 opacity-80" aria-hidden />
-                    <span className="whitespace-nowrap leading-none">{cat}</span>
-                    <span
-                      className={`font-mono text-[11px] tabular-nums leading-none px-1.5 py-0.5 rounded-sm flex-shrink-0 ${
-                        isActive
-                          ? 'bg-slate-700/70 text-slate-300'
-                          : 'bg-slate-100 text-slate-500 border border-slate-200/80'
-                      }`}
-                    >
-                      {count.toLocaleString()}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+      <section className="min-w-0">
+        <div className="border-b border-slate-200 px-5 py-6 md:px-8 md:py-8">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500"><span className="font-semibold text-slate-900 tabular-nums">{filteredSkills.length.toLocaleString()}</span>{' '}{filteredSkills.length === skills.length ? 'skills available' : `of ${skills.length.toLocaleString()} skills`}</p>
+          <h2 className="mt-3 font-funneldisplay text-2xl tracking-tight text-slate-950 md:text-3xl">{selectedCategory === 'All' ? 'All skills' : selectedCategory}</h2>
         </div>
-      </div>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-        {filteredSkills.map((skill) => (
-          <SkillCard
-            key={skill.id}
-            skill={skill}
-            href={getSkillPagePath(skill, skillRouteIndex)}
-          />
-        ))}
-      </div>
-
-      <div className="mt-16 text-center">
-        <a
-          href="https://www.clawhub.ai/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-sm text-sm font-medium transition-colors"
-        >
-          Explore All Skills on ClawHub
-          <ExternalLink className="w-4 h-4" />
-        </a>
-      </div>
+        {filteredSkills.length ? <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">{filteredSkills.map((skill) => <SkillCard key={skill.id} skill={skill} href={getSkillPagePath(skill, skillRouteIndex)} />)}</div> : <p className="p-8 text-sm text-slate-500">No skills match that search.</p>}
+        <div className="border-t border-slate-200 p-8 text-center">
+          <a href="https://www.clawhub.ai/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-slate-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-slate-800">Explore All Skills on ClawHub <ExternalLink className="h-4 w-4" /></a>
+        </div>
+      </section>
     </div>
   )
 }

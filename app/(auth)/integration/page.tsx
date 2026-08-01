@@ -39,7 +39,7 @@ const Integration = async ({
       />
 
       <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-canvas-warm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        <div className="rail-bleed py-10 md:py-14">
           <IntegrationClient skills={skills} initialCategory={initialCategory} />
         </div>
       </SectionShell>

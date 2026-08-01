@@ -39,7 +39,7 @@ const LoopsPage = async ({
       />
 
       <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-canvas-warm">
-        <div className="py-10 md:py-14">
+        <div className="rail-bleed py-10 md:py-14">
           <LoopsClient loops={loops} initialCategory={initialCategory} />
         </div>
       </SectionShell>
