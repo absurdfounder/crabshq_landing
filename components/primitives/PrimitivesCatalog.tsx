@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { ArrowRight, Grid3X3, Search } from 'lucide-react';
 import {
   primitiveCategories,
@@ -65,6 +65,7 @@ function CategoryNav({ selected, onSelect }: { selected: PrimitiveCategory | 'Al
 }
 
 export default function PrimitivesCatalog() {
+  const catalogRef = useRef<HTMLElement>(null);
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<PrimitiveCategory | 'All'>('All');
   const filtered = useMemo(() => {
@@ -76,8 +77,13 @@ export default function PrimitivesCatalog() {
   }, [query, selectedCategory]);
   const featured = primitives.filter((primitive) => primitive.featured);
 
+  const selectCategory = (category: PrimitiveCategory | 'All') => {
+    setSelectedCategory(category);
+    requestAnimationFrame(() => catalogRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' }));
+  };
+
   return (
-    <section className="border-t border-[var(--color-line)] bg-canvas-warm">
+    <section ref={catalogRef} className="scroll-mt-[var(--site-header-height)] border-t border-[var(--color-line)] bg-canvas-warm">
       <div className="mx-auto flex max-w-7xl flex-col border-x-0 border-[var(--color-line)] md:flex-row md:border-x">
         <aside className="shrink-0 border-b border-[var(--color-line)] bg-canvas p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:w-64 md:border-b-0 md:border-r md:p-7">
           <label className="relative block">
@@ -85,7 +91,7 @@ export default function PrimitivesCatalog() {
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search primitives…" className="w-full border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-ink outline-none placeholder:text-slate-400 focus:border-fern-600" type="search" />
           </label>
           <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-slate-400">Filter by capability</p>
-          <div className="mt-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:max-h-[calc(100vh-15rem)] md:overflow-y-auto"> <CategoryNav selected={selectedCategory} onSelect={setSelectedCategory} /></div>
+          <div className="mt-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:max-h-[calc(100vh-15rem)] md:overflow-y-auto"> <CategoryNav selected={selectedCategory} onSelect={selectCategory} /></div>
         </aside>
 
         <div className="min-h-[calc(100vh-var(--site-header-height))] min-w-0 flex-1 bg-canvas-warm [overflow-anchor:none]">

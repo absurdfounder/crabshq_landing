@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { 
   ExternalLink, 
   LayoutGrid,
@@ -106,6 +106,7 @@ interface IntegrationClientProps {
 }
 
 export default function IntegrationClient({ skills, initialCategory }: IntegrationClientProps) {
+  const catalogRef = useRef<HTMLDivElement>(null)
   const categories = useMemo(() => {
     const cats = Array.from(new Set(skills.map(s => s.category)))
     return ['All', ...cats.sort()]
@@ -140,6 +141,11 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
 
   const skillRouteIndex = useMemo(() => buildSkillRouteIndex(skills), [skills])
 
+  const selectCategory = (category: string) => {
+    setSelectedCategory(category)
+    requestAnimationFrame(() => catalogRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' }))
+  }
+
   const filterButtons = categories.map((cat) => {
     const isActive = selectedCategory === cat
     const CategoryIcon = cat === 'All' ? LayoutGrid : getCategoryIcon(cat)
@@ -148,7 +154,7 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
       <button
         key={cat}
         type="button"
-        onClick={() => setSelectedCategory(cat)}
+        onClick={() => selectCategory(cat)}
         aria-pressed={isActive}
         className={`flex w-48 shrink-0 items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors md:w-full ${
           isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
@@ -162,7 +168,7 @@ export default function IntegrationClient({ skills, initialCategory }: Integrati
   })
 
   return (
-    <div className="mx-auto max-w-7xl border-y border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)] md:border-x">
+    <div ref={catalogRef} className="mx-auto scroll-mt-[var(--site-header-height)] max-w-7xl border-y border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)] md:border-x">
       <aside className="border-b border-slate-200 p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:border-b-0 md:border-r md:p-6">
         <label className="relative block">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
