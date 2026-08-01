@@ -61,10 +61,9 @@ export function DemoBrowserStream({
       scroller.scrollTop = Math.min(max, Math.max(48, hotspot.offsetTop - 12));
     }
 
-    const id = window.requestAnimationFrame(() => {
-      hotspot.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-    });
-    return () => window.cancelAnimationFrame(id);
+    // This workspace is embedded in the landing page. Calling scrollIntoView
+    // here can select the document as the scroll container and yank visitors
+    // to the Command Center. Only the browser pane above is allowed to move.
   }, [current?.id]);
 
   return (

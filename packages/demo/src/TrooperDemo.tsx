@@ -751,7 +751,9 @@ export default function TrooperDemo({
   const chatAutoFollowRef = useRef(true);
   const chatProgrammaticScrollRef = useRef(false);
   const chatProgrammaticScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const demoBandRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
+  const [isDemoVisible, setIsDemoVisible] = useState(false);
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
@@ -777,6 +779,25 @@ export default function TrooperDemo({
   useEffect(() => { canvasReviewRef.current = canvasReview; }, [canvasReview]);
   useEffect(() => { activeChannelRef.current = activeChannel; }, [activeChannel]);
   useEffect(() => { taskModalOpenRef.current = taskModalOpen; }, [taskModalOpen]);
+
+  // The scripted workspace must be inert when it is off-screen. Apart from
+  // saving work, this prevents an embedded browser frame from influencing the
+  // visitor's page scroll while they are reading another section.
+  useEffect(() => {
+    const band = demoBandRef.current;
+    if (!band) return;
+    if (!('IntersectionObserver' in window)) {
+      setIsDemoVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsDemoVisible(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    observer.observe(band);
+    return () => observer.disconnect();
+  }, []);
 
   const messages = threads[activeChannel] ?? [];
 
@@ -1001,7 +1022,7 @@ export default function TrooperDemo({
   // control of the scroll position.
   useEffect(() => {
     const el = chatRef.current;
-    if (!el || !chatAutoFollowRef.current) return;
+    if (!isDemoVisible || !el || !chatAutoFollowRef.current) return;
     const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
     if (!nearBottom) return;
     chatProgrammaticScrollRef.current = true;
@@ -1016,7 +1037,7 @@ export default function TrooperDemo({
       cancelAnimationFrame(raf);
       if (chatProgrammaticScrollTimer.current) clearTimeout(chatProgrammaticScrollTimer.current);
     };
-  }, [messages, agentTyping, reducedMotion]);
+  }, [messages, agentTyping, reducedMotion, isDemoVisible]);
 
   const applyTaskExecStep = useCallback((step: TaskExecStep) => {
     switch (step.type) {
@@ -1211,7 +1232,7 @@ export default function TrooperDemo({
    * the cursor was still gliding, so effects landed before their causes.
    */
   useEffect(() => {
-    if (mode !== 'script') return;
+    if (mode !== 'script' || !isDemoVisible) return;
     let alive = true;
     const idx = scriptIndex;
     // Every scripted wait runs through here, so one knob rescales the whole reel.
@@ -1446,6 +1467,7 @@ export default function TrooperDemo({
           below `lg` this band used to render as an empty coloured strip. */}
       <div
         data-hero-demo-band
+        ref={demoBandRef}
         className={
           flush
             ? 'relative hidden lg:block'
