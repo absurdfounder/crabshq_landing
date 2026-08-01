@@ -38,8 +38,8 @@ const Integration = async ({
         </PixelButton>}
       />
 
-      <SectionShell eyebrow="Catalog" eyebrowNumber="02" bgClass="bg-canvas-warm">
-        <div className="rail-bleed py-10 md:py-14">
+      <SectionShell bgClass="bg-canvas-warm">
+        <div className="rail-bleed">
           <IntegrationClient skills={skills} initialCategory={initialCategory} />
         </div>
       </SectionShell>

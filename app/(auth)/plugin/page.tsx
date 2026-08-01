@@ -78,8 +78,8 @@ export default function PluginHubPage() {
         </div>
       </SectionShell>
 
-      <SectionShell eyebrow="Catalog" eyebrowNumber="03" bgClass="bg-canvas">
-        <div className="pt-2 pb-16 md:pb-24">
+      <SectionShell bgClass="bg-canvas">
+        <div className="pb-16 pt-6 md:pb-24">
           <p className="mb-8 max-w-2xl px-0 text-slate-600 leading-relaxed">
             Browse all {PLUGIN_CATALOG_COUNT.toLocaleString()} Trooper app plugins — Composio, Codex, OpenClaw channels,
             and native integrations. Each has a dedicated SEO page at{' '}
