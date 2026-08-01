@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, ChevronDown, Github } from 'lucide-react'
+import { ChevronDown, Github } from 'lucide-react'
 
 import TrooperLogo from '@/components/ui/TrooperLogo'
+import HeroDownloadButtons from '@/components/HeroDownloadButtons'
 import MobileMenu from './mobile-menu'
 import PixelButton from '@/components/ui/PixelButton'
 import TranslateButton from './TranslateButton'
@@ -153,16 +154,12 @@ export default function Header() {
             Sign in
           </PixelButton>
 
-          <PixelButton
-            href="https://app.trooper.so"
-            external
+          <HeroDownloadButtons
             size="sm"
+            variant="solid"
             tone="dark"
-            className={`hidden shrink-0 xl:inline-flex ${darkNav ? 'focus-visible:!ring-offset-split' : ''}`}
-            icon={<ArrowRight className="h-3 w-3" strokeWidth={2.5} />}
-          >
-            Get started
-          </PixelButton>
+            className={`hidden min-w-[10.75rem] shrink-0 xl:inline-flex ${darkNav ? 'focus-visible:!ring-offset-split' : ''}`}
+          />
 
           <MobileMenu dark={darkNav} />
         </div>

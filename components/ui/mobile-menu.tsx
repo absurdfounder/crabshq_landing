@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
+
+import HeroDownloadButtons from '@/components/HeroDownloadButtons'
 
 import {
   featureNavItems,
@@ -169,16 +171,12 @@ export default function MobileMenu({ dark = false }: { dark?: boolean }) {
         </nav>
 
         <div className="border-t border-slate-100 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <a
-            href="https://app.trooper.so"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={close}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-950 px-4 py-3 text-sm font-semibold text-white shadow-sm active:bg-neutral-900"
-          >
-            Get started free
-            <ArrowRight className="h-4 w-4" />
-          </a>
+          <HeroDownloadButtons
+            size="md"
+            variant="solid"
+            tone="dark"
+            className="w-full justify-center"
+          />
           <a
             href="/pricing"
             onClick={close}

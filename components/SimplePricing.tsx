@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
+import HeroDownloadButtons from '@/components/HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
 import {
   CLOUD_SUBSCRIPTION_TIERS,
@@ -551,23 +552,19 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
     local: {
       index: '01',
       eyebrow: 'Self-install',
-      badge: 'Lifetime',
+      badge: 'Free',
       title: 'Local Install',
       icon: Laptop,
       price: formatUsd(PRICING_USD.localLifetime),
-      cadence: 'one-time',
+      cadence: 'free forever',
       subline: (
-        <PricingSubline>1 workspace · no connected devices · lifetime license on your machine</PricingSubline>
+        <PricingSubline>1 workspace · no connected devices · free forever on your machine</PricingSubline>
       ),
-      note: <PricingNote>Bring your own API keys. Model usage billed by your providers.</PricingNote>,
+      note: <PricingNote>Free local install. Bring your own API keys; model usage is billed by your providers.</PricingNote>,
       tierRail: <HostingModePill label="Self Hosted" />,
       allowance: localAllowance,
       features: localFeatures,
-      cta: (
-        <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
-          Install locally
-        </PixelButton>
-      ),
+      cta: <HeroDownloadButtons size="md" variant="solid" tone="dark" className="w-full" />,
     },
     lifetime: {
       index: '02',

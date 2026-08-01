@@ -2,6 +2,7 @@
 
 import React from 'react';
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
+import HeroDownloadButtons from '@/components/HeroDownloadButtons';
 import PixelButton from '@/components/ui/PixelButton';
 import { formatUsd, PRICING_USD } from '@/lib/pricing';
 import { Check, Server, X } from 'lucide-react';
@@ -83,7 +84,7 @@ const comparisonCategories: ComparisonCategory[] = [
     rows: [
       {
         feature: 'Team seats',
-        local: { text: '1 user', sub: `${formatUsd(PRICING_USD.localLifetime)} lifetime` },
+        local: { text: '1 user', sub: 'Free forever' },
         cloudLifetime: { text: '2 included', sub: 'lifetime' },
         cloud: { text: '2 included', sub: `+${formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/member/mo` },
         enterprise: { text: 'Custom' },
@@ -211,7 +212,7 @@ function DesktopCompareTable() {
         </div>
         <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
           <span className="text-sm font-medium tabular-nums text-slate-900">
-            {formatUsd(PRICING_USD.localLifetime)} one-time
+            {formatUsd(PRICING_USD.localLifetime)} · free forever
           </span>
         </div>
         <div className={`${compareCellClass()} flex items-center justify-center py-4 text-center`}>
@@ -230,9 +231,7 @@ function DesktopCompareTable() {
 
         <div className={`${compareCellClass()} py-5`} />
         <div className={`${compareCellClass()} flex items-center justify-center px-3 py-5`}>
-          <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">
-            Install locally
-          </PixelButton>
+          <HeroDownloadButtons size="md" variant="solid" tone="dark" className="w-full" />
         </div>
         <div className={`${compareCellClass()} flex items-center justify-center px-3 py-5`}>
           <PixelButton href="https://app.trooper.so" external size="md" tone="dark" className="w-full">

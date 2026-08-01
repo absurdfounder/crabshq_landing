@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import PixelButton from '@/components/ui/PixelButton';
 import { detectPlatform, getPlatformDownload, type Platform } from '@/lib/platformDownload';
@@ -16,8 +16,22 @@ function PlatformIcon({ src, className = '' }: { src: string; className?: string
  * One download CTA for the visitor's OS (Mac / Windows / iOS / Android).
  * Detects after mount so SSR stays stable; falls back to the apps page on web.
  */
-export default function HeroDownloadButtons({ className = '' }: { className?: string }) {
-  const [platform, setPlatform] = useState<Platform>('mac');
+export default function HeroDownloadButtons({
+  className = '',
+  size = 'lg',
+  variant = 'outline',
+  tone = 'dark',
+  icon,
+}: {
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'outline';
+  tone?: 'brand' | 'dark' | 'light';
+  icon?: ReactNode;
+}) {
+  // Keep the server render platform-neutral. The label updates immediately
+  // after mount once the visitor's actual device is available.
+  const [platform, setPlatform] = useState<Platform>('unknown');
 
   useEffect(() => {
     setPlatform(detectPlatform());
@@ -29,10 +43,11 @@ export default function HeroDownloadButtons({ className = '' }: { className?: st
     <PixelButton
       href={download.href}
       external={download.external}
-      size="lg"
-      variant="outline"
-      tone="dark"
+      size={size}
+      variant={variant}
+      tone={tone}
       className={`max-sm:active:translate-x-0 max-sm:active:translate-y-0 ${className}`}
+      icon={icon}
     >
       <span className="inline-flex items-center gap-2">
         <PlatformIcon src={download.iconSrc} />

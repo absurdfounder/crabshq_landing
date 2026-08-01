@@ -1,6 +1,6 @@
 /** Public marketing prices — keep in sync with app checkout when billing changes. */
 export const PRICING_USD = {
-  localLifetime: 49,
+  localLifetime: 0,
   cloudLifetime: 149,
   cloudStandardMonthly: 25,
   cloudPremiumMonthly: 99,
