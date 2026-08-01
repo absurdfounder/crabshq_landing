@@ -1,0 +1,162 @@
+'use client';
+
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { ArrowRight, Grid3X3, Search } from 'lucide-react';
+import {
+  primitiveCategories,
+  primitivePath,
+  primitives,
+  type Primitive,
+  type PrimitiveCategory,
+} from '@/lib/primitives';
+
+function PrimitiveCard({ primitive, index }: { primitive: Primitive; index: number }) {
+  return (
+    <Link
+      href={primitivePath(primitive.slug)}
+      className="group relative isolate flex min-h-[250px] flex-col overflow-hidden border border-white/15 bg-white/[0.025] p-5 transition-colors hover:border-white/35 hover:bg-white/[0.055] md:min-h-[280px] md:p-6"
+    >
+      <div className="relative z-10">
+        <div className="flex items-center gap-3">
+          <span className="grid h-8 w-8 place-items-center border border-white/30 bg-white/10 font-mono text-xs text-white/90">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <h2 className="font-funneldisplay text-xl tracking-tight text-white transition-colors group-hover:text-lime-200">
+            {primitive.name}
+          </h2>
+        </div>
+        <p className="mt-4 max-w-[30ch] text-sm leading-relaxed text-white/65">{primitive.tagline}</p>
+      </div>
+
+      <div className="relative mt-auto min-h-[116px] overflow-hidden border border-white/10 bg-black/20 p-3 font-mono text-[10px] text-white/45">
+        <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.14)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.14)_1px,transparent_1px)] [background-size:16px_16px]" />
+        <div className="relative flex items-center justify-between border-b border-white/10 pb-2 uppercase tracking-[0.16em]">
+          <span>{primitive.slug}</span>
+          <span className="text-lime-200/75">ready</span>
+        </div>
+        <div className="relative mt-3 space-y-2">
+          <p><span className="text-white/30">$</span> {primitive.endpoint}</p>
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 bg-lime-200" />
+            <span>{primitive.outcomes[0]}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 border border-white/30" />
+            <span>{primitive.outcomes[1]}</span>
+          </div>
+        </div>
+      </div>
+
+      <ArrowRight className="absolute bottom-5 right-5 h-4 w-4 text-white/30 transition-all group-hover:translate-x-1 group-hover:text-white md:bottom-6 md:right-6" />
+    </Link>
+  );
+}
+
+function CategoryNav({
+  selected,
+  onSelect,
+}: {
+  selected: PrimitiveCategory | 'All';
+  onSelect: (category: PrimitiveCategory | 'All') => void;
+}) {
+  const countFor = (category: PrimitiveCategory | 'All') =>
+    category === 'All' ? primitives.length : primitives.filter((primitive) => primitive.category === category).length;
+
+  return (
+    <nav aria-label="Primitive categories" className="flex gap-1 md:flex-col">
+      {(['All', ...primitiveCategories] as const).map((category) => {
+        const active = selected === category;
+        return (
+          <button
+            key={category}
+            type="button"
+            onClick={() => onSelect(category)}
+            className={`shrink-0 border px-3 py-2 text-left transition-colors md:border-0 md:px-2 md:py-1.5 ${
+              active
+                ? 'border-white/30 bg-white text-black md:bg-transparent md:text-white'
+                : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/30 hover:text-white md:bg-transparent'
+            }`}
+          >
+            <span className="block text-sm font-medium">{category}</span>
+            <span className={`block text-[10px] ${active ? 'text-black/55 md:text-white/45' : 'text-white/30'}`}>
+              {countFor(category)} primitives
+            </span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+export default function PrimitivesCatalog() {
+  const [query, setQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<PrimitiveCategory | 'All'>('All');
+  const filtered = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    return primitives.filter((primitive) => {
+      if (selectedCategory !== 'All' && primitive.category !== selectedCategory) return false;
+      return !normalizedQuery || [primitive.name, primitive.tagline, primitive.description, primitive.category]
+        .join(' ')
+        .toLowerCase()
+        .includes(normalizedQuery);
+    });
+  }, [query, selectedCategory]);
+  const featured = primitives.filter((primitive) => primitive.featured);
+
+  return (
+    <section className="border-t border-white/15">
+      <div className="mx-auto flex max-w-7xl flex-col border-x-0 border-white/15 md:flex-row md:border-x">
+        <aside className="shrink-0 border-b border-white/15 p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:w-64 md:border-b-0 md:border-r md:p-7">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search primitives…"
+              className="w-full border border-white/15 bg-white/[0.03] py-2.5 pl-9 pr-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/45"
+              type="search"
+            />
+          </label>
+          <div className="mt-5 overflow-x-auto pb-1 md:overflow-visible">
+            <CategoryNav selected={selectedCategory} onSelect={setSelectedCategory} />
+          </div>
+        </aside>
+
+        <div className="min-w-0 flex-1">
+          {selectedCategory === 'All' && !query ? (
+            <section className="border-b border-white/15">
+              <div className="border-b border-white/15 px-5 py-6 md:px-8 md:py-8">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-lime-200">Start here</span>
+                <h2 className="mt-2 font-funneldisplay text-2xl tracking-tight text-white md:text-3xl">Featured primitives</h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/55">The capabilities most teams use to give their agents durable, real-world reach.</p>
+              </div>
+              <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">
+                {featured.map((primitive, index) => <PrimitiveCard key={primitive.slug} primitive={primitive} index={index} />)}
+              </div>
+            </section>
+          ) : null}
+
+          <section>
+            <div className="flex items-end justify-between border-b border-white/15 px-5 py-6 md:px-8 md:py-8">
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-lime-200">{selectedCategory === 'All' ? 'All capabilities' : selectedCategory}</span>
+                <h2 className="mt-2 font-funneldisplay text-2xl tracking-tight text-white md:text-3xl">
+                  {filtered.length} {filtered.length === 1 ? 'primitive' : 'primitives'}
+                </h2>
+              </div>
+              <Grid3X3 className="h-5 w-5 text-white/35" aria-hidden />
+            </div>
+            {filtered.length ? (
+              <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">
+                {filtered.map((primitive, index) => <PrimitiveCard key={primitive.slug} primitive={primitive} index={index} />)}
+              </div>
+            ) : (
+              <p className="p-8 text-sm text-white/55">No primitives match that search.</p>
+            )}
+          </section>
+        </div>
+      </div>
+    </section>
+  );
+}

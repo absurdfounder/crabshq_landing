@@ -47,6 +47,7 @@ export const featureNavItems: NavItem[] = [
   { href: '/features/system-access', title: 'Full System Access', description: 'Execute scripts, manage files, run commands', icon: Terminal, iconColor: 'text-orange-500', bgColor: 'bg-orange-50' },
   { href: '/features/email-automation', title: 'Email & Communication', description: 'Gmail, Slack, Discord integration', icon: Mail, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
   { href: '/features/skills-plugins', title: 'Skills & Plugins', description: 'Extend with community or custom skills', icon: Puzzle, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
+  { href: '/primitives', title: 'Agent Primitives', description: 'Composable real-world capabilities for agents', icon: Puzzle, iconColor: 'text-lime-600', bgColor: 'bg-lime-50' },
   { href: '/loops', title: 'Agent Loops', description: 'Prompt-only loops for CI, review, and testing', icon: Repeat, iconColor: 'text-emerald-600', bgColor: 'bg-emerald-50' },
   { href: '/features/multi-agent-collaboration', title: 'Multi-Agent Teams', description: 'AI employees collaborate on complex tasks', icon: Network, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
   { href: '/features/openclaw-powered', title: 'OpenClaw Runtime', description: 'Built on the proven OpenClaw framework', icon: Sparkles, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
