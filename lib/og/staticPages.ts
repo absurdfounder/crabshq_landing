@@ -128,10 +128,10 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
   ),
   resellers: page(
     'resellers',
-    'Resellers',
-    'Build custom',
-    'Trooper solutions',
-    'Resell Trooper Mission Control to local businesses and charge for the setup you run.',
+    'Reseller program',
+    'Trooper Reseller',
+    'Program',
+    'Build custom Mission Control setups for local businesses and charge for the layer you own.',
   ),
   terms: page(
     'terms',

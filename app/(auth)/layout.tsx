@@ -1,8 +1,9 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Footer from "@/components/ui/footer"
-import Newsletter from "@/components/newsletter"
+import Footer from '@/components/ui/footer'
+import Newsletter from '@/components/newsletter'
+import SectionShell from '@/components/ui/SectionShell'
 
 const CATALOG_PATH_PREFIXES = ['/plugin', '/integration', '/loops', '/download', '/skill']
 
@@ -12,16 +13,19 @@ function isCatalogPage(pathname: string) {
   )
 }
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {  
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const hideNewsletter = pathname === '/wonder-auth' || isCatalogPage(pathname)
-  
+
   return (
     <>
-      <main className="grow bg-gray-50">
-        {children}
-      </main>
-      {!hideNewsletter && <Newsletter />}
+      {/* Match homepage canvas — gray-50 put a cool gutter beside the warm rail */}
+      <main className="grow bg-canvas">{children}</main>
+      {!hideNewsletter ? (
+        <SectionShell eyebrow="Deploy Orders" bgClass="bg-canvas" noBorderBottom={false}>
+          <Newsletter />
+        </SectionShell>
+      ) : null}
       <Footer />
     </>
   )
