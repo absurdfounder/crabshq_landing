@@ -7,7 +7,7 @@ import { buildPageMetadata } from '@/lib/og/buildMetadata';
 export const metadata = buildPageMetadata({
   title: 'Hire a Trooper Expert',
   description:
-    'Hire Trooper Agency when your ready to grow beyond we can help setup, design and manage your helpdesk, blog, or even marketplace. Also add custom code to your website deployment to make sure your needs are always met.',
+    'Hire a Trooper expert when you are ready to grow. We help set up, design, and manage your helpdesk, blog, or marketplace — and can add custom code to your deployment so your needs are always met.',
   canonical: 'https://trooper.so/agency',
   ogKind: 'page',
   ogSlug: 'agency',
@@ -27,9 +27,9 @@ export default function PageDetail() {
                     <div className="max-w-4xl py-6 mx-auto lg:py-6">
 
                         <div className="text-center">
-                            <h1 className="md:text-5xl font-bold tracking-tight text-slate-900 sm:text-4xl font-funneldisplay font-extrabold leading-tighter tracking-tighter mb-4 aos-init aos-animate"><span className="gradient-text-accent">Hire a Trooper  Expert</span> to help you grow beyond the limitations.</h1>
+                            <h1 className="md:text-5xl font-bold tracking-tight text-slate-900 sm:text-4xl font-funneldisplay font-extrabold leading-tighter tracking-tighter mb-4 aos-init aos-animate"><span className="gradient-text-accent">Hire a Trooper Expert</span> to help you grow beyond your current limits.</h1>
                             <p className="mt-6 leading-7 text-slate-600 sm:text-lg sm:leading-8">
-                                If your ready to grow from a 100 users to 10,000 , We can customize your Trooper  site to match your needs.
+                                If you are ready to grow from 100 users to 10,000, we can customize your Trooper site to match your needs.
                             </p>
                             <div className="flex items-center justify-center mt-10 gap-x-6">
                                 <Link  href="https://app.youform.com/forms/r3rvhjv4" target="_blank" rel="noopener"  className="px-6 py-2 text-lg font-semibold text-white rounded-lg gradient-bg-accent bg-slate-800">
@@ -52,10 +52,10 @@ export default function PageDetail() {
                                     EXPERTS CAN HELP
                                 </p>
                                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                                    What can Trooper  Experts do for you?
+                                    What can Trooper Experts do for you?
                                 </h2>
                                 <p className="mt-6 text-slate-600 sm:text-lg sm:leading-8">
-                                    Experts can help with a wide range of design, development, and marketing projects. Helping you reach your business goals as a solo founder or small team.
+                                    Experts can help with a wide range of design, development, and marketing projects — helping you reach your business goals as a solo founder or small team.
                                 </p>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ export default function PageDetail() {
                                             <Image loading="lazy" width={100} height={100} alt="Platform migrations" unoptimized src="https://assets-global.website-files.com/6320a2f3bd0b234991397e96/65316fc6b33cce40a33c2b1b_Migration.svg" className="project_type-image mr-4 p-2" style={{ filter: 'hue-rotate(161deg)' }} />
                                             <div>
                                                 <h3 className="text-xl font-semibold mb-2">Platform migrations</h3>
-                                                <p>Move all (or just part of) your site from another platform to Webflow.</p>
+                                                <p>Move all (or just part of) your site from another platform to Trooper.</p>
                                             </div>
                                         </div>
                                     </div>

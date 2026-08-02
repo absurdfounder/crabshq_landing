@@ -286,7 +286,7 @@ export default function ResellersStory() {
           <FadeIn>
             <p className="kicker-dark">The opportunity</p>
             <h2 className="h2-section-dark mt-2">
-              Ten clients compounds.
+              Ten clients compound.
               <br />
               Twenty gets you close to $10k / month.
             </h2>

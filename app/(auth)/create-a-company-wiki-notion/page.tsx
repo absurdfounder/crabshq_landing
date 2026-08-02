@@ -22,7 +22,7 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a company wiki with Notion (no-code and free)",
     description:
-        "Build a company wiki in Notion, with our Notion company wiki maker. Go live in under a minute.  Build your free Trooper  company wiki website in a minute!",
+        "Build a company wiki in Notion, with our Notion company wiki maker. Go live in under a minute. Build your free Trooper company wiki website in a minute!",
     alternates: {
         canonical: "https://trooper.so/create-a-company-wiki-notion",
     },

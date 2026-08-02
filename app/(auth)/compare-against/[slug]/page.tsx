@@ -62,14 +62,13 @@ export async function generateMetadata(
   const filteredContent = content.find((item: { id: string }) => item.id === slug) as FilterBySlugType;
 
   if (!filteredContent) {
-    throw new Error('Comparision not found');
+    throw new Error('Comparison not found');
   }
 
   return mergeOgImages(
     {
-      title: `The simple, powerful ${filteredContent.product.name} alternative - Trooper vs ${filteredContent.product.name}`,
-      description: `Trooper is the fast, modern ${filteredContent.product.name} alternative built on notion as a CMS, it's focused completely on professional website publishing. You can publish a blog, helpdesk, directory or even a 2-sided marketplace. 
-Compare Trooper  to ${filteredContent.product.name}: ${filteredContent.product.description}`,
+      title: `The simple, powerful ${filteredContent.product.name} alternative — Trooper vs ${filteredContent.product.name}`,
+      description: `Trooper is a fast, modern ${filteredContent.product.name} alternative built on Notion as a CMS. It focuses on professional website publishing — blogs, helpdesks, directories, and two-sided marketplaces. Compare Trooper to ${filteredContent.product.name}: ${filteredContent.product.description}`,
       alternates: {
         canonical: `https://trooper.so/compare-against/${slug}`,
       },

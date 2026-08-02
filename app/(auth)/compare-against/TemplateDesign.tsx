@@ -9,7 +9,7 @@ const TemplateDesign = () => {
     {
       title: "Your content",
       highlight: "lives in Notion",
-      description: "Your work stays in a place you control and love, while Trooper  handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
+      description: "Your work stays in a place you control and love, while Trooper handles the technical parts of publishing it to your website. This means you can focus on what's actually important to you: creating content and building your brand without worrying about configurations, plugins, downtime, performance, or security.",
       image: "https://dazzling-cat.netlify.app/write%20on%20notion.png",
       alt: "Content in Notion",
       imageFirst: false
@@ -17,7 +17,7 @@ const TemplateDesign = () => {
     {
       title: "Customize to",
       highlight: "your brand",
-      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside Trooper  without code to make you proud of the unique site you share with the world. Add custom-code only if you want to.",
+      description: "Style the look and feel of your site with no-code themes and designer templates. Everything can be customized inside Trooper without code to make you proud of the unique site you share with the world. Add custom code only if you want to.",
       image: "https://dazzling-cat.netlify.app/notion%20to%20website.png",
       alt: "Customizable design templates",
       imageFirst: true
@@ -33,7 +33,7 @@ const TemplateDesign = () => {
     {
       title: "In-built",
       highlight: "analytics",
-      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. Trooper  provides Inbuilt analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
+      description: "See your page views, visitors, referrers, clicks, and much more for all of your websites. Trooper provides built-in analytics for all your sites to help you find out where people are finding your blog, which links people are clicking the most, which of your posts are popular.",
       image: "https://dazzling-cat.netlify.app/analyticsseo.png",
       alt: "Website analytics dashboard",
       imageFirst: true
@@ -119,7 +119,7 @@ const TemplateDesign = () => {
               Ship production ready apps on top of Notion
             </h3>
             <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-              Start creating beautiful, high-performance websites with Trooper  today.
+              Start creating beautiful, high-performance websites with Trooper today.
             </p>
             <Link 
               href="https://app.trooper.so" 

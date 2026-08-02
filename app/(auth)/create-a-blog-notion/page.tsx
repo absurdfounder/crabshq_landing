@@ -23,7 +23,7 @@ import HowToBlog from "@/components/HowToBlog";
 export const metadata = {
     title: "Get a blog with Notion (no-code and free)",
     description:
-        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute.  Build your free Trooper  blog website in a minute!",
+        "Build a blog in Notion, with our Notion blog maker. Go live in under a minute. Build your free Trooper blog website in a minute!",
     alternates: {
         canonical: "https://trooper.so/create-a-blog-notion",
     },

@@ -24,7 +24,7 @@ import 'aos/dist/aos.css'
 export const metadata = {
     title: "Get a knowledge base with Notion (no-code and free)",
     description:
-        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute.  Build your free Trooper  knowledge base website in a minute!",
+        "Build a knowledge base in Notion, with our Notion knowledge base maker. Go live in under a minute. Build your free Trooper knowledge base website in a minute!",
     alternates: {
         canonical: "https://trooper.so/create-a-knowledge-base-notion",
     },

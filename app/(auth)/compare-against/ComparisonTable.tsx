@@ -23,7 +23,7 @@ const ComparisonTable = ({ id }: { id: string }) => {
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4">Get so much more with Trooper</h2>
         <p className="text-lg text-slate-600 max-w-2xl">
-          Trooper  has everything you need, from task tracking to templates to documentation.
+          Trooper has everything you need, from task tracking to templates to documentation.
           Get comfortable — you won't be leaving all that often.
         </p>
       </div>

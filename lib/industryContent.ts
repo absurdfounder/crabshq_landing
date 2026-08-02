@@ -243,7 +243,7 @@ function buildIndustry(def: IndustryDef): IndustryPageContent {
     ],
     benefits,
     howItWorks: [
-      'Lead calls, texts, or submits a form — agent answers with your scripts and pricing rules',
+      'A lead calls, texts, or submits a form — the agent answers with your scripts and pricing rules',
       'Agent qualifies the job, checks availability, and books or escalates to a human',
       'Confirmation and prep details sent to the customer; ticket logged in CRM',
       'Post-job follow-up, reviews, and reactivation campaigns run on schedule',

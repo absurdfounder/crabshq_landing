@@ -15,7 +15,7 @@ export default function ResellersApplyBand() {
           Ready to join the Trooper Reseller Program?
         </h2>
         <p className="mt-3 text-base leading-relaxed text-white/60">
-          Tell us who you serve and how you’d build. We’ll follow up at support@trooper.so.
+          Tell us who you serve and how you’d use Trooper. We’ll follow up at support@trooper.so.
         </p>
       </div>
       <PixelButton

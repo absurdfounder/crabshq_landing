@@ -51,12 +51,12 @@ export default function Marketplace_Type() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
           <h1 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl mb-4 text-slate-800">
-              Unique your knowledge base concept? <span className=" block font-normal text-emerald-600">Trooper can support it.</span>
+              Have a unique knowledge base concept? <span className=" block font-normal text-emerald-600">Trooper can support it.</span>
             </h1>
             <p className="text-xl text-slate-600">
-              Trooper  is designed for all types from content curation to
-              content creation. Build company blogs, helpdesks, company wiki,
-              documentations, and marketplaces.
+              Trooper is designed for all types of sites, from content curation to
+              content creation. Build company blogs, helpdesks, company wikis,
+              documentation, and marketplaces.
             </p>
           </div>
 

@@ -80,7 +80,7 @@ export async function generateMetadata(
     if (!filteredContent) {
       return {
         title: 'Trooper vs Unknown Template',
-        description: 'Compare Trooper  to an unknown template',
+        description: 'Compare Trooper to an unknown template',
         alternates: {
           canonical: `https://trooper.so/showcase/${slug}`,
         },

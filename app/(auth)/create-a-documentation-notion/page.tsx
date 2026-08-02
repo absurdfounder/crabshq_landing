@@ -22,9 +22,9 @@ import HowToProductDocs from "@/components/HowToProductDocs";
 
 
 export const metadata = {
-    title: "Get a documentation with Notion (no-code and free)",
+    title: "Create documentation with Notion (no-code and free)",
     description:
-        "Build a documentation in Notion, with our Notion documentation maker. Go live in under a minute.  Build your free Trooper  documentation website in a minute!",
+        "Build documentation in Notion with our Notion documentation maker. Go live in under a minute. Build your free Trooper documentation website in a minute!",
     alternates: {
         canonical: "https://trooper.so/create-a-documentation-notion",
     },
@@ -34,7 +34,7 @@ export const metadata = {
                 url: "https://dazzling-cat.netlify.app/notiontodocumentation_socialshare.png",
                 width: 1200,
                 height: 630,
-                alt: "Get a documentation with Notion",
+                alt: "Create documentation with Notion",
             },
         ],
     },
@@ -43,7 +43,7 @@ export const metadata = {
         images: [
             {
                 url: "https://dazzling-cat.netlify.app/notiontodocumentation_socialshare.png",
-                alt: "Get a documentation with Notion",
+                alt: "Create documentation with Notion",
             },
         ],
     },
@@ -97,7 +97,7 @@ export default function PageDetail() {
                                         <div className="flex flex-col-reverse justify-center w-full mt-10 sm:flex-row">
                                             <div className="mt-3 sm:mt-0">
                                                 <Link href="/signup" className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out rounded-md shadow bg-emerald-700 sm:w-auto">
-                                                    <strong className="mr-1">Get a documentation with Notion →</strong>
+                                                    <strong className="mr-1">Create documentation with Notion →</strong>
                                                 </Link>
                                                 <p className="mt-3 text-sm text-slate-700"><strong>Free</strong> 3 day trial. Free Design Service.</p>
                                             </div>

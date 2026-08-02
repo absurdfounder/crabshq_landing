@@ -273,7 +273,7 @@ function TemplateClientContent() {
                                         <div className="text-center lg:text-left lg:max-w-xl space-y-6">
                                             <h3 className="h3 text-white mb-2">
                                                 Planning to <b className="text-emerald-600">migrate</b> to
-                                                Trooper  from another platform?
+                                                Trooper from another platform?
                                             </h3>
 
                                             {/* --- UPDATED Migration CTA Button --- */}

@@ -26,7 +26,7 @@ import HowToHelpdesk from "@/components/HowToHelpdesk";
 export const metadata = {
     title: "Get a help desk with Notion (no-code and free)",
     description:
-        "Build a help desk in Notion, with our Notion help desk maker. Go live in under a minute.  Build your free Trooper  help desk website in a minute!",
+        "Build a help desk in Notion, with our Notion help desk maker. Go live in under a minute. Build your free Trooper help desk website in a minute!",
     alternates: {
         canonical: "https://trooper.so/create-a-helpdesk-servicedesk-notion",
     },

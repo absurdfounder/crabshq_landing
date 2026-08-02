@@ -1,4 +1,4 @@
-# Trooper : Simplest builder for all your Trooper  needs
+# Trooper: AI workforce platform
 
 ![Trooper template preview](https://dazzling-cat.netlify.app/Wonderscreenshot.png)
 

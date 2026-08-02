@@ -53,8 +53,8 @@ export default function AboutMe() {
             </p>
             <p className="my-2">
               <strong className="text-slate-900">
-                Trooper  is solving all of this. It is for businesses who need
-                an easy way to Get a reliable knowledge site powered by
+                Trooper is solving all of this. It is for businesses who need
+                an easy way to get a reliable knowledge site powered by
                 Notion.{" "}
               </strong>
             </p>
