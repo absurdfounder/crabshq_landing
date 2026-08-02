@@ -753,7 +753,7 @@ export default function TrooperDemo({
   const chatProgrammaticScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const demoBandRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
-  const [isDemoVisible, setIsDemoVisible] = useState(false);
+  const [isDemoVisible, setIsDemoVisible] = useState(true);
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
@@ -780,9 +780,9 @@ export default function TrooperDemo({
   useEffect(() => { activeChannelRef.current = activeChannel; }, [activeChannel]);
   useEffect(() => { taskModalOpenRef.current = taskModalOpen; }, [taskModalOpen]);
 
-  // The scripted workspace must be inert when it is off-screen. Apart from
-  // saving work, this prevents an embedded browser frame from influencing the
-  // visitor's page scroll while they are reading another section.
+  // Start the reel as soon as any part of the band is on screen. Defaulting to
+  // `false` left subpage demos dead for seconds (empty board + Pause icon) until
+  // the observer fired — even when the visitor was already looking at them.
   useEffect(() => {
     const band = demoBandRef.current;
     if (!band) return;
@@ -791,9 +791,23 @@ export default function TrooperDemo({
       return;
     }
 
+    const sync = (entry?: IntersectionObserverEntry) => {
+      if (entry) {
+        setIsDemoVisible(entry.isIntersecting);
+        return;
+      }
+      const rect = band.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const visible = rect.bottom > 0 && rect.top < vh;
+      setIsDemoVisible(visible);
+    };
+
+    sync();
+
     const observer = new IntersectionObserver(
-      ([entry]) => setIsDemoVisible(entry.isIntersecting),
-      { threshold: 0.1 },
+      ([entry]) => sync(entry),
+      // Any pixel counts; generous margin so the reel starts as the band approaches.
+      { threshold: 0, rootMargin: '120px 0px 120px 0px' },
     );
     observer.observe(band);
     return () => observer.disconnect();
@@ -1496,8 +1510,25 @@ export default function TrooperDemo({
               <DemoModePill mode={mode} resumeIn={resumeIn} />
             </div>
             <div style={{ display: "flex", gap: 5 }}>
-              <button type="button" onClick={() => (mode === 'script' ? handleActivity() : resumeScript())} className="demo-hoverable demo-icon-btn" style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
-                {mode === 'script' ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />}
+              <button
+                type="button"
+                onClick={() => (mode === 'script' ? handleActivity() : resumeScript())}
+                className="demo-hoverable demo-icon-btn"
+                aria-label={mode === 'script' ? (isDemoVisible ? 'Pause demo' : 'Demo waiting') : 'Resume demo'}
+                title={
+                  mode === 'script'
+                    ? isDemoVisible
+                      ? 'Pause'
+                      : 'Starting…'
+                    : 'Resume'
+                }
+                style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}
+              >
+                {mode === 'script' ? (
+                  isDemoVisible ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />
+                ) : (
+                  <Play size={12} strokeWidth={2} />
+                )}
               </button>
               <button type="button" onClick={restart} className="demo-hoverable demo-icon-btn" style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}>
                 <RotateCcw size={12} strokeWidth={2} />

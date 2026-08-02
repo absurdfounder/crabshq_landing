@@ -95,12 +95,12 @@ const teamPages: Record<string, TeamPageContent> = {
         eyebrow: 'Harness',
         eyebrowNumber: '03',
         ask: 'trooper, run Claude Code and Codex on this ticket',
-        reply: 'on it — both CLIs live, plus browser and desktop',
+        reply: 'on it — both agents working in parallel',
         window: 'Coding — Multi-agent',
         title: 'Your coding agents,',
         titleHighlight: 'one shared harness.',
         intro:
-          'Claude Code and Codex open as real CLI windows on the same ticket — with browser on demand and desktop on demand when the job needs a live page or a real machine.',
+          'Bring Claude Code, Codex, and OpenCode onto the same ticket as real CLI sessions. They work in parallel with live tool traces — you keep the keys and the merge decision.',
         visual: 'coding-harness',
       },
       {
@@ -342,7 +342,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'for your say-so.',
         intro:
           'Outreach and proposals stay held until a human approves. Speed on prep — control on what leaves the inbox.',
-        visual: 'legal-review',
+        visual: 'sales-pipeline',
       },
     ],
     title: 'Trooper for Sales',
@@ -434,7 +434,7 @@ const teamPages: Record<string, TeamPageContent> = {
           'Emails and contract sends wait for attorney approval with full matter context attached — so speed never skips judgment.',
         visual: 'email-routing',
       },
-            {
+      {
         eyebrow: 'Matter pack',
         eyebrowNumber: '06',
         ask: 'trooper, show the matter pack for review',
@@ -444,7 +444,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'before anything leaves.',
         intro:
           'Summaries, redlines, and drafts sit together for counsel review — prep stays fast, judgment stays human.',
-        visual: 'canvas-desktop',
+        visual: 'legal-review',
       },
     ],
     title: 'Trooper for Legal Teams',
@@ -625,7 +625,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'you can actually scan.',
         intro:
           'Completed routines and held reports land in one place so ops leads review outcomes — not a pile of tabs.',
-        visual: 'canvas-desktop',
+        visual: 'ops-runbook',
       },
     ],
     title: 'Trooper for Operations',
@@ -694,7 +694,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'ready for review.',
         intro:
           'Exports, previews, and brand checks sit together so design and marketing review one set of work.',
-        visual: 'canvas-desktop',
+        visual: 'design-pipeline',
       },
     ],
     title: 'Trooper for Design',
@@ -774,7 +774,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'until a human sends.',
         intro:
           'High-impact replies stay in review with full ticket context — volume stays automated, tone stays human.',
-        visual: 'canvas-desktop',
+        visual: 'support-queue',
       },
     ],
     title: 'Trooper for Customer Support',
@@ -830,7 +830,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'before you sign off.',
         intro:
           'Vendor statements and ledger rows line up with exceptions called out. Review the diffs — not raw export dumps.',
-        visual: 'coding-board',
+        visual: 'finance-close',
       },
       {
         eyebrow: 'Approval',
@@ -842,7 +842,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'until you say so.',
         intro:
           'Journal entries and board reports wait for controller review. Speed on prep — control on what leaves the books.',
-        visual: 'legal-review',
+        visual: 'finance-close',
       },
             {
         eyebrow: 'Sign-off',
@@ -854,7 +854,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'ready for sign-off.',
         intro:
           'Reconciliations, variance notes, and reports sit together so controllers approve the close — not raw exports.',
-        visual: 'canvas-desktop',
+        visual: 'finance-close',
       },
     ],
     title: 'Trooper for Finance',
@@ -934,7 +934,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'ready when you are.',
         intro:
           'Research briefs and intro drafts wait together so you send with context — not a half-finished thread.',
-        visual: 'canvas-desktop',
+        visual: 'bd-pipeline',
       },
     ],
     title: 'Trooper for Business Development',
@@ -1002,9 +1002,9 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'not a link dump.',
         intro:
           'Multi-source notes become a clear recommendation brief. Strategy leads approve before it circulates.',
-        visual: 'launch-ops',
+        visual: 'research-intel',
       },
-            {
+      {
         eyebrow: 'Brief pack',
         eyebrowNumber: '06',
         ask: 'trooper, show the intel brief for leadership',
@@ -1014,7 +1014,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'for leadership review.',
         intro:
           'Sources, matrix, and recommendations sit in one pack so strategy leads approve before it circulates.',
-        visual: 'canvas-desktop',
+        visual: 'research-intel',
       },
     ],
     title: 'Trooper for Research',
@@ -1094,7 +1094,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'not alert noise.',
         intro:
           'Audit results and remediation steps land in one review pack so critical actions get human eyes first.',
-        visual: 'canvas-desktop',
+        visual: 'security-audit',
       },
     ],
     title: 'Trooper for Security',
@@ -1174,7 +1174,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'ready for comms review.',
         intro:
           'Release draft, media list, and assets sit together so nothing wires before the comms lead signs off.',
-        visual: 'canvas-desktop',
+        visual: 'pr-comms',
       },
     ],
     title: 'Trooper for PR',
@@ -1254,7 +1254,7 @@ const teamPages: Record<string, TeamPageContent> = {
         titleHighlight: 'ready for rollout.',
         intro:
           'Results, docs, and deployment checklist sit together so growth leads approve 100% rollout with eyes open.',
-        visual: 'canvas-desktop',
+        visual: 'growth-experiments',
       },
     ],
     title: 'Trooper for Growth',

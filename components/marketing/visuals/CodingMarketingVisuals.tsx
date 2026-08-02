@@ -57,7 +57,7 @@ function ShellLine({
   );
 }
 
-/* ─── Shared harness: real CLI windows + on-demand surfaces ─── */
+/* ─── Shared harness: coding CLI windows only ─── */
 export function CodingHarnessVisual() {
   return (
     <VignetteChrome label="workspace" className="bg-[#b9b4ab]">
@@ -112,66 +112,28 @@ export function CodingHarnessVisual() {
           }
         />
 
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-          <div className="overflow-hidden rounded-lg shadow-[0_10px_24px_-10px_rgba(0,0,0,0.4)] ring-1 ring-black/30">
-            <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-2.5 py-1.5">
-              <span className="text-[11px] font-medium text-stone-200">Browser on demand</span>
-              <span className="ml-auto rounded-full bg-green-500/15 px-1.5 py-0.5 text-[9px] font-medium text-green-300">
-                Live
-              </span>
-            </div>
-            <DemoBrowserFrame
-              addressUrl="github.com/acme/billing/pull/418"
-              faviconDomain="github.com"
-              title="PR #418"
-              compact
-            >
-              <div className="h-[100px] space-y-2 overflow-hidden bg-white p-2.5 text-[12px]">
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
-                    Open
-                  </span>
-                  <span className="font-semibold text-stone-900">fix(parser): skip empty rows</span>
-                </div>
-                <p className="text-stone-500">acme/billing #418 · Codex + Claude Code</p>
-                <p className="font-mono text-[11px] text-emerald-700">+8 −1 · All checks passed</p>
-              </div>
-            </DemoBrowserFrame>
-          </div>
-
-          <div className="overflow-hidden rounded-lg bg-[#1c1c1e] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.4)] ring-1 ring-black/30">
-            <div className="flex items-center justify-between border-b border-white/10 px-2.5 py-1.5">
-              <div className="flex items-center gap-1.5 text-[11px] text-white/90">
-                <Laptop className="size-3.5 text-white/55" strokeWidth={2} />
-                <span className="font-medium">Desktop on demand</span>
-              </div>
-              <span className="rounded-full bg-amber-400/20 px-1.5 py-0.5 text-[9px] font-semibold text-amber-200 ring-1 ring-amber-400/30">
-                ● Busy
-              </span>
-            </div>
-            <div className="border-b border-white/10 bg-[#2c2c2e] px-2.5 py-1.5 text-[10px] text-white/55">
-              Studio-Mac · macOS 15.2 · seat on screen 1
-            </div>
-            <div className="space-y-0.5 px-2.5 py-2.5 font-mono text-[12px] leading-relaxed">
-              <div className="text-white">$ trooper device wake studio-mac</div>
-              <div className="text-[#a3e635]/85">device responded · agent seat attached</div>
-              <div className="flex items-center gap-1.5 text-amber-300">
-                <Loader2 size={11} className="animate-spin" />
-                npm run test:integration
-                <span className="animate-pulse">▌</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AcpCliWindow
+          provider="OpenCode"
+          status="ready"
+          cwd="~/acme-billing · fix/etl-dedupe · etl/dedupe.ts  +3 −0"
+          lines={
+            <>
+              <ShellLine prompt>$ opencode — acp</ShellLine>
+              <ShellLine ok>apply_patch  etl/dedupe.ts — ignore empty row ids</ShellLine>
+              <ShellLine ok>exec  dedupe.integration.test</ShellLine>
+            </>
+          }
+        />
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-black/10 bg-[#FAF9F6] px-3.5 py-2">
         <span className="font-mono text-[11px] text-stone-500">
-          CLIs · browser · desktop — one ticket
+          One ticket · three coding CLIs
         </span>
         <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-trooper-700">
           <ProviderChip provider="Claude Code" size={12} />
           <ProviderChip provider="Codex" size={12} />
+          <ProviderChip provider="OpenCode" size={12} />
           Live ACP
         </span>
       </div>

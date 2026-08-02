@@ -320,7 +320,7 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       titleHighlight: 'for your command.',
       intro:
         'Reply and proposal drafts stay held until you approve. Speed on prep — control on what leaves the inbox.',
-      visual: 'legal-review',
+      visual: 'email-routing',
     },
     canvasFeatureSection('06'),
   ],

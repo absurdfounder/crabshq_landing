@@ -1,7 +1,6 @@
 import type { SubpageBenefit } from '@/lib/subpageContent';
 import type { DemoScenarioId } from '@trooper/demo';
 import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
-import { canvasFeatureSection } from '@/lib/marketingFeatures';
 import {
   allChannelSlugs,
   getChannelBySlug,
@@ -112,7 +111,7 @@ const slack = buildChannelPage({
       titleHighlight: 'where you asked.',
       intro:
         'Agents report progress in the same Slack thread — so the team sees outcomes without opening another app.',
-      visual: 'canvas-desktop',
+      visual: 'slack-routing',
     },
   ],
   titleAccent: 'without leaving your workspace',
@@ -167,7 +166,7 @@ const whatsapp = buildChannelPage({
       titleHighlight: 'on your phone.',
       intro:
         'Completion summaries and approval asks return in WhatsApp so you stay in command without watching a dashboard.',
-      visual: 'canvas-desktop',
+      visual: 'whatsapp-routing',
     },
   ],
   titleAccent: 'from your pocket',
@@ -222,7 +221,7 @@ const telegram = buildChannelPage({
       titleHighlight: 'real mission updates.',
       intro:
         'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
-      visual: 'canvas-desktop',
+      visual: 'messaging-routing',
     },
   ],
   titleAccent: 'via your bot',
@@ -264,7 +263,7 @@ const discord = buildChannelPage({
       titleHighlight: 'real mission updates.',
       intro:
         'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
-      visual: 'canvas-desktop',
+      visual: 'messaging-routing',
     },
   ],
   titleAccent: 'in your server',
@@ -306,7 +305,7 @@ const signal = buildChannelPage({
       titleHighlight: 'real mission updates.',
       intro:
         'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
-      visual: 'canvas-desktop',
+      visual: 'messaging-routing',
     },
   ],
   titleAccent: 'with end-to-end encryption',
@@ -348,7 +347,7 @@ const imessage = buildChannelPage({
       titleHighlight: 'real mission updates.',
       intro:
         'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
-      visual: 'canvas-desktop',
+      visual: 'messaging-routing',
     },
   ],
   titleAccent: 'through your Mac relay',
@@ -390,7 +389,7 @@ const email = buildChannelPage({
       titleHighlight: 'for your send.',
       intro:
         'Research and reply drafts stay held until you approve — inbox automation without accidental sends.',
-      visual: 'legal-review',
+      visual: 'email-routing',
     },
   ],
   titleAccent: 'via IMAP and SMTP',
