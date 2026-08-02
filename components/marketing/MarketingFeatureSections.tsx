@@ -93,8 +93,8 @@ type MarketingFeatureSectionsProps = {
 const defaultHeadingLines: MarketingHeadlineLine[] = [
   {
     parts: [
-      { text: 'How this unit', tone: 'default' },
-      { text: 'runs', tone: 'default' },
+      { text: 'What this team', tone: 'default' },
+      { text: 'does', tone: 'default' },
     ],
     iconAfter: 0,
   },
@@ -112,9 +112,9 @@ export default function MarketingFeatureSections({
   sections,
   eyebrow = 'Capabilities',
   eyebrowNumber = '03',
-  heading = 'How this unit runs on Trooper.',
+  heading = 'What this team does on Trooper.',
   headingLines = defaultHeadingLines,
-  subheading = 'Traced tickets, live artifacts, and harnesses that match the work — not generic placeholders.',
+  subheading = 'Each row is one clear capability — ask in chat, watch it run, approve before anything ships.',
 }: MarketingFeatureSectionsProps) {
   const rowRefs = useRef<Array<HTMLElement | null>>([]);
   const activeRef = useRef(-1);

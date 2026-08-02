@@ -91,13 +91,15 @@ const slack = buildChannelPage({
   demoId: 'slack',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, turn this Slack thread into a ticket',
-      reply: 'routed — context preserved',
-      window: 'Slack — Routing',
-      title: 'Slack thread → traced ticket',
-      intro: 'Every assignment becomes a ticket with full context — chat stays fast, ops stays auditable.',
+      reply: 'on it — work is on the board',
+      window: 'Slack — Command',
+      title: 'Assign work in Slack,',
+      titleHighlight: 'track it like ops.',
+      intro:
+        'Drop a task in a channel or DM. Trooper opens a real mission with the conversation attached — chat stays fast, work stays clear.',
       visual: 'slack-routing',
     },
     canvasFeatureSection('04'),
@@ -133,13 +135,15 @@ const whatsapp = buildChannelPage({
   demoId: 'whatsapp',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, take this WhatsApp and run it',
       reply: 'on it — field ticket opened',
-      window: 'WhatsApp — Routing',
-      title: 'WhatsApp message → field ticket',
-      intro: 'Support and command from your pocket — agents execute on your server while you approve from mobile.',
+      window: 'WhatsApp — Command',
+      title: 'Command from your phone,',
+      titleHighlight: 'execute on your server.',
+      intro:
+        'Send a message on WhatsApp. Agents run the work on your infrastructure while approvals stay a quick reply away.',
       visual: 'whatsapp-routing',
     },
     canvasFeatureSection('04'),
@@ -175,13 +179,15 @@ const telegram = buildChannelPage({
   demoId: 'messaging',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
-      ask: 'trooper, route this Telegram DM to the board',
+      ask: 'trooper, take this Telegram message and open a mission',
       reply: 'ticket opened — same workforce',
-      window: 'Telegram — Routing',
-      title: 'Any channel → one task board',
-      intro: 'DMs from Telegram, Discord, Signal, or iMessage all route to the same traced workforce.',
+      window: 'Telegram — Command',
+      title: 'Telegram becomes',
+      titleHighlight: 'the same task board.',
+      intro:
+        'Bot messages turn into tracked missions with the same agents and memory as the rest of Trooper — lightweight command, full ops trail.',
       visual: 'messaging-routing',
     },
     canvasFeatureSection('04'),
@@ -204,13 +210,15 @@ const discord = buildChannelPage({
   demoId: 'messaging',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, turn this Discord message into a ticket',
       reply: 'mission on the board',
-      window: 'Discord — Routing',
-      title: 'Server message → ticket',
-      intro: 'Community channels and DMs become first-class missions on your Trooper board.',
+      window: 'Discord — Command',
+      title: 'Server chat becomes',
+      titleHighlight: 'real missions.',
+      intro:
+        'Community channels and DMs open first-class work on your board — same workforce, same approvals, right where your team already talks.',
       visual: 'messaging-routing',
     },
     canvasFeatureSection('04'),
@@ -233,13 +241,15 @@ const signal = buildChannelPage({
   demoId: 'messaging',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, take this Signal DM and open a mission',
-      reply: 'encrypted handoff — ticket traced',
-      window: 'Signal — Routing',
-      title: 'Encrypted DM → traced ops',
-      intro: 'Signal keeps messages private while Trooper handles execution on your runtime.',
+      reply: 'encrypted handoff — ticket opened',
+      window: 'Signal — Command',
+      title: 'Private messages,',
+      titleHighlight: 'auditable execution.',
+      intro:
+        'Signal keeps the conversation encrypted. Trooper still opens a clear mission on your runtime so work does not vanish into a DM.',
       visual: 'messaging-routing',
     },
     canvasFeatureSection('04'),
@@ -262,13 +272,15 @@ const imessage = buildChannelPage({
   demoId: 'messaging',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, bridge this iMessage to the workforce',
       reply: 'relay up — ticket opened',
-      window: 'iMessage — Routing',
-      title: 'iMessage → your workforce',
-      intro: 'Bridge Apple messaging to Trooper tickets without adding another app.',
+      window: 'iMessage — Command',
+      title: 'iMessage to your workforce,',
+      titleHighlight: 'no new app.',
+      intro:
+        'Bridge Apple Messages through your Mac relay. Assign work from the app you already use — tickets still land on Trooper.',
       visual: 'messaging-routing',
     },
     canvasFeatureSection('04'),
@@ -291,13 +303,15 @@ const email = buildChannelPage({
   demoId: 'email',
   featureSections: [
     {
-      eyebrow: 'Routing',
+      eyebrow: 'Command',
       eyebrowNumber: '03',
       ask: 'trooper, turn this inbox thread into a mission',
-      reply: 'parsed — research + draft queued',
-      window: 'Email — Routing',
-      title: 'Inbox → structured ticket',
-      intro: 'RFPs, support threads, and follow-ups parsed into missions with research and draft workflows.',
+      reply: 'parsed — research and draft queued',
+      window: 'Email — Command',
+      title: 'Your inbox becomes',
+      titleHighlight: 'a command channel.',
+      intro:
+        'RFPs, support threads, and follow-ups become missions with research and drafts — email stops being a black hole.',
       visual: 'email-routing',
     },
     canvasFeatureSection('04'),
