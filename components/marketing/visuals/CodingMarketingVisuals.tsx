@@ -60,8 +60,8 @@ function ShellLine({
 /* ─── Shared harness: real CLI windows + on-demand surfaces ─── */
 export function CodingHarnessVisual() {
   return (
-    <VignetteChrome label="trooper · ticket #418 · workspace">
-      <div className="border-b border-stone-100 bg-white px-3 py-2.5">
+    <VignetteChrome label="workspace" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="mb-1 flex flex-wrap items-center gap-2">
@@ -72,7 +72,7 @@ export function CodingHarnessVisual() {
                 In progress
               </span>
             </div>
-            <h4 className="text-[13px] font-semibold leading-snug text-stone-900">
+            <h4 className="text-[14px] font-semibold leading-snug text-stone-900">
               Fix invoice parser null rows
             </h4>
           </div>
@@ -83,8 +83,7 @@ export function CodingHarnessVisual() {
         </div>
       </div>
 
-      {/* Desktop floor — full-width CLI windows, not skinny columns */}
-      <div className="space-y-2.5 bg-[#b9b4ab] p-3 sm:p-3.5">
+      <div className="flex flex-1 flex-col gap-2.5 p-3">
         <AcpCliWindow
           provider="Claude Code"
           status="working"
@@ -114,14 +113,8 @@ export function CodingHarnessVisual() {
         />
 
         <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-          {/* Browser on demand */}
           <div className="overflow-hidden rounded-lg shadow-[0_10px_24px_-10px_rgba(0,0,0,0.4)] ring-1 ring-black/30">
             <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-2.5 py-1.5">
-              <span className="flex gap-1" aria-hidden>
-                <span className="size-2 rounded-full bg-[#ff5f57]" />
-                <span className="size-2 rounded-full bg-[#febc2e]" />
-                <span className="size-2 rounded-full bg-[#28c840]" />
-              </span>
               <span className="text-[11px] font-medium text-stone-200">Browser on demand</span>
               <span className="ml-auto rounded-full bg-green-500/15 px-1.5 py-0.5 text-[9px] font-medium text-green-300">
                 Live
@@ -133,7 +126,7 @@ export function CodingHarnessVisual() {
               title="PR #418"
               compact
             >
-              <div className="h-[108px] space-y-2 overflow-hidden bg-white p-2.5 text-[11px]">
+              <div className="h-[100px] space-y-2 overflow-hidden bg-white p-2.5 text-[12px]">
                 <div className="flex items-center gap-2">
                   <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
                     Open
@@ -141,20 +134,11 @@ export function CodingHarnessVisual() {
                   <span className="font-semibold text-stone-900">fix(parser): skip empty rows</span>
                 </div>
                 <p className="text-stone-500">acme/billing #418 · Codex + Claude Code</p>
-                <div className="flex gap-3 font-mono text-[10px]">
-                  <span className="text-emerald-700">+8</span>
-                  <span className="text-red-600">−1</span>
-                  <span className="text-stone-400">2 files</span>
-                </div>
-                <p className="text-[10px] text-emerald-700">All checks have passed</p>
+                <p className="font-mono text-[11px] text-emerald-700">+8 −1 · All checks passed</p>
               </div>
             </DemoBrowserFrame>
-            <div className="border-t border-stone-800 bg-stone-950 px-2.5 py-1.5 font-mono text-[10px] text-stone-400">
-              browser_navigate · CI checks · Files changed
-            </div>
           </div>
 
-          {/* Desktop on demand */}
           <div className="overflow-hidden rounded-lg bg-[#1c1c1e] shadow-[0_10px_24px_-10px_rgba(0,0,0,0.4)] ring-1 ring-black/30">
             <div className="flex items-center justify-between border-b border-white/10 px-2.5 py-1.5">
               <div className="flex items-center gap-1.5 text-[11px] text-white/90">
@@ -168,10 +152,9 @@ export function CodingHarnessVisual() {
             <div className="border-b border-white/10 bg-[#2c2c2e] px-2.5 py-1.5 text-[10px] text-white/55">
               Studio-Mac · macOS 15.2 · seat on screen 1
             </div>
-            <div className="space-y-0.5 px-2.5 py-2 font-mono text-[11px] leading-relaxed">
+            <div className="space-y-0.5 px-2.5 py-2.5 font-mono text-[12px] leading-relaxed">
               <div className="text-white">$ trooper device wake studio-mac</div>
               <div className="text-[#a3e635]/85">device responded · agent seat attached</div>
-              <div className="text-white">$ open -a Terminal ~/acme-billing</div>
               <div className="flex items-center gap-1.5 text-amber-300">
                 <Loader2 size={11} className="animate-spin" />
                 npm run test:integration
@@ -182,14 +165,14 @@ export function CodingHarnessVisual() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone-100 bg-[#FAF9F6] px-3 py-2">
-        <span className="font-mono text-[10px] text-stone-500">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-black/10 bg-[#FAF9F6] px-3.5 py-2">
+        <span className="font-mono text-[11px] text-stone-500">
           CLIs · browser · desktop — one ticket
         </span>
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] text-trooper-700">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-trooper-700">
           <ProviderChip provider="Claude Code" size={12} />
           <ProviderChip provider="Codex" size={12} />
-          <span>Live ACP sessions</span>
+          Live ACP
         </span>
       </div>
     </VignetteChrome>
@@ -199,8 +182,8 @@ export function CodingHarnessVisual() {
 /* ─── DiffViewer-style review ─── */
 export function CodingBoardVisual() {
   return (
-    <VignetteChrome label="Review · DiffViewer">
-      <div className="border-b border-stone-100 bg-white px-3 py-2.5">
+    <VignetteChrome label="DiffViewer">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
             Pull request #418
@@ -209,26 +192,21 @@ export function CodingBoardVisual() {
             Ready for review
           </span>
         </div>
-        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">
           fix(parser): skip empty invoice rows
         </h4>
       </div>
 
-      <div className="space-y-3 bg-[#FAF9F6] p-3">
-        <AppDiffCard
-          path="src/parser.ts"
-          additions={5}
-          deletions={1}
-          lines={PARSER_DIFF}
-        />
-        <div className="flex items-center gap-3 rounded-lg border border-stone-200 bg-white px-3 py-2 font-mono text-[11px]">
+      <div className="flex-1 space-y-3 bg-[#FAF9F6] p-3">
+        <AppDiffCard path="src/parser.ts" additions={5} deletions={1} lines={PARSER_DIFF} />
+        <div className="flex items-center gap-3 rounded-lg border border-stone-200 bg-white px-3 py-2.5 font-mono text-[12px]">
           <span className="text-emerald-600">✓</span>
           <span className="text-stone-700">CI · 13 tests passed</span>
           <span className="ml-auto text-stone-400">etl/dedupe.ts +3</span>
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3 py-2.5 text-[11px]">
+      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3.5 py-2.5 text-[12px]">
         <span className="text-stone-500">Codex patch · Claude Code tests</span>
         <span className="font-medium text-amber-700">Staff merges</span>
       </div>
@@ -236,11 +214,11 @@ export function CodingBoardVisual() {
   );
 }
 
-/* ─── AGENTS.md / repo memory document ─── */
+/* ─── AGENTS.md / repo memory ─── */
 export function CodingMemoryVisual() {
   return (
-    <VignetteChrome label="Coding · AGENTS.md">
-      <div className="border-b border-stone-100 bg-[#FAF9F6] px-3 py-2.5">
+    <VignetteChrome label="AGENTS.md">
+      <div className="border-b border-stone-100 bg-[#FAF9F6] px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
             Org context for every CLI
@@ -249,12 +227,9 @@ export function CodingMemoryVisual() {
             Injected
           </span>
         </div>
-        <p className="mt-1.5 text-[12px] leading-relaxed text-stone-600">
-          Same branch, review, and test rules load into Claude Code, Codex, and OpenCode.
-        </p>
       </div>
 
-      <div className="bg-white p-3">
+      <div className="flex-1 bg-white p-3">
         <AppDocPanel filename="AGENTS.md" badge="acme-billing">
           <p className="mb-2 text-neutral-500"># Engineering agents</p>
           <p className="mb-3 text-neutral-800">## Branch rules</p>
@@ -271,7 +246,7 @@ export function CodingMemoryVisual() {
         </AppDocPanel>
       </div>
 
-      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-3 py-2.5 text-[11px]">
+      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-3.5 py-2.5 text-[12px]">
         <span className="text-stone-500">Loaded for Claude · Codex · OpenCode</span>
         <span className="font-medium text-trooper-700">Always on</span>
       </div>
@@ -279,14 +254,53 @@ export function CodingMemoryVisual() {
   );
 }
 
-/**
- * Browser + desktop on demand — coding agents get a live browser and a real machine,
- * not just a cloud chat box.
- */
+/* ─── Merge pack: full-bleed DiffViewer + CI terminal ─── */
 export function CodingCanvasVisual() {
   return (
-    <VignetteChrome label="Coding · on-demand runtimes">
-      <div className="border-b border-stone-100 bg-white px-3 py-2.5">
+    <VignetteChrome label="merge pack">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+            Merge pack · PR #418
+          </span>
+          <span className="rounded border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
+            CI green
+          </span>
+        </div>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">
+          Diffs and CI — ready to approve
+        </h4>
+      </div>
+
+      <div className="grid flex-1 grid-cols-1 gap-0 bg-white sm:grid-cols-2">
+        <div className="border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          <AppDiffCard path="src/parser.ts" additions={5} deletions={1} lines={PARSER_DIFF} />
+        </div>
+        <div className="bg-stone-950 p-3">
+          <AppTerminalPanel title="ci · npm run test:integration" className="!rounded-none !ring-0">
+            <p className="text-stone-500">$ npm run test:integration</p>
+            <p className="mt-2 text-[13px] text-green-400">✓ parser.test.ts (8)</p>
+            <p className="text-[13px] text-green-400">✓ dedupe.integration.test (5)</p>
+            <p className="mt-2 text-[13px] text-emerald-400">Tests: 13 passed</p>
+            <p className="mt-1 text-stone-500">Duration: 4.2s</p>
+            <p className="mt-3 text-stone-400">Ready for PR #418 ▌</p>
+          </AppTerminalPanel>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-3.5 py-2.5 text-[12px]">
+        <span className="text-stone-500">UnifiedDiff · Terminal</span>
+        <span className="font-medium text-amber-700">Approve to merge</span>
+      </div>
+    </VignetteChrome>
+  );
+}
+
+/* ─── Browser + desktop on demand ─── */
+export function CodingRuntimeVisual() {
+  return (
+    <VignetteChrome label="runtimes" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
             Runtimes on this ticket
@@ -295,15 +309,15 @@ export function CodingCanvasVisual() {
             Attached
           </span>
         </div>
-        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">
           Browser on demand · Desktop on demand
         </h4>
       </div>
 
-      <div className="grid min-h-[260px] grid-cols-1 gap-3 bg-[#b9b4ab] p-3 sm:grid-cols-2">
+      <div className="grid flex-1 grid-cols-1 gap-3 p-3 sm:grid-cols-2">
         <div className="overflow-hidden rounded-lg shadow-md ring-1 ring-black/25">
           <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-2.5 py-1.5">
-            <span className="text-[11px] font-medium text-stone-100">Browser on demand</span>
+            <span className="text-[12px] font-medium text-stone-100">Browser on demand</span>
             <span className="ml-auto rounded-full bg-green-500/15 px-1.5 py-0.5 text-[9px] font-medium text-green-300">
               Session live
             </span>
@@ -314,24 +328,26 @@ export function CodingCanvasVisual() {
             title="CI · Actions"
             compact
           >
-            <div className="h-[120px] space-y-2 overflow-hidden bg-white p-2.5 text-[11px]">
+            <div className="h-[140px] space-y-2 overflow-hidden bg-white p-3 text-[12px]">
               <p className="font-semibold text-stone-900">Actions · acme/billing</p>
-              <div className="rounded border border-stone-100 px-2 py-1.5">
+              <div className="rounded border border-stone-100 px-2.5 py-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-stone-800">integration</span>
-                  <span className="text-[10px] font-semibold text-emerald-700">passing</span>
+                  <span className="text-[11px] font-semibold text-emerald-700">passing</span>
                 </div>
-                <p className="mt-0.5 font-mono text-[10px] text-stone-400">fix/parser-null-rows · 4.2s</p>
+                <p className="mt-0.5 font-mono text-[11px] text-stone-400">
+                  fix/parser-null-rows · 4.2s
+                </p>
               </div>
-              <div className="rounded border border-stone-100 px-2 py-1.5">
+              <div className="rounded border border-stone-100 px-2.5 py-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-stone-800">lint</span>
-                  <span className="text-[10px] font-semibold text-emerald-700">passing</span>
+                  <span className="text-[11px] font-semibold text-emerald-700">passing</span>
                 </div>
               </div>
             </div>
           </DemoBrowserFrame>
-          <div className="space-y-0.5 border-t border-stone-800 bg-stone-950 px-2.5 py-2 font-mono text-[11px]">
+          <div className="space-y-1 border-t border-stone-800 bg-stone-950 px-3 py-2.5 font-mono text-[12px]">
             <div className="text-green-400">✓ browser_navigate  pull/418</div>
             <div className="text-green-400">✓ browser_snapshot  CI green</div>
             <div className="text-amber-300">
@@ -343,7 +359,7 @@ export function CodingCanvasVisual() {
 
         <div className="flex flex-col overflow-hidden rounded-lg bg-[#1c1c1e] shadow-md ring-1 ring-black/25">
           <div className="flex items-center justify-between border-b border-white/10 px-2.5 py-1.5">
-            <div className="flex items-center gap-1.5 text-[11px] text-white/90">
+            <div className="flex items-center gap-1.5 text-[12px] text-white/90">
               <Laptop className="size-3.5 text-white/55" strokeWidth={2} />
               <span className="font-medium">Desktop on demand</span>
             </div>
@@ -351,22 +367,22 @@ export function CodingCanvasVisual() {
               Studio-Mac
             </span>
           </div>
-          <div className="flex-1 bg-[#2c2c2e] px-2.5 py-2">
-            <div className="rounded border border-white/10 bg-[#1c1c1e] px-2 py-1.5 font-mono text-[10px] text-white/70">
+          <div className="flex flex-1 flex-col bg-[#2c2c2e] p-3">
+            <div className="mb-2 rounded border border-white/10 bg-[#1c1c1e] px-2.5 py-1.5 font-mono text-[11px] text-white/70">
               Terminal — ~/acme-billing
             </div>
-            <AppTerminalPanel title="local · integration" className="mt-2 !rounded-md">
+            <div className="flex-1 space-y-1 font-mono text-[12px] leading-relaxed">
               <p className="text-stone-500">$ trooper device exec studio-mac</p>
-              <p className="mt-1 text-green-400">✓ git checkout fix/parser-null-rows</p>
+              <p className="text-green-400">✓ git checkout fix/parser-null-rows</p>
               <p className="text-green-400">✓ npm run test:integration</p>
               <p className="mt-1 text-emerald-400">13 passed · 4.2s</p>
-              <p className="mt-1 text-stone-400">Seat held for review ▌</p>
-            </AppTerminalPanel>
+              <p className="mt-2 text-stone-400">Seat held for review ▌</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3 py-2.5 text-[11px]">
+      <div className="flex items-center justify-between border-t border-black/10 bg-white px-3.5 py-2.5 text-[12px]">
         <span className="text-stone-500">Same ticket · live browser · enrolled Mac</span>
         <span className="font-medium text-trooper-700">On demand</span>
       </div>

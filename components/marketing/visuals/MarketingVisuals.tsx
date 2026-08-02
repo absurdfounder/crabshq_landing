@@ -1,18 +1,15 @@
 'use client';
 
-import {
-  Check, Loader2, FileText, Terminal, Hash, Play,
-} from 'lucide-react';
-import { DemoFavicon } from '@trooper/demo';
-import { DemoBrowserFrame } from '@trooper/demo';
-import { demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
-import { VignetteChrome, TrooperMark } from './shared';
-import { AppDocPanel, AppTerminalPanel } from './productSurfaces';
+import { Hash, Laptop, Play } from 'lucide-react';
+import { DemoFavicon, DemoBrowserFrame, demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
+import { VignetteChrome, TrooperMark, ProviderChip } from './shared';
+import { AppDiffCard, AppDocPanel, AppTerminalPanel, type DiffLine } from './productSurfaces';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
   CodingMemoryVisual,
   CodingCanvasVisual,
+  CodingRuntimeVisual,
 } from './CodingMarketingVisuals';
 import {
   MarketingHarnessVisual,
@@ -27,6 +24,7 @@ export {
   CodingBoardVisual,
   CodingMemoryVisual,
   CodingCanvasVisual,
+  CodingRuntimeVisual,
   MarketingHarnessVisual,
   MarketingBoardVisual,
   MarketingMemoryVisual,
@@ -34,50 +32,29 @@ export {
   MarketingLaunchVisual,
 };
 
-function ToolRow({ label, detail, done }: { label: string; detail: string; done?: boolean }) {
+const RECON_DIFF: DiffLine[] = [
+  { type: 'hunk', text: '@@ recon · variance flagged' },
+  { type: 'ctx', oldLine: 12, newLine: 12, text: ' stripe_payouts.total' },
+  { type: 'del', oldLine: 13, newLine: null, text: '  expected: 184200' },
+  { type: 'add', oldLine: null, newLine: 13, text: '  expected: 196600  // +$12.4k' },
+  { type: 'ctx', oldLine: 14, newLine: 14, text: ' status: needs_review' },
+];
+
+function ToolLine({ label, detail, done }: { label: string; detail: string; done?: boolean }) {
   return (
-    <div className="flex items-center gap-2 py-1 text-[11px]">
-      {done ? <Check size={12} className="text-trooper shrink-0" /> : <Loader2 size={12} className="animate-spin text-[#3f6b00] shrink-0" />}
-      <span className="font-mono font-semibold text-stone-800">{label}</span>
-      <span className="truncate text-stone-400">{detail}</span>
+    <div className="flex gap-2 font-mono text-[12px] leading-snug">
+      <span className={done ? 'text-trooper' : 'text-amber-600'}>{done ? '✓' : '◉'}</span>
+      <span className="font-semibold text-stone-200">{label}</span>
+      <span className="text-stone-400">{detail}</span>
     </div>
   );
 }
 
-function MiniBrowserTile({ url, src, faviconDomain }: { url: string; src?: string; faviconDomain?: string }) {
-  return (
-    <DemoBrowserFrame
-      src={src}
-      addressUrl={url}
-      faviconDomain={faviconDomain}
-      compact
-      title={url}
-    />
-  );
-}
-
-function MiniCarouselTile() {
-  return (
-    <div className="relative h-full overflow-hidden bg-gradient-to-br from-stone-100 to-white">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={DEMO_MEDIA.linkedinCarousel}
-        alt="LinkedIn carousel slide 1"
-        className="h-full w-full object-cover"
-      />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-900/75 to-transparent px-2 pb-1.5 pt-4">
-        <p className="text-[7px] font-semibold text-white">Slide 1 of 3</p>
-        <p className="text-[6px] text-stone-300">LinkedIn carousel</p>
-      </div>
-    </div>
-  );
-}
-
-/** Generic pack review — ticket chrome + doc + preview + terminal (no abstract checklists). */
+/** Generic pack review used across teams / features / channels. */
 export function CanvasBoardVisual() {
   return (
-    <VignetteChrome label="Review · mission pack">
-      <div className="border-b border-stone-100 bg-white px-3 py-2.5">
+    <VignetteChrome label="mission pack">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
             Ticket · deliverables
@@ -86,76 +63,82 @@ export function CanvasBoardVisual() {
             Ready for review
           </span>
         </div>
-        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">
           Draft, preview, and approve — one pack
         </h4>
       </div>
 
-      <div className="grid min-h-[240px] grid-cols-1 gap-3 bg-[#FAF9F6] p-3 sm:grid-cols-2">
-        <AppDocPanel filename="brief.md" badge="draft ✓">
-          <p className="mb-2 text-neutral-500"># Mission brief</p>
-          <p className="mb-1">- Context loaded from org memory</p>
-          <p className="mb-1">- First draft attached to ticket</p>
-          <p className="mb-3">- Preview open for staff review</p>
-          <p className="text-amber-700">Status: held for approve</p>
-        </AppDocPanel>
-        <div className="flex flex-col gap-3">
-          <div className="overflow-hidden rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] ring-1 ring-neutral-200/55">
-            <DemoBrowserFrame
-              src={assetPath('marketing', 'campaign.html')}
-              addressUrl="preview.trooper.so"
-              faviconDomain="trooper.so"
-              title="Preview"
-              compact
-            />
-          </div>
-          <AppTerminalPanel title="trace · tools">
-            <p className="text-stone-500">$ mission status</p>
-            <p className="mt-1 text-green-400">✓ brief.md written</p>
-            <p className="text-green-400">✓ preview attached</p>
-            <p className="mt-1 text-amber-400">◯ approve — waiting on you ▌</p>
-          </AppTerminalPanel>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          <AppDocPanel filename="brief.md" badge="draft ✓">
+            <p className="mb-2 text-neutral-500"># Mission brief</p>
+            <p className="mb-1">- Context loaded from org memory</p>
+            <p className="mb-1">- First draft attached to ticket</p>
+            <p className="mb-3">- Preview open for staff review</p>
+            <p className="text-amber-700">Status: held for approve</p>
+          </AppDocPanel>
         </div>
-      </div>
-
-      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3 py-2.5 text-[11px]">
-        <span className="text-stone-500">Doc · preview · tool trace</span>
-        <span className="font-medium text-amber-700">Approve to continue</span>
+        <div className="flex flex-col bg-stone-950">
+          <DemoBrowserFrame
+            addressUrl="preview.trooper.so"
+            faviconDomain="trooper.so"
+            title="Preview"
+            compact
+          >
+            <div className="flex h-[120px] items-center justify-center bg-[#FAF9F6] text-[12px] text-stone-500">
+              Preview attached to ticket
+            </div>
+          </DemoBrowserFrame>
+          <div className="flex-1 space-y-1 border-t border-stone-800 px-3 py-2.5 font-mono text-[12px]">
+            <ToolLine label="write_file" detail="brief.md" done />
+            <ToolLine label="browser_open" detail="preview attached" done />
+            <ToolLine label="approve" detail="waiting on you" />
+          </div>
+        </div>
       </div>
     </VignetteChrome>
   );
 }
 
 export function CampaignPipelineVisual() {
-  const lanes = [
-    { label: 'SEO recon', agent: 'Aria', status: 'done' },
-    { label: 'Pillar page', agent: 'Ren', status: 'running' },
-    { label: 'Carousel', agent: 'Ren', status: 'running' },
-    { label: 'Video cut', agent: 'Aria', status: 'pending' },
-  ];
   return (
-    <VignetteChrome label="trooper · campaign">
-      <div className="p-4 bg-white min-h-[280px]">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[9px] font-bold uppercase tracking-wide text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">In progress</span>
-          <span className="text-[10px] text-stone-400">#marketing · Q2</span>
+    <VignetteChrome label="campaign" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
+        <div className="flex items-center gap-2">
+          <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">
+            In progress
+          </span>
+          <span className="font-mono text-[10px] text-stone-400">#marketing · Q2</span>
         </div>
-        <div className="space-y-2">
-          {lanes.map((l) => (
-            <div key={l.label} className="flex items-center gap-3 rounded-lg border border-stone-100 px-3 py-2.5">
-              <div className={`h-2 w-2 rounded-full ${l.status === 'done' ? 'bg-trooper' : l.status === 'running' ? 'bg-amber-500 animate-pulse' : 'bg-stone-300'}`} />
-              <span className="text-[12px] font-medium text-stone-800 flex-1">{l.label}</span>
-              <span className="text-[10px] text-stone-400">{l.agent}</span>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded border border-stone-200 overflow-hidden h-14">
-            <MiniBrowserTile url="northstar.io/q2" src={assetPath('marketing', 'campaign.html')} faviconDomain="northstar.io" />
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Campaign pipeline</h4>
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-3">
+        <div className="overflow-hidden rounded-lg bg-stone-950 ring-1 ring-black/30">
+          <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-3 py-1.5">
+            <ProviderChip provider="Claude Code" size={14} />
+            <span className="text-[12px] font-medium text-stone-100">Claude Code · pillar page</span>
+            <span className="ml-auto text-[10px] text-green-300">working</span>
           </div>
-          <div className="rounded border border-stone-200 overflow-hidden bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">Carousel PNG</div>
-          <div className="rounded border border-stone-200 overflow-hidden bg-stone-900 flex items-center justify-center p-2">
-            <Play size={12} className="text-white" fill="white" />
+          <div className="space-y-1 px-3 py-2 font-mono text-[12px]">
+            <ToolLine label="write_file" detail="landing/campaign.html" done />
+            <ToolLine label="browser_open" detail="northstar.io/q2" />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="overflow-hidden rounded-lg ring-1 ring-black/20">
+            <DemoBrowserFrame
+              src={assetPath('marketing', 'campaign.html')}
+              addressUrl="northstar.io/q2"
+              faviconDomain="northstar.io"
+              compact
+            />
+          </div>
+          <div className="overflow-hidden rounded-lg ring-1 ring-black/20">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={DEMO_MEDIA.linkedinCarousel} alt="" className="h-full min-h-[88px] w-full object-cover" />
+          </div>
+          <div className="flex items-center justify-center rounded-lg bg-stone-950 ring-1 ring-black/20">
+            <Play size={18} className="text-white" fill="white" />
           </div>
         </div>
       </div>
@@ -165,28 +148,44 @@ export function CampaignPipelineVisual() {
 
 export function SalesPipelineVisual() {
   return (
-    <VignetteChrome label="trooper · pipeline">
-      <div className="p-4 bg-[#FAF9F6] min-h-[280px]">
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          {[
-            { n: 'Inbound', c: 3 },
-            { n: 'Qualified', c: 2, active: true },
-            { n: 'Demo', c: 1 },
-            { n: 'Close', c: 0 },
-          ].map((s) => (
-            <div key={s.n} className={`rounded-lg border p-2 ${s.active ? 'border-trooper bg-trooper-50' : 'border-stone-200 bg-white'}`}>
-              <div className="text-[9px] font-semibold text-stone-500">{s.n}</div>
-              <div className="text-xl font-semibold tabular-nums text-stone-900 mt-1">{s.c}</div>
-            </div>
-          ))}
-        </div>
-        <div className="rounded-lg border border-stone-200 bg-white p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <DemoFavicon domain="linkedin.com" size={16} rounded="sm" />
-            <span className="text-[11px] font-semibold text-stone-800">Acme Corp — outreach draft</span>
+    <VignetteChrome label="pipeline">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+          Sales board
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Acme Corp — outreach</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-4 divide-x divide-stone-100 border-b border-stone-100">
+        {[
+          { n: 'Inbound', c: 3 },
+          { n: 'Qualified', c: 2, active: true },
+          { n: 'Demo', c: 1 },
+          { n: 'Close', c: 0 },
+        ].map((s) => (
+          <div key={s.n} className={`px-2.5 py-3 ${s.active ? 'bg-trooper-50' : 'bg-white'}`}>
+            <div className="text-[10px] font-semibold text-stone-500">{s.n}</div>
+            <div className="mt-1 text-2xl font-semibold tabular-nums text-stone-900">{s.c}</div>
           </div>
-          <p className="text-[10px] text-stone-500 leading-relaxed">Personalized hook + demo CTA — held for approval before send.</p>
+        ))}
+      </div>
+      <div className="flex-1 space-y-3 bg-[#FAF9F6] p-3">
+        <div className="rounded-lg bg-white p-3 ring-1 ring-neutral-200/70">
+          <div className="mb-2 flex items-center gap-2">
+            <DemoFavicon domain="linkedin.com" size={16} rounded="sm" />
+            <span className="text-[13px] font-semibold text-stone-800">Outreach draft</span>
+            <span className="ml-auto rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+              Held
+            </span>
+          </div>
+          <p className="text-[12px] leading-relaxed text-stone-600">
+            Personalized hook + demo CTA — waiting on approval before send.
+          </p>
         </div>
+        <AppTerminalPanel title="tools">
+          <ToolLine label="linkedin_research" detail="Acme Corp" done />
+          <ToolLine label="write_file" detail="outreach-draft.md" done />
+          <ToolLine label="approve" detail="before send" />
+        </AppTerminalPanel>
       </div>
     </VignetteChrome>
   );
@@ -194,28 +193,25 @@ export function SalesPipelineVisual() {
 
 export function SlackRoutingVisual() {
   return (
-    <VignetteChrome label="slack · #sales → ticket">
-      <div className="flex min-h-[280px]">
-        <div className="w-[45%] border-r border-stone-100 bg-[#f8f5fb] p-3">
-          <div className="text-[10px] font-bold text-[#611f69] mb-2">#sales</div>
-          <div className="rounded-lg bg-white p-2.5 shadow-sm mb-2">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="h-6 w-6 rounded bg-stone-200" />
-              <span className="text-[11px] font-semibold">Sarah Chen</span>
-            </div>
-            <p className="text-[11px] text-stone-600">Can we schedule a Trooper demo this week?</p>
+    <VignetteChrome label="slack → ticket">
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="border-b border-stone-100 bg-[#f8f5fb] p-3 sm:border-b-0 sm:border-r">
+          <div className="mb-2 text-[11px] font-bold text-[#611f69]">#sales</div>
+          <div className="mb-2 rounded-lg bg-white p-3 shadow-sm">
+            <div className="mb-1 text-[12px] font-semibold">Sarah Chen</div>
+            <p className="text-[13px] text-stone-700">Can we schedule a Trooper demo this week?</p>
           </div>
-          <div className="rounded-lg bg-white/80 p-2 text-[10px] text-stone-500 border border-[#611f69]/10">
+          <div className="rounded-lg border border-[#611f69]/15 bg-white/80 px-3 py-2 text-[12px] text-stone-600">
             <span className="font-semibold text-[#611f69]">Jordan</span> · creating ticket…
           </div>
         </div>
-        <div className="flex-1 p-3 bg-white">
-          <div className="font-mono text-[9px] uppercase text-stone-400 mb-2">Ticket #4421</div>
-          <h4 className="text-[13px] font-semibold text-stone-900 mb-3">Schedule Acme demo</h4>
-          <div className="space-y-1.5">
-            <ToolRow label="slack_read" detail="#sales thread preserved" done />
-            <ToolRow label="web_search" detail="Acme Corp research" done />
-            <ToolRow label="calendar_hold" detail="Thursday 2pm" />
+        <div className="flex flex-col bg-white p-3">
+          <div className="mb-1 font-mono text-[10px] uppercase text-stone-400">Ticket #4421</div>
+          <h4 className="mb-3 text-[14px] font-semibold text-stone-900">Schedule Acme demo</h4>
+          <div className="flex-1 rounded-lg bg-stone-950 px-3 py-2.5 font-mono text-[12px]">
+            <ToolLine label="slack_read" detail="#sales thread preserved" done />
+            <ToolLine label="web_search" detail="Acme Corp research" done />
+            <ToolLine label="calendar_hold" detail="Thursday 2pm" />
           </div>
         </div>
       </div>
@@ -225,19 +221,23 @@ export function SlackRoutingVisual() {
 
 export function WhatsAppRoutingVisual() {
   return (
-    <VignetteChrome label="whatsapp · support">
-      <div className="min-h-[280px] bg-[#ece5dd] p-3 flex flex-col">
-        <div className="ml-auto max-w-[80%] rounded-lg rounded-tr-none bg-[#dcf8c6] px-3 py-2 text-[11px] text-stone-800 shadow-sm">
+    <VignetteChrome label="whatsapp" className="bg-[#ece5dd]">
+      <div className="flex flex-1 flex-col gap-3 p-3">
+        <div className="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#dcf8c6] px-3 py-2.5 text-[13px] text-stone-800 shadow-sm">
           Login still broken after password reset
         </div>
-        <div className="mt-3 rounded-xl border border-stone-200 bg-white p-3 shadow-sm">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="rounded-xl border border-stone-200 bg-white p-3 shadow-sm">
+          <div className="mb-2 flex items-center gap-2">
             <TrooperMark className="h-4 w-4" />
-            <span className="text-[11px] font-semibold">Ticket #881</span>
-            <span className="text-[9px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded ml-auto">In progress</span>
+            <span className="text-[12px] font-semibold">Ticket #881</span>
+            <span className="ml-auto rounded bg-amber-50 px-1.5 py-0.5 text-[10px] text-amber-700">
+              In progress
+            </span>
           </div>
-          <ToolRow label="whatsapp_read" detail="routed to Leo" done />
-          <ToolRow label="exec" detail="reset billing session" />
+          <div className="rounded-lg bg-stone-950 px-3 py-2.5 font-mono text-[12px]">
+            <ToolLine label="whatsapp_read" detail="routed to Leo" done />
+            <ToolLine label="exec" detail="reset billing session" />
+          </div>
         </div>
       </div>
     </VignetteChrome>
@@ -246,20 +246,26 @@ export function WhatsAppRoutingVisual() {
 
 export function LegalReviewVisual() {
   return (
-    <VignetteChrome label="trooper · human review">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[9px] font-bold uppercase text-red-800 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">Approval required</span>
+    <VignetteChrome label="approval">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[9px] font-bold uppercase text-red-800">
+          Approval required
+        </span>
+        <h4 className="mt-2 text-[14px] font-semibold text-stone-900">MSA redline · held for counsel</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          <AppDocPanel filename="legal/msa-redline.md" badge="14 flags">
+            <p className="mb-2 text-neutral-500"># MSA review</p>
+            <p className="mb-1">- 14 clauses flagged vs playbook</p>
+            <p className="mb-1">- Redline drafted</p>
+            <p className="text-amber-700">- Counsel sign-off before counter</p>
+          </AppDocPanel>
         </div>
-        {['MSA parsed · 14 clauses flagged', 'Redline drafted vs playbook', 'Counsel sign-off before counter'].map((line, i) => (
-          <div key={line} className="flex items-start gap-3 border border-stone-100 rounded-lg px-3 py-2.5 mb-2">
-            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${i < 2 ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}`}>{i + 1}</span>
-            <span className="text-[11px] text-stone-700 leading-relaxed">{line}</span>
-          </div>
-        ))}
-        <div className="mt-3 flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50 px-3 py-2">
-          <FileText size={14} className="text-stone-400" />
-          <span className="text-[10px] font-medium text-stone-600">legal/msa-redline.md</span>
+        <div className="bg-stone-950 p-3 font-mono text-[12px]">
+          <ToolLine label="parse_pdf" detail="MSA · 42 pages" done />
+          <ToolLine label="playbook_diff" detail="14 clauses" done />
+          <ToolLine label="approve" detail="counsel required" />
         </div>
       </div>
     </VignetteChrome>
@@ -267,25 +273,46 @@ export function LegalReviewVisual() {
 }
 
 export function OpsRunbookVisual() {
-  const items = [
-    { label: 'Vendor reconciliation', done: true },
-    { label: 'Access review', done: true },
-    { label: 'Budget variance report', done: false, blocked: true },
-    { label: 'Backup verification', done: true },
-  ];
   return (
-    <VignetteChrome label="trooper · runbook">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="font-mono text-[10px] uppercase tracking-widest text-stone-400 mb-3">Weekly checklist · W24</div>
-        {items.map((item) => (
-          <div key={item.label} className="flex items-center gap-3 py-2 border-b border-stone-50 last:border-0">
-            <span className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${item.done ? 'border-trooper bg-trooper-50 text-trooper' : 'border-stone-300'}`}>
-              {item.done ? '✓' : ''}
-            </span>
-            <span className={`text-[11px] flex-1 ${item.blocked ? 'text-amber-800 font-medium' : 'text-stone-700'}`}>{item.label}</span>
-            {item.blocked && <span className="text-[9px] text-amber-700">Needs approval</span>}
-          </div>
-        ))}
+    <VignetteChrome label="runbook">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-stone-400">
+          Weekly checklist · W24
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Ops runbook in progress</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="space-y-0 border-b border-stone-100 sm:border-b-0 sm:border-r">
+          {[
+            { label: 'Vendor reconciliation', done: true },
+            { label: 'Access review', done: true },
+            { label: 'Budget variance report', done: false, blocked: true },
+            { label: 'Backup verification', done: true },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-3 border-b border-stone-50 px-3.5 py-3 last:border-0"
+            >
+              <span
+                className={`flex h-5 w-5 items-center justify-center rounded border text-[11px] ${
+                  item.done ? 'border-trooper bg-trooper-50 text-trooper' : 'border-stone-300'
+                }`}
+              >
+                {item.done ? '✓' : ''}
+              </span>
+              <span className={`flex-1 text-[13px] ${item.blocked ? 'font-medium text-amber-800' : 'text-stone-700'}`}>
+                {item.label}
+              </span>
+              {item.blocked ? <span className="text-[11px] text-amber-700">Needs approval</span> : null}
+            </div>
+          ))}
+        </div>
+        <AppTerminalPanel title="routine · exec" className="!rounded-none !ring-0">
+          <p className="text-stone-500">$ trooper routine run weekly-ops</p>
+          <p className="mt-2 text-green-400">✓ vendor recon</p>
+          <p className="text-green-400">✓ access review</p>
+          <p className="text-amber-300">◯ budget variance — held ▌</p>
+        </AppTerminalPanel>
       </div>
     </VignetteChrome>
   );
@@ -293,16 +320,25 @@ export function OpsRunbookVisual() {
 
 export function EngineeringIncidentVisual() {
   return (
-    <VignetteChrome label="trooper · incident #442">
-      <div className="min-h-[280px] bg-stone-950 p-4 font-mono text-[10px] leading-relaxed">
-        <div className="text-red-400 mb-3">p99 spike · /api/v2</div>
-        <div className="space-y-1 text-stone-400">
-          <div><span className="text-stone-500">08:12</span> alert fired</div>
-          <div><span className="text-stone-500">08:14</span> Leo · pool exhaustion</div>
-          <div><span className="text-stone-500">08:16</span> <Terminal size={10} className="inline mr-1" />kubectl logs</div>
-          <div className="text-green-400"><span className="text-stone-500">08:18</span> rollback v2.3.1 ✓</div>
+    <VignetteChrome label="incident" className="bg-stone-950">
+      <div className="border-b border-stone-800 px-3.5 py-2.5">
+        <div className="text-[13px] font-semibold text-red-400">p99 spike · /api/v2</div>
+        <div className="mt-0.5 font-mono text-[11px] text-stone-500">incident #442 · Leo responding</div>
+      </div>
+      <div className="flex-1 space-y-1.5 px-3.5 py-3 font-mono text-[13px] leading-relaxed text-stone-400">
+        <div>
+          <span className="text-stone-600">08:12</span> alert fired
         </div>
-        <div className="mt-4 rounded border border-stone-800 bg-stone-900 p-2 text-stone-300">
+        <div>
+          <span className="text-stone-600">08:14</span> Leo · pool exhaustion
+        </div>
+        <div>
+          <span className="text-stone-600">08:16</span> $ kubectl logs api-gateway
+        </div>
+        <div className="text-green-400">
+          <span className="text-stone-600">08:18</span> rollback v2.3.1 ✓
+        </div>
+        <div className="mt-4 rounded border border-stone-800 bg-stone-900 px-3 py-2 text-stone-300">
           Postmortem draft attached · human review
         </div>
       </div>
@@ -312,15 +348,26 @@ export function EngineeringIncidentVisual() {
 
 export function MessagingRoutingVisual() {
   return (
-    <VignetteChrome label="trooper · any channel">
-      <div className="flex min-h-[280px] items-center justify-center gap-3 p-4 bg-[#FAF9F6]">
-        {['Telegram', 'Discord', 'Signal'].map((ch) => (
-          <div key={ch} className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[10px] font-medium text-stone-600">{ch}</div>
-        ))}
-        <span className="text-stone-300">→</span>
-        <div className="rounded-lg border border-trooper-200 bg-trooper-50 px-4 py-3 text-center">
-          <Hash size={14} className="mx-auto text-trooper mb-1" />
-          <div className="text-[10px] font-bold text-trooper-800">Traced ticket</div>
+    <VignetteChrome label="channels">
+      <div className="flex flex-1 flex-col items-stretch justify-center gap-4 bg-[#FAF9F6] p-4">
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {['Telegram', 'Discord', 'Signal', 'iMessage'].map((ch) => (
+            <span
+              key={ch}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-[12px] font-medium text-stone-700"
+            >
+              {ch}
+            </span>
+          ))}
+        </div>
+        <div className="text-center text-[12px] text-stone-400">↓ routed into</div>
+        <div className="mx-auto w-full max-w-xs rounded-xl border border-trooper-200 bg-white p-4 text-center shadow-sm">
+          <Hash size={16} className="mx-auto mb-1 text-trooper" />
+          <div className="text-[13px] font-bold text-trooper-800">Traced ticket</div>
+          <div className="mt-2 rounded-lg bg-stone-950 px-3 py-2 text-left font-mono text-[11px]">
+            <ToolLine label="channel_read" detail="thread preserved" done />
+            <ToolLine label="create_ticket" detail="#991" done />
+          </div>
         </div>
       </div>
     </VignetteChrome>
@@ -329,53 +376,57 @@ export function MessagingRoutingVisual() {
 
 export function EmailRoutingVisual() {
   return (
-    <VignetteChrome label="trooper · inbox">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="rounded-lg border border-stone-200 p-3 mb-3">
-          <div className="flex items-center gap-2 mb-1">
-            <DemoFavicon domain="gmail.com" size={16} rounded="sm" />
-            <span className="text-[10px] text-stone-500">procurement@enterprise.co</span>
-          </div>
-          <div className="text-[13px] font-semibold text-stone-900">RFP — AI ops platform evaluation</div>
-          <div className="text-[10px] text-stone-400 mt-1">Due Friday EOD</div>
+    <VignetteChrome label="inbox">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <div className="flex items-center gap-2">
+          <DemoFavicon domain="gmail.com" size={16} rounded="sm" />
+          <span className="text-[12px] text-stone-500">procurement@enterprise.co</span>
         </div>
-        <div className="rounded-lg border border-stone-100 bg-stone-50 p-3 space-y-1">
-          <ToolRow label="email_parse" detail="structured ticket #772" done />
-          <ToolRow label="web_search" detail="evaluator requirements" done />
-          <ToolRow label="write_file" detail="draft response" />
-        </div>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">
+          RFP — AI ops platform evaluation
+        </h4>
+        <div className="mt-0.5 text-[11px] text-stone-400">Due Friday EOD</div>
+      </div>
+      <div className="flex-1 bg-stone-950 p-3 font-mono text-[12px]">
+        <ToolLine label="email_parse" detail="structured ticket #772" done />
+        <ToolLine label="web_search" detail="evaluator requirements" done />
+        <ToolLine label="write_file" detail="draft response" />
       </div>
     </VignetteChrome>
   );
 }
 
 export function DesignPipelineVisual() {
-  const lanes = [
-    { label: 'Figma frame audit', agent: 'Ren', status: 'done' },
-    { label: 'Asset export bundle', agent: 'Ren', status: 'running' },
-    { label: 'Brand token diff', agent: 'Aria', status: 'running' },
-    { label: 'Checklist review', agent: 'Jordan', status: 'pending' },
-  ];
   return (
-    <VignetteChrome label="trooper · brand refresh">
-      <div className="p-4 bg-white min-h-[280px]">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[9px] font-bold uppercase tracking-wide text-purple-800 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">In review</span>
-          <span className="text-[10px] text-stone-400">#design · Q2 refresh</span>
+    <VignetteChrome label="design" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
+        <span className="rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[9px] font-bold uppercase text-violet-800">
+          In review
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Brand refresh · asset pack</h4>
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-3">
+        <div className="overflow-hidden rounded-lg bg-stone-950 ring-1 ring-black/30">
+          <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-3 py-1.5">
+            <ProviderChip provider="Codex" size={14} />
+            <span className="text-[12px] font-medium text-stone-100">Codex · Figma export</span>
+          </div>
+          <div className="space-y-1 px-3 py-2 font-mono text-[12px]">
+            <ToolLine label="figma_export" detail="hero + carousel" done />
+            <ToolLine label="token_diff" detail="brand tokens" />
+          </div>
         </div>
-        <div className="space-y-2">
-          {lanes.map((l) => (
-            <div key={l.label} className="flex items-center gap-3 rounded-lg border border-stone-100 px-3 py-2.5">
-              <div className={`h-2 w-2 rounded-full ${l.status === 'done' ? 'bg-trooper' : l.status === 'running' ? 'bg-purple-500 animate-pulse' : 'bg-stone-300'}`} />
-              <span className="text-[12px] font-medium text-stone-800 flex-1">{l.label}</span>
-              <span className="text-[10px] text-stone-400">{l.agent}</span>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded border border-stone-200 overflow-hidden h-14 bg-gradient-to-br from-purple-50 to-white p-2 text-[8px] font-semibold text-stone-700">Hero mockup</div>
-          <div className="rounded border border-stone-200 overflow-hidden h-14 bg-gradient-to-br from-[#f0f5e6] to-white p-2 text-[8px] font-semibold text-stone-700">Carousel PNG</div>
-          <div className="rounded border border-stone-200 overflow-hidden h-14 font-mono text-[7px] p-1.5 text-emerald-700 bg-emerald-50">+ token diff</div>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="flex h-20 items-end rounded-lg bg-gradient-to-br from-violet-100 to-white p-2 text-[11px] font-semibold text-stone-700 ring-1 ring-black/10">
+            Hero mockup
+          </div>
+          <div className="overflow-hidden rounded-lg ring-1 ring-black/10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={DEMO_MEDIA.linkedinCarousel} alt="" className="h-20 w-full object-cover" />
+          </div>
+          <div className="flex h-20 items-center justify-center rounded-lg bg-emerald-50 font-mono text-[11px] text-emerald-700 ring-1 ring-black/10">
+            + token.diff
+          </div>
         </div>
       </div>
     </VignetteChrome>
@@ -384,51 +435,62 @@ export function DesignPipelineVisual() {
 
 export function SupportQueueVisual() {
   return (
-    <VignetteChrome label="zendesk · P1 queue">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[9px] font-bold uppercase text-red-800 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">P1</span>
-          <span className="text-[10px] text-stone-400">Ticket #4421 · login failure</span>
+    <VignetteChrome label="support">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <div className="flex items-center gap-2">
+          <span className="rounded border border-red-200 bg-red-50 px-2 py-0.5 text-[9px] font-bold uppercase text-red-800">
+            P1
+          </span>
+          <span className="font-mono text-[11px] text-stone-400">#4421 · login failure</span>
         </div>
-        <div className="space-y-2 mb-3">
-          {['Classified · billing session', 'KB match · reset guide', 'Reply draft · held for approval'].map((line, i) => (
-            <div key={line} className="flex items-center gap-2 rounded-lg border border-stone-100 px-3 py-2">
-              <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${i < 2 ? 'bg-trooper-50 text-trooper' : 'bg-amber-50 text-amber-800'}`}>{i + 1}</span>
-              <span className="text-[11px] text-stone-700">{line}</span>
-            </div>
-          ))}
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Zendesk · reply held for approve</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="space-y-2 border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          {['Classified · billing session', 'KB match · reset guide', 'Reply draft · held'].map(
+            (line, i) => (
+              <div key={line} className="flex items-center gap-2 rounded-lg border border-stone-100 px-3 py-2.5">
+                <span
+                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+                    i < 2 ? 'bg-trooper-50 text-trooper' : 'bg-amber-50 text-amber-800'
+                  }`}
+                >
+                  {i + 1}
+                </span>
+                <span className="text-[13px] text-stone-700">{line}</span>
+              </div>
+            ),
+          )}
         </div>
-        <ToolRow label="zendesk_read" detail="thread preserved" done />
-        <ToolRow label="notion_search" detail="KB: password reset" done />
-        <ToolRow label="write_file" detail="reply-draft.md" />
+        <div className="bg-stone-950 p-3 font-mono text-[12px]">
+          <ToolLine label="zendesk_read" detail="thread preserved" done />
+          <ToolLine label="notion_search" detail="KB: password reset" done />
+          <ToolLine label="write_file" detail="reply-draft.md" />
+        </div>
       </div>
     </VignetteChrome>
   );
 }
 
 export function FinanceCloseVisual() {
-  const items = [
-    { label: 'QuickBooks ledger pull', done: true },
-    { label: 'Variance report', done: true },
-    { label: 'Reconciliation diff', done: false, blocked: true },
-    { label: 'Close checklist sign-off', done: false },
-  ];
   return (
-    <VignetteChrome label="trooper · month-end">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="font-mono text-[10px] uppercase tracking-widest text-stone-400 mb-3">Close · June 2026</div>
-        {items.map((item) => (
-          <div key={item.label} className="flex items-center gap-3 py-2 border-b border-stone-50 last:border-0">
-            <span className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${item.done ? 'border-trooper bg-trooper-50 text-trooper' : 'border-stone-300'}`}>
-              {item.done ? '✓' : ''}
-            </span>
-            <span className={`text-[11px] flex-1 ${item.blocked ? 'text-amber-800 font-medium' : 'text-stone-700'}`}>{item.label}</span>
-            {item.blocked && <span className="text-[9px] text-amber-700">Needs approval</span>}
-          </div>
-        ))}
-        <div className="mt-3 rounded border border-stone-100 bg-stone-50 px-3 py-2 font-mono text-[9px] text-stone-600">
-          recon-variance.diff · +$12.4k flagged
+    <VignetteChrome label="close">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-stone-400">
+          Close · June 2026
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Month-end recon</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          <AppDiffCard path="recon-variance.diff" additions={1} deletions={1} lines={RECON_DIFF} />
         </div>
+        <AppTerminalPanel title="qbo · stripe" className="!rounded-none !ring-0">
+          <p className="text-stone-500">$ trooper finance close</p>
+          <p className="mt-2 text-green-400">✓ QuickBooks ledger pull</p>
+          <p className="text-green-400">✓ variance report</p>
+          <p className="text-amber-300">◯ recon +$12.4k — approve ▌</p>
+        </AppTerminalPanel>
       </div>
     </VignetteChrome>
   );
@@ -436,27 +498,36 @@ export function FinanceCloseVisual() {
 
 export function BdPipelineVisual() {
   return (
-    <VignetteChrome label="trooper · partnerships">
-      <div className="p-4 bg-[#FAF9F6] min-h-[280px]">
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          {[
-            { n: 'Research', c: 4 },
-            { n: 'Brief', c: 2, active: true },
-            { n: 'Outreach', c: 1 },
-          ].map((s) => (
-            <div key={s.n} className={`rounded-lg border p-2 ${s.active ? 'border-trooper bg-trooper-50' : 'border-stone-200 bg-white'}`}>
-              <div className="text-[9px] font-semibold text-stone-500">{s.n}</div>
-              <div className="text-xl font-semibold tabular-nums text-stone-900 mt-1">{s.c}</div>
-            </div>
-          ))}
-        </div>
-        <div className="rounded-lg border border-stone-200 bg-white p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <DemoFavicon domain="stripe.com" size={16} rounded="sm" />
-            <span className="text-[11px] font-semibold text-stone-800">Stripe Connect — intro draft</span>
+    <VignetteChrome label="partners">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <h4 className="text-[14px] font-semibold text-stone-900">Stripe Connect — intro draft</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-3 divide-x divide-stone-100 border-b border-stone-100">
+        {[
+          { n: 'Research', c: 4 },
+          { n: 'Brief', c: 2, active: true },
+          { n: 'Outreach', c: 1 },
+        ].map((s) => (
+          <div key={s.n} className={`px-3 py-3 ${s.active ? 'bg-trooper-50' : ''}`}>
+            <div className="text-[10px] font-semibold text-stone-500">{s.n}</div>
+            <div className="mt-1 text-2xl font-semibold tabular-nums">{s.c}</div>
           </div>
-          <p className="text-[10px] text-stone-500 leading-relaxed">Partner brief + mutual intro email — held for approval.</p>
+        ))}
+      </div>
+      <div className="flex-1 space-y-3 bg-[#FAF9F6] p-3">
+        <div className="rounded-lg bg-white p-3 ring-1 ring-neutral-200/70">
+          <div className="mb-2 flex items-center gap-2">
+            <DemoFavicon domain="stripe.com" size={16} rounded="sm" />
+            <span className="text-[13px] font-semibold">Partner brief</span>
+            <span className="ml-auto text-[10px] font-medium text-amber-700">Held</span>
+          </div>
+          <p className="text-[12px] text-stone-600">Mutual intro email — waiting on approval.</p>
         </div>
+        <AppTerminalPanel title="bd tools">
+          <ToolLine label="web_research" detail="Stripe Connect" done />
+          <ToolLine label="write_file" detail="intro-draft.md" done />
+          <ToolLine label="approve" detail="before send" />
+        </AppTerminalPanel>
       </div>
     </VignetteChrome>
   );
@@ -464,25 +535,36 @@ export function BdPipelineVisual() {
 
 export function ResearchIntelVisual() {
   return (
-    <VignetteChrome label="trooper · competitive intel">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="font-mono text-[10px] uppercase tracking-widest text-stone-400 mb-3">Q2 · agent ops landscape</div>
-        <div className="rounded-lg border border-stone-200 overflow-hidden mb-3">
-          <div className="grid grid-cols-4 gap-px bg-stone-100 text-[9px]">
-            {['Vendor', 'Multi-agent', 'Canvas', 'Price'].map((h) => (
-              <div key={h} className="bg-stone-50 px-2 py-1.5 font-semibold text-stone-600">{h}</div>
-            ))}
-            {['Competitor A', 'Partial', 'No', '$89'].map((c) => (
-              <div key={c} className="bg-white px-2 py-1.5 text-stone-700">{c}</div>
-            ))}
-            {['Trooper', 'Yes', 'Yes', 'BYOA'].map((c) => (
-              <div key={c} className="bg-trooper-50 px-2 py-1.5 font-medium text-trooper-800">{c}</div>
-            ))}
-          </div>
+    <VignetteChrome label="intel">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-stone-400">
+          Q2 · agent ops landscape
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Competitive matrix</h4>
+      </div>
+      <div className="border-b border-stone-100">
+        <div className="grid grid-cols-4 gap-px bg-stone-100 text-[12px]">
+          {['Vendor', 'Multi-agent', 'Canvas', 'Price'].map((h) => (
+            <div key={h} className="bg-stone-50 px-2.5 py-2 font-semibold text-stone-600">
+              {h}
+            </div>
+          ))}
+          {['Competitor A', 'Partial', 'No', '$89'].map((c) => (
+            <div key={c} className="bg-white px-2.5 py-2 text-stone-700">
+              {c}
+            </div>
+          ))}
+          {['Trooper', 'Yes', 'Yes', 'BYOA'].map((c) => (
+            <div key={c} className="bg-trooper-50 px-2.5 py-2 font-medium text-trooper-800">
+              {c}
+            </div>
+          ))}
         </div>
-        <ToolRow label="notion_search" detail="source notes compiled" done />
-        <ToolRow label="airtable_update" detail="competitive matrix" done />
-        <ToolRow label="notion_write" detail="intel-brief.md" />
+      </div>
+      <div className="flex-1 bg-stone-950 p-3 font-mono text-[12px]">
+        <ToolLine label="browser_navigate" detail="competitor pricing" done />
+        <ToolLine label="notion_write" detail="intel-brief.md" done />
+        <ToolLine label="airtable_update" detail="competitive matrix" />
       </div>
     </VignetteChrome>
   );
@@ -490,17 +572,26 @@ export function ResearchIntelVisual() {
 
 export function SecurityAuditVisual() {
   return (
-    <VignetteChrome label="trooper · audit run">
-      <div className="min-h-[280px] bg-stone-950 p-4 font-mono text-[10px] leading-relaxed">
-        <div className="text-amber-400 mb-3">CVE-2026-1842 · api-gateway</div>
-        <div className="space-y-1 text-stone-400">
-          <div><span className="text-stone-500">09:12</span> WARN TLS 1.1 enabled</div>
-          <div><span className="text-stone-500">09:14</span> Leo · patch v2.1.1 available</div>
-          <div><span className="text-stone-500">09:16</span> <Terminal size={10} className="inline mr-1" />aws_audit production</div>
-          <div className="text-green-400"><span className="text-stone-500">09:18</span> rollback complete ✓</div>
+    <VignetteChrome label="audit" className="bg-stone-950">
+      <div className="border-b border-stone-800 px-3.5 py-2.5">
+        <div className="text-[13px] font-semibold text-amber-400">CVE-2026-1842 · api-gateway</div>
+        <div className="mt-0.5 font-mono text-[11px] text-stone-500">audit run · production</div>
+      </div>
+      <div className="flex-1 space-y-1.5 px-3.5 py-3 font-mono text-[13px] leading-relaxed text-stone-400">
+        <div>
+          <span className="text-stone-600">09:12</span> WARN TLS 1.1 enabled
         </div>
-        <div className="mt-4 rounded border border-stone-800 bg-stone-900 p-2 text-stone-300">
-          findings.md + gateway-patch.diff on Canvas
+        <div>
+          <span className="text-stone-600">09:14</span> Leo · patch v2.1.1 available
+        </div>
+        <div>
+          <span className="text-stone-600">09:16</span> $ aws_audit production
+        </div>
+        <div className="text-green-400">
+          <span className="text-stone-600">09:18</span> rollback complete ✓
+        </div>
+        <div className="mt-4 rounded border border-stone-800 bg-stone-900 px-3 py-2 text-stone-300">
+          findings.md + gateway-patch.diff attached
         </div>
       </div>
     </VignetteChrome>
@@ -509,20 +600,26 @@ export function SecurityAuditVisual() {
 
 export function PrCommsVisual() {
   return (
-    <VignetteChrome label="trooper · series A comms">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[9px] font-bold uppercase text-fuchsia-800 bg-fuchsia-50 px-2 py-0.5 rounded-full border border-fuchsia-200">Embargo</span>
+    <VignetteChrome label="comms">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <span className="rounded-full border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-[9px] font-bold uppercase text-fuchsia-800">
+          Embargo
+        </span>
+        <h4 className="mt-2 text-[14px] font-semibold text-stone-900">Series A announcement pack</h4>
+      </div>
+      <div className="grid flex-1 grid-cols-1 sm:grid-cols-2">
+        <div className="border-b border-stone-100 p-3 sm:border-b-0 sm:border-r">
+          <AppDocPanel filename="pr/announcement.md" badge="draft">
+            <p className="mb-2 text-neutral-500"># Press release</p>
+            <p className="mb-1">- Release drafted</p>
+            <p className="mb-1">- Media list tier A/B updated</p>
+            <p className="text-amber-700">- CEO quote · pending approval</p>
+          </AppDocPanel>
         </div>
-        {['Press release drafted', 'Media list tier A/B updated', 'CEO quote · pending approval'].map((line, i) => (
-          <div key={line} className="flex items-start gap-3 border border-stone-100 rounded-lg px-3 py-2.5 mb-2">
-            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${i < 2 ? 'bg-trooper-50 text-trooper' : 'bg-amber-100 text-amber-800'}`}>{i + 1}</span>
-            <span className="text-[11px] text-stone-700 leading-relaxed">{line}</span>
-          </div>
-        ))}
-        <div className="mt-2 flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50 px-3 py-2">
-          <FileText size={14} className="text-stone-400" />
-          <span className="text-[10px] font-medium text-stone-600">pr/announcement-checklist.md</span>
+        <div className="bg-stone-950 p-3 font-mono text-[12px]">
+          <ToolLine label="write_file" detail="press-release.md" done />
+          <ToolLine label="sheets_update" detail="media list" done />
+          <ToolLine label="approve" detail="CEO quote" />
         </div>
       </div>
     </VignetteChrome>
@@ -531,25 +628,29 @@ export function PrCommsVisual() {
 
 export function GrowthExperimentsVisual() {
   return (
-    <VignetteChrome label="trooper · A/B experiment">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[9px] font-bold uppercase text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Winner: Variant B</span>
-          <span className="text-[10px] text-stone-400">+38% signup lift</span>
+    <VignetteChrome label="experiment">
+      <div className="border-b border-stone-100 px-3.5 py-2.5">
+        <div className="flex items-center gap-2">
+          <span className="rounded border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">
+            Winner: Variant B
+          </span>
+          <span className="text-[12px] text-stone-500">+38% signup lift</span>
         </div>
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="rounded-lg border border-stone-200 p-3">
-            <div className="text-[9px] text-stone-500">Control</div>
-            <div className="text-2xl font-semibold tabular-nums text-stone-900">4.2%</div>
-          </div>
-          <div className="rounded-lg border border-trooper bg-trooper-50 p-3">
-            <div className="text-[9px] text-trooper-700">Variant B</div>
-            <div className="text-2xl font-semibold tabular-nums text-trooper-900">5.8%</div>
-          </div>
+      </div>
+      <div className="grid grid-cols-2 divide-x divide-stone-100 border-b border-stone-100">
+        <div className="px-4 py-4">
+          <div className="text-[11px] text-stone-500">Control</div>
+          <div className="text-3xl font-semibold tabular-nums text-stone-900">4.2%</div>
         </div>
-        <ToolRow label="sheets_read" detail="funnel metrics pulled" done />
-        <ToolRow label="notion_write" detail="experiment-doc.md" done />
-        <ToolRow label="write_file" detail="rollout-checklist.md" />
+        <div className="bg-trooper-50 px-4 py-4">
+          <div className="text-[11px] text-trooper-700">Variant B</div>
+          <div className="text-3xl font-semibold tabular-nums text-trooper-900">5.8%</div>
+        </div>
+      </div>
+      <div className="flex-1 bg-stone-950 p-3 font-mono text-[12px]">
+        <ToolLine label="sheets_read" detail="funnel metrics" done />
+        <ToolLine label="notion_write" detail="experiment-doc.md" done />
+        <ToolLine label="write_file" detail="rollout-checklist.md" />
       </div>
     </VignetteChrome>
   );
@@ -557,14 +658,39 @@ export function GrowthExperimentsVisual() {
 
 export function BrowserSerpVisual() {
   return (
-    <VignetteChrome label="trooper · browser_navigate">
-      <div className="p-3 min-h-[280px] bg-[#FAF9F6]">
-        <div className="rounded-lg border border-stone-200 overflow-hidden mb-3 h-32">
-          <MiniBrowserTile url="google.com/search?q=..." src={undefined} />
+    <VignetteChrome label="browser" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
+        <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+          Browser on demand
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Live session · SERP capture</h4>
+      </div>
+      <div className="flex flex-1 flex-col gap-0 p-3">
+        <div className="overflow-hidden rounded-lg shadow-md ring-1 ring-black/25">
+          <DemoBrowserFrame
+            addressUrl="google.com/search?q=ai+ops+platform+pricing"
+            faviconDomain="google.com"
+            title="SERP"
+            compact
+          >
+            <div className="h-[140px] space-y-2 overflow-hidden bg-white p-3 text-[12px]">
+              <p className="text-[11px] text-stone-400">About 2,400,000 results</p>
+              <div>
+                <p className="text-[13px] font-medium text-blue-700">Competitor A — Pricing</p>
+                <p className="text-[11px] text-stone-500">$89/seat · multi-agent: partial</p>
+              </div>
+              <div>
+                <p className="text-[13px] font-medium text-blue-700">Trooper — BYOA harness</p>
+                <p className="text-[11px] text-stone-500">Your keys · traced tickets</p>
+              </div>
+            </div>
+          </DemoBrowserFrame>
         </div>
-        <ToolRow label="browser_navigate" detail="SERP snapshot captured" done />
-        <ToolRow label="browser_snapshot" detail="competitor pricing extracted" done />
-        <ToolRow label="write_file" detail="research-notes.md" />
+        <div className="mt-2 rounded-lg bg-stone-950 px-3 py-2.5 font-mono text-[12px]">
+          <ToolLine label="browser_navigate" detail="SERP snapshot captured" done />
+          <ToolLine label="browser_snapshot" detail="competitor pricing extracted" done />
+          <ToolLine label="write_file" detail="research-notes.md" />
+        </div>
       </div>
     </VignetteChrome>
   );
@@ -572,23 +698,33 @@ export function BrowserSerpVisual() {
 
 export function LaunchOpsVisual() {
   return (
-    <VignetteChrome label="trooper · org launch">
-      <div className="p-4 min-h-[280px] bg-white">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[9px] font-bold uppercase text-pink-800 bg-pink-50 px-2 py-0.5 rounded-full border border-pink-200">Multi-agent</span>
-          <span className="text-[10px] text-stone-400">Wonder PH launch</span>
-        </div>
-        <div className="grid grid-cols-3 gap-2 mb-3">
+    <VignetteChrome label="launch" className="bg-[#b9b4ab]">
+      <div className="border-b border-black/10 bg-white px-3.5 py-2.5">
+        <span className="rounded-full border border-pink-200 bg-pink-50 px-2 py-0.5 text-[9px] font-bold uppercase text-pink-800">
+          Multi-agent
+        </span>
+        <h4 className="mt-1 text-[14px] font-semibold text-stone-900">Wonder PH launch</h4>
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-3">
+        <div className="grid grid-cols-3 gap-2">
           {['Product Hunt', 'Press wire', 'Social cut'].map((lane) => (
-            <div key={lane} className="rounded-lg border border-stone-100 px-2 py-2 text-center">
-              <div className="text-[10px] font-medium text-stone-800">{lane}</div>
-              <div className="text-[9px] text-trooper mt-1">In progress</div>
+            <div key={lane} className="rounded-lg bg-white px-2 py-2.5 text-center ring-1 ring-black/10">
+              <div className="text-[12px] font-medium text-stone-800">{lane}</div>
+              <div className="mt-1 text-[11px] text-trooper">In progress</div>
             </div>
           ))}
         </div>
-        <ToolRow label="producthunt_submit" detail="launch listing queued" done />
-        <ToolRow label="browser_navigate" detail="PH preview captured" done />
-        <ToolRow label="slack_post" detail="#launch coordination" />
+        <div className="overflow-hidden rounded-lg bg-stone-950 ring-1 ring-black/30">
+          <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-3 py-1.5">
+            <Laptop size={14} className="text-stone-400" />
+            <span className="text-[12px] font-medium text-stone-100">Browser + desktop attached</span>
+          </div>
+          <div className="space-y-1 px-3 py-2.5 font-mono text-[12px]">
+            <ToolLine label="producthunt_submit" detail="listing queued" done />
+            <ToolLine label="browser_navigate" detail="PH preview captured" done />
+            <ToolLine label="slack_post" detail="#launch coordination" />
+          </div>
+        </div>
       </div>
     </VignetteChrome>
   );

@@ -5,6 +5,7 @@ export type MarketingVisualId =
   | 'coding-board'
   | 'coding-memory'
   | 'coding-canvas'
+  | 'coding-runtime'
   | 'marketing-harness'
   | 'marketing-board'
   | 'marketing-memory'
@@ -69,9 +70,14 @@ const VISUAL_PROMPTS: Record<
     window: 'Coding — Memory',
   },
   'coding-canvas': {
-    ask: 'trooper, lay out this PR for review',
-    reply: 'review pack ready',
-    window: 'Coding — Canvas',
+    ask: 'trooper, lay out this PR for merge review',
+    reply: 'diffs, CI, and summary ready',
+    window: 'Coding — Merge pack',
+  },
+  'coding-runtime': {
+    ask: 'trooper, open a browser and wake Studio-Mac',
+    reply: 'browser live — desktop seat attached',
+    window: 'Coding — Runtimes',
   },
   'marketing-harness': {
     ask: 'trooper, ship this campaign end to end',
@@ -214,12 +220,12 @@ export function canvasFeatureSection(eyebrowNumber: string): MarketingFeatureSec
     eyebrowNumber,
     tag: 'PACK REVIEW',
     ask: 'trooper, show me everything for review',
-    reply: 'pack ready — side by side',
+    reply: 'pack ready — brief, preview, tools',
     window: 'Review — Deliverables',
     title: 'See the deliverables',
     titleHighlight: 'before you approve.',
     intro:
-      'Previews, briefs, and copy sit together so you review the set once — instead of chasing files across tools.',
+      'Brief, live preview, and tool trace sit together so you review the set once — instead of chasing files across tools.',
     visual: 'canvas-desktop',
   };
 }
@@ -232,10 +238,10 @@ export function codingCanvasFeatureSection(eyebrowNumber: string): MarketingFeat
     ask: 'trooper, lay out this PR for merge review',
     reply: 'diffs, CI, and summary ready',
     window: 'Coding — Merge pack',
-    title: 'Code review in one place,',
-    titleHighlight: 'not six browser tabs.',
+    title: 'Diffs and CI together,',
+    titleHighlight: 'ready to approve.',
     intro:
-      'Diffs, test output, and the PR write-up sit together so you can approve the change without reconstructing context yourself.',
+      'Unified diff and integration terminal sit side by side so you can approve the change without reconstructing context yourself.',
     visual: 'coding-canvas',
   };
 }

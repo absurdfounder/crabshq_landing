@@ -105,7 +105,18 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
         'Triage and rollback steps stay logged on the mission so the team can see what ran and what still needs a human.',
       visual: 'engineering-incident',
     },
-    canvasFeatureSection('06'),
+    {
+      eyebrow: 'On demand',
+      eyebrowNumber: '06',
+      ask: 'trooper, open a browser and wake Studio-Mac for this PR',
+      reply: 'browser live — desktop seat attached',
+      window: 'GitHub — Runtimes',
+      title: 'Browser and desktop,',
+      titleHighlight: 'on the same PR.',
+      intro:
+        'Check Actions in a live browser or repro on an enrolled Mac — attached to the ticket, not lost in another tool.',
+      visual: 'coding-runtime',
+    },
   ],
   'task-execution': [
     {
@@ -222,7 +233,18 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
         'Landing and pricing captures stay attached to the mission so GTM and product can revisit the evidence later.',
       visual: 'launch-ops',
     },
-    canvasFeatureSection('06'),
+    {
+      eyebrow: 'On demand',
+      eyebrowNumber: '06',
+      ask: 'trooper, keep the browser session on this ticket',
+      reply: 'session live — snapshots attached',
+      window: 'Browser — On demand',
+      title: 'Browser on demand,',
+      titleHighlight: 'traced to the mission.',
+      intro:
+        'Live sessions, SERP captures, and page snapshots stay on the ticket so research is evidence — not a lost tab.',
+      visual: 'browser-serp',
+    },
   ],
   'system-access': [
     {
@@ -364,7 +386,7 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
       titleHighlight: 'copy-paste chaos.',
       intro:
         'Diffs, logs, and write-ups stay visible together so the next person — human or agent — picks up cleanly.',
-      visual: 'coding-board',
+      visual: 'coding-canvas',
     },
     {
       eyebrow: 'Launch',
@@ -378,7 +400,18 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
         'Press, social, and product streams run as related subtasks with shared memory — one org, one timeline.',
       visual: 'launch-ops',
     },
-    canvasFeatureSection('06'),
+    {
+      eyebrow: 'On demand',
+      eyebrowNumber: '06',
+      ask: 'trooper, attach browser and desktop to this mission',
+      reply: 'browser live — Studio-Mac seat attached',
+      window: 'Agents — Runtimes',
+      title: 'Browser and desktop,',
+      titleHighlight: 'shared across agents.',
+      intro:
+        'Parallel agents share the same on-demand browser and enrolled machines — one mission floor, not three disconnected tools.',
+      visual: 'coding-runtime',
+    },
   ],
   'openclaw-powered': [
     {
