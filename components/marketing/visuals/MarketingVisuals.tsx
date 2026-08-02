@@ -7,6 +7,7 @@ import { DemoFavicon } from '@trooper/demo';
 import { DemoBrowserFrame } from '@trooper/demo';
 import { demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
 import { VignetteChrome, TrooperMark } from './shared';
+import { AppDocPanel, AppTerminalPanel } from './productSurfaces';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
@@ -72,56 +73,53 @@ function MiniCarouselTile() {
   );
 }
 
+/** Generic pack review — ticket chrome + doc + preview + terminal (no abstract checklists). */
 export function CanvasBoardVisual() {
-  const items = [
-    { title: 'Brief', detail: 'Mission context loaded', status: 'done' as const },
-    { title: 'Draft', detail: 'First pass ready', status: 'done' as const },
-    { title: 'Preview', detail: 'Open for review', status: 'ready' as const },
-    { title: 'Approve', detail: 'Waiting on you', status: 'pending' as const },
-  ];
-
   return (
-    <VignetteChrome label="Review · deliverables">
-      <div className="border-b border-stone-100 bg-white px-4 py-3">
+    <VignetteChrome label="Review · mission pack">
+      <div className="border-b border-stone-100 bg-white px-3 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
-            Deliverables
+            Ticket · deliverables
           </span>
           <span className="rounded border border-trooper-200 bg-trooper-50 px-2 py-0.5 text-[10px] font-semibold text-trooper-800">
             Ready for review
           </span>
         </div>
         <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
-          See the set before you approve
+          Draft, preview, and approve — one pack
         </h4>
       </div>
-      <div className="min-h-[220px] space-y-2 bg-white p-4">
-        {items.map((item) => (
-          <div
-            key={item.title}
-            className="flex items-center gap-3 rounded-lg border border-stone-100 px-3.5 py-3"
-          >
-            <div
-              className={`h-2.5 w-2.5 shrink-0 rounded-full ${
-                item.status === 'done'
-                  ? 'bg-trooper'
-                  : item.status === 'ready'
-                    ? 'bg-amber-500'
-                    : 'bg-stone-300'
-              }`}
+
+      <div className="grid min-h-[240px] grid-cols-1 gap-3 bg-[#FAF9F6] p-3 sm:grid-cols-2">
+        <AppDocPanel filename="brief.md" badge="draft ✓">
+          <p className="mb-2 text-neutral-500"># Mission brief</p>
+          <p className="mb-1">- Context loaded from org memory</p>
+          <p className="mb-1">- First draft attached to ticket</p>
+          <p className="mb-3">- Preview open for staff review</p>
+          <p className="text-amber-700">Status: held for approve</p>
+        </AppDocPanel>
+        <div className="flex flex-col gap-3">
+          <div className="overflow-hidden rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] ring-1 ring-neutral-200/55">
+            <DemoBrowserFrame
+              src={assetPath('marketing', 'campaign.html')}
+              addressUrl="preview.trooper.so"
+              faviconDomain="trooper.so"
+              title="Preview"
+              compact
             />
-            <div className="min-w-0 flex-1">
-              <div className="text-[13px] font-semibold text-stone-900">{item.title}</div>
-              <div className="truncate text-[11px] text-stone-500">{item.detail}</div>
-            </div>
-            <span className="shrink-0 text-[11px] font-medium text-stone-400">
-              {item.status === 'done' ? 'Done' : item.status === 'ready' ? 'Ready' : 'Held'}
-            </span>
           </div>
-        ))}
+          <AppTerminalPanel title="trace · tools">
+            <p className="text-stone-500">$ mission status</p>
+            <p className="mt-1 text-green-400">✓ brief.md written</p>
+            <p className="text-green-400">✓ preview attached</p>
+            <p className="mt-1 text-amber-400">◯ approve — waiting on you ▌</p>
+          </AppTerminalPanel>
+        </div>
       </div>
-      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-4 py-2.5 text-[11px]">
-        <span className="text-stone-500">4 deliverables</span>
+
+      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3 py-2.5 text-[11px]">
+        <span className="text-stone-500">Doc · preview · tool trace</span>
         <span className="font-medium text-amber-700">Approve to continue</span>
       </div>
     </VignetteChrome>
