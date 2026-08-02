@@ -18,26 +18,31 @@ const TRUST = [
 ] as const;
 
 /**
- * Centered reseller hero — brand-forward headline, no duplicate logo,
- * no side panel. Atmosphere from the same dither band as other Trooper heroes.
+ * Hero stays inside the page rail. Dither is clipped to that frame — not a
+ * full-bleed wallpaper — and copy sits on a frosted panel so it stays readable.
  */
 export default function ResellersHero() {
   return (
-    <section className="relative overflow-hidden border-b border-[var(--color-line)]">
-      <PixelDitherGradient variant="hero" className="opacity-90" />
-      <div className="relative z-10">
-        <div className="rail page-hero-padding pb-16 text-center sm:pb-20 lg:pb-24">
+    <section className="site-header-clear bg-canvas">
+      <div className="rail relative overflow-hidden border-b border-[var(--color-line)]">
+        {/* Atmosphere clipped to the rail only */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <PixelDitherGradient variant="warm" className="opacity-70" />
+          <div className="absolute inset-0 bg-canvas/55" />
+        </div>
+
+        <div className="relative z-10 px-0 py-12 sm:py-16 lg:py-20">
           <motion.div
-            className="mx-auto max-w-3xl"
+            className="mx-auto max-w-3xl rounded-2xl bg-white/75 px-6 py-10 text-center backdrop-blur-xl sm:px-10 sm:py-12"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease }}
+            transition={{ duration: 0.55, ease }}
           >
-            <p className="kicker mb-4">Partner with Trooper</p>
-            <h1 className="text-balance font-display text-4xl leading-[1.05] tracking-tight text-neutral-800 sm:text-5xl md:text-6xl lg:text-[4rem]">
+            <p className="kicker mb-3">Partner with Trooper</p>
+            <h1 className="text-balance font-display text-4xl leading-[1.05] tracking-tight text-neutral-800 sm:text-5xl md:text-[3.25rem]">
               Trooper Reseller Program
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-neutral-700 sm:text-lg md:text-xl">
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-neutral-600 sm:text-lg">
               Build custom AI front offices for local businesses on Mission Control.
               Charge for the layer you own — and keep the recurring revenue.
             </p>
@@ -63,7 +68,7 @@ export default function ResellersHero() {
               aria-label="Program highlights"
             >
               {TRUST.map((item) => (
-                <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-700">
+                <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-600">
                   <FernCircleCheckIcon className="h-3.5 w-3.5 shrink-0 text-fern-600" />
                   <span>{item}</span>
                 </li>

@@ -18,6 +18,7 @@ import SectionShell from '@/components/ui/SectionShell';
 import DarkSplitSection from '@/components/ui/DarkSplitSection';
 import PixelButton from '@/components/ui/PixelButton';
 import type { IndustryCard } from '@/lib/industryContent';
+import ResellersOldStack from './ResellersOldStack';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -282,24 +283,18 @@ export default function ResellersStory() {
   return (
     <>
       <DarkSplitSection>
-        <div className="py-12 sm:py-20">
+        <div className="py-12 sm:py-16">
           <FadeIn>
-            <p className="kicker-dark">The opportunity</p>
-            <h2 className="h2-section-dark mt-2">
-              Ten clients compound.
-              <br />
-              Twenty gets you close to $10k / month.
+            <p className="kicker-dark">The economics</p>
+            <h2 className="h2-section-dark mt-2 max-w-2xl">
+              Recurring revenue from every client you set up.
             </h2>
-            <p className="lede-dark">
-              Package Mission Control for a local business. Charge $200–$500 / month to run it. For
-              the owner, it’s often cheaper than hiring another employee.
-            </p>
           </FadeIn>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
             {[
-              { value: '$200–$500', label: 'Typical monthly fee per client' },
-              { value: '10 clients', label: 'Where recurring revenue starts compounding' },
-              { value: '~$10k / mo', label: 'Around 20 clients at mid-range pricing' },
+              { value: '$200–$500', label: 'What you charge per client / month' },
+              { value: '10 clients', label: 'A $2k–$5k / month practice' },
+              { value: '~$10k / mo', label: 'Around 20 clients at mid-range' },
             ].map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 0.06}>
                 <div className="rounded-2xl bg-white/[0.04] p-6 ring-1 ring-white/10 sm:p-7">
@@ -313,6 +308,8 @@ export default function ResellersStory() {
           </div>
         </div>
       </DarkSplitSection>
+
+      <ResellersOldStack />
 
       <SectionShell rhythm eyebrow="How it works" bgClass="bg-white">
         <ResellerSteps />

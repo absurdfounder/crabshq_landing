@@ -42,7 +42,7 @@ const INDUSTRY_CATALOG: IndustryDef[] = [
     name: 'Pest Control',
     audience: 'pest control businesses',
     coverImage:
-      'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1670989292166-8b20b9530438?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'hvac',
@@ -77,7 +77,7 @@ const INDUSTRY_CATALOG: IndustryDef[] = [
     name: 'Garage Door',
     audience: 'garage door businesses',
     coverImage:
-      'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1692133188474-8c5591e6a6a8?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'construction',
@@ -154,21 +154,21 @@ const INDUSTRY_CATALOG: IndustryDef[] = [
     name: 'Pressure Washing',
     audience: 'pressure washing businesses',
     coverImage:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1581883579507-019c44b711cb?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'window-cleaners',
     name: 'Window Cleaning',
     audience: 'window cleaning businesses',
     coverImage:
-      'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1769788161278-8dc624a2d537?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'junk-removal',
     name: 'Junk Removal',
     audience: 'junk removal businesses',
     coverImage:
-      'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1707960186132-cee9548de238?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'movers',
@@ -196,7 +196,7 @@ const INDUSTRY_CATALOG: IndustryDef[] = [
     name: 'Restoration',
     audience: 'restoration contractors',
     coverImage:
-      'https://images.unsplash.com/photo-1581852017103-68ac65514cf7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=1200&q=80',
   },
   {
     slug: 'energy',

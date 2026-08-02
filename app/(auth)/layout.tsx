@@ -15,7 +15,12 @@ function isCatalogPage(pathname: string) {
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const hideNewsletter = pathname === '/wonder-auth' || isCatalogPage(pathname)
+  // Resellers already ends with its own apply CTA — stacking "Try Trooper now"
+  // under it reads as a second footer.
+  const hideNewsletter =
+    pathname === '/wonder-auth' ||
+    pathname === '/resellers' ||
+    isCatalogPage(pathname)
 
   return (
     <>
