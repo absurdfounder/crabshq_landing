@@ -7,15 +7,19 @@ import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { UseCasePageContent } from '@/lib/useCaseContent';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
+import OldStackComparison from '@/components/marketing/OldStackComparison';
+import type { OldStackContent } from '@/lib/oldStackContent';
 
 export default function UseCaseSubpageLayout({
   content,
   hubHref = '/use-cases',
   hubLabel = 'All use cases',
+  oldStack,
 }: {
   content: UseCasePageContent;
   hubHref?: string;
   hubLabel?: string;
+  oldStack?: OldStackContent;
 }) {
   return (
     <>
@@ -90,6 +94,8 @@ export default function UseCaseSubpageLayout({
           </div>
         </section>
       </SectionShell>
+
+      {oldStack ? <OldStackComparison content={oldStack} bgClass="bg-canvas" /> : null}
 
       <SectionShell eyebrow="How it works" eyebrowNumber="03" bgClass="bg-slate-50">
         <section className="py-12 md:py-20">

@@ -8,7 +8,9 @@ import Header from "@/components/ui/header";
 import SectionShell from "@/components/ui/SectionShell";
 import SimplePricing from "@/components/SimplePricing";
 import PricingCompareTable from "@/components/PricingCompareTable";
+import OldStackComparison from "@/components/marketing/OldStackComparison";
 import { formatUsd, PRICING_USD } from "@/lib/pricing";
+import { getPricingOldStack } from "@/lib/oldStackContent";
 
 // --- Exit Intent Popup ---
 interface ExitIntentPopupProps {
@@ -243,6 +245,8 @@ const Pricing: React.FC = () => {
             <SectionShell eyebrow="COMPARE PLANS" eyebrowNumber="02" bgClass="bg-canvas-warm">
                 <PricingCompareTable />
             </SectionShell>
+
+            <OldStackComparison content={getPricingOldStack()} bgClass="bg-white" />
 
             {/* The inner max-w-7xl was nested inside the shell's own padded
                 max-w-7xl, so it could never reach that width and sat inset

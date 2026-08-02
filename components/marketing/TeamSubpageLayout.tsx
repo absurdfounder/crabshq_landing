@@ -5,15 +5,18 @@ import MarketingFeatureSections from '@/components/marketing/MarketingFeatureSec
 import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSection';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
+import OldStackComparison from '@/components/marketing/OldStackComparison';
 import PixelButton from '@/components/ui/PixelButton';
 import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { TeamPageContent } from '@/lib/teamContent';
+import { getTeamOldStack } from '@/lib/oldStackContent';
 import { getCapabilitiesEyebrowNumber, getSubpageSectionOffset } from '@/lib/subpageSections';
 import { ArrowRight } from 'lucide-react';
 
 export default function TeamSubpageLayout({ content }: { content: TeamPageContent }) {
   const sectionOffset = getSubpageSectionOffset(content);
   const capabilitiesNumber = getCapabilitiesEyebrowNumber(sectionOffset);
+  const oldStack = getTeamOldStack(content.slug);
   return (
     <>
       <div className="bg-white">
@@ -92,6 +95,8 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
           </div>
         </section>
       </SectionShell>
+
+      {oldStack ? <OldStackComparison content={oldStack} bgClass="bg-canvas" /> : null}
 
       {content.playbookWorkflow && (
         <PlaybookWorkflowSection content={content.playbookWorkflow} eyebrowNumber="03" />
