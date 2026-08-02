@@ -95,12 +95,12 @@ const teamPages: Record<string, TeamPageContent> = {
         eyebrow: 'Harness',
         eyebrowNumber: '03',
         ask: 'trooper, run Claude Code and Codex on this ticket',
-        reply: 'on it — both agents working in parallel',
+        reply: 'on it — both CLIs live, plus browser and desktop',
         window: 'Coding — Multi-agent',
         title: 'Your coding agents,',
         titleHighlight: 'one shared harness.',
         intro:
-          'Bring Claude Code, Codex, and your own agents onto the same ticket. They work in parallel with live progress — you keep the keys and the merge decision.',
+          'Claude Code and Codex open as real CLI windows on the same ticket — with browser on demand and desktop on demand when the job needs a live page or a real machine.',
         visual: 'coding-harness',
       },
       {
@@ -128,15 +128,15 @@ const teamPages: Record<string, TeamPageContent> = {
         visual: 'coding-board',
       },
       {
-        eyebrow: 'Merge pack',
+        eyebrow: 'On demand',
         eyebrowNumber: '06',
-        ask: 'trooper, lay out this PR for merge review',
-        reply: 'diffs, CI, and summary ready',
-        window: 'Coding — Merge pack',
-        title: 'Code review in one place,',
-        titleHighlight: 'not six browser tabs.',
+        ask: 'trooper, open a browser and wake Studio-Mac for this ticket',
+        reply: 'browser session live — desktop seat attached',
+        window: 'Coding — Runtimes',
+        title: 'Browser and desktop,',
+        titleHighlight: 'on demand.',
         intro:
-          'Changes, test results, and the PR summary sit together so you can approve the change without reconstructing context yourself.',
+          'Agents do not stop at chat. Spin up a live browser to check CI and PRs, or wake an enrolled Mac when the work needs a real machine — same ticket, same harness.',
         visual: 'coding-canvas',
       },
     ],
@@ -147,17 +147,17 @@ const teamPages: Record<string, TeamPageContent> = {
     overviewTitle: 'Multi-agent coding ops',
     overviewParagraphs: [
       'Trooper does not resell model access. You bring Claude, OpenAI, or any provider subscription — we bring the harness: routing, permissions, logs, and shared memory across every agent on your roster.',
-      'Claude Code hardens a parser, Codex dedupes ETL rows, and your in-house agent drafts release notes — all in parallel, all on one board.',
+      'Claude Code and Codex open as real CLI sessions on one ticket. When the job needs a live page or a real machine, browser on demand and desktop on demand attach to the same mission.',
       'Every edit, test run, commit, and PR open is traced in the ticket thread. Senior engineers approve merges; agents handle the grind.',
     ],
     benefits: [
       {
         title: 'Multi-agent harness',
-        description: 'Run Claude Code, Codex, and custom agents side-by-side — each on its own task with live diffs and activity logs.',
+        description: 'Run Claude Code, Codex, and custom agents as full CLI sessions on one ticket — live tool traces, not vague status dots.',
       },
       {
-        title: 'Unified task board',
-        description: 'In progress, backlog, and done — one board for every coding agent. Pick the right soldier for the job, not the right browser tab.',
+        title: 'Browser & desktop on demand',
+        description: 'Spin up a live browser for PRs and CI, or wake an enrolled Mac when the work needs a real machine — same ticket.',
       },
       {
         title: 'BYOA subscriptions',

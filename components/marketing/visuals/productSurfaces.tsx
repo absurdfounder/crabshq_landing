@@ -36,7 +36,7 @@ export function AcpToolRow({ label, detail, done, running }: AcpToolLine) {
       ) : (
         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full border border-stone-400" />
       )}
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 break-words">
         <span className="font-semibold text-stone-200">{label}</span>{' '}
         <span className="text-stone-400">{detail}</span>
         {running ? <span className="ml-0.5 inline-block animate-pulse text-amber-400">▌</span> : null}
@@ -46,8 +46,54 @@ export function AcpToolRow({ label, detail, done, running }: AcpToolLine) {
 }
 
 /**
- * One ACP coding CLI unit — mirrors Trooper AcpSessionPanel session card chrome
- * with a dark terminal body for tool traces.
+ * Full OS-style ACP CLI window — title bar shows the full provider name (no
+ * cramped column truncation). Use for harness floors, not 3-up grids.
+ */
+export function AcpCliWindow({
+  provider,
+  status = 'working',
+  cwd,
+  lines,
+  className = '',
+}: {
+  provider: string;
+  status?: keyof typeof ACP_STATUS | string;
+  cwd: string;
+  lines: ReactNode;
+  className?: string;
+}) {
+  const statusClass = ACP_STATUS[status] ?? ACP_STATUS.ready;
+
+  return (
+    <div
+      className={`overflow-hidden rounded-lg bg-stone-950 shadow-[0_12px_28px_-10px_rgba(0,0,0,0.45)] ring-1 ring-black/40 ${className}`}
+    >
+      <div className="flex items-center gap-2 border-b border-stone-800 bg-[#2a2a2c] px-3 py-2">
+        <span className="flex shrink-0 gap-1.5" aria-hidden>
+          <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="size-2.5 rounded-full bg-[#febc2e]" />
+          <span className="size-2.5 rounded-full bg-[#28c840]" />
+        </span>
+        <ProviderChip provider={provider} size={16} />
+        <span className="min-w-0 flex-1 text-[12px] font-medium text-stone-100">
+          {provider}
+        </span>
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium capitalize ${statusClass}`}>
+          {status}
+        </span>
+      </div>
+      <div className="border-b border-stone-800/80 bg-stone-900 px-3 py-1.5 font-mono text-[11px] text-stone-400">
+        {cwd}
+      </div>
+      <div className="space-y-1 px-3 py-2.5 font-mono text-[12px] leading-relaxed text-stone-300">
+        {lines}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Compact ACP lane for denser grids (marketing). Prefer AcpCliWindow on coding.
  */
 export function AcpCliPane({
   provider,
@@ -77,18 +123,18 @@ export function AcpCliPane({
       <div className="flex items-center gap-2 border-b border-stone-100 bg-white px-2.5 py-2">
         <ProviderChip provider={provider} size={18} />
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <span className="truncate text-[12px] font-semibold text-stone-900">{provider}</span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[12px] font-semibold text-stone-900">{provider}</span>
             <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-medium capitalize ${statusClass}`}>
               {status}
             </span>
           </div>
-          <div className="truncate font-mono text-[10px] text-stone-400">{branch}</div>
+          <div className="font-mono text-[10px] leading-snug text-stone-400">{branch}</div>
         </div>
         <span className="shrink-0 font-mono text-[10px] font-semibold text-trooper-700">{diff}</span>
       </div>
       <div className="border-b border-stone-800/40 bg-stone-950 px-2.5 py-1.5">
-        <div className="truncate font-mono text-[10px] text-stone-400">{file}</div>
+        <div className="font-mono text-[10px] leading-snug text-stone-400">{file}</div>
       </div>
       <div className="flex-1 space-y-0.5 bg-stone-950 px-2.5 py-2">
         {tools.map((t) => (
