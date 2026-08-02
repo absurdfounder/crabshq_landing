@@ -7,7 +7,6 @@ import { DemoFavicon } from '@trooper/demo';
 import { DemoBrowserFrame } from '@trooper/demo';
 import { demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
 import { VignetteChrome, TrooperMark } from './shared';
-import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
@@ -56,36 +55,6 @@ function MiniBrowserTile({ url, src, faviconDomain }: { url: string; src?: strin
   );
 }
 
-function MiniMarkdownBrief() {
-  const lines = [
-    { t: 'heading', text: 'Q2 Campaign Brief' },
-    { t: 'muted', text: 'Theme · parser reliability story' },
-    { t: 'body', text: 'Deliverables shipped' },
-    { t: 'bullet', text: '· Pillar landing page (live preview)' },
-    { t: 'bullet', text: '· LinkedIn carousel — 3 slides' },
-    { t: 'bullet', text: '· 30s social video cut + transcript' },
-    { t: 'status', text: 'Awaiting brand review' },
-  ];
-  return (
-    <div className="min-h-full overflow-y-auto bg-white p-2.5 text-[8px] leading-relaxed">
-      {lines.map((line, i) => (
-        <div
-          key={i}
-          className={
-            line.t === 'heading' ? 'mb-1 text-[9px] font-semibold text-stone-800'
-              : line.t === 'muted' ? 'mb-1.5 text-stone-400'
-                : line.t === 'bullet' ? 'text-stone-600'
-                  : line.t === 'status' ? 'mt-2 font-medium text-[#3f6b00]'
-                    : 'text-stone-600'
-          }
-        >
-          {line.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function MiniCarouselTile() {
   return (
     <div className="relative h-full overflow-hidden bg-gradient-to-br from-stone-100 to-white">
@@ -103,74 +72,59 @@ function MiniCarouselTile() {
   );
 }
 
-function MiniVideoTile() {
-  return (
-    <div className="relative h-full overflow-hidden bg-stone-900">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={DEMO_MEDIA.socialVideoPoster}
-        alt="Social video poster"
-        className="absolute inset-0 h-full w-full object-cover opacity-90"
-      />
-      <div className="absolute inset-0 bg-stone-950/20" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-white/40 bg-white/15 backdrop-blur-sm">
-          <Play size={11} className="ml-0.5 text-white" fill="white" />
-        </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-stone-950/60 px-2 py-1">
-        <span className="font-mono text-[6px] text-stone-300">00:00 / 00:30</span>
-        <span className="text-[6px] font-medium text-stone-400">social-cut.mp4</span>
-      </div>
-    </div>
-  );
-}
-
 export function CanvasBoardVisual() {
-  const campaignSrc = assetPath('marketing', 'campaign.html');
+  const items = [
+    { title: 'Brief', detail: 'Mission context loaded', status: 'done' as const },
+    { title: 'Draft', detail: 'First pass ready', status: 'done' as const },
+    { title: 'Preview', detail: 'Open for review', status: 'ready' as const },
+    { title: 'Approve', detail: 'Waiting on you', status: 'pending' as const },
+  ];
+
   return (
-    <CanvasDesktopVisual
-      animated
-      windows={[
-        {
-          id: 'brief',
-          title: 'content/q2-campaign-brief.md',
-          x: 22,
-          y: 16,
-          w: 182,
-          h: 148,
-          body: <MiniMarkdownBrief />,
-        },
-        {
-          id: 'preview',
-          title: 'landing/campaign.html',
-          x: 148,
-          y: 28,
-          w: 224,
-          h: 142,
-          body: <MiniBrowserTile url="northstar.io/q2" src={campaignSrc} faviconDomain="northstar.io" />,
-        },
-        {
-          id: 'asset',
-          title: 'creative/linkedin-carousel.png',
-          x: 52,
-          y: 132,
-          w: 178,
-          h: 124,
-          body: <MiniCarouselTile />,
-        },
-        {
-          id: 'video',
-          title: 'video/social-cut.mp4',
-          x: 196,
-          y: 108,
-          w: 192,
-          h: 128,
-          accent: true,
-          body: <MiniVideoTile />,
-        },
-      ]}
-    />
+    <VignetteChrome label="Review · deliverables">
+      <div className="border-b border-stone-100 bg-white px-4 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+            Deliverables
+          </span>
+          <span className="rounded border border-trooper-200 bg-trooper-50 px-2 py-0.5 text-[10px] font-semibold text-trooper-800">
+            Ready for review
+          </span>
+        </div>
+        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+          See the set before you approve
+        </h4>
+      </div>
+      <div className="min-h-[220px] space-y-2 bg-white p-4">
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="flex items-center gap-3 rounded-lg border border-stone-100 px-3.5 py-3"
+          >
+            <div
+              className={`h-2.5 w-2.5 shrink-0 rounded-full ${
+                item.status === 'done'
+                  ? 'bg-trooper'
+                  : item.status === 'ready'
+                    ? 'bg-amber-500'
+                    : 'bg-stone-300'
+              }`}
+            />
+            <div className="min-w-0 flex-1">
+              <div className="text-[13px] font-semibold text-stone-900">{item.title}</div>
+              <div className="truncate text-[11px] text-stone-500">{item.detail}</div>
+            </div>
+            <span className="shrink-0 text-[11px] font-medium text-stone-400">
+              {item.status === 'done' ? 'Done' : item.status === 'ready' ? 'Ready' : 'Held'}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-4 py-2.5 text-[11px]">
+        <span className="text-stone-500">4 deliverables</span>
+        <span className="font-medium text-amber-700">Approve to continue</span>
+      </div>
+    </VignetteChrome>
   );
 }
 

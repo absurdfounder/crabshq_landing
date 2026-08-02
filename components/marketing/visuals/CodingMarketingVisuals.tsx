@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { DemoFavicon } from '@trooper/demo';
 import { VignetteChrome, ProviderChip } from './shared';
-import { CanvasDesktopVisual } from './CanvasDesktopVisual';
 
 function ToolRow({
   label, detail, done, running, icon,
@@ -29,120 +28,6 @@ function ToolRow({
       {icon}
       <span className="font-mono font-semibold text-stone-800">{label}</span>
       <span className="truncate text-stone-400">{detail}</span>
-    </div>
-  );
-}
-
-const PARSER_DIFF_LINES = [
-  { ln: 12, type: 'del' as const, text: '  const rows = raw.split(\'\\n\').map(line => line.trim());' },
-  { ln: 13, type: 'add' as const, text: '  const rows = raw.split(\'\\n\')' },
-  { ln: 14, type: 'add' as const, text: '    .map(line => line.trim())' },
-  { ln: 15, type: 'add' as const, text: '    .filter(Boolean);' },
-  { ln: 16, type: 'ctx' as const, text: '  return rows.map(parseRow).filter(Boolean);' },
-];
-
-const DEDUPE_DIFF_LINES = [
-  { ln: 44, type: 'add' as const, text: '    if (!row.id?.trim()) return false;' },
-  { ln: 45, type: 'ctx' as const, text: '    const key = `${row.id}:${row.batchId}`;' },
-  { ln: 46, type: 'ctx' as const, text: '    if (seen.has(key)) return false;' },
-];
-
-const CI_LOG_LINES = [
-  { text: '$ npm run test:integration', muted: true },
-  { text: '', muted: true },
-  { text: ' ✓ parser.integration.test.ts (8 tests) 2.1s', ok: true },
-  { text: ' ✓ etl/dedupe.integration.test.ts (5 tests) 1.4s', ok: true },
-  { text: '', muted: true },
-  { text: ' Test Files  2 passed (2)', ok: true },
-  { text: '      Tests  13 passed (13)', ok: true },
-  { text: '', muted: true },
-  { text: ' CI · green · ready for PR #418', highlight: true },
-];
-
-function DiffTile({ file, adds, dels, lines }: {
-  file: string;
-  adds: number;
-  dels: number;
-  lines: typeof PARSER_DIFF_LINES;
-}) {
-  return (
-    <div className="flex min-h-full flex-col bg-white text-[8px] leading-snug">
-      <div className="flex shrink-0 items-center gap-1 border-b border-stone-100 px-2 py-1.5 bg-stone-50">
-        <span className="font-mono font-semibold text-stone-700 truncate flex-1">{file}</span>
-        <span className="rounded bg-emerald-50 px-1 text-emerald-700 font-semibold">+{adds}</span>
-        <span className="rounded bg-red-50 px-1 text-red-600 font-semibold">−{dels}</span>
-      </div>
-      <div className="font-mono min-h-0 flex-1 overflow-y-auto px-0.5 py-1">
-        {lines.map((line) => (
-          <div
-            key={`${line.ln}-${line.text.slice(0, 12)}`}
-            className={
-              line.type === 'del' ? 'flex bg-red-50/60'
-                : line.type === 'add' ? 'flex bg-emerald-50/70'
-                  : 'flex'
-            }
-          >
-            <span className="w-5 shrink-0 text-right text-stone-400 px-0.5 tabular-nums">{line.ln}</span>
-            <span className={`w-3 text-center shrink-0 ${line.type === 'del' ? 'text-red-500' : line.type === 'add' ? 'text-emerald-600' : 'text-transparent'}`}>
-              {line.type === 'del' ? '−' : line.type === 'add' ? '+' : ' '}
-            </span>
-            <span className={`break-all ${line.type === 'del' ? 'text-red-800/80' : line.type === 'add' ? 'text-emerald-800' : 'text-stone-500'}`}>
-              {line.text}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CiLogTile() {
-  return (
-    <div className="min-h-full bg-stone-950 p-2 font-mono text-[7px] leading-relaxed">
-      {CI_LOG_LINES.map((line, i) => (
-        <div
-          key={i}
-          className={
-            line.highlight ? 'text-emerald-400 font-semibold mt-1'
-              : line.ok ? 'text-green-400'
-                : line.muted ? 'text-stone-600'
-                  : 'text-stone-300'
-          }
-        >
-          {line.text || '\u00A0'}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function PrBodyTile() {
-  const sections = [
-    { t: 'h1', text: 'PR #418 — fix(parser): skip empty invoice rows' },
-    { t: 'h2', text: 'Summary' },
-    { t: 'p', text: 'Production CSVs include blank lines that caused the invoice parser to drop valid rows.' },
-    { t: 'h2', text: 'Changes' },
-    { t: 'li', text: 'src/parser.ts — filter empty rows after trim' },
-    { t: 'li', text: 'etl/dedupe.ts — ignore rows with empty ids' },
-    { t: 'li', text: 'tests/parser.test.ts — empty-row regression' },
-    { t: 'gate', text: 'Awaiting merge approval from @Vaibhav' },
-  ];
-  return (
-    <div className="h-full overflow-hidden bg-white p-2 text-[7px] leading-snug">
-      {sections.map((s, i) => (
-        <div
-          key={i}
-          className={
-            s.t === 'h1' ? 'mb-1 font-semibold text-stone-900 text-[8px]'
-              : s.t === 'h2' ? 'mt-1 mb-0.5 font-semibold text-stone-700'
-                : s.t === 'li' ? 'pl-2 text-stone-600 before:content-["·_"]'
-                  : s.t === 'gate' ? 'mt-2 rounded border border-amber-200 bg-amber-50 px-1.5 py-1 font-medium text-amber-800'
-                    : 'text-stone-600'
-          }
-        >
-          {s.text}
-        </div>
-      ))}
     </div>
   );
 }
@@ -271,179 +156,193 @@ export function CodingHarnessVisual() {
   );
 }
 
-/* ─── [04] Ticket Canvas — stacked diffs, CI, PR (static) ─── */
+/* ─── [04] PR review checklist — single panel, not Canvas 2×2 ─── */
 export function CodingBoardVisual() {
+  const items = [
+    { title: 'Diffs', detail: 'parser.ts + etl/dedupe.ts', status: 'done' as const, meta: '+8 −1' },
+    { title: 'CI', detail: '13 tests passed', status: 'done' as const, meta: 'Green' },
+    { title: 'PR body', detail: 'Summary and merge notes', status: 'ready' as const, meta: '#418' },
+    { title: 'Merge', detail: 'Waiting on human approval', status: 'pending' as const, meta: 'Held' },
+  ];
+
   return (
-    <CanvasDesktopVisual
-      windows={[
-        {
-          id: 'parser',
-          title: 'src/parser.ts.diff',
-          x: 8,
-          y: 8,
-          w: 198,
-          h: 128,
-          body: <DiffTile file="src/parser.ts" adds={5} dels={1} lines={PARSER_DIFF_LINES} />,
-        },
-        {
-          id: 'dedupe',
-          title: 'etl/dedupe.ts.diff',
-          x: 168,
-          y: 24,
-          w: 178,
-          h: 108,
-          body: <DiffTile file="etl/dedupe.ts" adds={3} dels={0} lines={DEDUPE_DIFF_LINES} />,
-        },
-        {
-          id: 'ci',
-          title: 'logs/ci-integration.log',
-          x: 28,
-          y: 118,
-          w: 200,
-          h: 112,
-          body: <CiLogTile />,
-        },
-        {
-          id: 'pr',
-          title: 'pull-requests/418-body.md',
-          x: 196,
-          y: 132,
-          w: 220,
-          h: 118,
-          accent: true,
-          body: <PrBodyTile />,
-        },
-      ]}
-    />
+    <VignetteChrome label="Review · before merge">
+      <div className="border-b border-stone-100 bg-white px-4 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+            Pull request
+          </span>
+          <span className="rounded border border-trooper-200 bg-trooper-50 px-2 py-0.5 text-[10px] font-semibold text-trooper-800">
+            Ready for review
+          </span>
+        </div>
+        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+          Diffs, tests, and PR — together before you merge
+        </h4>
+      </div>
+      <div className="min-h-[220px] space-y-2 bg-white p-4">
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="flex items-center gap-3 rounded-lg border border-stone-100 px-3.5 py-3"
+          >
+            <div
+              className={`h-2.5 w-2.5 shrink-0 rounded-full ${
+                item.status === 'done'
+                  ? 'bg-trooper'
+                  : item.status === 'ready'
+                    ? 'bg-amber-500'
+                    : 'bg-stone-300'
+              }`}
+            />
+            <div className="min-w-0 flex-1">
+              <div className="text-[13px] font-semibold text-stone-900">{item.title}</div>
+              <div className="truncate text-[11px] text-stone-500">{item.detail}</div>
+            </div>
+            <span className="shrink-0 text-[11px] font-medium text-stone-500">{item.meta}</span>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-4 py-2.5 text-[11px]">
+        <span className="inline-flex items-center gap-1.5 text-stone-500">
+          <GitCommit size={12} className="text-stone-400" />
+          PR #418
+        </span>
+        <span className="font-medium text-amber-700">Staff merges</span>
+      </div>
+    </VignetteChrome>
   );
 }
 
-/* ─── [05] Org memory — conventions loaded per mission ─── */
+/* ─── [05] Org memory — human category cards ─── */
 export function CodingMemoryVisual() {
-  const memoryFiles = [
+  const cards = [
     {
-      path: 'AGENTS.md',
-      icon: <FileText size={11} className="text-stone-400 shrink-0" />,
+      title: 'Branch rules',
+      icon: <FileText size={14} className="shrink-0 text-stone-400" />,
       lines: [
-        { k: 'default_branch', v: 'main — no direct pushes' },
-        { k: 'reviewer', v: '@Vaibhav on parser/*' },
-        { k: 'test_cmd', v: 'npm test && npm run test:integration' },
+        { k: 'Default', v: 'main — no direct pushes' },
+        { k: 'Reviewer', v: 'Parser owners first' },
+        { k: 'Tests', v: 'Unit + integration' },
       ],
     },
     {
-      path: '.eslintrc.cjs',
-      icon: <Terminal size={11} className="text-stone-400 shrink-0" />,
+      title: 'Lint',
+      icon: <Terminal size={14} className="shrink-0 text-stone-400" />,
       lines: [
-        { k: 'no-console', v: 'error in src/' },
-        { k: 'import/order', v: 'enforced · autofix on save' },
-        { k: '@typescript-eslint', v: 'strict mode' },
+        { k: 'Console', v: 'Error in src/' },
+        { k: 'Imports', v: 'Ordered · autofix' },
+        { k: 'TS', v: 'Strict mode' },
       ],
     },
     {
-      path: 'CODEOWNERS',
-      icon: <Shield size={11} className="text-stone-400 shrink-0" />,
+      title: 'Owners',
+      icon: <Shield size={14} className="shrink-0 text-stone-400" />,
       lines: [
-        { k: 'src/parser/*', v: '@Leo @engineering' },
-        { k: 'etl/*', v: '@Leo' },
-        { k: '*', v: '@engineering' },
+        { k: 'Parser', v: 'Engineering leads' },
+        { k: 'ETL', v: 'Data owners' },
+        { k: 'Default', v: 'Engineering' },
       ],
     },
     {
-      path: 'merge-gates.yml',
-      icon: <Check size={11} className="text-trooper shrink-0" />,
+      title: 'Merge gates',
+      icon: <Check size={14} className="shrink-0 text-trooper" />,
       lines: [
-        { k: 'ci_required', v: '✓ integration suite green' },
-        { k: 'approvals', v: '✓ 1 human before merge' },
-        { k: 'atomic_checkout', v: '✓ one agent per branch' },
+        { k: 'CI', v: 'Must be green' },
+        { k: 'Approvals', v: '1 human required' },
+        { k: 'Checkout', v: 'One agent per branch' },
       ],
     },
   ];
 
   return (
-    <VignetteChrome label="trooper · org memory">
-      <div className="border-b border-stone-100 bg-[#FAF9F6] px-3 py-2">
+    <VignetteChrome label="Coding · memory">
+      <div className="border-b border-stone-100 bg-[#FAF9F6] px-4 py-3">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-stone-500">
+          <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
             Loaded on every coding mission
           </span>
-          <span className="rounded border border-trooper-200 bg-trooper-50 px-1.5 py-0.5 text-[8px] font-semibold text-trooper-800">
+          <span className="rounded border border-trooper-200 bg-trooper-50 px-2 py-0.5 text-[10px] font-semibold text-trooper-800">
             Persisted
           </span>
         </div>
-        <p className="mt-1 text-[10px] text-stone-500 leading-relaxed">
-          Branch rules, lint config, and reviewer prefs — no re-briefing each session.
+        <p className="mt-1.5 text-[12px] leading-relaxed text-stone-600">
+          Branch rules, lint, owners, and merge gates — same standards on every agent.
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-px bg-stone-100 min-h-[240px]">
-        {memoryFiles.map((file) => (
-          <div key={file.path} className="bg-white p-2.5 flex flex-col">
-            <div className="flex items-center gap-1.5 mb-2 border-b border-stone-50 pb-1.5">
-              {file.icon}
-              <span className="font-mono text-[9px] font-semibold text-stone-700 truncate">{file.path}</span>
+      <div className="grid min-h-[240px] grid-cols-2 gap-px bg-stone-100">
+        {cards.map((card) => (
+          <div key={card.title} className="flex flex-col bg-white p-3.5">
+            <div className="mb-2.5 flex items-center gap-2 border-b border-stone-50 pb-2">
+              {card.icon}
+              <span className="text-[13px] font-semibold text-stone-900">{card.title}</span>
             </div>
-            <div className="space-y-1 flex-1">
-              {file.lines.map((line) => (
-                <div key={line.k} className="flex gap-1.5 text-[8px] leading-snug">
-                  <span className="font-mono text-stone-400 shrink-0 w-[72px] truncate">{line.k}</span>
-                  <span className="text-stone-700 truncate">{line.v}</span>
+            <div className="flex-1 space-y-1.5">
+              {card.lines.map((line) => (
+                <div key={line.k} className="flex gap-2 text-[11px] leading-snug">
+                  <span className="w-16 shrink-0 text-stone-400">{line.k}</span>
+                  <span className="truncate text-stone-800">{line.v}</span>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-3 py-2">
-        <span className="font-mono text-[9px] text-stone-400">4 files · synced across Codex, Claude Code, OpenCode</span>
-        <span className="font-mono text-[9px] text-trooper-700">Memory hit · 0ms re-brief</span>
+      <div className="flex items-center justify-between border-t border-stone-100 bg-white px-4 py-2.5 text-[11px]">
+        <span className="text-stone-500">Shared across coding agents</span>
+        <span className="font-medium text-trooper-700">Always on</span>
       </div>
     </VignetteChrome>
   );
 }
 
-/* ─── [06] Animated Canvas — full PR bundle review ─── */
+/* ─── [06] Merge pack — readable review summary ─── */
 export function CodingCanvasVisual() {
   return (
-    <CanvasDesktopVisual
-      animated
-      windows={[
-        {
-          id: 'parser',
-          title: 'src/parser.ts.diff',
-          x: 18,
-          y: 14,
-          w: 188,
-          h: 122,
-          body: <DiffTile file="src/parser.ts" adds={5} dels={1} lines={PARSER_DIFF_LINES} />,
-        },
-        {
-          id: 'dedupe',
-          title: 'etl/dedupe.ts.diff',
-          x: 168,
-          y: 28,
-          w: 172,
-          h: 104,
-          body: <DiffTile file="etl/dedupe.ts" adds={3} dels={0} lines={DEDUPE_DIFF_LINES} />,
-        },
-        {
-          id: 'ci',
-          title: 'logs/ci-integration.log',
-          x: 36,
-          y: 118,
-          w: 196,
-          h: 108,
-          body: <CiLogTile />,
-        },
-        {
-          id: 'pr',
-          title: 'pull-requests/418-body.md',
-          x: 210,
-          y: 124,
-          w: 214,
-          h: 116,
-          accent: true,
-          body: <PrBodyTile />,
-        },
-      ]}
-    />
+    <VignetteChrome label="Review · merge pack">
+      <div className="border-b border-stone-100 bg-white px-4 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-stone-400">
+            Merge pack
+          </span>
+          <span className="rounded border border-trooper-200 bg-trooper-50 px-2 py-0.5 text-[10px] font-semibold text-trooper-800">
+            CI green
+          </span>
+        </div>
+        <h4 className="mt-1.5 text-[13px] font-semibold text-stone-900 sm:text-sm">
+          Everything you need before merge — one view
+        </h4>
+      </div>
+      <div className="grid min-h-[220px] grid-cols-2 gap-2 bg-white p-4">
+        <div className="rounded-lg border border-stone-200 p-3">
+          <div className="mb-2 text-[12px] font-semibold text-stone-900">Changes</div>
+          <div className="space-y-1.5 text-[11px] text-stone-600">
+            <p className="flex justify-between gap-2">
+              <span>parser.ts</span>
+              <span className="font-medium text-emerald-700">+5 −1</span>
+            </p>
+            <p className="flex justify-between gap-2">
+              <span>etl/dedupe.ts</span>
+              <span className="font-medium text-emerald-700">+3</span>
+            </p>
+          </div>
+        </div>
+        <div className="rounded-lg border border-stone-200 bg-stone-950 p-3 font-mono text-[11px] leading-relaxed text-stone-300">
+          <div className="mb-2 text-[10px] uppercase tracking-wide text-stone-500">CI</div>
+          <p className="text-green-400">✓ 13 tests passed</p>
+          <p className="mt-1 text-emerald-400">Ready for PR #418</p>
+        </div>
+        <div className="col-span-2 rounded-lg border border-stone-200 p-3">
+          <div className="mb-1.5 text-[12px] font-semibold text-stone-900">PR summary</div>
+          <p className="text-[11px] leading-relaxed text-stone-600">
+            Harden invoice parser empty-line handling and ETL dedupe guards. Integration suite green — awaiting staff merge.
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center justify-between border-t border-stone-100 bg-[#FAF9F6] px-4 py-2.5 text-[11px]">
+        <span className="text-stone-500">Diffs · CI · PR body</span>
+        <span className="font-medium text-amber-700">Approve to merge</span>
+      </div>
+    </VignetteChrome>
   );
 }

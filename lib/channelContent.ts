@@ -102,7 +102,18 @@ const slack = buildChannelPage({
         'Drop a task in a channel or DM. Trooper opens a real mission with the conversation attached — chat stays fast, work stays clear.',
       visual: 'slack-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, post status back in the thread',
+      reply: 'progress updates in Slack',
+      window: 'Slack — Updates',
+      title: 'Status comes back',
+      titleHighlight: 'where you asked.',
+      intro:
+        'Agents report progress in the same Slack thread — so the team sees outcomes without opening another app.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'without leaving your workspace',
   description:
@@ -146,7 +157,18 @@ const whatsapp = buildChannelPage({
         'Send a message on WhatsApp. Agents run the work on your infrastructure while approvals stay a quick reply away.',
       visual: 'whatsapp-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, ping me when the mission finishes',
+      reply: 'completion summary on WhatsApp',
+      window: 'WhatsApp — Updates',
+      title: 'Field updates',
+      titleHighlight: 'on your phone.',
+      intro:
+        'Completion summaries and approval asks return in WhatsApp so you stay in command without watching a dashboard.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'from your pocket',
   description:
@@ -190,7 +212,18 @@ const telegram = buildChannelPage({
         'Bot messages turn into tracked missions with the same agents and memory as the rest of Trooper — lightweight command, full ops trail.',
       visual: 'messaging-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, keep me posted in this chat',
+      reply: 'mission updates in-thread',
+      window: 'Channel — Updates',
+      title: 'Same chat,',
+      titleHighlight: 'real mission updates.',
+      intro:
+        'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'via your bot',
   description:
@@ -221,7 +254,18 @@ const discord = buildChannelPage({
         'Community channels and DMs open first-class work on your board — same workforce, same approvals, right where your team already talks.',
       visual: 'messaging-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, keep me posted in this chat',
+      reply: 'mission updates in-thread',
+      window: 'Channel — Updates',
+      title: 'Same chat,',
+      titleHighlight: 'real mission updates.',
+      intro:
+        'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'in your server',
   description:
@@ -252,7 +296,18 @@ const signal = buildChannelPage({
         'Signal keeps the conversation encrypted. Trooper still opens a clear mission on your runtime so work does not vanish into a DM.',
       visual: 'messaging-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, keep me posted in this chat',
+      reply: 'mission updates in-thread',
+      window: 'Channel — Updates',
+      title: 'Same chat,',
+      titleHighlight: 'real mission updates.',
+      intro:
+        'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'with end-to-end encryption',
   description:
@@ -283,7 +338,18 @@ const imessage = buildChannelPage({
         'Bridge Apple Messages through your Mac relay. Assign work from the app you already use — tickets still land on Trooper.',
       visual: 'messaging-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Updates',
+      eyebrowNumber: '04',
+      ask: 'trooper, keep me posted in this chat',
+      reply: 'mission updates in-thread',
+      window: 'Channel — Updates',
+      title: 'Same chat,',
+      titleHighlight: 'real mission updates.',
+      intro:
+        'Progress and completion notes return in the channel you used — lightweight command, full ops trail.',
+      visual: 'canvas-desktop',
+    },
   ],
   titleAccent: 'through your Mac relay',
   description:
@@ -314,7 +380,18 @@ const email = buildChannelPage({
         'RFPs, support threads, and follow-ups become missions with research and drafts — email stops being a black hole.',
       visual: 'email-routing',
     },
-    canvasFeatureSection('04'),
+    {
+      eyebrow: 'Approve',
+      eyebrowNumber: '04',
+      ask: 'trooper, hold the reply until I approve',
+      reply: 'draft queued — waiting on you',
+      window: 'Email — Approve',
+      title: 'Drafts wait',
+      titleHighlight: 'for your send.',
+      intro:
+        'Research and reply drafts stay held until you approve — inbox automation without accidental sends.',
+      visual: 'legal-review',
+    },
   ],
   titleAccent: 'via IMAP and SMTP',
   description:

@@ -210,28 +210,28 @@ export function resolveCapabilityPrompt(section: MarketingFeatureSection): {
 
 export function canvasFeatureSection(eyebrowNumber: string): MarketingFeatureSection {
   return {
-    eyebrow: 'Canvas',
+    eyebrow: 'Review',
     eyebrowNumber,
-    tag: 'DESKTOP CANVAS',
-    ask: 'trooper, put everything on Canvas for review',
-    reply: 'on it — drag to rearrange',
-    window: 'Canvas — Desktop',
-    title: 'Review deliverables like',
-    titleHighlight: 'a desktop, not a folder dump.',
+    tag: 'PACK REVIEW',
+    ask: 'trooper, show me everything for review',
+    reply: 'pack ready — side by side',
+    window: 'Review — Deliverables',
+    title: 'See the deliverables',
+    titleHighlight: 'before you approve.',
     intro:
-      'Open the mission pack side by side — docs, previews, logs, and exports. Drag windows around, then approve when the set looks right.',
+      'Previews, briefs, and copy sit together so you review the set once — instead of chasing files across tools.',
     visual: 'canvas-desktop',
   };
 }
 
 export function codingCanvasFeatureSection(eyebrowNumber: string): MarketingFeatureSection {
   return {
-    eyebrow: 'Canvas',
+    eyebrow: 'Merge pack',
     eyebrowNumber,
-    tag: 'DESKTOP CANVAS',
+    tag: 'CODE REVIEW',
     ask: 'trooper, lay out this PR for merge review',
-    reply: 'diffs, CI, and PR body on Canvas',
-    window: 'Canvas — Code review',
+    reply: 'diffs, CI, and summary ready',
+    window: 'Coding — Merge pack',
     title: 'Code review in one place,',
     titleHighlight: 'not six browser tabs.',
     intro:
@@ -242,16 +242,16 @@ export function codingCanvasFeatureSection(eyebrowNumber: string): MarketingFeat
 
 export function marketingCanvasFeatureSection(eyebrowNumber: string): MarketingFeatureSection {
   return {
-    eyebrow: 'Canvas',
+    eyebrow: 'Review',
     eyebrowNumber,
-    tag: 'DESKTOP CANVAS',
-    ask: 'trooper, open the full campaign pack',
-    reply: 'brief, landing, creative, and copy — ready',
-    window: 'Canvas — Campaign pack',
-    title: 'The full campaign pack,',
-    titleHighlight: 'ready for brand review.',
+    tag: 'PACK REVIEW',
+    ask: 'trooper, show me the full pack for brand review',
+    reply: 'landing, brief, carousel, and email — ready',
+    window: 'Marketing — Pack review',
+    title: 'See the whole pack',
+    titleHighlight: 'before you approve.',
     intro:
-      'Brief, landing preview, creative, and nurture copy appear together. Approve the set once — instead of chasing files across tools.',
+      'Landing preview, brief, carousel, and nurture copy sit together. Review like a product — not a scavenger hunt across tools.',
     visual: 'marketing-canvas',
   };
 }

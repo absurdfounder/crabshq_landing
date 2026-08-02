@@ -42,14 +42,6 @@ import {
   LaunchOpsVisual,
 } from '@/components/marketing/visuals/MarketingVisuals';
 
-const DESKTOP_VISUALS = new Set([
-  'coding-board',
-  'coding-canvas',
-  'marketing-board',
-  'marketing-canvas',
-  'canvas-desktop',
-]);
-
 const VISUALS = {
   'coding-harness': CodingHarnessVisual,
   'coding-board': CodingBoardVisual,
@@ -213,7 +205,6 @@ export default function MarketingFeatureSections({
           const dimmed = active >= 0 && index !== active;
           const focused = active === index || active === -2;
           const prompt = resolveCapabilityPrompt(section);
-          const isDesktop = DESKTOP_VISUALS.has(section.visual);
 
           return (
             <article
@@ -260,15 +251,9 @@ export default function MarketingFeatureSections({
                       {prompt.window}
                     </span>
                   </div>
-                  {isDesktop ? (
-                    <PixelFramedVisual variant="desktop">
-                      <Visual />
-                    </PixelFramedVisual>
-                  ) : (
-                    <PixelFramedVisual>
-                      <Visual />
-                    </PixelFramedVisual>
-                  )}
+                  <PixelFramedVisual>
+                    <Visual />
+                  </PixelFramedVisual>
                 </div>
               </div>
             </article>
