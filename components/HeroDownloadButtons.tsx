@@ -38,6 +38,9 @@ export default function HeroDownloadButtons({
   }, []);
 
   const download = getPlatformDownload(platform);
+  // Platform SVGs ship as near-black fills — invert on solid dark/brand faces
+  // so the mark stays visible (header "Download for Mac" was black-on-black).
+  const lightFace = variant === 'solid' && tone !== 'light';
 
   return (
     <PixelButton
@@ -50,7 +53,10 @@ export default function HeroDownloadButtons({
       icon={icon}
     >
       <span className="inline-flex items-center gap-2">
-        <PlatformIcon src={download.iconSrc} />
+        <PlatformIcon
+          src={download.iconSrc}
+          className={lightFace ? 'brightness-0 invert' : undefined}
+        />
         {download.label}
       </span>
     </PixelButton>
