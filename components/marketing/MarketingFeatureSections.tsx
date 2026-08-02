@@ -79,8 +79,6 @@ const VISUALS = {
   'launch-ops': LaunchOpsVisual,
 } as const;
 
-const sectionXPadding = 'px-4 sm:px-6 lg:px-8';
-
 type MarketingFeatureSectionsProps = {
   sections: MarketingFeatureSection[];
   eyebrow?: string;
@@ -103,6 +101,12 @@ const defaultHeadingLines: MarketingHeadlineLine[] = [
   },
 ];
 
+/**
+ * Capability rows for team / feature / channel pages.
+ *
+ * Matches homepage `OldWays`: alternating text + product window, scroll-focus
+ * dimming — not the old sticky card stack that overlapped on desktop.
+ */
 export default function MarketingFeatureSections({
   sections,
   eyebrow = 'Capabilities',
@@ -111,141 +115,171 @@ export default function MarketingFeatureSections({
   headingLines = defaultHeadingLines,
   subheading = 'Traced tickets, live artifacts, and harnesses that match the work — not generic placeholders.',
 }: MarketingFeatureSectionsProps) {
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [cardTransforms, setCardTransforms] = useState<{ scale: number; opacity: number; y: number }[]>([]);
+  const rowRefs = useRef<Array<HTMLElement | null>>([]);
+  const activeRef = useRef(-1);
+  // -1: unmeasured; -2: reduced motion (all rows fully on)
+  const [active, setActive] = useState(-1);
 
   useEffect(() => {
-    const calculateTransforms = () => {
-      const isMobile = window.innerWidth < 1024;
-      const stickyTop = window.innerHeight * 0.15;
-      const transforms: { scale: number; opacity: number; y: number }[] = [];
+    const reduceMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const desktopMq = window.matchMedia('(min-width: 1024px)');
+    let raf = 0;
 
-      if (isMobile) {
-        setCardTransforms(sections.map(() => ({ scale: 1, opacity: 1, y: 0 })));
+    const focusY = (r: DOMRect, desktop: boolean) =>
+      desktop ? r.top + r.height / 2 : r.top + Math.min(160, r.height * 0.22);
+
+    const distance = (el: HTMLElement, band: number, desktop: boolean) =>
+      Math.abs(focusY(el.getBoundingClientRect(), desktop) - band);
+
+    const update = () => {
+      raf = 0;
+      if (reduceMq.matches) {
+        activeRef.current = -2;
+        setActive(-2);
         return;
       }
 
-      let activeCardIndex = 0;
-      cardRefs.current.forEach((card, index) => {
-        if (!card) return;
-        if (card.getBoundingClientRect().top <= stickyTop + 10) activeCardIndex = index;
-      });
+      const desktop = desktopMq.matches;
+      const band = window.innerHeight * (desktop ? 0.5 : 0.34);
+      let best = -1;
+      let bestD = Infinity;
 
-      cardRefs.current.forEach((card, index) => {
-        if (!card) {
-          transforms.push({ scale: 1, opacity: 1, y: 0 });
-          return;
-        }
-        const cardsOnTop = Math.max(0, activeCardIndex - index);
-        if (cardsOnTop > 0) {
-          transforms.push({
-            scale: Math.max(0.92, 1 - 0.025 * cardsOnTop),
-            opacity: Math.max(0.45, 1 - 0.12 * cardsOnTop),
-            y: -8 * cardsOnTop,
-          });
-        } else {
-          transforms.push({ scale: 1, opacity: 1, y: 0 });
+      rowRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const d = distance(el, band, desktop);
+        if (d < bestD) {
+          bestD = d;
+          best = i;
         }
       });
-      setCardTransforms(transforms);
+
+      const prev = activeRef.current;
+      let next = best;
+      if (prev >= 0 && prev !== best) {
+        const prevEl = rowRefs.current[prev];
+        if (prevEl) {
+          const prevD = distance(prevEl, band, desktop);
+          const slack = desktop ? 56 : 96;
+          if (prevD < bestD + slack) next = prev;
+        }
+      }
+
+      if (next !== prev) {
+        activeRef.current = next;
+        setActive(next);
+      }
     };
 
-    calculateTransforms();
-    let rafId: number | undefined;
-    const handleScroll = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(calculateTransforms);
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', calculateTransforms);
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    reduceMq.addEventListener('change', onScroll);
+    desktopMq.addEventListener('change', onScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', calculateTransforms);
-      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      reduceMq.removeEventListener('change', onScroll);
+      desktopMq.removeEventListener('change', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [sections]);
 
   if (!sections.length) return null;
 
   return (
-    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-slate-50">
-      <div className="max-w-7xl mx-auto px-0 sm:px-0 py-10 sm:py-16 md:py-24">
-        <div className="mb-8 sm:mb-12 md:mb-14 max-w-2xl">
-          {headingLines.length > 0 ? (
-            <MarketingHeadline
-              as="h2"
-              size="section"
-              lines={headingLines}
-              subline={subheading}
-            />
-          ) : (
-            <>
-              <h2 className="font-funneldisplay text-2xl sm:text-3xl md:text-4xl tracking-tight text-slate-900 leading-snug">
-                {heading}
-              </h2>
-              <p className="text-slate-500 text-sm sm:text-base mt-3 leading-relaxed">{subheading}</p>
-            </>
-          )}
-        </div>
+    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-canvas" rhythm>
+      <div className="mb-10 max-w-2xl sm:mb-14">
+        {headingLines.length > 0 ? (
+          <MarketingHeadline as="h2" size="section" lines={headingLines} subline={subheading} />
+        ) : (
+          <>
+            <h2 className="font-display text-2xl leading-snug tracking-tight text-neutral-800 sm:text-3xl md:text-4xl">
+              {heading}
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base">{subheading}</p>
+          </>
+        )}
+      </div>
 
-        <div className="relative" style={{ perspective: '1000px' }}>
-          {sections.map((section, index) => {
-            const Visual = VISUALS[section.visual] ?? CanvasBoardVisual;
-            const t = cardTransforms[index] ?? { scale: 1, opacity: 1, y: 0 };
-            const tag = section.tag ?? section.eyebrow;
+      <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24">
+        {sections.map((section, index) => {
+          const Visual = VISUALS[section.visual] ?? CanvasBoardVisual;
+          const visualFirst = section.reverse ?? index % 2 === 1;
+          const dimmed = active >= 0 && index !== active;
+          const tag = section.tag ?? section.eyebrow;
+          const windowLabel = `Trooper · ${tag}`;
 
-            return (
+          return (
+            <article
+              key={`${section.eyebrowNumber}-${section.visual}-${index}`}
+              ref={(el) => {
+                rowRefs.current[index] = el;
+              }}
+              className={[
+                'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
+                dimmed
+                  ? 'opacity-[0.38] max-lg:opacity-[0.48] lg:scale-[0.985] lg:opacity-40 lg:blur-[1.5px]'
+                  : 'opacity-100',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+            >
               <div
-                key={`${section.eyebrowNumber}-${section.visual}-${index}`}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                className="lg:sticky lg:top-[15vh] mb-4 sm:mb-6 lg:mb-8"
-                style={{
-                  zIndex: sections.length + index,
-                  marginBottom: index === sections.length - 1 ? '0' : undefined,
-                }}
+                className={`flex min-w-0 flex-col lg:max-w-md lg:justify-self-center ${
+                  visualFirst ? 'lg:order-2' : ''
+                }`}
               >
-                <div
-                  className="relative bg-white border border-slate-200 overflow-hidden min-h-0 lg:min-h-[520px] flex flex-col will-change-transform"
-                  style={{
-                    transform: `scale(${t.scale}) translateY(${t.y}px)`,
-                    opacity: t.opacity,
-                    transformOrigin: 'center top',
-                    transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1)',
-                  }}
-                >
-                  <div className="grid md:flex items-stretch flex-1 min-h-0">
-                    <div className={`${sectionXPadding} box-border pt-6 sm:pt-8 md:pt-10 pb-6 sm:pb-8 md:pb-10 lg:pb-12 md:w-[38%] w-full flex flex-col`}>
-                      <PixelMissionTag index={section.eyebrowNumber} label={tag} />
-                      <MarketingCardTitle
-                        title={section.title}
-                        titleHighlight={section.titleHighlight}
-                        titleHighlightTone="brand"
-                      />
-                      {section.intro && (
-                        <p className="text-sm text-slate-500 mt-3 sm:mt-4 leading-relaxed">{section.intro}</p>
-                      )}
-                      {section.bullets && section.bullets.length > 0 && (
-                        <ul className="mt-4 space-y-2 text-sm text-slate-600">
-                          {section.bullets.map((b) => (
-                            <li key={b} className="flex gap-2">
-                              <span className="text-trooper mt-0.5 shrink-0">▸</span>
-                              <span>{b}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                    <div className="box-border w-full md:w-[62%] border-t md:border-t-0 md:border-l border-slate-200 flex flex-col min-h-0">
-                      <PixelFramedVisual variant={DESKTOP_VISUALS.has(section.visual) ? 'desktop' : 'default'}>
-                        <Visual />
-                      </PixelFramedVisual>
-                    </div>
+                <PixelMissionTag index={section.eyebrowNumber} label={tag} />
+                <MarketingCardTitle
+                  title={section.title}
+                  titleHighlight={section.titleHighlight}
+                  titleHighlightTone="brand"
+                />
+                {section.intro ? (
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-neutral-500 sm:mt-4 sm:text-[15px] sm:leading-7">
+                    {section.intro}
+                  </p>
+                ) : null}
+                {section.bullets && section.bullets.length > 0 ? (
+                  <ul className="mt-4 space-y-2 text-sm text-neutral-600">
+                    {section.bullets.map((b) => (
+                      <li key={b} className="flex gap-2">
+                        <span className="mt-0.5 shrink-0 text-trooper">▸</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+
+              <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
+                <div className="overflow-hidden rounded-xl bg-white shadow-[0_28px_56px_-24px_rgba(26,26,26,0.4)] ring-1 ring-black/10">
+                  <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-xl border-b border-black/5 bg-neutral-50 px-3 py-2">
+                    <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+                    <span className="size-2.5 rounded-full bg-[#febc2e]" />
+                    <span className="size-2.5 rounded-full bg-[#28c840]" />
+                    <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
+                      {windowLabel}
+                    </span>
                   </div>
+                  {DESKTOP_VISUALS.has(section.visual) ? (
+                    <PixelFramedVisual variant="desktop">
+                      <Visual />
+                    </PixelFramedVisual>
+                  ) : (
+                    <PixelFramedVisual>
+                      <Visual />
+                    </PixelFramedVisual>
+                  )}
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </article>
+          );
+        })}
       </div>
     </SectionShell>
   );
