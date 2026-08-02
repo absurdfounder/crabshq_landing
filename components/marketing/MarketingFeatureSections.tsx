@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import MarketingHeadline, {
-  MarketingCardTitle,
   type MarketingHeadlineLine,
 } from '@/components/marketing/MarketingHeadline';
 import SectionShell from '@/components/ui/SectionShell';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
+import { BubbleExchange } from '@/components/ui/ChatBubble';
 import PixelFramedVisual from '@/components/marketing/PixelFramedVisual';
-import type { MarketingFeatureSection } from '@/lib/marketingFeatures';
+import {
+  resolveCapabilityPrompt,
+  type MarketingFeatureSection,
+} from '@/lib/marketingFeatures';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
@@ -103,9 +105,8 @@ const defaultHeadingLines: MarketingHeadlineLine[] = [
 
 /**
  * Capability rows for team / feature / channel pages.
- *
- * Matches homepage `OldWays`: alternating text + product window, scroll-focus
- * dimming — not the old sticky card stack that overlapped on desktop.
+ * Same rhythm as homepage `OldWays`: typing ask/reply bubbles, title,
+ * description, traffic-light product window, scroll-focus dimming.
  */
 export default function MarketingFeatureSections({
   sections,
@@ -197,10 +198,10 @@ export default function MarketingFeatureSections({
           <MarketingHeadline as="h2" size="section" lines={headingLines} subline={subheading} />
         ) : (
           <>
-            <h2 className="font-display text-2xl leading-snug tracking-tight text-neutral-800 sm:text-3xl md:text-4xl">
+            <h2 className="font-funneldisplay text-2xl leading-snug tracking-tight text-ink sm:text-3xl md:text-4xl">
               {heading}
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base">{subheading}</p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base">{subheading}</p>
           </>
         )}
       </div>
@@ -210,8 +211,9 @@ export default function MarketingFeatureSections({
           const Visual = VISUALS[section.visual] ?? CanvasBoardVisual;
           const visualFirst = section.reverse ?? index % 2 === 1;
           const dimmed = active >= 0 && index !== active;
-          const tag = section.tag ?? section.eyebrow;
-          const windowLabel = `Trooper · ${tag}`;
+          const focused = active === index || active === -2;
+          const prompt = resolveCapabilityPrompt(section);
+          const isDesktop = DESKTOP_VISUALS.has(section.visual);
 
           return (
             <article
@@ -233,26 +235,18 @@ export default function MarketingFeatureSections({
                   visualFirst ? 'lg:order-2' : ''
                 }`}
               >
-                <PixelMissionTag index={section.eyebrowNumber} label={tag} />
-                <MarketingCardTitle
-                  title={section.title}
-                  titleHighlight={section.titleHighlight}
-                  titleHighlightTone="brand"
-                />
+                <BubbleExchange ask={prompt.ask} reply={prompt.reply} focused={focused} />
+
+                <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+                  {section.title}{' '}
+                  {section.titleHighlight ? (
+                    <span className="text-ink-muted">{section.titleHighlight}</span>
+                  ) : null}
+                </h3>
                 {section.intro ? (
-                  <p className="mt-3 max-w-md text-sm leading-relaxed text-neutral-500 sm:mt-4 sm:text-[15px] sm:leading-7">
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
                     {section.intro}
                   </p>
-                ) : null}
-                {section.bullets && section.bullets.length > 0 ? (
-                  <ul className="mt-4 space-y-2 text-sm text-neutral-600">
-                    {section.bullets.map((b) => (
-                      <li key={b} className="flex gap-2">
-                        <span className="mt-0.5 shrink-0 text-trooper">▸</span>
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
                 ) : null}
               </div>
 
@@ -263,10 +257,10 @@ export default function MarketingFeatureSections({
                     <span className="size-2.5 rounded-full bg-[#febc2e]" />
                     <span className="size-2.5 rounded-full bg-[#28c840]" />
                     <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
-                      {windowLabel}
+                      {prompt.window}
                     </span>
                   </div>
-                  {DESKTOP_VISUALS.has(section.visual) ? (
+                  {isDesktop ? (
                     <PixelFramedVisual variant="desktop">
                       <Visual />
                     </PixelFramedVisual>

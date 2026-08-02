@@ -93,6 +93,9 @@ const slack = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, turn this Slack thread into a ticket',
+      reply: 'routed — context preserved',
+      window: 'Slack — Routing',
       title: 'Slack thread → traced ticket',
       intro: 'Every assignment becomes a ticket with full context — chat stays fast, ops stays auditable.',
       visual: 'slack-routing',
@@ -132,6 +135,9 @@ const whatsapp = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, take this WhatsApp and run it',
+      reply: 'on it — field ticket opened',
+      window: 'WhatsApp — Routing',
       title: 'WhatsApp message → field ticket',
       intro: 'Support and command from your pocket — agents execute on your server while you approve from mobile.',
       visual: 'whatsapp-routing',
@@ -171,6 +177,9 @@ const telegram = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, route this Telegram DM to the board',
+      reply: 'ticket opened — same workforce',
+      window: 'Telegram — Routing',
       title: 'Any channel → one task board',
       intro: 'DMs from Telegram, Discord, Signal, or iMessage all route to the same traced workforce.',
       visual: 'messaging-routing',
@@ -197,6 +206,9 @@ const discord = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, turn this Discord message into a ticket',
+      reply: 'mission on the board',
+      window: 'Discord — Routing',
       title: 'Server message → ticket',
       intro: 'Community channels and DMs become first-class missions on your Trooper board.',
       visual: 'messaging-routing',
@@ -223,6 +235,9 @@ const signal = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, take this Signal DM and open a mission',
+      reply: 'encrypted handoff — ticket traced',
+      window: 'Signal — Routing',
       title: 'Encrypted DM → traced ops',
       intro: 'Signal keeps messages private while Trooper handles execution on your runtime.',
       visual: 'messaging-routing',
@@ -249,6 +264,9 @@ const imessage = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, bridge this iMessage to the workforce',
+      reply: 'relay up — ticket opened',
+      window: 'iMessage — Routing',
       title: 'iMessage → your workforce',
       intro: 'Bridge Apple messaging to Trooper tickets without adding another app.',
       visual: 'messaging-routing',
@@ -275,6 +293,9 @@ const email = buildChannelPage({
     {
       eyebrow: 'Routing',
       eyebrowNumber: '03',
+      ask: 'trooper, turn this inbox thread into a mission',
+      reply: 'parsed — research + draft queued',
+      window: 'Email — Routing',
       title: 'Inbox → structured ticket',
       intro: 'RFPs, support threads, and follow-ups parsed into missions with research and draft workflows.',
       visual: 'email-routing',
