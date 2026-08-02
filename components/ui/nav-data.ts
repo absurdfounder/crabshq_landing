@@ -86,11 +86,11 @@ export const teamNavItems: NavItem[] = [
 ]
 
 /*
- * Four, not six.
+ * Five, not six.
  *
  * With six links the nav measured ~682px and the whole header ~1225px against
  * a 1230px rail — 5px of slack, which would not survive a font-metric change.
- * At four it is ~492px, leaving ~215px.
+ * At five it still leaves room; keep Resellers short so the rail stays healthy.
  *
  * Industries moved into the Teams menu, where it belongs semantically.
  * Download came out because the top bar is already a full-width Download CTA.
@@ -99,5 +99,6 @@ export const primaryNavLinks = [
   { href: '/plugin', label: 'Plugins' },
   { href: '/integration', label: 'Skills' },
   { href: '/loops', label: 'Loops' },
+  { href: '/resellers', label: 'Resellers' },
   { href: '/pricing', label: 'Pricing' },
 ] as const

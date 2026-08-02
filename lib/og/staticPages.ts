@@ -126,6 +126,13 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     'Trooper',
     'Partner program for creators and teams promoting the AI workforce platform.',
   ),
+  resellers: page(
+    'resellers',
+    'Resellers',
+    'Build custom',
+    'Trooper solutions',
+    'Resell Trooper Mission Control to local businesses and charge for the setup you run.',
+  ),
   terms: page(
     'terms',
     'Legal',

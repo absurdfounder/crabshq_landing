@@ -57,6 +57,7 @@ const staticPages = [
   { path: '/industries', priority: '0.8', changefreq: 'weekly' },
   { path: '/pricing', priority: '0.8', changefreq: 'weekly' },
   { path: '/affiliate', priority: '0.6', changefreq: 'monthly' },
+  { path: '/resellers', priority: '0.7', changefreq: 'monthly' },
   { path: '/agency', priority: '0.6', changefreq: 'monthly' },
   { path: '/contact-us', priority: '0.5', changefreq: 'monthly' },
   { path: '/showcase', priority: '0.7', changefreq: 'weekly' },
