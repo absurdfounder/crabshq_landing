@@ -262,7 +262,7 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
           <span className="h-px min-w-[36px] flex-1 bg-neutral-900/[0.12] lg:h-auto lg:min-h-[54px] lg:w-px lg:min-w-0 lg:flex-none" />
         </div>
 
-        <div className="flex justify-center lg:justify-start">
+        <div className="m-auto flex justify-center lg:justify-start">
           <div className="w-full max-w-[440px] overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05),0_18px_40px_-12px_rgba(15,23,42,0.14)] ring-1 ring-black/[0.07]">
             <div className="flex items-center gap-2.5 border-b border-neutral-100 px-4 py-3 sm:px-5">
               <TrooperMark />
