@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  Check, Loader2, Megaphone, Palette, BookOpen, Play, Users, Target, FileText,
+  Check, Loader2, Megaphone, Palette, Play, Users, Target, FileText,
 } from 'lucide-react';
 import { DemoFavicon } from '@trooper/demo';
 import { DemoBrowserFrame } from '@trooper/demo';
