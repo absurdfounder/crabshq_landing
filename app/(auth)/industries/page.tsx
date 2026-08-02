@@ -1,9 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/ui/header';
-import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
-import { getIndustryHubCards, industryHubMeta } from '@/lib/industryContent';
+import { getIndustryCards, industryHubMeta } from '@/lib/industryContent';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
@@ -16,28 +15,31 @@ export const metadata = buildPageMetadata({
   ogSlug: 'industries',
 });
 
+const PX = 'px-4 sm:px-6 lg:px-8';
+
 export default function IndustriesHubPage() {
-  const pages = getIndustryHubCards();
+  const pages = getIndustryCards();
 
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-canvas text-ink">
       <Header />
-      <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
-        <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-10">
-          <PixelMissionTag index="01" label="Industries" className="mb-4" />
-          <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] tracking-tight text-slate-900 max-w-3xl">
-            AI Front Office by Industry
+
+      <section className="site-header-clear border-b border-black/5 bg-canvas">
+        <div className={`mx-auto max-w-7xl ${PX} pb-12 pt-10 sm:pb-16 sm:pt-14`}>
+          <p className="kicker mb-3">Industries</p>
+          <h1 className="max-w-3xl text-balance font-display text-4xl leading-[1.08] tracking-tight text-neutral-800 sm:text-5xl">
+            AI Front Office by industry
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+          <p className="lede mt-5 max-w-2xl">
             Trooper agents handle calls, booking, dispatch, and follow-up for home services and field
             businesses — built on OpenClaw, ready to deploy in minutes.
           </p>
-          <div className="mt-6">
+          <div className="mt-8">
             <PixelButton
               href="https://app.trooper.so"
               external
               size="lg"
-              tone="brand"
+              tone="dark"
               icon={<ArrowRight className="h-4 w-4" />}
             >
               Deploy agents
@@ -46,29 +48,47 @@ export default function IndustriesHubPage() {
         </div>
       </section>
 
-      <SectionShell eyebrow="Industries" eyebrowNumber="02" bgClass="bg-slate-50">
-        <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {pages.map((page) => (
-              <Link
-                key={page.slug}
-                href={`/industries/${page.slug}`}
-                className="group flex min-h-[120px] flex-col gap-2 border border-slate-200 bg-white p-5 transition-colors hover:border-slate-300 hover:bg-slate-50"
-              >
-                <h2 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                  {page.title}
-                </h2>
-                <p className="text-sm text-slate-600 leading-relaxed flex-1 line-clamp-2">
-                  {page.description}
-                </p>
-                <span className="text-xs font-mono uppercase tracking-[0.12em] text-slate-400 group-hover:text-emerald-600 transition-colors">
-                  Learn more →
-                </span>
-              </Link>
-            ))}
+      <section className="border-b border-black/5">
+        <div className="dot-grid py-12 sm:py-20">
+          <div className={`mx-auto max-w-7xl ${PX}`}>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {pages.map((page) => (
+                <Link
+                  key={page.slug}
+                  href={page.href}
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5 transition-transform duration-200 hover:scale-[1.015]"
+                >
+                  <div className="relative h-44 overflow-hidden border-b border-black/5 sm:h-48">
+                    <Image
+                      src={page.coverImage}
+                      alt=""
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+                    <span className="absolute bottom-3 left-3 rounded-lg bg-white/95 px-2.5 py-1 text-[13px] font-medium text-neutral-800 shadow-xs backdrop-blur">
+                      {page.name}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-2 p-5 sm:p-6">
+                    <h2 className="text-base font-semibold text-balance text-neutral-800 group-hover:text-fern-800 sm:text-lg">
+                      {page.title}
+                    </h2>
+                    <p className="flex-1 text-[15px] leading-relaxed text-pretty text-neutral-500 line-clamp-2">
+                      {page.description}
+                    </p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-fern-700">
+                      Open playbook
+                      <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </SectionShell>
+      </section>
 
       <MarketingSubpageTail />
     </div>

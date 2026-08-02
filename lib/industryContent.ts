@@ -10,6 +10,17 @@ type IndustryDef = {
   /** e.g. "pest control businesses" — defaults from name */
   audience?: string;
   demoId?: DemoScenarioId;
+  /** Cover photo for hub / reseller cards */
+  coverImage: string;
+};
+
+export type IndustryCard = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  coverImage: string;
+  href: string;
 };
 
 const DEFAULT_TEAMS: RelatedLink[] = [
@@ -24,31 +35,176 @@ const DEFAULT_INTEGRATIONS: RelatedLink[] = [
   { href: '/plugin/ai_agent_for_hubspot', label: 'HubSpot', description: 'CRM logging' },
 ];
 
+/** Curated Unsplash covers — field / home-service atmosphere per vertical */
 const INDUSTRY_CATALOG: IndustryDef[] = [
-  { slug: 'pest-control', name: 'Pest Control', audience: 'pest control businesses' },
-  { slug: 'hvac', name: 'HVAC', audience: 'HVAC businesses' },
-  { slug: 'plumbing', name: 'Plumbing', audience: 'plumbing businesses' },
-  { slug: 'electrical', name: 'Electrical', audience: 'electrical contractors' },
-  { slug: 'roofing', name: 'Roofing', audience: 'roofing contractors' },
-  { slug: 'garage-door', name: 'Garage Door', audience: 'garage door businesses' },
-  { slug: 'construction', name: 'Construction', audience: 'construction companies' },
-  { slug: 'handyman', name: 'Handyman', audience: 'handyman businesses' },
-  { slug: 'home-security', name: 'Home Security', audience: 'home security companies' },
-  { slug: 'automotive', name: 'Automotive', audience: 'automotive businesses' },
-  { slug: 'dealership-service', name: 'Dealership Service', audience: 'dealership service departments' },
-  { slug: 'painters', name: 'Painters', audience: 'painting contractors' },
-  { slug: 'interior-designers', name: 'Interior Designers', audience: 'interior design businesses' },
-  { slug: 'home-cleaners', name: 'Home Cleaners', audience: 'home cleaning businesses' },
-  { slug: 'lawn-care', name: 'Lawn Care', audience: 'lawn care businesses' },
-  { slug: 'landscapers', name: 'Landscaping', audience: 'landscaping businesses' },
-  { slug: 'pressure-washers', name: 'Pressure Washing', audience: 'pressure washing businesses' },
-  { slug: 'window-cleaners', name: 'Window Cleaning', audience: 'window cleaning businesses' },
-  { slug: 'junk-removal', name: 'Junk Removal', audience: 'junk removal businesses' },
-  { slug: 'movers', name: 'Moving', audience: 'moving companies' },
-  { slug: 'pool-maintenance', name: 'Pool Maintenance', audience: 'pool service businesses' },
-  { slug: 'pet-sitting', name: 'Pet Sitting', audience: 'pet sitting businesses' },
-  { slug: 'restoration-services', name: 'Restoration', audience: 'restoration contractors' },
-  { slug: 'energy', name: 'Energy', audience: 'energy service businesses' },
+  {
+    slug: 'pest-control',
+    name: 'Pest Control',
+    audience: 'pest control businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'hvac',
+    name: 'HVAC',
+    audience: 'HVAC businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'plumbing',
+    name: 'Plumbing',
+    audience: 'plumbing businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'electrical',
+    name: 'Electrical',
+    audience: 'electrical contractors',
+    coverImage:
+      'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'roofing',
+    name: 'Roofing',
+    audience: 'roofing contractors',
+    coverImage:
+      'https://images.unsplash.com/photo-1632759145351-1d592919f522?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'garage-door',
+    name: 'Garage Door',
+    audience: 'garage door businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'construction',
+    name: 'Construction',
+    audience: 'construction companies',
+    coverImage:
+      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'handyman',
+    name: 'Handyman',
+    audience: 'handyman businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'home-security',
+    name: 'Home Security',
+    audience: 'home security companies',
+    coverImage:
+      'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'automotive',
+    name: 'Automotive',
+    audience: 'automotive businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'dealership-service',
+    name: 'Dealership Service',
+    audience: 'dealership service departments',
+    coverImage:
+      'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'painters',
+    name: 'Painters',
+    audience: 'painting contractors',
+    coverImage:
+      'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'interior-designers',
+    name: 'Interior Designers',
+    audience: 'interior design businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'home-cleaners',
+    name: 'Home Cleaners',
+    audience: 'home cleaning businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'lawn-care',
+    name: 'Lawn Care',
+    audience: 'lawn care businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'landscapers',
+    name: 'Landscaping',
+    audience: 'landscaping businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'pressure-washers',
+    name: 'Pressure Washing',
+    audience: 'pressure washing businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'window-cleaners',
+    name: 'Window Cleaning',
+    audience: 'window cleaning businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'junk-removal',
+    name: 'Junk Removal',
+    audience: 'junk removal businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'movers',
+    name: 'Moving',
+    audience: 'moving companies',
+    coverImage:
+      'https://images.unsplash.com/photo-1600518464441-9154a4dea21b?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'pool-maintenance',
+    name: 'Pool Maintenance',
+    audience: 'pool service businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'pet-sitting',
+    name: 'Pet Sitting',
+    audience: 'pet sitting businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'restoration-services',
+    name: 'Restoration',
+    audience: 'restoration contractors',
+    coverImage:
+      'https://images.unsplash.com/photo-1581852017103-68ac65514cf7?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    slug: 'energy',
+    name: 'Energy',
+    audience: 'energy service businesses',
+    coverImage:
+      'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80',
+  },
 ];
 
 function audienceLabel(def: IndustryDef): string {
@@ -117,6 +273,20 @@ export function allIndustrySlugs(): string[] {
 
 export function getIndustryHubCards(): IndustryPageContent[] {
   return INDUSTRY_CATALOG.map((def) => industries[def.slug]);
+}
+
+export function getIndustryCards(): IndustryCard[] {
+  return INDUSTRY_CATALOG.map((def) => {
+    const page = industries[def.slug];
+    return {
+      slug: def.slug,
+      name: def.name,
+      title: page.title,
+      description: page.description,
+      coverImage: def.coverImage,
+      href: `/industries/${def.slug}`,
+    };
+  });
 }
 
 export const industryHubMeta = {
