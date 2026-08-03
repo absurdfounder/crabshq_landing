@@ -10,6 +10,7 @@ import { skillsPluginsPlaybookWorkflow } from './skills-plugins';
 import { multiAgentCollaborationPlaybookWorkflow } from './multi-agent-collaboration';
 import { openclawPoweredPlaybookWorkflow } from './openclaw-powered';
 import { chatInterfacesPlaybookWorkflow } from './chat-interfaces';
+import { inboxPlaybookWorkflow } from './inbox';
 import { LEGACY_FEATURE_PLAYBOOKS } from './legacy';
 
 export const FEATURE_PLAYBOOKS: Record<string, PlaybookWorkflowContent> = {
@@ -24,6 +25,7 @@ export const FEATURE_PLAYBOOKS: Record<string, PlaybookWorkflowContent> = {
   'multi-agent-collaboration': multiAgentCollaborationPlaybookWorkflow,
   'openclaw-powered': openclawPoweredPlaybookWorkflow,
   'chat-interfaces': chatInterfacesPlaybookWorkflow,
+  inbox: inboxPlaybookWorkflow,
   ...LEGACY_FEATURE_PLAYBOOKS,
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import {
   FileText,
@@ -9,10 +9,11 @@ import {
   Search,
   Brain,
   ArrowRight,
+  GitBranch,
   Globe,
   Terminal,
 } from 'lucide-react';
-import { DEMO_KEYFRAMES, DemoNodeGraph, type DemoWorkflowGraph } from '@trooper/demo';
+import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { DotMatrixFade } from './ui/FeaturePeekStage';
@@ -551,41 +552,115 @@ function MemoryVisual({ focused }: { focused: boolean }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
- * 4. Workflows — chat asks to run a playbook → flowchart lights up
+ * 4. Workflows — chat asks to run a playbook → Mermaid graph lights up
  * ═══════════════════════════════════════════════════════════════ */
-const REFUND_PLAYBOOK: DemoWorkflowGraph = {
-  name: 'Refund playbook',
-  nodes: [
-    { id: 'n1', label: 'Refund requested', kind: 'trigger', x: 16, y: 8 },
-    { id: 'n2', label: 'Amount over $200?', kind: 'if', x: 16, y: 92 },
-    { id: 'n3', label: 'Collect evidence', kind: 'then', x: 16, y: 176 },
-    { id: 'n4', label: 'Apply refund SOP', kind: 'ai', x: 188, y: 176 },
-    { id: 'n5', label: 'Human review gate', kind: 'then', x: 188, y: 92 },
-    { id: 'n6', label: 'Issue refund', kind: 'then', x: 188, y: 8 },
-  ],
-  edges: [
-    { from: 'n1', to: 'n2' },
-    { from: 'n2', to: 'n3', label: 'yes' },
-    { from: 'n3', to: 'n4' },
-    { from: 'n4', to: 'n5' },
-    { from: 'n5', to: 'n6' },
-  ],
-};
+const WORKFLOW_NODE_IDS = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const;
 
-const WORKFLOW_NODE_ORDER = REFUND_PLAYBOOK.nodes.map((n) => n.id);
+const REFUND_MERMAID = `flowchart TD
+  n1(["Refund requested"])
+  n2{"Amount over $200?"}
+  n3["Collect evidence"]
+  n4["Apply refund SOP"]
+  n5["Human review gate"]
+  n6(["Issue refund"])
+  n1 --> n2
+  n2 -->|yes| n3
+  n3 --> n4
+  n4 --> n5
+  n5 --> n6`;
+
+const WORKFLOW_MERMAID_CSS = `
+.workflow-mermaid .node { transition: opacity 280ms ease; }
+.workflow-mermaid .node[data-state="idle"] { opacity: 0.38; }
+.workflow-mermaid .node[data-state="done"] { opacity: 1; }
+.workflow-mermaid .node[data-state="running"] { opacity: 1; }
+.workflow-mermaid .node[data-state="done"] rect,
+.workflow-mermaid .node[data-state="done"] polygon,
+.workflow-mermaid .node[data-state="done"] path,
+.workflow-mermaid .node[data-state="done"] circle {
+  fill: #f0f5e6 !important;
+  stroke: #3f6b00 !important;
+  stroke-width: 1.75px !important;
+}
+.workflow-mermaid .node[data-state="running"] rect,
+.workflow-mermaid .node[data-state="running"] polygon,
+.workflow-mermaid .node[data-state="running"] path,
+.workflow-mermaid .node[data-state="running"] circle {
+  fill: #eef6dc !important;
+  stroke: #3f6b00 !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 0 0 3px rgba(63, 107, 0, 0.16));
+}
+.workflow-mermaid .node label,
+.workflow-mermaid .node .label,
+.workflow-mermaid .node span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 12px !important;
+}
+.workflow-mermaid .edgePath path {
+  stroke: #a8a29e !important;
+  stroke-width: 1.5px !important;
+}
+.workflow-mermaid .edgeLabel {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 11px !important;
+  color: #57534e !important;
+}
+.workflow-mermaid .marker {
+  fill: #a8a29e !important;
+  stroke: #a8a29e !important;
+}
+`;
 
 function WorkflowVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, WORKFLOW_DELAYS);
-  const activeIds = WORKFLOW_NODE_ORDER.slice(0, phase);
+  const activeIds = WORKFLOW_NODE_IDS.slice(0, phase);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [svgReady, setSvgReady] = useState(0);
+  const handleRender = useCallback(() => setSvgReady((n) => n + 1), []);
+
+  useEffect(() => {
+    const root = wrapRef.current;
+    if (!root) return;
+
+    const runningId =
+      activeIds.length > 0 && activeIds.length < WORKFLOW_NODE_IDS.length
+        ? activeIds[activeIds.length - 1]
+        : null;
+    const done = new Set<string>(
+      runningId ? activeIds.slice(0, -1) : activeIds,
+    );
+
+    root.querySelectorAll<SVGGElement>('g.node').forEach((node) => {
+      const id = node.id.match(/^flowchart-([^-]+)-/)?.[1];
+      if (!id) return;
+      if (runningId && id === runningId) node.dataset.state = 'running';
+      else if (done.has(id)) node.dataset.state = 'done';
+      else node.dataset.state = 'idle';
+    });
+  }, [activeIds, svgReady]);
 
   return (
-    <>
-      {/* Node graph live-dot / transitions — same keyframes as the product demo. */}
-      <style dangerouslySetInnerHTML={{ __html: DEMO_KEYFRAMES }} />
-      <MockShell className="flex h-[300px] flex-col sm:h-[320px] lg:h-[340px]">
-        <DemoNodeGraph graph={REFUND_PLAYBOOK} activeIds={activeIds} />
-      </MockShell>
-    </>
+    <MockShell className="flex h-[300px] flex-col sm:h-[320px] lg:h-[340px]">
+      <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
+      <div className="flex shrink-0 items-center gap-2 border-b border-[#E7E5E4] bg-[#FAFAF9] px-3 py-2.5">
+        <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
+        <span className="text-[12px] font-semibold text-neutral-800">Refund playbook</span>
+        <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
+          {activeIds.length}/{WORKFLOW_NODE_IDS.length} steps
+        </span>
+      </div>
+      <div
+        ref={wrapRef}
+        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#FAFAF9] px-2 py-3"
+      >
+        <MermaidFlowDiagram
+          source={REFUND_MERMAID}
+          className="min-h-0 w-full [&_svg]:max-h-[260px]"
+          onRender={handleRender}
+        />
+      </div>
+    </MockShell>
   );
 }
 

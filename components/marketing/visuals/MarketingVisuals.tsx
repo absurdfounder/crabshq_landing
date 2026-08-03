@@ -28,6 +28,12 @@ import {
   MarketingCanvasVisual,
   MarketingLaunchVisual,
 } from './MarketingTeamVisuals';
+import {
+  InboxUnifiedVisual,
+  InboxComposeVisual,
+  InboxCampaignVisual,
+  InboxAutomationsVisual,
+} from './InboxMarketingVisuals';
 
 export {
   CodingHarnessVisual,
@@ -40,6 +46,10 @@ export {
   MarketingMemoryVisual,
   MarketingCanvasVisual,
   MarketingLaunchVisual,
+  InboxUnifiedVisual,
+  InboxComposeVisual,
+  InboxCampaignVisual,
+  InboxAutomationsVisual,
 };
 
 const RECON_DIFF: DiffLine[] = [

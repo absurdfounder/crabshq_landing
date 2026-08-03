@@ -753,7 +753,12 @@ export default function TrooperDemo({
   const chatProgrammaticScrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const demoBandRef = useRef<HTMLDivElement>(null);
   const demoCanvasRef = useRef<HTMLDivElement>(null);
-  const [isDemoVisible, setIsDemoVisible] = useState(true);
+  // Start inert until the intersection sync runs — the script effect depends on
+  // this flag, so flipping it true is what kicks the reel off (and back on after
+  // the band leaves and re-enters the viewport).
+  const [isDemoVisible, setIsDemoVisible] = useState(false);
+  const isDemoVisibleRef = useRef(false);
+  const modeRef = useRef<DemoMode>('script');
   const modalMsgCounter = useRef(0);
   const idleTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const { cursor, goTo, hide: hideCursor, rest: restCursor, clearTimers: clearCursorTimers } =
@@ -779,29 +784,36 @@ export default function TrooperDemo({
   useEffect(() => { canvasReviewRef.current = canvasReview; }, [canvasReview]);
   useEffect(() => { activeChannelRef.current = activeChannel; }, [activeChannel]);
   useEffect(() => { taskModalOpenRef.current = taskModalOpen; }, [taskModalOpen]);
+  useEffect(() => { modeRef.current = mode; }, [mode]);
+  useEffect(() => { isDemoVisibleRef.current = isDemoVisible; }, [isDemoVisible]);
 
-  // Start the reel as soon as any part of the band is on screen. Defaulting to
-  // `false` left subpage demos dead for seconds (empty board + Pause icon) until
-  // the observer fired — even when the visitor was already looking at them.
+  // Drive playback from viewport presence. The script effect lists
+  // `isDemoVisible` as a dependency — without that, a mount-time `false` (or a
+  // scroll-away) parked the reel forever until a click flipped `mode` and the
+  // 6s idle timer resumed it.
   useEffect(() => {
     const band = demoBandRef.current;
     if (!band) return;
     if (!('IntersectionObserver' in window)) {
+      isDemoVisibleRef.current = true;
       setIsDemoVisible(true);
       return;
     }
 
     const sync = (entry?: IntersectionObserverEntry) => {
-      if (entry) {
-        setIsDemoVisible(entry.isIntersecting);
-        return;
-      }
-      const rect = band.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      const visible = rect.bottom > 0 && rect.top < vh;
+      const visible = entry
+        ? entry.isIntersecting
+        : (() => {
+            const rect = band.getBoundingClientRect();
+            const vh = window.innerHeight || document.documentElement.clientHeight;
+            return rect.bottom > 0 && rect.top < vh;
+          })();
+      isDemoVisibleRef.current = visible;
       setIsDemoVisible(visible);
     };
 
+    // Immediate sync so in-view heroes (team/feature pages) start on the next
+    // paint instead of waiting for the observer's first callback.
     sync();
 
     const observer = new IntersectionObserver(
@@ -950,6 +962,7 @@ export default function TrooperDemo({
    * reel outright — it picks itself back up once they stop.
    */
   const handleActivity = useCallback(() => {
+    modeRef.current = 'user';
     setMode('user');
     clearCursorTimers();
     restCursor();
@@ -962,6 +975,7 @@ export default function TrooperDemo({
         if (idleTimer.current) clearInterval(idleTimer.current);
         idleTimer.current = null;
         setResumeIn(null);
+        modeRef.current = 'script';
         setMode('script');
       } else {
         setResumeIn(left);
@@ -979,6 +993,7 @@ export default function TrooperDemo({
 
     if (prevId === null) {
       resetDemo();
+      modeRef.current = 'script';
       setMode('script');
       return;
     }
@@ -991,6 +1006,7 @@ export default function TrooperDemo({
     } else {
       resetDemo();
     }
+    modeRef.current = 'script';
     setMode('script');
   }, [activeScenarioId]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -1251,12 +1267,14 @@ export default function TrooperDemo({
     const idx = scriptIndex;
     // Every scripted wait runs through here, so one knob rescales the whole reel.
     const sleep = (ms: number) => rawSleep(speed > 0 ? ms / speed : ms);
+    const stillRunning = () =>
+      alive && modeRef.current === 'script' && isDemoVisibleRef.current;
     onStepChange?.(idx, totalScriptLength);
 
     const run = async () => {
       if (idx >= totalScriptLength) {
         await sleep(5000);
-        if (!alive) return;
+        if (!stillRunning()) return;
         if (rotate) {
           // Scenario-change effect owns soft/hard reset so same-org threads survive.
           setRotationIndex(n => n + 1);
@@ -1269,7 +1287,7 @@ export default function TrooperDemo({
       if (idx >= CHAT_SCRIPT.length) {
         const step = TASK_EXEC_SCRIPT[idx - CHAT_SCRIPT.length];
         await sleep(step.delay);
-        if (!alive) return;
+        if (!stillRunning()) return;
         const ctx = cursorContextForStep(step, DEMO_ARTIFACTS);
 
         if (step.type === 'moveTask') {
@@ -1286,16 +1304,16 @@ export default function TrooperDemo({
               handleTaskDrop(task.id, step.col);
             } else {
               await goTo(`[data-demo-target="task-card"][data-task-id="${step.taskId}"]`, { click: true });
-              if (!alive) return;
+              if (!stillRunning()) return;
               const move = runScriptedMove(task, step.col);
               // The pointer carries the card rather than watching it fly alone.
-              setTimeout(() => { if (alive) goTo(`[data-demo-target="kanban-body-${step.col}"]`); }, DRAG.lift);
+              setTimeout(() => { if (stillRunning()) goTo(`[data-demo-target="kanban-body-${step.col}"]`); }, DRAG.lift);
               await move;
             }
           } else {
             applyTaskExecStep(step);
           }
-          if (!alive) return;
+          if (!stillRunning()) return;
           setScriptIndex(idx + 1);
           return;
         }
@@ -1310,7 +1328,7 @@ export default function TrooperDemo({
         if (step.type === 'generate') {
           applyTaskExecStep(step);
           await sleep(step.runMs);
-          if (!alive) return;
+          if (!stillRunning()) return;
           setGenerationJob(j => (j ? { ...j, done: true } : j));
           setScriptIndex(idx + 1);
           return;
@@ -1323,7 +1341,7 @@ export default function TrooperDemo({
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
                 void (async () => {
-                  if (alive) await animateExecStepCursor(step, goTo, ctx);
+                  if (stillRunning()) await animateExecStepCursor(step, goTo, ctx);
                   resolve();
                 })();
               });
@@ -1331,19 +1349,19 @@ export default function TrooperDemo({
           });
         } else {
           await animateExecStepCursor(step, goTo, ctx);
-          if (!alive) return;
+          if (!stillRunning()) return;
           await sleep(REACTION_MS);
-          if (!alive) return;
+          if (!stillRunning()) return;
           applyTaskExecStep(step);
         }
-        if (!alive) return;
+        if (!stillRunning()) return;
         setScriptIndex(idx + 1);
         return;
       }
 
       const s = CHAT_SCRIPT[idx];
       await sleep(s.delay);
-      if (!alive) return;
+      if (!stillRunning()) return;
 
       if (s.type === 'typing') {
         // Hands move to the keyboard — the pointer rests instead of hovering
@@ -1354,7 +1372,7 @@ export default function TrooperDemo({
         for (let i = 1; i <= text.length; i++) {
           setInputText(text.slice(0, i));
           await sleep(reducedMotion ? 6 : typingDelayFor(text, i - 1));
-          if (!alive) return;
+          if (!stillRunning()) return;
         }
         setScriptIndex(idx + 1);
         return;
@@ -1364,9 +1382,9 @@ export default function TrooperDemo({
       // The rest are glances; let the cursor drift over while the beat plays.
       if (s.type === 'send' || s.type === 'mention_tab') {
         await animateChatStepCursor(s, goTo);
-        if (!alive) return;
+        if (!stillRunning()) return;
         await sleep(REACTION_MS);
-        if (!alive) return;
+        if (!stillRunning()) return;
       } else {
         animateChatStepCursor(s, goTo);
       }
@@ -1419,19 +1437,24 @@ export default function TrooperDemo({
         for (const task of newTasks) {
           setTasks((p) => [...p, task]);
           await sleep(reducedMotion ? 0 : 110);
-          if (!alive) return;
+          if (!stillRunning()) return;
         }
         setActivePage("tasks");
       }
 
-      if (!alive) return;
+      if (!stillRunning()) return;
       setScriptIndex(idx + 1);
     };
 
     run();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+      // Cancel in-flight cursor travel so a visibility/mode pause cannot leave
+      // the previous step hung on `await goTo`.
+      clearCursorTimers();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scriptIndex, mode, speed]);
+  }, [scriptIndex, mode, speed, isDemoVisible]);
 
   const clearIdleTimer = () => {
     if (idleTimer.current) { clearInterval(idleTimer.current); idleTimer.current = null; }
@@ -1441,6 +1464,7 @@ export default function TrooperDemo({
   /** Hand the reel back the wheel without losing the visitor's place. */
   const resumeScript = () => {
     clearIdleTimer();
+    modeRef.current = 'script';
     setMode('script');
   };
 
@@ -1448,6 +1472,7 @@ export default function TrooperDemo({
     clearCursorTimers();
     clearIdleTimer();
     resetDemo();
+    modeRef.current = 'script';
     setMode('script');
   };
 
@@ -1512,20 +1537,31 @@ export default function TrooperDemo({
             <div style={{ display: "flex", gap: 5 }}>
               <button
                 type="button"
-                onClick={() => (mode === 'script' ? handleActivity() : resumeScript())}
+                onClick={() => {
+                  // Play-while-waiting used to call handleActivity (user mode + 6s
+                  // idle), which made "start the stuck demo" feel like a long pause.
+                  if (mode === 'user') resumeScript();
+                  else if (isDemoVisible) handleActivity();
+                }}
                 className="demo-hoverable demo-icon-btn"
-                aria-label={mode === 'script' ? (isDemoVisible ? 'Pause demo' : 'Demo waiting') : 'Resume demo'}
+                aria-label={
+                  mode === 'user'
+                    ? 'Resume demo'
+                    : isDemoVisible
+                      ? 'Pause demo'
+                      : 'Demo waiting for viewport'
+                }
                 title={
-                  mode === 'script'
-                    ? isDemoVisible
+                  mode === 'user'
+                    ? 'Resume'
+                    : isDemoVisible
                       ? 'Pause'
                       : 'Starting…'
-                    : 'Resume'
                 }
                 style={{ width: 26, height: 26, borderRadius: 8, border: `1px solid ${C.border}`, background: C.card, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: C.textSubtle }}
               >
-                {mode === 'script' ? (
-                  isDemoVisible ? <Pause size={12} strokeWidth={2} /> : <Play size={12} strokeWidth={2} />
+                {mode === 'script' && isDemoVisible ? (
+                  <Pause size={12} strokeWidth={2} />
                 ) : (
                   <Play size={12} strokeWidth={2} />
                 )}

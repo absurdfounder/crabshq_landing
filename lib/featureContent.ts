@@ -491,6 +491,56 @@ const FEATURE_SECTIONS: Record<string, MarketingFeatureSection[]> = {
     },
     canvasFeatureSection('06'),
   ],
+  inbox: [
+    {
+      eyebrow: 'Unified',
+      eyebrowNumber: '03',
+      ask: 'trooper, show me every conversation in one place',
+      reply: 'inbox synced — LinkedIn to WhatsApp',
+      window: 'Inbox — All channels',
+      title: 'Every conversation,',
+      titleHighlight: 'one productive inbox.',
+      intro:
+        'LinkedIn, Gmail, business email, Instagram, WhatsApp, and X land together — tagged, remembered, and ready for follow-up.',
+      visual: 'inbox-unified',
+    },
+    {
+      eyebrow: 'Compose',
+      eyebrowNumber: '04',
+      ask: 'trooper, draft this week’s digest for customers',
+      reply: 'draft ready — waiting on schedule',
+      window: 'Inbox — Compose',
+      title: 'Digests and outreach',
+      titleHighlight: 'written for you.',
+      intro:
+        'Agents draft newsletters and replies with contact variables. You schedule or approve — nothing ships off-script.',
+      visual: 'inbox-compose',
+    },
+    {
+      eyebrow: 'Campaigns',
+      eyebrowNumber: '05',
+      ask: 'trooper, turn the new post into a newsletter',
+      reply: 'queued for Friday morning',
+      window: 'Inbox — Campaign',
+      title: 'Changelogs and posts',
+      titleHighlight: 'become sends on autopilot.',
+      intro:
+        'New blog posts and product notes become scheduled customer email — agents write and queue, you keep the calendar.',
+      visual: 'inbox-campaign',
+    },
+    {
+      eyebrow: 'Automations',
+      eyebrowNumber: '06',
+      ask: 'trooper, keep the welcome series running',
+      reply: 'automation live — no follow-ups slip',
+      window: 'Inbox — Automations',
+      title: 'Welcome series and nudges',
+      titleHighlight: 'that never go quiet.',
+      intro:
+        'Set the drip once. Agents wait, follow up, and log outcomes so no lead sits forgotten in a channel.',
+      visual: 'inbox-automations',
+    },
+  ],
 };
 
 type FeaturePageExtras = Record<string, never>;

@@ -29,7 +29,11 @@ export type MarketingVisualId =
   | 'pr-comms'
   | 'growth-experiments'
   | 'browser-serp'
-  | 'launch-ops';
+  | 'launch-ops'
+  | 'inbox-unified'
+  | 'inbox-compose'
+  | 'inbox-campaign'
+  | 'inbox-automations';
 
 export type MarketingFeatureSection = {
   eyebrow: string;
@@ -198,6 +202,26 @@ const VISUAL_PROMPTS: Record<
     ask: 'trooper, coordinate the launch checklist',
     reply: 'on it — moving in parallel',
     window: 'Launch — Ops',
+  },
+  'inbox-unified': {
+    ask: 'trooper, show me every conversation in one place',
+    reply: 'inbox synced — LinkedIn to WhatsApp',
+    window: 'Inbox — All channels',
+  },
+  'inbox-compose': {
+    ask: 'trooper, draft this week’s digest for customers',
+    reply: 'draft ready — waiting on schedule',
+    window: 'Inbox — Compose',
+  },
+  'inbox-campaign': {
+    ask: 'trooper, turn the new post into a newsletter',
+    reply: 'queued for Friday morning',
+    window: 'Inbox — Campaign',
+  },
+  'inbox-automations': {
+    ask: 'trooper, keep the welcome series running',
+    reply: 'automation live — no follow-ups slip',
+    window: 'Inbox — Automations',
   },
 };
 

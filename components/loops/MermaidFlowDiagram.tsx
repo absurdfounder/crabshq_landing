@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 let mermaidInitialized = false;
 
@@ -29,6 +29,10 @@ export function MermaidFlowDiagram({ source, className = '', onRender }: Mermaid
   const reactId = useId().replace(/:/g, '');
   const [error, setError] = useState('');
   const [svg, setSvg] = useState('');
+  const onRenderRef = useRef(onRender);
+  useEffect(() => {
+    onRenderRef.current = onRender;
+  }, [onRender]);
 
   useEffect(() => {
     let cancelled = false;
@@ -46,7 +50,7 @@ export function MermaidFlowDiagram({ source, className = '', onRender }: Mermaid
         if (cancelled) return;
         setSvg(rendered);
         setError('');
-        onRender?.(rendered);
+        onRenderRef.current?.(rendered);
       } catch (err) {
         if (cancelled) return;
         setSvg('');
@@ -58,7 +62,7 @@ export function MermaidFlowDiagram({ source, className = '', onRender }: Mermaid
     return () => {
       cancelled = true;
     };
-  }, [source, reactId, onRender]);
+  }, [source, reactId]);
 
   if (error) {
     return (

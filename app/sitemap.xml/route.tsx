@@ -69,6 +69,7 @@ const staticPages = [
   { path: '/features/browser-control', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/system-access', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/email-automation', priority: '0.8', changefreq: 'weekly' },
+  { path: '/features/inbox', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/skills-plugins', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/multi-agent-collaboration', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/openclaw-powered', priority: '0.8', changefreq: 'weekly' },

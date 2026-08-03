@@ -65,6 +65,7 @@ export const FEATURE_DEMO_MAP: Record<string, DemoScenarioId> = {
   'browser-control': 'launch',
   'system-access': 'engineering',
   'email-automation': 'email',
+  inbox: 'email',
   'skills-plugins': 'marketing',
   'multi-agent-collaboration': 'coding',
   'openclaw-powered': 'launch',
@@ -290,6 +291,38 @@ const featureContent: Record<string, SubpageContent> = {
       'Browse setup guides for Slack, WhatsApp, Telegram, Discord, Signal, iMessage, and Email at /channels.',
     ],
     benefits: genericFeatureBenefits('multi-channel command'),
+  }),
+  inbox: buildPage({
+    slug: 'inbox',
+    kind: 'feature',
+    missionLabel: 'Feature brief',
+    title: 'Powerful Inbox',
+    titleAccent: 'every conversation in one place.',
+    description:
+      'One fast, productive inbox that remembers everyone, tags every conversation, and never lets a follow-up slip — LinkedIn, Gmail, WhatsApp, Instagram, X, and business email, with agents that know how to use each.',
+    overviewTitle: 'CRM + email + messaging, run by your agents',
+    overviewParagraphs: [
+      'Stop hopping between LinkedIn DMs, Gmail threads, WhatsApp chats, Instagram, and X. Trooper brings every conversation into one inbox with contact memory and tags.',
+      'Agents read and draft across channels the way you would — then hold sensitive sends for your approval. Same workforce whether the message came from email or WhatsApp.',
+      'Hand off newsletters, changelogs, and marketing schedules to AI. Digests go out on time, welcome series keep running, and follow-ups do not slip into a forgotten tab.',
+    ],
+    benefits: [
+      {
+        title: 'All channels, one CRM',
+        description:
+          'LinkedIn, Gmail, business email, Instagram, WhatsApp, and X land in a single tagged inbox — with history that sticks to the contact.',
+      },
+      {
+        title: 'Agents that speak each channel',
+        description:
+          'Your workforce knows how to use each surface: draft emails, nudge on WhatsApp, follow up on LinkedIn — with send gates you control.',
+      },
+      {
+        title: 'Schedules without the grind',
+        description:
+          'Weekly digests, product changelogs, and drip campaigns write and queue automatically. You review and approve — they keep the cadence.',
+      },
+    ],
   }),
 };
 

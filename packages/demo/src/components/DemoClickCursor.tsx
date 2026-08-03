@@ -40,10 +40,14 @@ export function useDemoCursor(
   const anchor = useRef<{ x: number; y: number } | null>(null);
   const hovered = useRef<Element | null>(null);
   const posRef = useRef<{ x: number; y: number }>({ x: INITIAL.x, y: INITIAL.y });
+  /** In-flight goTo resolvers — clearTimers must settle them or the reel hangs. */
+  const pendingResolvers = useRef<Array<() => void>>([]);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
+    const resolvers = pendingResolvers.current.splice(0);
+    resolvers.forEach((resolve) => resolve());
   }, []);
 
   const later = useCallback((fn: () => void, ms: number) => {
@@ -96,6 +100,20 @@ export function useDemoCursor(
     later(() => setCursor((c) => ({ ...c, clicking: false })), CURSOR_CLICK_MS);
   }, [later]);
 
+  const trackPromise = useCallback((run: (resolve: () => void) => void): Promise<void> => {
+    return new Promise((resolve) => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        pendingResolvers.current = pendingResolvers.current.filter((r) => r !== finish);
+        resolve();
+      };
+      pendingResolvers.current.push(finish);
+      run(finish);
+    });
+  }, []);
+
   /**
    * Moves the cursor and resolves when it has arrived (and clicked, if asked).
    * Callers await this so the state change lands *after* the click, instead of
@@ -106,7 +124,7 @@ export function useDemoCursor(
       const from = resolveTarget(options.dragFrom, 'start');
       const to = resolveTarget(selector, 'end');
       if (!from || !to) return Promise.resolve();
-      return new Promise((resolve) => {
+      return trackPromise((resolve) => {
         const travelIn = moveTo(from.x, from.y, from.el);
         later(() => {
           setCursor((c) => ({ ...c, clicking: true }));
@@ -128,14 +146,14 @@ export function useDemoCursor(
 
     const pt = resolveTarget(selector);
     if (!pt) return Promise.resolve();
-    return new Promise((resolve) => {
+    return trackPromise((resolve) => {
       const travelMs = moveTo(pt.x, pt.y, pt.el);
       later(() => {
         if (options?.click && !options.silent) pulseClick();
         resolve();
       }, travelMs + CURSOR_SETTLE_MS);
     });
-  }, [later, moveTo, pulseClick, reducedMotion, resolveTarget, setHover]);
+  }, [later, moveTo, pulseClick, reducedMotion, resolveTarget, setHover, trackPromise]);
 
   /** Park the pointer out of the way — a hand leaving the mouse to type. */
   const rest = useCallback(() => {

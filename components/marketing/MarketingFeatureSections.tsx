@@ -41,6 +41,10 @@ import {
   GrowthExperimentsVisual,
   BrowserSerpVisual,
   LaunchOpsVisual,
+  InboxUnifiedVisual,
+  InboxComposeVisual,
+  InboxCampaignVisual,
+  InboxAutomationsVisual,
 } from '@/components/marketing/visuals/MarketingVisuals';
 
 const VISUALS = {
@@ -73,6 +77,10 @@ const VISUALS = {
   'growth-experiments': GrowthExperimentsVisual,
   'browser-serp': BrowserSerpVisual,
   'launch-ops': LaunchOpsVisual,
+  'inbox-unified': InboxUnifiedVisual,
+  'inbox-compose': InboxComposeVisual,
+  'inbox-campaign': InboxCampaignVisual,
+  'inbox-automations': InboxAutomationsVisual,
 } as const;
 
 type MarketingFeatureSectionsProps = {
