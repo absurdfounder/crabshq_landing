@@ -18,10 +18,6 @@ export default function DashboardShowcaseSection() {
   return (
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
-        <div className="pb-4 text-center">
-          <span className="kicker">Command center</span>
-        </div>
-
         <motion.div
           className="mx-auto w-full max-w-2xl text-center"
           initial={{ opacity: 0, y: 14 }}

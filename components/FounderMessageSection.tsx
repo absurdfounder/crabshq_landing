@@ -96,8 +96,7 @@ export default function FounderMessageSection() {
   return (
     <div>
       <div className="mx-auto max-w-3xl px-1 text-center sm:px-0">
-        <p className="kicker">Message from the founder</p>
-        <h2 className="h2-section mx-auto mt-3">the dream.</h2>
+        <h2 className="h2-section mx-auto">the dream.</h2>
       </div>
 
       <div className="relative mx-auto mt-8 max-w-3xl overflow-x-clip sm:mt-12 sm:overflow-visible">

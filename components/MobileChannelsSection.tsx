@@ -715,8 +715,7 @@ export default function MobileChannelsSection() {
       <div className="rail border-t border-[var(--color-line)] px-4 py-14 sm:px-6 sm:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-14">
           <div className="max-w-md">
-            <span className="kicker">Field Comms</span>
-            <h2 className="h2-section mt-3 text-balance">
+            <h2 className="h2-section text-balance">
               Chat with your{' '}
               <span className="inline sm:whitespace-nowrap">
                 workforce

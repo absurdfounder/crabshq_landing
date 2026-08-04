@@ -163,15 +163,6 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
 
       <div className="mt-14 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-0">
         <div className="relative">
-          <div className="flex justify-center lg:justify-start lg:pl-1.5">
-            <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
-              <span aria-hidden className="text-[8px] text-neutral-300">
-                ◆
-              </span>
-              The old stack
-            </span>
-          </div>
-
           <div className="relative mx-auto mt-[18px] h-[444px] w-full max-w-[336px] lg:mt-5 lg:h-[460px] lg:w-[412px] lg:max-w-none">
             {tools.map((tool, i) => (
               <ToolCard

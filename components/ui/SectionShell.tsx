@@ -24,17 +24,17 @@ interface SectionShellProps {
 
 /**
  * SectionShell — establishes a deliberate grid/line rhythm between major
- * landing-page sections. Renders a hairline top border, an optional numbered
- * monospace eyebrow at the top-left (e.g. `[02] WORKFORCE`), and the children.
+ * landing-page sections. Renders a hairline top border and the children.
  *
- * Keeps the light theme intact. Children control their own inner padding and
- * background; pass `bgClass` so the eyebrow strip matches the section's bg.
+ * Eyebrow / number props are accepted for call-site compatibility but never
+ * rendered — small left kickers read as misaligned when section bodies are
+ * centered, and duplicated real headlines below them.
  */
 export default function SectionShell({
   id,
   eyebrow,
-  eyebrowNumber,
-  eyebrowAlign = 'left',
+  eyebrowNumber: _eyebrowNumber,
+  eyebrowAlign: _eyebrowAlign = 'left',
   className = '',
   bgClass = 'bg-canvas',
   noBorder = false,
@@ -65,25 +65,14 @@ export default function SectionShell({
     .filter(Boolean)
     .join(' ');
 
+  // Non-rhythm sections used to get top padding from the eyebrow strip.
+  // Keep that spacing when a label was requested so layouts do not collapse.
+  const needsLegacyTopPad = Boolean(eyebrow) && !rhythm;
+
   return (
     <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
-        {eyebrow && (
-          <div
-            className={`${rhythm ? 'pb-4' : 'pb-4 pt-12 sm:pt-20'} ${
-              eyebrowAlign === 'center' ? 'text-center' : ''
-            }`}
-          >
-            {/*
-              `eyebrowNumber` is accepted and ignored. It used to print
-              `[02]` before the label, numbering the page like a parts
-              catalogue — which tells a reader how many more of these they
-              have left to sit through. 75 call sites pass it; rather than
-              touch all of them, the shell stops rendering it.
-            */}
-            <span className="kicker">{eyebrow}</span>
-          </div>
-        )}
+        {needsLegacyTopPad ? <div className="pt-12 sm:pt-20" aria-hidden /> : null}
         {children}
       </div>
     </section>

@@ -125,12 +125,6 @@ const ecosystemColumn: FooterColumn = {
   ],
 };
 
-function CellHeader({ number, eyebrow }: { number: string; eyebrow: string }) {
-  return (
-    <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{eyebrow}</div>
-  );
-}
-
 function LinkList({ links }: { links: LinkItem[] }) {
   return (
     <ul className="space-y-1.5">
@@ -185,15 +179,12 @@ function FooterColumnCell({
         .filter(Boolean)
         .join(' ')}
     >
-      <CellHeader number={column.number} eyebrow={column.eyebrow} />
       {column.groups.map((group, gIdx) => (
         <div
           key={group.heading}
           className={gIdx > 0 ? 'border-t border-slate-100 pt-5' : ''}
         >
-          {column.groups.length > 1 && (
-            <div className="mb-3 text-sm font-semibold text-slate-900">{group.heading}</div>
-          )}
+          <div className="mb-3 text-sm font-semibold text-slate-900">{group.heading}</div>
           <LinkList links={group.links} />
         </div>
       ))}
@@ -212,7 +203,6 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
           <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-100 border-b border-slate-100 sm:col-span-2 lg:col-span-1 lg:border-b-0">
-            <CellHeader number="01" eyebrow="Trooper" />
             <TrooperLogo
               characterClassName="h-10 w-10 sm:h-11 sm:w-11 object-contain"
               textClassName="text-lg sm:text-xl"
