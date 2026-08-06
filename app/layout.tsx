@@ -3,6 +3,7 @@ import './css/style.css'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import Script from 'next/script'
+import PlausibleProvider from 'next-plausible'
 
 import Banner from '@/components/banner'
 import SchemaMarkup from '@/components/SchemaMarkup'
@@ -105,19 +106,15 @@ export default function RootLayout({
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
         {/*
-          Plausible must be a real <head> script in the initial HTML.
-          next-plausible + afterInteractive only injects after hydration, so the
-          installer check / early pageviews miss it. beforeInteractive ships in SSR HTML.
+          Plausible via first-party proxy (withPlausibleProxy → /q/js/... + /q/proxy/api/event).
+          beforeInteractive so the tag exists in SSR HTML for installer checks.
         */}
-        <Script
-          defer
-          data-domain="trooper.so"
-          src="https://plausible.io/js/script.outbound-links.tagged-events.js"
-          strategy="beforeInteractive"
+        <PlausibleProvider
+          domain="trooper.so"
+          trackOutboundLinks
+          taggedEvents
+          scriptProps={{ strategy: 'beforeInteractive' }}
         />
-        <Script id="plausible-init" strategy="beforeInteractive">
-          {`window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}`}
-        </Script>
         {/* Google Translate Script */}
         <Script 
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" 
