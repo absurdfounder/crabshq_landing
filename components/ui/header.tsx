@@ -145,7 +145,7 @@ export default function Header() {
             size="sm"
             variant="outline"
             tone="dark"
-            className={`hidden shrink-0 xl:inline-flex ${
+            className={`plausible-event-name=Sign+In plausible-event-location=Header hidden shrink-0 xl:inline-flex ${
               darkNav
                 ? '!border-white/25 !text-white hover:!bg-white/10 focus-visible:!ring-offset-[#141a10]'
                 : ''

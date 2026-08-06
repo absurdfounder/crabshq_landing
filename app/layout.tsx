@@ -3,6 +3,7 @@ import './css/style.css'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import Script from 'next/script'
+import PlausibleProvider from 'next-plausible'
 
 import Banner from '@/components/banner'
 import SchemaMarkup from '@/components/SchemaMarkup'
@@ -146,6 +147,32 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-canvas font-sans antialiased text-ink`}
       >
+        {/* Site-wide Plausible — must live in the root layout so (auth) pages
+            (pricing, features, loops, …) are tracked, not only the homepage. */}
+        <PlausibleProvider
+          domain="trooper.so"
+          trackOutboundLinks
+          taggedEvents
+        />
+        {/* GA + Clarity also site-wide (same prior gap as Plausible). */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-FKXTBWH4RE');
+          `}
+        </Script>
+        <Script id="clarity-script" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "mm5deyus4u");
+          `}
+        </Script>
         <div className="flex flex-col min-h-screen">
           {children}
           <SchemaMarkup />

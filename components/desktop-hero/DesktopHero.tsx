@@ -1544,7 +1544,7 @@ export default function DesktopHero() {
                 external
                 size="lg"
                 tone="dark"
-                className="w-full shrink-0 sm:w-auto"
+                className="plausible-event-name=CTA+Click plausible-event-location=Hero w-full shrink-0 sm:w-auto"
                 icon={<ArrowRight className="h-4 w-4" />}
               >
                 Get started free

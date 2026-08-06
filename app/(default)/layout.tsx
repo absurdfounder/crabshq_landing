@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import PlausibleProvider from 'next-plausible'
 import Script from 'next/script'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -73,31 +72,9 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
     }
   `;
 
+  // Analytics (Plausible / GA / Clarity) live in app/layout.tsx so (auth) pages are covered.
   return (
-    <PlausibleProvider domain="trooper.so">
-
-      {/* Google Analytics */}
-      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-FKXTBWH4RE');
-        `}
-      </Script>
-
-      {/* Microsoft Clarity */}
-      <Script id="clarity-script" strategy="afterInteractive">
-        {`
-          (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-          })(window, document, "clarity", "script", "mm5deyus4u");
-        `}
-      </Script>
-
+    <>
       {/* Clear googtrans hash from URL if present */}
       <Script id="clear-hash" strategy="beforeInteractive">
         {`
@@ -138,6 +115,6 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         <Newsletter />
       </SectionShell>
       <Footer />
-    </PlausibleProvider>
+    </>
   )
 }

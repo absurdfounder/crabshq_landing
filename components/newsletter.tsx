@@ -28,6 +28,7 @@ export default function Newsletter() {
                   external
                   size="lg"
                   tone="brand"
+                  className="plausible-event-name=CTA+Click plausible-event-location=Newsletter"
                   icon={<ArrowRight className="h-4 w-4" />}
                 >
                   Get Started
@@ -39,6 +40,7 @@ export default function Newsletter() {
                   size="lg"
                   variant="outline"
                   tone="dark"
+                  className="plausible-event-name=Download+Mac plausible-event-location=Newsletter"
                   icon={<Download className="h-4 w-4" />}
                 >
                   Download Mac App
