@@ -3,7 +3,6 @@ import './css/style.css'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import Script from 'next/script'
-import PlausibleProvider from 'next-plausible'
 
 import Banner from '@/components/banner'
 import SchemaMarkup from '@/components/SchemaMarkup'
@@ -105,6 +104,20 @@ export default function RootLayout({
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
+        {/*
+          Plausible must be a real <head> script in the initial HTML.
+          next-plausible + afterInteractive only injects after hydration, so the
+          installer check / early pageviews miss it. beforeInteractive ships in SSR HTML.
+        */}
+        <Script
+          defer
+          data-domain="trooper.so"
+          src="https://plausible.io/js/script.outbound-links.tagged-events.js"
+          strategy="beforeInteractive"
+        />
+        <Script id="plausible-init" strategy="beforeInteractive">
+          {`window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}`}
+        </Script>
         {/* Google Translate Script */}
         <Script 
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" 
@@ -147,14 +160,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-canvas font-sans antialiased text-ink`}
       >
-        {/* Site-wide Plausible — must live in the root layout so (auth) pages
-            (pricing, features, loops, …) are tracked, not only the homepage. */}
-        <PlausibleProvider
-          domain="trooper.so"
-          trackOutboundLinks
-          taggedEvents
-        />
-        {/* GA + Clarity also site-wide (same prior gap as Plausible). */}
+        {/* GA + Clarity site-wide (covers (auth) pages too). */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
