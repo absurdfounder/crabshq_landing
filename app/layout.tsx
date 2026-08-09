@@ -107,13 +107,14 @@ export default function RootLayout({
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
         {/*
           Plausible via first-party proxy (withPlausibleProxy → /q/js/... + /q/proxy/api/event).
-          beforeInteractive so the tag exists in SSR HTML for installer checks.
+          Rendered in <head> so the tag is present in SSR HTML for installer checks.
+          Do not pass Next.js Script `strategy` via scriptProps — that prop is not on
+          HTMLScriptAttributes and fails `next build` typecheck.
         */}
         <PlausibleProvider
           domain="trooper.so"
           trackOutboundLinks
           taggedEvents
-          scriptProps={{ strategy: 'beforeInteractive' }}
         />
         {/* Google Translate Script */}
         <Script 
