@@ -109,16 +109,13 @@ const CURSOR_POS = [
   { x: 318, y: 282 },
 ] as const;
 
-/** The routine as a canvas card: nodes light up as the run advances. */
+/** Left half of the panel: the routine as a canvas, nodes light up as the run advances. */
 function WorkflowGraph({ step }: { step: number }) {
   const reduceMotion = useReducedMotion();
   const cursor = CURSOR_POS[Math.min(step, CURSOR_POS.length - 1)];
 
   return (
-    <div
-      className="relative h-[330px] w-[360px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-[0_20px_44px_-22px_rgba(28,25,23,0.35)] ring-1 ring-stone-900/10"
-      aria-hidden
-    >
+    <div className="relative h-[330px] w-full overflow-hidden bg-white" aria-hidden>
       {/* canvas dot grid */}
       <div
         className="absolute inset-0"
@@ -127,10 +124,12 @@ function WorkflowGraph({ step }: { step: number }) {
           backgroundSize: '12px 12px',
         }}
       />
-      <p className="absolute left-3.5 top-3 font-mono text-[10px] tracking-wide text-stone-400">
+      <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
         workflow — refund-playbook
       </p>
 
+      {/* fixed-size canvas centered in the half; squeezes slightly on phones */}
+      <div className="absolute left-1/2 top-0 h-[330px] w-[360px] origin-top -translate-x-1/2 scale-[0.88] sm:scale-100">
       <svg viewBox="0 0 360 330" fill="none" className="absolute inset-0 h-full w-full">
         {/* resting edges */}
         <path
@@ -206,6 +205,7 @@ function WorkflowGraph({ step }: { step: number }) {
           strokeWidth={1.5}
         />
       </motion.span>
+      </div>
     </div>
   );
 }
@@ -223,15 +223,12 @@ function TerminalLine({ children }: { children: ReactNode }) {
   );
 }
 
-/** The same routine, published — replays the run as the workflow advances. */
+/** Right half of the panel: the same routine, published — replays the run live. */
 function ApiTerminal({ step }: { step: number }) {
   const running = step >= 1 && step < 3;
 
   return (
-    <div
-      className="w-full max-w-[27rem] overflow-hidden rounded-2xl bg-stone-900 shadow-[0_28px_60px_-28px_rgba(28,25,23,0.55)] ring-1 ring-black/20"
-      data-mock-ui
-    >
+    <div className="flex h-full w-full flex-col bg-stone-900" data-mock-ui>
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
@@ -250,7 +247,7 @@ function ApiTerminal({ step }: { step: number }) {
         </span>
       </div>
 
-      <div className="min-h-[248px] space-y-1 px-4 py-4 font-mono text-[12.5px] leading-relaxed">
+      <div className="min-h-[248px] flex-1 space-y-1 px-4 py-4 font-mono text-[12.5px] leading-relaxed">
         <p className="text-stone-500"># call it from your app or internal tools</p>
 
         <AnimatePresence initial={false}>
@@ -393,15 +390,18 @@ export default function LoopApiSection() {
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
-          <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-5 lg:flex-row lg:gap-7">
+          {/* One panel, two halves: workflow canvas | published endpoint. */}
+          <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
             <WorkflowGraph step={step} />
+            <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
+              <ApiTerminal step={step} />
+            </div>
             <span
-              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-stone-500 shadow-sm ring-1 ring-stone-900/10"
+              className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
               aria-hidden
             >
-              <ArrowRight className="size-4 rotate-90 lg:rotate-0" strokeWidth={2.25} />
+              <ArrowRight className="size-4" strokeWidth={2.25} />
             </span>
-            <ApiTerminal step={step} />
           </div>
         </motion.div>
 
