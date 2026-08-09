@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Bot, MousePointer2, RefreshCw, UserCheck, Zap } from 'lucide-react';
-import { DemoFavicon } from '@trooper/demo';
+import { ArrowRight, RefreshCw } from 'lucide-react';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -25,97 +24,18 @@ function ForBy() {
   );
 }
 
-/* ─── Script: the workflow runs on the left, the terminal answers on the right ───
+/* ─── Script ───
  * step 0  idle
- * step 1  refund request lands (POST appears)
- * step 2  evidence agent works (edge 1 draws, run log)
- * step 3  human gate (edge 2 draws, response)
+ * step 1  mention lands (POST appears)
+ * step 2  agents hand off (run log)
+ * step 3  response
  * step 4  token rotation footer
  */
 
-function NodeCard({
-  icon,
-  iconBg,
-  label,
-  domains,
-  className = '',
-  active,
-  done,
-}: {
-  icon: ReactNode;
-  iconBg: string;
-  label: string;
-  domains?: string[];
-  className?: string;
-  active: boolean;
-  done: boolean;
-}) {
+/** Left half of the panel: the agent workflow canvas. */
+function WorkflowCanvas() {
   return (
-    <motion.div
-      className={`absolute flex items-center gap-2.5 rounded-xl bg-white py-2 pl-2 pr-3 shadow-[0_14px_30px_-14px_rgba(28,25,23,0.4)] ${
-        active ? 'ring-2 ring-trooper' : 'ring-1 ring-stone-900/10'
-      } ${className}`}
-      animate={{ scale: active ? 1.04 : 1, opacity: active || done ? 1 : 0.5 }}
-      transition={{ duration: 0.35, ease }}
-    >
-      <span
-        className="flex size-7 shrink-0 items-center justify-center rounded-lg text-white"
-        style={{ background: iconBg }}
-      >
-        {icon}
-      </span>
-      <span className="whitespace-nowrap text-[13px] font-semibold text-stone-800">{label}</span>
-      {domains && domains.length > 0 ? (
-        <span className="flex items-center gap-1">
-          {domains.map((d) => (
-            <span
-              key={d}
-              className="flex size-5 items-center justify-center rounded-full bg-stone-50 ring-1 ring-stone-200"
-            >
-              <DemoFavicon domain={d} size={11} rounded="sm" />
-            </span>
-          ))}
-        </span>
-      ) : null}
-    </motion.div>
-  );
-}
-
-function EdgeLabel({
-  label,
-  className = '',
-  passed,
-}: {
-  label: string;
-  className?: string;
-  passed: boolean;
-}) {
-  return (
-    <span
-      className={`absolute whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-medium shadow-sm ring-1 transition-colors duration-300 ${
-        passed ? 'bg-trooper-50 text-trooper-800 ring-trooper/40' : 'bg-white text-stone-500 ring-stone-900/10'
-      } ${className}`}
-    >
-      {label}
-    </span>
-  );
-}
-
-const CURSOR_POS = [
-  { x: 205, y: 64 },
-  { x: 205, y: 64 },
-  { x: 296, y: 172 },
-  { x: 318, y: 282 },
-  { x: 318, y: 282 },
-] as const;
-
-/** Left half of the panel: the routine as a canvas, nodes light up as the run advances. */
-function WorkflowGraph({ step }: { step: number }) {
-  const reduceMotion = useReducedMotion();
-  const cursor = CURSOR_POS[Math.min(step, CURSOR_POS.length - 1)];
-
-  return (
-    <div className="relative h-[330px] w-full overflow-hidden bg-white" aria-hidden>
+    <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden bg-white px-5 lg:h-auto lg:min-h-[330px]" aria-hidden>
       {/* canvas dot grid */}
       <div
         className="absolute inset-0"
@@ -125,87 +45,16 @@ function WorkflowGraph({ step }: { step: number }) {
         }}
       />
       <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
-        workflow — refund-playbook
+        workflow — agent-orchestration
       </p>
-
-      {/* fixed-size canvas centered in the half; squeezes slightly on phones */}
-      <div className="absolute left-1/2 top-0 h-[330px] w-[360px] origin-top -translate-x-1/2 scale-[0.88] sm:scale-100">
-      <svg viewBox="0 0 360 330" fill="none" className="absolute inset-0 h-full w-full">
-        {/* resting edges */}
-        <path
-          d="M 100 88 L 100 130 L 196 130 L 196 156"
-          stroke="#c9c4b8"
-          strokeWidth="1.6"
-          strokeDasharray="5 5"
-        />
-        <path
-          d="M 196 202 L 196 244 L 268 244 L 268 270"
-          stroke="#c9c4b8"
-          strokeWidth="1.6"
-          strokeDasharray="5 5"
-        />
-        {/* traversed edges draw in green */}
-        <motion.path
-          d="M 100 88 L 100 130 L 196 130 L 196 156"
-          stroke="#4f7b38"
-          strokeWidth="2"
-          strokeLinecap="round"
-          initial={false}
-          animate={{ pathLength: step >= 2 ? 1 : 0, opacity: step >= 2 ? 1 : 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
-        />
-        <motion.path
-          d="M 196 202 L 196 244 L 268 244 L 268 270"
-          stroke="#4f7b38"
-          strokeWidth="2"
-          strokeLinecap="round"
-          initial={false}
-          animate={{ pathLength: step >= 3 ? 1 : 0, opacity: step >= 3 ? 1 : 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
-        />
-      </svg>
-
-      <NodeCard
-        icon={<Zap className="size-4" strokeWidth={2.25} />}
-        iconBg="#f59e0b"
-        label="Refund requested"
-        domains={['stripe.com', 'gmail.com']}
-        className="left-2 top-[42px]"
-        active={step === 1}
-        done={step > 1}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/landing/agent-orchestration.svg"
+        alt=""
+        className="relative z-[1] mt-4 w-full max-w-[400px]"
+        width={409}
+        height={211}
       />
-      <EdgeLabel label="Over $200?" className="left-[112px] top-[118px]" passed={step >= 2} />
-      <NodeCard
-        icon={<Bot className="size-4" strokeWidth={2.25} />}
-        iconBg="#8b5cf6"
-        label="Evidence Agent"
-        domains={['notion.so', 'slack.com']}
-        className="left-[104px] top-[156px]"
-        active={step === 2}
-        done={step > 2}
-      />
-      <EdgeLabel label="Needs sign-off?" className="left-[184px] top-[232px]" passed={step >= 3} />
-      <NodeCard
-        icon={<UserCheck className="size-4" strokeWidth={2.25} />}
-        iconBg="#4f7b38"
-        label="Human review gate"
-        className="left-[168px] top-[270px]"
-        active={step >= 3}
-        done={step > 3}
-      />
-
-      <motion.span
-        className="absolute left-0 top-0"
-        initial={false}
-        animate={{ x: cursor.x, y: cursor.y }}
-        transition={{ duration: reduceMotion ? 0 : 0.55, ease }}
-      >
-        <MousePointer2
-          className="h-5 w-5 rotate-[-8deg] fill-[#e85f4a] text-[#e85f4a] drop-shadow-sm"
-          strokeWidth={1.5}
-        />
-      </motion.span>
-      </div>
     </div>
   );
 }
@@ -223,7 +72,7 @@ function TerminalLine({ children }: { children: ReactNode }) {
   );
 }
 
-/** Right half of the panel: the same routine, published — replays the run live. */
+/** Right half of the panel: the same workflow, published — replays the run live. */
 function ApiTerminal({ step }: { step: number }) {
   const running = step >= 1 && step < 3;
 
@@ -234,7 +83,7 @@ function ApiTerminal({ step }: { step: number }) {
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-stone-400">
-          loop-api — refund-playbook
+          loop-api — agent-orchestration
         </span>
         <span
           className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 transition-colors duration-300 ${
@@ -255,10 +104,10 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="req">
               <p>
                 <span className="text-emerald-400">POST</span>{' '}
-                <span className="text-stone-100">/v1/loops/refund-playbook/run</span>
+                <span className="text-stone-100">/v1/loops/agent-orchestration/run</span>
               </p>
               <p className="text-stone-500">Authorization: Bearer sk-team-····</p>
-              <p className="text-stone-400">{'{ "ticket": "#4412", "amount": 240 }'}</p>
+              <p className="text-stone-400">{'{ "mention": "@acme", "sentiment": "negative" }'}</p>
             </TerminalLine>
           ) : null}
 
@@ -266,8 +115,8 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="run">
               <p className="pt-2 text-stone-500"># run</p>
               <p className="text-stone-300">
-                <span className="text-violet-400">evidence-agent</span> pulling Stripe charge +
-                email thread…
+                <span className="text-violet-400">social-agent</span> flagged mention →{' '}
+                <span className="text-sky-400">support-agent</span> triaging…
               </p>
             </TerminalLine>
           ) : null}
@@ -277,8 +126,8 @@ function ApiTerminal({ step }: { step: number }) {
               <p className="pt-2 text-stone-500"># response</p>
               <p className="text-stone-300">
                 {'{ "status": '}
-                <span className="text-emerald-400">"held_for_review"</span>
-                {', "gate": "human" }'}
+                <span className="text-emerald-400">"handed_off"</span>
+                {', "to": "support-agent" }'}
               </p>
             </TerminalLine>
           ) : null}
@@ -302,9 +151,9 @@ function ApiTerminal({ step }: { step: number }) {
 }
 
 /**
- * Homepage band: routines become Loop APIs. The workflow replays on a canvas
- * card at the left while the published endpoint streams the same run on the
- * right. The dither ground is a rounded panel inside the page rail.
+ * Homepage band: routines become Loop APIs. One split panel — the agent
+ * workflow canvas on the left, the published endpoint replaying the run on
+ * the right — on a dither ground that stays inside the page rail.
  */
 export default function LoopApiSection() {
   const bandRef = useRef<HTMLDivElement>(null);
@@ -392,7 +241,7 @@ export default function LoopApiSection() {
         >
           {/* One panel, two halves: workflow canvas | published endpoint. */}
           <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
-            <WorkflowGraph step={step} />
+            <WorkflowCanvas />
             <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
               <ApiTerminal step={step} />
             </div>
