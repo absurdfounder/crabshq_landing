@@ -40,6 +40,7 @@ export const metadata = {
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import LoopRail from '@/components/LoopRail'
+import LoopApiSection from '@/components/LoopApiSection'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import IntegrationScroller from '@/components/IntegrationScroller'
 import { getIntegrationTiles } from '@/lib/integrationScroller'
@@ -91,10 +92,19 @@ export default function Home() {
 
       <SectionShell
         rhythm
-        eyebrow="Loops"
+        eyebrow="Loop APIs"
         eyebrowNumber="05"
         eyebrowAlign="center"
         bgClass="bg-canvas-warm"
+      >
+        <LoopApiSection />
+      </SectionShell>
+
+      <SectionShell
+        rhythm
+        eyebrow="Loops"
+        eyebrowNumber="06"
+        eyebrowAlign="center"
       >
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
@@ -103,18 +113,18 @@ export default function Home() {
       <MobileChannelsSection />
 
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="07" />
+        <GovernanceSection eyebrowNumber="08" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="08">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="09">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="09">
+      <SectionShell rhythm eyebrowNumber="10">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="10" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11" bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
       </div>
