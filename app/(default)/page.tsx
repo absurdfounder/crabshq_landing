@@ -90,15 +90,8 @@ export default function Home() {
         <OldWays />
       </SectionShell>
 
-      <SectionShell
-        rhythm
-        eyebrow="Loop APIs"
-        eyebrowNumber="05"
-        eyebrowAlign="center"
-        bgClass="bg-canvas-warm"
-      >
-        <LoopApiSection />
-      </SectionShell>
+      {/* Loop APIs — owns its own section so the dither band runs edge-to-edge. */}
+      <LoopApiSection />
 
       <SectionShell
         rhythm
