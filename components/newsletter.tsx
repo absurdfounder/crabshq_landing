@@ -35,7 +35,7 @@ export default function Newsletter() {
                 </PixelButton>
 
                 <PixelButton
-                  href="https://github.com/absurdfounder/trooper_landing/releases/download/macos-latest/Trooper.dmg"
+                  href="https://github.com/Trooper-AI/trooper-core/releases/download/macos-latest/Trooper.dmg"
                   external
                   size="lg"
                   variant="outline"
