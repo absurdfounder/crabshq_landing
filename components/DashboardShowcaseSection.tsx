@@ -26,13 +26,13 @@ export default function DashboardShowcaseSection() {
           viewport={{ once: true, margin: '-40px' }}
         >
           <h2 className="h2-section mx-auto text-balance">
-            Give the order in chat.
+            Message troopers like teammates.
             <br className="hidden sm:block" />
-            Watch the workforce coordinate.
+            Watch them coordinate.
           </h2>
           <p className="lede mx-auto mt-3 max-w-lg sm:mt-4">
-            Assign work in the channel, see tasks move across the board, and open
-            any ticket for the full trace — the same dashboard your troopers run in.
+            Give a task in chat, see it move across the board, and open any ticket for the full
+            trace. The same dashboard your troopers run in.
           </p>
           <div className="mt-6 flex justify-center sm:mt-7">
             <PixelButton

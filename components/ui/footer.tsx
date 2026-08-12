@@ -208,8 +208,8 @@ export default function Footer() {
               textClassName="text-lg sm:text-xl"
             />
             <p className="text-sm leading-relaxed text-slate-600">
-              AI workforce platform powered by OpenClaw. Multiple AI employees executing tasks
-              autonomously across GitHub, email, browsers, and your entire tech stack.
+              AI employees you can give real work to: coding, support, sales, ops. They run loops
+              you approved across your tools.
             </p>
             <p className="text-sm text-slate-600">
               Built by{' '}

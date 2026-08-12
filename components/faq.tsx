@@ -23,12 +23,12 @@ const FAQS: FAQ[] = [
   {
     question: "What is Trooper?",
     answer:
-      "Trooper is an AI workforce platform powered by OpenClaw. You deploy teams of AI employees — agents that autonomously write code, manage GitHub repos, browse the web, send emails, run shell commands, and execute multi-step workflows using your own API keys.",
+      "Trooper is an AI workforce you can give real work to. Deploy teams of AI employees that use your tools, run loops you approved, and come back when they need a sign-off. Built on OpenClaw; bring your own API keys.",
   },
   {
     question: "How is Trooper different from ChatGPT or Claude?",
     answer:
-      "ChatGPT and Claude are single-model chat interfaces. Trooper gives you an entire AI workforce — multiple specialized agents that collaborate, share persistent memory, make real GitHub commits, control browsers, send emails, and run 24/7 on their own Always-on Virtual PC. It's not a chatbot, it's a team.",
+      "ChatGPT and Claude are single-model chat interfaces. Trooper gives you an entire AI workforce: multiple specialized agents that collaborate, share persistent memory, make real GitHub commits, control browsers, send emails, and run 24/7 on their own Always-on Virtual PC. Chat assistants answer. Troopers finish the job, on their own machine or in the cloud, even when you're offline.",
   },
   {
     question: "What can the AI agents actually do?",
@@ -38,21 +38,21 @@ const FAQS: FAQ[] = [
   {
     question: "Do I need technical knowledge to use Trooper?",
     answer:
-      "No. You assign tasks in plain language via chat. Trooper handles the execution — writing code, running commands, browsing the web, sending emails. The cloud plan manages all infrastructure for you. Power users can self-host for full control.",
+      "No. You assign tasks in plain language via chat. Trooper handles the execution: writing code, running commands, browsing the web, sending emails. The cloud plan manages all infrastructure for you. Power users can self-host for full control.",
   },
   {
     question: "Do I need my own API keys?",
     answer:
-      "Yes. Trooper follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers. This means no markup on AI usage — you pay providers directly at their rates.",
+      "Yes. Trooper follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers. This means no markup on AI usage. You pay providers directly at their rates.",
   },
   {
     question: "What is the difference between Solo, Cloud, and Enterprise?",
-    answer: `Local Install is ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine — one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+    answer: `Local Install is ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine: one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever: also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
   },
   {
     question: "Is my data secure?",
     answer:
-      "Yes. Every organization gets an isolated workspace with encrypted connections. API keys are never stored on our servers. Enterprise customers get additional controls — SSO, private VPC, on-prem deployment, and custom security agreements.",
+      "Yes. Every organization gets an isolated workspace with encrypted connections. API keys are never stored on our servers. Enterprise customers get additional controls: SSO, private VPC, on-prem deployment, and custom security agreements.",
   },
   {
     question: "Can I self-host Trooper?",

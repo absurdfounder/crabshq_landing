@@ -45,7 +45,7 @@ function WorkflowCanvas() {
         }}
       />
       <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
-        workflow — agent-orchestration
+        workflow · agent-orchestration
       </p>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -83,7 +83,7 @@ function ApiTerminal({ step }: { step: number }) {
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-stone-400">
-          loop-api — agent-orchestration
+          loop-api · agent-orchestration
         </span>
         <span
           className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 transition-colors duration-300 ${
@@ -136,7 +136,7 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="rotate">
               <div className="mt-3 flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-stone-400 ring-1 ring-white/10">
                 <RefreshCw className="h-3 w-3 shrink-0 text-trooper-300" aria-hidden />
-                token low — switched to backup account, run continued
+                token low · switched to backup account, run continued
               </div>
             </TerminalLine>
           ) : null}
@@ -221,10 +221,10 @@ export default function LoopApiSection() {
             AI agents built <ForBy /> your team
           </h2>
           <p className="lede mx-auto mt-3 max-w-lg">
-            Understanding a task should be the only prerequisite to automating it. Turn routines
-            into Loop APIs for your team or an external app —{' '}
+            Understanding a task should be the only prerequisite to automating it. Publish a loop as
+            an API for your team or an external app,{' '}
             <strong className="font-semibold text-neutral-800">
-              and connect a different account so the tokens never run out
+              and connect another account so the tokens never run out
             </strong>
             .
           </p>
