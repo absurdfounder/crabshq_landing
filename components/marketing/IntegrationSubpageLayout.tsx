@@ -4,7 +4,6 @@ import SectionShell from '@/components/ui/SectionShell';
 import MarketingHeroDemo from '@/components/marketing/MarketingHeroDemo';
 import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSection';
 import PixelButton from '@/components/ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { IntegrationPageContent } from '@/lib/integrationContent';
 import { pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
@@ -16,8 +15,6 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
         <Header />
         <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
-            <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
-
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900 flex items-center gap-3 sm:gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

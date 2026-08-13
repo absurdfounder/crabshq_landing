@@ -11,7 +11,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 import Header from '@/components/ui/header';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import PixelButton from '@/components/ui/PixelButton';
 import PixelDitherGradient from '@/components/ui/PixelDitherGradient';
 
@@ -241,8 +240,6 @@ export default function AffiliateClient() {
           <PixelDitherGradient />
           <div className="relative z-10">
             <div className="page-hero-padding px-4 sm:px-6 lg:px-8">
-              <PixelMissionTag index="01" label="Affiliate program" className="mb-4" />
-
               <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <div className="max-w-2xl">
                   <h1 className="font-funneldisplay text-3xl leading-tight tracking-tight text-slate-900 sm:text-4xl md:text-[2.75rem]">

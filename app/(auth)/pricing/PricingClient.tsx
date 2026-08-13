@@ -77,7 +77,7 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "What is the difference between Solo, Cloud, and Enterprise?",
-            answer: `Local Install is completely free (${formatUsd(PRICING_USD.localLifetime)}) forever on your machine — one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever — also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+            answer: `Local Install is completely free (${formatUsd(PRICING_USD.localLifetime)}) forever on your machine: one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever: also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with SSO, VPC, and on-prem. All plans include unlimited agents and chats.`,
         },
         {
             question: "Does Trooper Cloud include hosting?",
@@ -85,11 +85,11 @@ const faqs: Record<string, FAQItem[]> = {
         },
         {
             question: "Can I self-host Trooper?",
-            answer: "Yes. Enterprise customers deploy on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
+            answer: "Yes. Run it on your laptop or a virtual machine with the open-source app. Cloud is optional. Enterprise adds VPC, SSO, and on-prem. See trooper.so/self-host.",
         },
         {
             question: "Can I upgrade later from the lifetime deal?",
-            answer: "Yes. The lifetime deal is designed for solo founders to get started quickly. As your needs grow, you can move to Cloud for team collaboration or Enterprise for self-hosted deployment.",
+            answer: "Yes. Start on local install, then move to Cloud for team collaboration if you need it. Self-host stays available.",
         },
         {
             question: "Are there discounts for startups or nonprofits?",

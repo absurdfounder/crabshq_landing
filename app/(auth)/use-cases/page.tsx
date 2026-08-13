@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { useCaseHubMeta, allUseCaseSlugs, getUseCasePage } from '@/lib/useCaseContent';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
 import { ArrowRight } from 'lucide-react';
@@ -24,7 +23,6 @@ export default function UseCasesHubPage() {
       <Header />
       <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
         <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-10">
-          <PixelMissionTag index="01" label="Solutions" className="mb-4" />
           <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] tracking-tight text-slate-900 max-w-3xl">
             AI Agent Use Cases
           </h1>

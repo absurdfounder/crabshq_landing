@@ -1,12 +1,13 @@
-# Trooper — Complete Reference
+# Trooper. Complete Reference
 
-> AI Workforce Platform Powered by OpenClaw — Deploy autonomous AI employees that execute real tasks using GitHub, Gmail, browsers, and APIs.
+> AI teammates you can give real work to. They use your tools, run loops you approved, and come back when they need a sign-off. Open source. Self-host on a laptop or VM: https://trooper.so/self-host
 
 ## Company Overview
 
-Trooper is an AI workforce platform that transforms how teams work by deploying autonomous AI employees powered by OpenClaw technology. Unlike simple chatbots, Trooper AI agents perform real work: making GitHub commits, sending emails, browsing the web, managing files, and executing complex multi-step workflows.
+Trooper is an AI workforce you can run on a machine you own or in hosted cloud. Unlike chatbots, troopers do real work: GitHub commits, email, browsing, files, and multi-step loops with human approval. Built on OpenClaw. Bring your own API keys.
 
-The platform evolved from ClawdBot (a single AI assistant) into a full multi-agent workforce system (MoltBot evolution), enabling teams to scale their AI capabilities across multiple specialized agents.
+Self-host guide: https://trooper.so/self-host
+GitHub: https://github.com/Trooper-AI/trooper-core
 
 ## Platform Architecture
 

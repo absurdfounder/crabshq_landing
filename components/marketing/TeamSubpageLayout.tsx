@@ -7,7 +7,6 @@ import PlaybookWorkflowSection from '@/components/marketing/PlaybookWorkflowSect
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import OldStackComparison from '@/components/marketing/OldStackComparison';
 import PixelButton from '@/components/ui/PixelButton';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import type { TeamPageContent } from '@/lib/teamContent';
 import { getTeamOldStack } from '@/lib/oldStackContent';
 import { getCapabilitiesEyebrowNumber, getSubpageSectionOffset } from '@/lib/subpageSections';
@@ -23,8 +22,6 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
         <Header />
         <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
-            <PixelMissionTag index="01" label={content.missionLabel} className="mb-4" />
-
             {content.heroHeadline ? (
               <MarketingHeadline as="h1" size="hero" lines={content.heroHeadline} />
             ) : (

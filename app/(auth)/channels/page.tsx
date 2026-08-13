@@ -3,7 +3,6 @@ import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
 import ChannelIcon from '@/components/marketing/ChannelIcon';
-import { PixelMissionTag } from '@/components/PixelAtmosphere';
 import { OPENCLAW_CHANNELS } from '@/lib/channelCatalog';
 import { channelHubMeta } from '@/lib/channelContent';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
@@ -24,7 +23,6 @@ export default function ChannelsHubPage() {
       <Header />
       <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
         <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-10">
-          <PixelMissionTag index="01" label="Comms hub" className="mb-4" />
           <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] tracking-tight text-slate-900 max-w-3xl">
             Messaging Channels
           </h1>

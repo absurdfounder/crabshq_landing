@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, RefreshCw } from 'lucide-react';
+import { ArrowRight, Bot, RefreshCw, UserCheck, Zap } from 'lucide-react';
+import { DemoFavicon } from '@trooper/demo';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -26,17 +27,66 @@ function ForBy() {
 
 /* ─── Script ───
  * step 0  idle
- * step 1  mention lands (POST appears)
- * step 2  agents hand off (run log)
- * step 3  response
- * step 4  token rotation footer
+ * step 1  refund request (POST)
+ * step 2  evidence agent
+ * step 3  human gate + response
+ * step 4  token rotation
  */
 
-/** Left half of the panel: the agent workflow canvas. */
-function WorkflowCanvas() {
+function NodeCard({
+  icon,
+  iconBg,
+  label,
+  domains,
+  className = '',
+  active,
+  done,
+}: {
+  icon: ReactNode;
+  iconBg: string;
+  label: string;
+  domains?: string[];
+  className?: string;
+  active: boolean;
+  done: boolean;
+}) {
   return (
-    <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden bg-white px-5 lg:h-auto lg:min-h-[330px]" aria-hidden>
-      {/* canvas dot grid */}
+    <motion.div
+      className={`absolute flex items-center gap-2.5 rounded-xl bg-white py-2 pl-2 pr-3 shadow-[0_14px_30px_-14px_rgba(28,25,23,0.4)] ${
+        active ? 'ring-2 ring-trooper' : 'ring-1 ring-stone-900/10'
+      } ${className}`}
+      animate={{ scale: active ? 1.04 : 1, opacity: active || done ? 1 : 0.5 }}
+      transition={{ duration: 0.35, ease }}
+    >
+      <span
+        className="flex size-7 shrink-0 items-center justify-center rounded-lg text-white"
+        style={{ background: iconBg }}
+      >
+        {icon}
+      </span>
+      <span className="whitespace-nowrap text-[13px] font-semibold text-stone-800">{label}</span>
+      {domains && domains.length > 0 ? (
+        <span className="flex items-center gap-1">
+          {domains.map((d) => (
+            <span
+              key={d}
+              className="flex size-5 items-center justify-center rounded-full bg-stone-50 ring-1 ring-stone-200"
+            >
+              <DemoFavicon domain={d} size={11} rounded="sm" />
+            </span>
+          ))}
+        </span>
+      ) : null}
+    </motion.div>
+  );
+}
+
+/** Left half: Trooper refund loop, nodes light up with the terminal. */
+function WorkflowCanvas({ step }: { step: number }) {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <div className="relative h-[280px] w-full overflow-hidden bg-white lg:h-auto lg:min-h-[330px]" aria-hidden>
       <div
         className="absolute inset-0"
         style={{
@@ -45,16 +95,70 @@ function WorkflowCanvas() {
         }}
       />
       <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
-        workflow · agent-orchestration
+        workflow · refund-playbook
       </p>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/landing/agent-orchestration.svg"
-        alt=""
-        className="relative z-[1] mt-4 w-full max-w-[400px]"
-        width={409}
-        height={211}
-      />
+
+      <div className="absolute left-1/2 top-8 h-[280px] w-[340px] -translate-x-1/2 scale-[0.92] sm:scale-100 lg:top-10">
+        <svg viewBox="0 0 340 280" fill="none" className="absolute inset-0 h-full w-full">
+          <path
+            d="M 88 52 L 88 92 L 176 92 L 176 118"
+            stroke="#c9c4b8"
+            strokeWidth="1.6"
+            strokeDasharray="5 5"
+          />
+          <path
+            d="M 176 164 L 176 200 L 248 200 L 248 226"
+            stroke="#c9c4b8"
+            strokeWidth="1.6"
+            strokeDasharray="5 5"
+          />
+          <motion.path
+            d="M 88 52 L 88 92 L 176 92 L 176 118"
+            stroke="#4f7b38"
+            strokeWidth="2"
+            strokeLinecap="round"
+            initial={false}
+            animate={{ pathLength: step >= 2 ? 1 : 0, opacity: step >= 2 ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
+          />
+          <motion.path
+            d="M 176 164 L 176 200 L 248 200 L 248 226"
+            stroke="#4f7b38"
+            strokeWidth="2"
+            strokeLinecap="round"
+            initial={false}
+            animate={{ pathLength: step >= 3 ? 1 : 0, opacity: step >= 3 ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
+          />
+        </svg>
+
+        <NodeCard
+          icon={<Zap className="size-4" strokeWidth={2.25} />}
+          iconBg="#f59e0b"
+          label="Refund requested"
+          domains={['stripe.com', 'gmail.com']}
+          className="left-2 top-2"
+          active={step === 1}
+          done={step > 1}
+        />
+        <NodeCard
+          icon={<Bot className="size-4" strokeWidth={2.25} />}
+          iconBg="#8b5cf6"
+          label="Evidence Agent"
+          domains={['notion.so', 'slack.com']}
+          className="left-[88px] top-[118px]"
+          active={step === 2}
+          done={step > 2}
+        />
+        <NodeCard
+          icon={<UserCheck className="size-4" strokeWidth={2.25} />}
+          iconBg="#4f7b38"
+          label="Human review gate"
+          className="left-[148px] top-[226px]"
+          active={step >= 3}
+          done={step > 3}
+        />
+      </div>
     </div>
   );
 }
@@ -83,7 +187,7 @@ function ApiTerminal({ step }: { step: number }) {
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-stone-400">
-          loop-api · agent-orchestration
+          loop-api · refund-playbook
         </span>
         <span
           className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 transition-colors duration-300 ${
@@ -104,10 +208,10 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="req">
               <p>
                 <span className="text-emerald-400">POST</span>{' '}
-                <span className="text-stone-100">/v1/loops/agent-orchestration/run</span>
+                <span className="text-stone-100">/v1/loops/refund-playbook/run</span>
               </p>
               <p className="text-stone-500">Authorization: Bearer sk-team-····</p>
-              <p className="text-stone-400">{'{ "mention": "@acme", "sentiment": "negative" }'}</p>
+              <p className="text-stone-400">{'{ "ticket": "#4412", "amount": 240 }'}</p>
             </TerminalLine>
           ) : null}
 
@@ -115,8 +219,8 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="run">
               <p className="pt-2 text-stone-500"># run</p>
               <p className="text-stone-300">
-                <span className="text-violet-400">social-agent</span> flagged mention →{' '}
-                <span className="text-sky-400">support-agent</span> triaging…
+                <span className="text-violet-400">evidence-agent</span> pulling Stripe charge +
+                email thread…
               </p>
             </TerminalLine>
           ) : null}
@@ -126,8 +230,8 @@ function ApiTerminal({ step }: { step: number }) {
               <p className="pt-2 text-stone-500"># response</p>
               <p className="text-stone-300">
                 {'{ "status": '}
-                <span className="text-emerald-400">"handed_off"</span>
-                {', "to": "support-agent" }'}
+                <span className="text-emerald-400">"held_for_review"</span>
+                {', "gate": "human" }'}
               </p>
             </TerminalLine>
           ) : null}
@@ -249,7 +353,7 @@ export default function LoopApiSection() {
         >
           <div className="hero-surface rail-bleed relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
             <div className="relative overflow-hidden rounded-2xl shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ring-1 ring-black/5 lg:grid lg:grid-cols-2">
-              <WorkflowCanvas />
+              <WorkflowCanvas step={step} />
               <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
                 <ApiTerminal step={step} />
               </div>
