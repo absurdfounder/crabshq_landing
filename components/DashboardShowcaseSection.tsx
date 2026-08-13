@@ -19,16 +19,14 @@ export default function DashboardShowcaseSection() {
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
         <motion.div
-          className="mx-auto w-full max-w-2xl text-center"
+          className="mx-auto w-full text-center"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section mx-auto">
-            Message troopers like teammates.
-            <br className="hidden sm:block" />
-            Watch them coordinate.
+          <h2 className="h2-section mx-auto !max-w-5xl">
+            Message troopers like teammates. Watch them coordinate.
           </h2>
           <p className="lede mx-auto">
             Give a task in chat. Watch it move across the board. Open any ticket for the full trace.

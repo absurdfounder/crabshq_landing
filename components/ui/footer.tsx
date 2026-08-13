@@ -304,7 +304,7 @@ export default function Footer() {
               Terms
             </Link>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-stretch gap-3">
             <PixelButton
               href={GITHUB_ORG_URL}
               external
@@ -316,24 +316,28 @@ export default function Footer() {
             >
               Open Source
             </PixelButton>
-            <a
+            <PixelButton
               href="https://openclaw.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-2.5 py-1.5 text-[13px] font-medium text-neutral-600 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50 hover:text-neutral-800"
+              external
+              size="sm"
+              variant="outline"
+              tone="dark"
+              ariaLabel="Powered by OpenClaw"
             >
-              <span className="text-slate-400">Powered by</span>
-              <img
-                src={getFaviconUrl('openclaw.ai', 32)}
-                alt="OpenClaw"
-                className="h-3.5 w-3.5 rounded-sm"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/images/trooper-logomark-64.webp';
-                }}
-              />
-              <span className="font-semibold text-slate-700">OpenClaw</span>
-            </a>
+              <span className="inline-flex items-center gap-2">
+                <span className="font-medium text-slate-400">Powered by</span>
+                <img
+                  src={getFaviconUrl('openclaw.ai', 32)}
+                  alt=""
+                  className="h-3.5 w-3.5 rounded-sm"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/trooper-logomark-64.webp';
+                  }}
+                />
+                <span>OpenClaw</span>
+              </span>
+            </PixelButton>
           </div>
         </div>
 

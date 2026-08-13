@@ -23,7 +23,6 @@ import {
 
 import type { LoopRailItem } from '@/lib/loopCatalog';
 import LoopComposer from './LoopComposer';
-import { useScrollDrivenRail } from './useScrollDrivenRail';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -61,15 +60,13 @@ const CATEGORY_ICON: Record<string, LucideIcon> = {
  * also carried a "Hardened" badge — 115 of 119 loops are hardened, so it
  * appeared on every card and distinguished nothing.
  */
-function LoopCard({ loop, cloned }: { loop: LoopRailItem; cloned?: boolean }) {
+function LoopCard({ loop }: { loop: LoopRailItem }) {
   const Icon = CATEGORY_ICON[loop.category] ?? RefreshCw;
 
   return (
     <Link
       href={`/loops/${loop.slug}`}
-      aria-hidden={cloned || undefined}
-      tabIndex={cloned ? -1 : undefined}
-      className="group flex h-[7.5rem] w-[17rem] shrink-0 flex-col justify-between rounded-xl bg-white px-4 py-3.5 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
+      className="group flex h-full min-h-[7.5rem] w-full flex-col justify-between rounded-xl bg-white px-4 py-3.5 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
     >
       <div className="flex items-start gap-2.5">
         <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-trooper-50 text-trooper-700">
@@ -91,50 +88,23 @@ function LoopCard({ loop, cloned }: { loop: LoopRailItem; cloned?: boolean }) {
   );
 }
 
-/**
- * One scroll-driven row. Same mechanism as the integrations rail — the track
- * advances with the page rather than on a timer, so nothing moves while the
- * reader is still.
- */
-function LoopRow({ loops, reverse = false }: { loops: LoopRailItem[]; reverse?: boolean }) {
-  const trackRef = useScrollDrivenRail<HTMLDivElement>(reverse);
-
-  return (
-    <div className="rail-fade scrollbar-hide overflow-x-auto">
-      <div ref={trackRef} className="rail-track flex gap-3">
-        {loops.map((loop) => (
-          <LoopCard key={loop.slug} loop={loop} />
-        ))}
-        {loops.map((loop) => (
-          <LoopCard key={`clone-${loop.slug}`} loop={loop} cloned />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 type LoopRailProps = {
   items: LoopRailItem[];
   totalCount: number;
 };
 
 /**
- * Loops: the composer, then two rows of them.
+ * Loops: the composer, then a grid of them.
  *
- * The filter chips are gone with the grid. Filtering is a browse action and
- * /loops already does it properly; on the home page the job is to show that
- * there are a lot of these and that you can describe your own.
+ * Filtering is a browse action and /loops already does it. On the home page
+ * the job is to show that there are a lot of these and that you can describe
+ * your own, without clipping cards off the rail.
  */
 export default function LoopRail({ items, totalCount }: LoopRailProps) {
-  const half = Math.ceil(items.length / 2);
-  const top = items.slice(0, half);
-  const bottom = items.slice(half);
+  const preview = items.slice(0, 9);
 
   return (
     <div>
-      {/* Centred, like a launch screen: headline, lede, then the composer as
-          the single focal object with real air around it, the catalog rows
-          under it, and the browse link on the axis. */}
       <motion.div
         className="mx-auto max-w-3xl text-center"
         initial={{ opacity: 0, y: 16 }}
@@ -156,9 +126,10 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
         <LoopComposer />
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:mt-10">
-        <LoopRow loops={top} />
-        <LoopRow loops={bottom} reverse />
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
+        {preview.map((loop) => (
+          <LoopCard key={loop.slug} loop={loop} />
+        ))}
       </div>
 
       <div className="mt-8 flex justify-center">

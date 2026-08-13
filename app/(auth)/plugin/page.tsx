@@ -1,14 +1,10 @@
-import Link from 'next/link';
 import Header from '@/components/ui/header';
 import SectionShell from '@/components/ui/SectionShell';
 import PixelButton from '@/components/ui/PixelButton';
 import CatalogHero from '@/components/marketing/CatalogHero';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
-import {
-  integrationHubMeta,
-  getPriorityIntegrations,
-} from '@/lib/integrationContent';
-import { getAllPlugins, PLUGIN_CATALOG_COUNT, pluginPagePath } from '@/lib/pluginCatalog';
+import { integrationHubMeta } from '@/lib/integrationContent';
+import { getAllPlugins, PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
 import PluginHubClient from './PluginHubClient';
 
@@ -21,7 +17,6 @@ export const metadata = buildPageMetadata({
 });
 
 export default function PluginHubPage() {
-  const priority = getPriorityIntegrations();
   const allPlugins = getAllPlugins();
 
   return (
@@ -41,50 +36,8 @@ export default function PluginHubPage() {
         </>}
       />
 
-      <SectionShell eyebrow="Priority" eyebrowNumber="02" bgClass="bg-canvas-warm">
-        <div className="px-4 sm:px-6 lg:px-8 pt-2 pb-16 md:pb-24">
-          <p className="mb-6 text-sm text-slate-600">
-            Most-deployed integrations for sales, engineering, and ops teams.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {priority.map((page) => (
-              <Link
-                key={page.slug}
-                href={pluginPagePath(page.slug)}
-                className="group flex min-h-[140px] flex-col gap-3 border border-slate-200 bg-white p-5 transition-colors hover:border-slate-300 hover:bg-slate-50"
-              >
-                <div className="flex items-center gap-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={page.logoUrl}
-                    alt={page.catalog.name}
-                    width={28}
-                    height={28}
-                    className="w-7 h-7 object-contain"
-                  />
-                  <h2 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                    {page.catalog.name}
-                  </h2>
-                </div>
-                <p className="text-sm text-slate-600 leading-relaxed flex-1 line-clamp-2">
-                  {page.description}
-                </p>
-                <span className="text-xs font-mono uppercase tracking-[0.12em] text-slate-400 group-hover:text-emerald-600 transition-colors">
-                  View integration →
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </SectionShell>
-
       <SectionShell bgClass="bg-canvas">
         <div className="pb-16 pt-6 md:pb-24">
-          <p className="mb-8 max-w-2xl px-0 text-slate-600 leading-relaxed">
-            Browse all {PLUGIN_CATALOG_COUNT.toLocaleString()} Trooper app plugins — Composio, Codex, OpenClaw channels,
-            and native integrations. Each has a dedicated SEO page at{' '}
-            <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded font-mono">/plugin/ai_agent_for_[plugin]</code>.
-          </p>
           <div className="rail-bleed">
             <PluginHubClient plugins={allPlugins} />
           </div>

@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, GitBranch, RefreshCw } from 'lucide-react';
-import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
+import { ArrowRight, RefreshCw } from 'lucide-react';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -27,125 +26,55 @@ function ForBy() {
 
 /* ─── Script ───
  * step 0  idle
- * step 1  refund request (POST)
- * step 2  evidence agent
- * step 3  human gate + response
- * step 4  token rotation
+ * step 1  mention lands (POST appears)
+ * step 2  agents hand off (run log)
+ * step 3  response
+ * step 4  token rotation footer
  */
 
-const LOOP_NODE_IDS = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const;
-
-const REFUND_MERMAID = `flowchart TD
-  n1(["Refund requested"])
-  n2{"Amount over $200?"}
-  n3["Collect evidence"]
-  n4["Apply refund SOP"]
-  n5["Human review gate"]
-  n6(["Issue refund"])
-  n1 --> n2
-  n2 -->|yes| n3
-  n3 --> n4
-  n4 --> n5
-  n5 --> n6`;
-
-const WORKFLOW_MERMAID_CSS = `
-.loop-api-mermaid .node { transition: opacity 280ms ease; }
-.loop-api-mermaid .node[data-state="idle"] { opacity: 0.38; }
-.loop-api-mermaid .node[data-state="done"] { opacity: 1; }
-.loop-api-mermaid .node[data-state="running"] { opacity: 1; }
-.loop-api-mermaid .node[data-state="done"] rect,
-.loop-api-mermaid .node[data-state="done"] polygon,
-.loop-api-mermaid .node[data-state="done"] path,
-.loop-api-mermaid .node[data-state="done"] circle {
-  fill: #f0f5e6 !important;
-  stroke: #3f6b00 !important;
-  stroke-width: 1.75px !important;
-}
-.loop-api-mermaid .node[data-state="running"] rect,
-.loop-api-mermaid .node[data-state="running"] polygon,
-.loop-api-mermaid .node[data-state="running"] path,
-.loop-api-mermaid .node[data-state="running"] circle {
-  fill: #eef6dc !important;
-  stroke: #3f6b00 !important;
-  stroke-width: 2.5px !important;
-}
-.loop-api-mermaid .node label,
-.loop-api-mermaid .node .label,
-.loop-api-mermaid .node span {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-  font-size: 12px !important;
-}
-.loop-api-mermaid .edgePath path {
-  stroke: #a8a29e !important;
-  stroke-width: 1.5px !important;
-}
-.loop-api-mermaid .edgeLabel {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-  font-size: 11px !important;
-  color: #57534e !important;
-}
-.loop-api-mermaid .marker {
-  fill: #a8a29e !important;
-  stroke: #a8a29e !important;
-}
-`;
-
-/** Terminal step → how far the playbook has walked. */
-function activeNodeCount(step: number) {
-  if (step <= 0) return 0;
-  if (step === 1) return 1;
-  if (step === 2) return 3;
-  if (step === 3) return 5;
-  return LOOP_NODE_IDS.length;
-}
-
-/** Left half: Trooper refund playbook, same mermaid editor as the product. */
+/** Left half: the agent-orchestration SVG, revealed and pulsed with the run. */
 function WorkflowCanvas({ step }: { step: number }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [svgReady, setSvgReady] = useState(0);
-  const handleRender = useCallback(() => setSvgReady((n) => n + 1), []);
-  const count = activeNodeCount(step);
-
-  useEffect(() => {
-    const root = wrapRef.current;
-    if (!root) return;
-
-    const activeIds = LOOP_NODE_IDS.slice(0, count);
-    const runningId =
-      activeIds.length > 0 && activeIds.length < LOOP_NODE_IDS.length
-        ? activeIds[activeIds.length - 1]
-        : null;
-    const done = new Set<string>(runningId ? activeIds.slice(0, -1) : activeIds);
-
-    root.querySelectorAll<SVGGElement>('g.node').forEach((node) => {
-      const id = node.id.match(/^flowchart-([^-]+)-/)?.[1];
-      if (!id) return;
-      if (runningId && id === runningId) node.dataset.state = 'running';
-      else if (done.has(id)) node.dataset.state = 'done';
-      else node.dataset.state = 'idle';
-    });
-  }, [count, svgReady]);
+  const reduceMotion = useReducedMotion();
+  const reveal = reduceMotion ? 100 : Math.min(100, 22 + step * 19.5);
 
   return (
-    <div className="flex h-[280px] w-full flex-col bg-[#FAFAF9] lg:h-auto lg:min-h-[330px]" aria-hidden>
-      <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
-      <div className="flex shrink-0 items-center gap-2 border-b border-[#E7E5E4] bg-[#FAFAF9] px-3 py-2.5">
-        <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
-        <span className="text-[12px] font-semibold text-neutral-800">Refund playbook</span>
-        <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
-          {count}/{LOOP_NODE_IDS.length} steps
-        </span>
-      </div>
+    <div
+      className="relative flex h-[280px] w-full items-center justify-center overflow-hidden bg-white px-5 lg:h-auto lg:min-h-[330px]"
+      aria-hidden
+    >
       <div
-        ref={wrapRef}
-        className="loop-api-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto px-2 py-3"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(28,25,23,0.07) 1px, transparent 0)',
+          backgroundSize: '12px 12px',
+        }}
+      />
+      <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
+        workflow · agent-orchestration
+      </p>
+      <motion.div
+        className="relative z-[1] mt-4 w-full max-w-[400px]"
+        animate={
+          reduceMotion
+            ? { opacity: 1 }
+            : { opacity: step === 0 ? 0.55 : 1, scale: step >= 2 && step < 4 ? 1.015 : 1 }
+        }
+        transition={{ duration: 0.45, ease }}
+        style={{
+          WebkitMaskImage: `linear-gradient(90deg, #000 ${reveal}%, transparent ${Math.min(100, reveal + 14)}%)`,
+          maskImage: `linear-gradient(90deg, #000 ${reveal}%, transparent ${Math.min(100, reveal + 14)}%)`,
+        }}
       >
-        <MermaidFlowDiagram
-          source={REFUND_MERMAID}
-          className="min-h-0 w-full [&_svg]:max-h-[260px]"
-          onRender={handleRender}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/landing/agent-orchestration.svg"
+          alt=""
+          className={`w-full ${step >= 1 && !reduceMotion ? 'loop-orch-live' : ''}`}
+          width={409}
+          height={211}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -163,7 +92,7 @@ function TerminalLine({ children }: { children: ReactNode }) {
   );
 }
 
-/** Right half of the panel: the same workflow, published — replays the run live. */
+/** Right half of the panel: the same workflow, published. Replays the run live. */
 function ApiTerminal({ step }: { step: number }) {
   const running = step >= 1 && step < 3;
 
@@ -174,7 +103,7 @@ function ApiTerminal({ step }: { step: number }) {
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2 font-mono text-[11px] text-stone-400">
-          loop-api · refund-playbook
+          loop-api · agent-orchestration
         </span>
         <span
           className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 transition-colors duration-300 ${
@@ -195,10 +124,10 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="req">
               <p>
                 <span className="text-emerald-400">POST</span>{' '}
-                <span className="text-stone-100">/v1/loops/refund-playbook/run</span>
+                <span className="text-stone-100">/v1/loops/agent-orchestration/run</span>
               </p>
               <p className="text-stone-500">Authorization: Bearer sk-team-····</p>
-              <p className="text-stone-400">{'{ "ticket": "#4412", "amount": 240 }'}</p>
+              <p className="text-stone-400">{'{ "mention": "@acme", "sentiment": "negative" }'}</p>
             </TerminalLine>
           ) : null}
 
@@ -206,8 +135,8 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="run">
               <p className="pt-2 text-stone-500"># run</p>
               <p className="text-stone-300">
-                <span className="text-violet-400">evidence-agent</span> pulling Stripe charge +
-                email thread…
+                <span className="text-violet-400">social-agent</span> flagged mention →{' '}
+                <span className="text-sky-400">support-agent</span> triaging…
               </p>
             </TerminalLine>
           ) : null}
@@ -217,8 +146,8 @@ function ApiTerminal({ step }: { step: number }) {
               <p className="pt-2 text-stone-500"># response</p>
               <p className="text-stone-300">
                 {'{ "status": '}
-                <span className="text-emerald-400">"held_for_review"</span>
-                {', "gate": "human" }'}
+                <span className="text-emerald-400">"handed_off"</span>
+                {', "to": "support-agent" }'}
               </p>
             </TerminalLine>
           ) : null}
@@ -227,7 +156,7 @@ function ApiTerminal({ step }: { step: number }) {
             <TerminalLine key="rotate">
               <div className="mt-3 flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-stone-400 ring-1 ring-white/10">
                 <RefreshCw className="h-3 w-3 shrink-0 text-trooper-300" aria-hidden />
-                token low · switched to backup account, run continued
+                token low. switched to backup account, run continued
               </div>
             </TerminalLine>
           ) : null}
@@ -242,9 +171,9 @@ function ApiTerminal({ step }: { step: number }) {
 }
 
 /**
- * Homepage band: routines become Loop APIs. One split panel — the agent
+ * Homepage band: routines become Loop APIs. One split panel: the agent
  * workflow canvas on the left, the published endpoint replaying the run on
- * the right — on a dither ground that stays inside the page rail.
+ * the right, on a dither ground that stays inside the page rail.
  */
 export default function LoopApiSection() {
   const bandRef = useRef<HTMLDivElement>(null);
@@ -329,28 +258,25 @@ export default function LoopApiSection() {
           </div>
         </motion.div>
 
-        {/* Same dither as the dashboard: rail-bleed, square to the hairlines. */}
         <motion.div
           ref={bandRef}
-          className="mt-10 lg:mt-14"
+          className="hero-surface mt-10 rounded-2xl border border-black/5 px-4 py-8 sm:mt-14 sm:px-8 sm:py-10"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
-          <div className="hero-surface rail-bleed relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
-            <div className="relative overflow-hidden rounded-2xl shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ring-1 ring-black/5 lg:grid lg:grid-cols-2">
-              <WorkflowCanvas step={step} />
-              <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
-                <ApiTerminal step={step} />
-              </div>
-              <span
-                className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
-                aria-hidden
-              >
-                <ArrowRight className="size-4" strokeWidth={2.25} />
-              </span>
+          <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
+            <WorkflowCanvas step={step} />
+            <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
+              <ApiTerminal step={step} />
             </div>
+            <span
+              className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
+              aria-hidden
+            >
+              <ArrowRight className="size-4" strokeWidth={2.25} />
+            </span>
           </div>
         </motion.div>
       </div>

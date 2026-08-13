@@ -19,7 +19,7 @@ import TopBar from './TopBar'
 
 type DropdownKey = 'features' | 'teams' | null
 
-const GITHUB_URL = 'https://github.com/Trooper-AI'
+const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core'
 
 export default function Header() {
   const pathname = usePathname()
@@ -175,7 +175,7 @@ function GitHubNavLink({ dark = false }: { dark?: boolean }) {
       href={GITHUB_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Trooper on GitHub"
+      aria-label="Trooper core on GitHub"
       className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 ${
         dark
           ? 'border-white/20 text-white/75 hover:bg-white/10 hover:text-white'

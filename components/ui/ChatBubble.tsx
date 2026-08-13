@@ -45,9 +45,9 @@ const STYLES = {
   ask: {
     path: askPath,
     fill: [
-      ['0', '#5eb0ff'],
-      ['0.5', '#1a8cff'],
-      ['1', '#0071e3'],
+      ['0', '#2b94f5'],
+      ['0.55', '#167fe8'],
+      ['1', '#0066d1'],
     ],
     stroke: [
       ['0', '#3a9aef'],
@@ -59,9 +59,9 @@ const STYLES = {
   reply: {
     path: replyPath,
     fill: [
-      ['0', '#6ee7a0'],
-      ['0.5', '#34d16a'],
-      ['1', '#22c55e'],
+      ['0', '#2fce6a'],
+      ['0.55', '#22b85c'],
+      ['1', '#16a34a'],
     ],
     stroke: [
       ['0', '#3dce6e'],
@@ -193,14 +193,14 @@ export default function ChatBubble({
           strokeLinejoin="round"
         />
       </svg>
-      {/* glossy highlight — keeps white type readable on saturated fill */}
+      {/* Rim gloss only. A tall white wash used to sit on the type. */}
       <span
-        className="pointer-events-none absolute inset-x-3 top-[2px] h-[38%] rounded-full bg-white/40 blur-[4px]"
+        className="pointer-events-none absolute inset-x-5 top-[3px] h-[6px] rounded-full bg-white/20 blur-[2px]"
         aria-hidden
       />
       <span
         className={`relative z-[1] block text-[15px] font-semibold leading-snug tracking-[-0.01em] sm:text-[16px] ${s.text}`}
-        style={{ textShadow: '0 1px 0 rgba(0,0,0,0.12)' }}
+        style={{ textShadow: '0 1px 1px rgba(0,0,0,0.28)' }}
       >
         {label}
         {typing && active && shown.length < children.length ? (

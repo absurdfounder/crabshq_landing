@@ -987,7 +987,7 @@ const cards: CapabilityCard[] = [
   {
     tag: 'AI organizations',
     ask: 'trooper, I need a growth team on this launch',
-    reply: 'on it — spinning up 3 troopers',
+    reply: 'on it. spinning up 3 troopers',
     window: 'Agents — My Org',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
@@ -1020,7 +1020,7 @@ const cards: CapabilityCard[] = [
   {
     tag: 'Workflows',
     ask: 'trooper, run the refund playbook for Acme',
-    reply: 'on it — following the SOP',
+    reply: 'on it. following the SOP',
     window: 'Workflow — Refund playbook',
     title: 'Workflows you define.',
     highlight: 'Reliable decisions, every time.',
@@ -1031,7 +1031,7 @@ const cards: CapabilityCard[] = [
   {
     tag: 'Screen context',
     ask: "trooper, what's this muscle called?",
-    reply: 'deltoid — it lifts your arm',
+    reply: 'deltoid. it lifts your arm',
     window: 'Screen — studio-mac',
     title: 'Use your screen as context.',
     highlight: 'Hold Fn. Mark. Ask.',
@@ -1047,7 +1047,7 @@ const cards: CapabilityCard[] = [
   {
     tag: 'Video editor',
     ask: 'trooper, cut the fillers and pull the highlights',
-    reply: 'on it — opening the editor',
+    reply: 'on it. opening the editor',
     window: 'Editor — Demo Project',
     title: 'AI video editor,',
     highlight: 'not a timeline grind.',
