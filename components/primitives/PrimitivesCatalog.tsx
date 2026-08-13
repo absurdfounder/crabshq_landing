@@ -84,7 +84,8 @@ export default function PrimitivesCatalog() {
 
   return (
     <section ref={catalogRef} className="scroll-mt-[var(--site-header-height)] border-t border-[var(--color-line)] bg-canvas-warm">
-      <div className="mx-auto flex max-w-7xl flex-col border-x-0 border-[var(--color-line)] md:flex-row md:border-x">
+      <div className="rail py-12 sm:py-20">
+        <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white md:flex-row">
         <aside className="shrink-0 border-b border-[var(--color-line)] bg-canvas p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:w-64 md:border-b-0 md:border-r md:p-7">
           <label className="relative block">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -99,7 +100,7 @@ export default function PrimitivesCatalog() {
             <section className="border-b border-[var(--color-line)]">
               <div className="border-b border-[var(--color-line)] px-5 py-6 md:px-8 md:py-8">
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-fern-700">Start here</span>
-                <h2 className="mt-2 font-funneldisplay text-2xl tracking-tight text-ink md:text-3xl">Featured primitives</h2>
+                <h2 className="mt-2 font-display text-xl tracking-tight text-ink md:text-2xl">Featured primitives</h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">The capabilities most teams use to give their agents durable, real-world reach.</p>
               </div>
               <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">{featured.map((primitive, index) => <PrimitiveCard key={primitive.slug} primitive={primitive} index={index} />)}</div>
@@ -108,11 +109,12 @@ export default function PrimitivesCatalog() {
 
           <section>
             <div className="flex items-end justify-between border-b border-[var(--color-line)] px-5 py-6 md:px-8 md:py-8">
-              <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-fern-700">{selectedCategory === 'All' ? 'All capabilities' : selectedCategory}</span><h2 className="mt-2 font-funneldisplay text-2xl tracking-tight text-ink md:text-3xl">{filtered.length} {filtered.length === 1 ? 'primitive' : 'primitives'}</h2></div>
+              <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-fern-700">{selectedCategory === 'All' ? 'All capabilities' : selectedCategory}</span><h2 className="mt-2 font-display text-xl tracking-tight text-ink md:text-2xl">{filtered.length} {filtered.length === 1 ? 'primitive' : 'primitives'}</h2></div>
               <Grid3X3 className="h-5 w-5 text-slate-400" aria-hidden />
             </div>
             {filtered.length ? <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">{filtered.map((primitive, index) => <PrimitiveCard key={primitive.slug} primitive={primitive} index={index} />)}</div> : <p className="p-8 text-sm text-ink-muted">No primitives match that search.</p>}
           </section>
+        </div>
         </div>
       </div>
     </section>

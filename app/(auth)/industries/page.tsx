@@ -48,8 +48,7 @@ export default function IndustriesHubPage() {
       </section>
 
       <SectionShell rhythm eyebrow="Industries" bgClass="bg-canvas">
-        <div className="rail-bleed">
-          <div className="dot-grid rounded-2xl border border-black/5 p-4 sm:p-5 md:p-6">
+        <div className="dot-grid rounded-2xl border border-black/5 p-4 sm:p-5 md:p-6">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {pages.map((page) => (
                 <Link
@@ -83,7 +82,6 @@ export default function IndustriesHubPage() {
                 </Link>
               ))}
             </div>
-          </div>
         </div>
       </SectionShell>
 

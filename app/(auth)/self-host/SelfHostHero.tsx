@@ -54,15 +54,13 @@ export default function SelfHostHero() {
         </motion.div>
 
         <motion.div
-          className="mt-10 hidden lg:mt-14 lg:block"
+          className="hero-surface mt-9 hidden rounded-2xl border border-black/5 px-4 py-8 sm:mt-11 sm:px-8 sm:py-10 lg:block"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.08, ease }}
           viewport={{ once: true, margin: '-60px' }}
         >
-          <div className="hero-surface rail-bleed relative overflow-visible border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
-            <HeroArticleDemo rotate flush maxHeight={560} />
-          </div>
+          <HeroArticleDemo rotate flush maxHeight={560} />
         </motion.div>
       </div>
     </section>

@@ -143,7 +143,7 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
   });
 
   return (
-    <div ref={catalogRef} className="mx-auto scroll-mt-[var(--site-header-height)] max-w-7xl border-y border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)] md:border-x">
+    <div ref={catalogRef} className="mx-auto scroll-mt-[var(--site-header-height)] overflow-hidden rounded-2xl border border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)]">
       <aside className="border-b border-slate-200 p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:border-b-0 md:border-r md:p-6">
         <label className="relative block w-full sm:max-w-sm">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -162,7 +162,7 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
       <section className="min-h-[calc(100vh-var(--site-header-height))] min-w-0 [overflow-anchor:none]">
         <div className="border-b border-slate-200 px-5 py-6 md:px-8 md:py-8">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500"><span className="font-semibold tabular-nums text-slate-900">{filteredLoops.length}</span>{filteredLoops.length === loops.length ? ' loops' : ` of ${loops.length} loops`}</p>
-          <h2 className="mt-3 font-funneldisplay text-2xl tracking-tight text-slate-950 md:text-3xl">{selectedCategory === 'All' ? 'All loops' : selectedCategory}</h2>
+          <h2 className="mt-3 font-display text-xl tracking-tight text-slate-950 md:text-2xl">{selectedCategory === 'All' ? 'All loops' : selectedCategory}</h2>
         </div>
         {filteredLoops.length > 0 ? <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">{filteredLoops.map((loop) => <LoopCard key={loop.id} loop={loop} />)}</div> : <p className="p-8 text-sm text-slate-500">No loops match your search.</p>}
         <div className="border-t border-slate-200 p-8 text-center">

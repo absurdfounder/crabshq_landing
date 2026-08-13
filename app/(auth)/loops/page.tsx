@@ -38,10 +38,8 @@ const LoopsPage = async ({
         </PixelButton>}
       />
 
-      <SectionShell bgClass="bg-canvas-warm">
-        <div className="rail-bleed">
-          <LoopsClient loops={loops} initialCategory={initialCategory} />
-        </div>
+      <SectionShell rhythm bgClass="bg-canvas-warm">
+        <LoopsClient loops={loops} initialCategory={initialCategory} />
       </SectionShell>
     </div>
   );

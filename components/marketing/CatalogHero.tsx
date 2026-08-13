@@ -13,14 +13,14 @@ export default function CatalogHero({ title, description, actions }: CatalogHero
   return (
     <section className="border-b border-[var(--color-line)] bg-canvas">
       <div className="rail page-hero-padding">
-        <div className="max-w-4xl">
-          <h1 className="font-funneldisplay max-w-4xl text-4xl font-medium leading-[1.05] tracking-[-0.03em] text-ink sm:text-5xl md:text-6xl">
+        <div className="max-w-3xl">
+          <h1 className="font-display max-w-3xl text-3xl font-medium leading-tight tracking-tight text-neutral-800 sm:text-4xl md:text-[2.5rem]">
             {title}
           </h1>
-          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-ink-muted sm:text-xl">
+          <p className="lede mt-4 !max-w-2xl">
             {description}
           </p>
-          {actions ? <div className="mt-7 flex flex-wrap gap-3">{actions}</div> : null}
+          {actions ? <div className="mt-6 flex flex-wrap gap-3">{actions}</div> : null}
         </div>
       </div>
     </section>

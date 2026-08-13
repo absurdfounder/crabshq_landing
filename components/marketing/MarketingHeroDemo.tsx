@@ -5,12 +5,12 @@ import type { DemoScenarioId } from '@trooper/demo';
 
 /**
  * Product demo for marketing subpages (teams, features, channels, …).
- * Matches the homepage Command Center framing: tinted dither ground + padding
- * around the dashboard so it does not sit flush on white.
+ * Matches the homepage dashboard: rounded dither card with side padding
+ * so the demo does not sit flush on the rail.
  */
 export default function MarketingHeroDemo({ scenarioId }: { scenarioId: DemoScenarioId }) {
   return (
-    <div className="hero-surface relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
+    <div className="hero-surface mx-4 mb-8 rounded-2xl border border-black/5 px-4 py-8 sm:mx-6 sm:px-8 sm:py-10 lg:mx-8">
       <HeroArticleDemo scenarioId={scenarioId} flush />
     </div>
   );

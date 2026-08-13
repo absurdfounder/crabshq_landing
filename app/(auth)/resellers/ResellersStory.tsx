@@ -146,7 +146,7 @@ export function ResellersIndustries({ industries }: { industries: IndustryCard[]
         </div>
       </FadeIn>
 
-      <div className="rail-bleed mt-10">
+      <div className="mt-10">
         <div className="dot-grid rounded-2xl border border-black/5 p-4 sm:p-5 md:p-6">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry, i) => (

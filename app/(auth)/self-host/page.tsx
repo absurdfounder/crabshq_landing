@@ -55,22 +55,20 @@ export default function SelfHostPage() {
             <h2 className="h2-section mx-auto">Or install from the terminal</h2>
             <p className="lede mx-auto">One command. Then open the app and connect keys.</p>
           </div>
-          <div className="mt-10 lg:mt-14">
-            <div className="hero-surface rail-bleed relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
-              <div className="mx-auto max-w-2xl">
-                <CopyCli />
-                <p className="mt-4 text-center text-sm text-neutral-600">
-                  Source:{' '}
-                  <a
-                    href="https://github.com/Trooper-AI/trooper-core"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-neutral-800 underline-offset-2 hover:underline"
-                  >
-                    github.com/Trooper-AI/trooper-core
-                  </a>
-                </p>
-              </div>
+          <div className="hero-surface mt-9 rounded-2xl border border-black/5 px-4 py-8 sm:mt-11 sm:px-8 sm:py-10">
+            <div className="mx-auto max-w-2xl">
+              <CopyCli />
+              <p className="mt-4 text-center text-sm text-neutral-600">
+                Source:{' '}
+                <a
+                  href="https://github.com/Trooper-AI/trooper-core"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-neutral-800 underline-offset-2 hover:underline"
+                >
+                  github.com/Trooper-AI/trooper-core
+                </a>
+              </p>
             </div>
           </div>
         </div>

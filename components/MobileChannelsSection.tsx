@@ -560,13 +560,15 @@ function TrooperAppScreen({ play }: { play: boolean }) {
                     sizes="220px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <motion.div
-                    className="absolute left-1/2 top-1/2 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/35 backdrop-blur-sm"
-                    animate={reduceMotion ? undefined : { scale: [1, 1.06, 1] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <span className="ml-0.5 text-[11px] text-white">▶</span>
-                  </motion.div>
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <motion.div
+                      className="flex size-9 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/35 backdrop-blur-sm"
+                      animate={reduceMotion ? undefined : { scale: [1, 1.06, 1] }}
+                      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      <span className="ml-0.5 text-[11px] text-white">▶</span>
+                    </motion.div>
+                  </div>
                   <div className="absolute inset-x-3 bottom-2.5">
                     <p className="text-[12px] font-semibold text-white">Vanta walkthrough</p>
                     <p className="text-[10px] text-white/65">og-image · demo assets</p>
