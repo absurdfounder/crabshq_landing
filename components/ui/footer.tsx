@@ -62,6 +62,7 @@ const featureColumn: FooterColumn = {
         { label: 'Plugin Integrations', href: '/plugin', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
         { label: 'OpenClaw Skills', href: '/integration', icon: <Puzzle className="h-3.5 w-3.5 text-violet-500" /> },
         { label: 'Agent Loops', href: '/loops', icon: <Zap className="h-3.5 w-3.5 text-emerald-600" /> },
+        { label: 'Self-host', href: '/self-host', icon: <Terminal className="h-3.5 w-3.5 text-stone-500" /> },
       ],
     },
     {
@@ -90,6 +91,7 @@ const productColumn: FooterColumn = {
         { label: 'Resellers', href: '/resellers' },
         { label: 'Changelog', href: 'https://app.trooper.so/changelog', external: true },
         { label: 'Download', href: '/download' },
+        { label: 'Self-host', href: '/self-host' },
         { label: 'Dashboard', href: 'https://app.trooper.so', external: true },
       ],
     },

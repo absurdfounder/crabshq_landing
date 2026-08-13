@@ -94,12 +94,10 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
         viewport={{ once: true, margin: '-40px' }}
       >
         <h2 className="h2-section">
-          Anything you do in a computer,
-          <br />
-          Trooper can do for you.
+          Works with the tools you already have.
         </h2>
         <p className="lede">
-          Troopers work in the tools you already pay for, and if it has an API, they can reach it.
+          If it has an API, a trooper can reach it.
         </p>
       </motion.div>
 

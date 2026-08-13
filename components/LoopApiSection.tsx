@@ -221,12 +221,8 @@ export default function LoopApiSection() {
             AI agents built <ForBy /> your team
           </h2>
           <p className="lede mx-auto">
-            Understanding a task should be the only prerequisite to automating it. Publish a loop as
-            an API for your team or an external app,{' '}
-            <strong className="font-semibold text-neutral-800">
-              and connect another account so the tokens never run out
-            </strong>
-            .
+            Publish a loop as an API for your team or an app. Connect another account so tokens
+            never run out.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:mt-7">
             <PixelButton href="/loops" size="md" tone="dark" icon={<ArrowRight className="h-3.5 w-3.5" />}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ArrowRight, Download, Globe, Monitor, Smartphone } from 'lucide-react';
 import Header from '@/components/ui/header';
 import PixelButton from '@/components/ui/PixelButton';
@@ -268,9 +269,11 @@ export default function DownloadClient() {
                     Run agents on your own computer
                   </h2>
                   <p className="mt-1 max-w-md text-sm leading-relaxed text-ink-muted">
-                    Sign in, choose{' '}
-                    <span className="font-medium text-ink">Settings → AI Server → This computer</span>,
-                    then run the secure paired command for macOS or Windows.
+                    Self-host on a laptop or VM.{' '}
+                    <Link href="/self-host" className="font-medium text-ink underline-offset-2 hover:underline">
+                      How it works
+                    </Link>
+                    , or sign in and choose Settings → AI Server → This computer.
                   </p>
                 </div>
               </div>

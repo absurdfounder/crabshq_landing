@@ -38,7 +38,7 @@ const FAQS: FAQ[] = [
   {
     question: "Do I need technical knowledge to use Trooper?",
     answer:
-      "No. You assign tasks in plain language via chat. Trooper handles the execution: writing code, running commands, browsing the web, sending emails. The cloud plan manages all infrastructure for you. Power users can self-host for full control.",
+      "No. You assign tasks in plain language via chat. Trooper handles the execution: writing code, running commands, browsing the web, sending emails. Self-host on your machine, or use cloud if you want us to run it.",
   },
   {
     question: "Do I need my own API keys?",
@@ -57,7 +57,7 @@ const FAQS: FAQ[] = [
   {
     question: "Can I self-host Trooper?",
     answer:
-      "Yes. Enterprise customers can deploy Trooper on their own infrastructure with private VPC, on-prem options, SSO, white-label branding, and custom security requirements. Solo plan users run on their own machine.",
+      "Yes. Run it on your laptop or a virtual machine with the open-source app. Cloud is optional. Enterprise adds VPC, SSO, and on-prem.",
   },
 ];
 
@@ -110,10 +110,10 @@ const FAQ: React.FC = () => (
   <div>
     <div className="max-w-2xl">
       <h2 className="h2-section">
-        Intel brief.
+        Questions.
       </h2>
       <p className="lede">
-        Missing intel? Transmit your question to{' '}
+        Missing something? Email{' '}
         <a
           href="mailto:vaibhav@trooper.so"
           className="text-trooper hover:underline"

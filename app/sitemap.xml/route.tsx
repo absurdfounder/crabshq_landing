@@ -76,6 +76,7 @@ const staticPages = [
   { path: '/features/chat-interfaces', priority: '0.8', changefreq: 'weekly' },
   { path: '/channels', priority: '0.8', changefreq: 'weekly' },
   { path: '/download', priority: '0.7', changefreq: 'weekly' },
+  { path: '/self-host', priority: '0.8', changefreq: 'weekly' },
   { path: '/features/ai-documentation-agent', priority: '0.7', changefreq: 'weekly' },
   { path: '/features/ai-help-center', priority: '0.7', changefreq: 'weekly' },
   { path: '/features/automated-screenshots-for-docs', priority: '0.7', changefreq: 'weekly' },

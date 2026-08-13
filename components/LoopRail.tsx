@@ -148,8 +148,7 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
           not a prompt.
         </h2>
         <p className="lede mx-auto">
-          A loop has a goal, a check command and an exit condition, so a trooper knows when the job
-          is actually done. Describe one, or start from {totalCount}.
+          A loop has a goal, a check, and an exit. Describe one, or start from {totalCount}.
         </p>
       </motion.div>
 

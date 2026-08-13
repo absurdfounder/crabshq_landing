@@ -49,6 +49,9 @@ Categories include: Coding Agents & IDEs, Browser Automation, Data & Analytics, 
 ## Links
 
 - Website: https://trooper.so
+- Download: https://trooper.so/download
+- Self-host: https://trooper.so/self-host
+- GitHub: https://github.com/Trooper-AI/trooper-core
 - Skills Catalog: https://trooper.so/integration
 - Pricing: https://trooper.so/pricing
 - GitHub Integration: https://trooper.so/features/github-integration

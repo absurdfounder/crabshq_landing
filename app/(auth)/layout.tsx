@@ -5,7 +5,7 @@ import Footer from '@/components/ui/footer'
 import Newsletter from '@/components/newsletter'
 import SectionShell from '@/components/ui/SectionShell'
 
-const CATALOG_PATH_PREFIXES = ['/plugin', '/integration', '/loops', '/download', '/skill']
+const CATALOG_PATH_PREFIXES = ['/plugin', '/integration', '/loops', '/download', '/skill', '/self-host']
 
 function isCatalogPage(pathname: string) {
   return CATALOG_PATH_PREFIXES.some(

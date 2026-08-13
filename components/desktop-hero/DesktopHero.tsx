@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { ArrowRight, Github } from 'lucide-react';
 
 import HeroRotatingHeadline from '../HeroRotatingHeadline';
@@ -11,7 +12,6 @@ import Draggable from './Draggable';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
 const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core';
-const OPENCLAW_URL = 'https://openclaw.ai';
 
 /** Authored desktop size. Scaled to fit the page rail; headline owns the middle. */
 const STAGE_W = 1600;
@@ -1562,15 +1562,9 @@ export default function DesktopHero() {
             </ul>
 
             <p className="mt-4 text-[13px] text-neutral-500">
-              Powered by{' '}
-              <a
-                href={OPENCLAW_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-[#c47865] transition-colors hover:text-[#b26552]"
-              >
-                OpenClaw
-              </a>
+              <Link href="/self-host" className="font-medium text-neutral-700 transition-colors hover:text-neutral-900">
+                Open source. Self-host on your machine.
+              </Link>
             </p>
           </div>
         </div>

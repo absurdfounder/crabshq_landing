@@ -119,6 +119,13 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     'Trooper locally',
     'Get the desktop app and run agents on your machine with full control.',
   ),
+  'self-host': page(
+    'self-host',
+    'Self-host',
+    'Run Trooper',
+    'on your machine',
+    'Open source. Your keys, your models, your laptop or VM.',
+  ),
   affiliate: page(
     'affiliate',
     'Affiliate',

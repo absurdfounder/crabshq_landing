@@ -31,8 +31,7 @@ export default function DashboardShowcaseSection() {
             Watch them coordinate.
           </h2>
           <p className="lede mx-auto">
-            Give a task in chat, see it move across the board, and open any ticket for the full
-            trace. The same dashboard your troopers run in.
+            Give a task in chat. Watch it move across the board. Open any ticket for the full trace.
           </p>
           <div className="mt-6 flex justify-center sm:mt-7">
             <PixelButton
