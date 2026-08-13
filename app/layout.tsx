@@ -20,12 +20,12 @@ const silkscreen = localFont({
   variable: '--font-silkscreen',
 })
 
-/** H1, hero, section titles — Erode (Ferndesk display face) */
-const erode = localFont({
-  src: '../public/fonts/Erode-Variable.ttf',
-  variable: '--font-erode',
+/** H1, hero, section titles — Funnel Display */
+const display = localFont({
+  src: '../public/fonts/FunnelDisplay-VariableFont_wght.ttf',
+  variable: '--font-display',
   display: 'swap',
-  weight: '300 700',
+  weight: '300 800',
 })
 
 export const viewport = {
@@ -154,7 +154,7 @@ export default function RootLayout({
         }} />
       </head>
       <body
-        className={`${inter.variable} ${silkscreen.variable} ${erode.variable} bg-canvas font-sans antialiased text-ink`}
+        className={`${inter.variable} ${silkscreen.variable} ${display.variable} bg-canvas font-sans antialiased text-ink`}
       >
         {/* GA + Clarity site-wide (covers (auth) pages too). */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />

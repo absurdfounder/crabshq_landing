@@ -161,19 +161,19 @@ module.exports = {
       /*
        * Trooper typography (Ferndesk-aligned)
        * — font-sans / font-inter        → body, UI (Inter)
-       * — font-display / font-erode     → headlines (Erode via Fontshare)
+       * — font-display / font-erode     → headlines (Funnel Display)
        * — font-mono                     → code, terminal, agent UI (system stack)
        * — font-brand / font-silkscreen  → section kickers, logo wordmark
        * Utilities: type-h1, type-h2, type-body, type-caption, type-label, type-code, kicker
        */
       fontFamily: {
         sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['var(--font-erode)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
         brand: ['var(--font-silkscreen)', 'monospace'],
         inter: ['var(--font-inter)', 'sans-serif'],
-        erode: ['var(--font-erode)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        funneldisplay: ['var(--font-erode)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        erode: ['var(--font-display)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        funneldisplay: ['var(--font-display)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         silkscreen: ['var(--font-silkscreen)', 'monospace'],
       },
       /*

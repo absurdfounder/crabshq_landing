@@ -45,9 +45,8 @@ export async function loadOgFonts() {
       loadFont(FONT_FILES.robotoMono700),
       loadFont(FONT_FILES.silkscreen400),
     ]).then(([display400, display700, inter400, inter700, mono400, mono700, silkscreen400]) => [
-      // Registered as Erode so OG render styles stay aligned with the site display face.
-      { name: 'Erode', data: display400, weight: 400 as const, style: 'normal' as const },
-      { name: 'Erode', data: display700, weight: 700 as const, style: 'normal' as const },
+      { name: 'Funnel Display', data: display400, weight: 400 as const, style: 'normal' as const },
+      { name: 'Funnel Display', data: display700, weight: 700 as const, style: 'normal' as const },
       { name: 'Inter', data: inter400, weight: 400 as const, style: 'normal' as const },
       { name: 'Inter', data: inter700, weight: 700 as const, style: 'normal' as const },
       { name: 'Roboto Mono', data: mono400, weight: 400 as const, style: 'normal' as const },

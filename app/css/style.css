@@ -306,7 +306,7 @@ body > iframe.goog-te-menu-frame {
 
 /* Trooper typography utilities — see tailwind.config.js fontFamily */
 @layer components {
-  /* Erode is light at 400; default display headings to medium unless a weight utility is set */
+  /* Display face reads thin at 400; default headings to medium unless a weight utility is set */
   .font-display,
   .font-funneldisplay {
     @apply font-medium;

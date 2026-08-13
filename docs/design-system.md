@@ -1,7 +1,7 @@
 # The Trooper design system
 
 Derived from ferndesk.com, which is the same design lineage as this site — it
-already shares the display face (Erode), the body face (Inter), the pixel face
+already shares the display face (Funnel Display), the body face (Inter), the pixel face
 (Silkscreen), the dark (`#14170f`) and the lime accent. What follows is how
 those tokens are actually meant to be used.
 

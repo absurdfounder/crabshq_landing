@@ -106,7 +106,7 @@ function HeadlineBlock({ content }: { content: OgHeroContent }) {
     lineHeight: 1.08,
     fontWeight: 700,
     letterSpacing: '-0.03em',
-    fontFamily: 'Erode',
+    fontFamily: 'Funnel Display',
   } as const;
 
   const primaryAccent = (
@@ -323,7 +323,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
                     fontSize: 20,
                     lineHeight: 1.4,
                     color: '#475569',
-                    fontFamily: 'Erode',
+                    fontFamily: 'Funnel Display',
                   }}
                 >
                   {truncate(content.description, 140)}

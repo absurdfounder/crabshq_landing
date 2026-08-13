@@ -1532,10 +1532,9 @@ export default function DesktopHero() {
 
             <HeroRotatingHeadline className="mx-auto mt-2.5 text-center !text-neutral-900 !text-[2rem] sm:!text-4xl lg:!text-[2.35rem] xl:!text-5xl" />
 
-            <p className="lede mx-auto !mt-2.5 max-w-[32rem] text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
+            <p className="lede mx-auto !mt-2.5 max-w-xl text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
               <b className="font-semibold text-neutral-900">Hire a workforce, not a chatbot.</b>{' '}
-              Assign real work. They use your tools, run in parallel, and come back only when they
-              need your approval.
+              They use your tools and come back for your approval.
             </p>
 
             <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
