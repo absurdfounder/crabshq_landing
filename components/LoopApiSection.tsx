@@ -32,49 +32,28 @@ function ForBy() {
  * step 4  token rotation footer
  */
 
-/** Left half: the agent-orchestration SVG, revealed and pulsed with the run. */
-function WorkflowCanvas({ step }: { step: number }) {
-  const reduceMotion = useReducedMotion();
-  const reveal = reduceMotion ? 100 : Math.min(100, 22 + step * 19.5);
-
+/** Left half of the panel: the agent workflow canvas. */
+function WorkflowCanvas() {
   return (
-    <div
-      className="relative flex h-[280px] w-full items-center justify-center overflow-hidden bg-white px-5 lg:h-auto lg:min-h-[330px]"
-      aria-hidden
-    >
+    <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden bg-white px-5 lg:h-auto lg:min-h-[330px]" aria-hidden>
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(28,25,23,0.07) 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(28,25,23,0.07) 1px, transparent 0)',
           backgroundSize: '12px 12px',
         }}
       />
       <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
         workflow · agent-orchestration
       </p>
-      <motion.div
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/landing/agent-orchestration.svg"
+        alt=""
         className="relative z-[1] mt-4 w-full max-w-[400px]"
-        animate={
-          reduceMotion
-            ? { opacity: 1 }
-            : { opacity: step === 0 ? 0.55 : 1, scale: step >= 2 && step < 4 ? 1.015 : 1 }
-        }
-        transition={{ duration: 0.45, ease }}
-        style={{
-          WebkitMaskImage: `linear-gradient(90deg, #000 ${reveal}%, transparent ${Math.min(100, reveal + 14)}%)`,
-          maskImage: `linear-gradient(90deg, #000 ${reveal}%, transparent ${Math.min(100, reveal + 14)}%)`,
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/landing/agent-orchestration.svg"
-          alt=""
-          className={`w-full ${step >= 1 && !reduceMotion ? 'loop-orch-live' : ''}`}
-          width={409}
-          height={211}
-        />
-      </motion.div>
+        width={409}
+        height={211}
+      />
     </div>
   );
 }
@@ -244,30 +223,18 @@ export default function LoopApiSection() {
             Publish a loop as an API for your team or an app. Connect another account so tokens
             never run out.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:mt-7">
-            <PixelButton href="/loops" size="md" tone="dark" icon={<ArrowRight className="h-3.5 w-3.5" />}>
-              Browse Loop APIs
-            </PixelButton>
-            <Link href="/loops" className="group link-mono">
-              <span>See the full catalog</span>
-              <ArrowRight
-                className="size-3.5 transition-transform group-hover:translate-x-0.5"
-                aria-hidden
-              />
-            </Link>
-          </div>
         </motion.div>
 
         <motion.div
           ref={bandRef}
-          className="hero-surface mt-10 rounded-2xl border border-black/5 px-4 py-8 sm:mt-14 sm:px-8 sm:py-10"
+          className="hero-surface mt-9 rounded-2xl border border-black/5 px-4 py-8 sm:mt-11 sm:px-8 sm:py-10"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
           <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
-            <WorkflowCanvas step={step} />
+            <WorkflowCanvas />
             <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
               <ApiTerminal step={step} />
             </div>
@@ -279,6 +246,19 @@ export default function LoopApiSection() {
             </span>
           </div>
         </motion.div>
+
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:mt-10">
+          <PixelButton href="/loops" size="sm" tone="dark" icon={<ArrowRight className="h-4 w-4" />}>
+            Browse Loop APIs
+          </PixelButton>
+          <Link href="/loops" className="group link-mono">
+            <span>See the full catalog</span>
+            <ArrowRight
+              className="size-3.5 transition-transform group-hover:translate-x-0.5"
+              aria-hidden
+            />
+          </Link>
+        </div>
       </div>
     </section>
   );

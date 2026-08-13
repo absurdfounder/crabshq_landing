@@ -14,7 +14,7 @@ const TRUST = ['Open source', 'Your keys, your models', 'Laptop or VM'] as const
 
 export default function SelfHostHero() {
   return (
-    <section className="relative bg-canvas">
+    <section className="relative bg-canvas site-header-clear">
       <div className="rail py-12 sm:py-20">
         <motion.div
           className="mx-auto w-full max-w-2xl text-center"
@@ -60,8 +60,8 @@ export default function SelfHostHero() {
           transition={{ duration: 0.65, delay: 0.08, ease }}
           viewport={{ once: true, margin: '-60px' }}
         >
-          <div className="hero-surface rail-bleed relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
-            <HeroArticleDemo rotate flush />
+          <div className="hero-surface rail-bleed relative overflow-visible border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
+            <HeroArticleDemo rotate flush maxHeight={560} />
           </div>
         </motion.div>
       </div>

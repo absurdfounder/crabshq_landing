@@ -74,7 +74,13 @@ const DEMO_CANVAS_H = DEMO_APP_H + DEMO_CHROME_H;
 const DEMO_SIDEBAR_W = 216;
 const DEMO_CHAT_W = 440;
 
-function DemoScaleFrame({ children }: { children: ReactNode }) {
+function DemoScaleFrame({
+  children,
+  maxHeight,
+}: {
+  children: ReactNode;
+  maxHeight?: number;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -83,9 +89,9 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
     if (!el) return;
     const update = () => {
       const w = el.clientWidth;
-      // Fit the host exactly — scale down on narrow hosts and up on wide ones
-      // so we never leave empty gutters beside a 1× canvas.
-      setScale(w > 0 ? w / DEMO_CANVAS_W : 1);
+      const byW = w > 0 ? w / DEMO_CANVAS_W : 1;
+      const byH = maxHeight && maxHeight > 0 ? maxHeight / DEMO_CANVAS_H : Number.POSITIVE_INFINITY;
+      setScale(Math.min(byW, byH));
     };
     update();
     const ro = new ResizeObserver(update);
@@ -95,7 +101,7 @@ function DemoScaleFrame({ children }: { children: ReactNode }) {
       ro.disconnect();
       window.removeEventListener('resize', update);
     };
-  }, []);
+  }, [maxHeight]);
 
   const scaledW = DEMO_CANVAS_W * scale;
   const scaledH = DEMO_CANVAS_H * scale;
@@ -666,6 +672,7 @@ export default function TrooperDemo({
   rotate = false,
   backdrop = null,
   flush = false,
+  maxHeight,
   speed = 1,
   startStep = 0,
   onStepChange,
@@ -676,6 +683,8 @@ export default function TrooperDemo({
   /** Drop the band's own rule and vertical padding — for hosts that already
    *  frame the demo (the landing hero mats it otherwise). */
   flush?: boolean;
+  /** Cap painted height; scale to fit both width and this height. */
+  maxHeight?: number;
   /** Host-supplied background behind the frame — the landing passes its dither
    *  gradient. Kept a slot so the package owns none of the host's chrome. */
   backdrop?: ReactNode;
@@ -1515,7 +1524,7 @@ export default function TrooperDemo({
       >
         {backdrop}
         <div className="Trooper-demo relative z-10" style={{ width: "100%", margin: "0 auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", fontSize: 14 }}>
-        <DemoScaleFrame>
+        <DemoScaleFrame maxHeight={maxHeight}>
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
           border: `1px solid ${C.border}`, background: C.bg,

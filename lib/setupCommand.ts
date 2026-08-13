@@ -1,4 +1,4 @@
-/** Canonical local install — copy-paste as-is in terminal. */
+/** Canonical self-host CLI. Copy-paste as-is in terminal. */
 export const TROOPER_CLI_COMMAND = 'npx -y trooper-cli';
 
 /** @deprecated Use TROOPER_CLI_COMMAND */

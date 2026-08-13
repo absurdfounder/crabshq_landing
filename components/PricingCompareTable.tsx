@@ -23,7 +23,7 @@ type ComparisonCategory = {
 };
 
 const PLAN_COLUMNS = [
-  { key: 'local' as const, label: 'Local Install' },
+  { key: 'local' as const, label: 'Self-host' },
   { key: 'cloudLifetime' as const, label: 'Solo Cloud' },
   { key: 'cloud' as const, label: 'Trooper Cloud', featured: true },
   { key: 'enterprise' as const, label: 'Enterprise' },
@@ -311,7 +311,7 @@ export default function PricingCompareTable() {
               parts: [{ text: 'feature by feature.', tone: 'brand' }],
             },
           ]}
-          subline="Same grid rhythm as the cards above — every row aligned across Local Install, Solo Cloud, Trooper Cloud, and Enterprise."
+          subline="Same grid rhythm as the cards above. Every row aligned across Self-host, Solo Cloud, Trooper Cloud, and Enterprise."
         />
       </div>
 

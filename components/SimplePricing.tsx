@@ -550,17 +550,17 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
   const planProps = {
     local: {
       index: '01',
-      eyebrow: 'Self-install',
+      eyebrow: 'Self-host',
       badge: 'Free',
-      title: 'Local Install',
+      title: 'Self-host',
       icon: Laptop,
       price: formatUsd(PRICING_USD.localLifetime),
       cadence: 'free forever',
       subline: (
         <PricingSubline>1 workspace · no connected devices · free forever on your machine</PricingSubline>
       ),
-      note: <PricingNote>Free local install. Bring your own API keys; model usage is billed by your providers.</PricingNote>,
-      tierRail: <HostingModePill label="Self Hosted" />,
+      note: <PricingNote>Free self-host. Bring your own API keys; model usage is billed by your providers.</PricingNote>,
+      tierRail: <HostingModePill label="Self-host" />,
       allowance: localAllowance,
       features: localFeatures,
       cta: <HeroDownloadButtons size="md" variant="solid" tone="dark" className="w-full" />,
@@ -622,7 +622,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       price: 'Custom',
       subline: <PricingSubline>Volume pricing and dedicated support</PricingSubline>,
       note: <PricingNote>Self-hosted deployment with migration and custom agreements.</PricingNote>,
-      tierRail: <HostingModePill label="Self Hosted" />,
+      tierRail: <HostingModePill label="Self-host" />,
       allowance: enterpriseAllowance,
       features: enterpriseFeatures,
       cta: (

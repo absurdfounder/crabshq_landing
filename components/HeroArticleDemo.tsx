@@ -13,13 +13,12 @@ export default function HeroArticleDemo({
   scenarioId,
   rotate = false,
   flush = false,
+  maxHeight,
 }: {
   scenarioId?: DemoScenarioId;
   rotate?: boolean;
   flush?: boolean;
+  maxHeight?: number;
 }) {
-  // No backdrop. The demo used to carry its own blue dither field, which now
-  // sits inside the hero's tinted surface — two competing textures, in two
-  // different hues, one on top of the other. The band owns the ground.
-  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} flush={flush} />;
+  return <TrooperDemo scenarioId={scenarioId} rotate={rotate} flush={flush} maxHeight={maxHeight} />;
 }

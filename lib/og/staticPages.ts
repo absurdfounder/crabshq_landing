@@ -110,7 +110,7 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     'Pricing',
     'Run Trooper',
     'your way',
-    'Local install, Solo Cloud, hosted cloud, and enterprise self-host plans.',
+    'Self-host, Solo Cloud, hosted cloud, and enterprise plans.',
   ),
   download: page(
     'download',

@@ -47,7 +47,7 @@ const FAQS: FAQ[] = [
   },
   {
     question: "What is the difference between Solo, Cloud, and Enterprise?",
-    answer: `Local Install is ${formatUsd(PRICING_USD.localLifetime)} one-time for a lifetime license on your machine: one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever: also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+    answer: `Self-host is free forever on your machine: one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever: also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
   },
   {
     question: "Is my data secure?",
