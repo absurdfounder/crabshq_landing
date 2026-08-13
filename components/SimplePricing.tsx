@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import MarketingHeadline from '@/components/marketing/MarketingHeadline';
 import HeroDownloadButtons from '@/components/HeroDownloadButtons';
 import PixelButton from './ui/PixelButton';
 import {
@@ -647,23 +646,16 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
   return (
     /* Vertical rhythm belongs to the SectionShell wrapping this. */
     <div className="w-full">
-      <div className="flex flex-col gap-6 pb-8 max-md:gap-5 max-md:pb-6">
-        <MarketingHeadline
-          as="h2"
-          size="section"
-          lines={[
-            {
-              parts: [
-                { text: 'Simple pricing,', tone: 'default' },
-                { text: 'by deployment.', tone: 'default' },
-              ],
-            },
-            {
-              parts: [{ text: 'Pay for the plan you need.', tone: 'brand' }],
-            },
-          ]}
-          subline="Every plan runs on a private server with your keys. No surprise bills on model usage — you pay providers directly."
-        />
+      <div className="pb-8 max-md:pb-6">
+        <h2 className="h2-section">
+          Simple pricing, by deployment.
+          <br />
+          <span className="text-fern-700">Pay for the plan you need.</span>
+        </h2>
+        <p className="lede">
+          Every plan runs on a private server with your keys. No surprise bills on model usage. You
+          pay providers directly.
+        </p>
       </div>
 
       <div>

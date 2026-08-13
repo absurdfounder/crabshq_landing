@@ -77,7 +77,7 @@ export default function VoicesSection({ voices }: VoicesSectionProps) {
   if (!featured) return null;
 
   return (
-    <div className="py-10 md:py-16">
+    <div className="py-12 sm:py-20">
       {voices.length === 1 ? (
         <motion.figure
           className="relative"

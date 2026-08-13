@@ -87,7 +87,7 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
   return (
     <div>
       <motion.div
-        className="mb-6 max-w-3xl md:mb-10"
+        className="mb-10 max-w-3xl"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
@@ -99,7 +99,7 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
           Trooper can do for you.
         </h2>
         <p className="lede">
-          Troopers work in the tools you already pay for — and if it has an API, they can reach it.
+          Troopers work in the tools you already pay for, and if it has an API, they can reach it.
         </p>
       </motion.div>
 

@@ -25,12 +25,12 @@ export default function DashboardShowcaseSection() {
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section mx-auto text-balance">
+          <h2 className="h2-section mx-auto">
             Message troopers like teammates.
             <br className="hidden sm:block" />
             Watch them coordinate.
           </h2>
-          <p className="lede mx-auto mt-3 max-w-lg sm:mt-4">
+          <p className="lede mx-auto">
             Give a task in chat, see it move across the board, and open any ticket for the full
             trace. The same dashboard your troopers run in.
           </p>

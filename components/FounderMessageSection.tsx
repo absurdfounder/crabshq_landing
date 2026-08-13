@@ -106,7 +106,7 @@ export default function FounderMessageSection() {
         */}
         <div className="relative z-[2] flex flex-col items-center sm:flex-row sm:items-end sm:justify-center sm:gap-0">
           <div className="relative z-[1] mb-0 hidden w-[11rem] shrink-0 sm:mb-6 sm:block sm:-mr-4 lg:w-[12rem] lg:-mr-5">
-            <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_18px_40px_-16px_rgba(26,26,26,0.38)] ring-1 ring-black/[0.08]">
+            <div className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_18px_40px_-16px_rgba(26,26,26,0.38)] ring-1 ring-black/[0.08]">
               <div className="flex items-center gap-1.5 border-b border-black/[0.05] bg-neutral-50 px-2 py-1.5">
                 <span className="size-2 rounded-full bg-[#ff5f57]" />
                 <span className="size-2 rounded-full bg-[#febc2e]" />
@@ -140,7 +140,7 @@ export default function FounderMessageSection() {
 
           <div className="relative z-[2] w-full max-w-xl sm:max-w-[34rem]">
             <PeekingFolder />
-            <div className="relative z-[1] overflow-hidden rounded-[16px] bg-[#fbf8f1] shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-20px_rgba(26,26,26,0.42)] ring-1 ring-black/[0.08] sm:rounded-[18px]">
+            <div className="relative z-[1] overflow-hidden rounded-2xl bg-[#fbf8f1] shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_24px_60px_-20px_rgba(26,26,26,0.42)] ring-1 ring-black/[0.08]">
               <div className="flex items-center gap-2 border-b border-black/[0.05] bg-[#f3eee4] px-3 py-2 sm:px-3.5 sm:py-2.5">
                 <TrafficLights />
                 <span className="mx-auto flex items-center gap-1.5 text-[12px] font-medium text-neutral-500">

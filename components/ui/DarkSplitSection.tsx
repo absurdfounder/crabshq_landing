@@ -19,7 +19,7 @@ export default function DarkSplitSection({
   return (
     <section className={className}>
       <div
-        className={`rail border-x border-white/[0.06] text-white ${innerClassName || 'bg-split'}`}
+        className={`rail border-t border-white/[0.08] text-white ${innerClassName || 'bg-split'}`}
       >
         {children}
       </div>

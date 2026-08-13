@@ -209,7 +209,7 @@ export default function LoopApiSection() {
 
   return (
     <section className="relative bg-canvas">
-      <div className="rail border-t border-[var(--color-line)] py-12 sm:py-16">
+      <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
         <motion.div
           className="mx-auto w-full max-w-2xl text-center"
           initial={{ opacity: 0, y: 14 }}
@@ -217,10 +217,10 @@ export default function LoopApiSection() {
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section mx-auto text-balance">
+          <h2 className="h2-section mx-auto">
             AI agents built <ForBy /> your team
           </h2>
-          <p className="lede mx-auto mt-3 max-w-lg">
+          <p className="lede mx-auto">
             Understanding a task should be the only prerequisite to automating it. Publish a loop as
             an API for your team or an external app,{' '}
             <strong className="font-semibold text-neutral-800">
@@ -228,44 +228,44 @@ export default function LoopApiSection() {
             </strong>
             .
           </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:mt-7">
+            <PixelButton href="/loops" size="md" tone="dark" icon={<ArrowRight className="h-3.5 w-3.5" />}>
+              Browse Loop APIs
+            </PixelButton>
+            <Link href="/loops" className="group link-mono">
+              <span>See the full catalog</span>
+              <ArrowRight
+                className="size-3.5 transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </Link>
+          </div>
         </motion.div>
 
-        {/* Dither ground stays inside the grid: a rounded panel on the rail. */}
+        {/* Same dither as the dashboard: rail-bleed, square to the hairlines. */}
         <motion.div
           ref={bandRef}
-          className="hero-surface mt-9 rounded-2xl border border-black/5 px-4 py-8 sm:mt-11 sm:px-8 sm:py-10"
+          className="mt-10 lg:mt-14"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
-          {/* One panel, two halves: workflow canvas | published endpoint. */}
-          <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
-            <WorkflowCanvas />
-            <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
-              <ApiTerminal step={step} />
+          <div className="hero-surface rail-bleed relative border-y border-black/5 px-2 py-6 sm:px-3 sm:py-8 lg:px-3 lg:py-9">
+            <div className="relative overflow-hidden rounded-2xl shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ring-1 ring-black/5 lg:grid lg:grid-cols-2">
+              <WorkflowCanvas />
+              <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
+                <ApiTerminal step={step} />
+              </div>
+              <span
+                className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
+                aria-hidden
+              >
+                <ArrowRight className="size-4" strokeWidth={2.25} />
+              </span>
             </div>
-            <span
-              className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
-              aria-hidden
-            >
-              <ArrowRight className="size-4" strokeWidth={2.25} />
-            </span>
           </div>
         </motion.div>
-
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:mt-10">
-          <PixelButton href="/loops" size="sm" tone="brand" icon={<ArrowRight className="h-4 w-4" />}>
-            Browse Loop APIs
-          </PixelButton>
-          <Link href="/loops" className="group link-mono">
-            <span>See the full catalog</span>
-            <ArrowRight
-              className="size-3.5 transition-transform group-hover:translate-x-0.5"
-              aria-hidden
-            />
-          </Link>
-        </div>
       </div>
     </section>
   );

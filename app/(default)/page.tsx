@@ -120,7 +120,7 @@ export default function Home() {
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11" bgClass="bg-canvas-warm">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11">
         <FAQ />
       </SectionShell>
       </div>

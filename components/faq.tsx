@@ -128,7 +128,7 @@ const FAQ: React.FC = () => (
 
     {/* Cards with a real gap — see the note in HowItWorksSteps on why the
         `gap-px` hairline table is gone. */}
-    <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
+    <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2">
       {FAQS.map((faq) => (
         <FAQCell key={faq.question} question={faq.question} answer={faq.answer} />
       ))}

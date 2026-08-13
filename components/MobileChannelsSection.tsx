@@ -712,7 +712,7 @@ export default function MobileChannelsSection() {
 
   return (
     <section className="relative bg-canvas">
-      <div className="rail border-t border-[var(--color-line)] px-4 py-14 sm:px-6 sm:py-20">
+      <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-14">
           <div className="max-w-md">
             <h2 className="h2-section text-balance">
@@ -723,7 +723,7 @@ export default function MobileChannelsSection() {
               </span>{' '}
               on the go.
             </h2>
-            <p className="lede mt-3 max-w-sm">
+            <p className="lede">
               Text your agents from the apps you already live in. Review work and ship from the
               Trooper app.
             </p>
