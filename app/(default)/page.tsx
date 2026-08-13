@@ -29,14 +29,13 @@ export const metadata = {
     images: homeOg.twitter!.images,
   },
   keywords: [
-    'openclaw ai',
-    'github openclaw',
-    'openclaw github',
-    'openclaw clawdbot',
-    'clawdbot openclaw',
-    'clawdbot',
-    'moltbot',
+    'trooper',
+    'ai teammates',
+    'ai employees',
     'ai workforce',
+    'loop api',
+    'self-host ai agents',
+    'openclaw',
   ],
 }
 

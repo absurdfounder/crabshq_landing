@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Bot, RefreshCw, UserCheck, Zap } from 'lucide-react';
-import { DemoFavicon } from '@trooper/demo';
+import { ArrowRight, GitBranch, RefreshCw } from 'lucide-react';
+import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -33,130 +33,117 @@ function ForBy() {
  * step 4  token rotation
  */
 
-function NodeCard({
-  icon,
-  iconBg,
-  label,
-  domains,
-  className = '',
-  active,
-  done,
-}: {
-  icon: ReactNode;
-  iconBg: string;
-  label: string;
-  domains?: string[];
-  className?: string;
-  active: boolean;
-  done: boolean;
-}) {
-  return (
-    <motion.div
-      className={`absolute flex items-center gap-2.5 rounded-xl bg-white py-2 pl-2 pr-3 shadow-[0_14px_30px_-14px_rgba(28,25,23,0.4)] ${
-        active ? 'ring-2 ring-trooper' : 'ring-1 ring-stone-900/10'
-      } ${className}`}
-      animate={{ scale: active ? 1.04 : 1, opacity: active || done ? 1 : 0.5 }}
-      transition={{ duration: 0.35, ease }}
-    >
-      <span
-        className="flex size-7 shrink-0 items-center justify-center rounded-lg text-white"
-        style={{ background: iconBg }}
-      >
-        {icon}
-      </span>
-      <span className="whitespace-nowrap text-[13px] font-semibold text-stone-800">{label}</span>
-      {domains && domains.length > 0 ? (
-        <span className="flex items-center gap-1">
-          {domains.map((d) => (
-            <span
-              key={d}
-              className="flex size-5 items-center justify-center rounded-full bg-stone-50 ring-1 ring-stone-200"
-            >
-              <DemoFavicon domain={d} size={11} rounded="sm" />
-            </span>
-          ))}
-        </span>
-      ) : null}
-    </motion.div>
-  );
+const LOOP_NODE_IDS = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const;
+
+const REFUND_MERMAID = `flowchart TD
+  n1(["Refund requested"])
+  n2{"Amount over $200?"}
+  n3["Collect evidence"]
+  n4["Apply refund SOP"]
+  n5["Human review gate"]
+  n6(["Issue refund"])
+  n1 --> n2
+  n2 -->|yes| n3
+  n3 --> n4
+  n4 --> n5
+  n5 --> n6`;
+
+const WORKFLOW_MERMAID_CSS = `
+.loop-api-mermaid .node { transition: opacity 280ms ease; }
+.loop-api-mermaid .node[data-state="idle"] { opacity: 0.38; }
+.loop-api-mermaid .node[data-state="done"] { opacity: 1; }
+.loop-api-mermaid .node[data-state="running"] { opacity: 1; }
+.loop-api-mermaid .node[data-state="done"] rect,
+.loop-api-mermaid .node[data-state="done"] polygon,
+.loop-api-mermaid .node[data-state="done"] path,
+.loop-api-mermaid .node[data-state="done"] circle {
+  fill: #f0f5e6 !important;
+  stroke: #3f6b00 !important;
+  stroke-width: 1.75px !important;
+}
+.loop-api-mermaid .node[data-state="running"] rect,
+.loop-api-mermaid .node[data-state="running"] polygon,
+.loop-api-mermaid .node[data-state="running"] path,
+.loop-api-mermaid .node[data-state="running"] circle {
+  fill: #eef6dc !important;
+  stroke: #3f6b00 !important;
+  stroke-width: 2.5px !important;
+}
+.loop-api-mermaid .node label,
+.loop-api-mermaid .node .label,
+.loop-api-mermaid .node span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 12px !important;
+}
+.loop-api-mermaid .edgePath path {
+  stroke: #a8a29e !important;
+  stroke-width: 1.5px !important;
+}
+.loop-api-mermaid .edgeLabel {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 11px !important;
+  color: #57534e !important;
+}
+.loop-api-mermaid .marker {
+  fill: #a8a29e !important;
+  stroke: #a8a29e !important;
+}
+`;
+
+/** Terminal step → how far the playbook has walked. */
+function activeNodeCount(step: number) {
+  if (step <= 0) return 0;
+  if (step === 1) return 1;
+  if (step === 2) return 3;
+  if (step === 3) return 5;
+  return LOOP_NODE_IDS.length;
 }
 
-/** Left half: Trooper refund loop, nodes light up with the terminal. */
+/** Left half: Trooper refund playbook, same mermaid editor as the product. */
 function WorkflowCanvas({ step }: { step: number }) {
-  const reduceMotion = useReducedMotion();
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [svgReady, setSvgReady] = useState(0);
+  const handleRender = useCallback(() => setSvgReady((n) => n + 1), []);
+  const count = activeNodeCount(step);
+
+  useEffect(() => {
+    const root = wrapRef.current;
+    if (!root) return;
+
+    const activeIds = LOOP_NODE_IDS.slice(0, count);
+    const runningId =
+      activeIds.length > 0 && activeIds.length < LOOP_NODE_IDS.length
+        ? activeIds[activeIds.length - 1]
+        : null;
+    const done = new Set<string>(runningId ? activeIds.slice(0, -1) : activeIds);
+
+    root.querySelectorAll<SVGGElement>('g.node').forEach((node) => {
+      const id = node.id.match(/^flowchart-([^-]+)-/)?.[1];
+      if (!id) return;
+      if (runningId && id === runningId) node.dataset.state = 'running';
+      else if (done.has(id)) node.dataset.state = 'done';
+      else node.dataset.state = 'idle';
+    });
+  }, [count, svgReady]);
 
   return (
-    <div className="relative h-[280px] w-full overflow-hidden bg-white lg:h-auto lg:min-h-[330px]" aria-hidden>
+    <div className="flex h-[280px] w-full flex-col bg-[#FAFAF9] lg:h-auto lg:min-h-[330px]" aria-hidden>
+      <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
+      <div className="flex shrink-0 items-center gap-2 border-b border-[#E7E5E4] bg-[#FAFAF9] px-3 py-2.5">
+        <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
+        <span className="text-[12px] font-semibold text-neutral-800">Refund playbook</span>
+        <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
+          {count}/{LOOP_NODE_IDS.length} steps
+        </span>
+      </div>
       <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(28,25,23,0.07) 1px, transparent 0)',
-          backgroundSize: '12px 12px',
-        }}
-      />
-      <p className="absolute left-3.5 top-3 z-10 font-mono text-[10px] tracking-wide text-stone-400">
-        workflow · refund-playbook
-      </p>
-
-      <div className="absolute left-1/2 top-8 h-[280px] w-[340px] -translate-x-1/2 scale-[0.92] sm:scale-100 lg:top-10">
-        <svg viewBox="0 0 340 280" fill="none" className="absolute inset-0 h-full w-full">
-          <path
-            d="M 88 52 L 88 92 L 176 92 L 176 118"
-            stroke="#c9c4b8"
-            strokeWidth="1.6"
-            strokeDasharray="5 5"
-          />
-          <path
-            d="M 176 164 L 176 200 L 248 200 L 248 226"
-            stroke="#c9c4b8"
-            strokeWidth="1.6"
-            strokeDasharray="5 5"
-          />
-          <motion.path
-            d="M 88 52 L 88 92 L 176 92 L 176 118"
-            stroke="#4f7b38"
-            strokeWidth="2"
-            strokeLinecap="round"
-            initial={false}
-            animate={{ pathLength: step >= 2 ? 1 : 0, opacity: step >= 2 ? 1 : 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
-          />
-          <motion.path
-            d="M 176 164 L 176 200 L 248 200 L 248 226"
-            stroke="#4f7b38"
-            strokeWidth="2"
-            strokeLinecap="round"
-            initial={false}
-            animate={{ pathLength: step >= 3 ? 1 : 0, opacity: step >= 3 ? 1 : 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.5, ease }}
-          />
-        </svg>
-
-        <NodeCard
-          icon={<Zap className="size-4" strokeWidth={2.25} />}
-          iconBg="#f59e0b"
-          label="Refund requested"
-          domains={['stripe.com', 'gmail.com']}
-          className="left-2 top-2"
-          active={step === 1}
-          done={step > 1}
-        />
-        <NodeCard
-          icon={<Bot className="size-4" strokeWidth={2.25} />}
-          iconBg="#8b5cf6"
-          label="Evidence Agent"
-          domains={['notion.so', 'slack.com']}
-          className="left-[88px] top-[118px]"
-          active={step === 2}
-          done={step > 2}
-        />
-        <NodeCard
-          icon={<UserCheck className="size-4" strokeWidth={2.25} />}
-          iconBg="#4f7b38"
-          label="Human review gate"
-          className="left-[148px] top-[226px]"
-          active={step >= 3}
-          done={step > 3}
+        ref={wrapRef}
+        className="loop-api-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto px-2 py-3"
+      >
+        <MermaidFlowDiagram
+          source={REFUND_MERMAID}
+          className="min-h-0 w-full [&_svg]:max-h-[260px]"
+          onRender={handleRender}
         />
       </div>
     </div>

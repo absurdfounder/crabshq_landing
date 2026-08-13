@@ -1,8 +1,15 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-const steps = [
+export type HowItWorksStep = {
+  number: string;
+  title: string;
+  example: string;
+};
+
+const DEFAULT_STEPS: HowItWorksStep[] = [
   {
     number: '01',
     title: 'Define the goal.',
@@ -11,7 +18,7 @@ const steps = [
   {
     number: '02',
     title: 'Hire the team.',
-    example: 'CEO, CTO, engineers, designers, marketers — any agent, any provider.',
+    example: 'CEO, CTO, engineers, designers, marketers. Any agent, any provider.',
   },
   {
     number: '03',
@@ -22,21 +29,37 @@ const steps = [
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export default function HowItWorksSteps() {
+export default function HowItWorksSteps({
+  title,
+  lede,
+  steps = DEFAULT_STEPS,
+  align = 'left',
+}: {
+  title?: ReactNode;
+  lede?: string;
+  steps?: readonly HowItWorksStep[];
+  align?: 'left' | 'center';
+}) {
+  const centered = align === 'center';
   return (
     <div>
       <motion.div
-        className="how-it-works-header mb-6 md:mb-12 max-w-3xl"
+        className={`how-it-works-header mb-6 md:mb-12 max-w-3xl ${centered ? 'mx-auto text-center' : ''}`}
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="how-it-works-heading h2-section">
-          Manage business goals
-          <br />
-          not pull requests.
+        <h2 className={`how-it-works-heading h2-section ${centered ? 'mx-auto' : ''}`}>
+          {title ?? (
+            <>
+              Manage business goals
+              <br />
+              not pull requests.
+            </>
+          )}
         </h2>
+        {lede ? <p className={`lede ${centered ? 'mx-auto' : ''}`}>{lede}</p> : null}
       </motion.div>
 
       {/*

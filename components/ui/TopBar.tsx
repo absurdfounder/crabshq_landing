@@ -14,10 +14,10 @@ export default function TopBar() {
           New
         </span>
         <span className="min-w-0 text-center sm:hidden">
-          Trooper for Mac — run your AI workforce
+          Trooper for Mac. Run your AI workforce
         </span>
         <span className="hidden min-w-0 sm:inline">
-          Trooper for Mac — run your AI workforce on your machine
+          Trooper for Mac. Run your AI workforce on your machine
         </span>
         <span className="inline-flex shrink-0 items-center gap-0.5 font-bold text-[#0b1400] transition-colors group-hover:text-black sm:ml-1 sm:gap-1 sm:font-semibold">
           <span aria-hidden className="mx-0.5 hidden text-[#0b1400]/40 sm:inline">
