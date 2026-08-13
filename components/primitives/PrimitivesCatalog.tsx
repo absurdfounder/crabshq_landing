@@ -84,8 +84,7 @@ export default function PrimitivesCatalog() {
 
   return (
     <section ref={catalogRef} className="scroll-mt-[var(--site-header-height)] border-t border-[var(--color-line)] bg-canvas-warm">
-      <div className="rail py-12 sm:py-20">
-        <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white md:flex-row">
+      <div className="mx-auto flex w-full max-w-7xl flex-col border-x-0 border-[var(--color-line)] md:flex-row md:border-x">
         <aside className="shrink-0 border-b border-[var(--color-line)] bg-canvas p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:w-64 md:border-b-0 md:border-r md:p-7">
           <label className="relative block">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -114,7 +113,6 @@ export default function PrimitivesCatalog() {
             </div>
             {filtered.length ? <div className="grid gap-4 p-5 sm:grid-cols-2 md:gap-5 md:p-8 xl:grid-cols-3">{filtered.map((primitive, index) => <PrimitiveCard key={primitive.slug} primitive={primitive} index={index} />)}</div> : <p className="p-8 text-sm text-ink-muted">No primitives match that search.</p>}
           </section>
-        </div>
         </div>
       </div>
     </section>

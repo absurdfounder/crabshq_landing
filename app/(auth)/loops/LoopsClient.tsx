@@ -143,7 +143,7 @@ export default function LoopsClient({ loops, initialCategory }: LoopsClientProps
   });
 
   return (
-    <div ref={catalogRef} className="mx-auto scroll-mt-[var(--site-header-height)] overflow-hidden rounded-2xl border border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)]">
+    <div ref={catalogRef} className="mx-auto w-full scroll-mt-[var(--site-header-height)] max-w-7xl border-y border-slate-200 bg-white md:grid md:grid-cols-[15rem_minmax(0,1fr)] md:border-x">
       <aside className="border-b border-slate-200 p-5 md:sticky md:top-[var(--site-header-height)] md:h-[calc(100vh-var(--site-header-height))] md:border-b-0 md:border-r md:p-6">
         <label className="relative block w-full sm:max-w-sm">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />

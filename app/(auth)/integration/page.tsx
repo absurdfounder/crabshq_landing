@@ -38,8 +38,10 @@ const Integration = async ({
         </PixelButton>}
       />
 
-      <SectionShell rhythm bgClass="bg-canvas-warm">
-        <IntegrationClient skills={skills} initialCategory={initialCategory} />
+      <SectionShell bgClass="bg-canvas-warm">
+        <div className="rail-bleed">
+          <IntegrationClient skills={skills} initialCategory={initialCategory} />
+        </div>
       </SectionShell>
     </div>
   );

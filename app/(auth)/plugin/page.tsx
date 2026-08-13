@@ -36,8 +36,12 @@ export default function PluginHubPage() {
         </>}
       />
 
-      <SectionShell rhythm bgClass="bg-canvas">
-        <PluginHubClient plugins={allPlugins} />
+      <SectionShell bgClass="bg-canvas">
+        <div className="pb-16 pt-6 md:pb-24">
+          <div className="rail-bleed">
+            <PluginHubClient plugins={allPlugins} />
+          </div>
+        </div>
       </SectionShell>
     </div>
   );
