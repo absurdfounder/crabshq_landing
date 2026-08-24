@@ -10,7 +10,19 @@ const MEDIA = {
   mgTop5: 'https://cdn.chatcut.dev/playback/mg/mg-taylor-top5.webm',
   mgCta: 'https://cdn.chatcut.dev/playback/mg/mg-youtube-cta.webm',
   filmstrip: 'https://cdn.chatcut.dev/playback/talking-head-filmstrip.jpg',
-  waveform: 'https://cdn.chatcut.dev/playback/talking-head-waveform.png',
+  // Same-origin data URI — CSS masks on a cross-origin PNG throw a CORS error
+  // in Chromium (cdn.chatcut.dev does not send Access-Control-Allow-Origin).
+  waveform:
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 32" preserveAspectRatio="none">' +
+        Array.from({ length: 48 }, (_, i) => {
+          const h = 8 + ((i * 19 + 7) % 20)
+          const y = (32 - h) / 2
+          return `<rect x="${i * 5}" y="${y}" width="3.2" height="${h}" rx="0.6" fill="white"/>`
+        }).join('') +
+        '</svg>',
+    ),
 } as const;
 
 /** Matches the transport readout (≈19.9s). */

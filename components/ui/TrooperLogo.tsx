@@ -29,6 +29,7 @@ export default function TrooperLogo({
         height={128}
         className={`bg-transparent ${characterClassName}`}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'low'}
         decoding="async"
         aria-hidden
       />

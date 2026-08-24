@@ -5,7 +5,7 @@ import localFont from 'next/font/local'
 import Script from 'next/script'
 import PlausibleProvider from 'next-plausible'
 
-import Banner from '@/components/banner'
+import GoogleTranslateRuntime from '@/components/GoogleTranslateRuntime'
 import SchemaMarkup from '@/components/SchemaMarkup'
 import { ogImageMeta } from '@/lib/og/url'
 
@@ -114,51 +114,14 @@ export default function RootLayout({
           trackOutboundLinks
           taggedEvents
         />
-        {/* Google Translate Script */}
-        <Script 
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" 
-          strategy="afterInteractive" 
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              function googleTranslateElementInit() {
-                new google.translate.TranslateElement({
-                  pageLanguage: 'en',
-                  autoDisplay: false,
-                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-                }, 'google_translate_element');
-              }
-            `,
-          }}
-        />
-        {/* Add style to hide Google Translate bar */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            .VIpgJd-ZVi9od-ORHb-OEVmcd, 
-            .VIpgJd-ZVi9od-aZ2wEe-wOHMyf, 
-            .goog-te-banner-frame, 
-            .skiptranslate,
-            iframe.skiptranslate,
-            #google_translate_element iframe {
-              display: none !important; 
-              visibility: hidden !important;
-              pointer-events: none !important;
-              height: 0 !important;
-              width: 0 !important;
-            }
-            body {
-              top: 0 !important;
-            }
-          `,
-        }} />
+        <link rel="preload" as="image" href="/images/trooper-logomark-128.webp" type="image/webp" />
       </head>
       <body
         className={`${inter.variable} ${silkscreen.variable} ${display.variable} bg-canvas font-sans antialiased text-ink`}
       >
         {/* GA + Clarity site-wide (covers (auth) pages too). */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="lazyOnload" />
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -166,7 +129,7 @@ export default function RootLayout({
             gtag('config', 'G-FKXTBWH4RE');
           `}
         </Script>
-        <Script id="clarity-script" strategy="afterInteractive">
+        <Script id="clarity-script" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -179,8 +142,7 @@ export default function RootLayout({
           {children}
           <SchemaMarkup />
         </div>
-        {/* Hidden Google Translate Element */}
-        <div id="google_translate_element" className="fixed -z-50 top-0 left-0 opacity-0 pointer-events-none" aria-hidden />
+        <GoogleTranslateRuntime />
       </body>
     </html>
   )

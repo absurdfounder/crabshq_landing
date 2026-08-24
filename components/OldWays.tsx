@@ -24,7 +24,16 @@ import {
   DesktopScene,
   DevicesScene,
 } from './where-they-work/WorkSurfaceScenes';
-import VideoEditorCapabilityVisual from './VideoEditorCapabilityVisual';
+import dynamic from 'next/dynamic';
+
+const VideoEditorCapabilityVisual = dynamic(() => import('./VideoEditorCapabilityVisual'), {
+  ssr: false,
+  loading: () => <div className="h-[280px] w-full rounded-xl bg-black/[0.04]" aria-hidden />,
+});
+
+function VideoEditorVisual({ focused }: { focused: boolean }) {
+  return <VideoEditorCapabilityVisual focused={focused} />;
+}
 
 /* ─── Shared shell ─── */
 const MockShell = ({
@@ -1053,7 +1062,7 @@ const cards: CapabilityCard[] = [
     highlight: 'not a timeline grind.',
     description:
       'Ask Troopers to remove fillers, find highlights, generate motion graphics, and score the cut. The timeline updates while you watch — same workflow as chatting your edit.',
-    Visual: VideoEditorCapabilityVisual,
+    Visual: VideoEditorVisual,
     screen: true,
     meta: 'Cuts · motion graphics · score',
     cta: { label: 'Get started free', href: 'https://app.trooper.so?ref=video-editor', external: true },

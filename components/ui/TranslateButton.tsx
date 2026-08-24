@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { getCurrentLanguage, setLanguageWithCookie, ensureTranslation } from '../../app/utils/googleTranslateHelper';
+import { requestGoogleTranslate } from '@/components/GoogleTranslateRuntime';
 
 // Define TypeScript interfaces
 interface LanguageData {
@@ -96,8 +97,10 @@ const TranslateButton = () => {
         }
       }
       
-      // Ensure translation is applied
-      ensureTranslation();
+      if (currentLangCode && currentLangCode !== 'en') {
+        requestGoogleTranslate();
+        ensureTranslation();
+      }
     }
   }, []);
   

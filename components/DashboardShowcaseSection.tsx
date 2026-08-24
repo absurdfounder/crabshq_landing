@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
-import HeroArticleDemo from '@/components/HeroArticleDemo';
+import DeferredMount from '@/components/DeferredMount';
+import LazyHeroArticleDemo from '@/components/LazyHeroArticleDemo';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -52,7 +53,9 @@ export default function DashboardShowcaseSection() {
           transition={{ duration: 0.65, delay: 0.08, ease }}
           viewport={{ once: true, margin: '-60px' }}
         >
-          <HeroArticleDemo rotate flush />
+          <DeferredMount desktopOnly minHeight={520}>
+            <LazyHeroArticleDemo rotate flush />
+          </DeferredMount>
         </motion.div>
       </div>
     </section>

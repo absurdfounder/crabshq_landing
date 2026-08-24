@@ -1,7 +1,6 @@
 'use client';
 
 import { TrooperDemo, type DemoScenarioId } from '@trooper/demo';
-import PixelDitherGradient from './ui/PixelDitherGradient';
 
 /**
  * The demo now lives in `packages/demo` so it can be built and iterated on

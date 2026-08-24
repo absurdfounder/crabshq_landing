@@ -39,25 +39,27 @@ export const metadata = {
   ],
 }
 
+import dynamic from 'next/dynamic'
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import LoopRail from '@/components/LoopRail'
-import LoopApiSection from '@/components/LoopApiSection'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import IntegrationScroller from '@/components/IntegrationScroller'
 import { getIntegrationTiles } from '@/lib/integrationScroller'
 import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
-import DashboardShowcaseSection from '@/components/DashboardShowcaseSection'
-import OldWays from '@/components/OldWays'
 import SimplePricing from '@/components/SimplePricing'
 import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
-import MobileChannelsSection from '@/components/MobileChannelsSection'
 import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
+
+const DashboardShowcaseSection = dynamic(() => import('@/components/DashboardShowcaseSection'))
+const OldWays = dynamic(() => import('@/components/OldWays'))
+const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
+const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
 
 export default function Home() {
   const loopRailItems = getLoopRailItems(22)
