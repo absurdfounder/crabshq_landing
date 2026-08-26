@@ -308,6 +308,18 @@ export default function Footer() {
             </Link>
           </div>
           <div className="flex flex-wrap items-stretch gap-3">
+            <a
+              href="https://turbo0.com/item/trooper-ai-workforce"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Trooper is listed on Turbo0"
+            >
+              <img
+                src="https://img.turbo0.com/badge-listed-light.svg"
+                alt="Listed on Turbo0"
+                className="h-[54px] w-auto"
+              />
+            </a>
             <PixelButton
               href={GITHUB_ORG_URL}
               external
