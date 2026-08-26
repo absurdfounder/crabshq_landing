@@ -1,40 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  BarChart3,
-  BookOpen,
-  CodeXml,
-  DollarSign,
-  Handshake,
-  Headset,
-  Inbox,
-  Mail,
-  Megaphone,
-  MessageCircleQuestion,
-  PenLine,
-  Search,
-  TrendingUp,
-  Trophy,
-} from 'lucide-react';
 
 const ITEMS = [
-  { id: 'overall', label: 'Overall rankings', icon: Trophy },
-  { id: 'harness', label: 'Harness rankings', icon: Trophy },
-  { id: 'models', label: 'Model rankings', icon: BarChart3 },
-  { id: 'value-per-dollar', label: 'Value per dollar', icon: DollarSign },
-  { id: 'coding', label: 'Coding', icon: CodeXml },
-  { id: 'research', label: 'Research', icon: Search },
-  { id: 'support', label: 'Customer support', icon: Headset },
-  { id: 'marketing', label: 'Marketing', icon: Megaphone },
-  { id: 'sales', label: 'Sales', icon: Handshake },
-  { id: 'email', label: 'Email & inbox', icon: Mail },
-  { id: 'data', label: 'Data & analytics', icon: BarChart3 },
-  { id: 'content', label: 'Content writing', icon: PenLine },
-  { id: 'seo', label: 'SEO', icon: TrendingUp },
-  { id: 'management', label: 'Management & coordination', icon: Inbox },
-  { id: 'methodology', label: 'Methodology', icon: BookOpen },
-  { id: 'faq', label: 'FAQ', icon: MessageCircleQuestion },
+  { id: 'overall', label: 'Overall rankings' },
+  { id: 'harness', label: 'Harness rankings' },
+  { id: 'models', label: 'Model rankings' },
+  { id: 'value-per-dollar', label: 'Value per dollar' },
+  { id: 'coding', label: 'Coding' },
+  { id: 'research', label: 'Research' },
+  { id: 'support', label: 'Customer support' },
+  { id: 'marketing', label: 'Marketing' },
+  { id: 'sales', label: 'Sales' },
+  { id: 'email', label: 'Email & inbox' },
+  { id: 'data', label: 'Data & analytics' },
+  { id: 'content', label: 'Content writing' },
+  { id: 'seo', label: 'SEO' },
+  { id: 'management', label: 'Management' },
+  { id: 'methodology', label: 'Methodology' },
+  { id: 'faq', label: 'FAQ' },
 ] as const;
 
 export default function BenchmarksNav() {
@@ -61,33 +45,30 @@ export default function BenchmarksNav() {
   }, []);
 
   return (
-    <div className="lg:sticky lg:top-28 lg:w-[188px] lg:shrink-0 lg:self-start">
-      <nav className="hidden flex-col gap-0.5 lg:flex" aria-label="Benchmarks sections">
-          {ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = active === item.id;
-            return (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                className={`flex items-center gap-2 rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors ${
-                  isActive
-                    ? 'bg-neutral-900/5 text-neutral-900'
-                    : 'text-neutral-500 hover:bg-neutral-900/[0.04] hover:text-neutral-800'
-                }`}
-              >
-                <Icon className={`size-3.5 shrink-0 ${isActive ? 'text-emerald-700' : 'text-neutral-400'}`} />
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
+    <div className="lg:sticky lg:top-28 lg:w-[190px] lg:shrink-0 lg:self-start">
+      <nav className="hidden space-y-2.5 border-l border-black/10 pl-4 lg:block" aria-label="On this page">
+        <p className="text-[11px] uppercase tracking-[0.16em] text-black/40">On this page</p>
+        {ITEMS.map((item) => {
+          const isActive = active === item.id;
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={`block text-[13px] transition-colors ${
+                isActive ? 'text-black' : 'text-black/55 hover:text-black'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
       <div className="flex flex-wrap gap-1.5 lg:hidden">
         {ITEMS.map((item) => (
           <a
             key={item.id}
             href={`#${item.id}`}
-            className="rounded-full border border-[var(--color-line)] px-3 py-1 text-[11px] font-medium text-neutral-600 hover:border-neutral-300 hover:text-neutral-900"
+            className="rounded-full border border-[var(--color-line)] px-3 py-1 text-sm font-medium text-neutral-600 hover:border-neutral-300 hover:text-neutral-900"
           >
             {item.label}
           </a>

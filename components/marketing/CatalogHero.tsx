@@ -6,10 +6,11 @@ type CatalogHeroProps = {
   title: string;
   description: string;
   actions?: ReactNode;
+  children?: ReactNode;
 };
 
 /** Shared editorial opening for the directory pages (plugins, skills, loops). */
-export default function CatalogHero({ title, description, actions }: CatalogHeroProps) {
+export default function CatalogHero({ title, description, actions, children }: CatalogHeroProps) {
   return (
     <section className="border-b border-[var(--color-line)] bg-canvas">
       <div className="rail page-hero-padding">
@@ -22,6 +23,7 @@ export default function CatalogHero({ title, description, actions }: CatalogHero
           </p>
           {actions ? <div className="mt-6 flex flex-wrap gap-3">{actions}</div> : null}
         </div>
+        {children ? <div className="mt-8 max-w-3xl">{children}</div> : null}
       </div>
     </section>
   );
