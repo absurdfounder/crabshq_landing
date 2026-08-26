@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 import {
+  BarChart3,
   Brain,
   Briefcase,
   CheckCircle,
@@ -55,6 +56,7 @@ export const featureNavItems: NavItem[] = [
   { href: '/features/multi-agent-collaboration', title: 'Multi-Agent Teams', description: 'AI employees collaborate on complex tasks', icon: Network, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
   { href: '/features/openclaw-powered', title: 'OpenClaw Runtime', description: 'Built on the proven OpenClaw framework', icon: Sparkles, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
   { href: '/self-host', title: 'Self-host', description: 'Open source on your laptop or VM', icon: Server, iconColor: 'text-stone-600', bgColor: 'bg-stone-50' },
+  { href: '/benchmarks', title: 'Benchmarks', description: 'Harness and model Elo, cost, and time', icon: BarChart3, iconColor: 'text-amber-600', bgColor: 'bg-amber-50' },
   { href: '/plugin', title: 'Plugins', description: 'HubSpot, GitHub, Slack & 1,000+ plugins', icon: Zap, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
   { href: '/integration', title: 'OpenClaw Skills', description: '3,000+ community skills catalog', icon: Puzzle, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
   { href: '/features/chat-interfaces', title: 'Chat Anywhere', description: 'WhatsApp, Telegram, Discord, Slack, Signal', icon: MessageCircle, iconColor: 'text-green-500', bgColor: 'bg-green-50' },

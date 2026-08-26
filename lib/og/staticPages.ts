@@ -126,6 +126,13 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     'on your machine',
     'Open source. Your keys, your models, your laptop or VM.',
   ),
+  benchmarks: page(
+    'benchmarks',
+    'Benchmarks',
+    'Harness and',
+    'model rankings',
+    'Elo, cost, and time from real Trooper tasks — not synthetic suites.',
+  ),
   affiliate: page(
     'affiliate',
     'Affiliate',
