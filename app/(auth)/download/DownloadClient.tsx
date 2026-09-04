@@ -124,8 +124,8 @@ function DownloadOptionRow({ row, isLast }: { row: DownloadRow; isLast: boolean 
   return (
     <div
       className={[
-        'flex items-center gap-3 px-4 py-4',
-        isLast ? '' : 'border-b border-black/5',
+        'flex items-center gap-3 px-4 py-4 sm:px-5',
+        isLast ? '' : 'border-b border-[var(--color-line)]',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -159,14 +159,18 @@ function DeviceDownloadCard({
   priority?: boolean;
 }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-white">
-      <div className="relative aspect-[784/440] w-full overflow-hidden bg-[#ededed]">
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white">
+      {/* Inline aspect-ratio avoids arbitrary Tailwind class mismatches; 16/9 matches the card assets. */}
+      <div
+        className="relative w-full overflow-hidden bg-[#ededed]"
+        style={{ aspectRatio: '16 / 9' }}
+      >
         <Image
           src={imageSrc}
           alt={imageAlt}
           fill
           priority={priority}
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1024px) 100vw, 560px"
           className="object-cover object-center"
         />
       </div>
@@ -181,52 +185,55 @@ function DeviceDownloadCard({
 
 export default function DownloadClient() {
   return (
-    <div className="min-h-screen bg-[#f7f7f5] text-ink">
+    <div className="min-h-screen bg-canvas text-ink">
       <Header />
 
-      <section className="site-header-clear">
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-display text-[2.35rem] leading-[1.08] tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.25rem]">
-              Trooper, wherever work happens
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-neutral-500 sm:text-[17px]">
-              The AI workforce that doesn&apos;t just think — it ships. Available for macOS,
-              Windows, iOS, and Android.
-            </p>
-            <div className="mt-7 flex justify-center">
-              <PrimaryDownloadCta />
+      {/* Side hairlines match header/footer measure — the page grid outside the cards. */}
+      <div className="mx-auto max-w-7xl border-l border-r border-[var(--color-line)]">
+        <section className="site-header-clear border-b border-[var(--color-line)] bg-canvas">
+          <div className="px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-8">
+            <div className="mx-auto max-w-2xl text-center">
+              <h1 className="font-display text-[2.35rem] leading-[1.08] tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.25rem]">
+                Leave all to Trooper
+              </h1>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-neutral-500 sm:text-[17px]">
+                The AI workforce that doesn&apos;t just think — it ships. Available for macOS,
+                Windows, iOS, and Android.
+              </p>
+              <div className="mt-7 flex justify-center">
+                <PrimaryDownloadCta />
+              </div>
+            </div>
+
+            <div className="mt-12 grid gap-5 sm:mt-14 sm:gap-6 lg:grid-cols-2">
+              <DeviceDownloadCard
+                imageSrc="/images/download/mobile-card.jpg"
+                imageAlt="Trooper mobile app on iPhone"
+                rows={MOBILE_ROWS}
+                priority
+              />
+              <DeviceDownloadCard
+                imageSrc="/images/download/desktop-card.jpg"
+                imageAlt="Trooper desktop app on computer"
+                rows={DESKTOP_ROWS}
+                priority
+              />
+            </div>
+
+            <div className="mt-16 grid gap-10 border-t border-[var(--color-line)] pt-12 sm:mt-20 sm:gap-12 sm:pt-16 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+              {FEATURES.map(({ icon: Icon, title, body }) => (
+                <div key={title} className="space-y-3">
+                  <Icon className="size-5 text-neutral-800" strokeWidth={1.75} aria-hidden />
+                  <div className="space-y-2">
+                    <h2 className="text-[16px] font-medium leading-snug text-neutral-800">{title}</h2>
+                    <p className="text-[14px] leading-relaxed text-neutral-500">{body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-
-          <div className="mt-12 grid gap-5 sm:mt-14 sm:gap-6 lg:grid-cols-2">
-            <DeviceDownloadCard
-              imageSrc="/images/download/mobile-card.jpg"
-              imageAlt="Trooper mobile app on iPhone"
-              rows={MOBILE_ROWS}
-              priority
-            />
-            <DeviceDownloadCard
-              imageSrc="/images/download/desktop-card.jpg"
-              imageAlt="Trooper desktop app on computer"
-              rows={DESKTOP_ROWS}
-              priority
-            />
-          </div>
-
-          <div className="mt-16 grid gap-10 sm:mt-20 sm:gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
-            {FEATURES.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="space-y-3">
-                <Icon className="size-5 text-neutral-800" strokeWidth={1.75} aria-hidden />
-                <div className="space-y-2">
-                  <h2 className="text-[16px] font-medium leading-snug text-neutral-800">{title}</h2>
-                  <p className="text-[14px] leading-relaxed text-neutral-500">{body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
