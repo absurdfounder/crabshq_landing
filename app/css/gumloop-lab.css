@@ -1,0 +1,193 @@
+/**
+ * Gumloop-extracted motion recipes, Trooper-namespaced.
+ *
+ * Source: CSS @keyframes inspected on gumloop.com (agent decoration float/drift,
+ * cursor hop+click, orbit spin, skills cursor traverse). Reimplemented here so
+ * we can preview and promote without depending on their CSS modules.
+ */
+
+/* ── Mark idle ─────────────────────────────────────────────────── */
+@keyframes gl-mark-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes gl-mark-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(
+        calc(var(--gl-drift-x, 12px) * 0.4),
+        calc(var(--gl-drift-y, 12px) * -0.25),
+        0
+      )
+      rotate(calc(var(--gl-drift-r, 4deg) * -0.3));
+  }
+  50% {
+    transform: translate3d(var(--gl-drift-x, 12px), var(--gl-drift-y, 12px), 0)
+      rotate(var(--gl-drift-r, 4deg));
+  }
+  75% {
+    transform: translate3d(
+        calc(var(--gl-drift-x, 12px) * -0.3),
+        calc(var(--gl-drift-y, 12px) * 0.45),
+        0
+      )
+      rotate(calc(var(--gl-drift-r, 4deg) * 0.2));
+  }
+}
+
+/* ── Cursor decoration (hop + click squash) ────────────────────── */
+@keyframes gl-cursor-translate {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  14%,
+  16%,
+  18% {
+    transform: translate3d(calc(18px * var(--gl-cursor-dir, 1)), -20px, 0);
+  }
+  34% {
+    transform: translate3d(calc(6px * var(--gl-cursor-dir, 1)), 8px, 0);
+  }
+  50%,
+  52%,
+  54% {
+    transform: translate3d(calc(22px * var(--gl-cursor-dir, 1)), 14px, 0);
+  }
+  72% {
+    transform: translate3d(calc(10px * var(--gl-cursor-dir, 1)), -10px, 0);
+  }
+}
+
+@keyframes gl-cursor-rotate {
+  0%,
+  14%,
+  18%,
+  34%,
+  50%,
+  54%,
+  72%,
+  100% {
+    transform: rotate(calc(-45deg * var(--gl-cursor-dir, 1)))
+      scaleX(var(--gl-cursor-dir, 1)) scale(1);
+  }
+  16%,
+  52% {
+    transform: rotate(calc(-45deg * var(--gl-cursor-dir, 1)))
+      scaleX(var(--gl-cursor-dir, 1)) scale(0.92);
+  }
+}
+
+/* ── Orbit ─────────────────────────────────────────────────────── */
+@keyframes gl-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gl-orbit-counter {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes gl-orbit-appear {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* ── Skills list cursor traverse ───────────────────────────────── */
+@keyframes gl-skills-traverse {
+  0%,
+  6% {
+    transform: translateY(0);
+  }
+  30%,
+  36% {
+    transform: translateY(52px);
+  }
+  64%,
+  70% {
+    transform: translateY(104px);
+  }
+  94%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes gl-trace-dash {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.gl-mark-float {
+  animation: gl-mark-float 3.2s ease-in-out infinite;
+}
+
+.gl-mark-drift {
+  animation: gl-mark-drift 7s ease-in-out infinite;
+}
+
+.gl-cursor-hop {
+  animation: gl-cursor-translate 4.8s ease-in-out infinite;
+}
+
+.gl-cursor-click {
+  animation: gl-cursor-rotate 4.8s ease-in-out infinite;
+}
+
+.gl-orbit-spin {
+  animation: gl-orbit-spin 28s linear infinite;
+}
+
+.gl-orbit-counter {
+  animation: gl-orbit-counter 28s linear infinite;
+}
+
+.gl-orbit-appear {
+  animation: gl-orbit-appear 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.gl-skills-traverse {
+  animation: gl-skills-traverse 5.5s ease-in-out infinite;
+}
+
+.gl-trace-dash {
+  stroke-dasharray: 4 4;
+  animation: gl-trace-dash 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-mark-float,
+  .gl-mark-drift,
+  .gl-cursor-hop,
+  .gl-cursor-click,
+  .gl-orbit-spin,
+  .gl-orbit-counter,
+  .gl-skills-traverse,
+  .gl-trace-dash {
+    animation: none !important;
+  }
+}
