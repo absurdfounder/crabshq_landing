@@ -3,7 +3,7 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 
 /**
- * Classic iOS-style chat bubbles: saturated blue ask, saturated green reply,
+ * Classic iOS-style chat bubbles: dark cyan ask, saturated green reply,
  * white type, soft gloss. SVG path scales with the text box.
  */
 
@@ -40,21 +40,21 @@ function replyPath(w: number, h: number) {
   );
 }
 
-/** Saturated iOS Message look — white type on vivid blue / green. */
+/** Saturated iOS Message look — white type on dark cyan / green. */
 const STYLES = {
   ask: {
     path: askPath,
     fill: [
-      ['0', '#2b94f5'],
-      ['0.55', '#167fe8'],
-      ['1', '#0066d1'],
+      ['0', '#1aa5b8'],
+      ['0.55', '#0e8a9c'],
+      ['1', '#0a6f7e'],
     ],
     stroke: [
-      ['0', '#3a9aef'],
-      ['1', '#005fc4'],
+      ['0', '#2bb4c4'],
+      ['1', '#085f6c'],
     ],
     text: 'text-white',
-    shadow: 'drop-shadow-[0_4px_10px_rgba(0,113,227,0.28)]',
+    shadow: 'drop-shadow-[0_4px_10px_rgba(10,111,126,0.32)]',
   },
   reply: {
     path: replyPath,
