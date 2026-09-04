@@ -108,22 +108,19 @@ module.exports = {
          * ladder, so no contrast relationship moves.
          */
         stone: { ...warmSlate, 950: '#0f0f0e' },
+        /*
+         * `neutral` and `gray` were still stock (cool) Tailwind ramps — so
+         * chips, download CTAs, and marketing cards that reached for
+         * `neutral-*` / `gray-*` read cooler than every `slate-*` / `stone-*`
+         * surface we already retargeted. Same warm ladder, one grey family.
+         */
+        neutral: { ...warmSlate, 950: '#0f0f0e' },
+        gray: { ...warmSlate, 50: '#FAFAF8', 950: '#0f0f0e' },
         // Frozen aliases. `emerald`, `teal` and `lime` all resolve to the brand
         // ramp so legacy subpage call sites keep working and cannot reintroduce
         // a second green. Do not use them in new code — use `trooper`.
         emerald: { ...brandGreen },
         lime: { ...brandGreen },
-        gray: {
-          100: '#FBFBFB',
-          200: '#EAEAEA',
-          300: '#DFDFDF',
-          400: '#999999',
-          500: '#7F7F7F',
-          600: '#666666',
-          700: '#4C4C4C',
-          800: '#333333',
-          900: '#191919',
-        },
         blue: {
           100: '#E6F0FD',
           200: '#CCE2FC',
@@ -268,13 +265,31 @@ module.exports = {
       scale: {
         '98': '.98'
       },
+      transitionTimingFunction: {
+        /* Gumloop agent-mark carousel — snappy settle without bounce. */
+        mark: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      },
       animation: {
         float: 'float 3s ease-in-out infinite',
+        'mark-float': 'mark-float 3.2s ease-in-out infinite',
+        'mark-drift': 'mark-drift 7s ease-in-out infinite',
       },
       keyframes: {
         float: {
-          '0%, 100%': { transform: 'translateY(0)', },
-          '50%': { transform: 'translateY(-5%)', },
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5%)' },
+        },
+        /* Subtle idle bob — ±3px, matches Gumloop agent decoration float. */
+        'mark-float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-3px)' },
+        },
+        /* Slow organic drift for hero/cast mark rows. */
+        'mark-drift': {
+          '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+          '25%': { transform: 'translate(4px, -3px) rotate(-1.2deg)' },
+          '50%': { transform: 'translate(10px, 8px) rotate(3deg)' },
+          '75%': { transform: 'translate(-3px, 5px) rotate(0.8deg)' },
         },
       },
       zIndex: {

@@ -82,7 +82,7 @@ function resolveTone(variant: Variant, tone: Tone): ToneStyles {
   // inside a hairline ring. There is no third button on this site.
   if (variant === 'outline' || tone === 'light') {
     return {
-      shell: 'border border-white bg-white text-neutral-700 shadow-xs ring-1 ring-black/[0.08]',
+      shell: 'bg-white text-neutral-700 shadow-xs ring-1 ring-black/[0.08]',
       face: 'border-none bg-transparent hover:bg-neutral-50',
     };
   }

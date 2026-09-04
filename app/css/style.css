@@ -17,6 +17,18 @@
 }
 
 /*
+ * Rings paint outside the box. Pairing `overflow-hidden` with `ring-*` clips
+ * the stroke into a half-edge on badges, cards, and rounded buttons. Force
+ * inset so the edge survives clipping site-wide.
+ */
+.overflow-hidden.ring-1,
+.overflow-hidden.ring-2,
+.overflow-clip.ring-1,
+.overflow-clip.ring-2 {
+  --tw-ring-inset: inset;
+}
+
+/*
  * Motion off, but nothing hidden: the track freezes while its wrapper keeps
  * overflow-x-auto, so every tile is still reachable by scrolling by hand.
  */
@@ -530,9 +542,10 @@ body > iframe.goog-te-menu-frame {
     @apply rounded-2xl bg-white p-6 shadow-xs ring-1 ring-black/5 sm:p-7;
   }
 
-  /* Same surface, no padding — for cards that own a full-bleed media well. */
+  /* Same surface, no padding — for cards that own a full-bleed media well.
+     Inset ring: overflow-hidden would otherwise clip a normal ring mid-stroke. */
   .card-flush {
-    @apply overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5;
+    @apply overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-inset ring-black/5;
   }
 
   /* Small pill: nav items, tags, integration tiles. */
@@ -595,8 +608,9 @@ body > iframe.goog-te-menu-frame {
     @apply border-neutral-700/80 bg-gradient-to-b from-neutral-900 to-neutral-900;
   }
 
+  /* Single edge — border+ring double-drew and read as a clipped half-stroke. */
   .btn-secondary {
-    @apply border border-white bg-white text-neutral-700 shadow-xs ring-1 ring-black/[0.08];
+    @apply bg-white text-neutral-700 shadow-xs ring-1 ring-black/[0.08];
   }
 
   .btn-secondary .btn-face {

@@ -139,7 +139,7 @@ function DownloadOptionRow({ row, isLast }: { row: DownloadRow; isLast: boolean 
       <Link
         href={row.href}
         {...(row.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        className="inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white px-4 text-[13px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50"
+        className="inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-white px-4 text-[13px] font-medium text-neutral-800 shadow-xs ring-1 ring-black/10 transition-colors hover:bg-neutral-50"
       >
         Download
       </Link>
@@ -159,10 +159,11 @@ function DeviceDownloadCard({
   priority?: boolean;
 }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white">
-      {/* Inline aspect-ratio avoids arbitrary Tailwind class mismatches; 16/9 matches the card assets. */}
+    <article className="flex flex-col rounded-2xl bg-white shadow-xs ring-1 ring-black/5">
+      {/* Overflow lives on the media well only — pairing it with the card ring
+          was clipping the stroke into a half-edge on the rounded corners. */}
       <div
-        className="relative w-full overflow-hidden bg-[#ededed]"
+        className="relative w-full overflow-hidden rounded-t-2xl bg-neutral-100"
         style={{ aspectRatio: '16 / 9' }}
       >
         <Image

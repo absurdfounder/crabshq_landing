@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 import { TROOPERS } from '@/lib/troopers';
-import TrooperMark, { TrooperMarkRow } from './ui/TrooperMark';
+import TrooperMark from './ui/TrooperMark';
+import { TrooperMarkCarousel } from './ui/TrooperMarkCarousel';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -28,7 +29,7 @@ export default function TrooperCastSection() {
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <TrooperMarkRow size={26} className="mb-5" />
+        <TrooperMarkCarousel size={28} className="mb-5" />
         <h2 className="font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem]">
           Everyone on the team
           <br />
