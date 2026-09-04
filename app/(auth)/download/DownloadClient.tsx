@@ -172,7 +172,7 @@ function DeviceDownloadCard({
           fill
           priority={priority}
           sizes="(max-width: 1024px) 100vw, 560px"
-          className="object-cover object-center"
+          className="object-cover object-[center_20%]"
         />
       </div>
       <div className="flex flex-1 flex-col">

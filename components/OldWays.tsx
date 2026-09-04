@@ -16,9 +16,11 @@ import {
 import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
+import { getTrooper } from '@/lib/troopers';
 import { DotMatrixFade } from './ui/FeaturePeekStage';
 import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
+import TrooperMark from './ui/TrooperMark';
 import {
   BrowserScene,
   DesktopScene,
@@ -36,59 +38,55 @@ function VideoEditorVisual({ focused }: { focused: boolean }) {
 }
 
 /* ─── Shared shell ─── */
-const MockShell = ({
+function MockShell({
   children,
   className = '',
 }: {
   children: ReactNode;
   className?: string;
-}) => (
-  <div
-    className={`w-full overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ${className}`}
-  >
-    {children}
-  </div>
-);
+}) {
+  return (
+    // Ring on the outer shell; overflow on the inner — pairing them clips the
+    // stroke into a half-edge on rounded corners (visible on org/action cards).
+    <div
+      className={`w-full rounded-2xl bg-white shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ring-1 ring-black/[0.07] ${className}`}
+    >
+      <div className="overflow-hidden rounded-2xl">{children}</div>
+    </div>
+  );
+}
 
 const AGENT_ROSTER = [
   {
     name: 'Jordan',
     role: 'Chief of Staff',
-    img: 'https://i.pravatar.cc/150?u=agent-jordan',
+    handle: 'nova' as const,
     kind: 'manager' as const,
   },
   {
     name: 'Aria',
     role: 'Growth',
-    img: 'https://i.pravatar.cc/150?u=agent-aria',
+    handle: 'scout' as const,
     kind: 'specialist' as const,
   },
   {
     name: 'Ren',
     role: 'Product',
-    img: 'https://i.pravatar.cc/150?u=agent-ren',
+    handle: 'wren' as const,
     kind: 'specialist' as const,
   },
   {
     name: 'Leo',
     role: 'Ops',
-    img: 'https://i.pravatar.cc/150?u=agent-leo',
+    handle: 'pip' as const,
     kind: 'specialist' as const,
   },
 ];
 
-function AgentAv({ src, size = 36 }: { src: string; size?: number }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt=""
-      width={size}
-      height={size}
-      className="shrink-0 rounded-full object-cover ring-2 ring-white"
-      style={{ width: size, height: size }}
-    />
-  );
+function AgentAv({ handle, size = 36 }: { handle: (typeof AGENT_ROSTER)[number]['handle']; size?: number }) {
+  const trooper = getTrooper(handle);
+  if (!trooper) return null;
+  return <TrooperMark trooper={trooper} size={size} />;
 }
 
 /** Advance a staged simulation while the capability row is focused. */
@@ -160,7 +158,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
       <div className="flex flex-col items-center bg-[#FAFAF9]/40 px-4 py-5">
         {/* Jordan routes the ask */}
         <div className="flex flex-col items-center gap-1">
-          <AgentAv src={AGENT_ROSTER[0].img} size={40} />
+          <AgentAv handle={AGENT_ROSTER[0].handle} size={40} />
           <p className="text-[13px] font-semibold text-neutral-900">{AGENT_ROSTER[0].name}</p>
           <p className="text-[11px] text-neutral-500">{AGENT_ROSTER[0].role}</p>
           <span
@@ -181,33 +179,47 @@ function OrgVisual({ focused }: { focused: boolean }) {
         <div className="grid w-full grid-cols-3 gap-2">
           {AGENT_ROSTER.slice(1).map((agent, i) => {
             const st = statuses[i + 1];
+            const trooper = getTrooper(agent.handle);
             return (
               <div
                 key={agent.name}
-                className={`flex flex-col items-center rounded-xl border bg-white px-2 py-3 text-center transition-all duration-500 ${
+                className={`flex flex-col items-center rounded-xl bg-white px-2 py-3 text-center transition-all duration-500 ring-1 ${
                   st === 'online'
-                    ? 'border-[#c4d9a0] shadow-[0_8px_20px_-14px_rgba(63,107,0,0.45)]'
+                    ? 'shadow-[0_8px_20px_-14px_rgba(26,26,26,0.28)]'
                     : st === 'spinning'
-                      ? 'border-amber-200 shadow-sm'
-                      : 'border-[#E7E5E4] opacity-55'
+                      ? 'ring-amber-200 shadow-sm'
+                      : 'ring-[var(--color-line)] opacity-55'
                 }`}
+                style={
+                  st === 'online' && trooper
+                    ? { boxShadow: `0 0 0 1px ${trooper.accent}55, 0 8px 20px -14px rgba(26,26,26,0.28)` }
+                    : undefined
+                }
               >
-                <AgentAv src={agent.img} size={34} />
+                <AgentAv handle={agent.handle} size={34} />
                 <p className="mt-1.5 text-[12px] font-semibold text-neutral-900">{agent.name}</p>
                 <p className="text-[10px] text-neutral-500">{agent.role}</p>
                 <span
                   className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${
                     st === 'online'
-                      ? 'bg-[#f0f5e6] text-[#325600]'
+                      ? ''
                       : st === 'spinning'
                         ? 'bg-amber-50 text-amber-700'
                         : 'bg-neutral-100 text-neutral-400'
                   }`}
+                  style={
+                    st === 'online' && trooper
+                      ? { backgroundColor: trooper.tint, color: trooper.accentDark }
+                      : undefined
+                  }
                 >
                   {st === 'spinning' ? (
                     <Loader2 className="size-2.5 animate-spin" strokeWidth={2.5} />
-                  ) : st === 'online' ? (
-                    <span className="size-1.5 rounded-full bg-[#3f6b00]" />
+                  ) : st === 'online' && trooper ? (
+                    <span
+                      className="size-1.5 rounded-full"
+                      style={{ backgroundColor: trooper.accent }}
+                    />
                   ) : null}
                   {st === 'online' ? 'Online' : st === 'spinning' ? 'Spinning up' : 'Queued'}
                 </span>

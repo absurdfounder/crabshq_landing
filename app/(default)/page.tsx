@@ -58,6 +58,7 @@ import SectionShell from '@/components/ui/SectionShell'
 
 const DashboardShowcaseSection = dynamic(() => import('@/components/DashboardShowcaseSection'))
 const OldWays = dynamic(() => import('@/components/OldWays'))
+const TrooperCastSection = dynamic(() => import('@/components/TrooperCastSection'))
 const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
 const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
 
@@ -88,9 +89,13 @@ export default function Home() {
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
+      <SectionShell rhythm eyebrow="The cast" eyebrowNumber="04">
+        <TrooperCastSection />
+      </SectionShell>
+
       {/* Orgs / action / memory / tickets, then desktop / browser / devices —
           one Capabilities rhythm, not a second section. */}
-      <SectionShell rhythm eyebrowNumber="04">
+      <SectionShell rhythm eyebrowNumber="05">
         <OldWays />
       </SectionShell>
 
@@ -100,7 +105,7 @@ export default function Home() {
       <SectionShell
         rhythm
         eyebrow="Loops"
-        eyebrowNumber="06"
+        eyebrowNumber="07"
         eyebrowAlign="center"
       >
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
@@ -110,18 +115,18 @@ export default function Home() {
       <MobileChannelsSection />
 
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="08" />
+        <GovernanceSection eyebrowNumber="09" />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="09">
+      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="10">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="10">
+      <SectionShell rhythm eyebrowNumber="11">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="11">
+      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="12">
         <FAQ />
       </SectionShell>
       </div>

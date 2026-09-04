@@ -233,7 +233,7 @@ export default function LoopApiSection() {
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
-          <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
+          <div className="relative mx-auto w-full max-w-4xl rounded-2xl bg-white shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
             <WorkflowCanvas />
             <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
               <ApiTerminal step={step} />

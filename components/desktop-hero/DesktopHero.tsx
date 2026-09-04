@@ -883,8 +883,10 @@ function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
           strokeLinejoin="round"
         />
       </svg>
+      {/* Label sits under the arrow so the stage's overflow-hidden can't
+          clip the right edge of a side-mounted pill (Jordan at x≈1420). */}
       <span
-        className="ml-4 mt-0.5 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-sm ring-1 ring-black/5"
+        className="mt-1 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]"
         style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
       >
         {agent.name} · {agent.role}
