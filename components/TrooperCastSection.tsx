@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 import { TROOPERS } from '@/lib/troopers';
-import TrooperAvatar from './ui/TrooperAvatar';
+import TrooperMark, { TrooperMarkRow } from './ui/TrooperMark';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -15,6 +15,8 @@ const ease = [0.22, 1, 0.36, 1] as const;
  * Names the workforce instead of describing it. Each card is one trooper, one
  * human, one artifact, and a link to the loop that actually does the job — so
  * the personality is a way into the catalog rather than set dressing.
+ *
+ * Colour discipline: saturated marks carry identity; body copy stays ink/muted.
  */
 export default function TrooperCastSection() {
   return (
@@ -26,6 +28,7 @@ export default function TrooperCastSection() {
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
+        <TrooperMarkRow size={26} className="mb-5" />
         <h2 className="font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem]">
           Everyone on the team
           <br />
@@ -51,20 +54,12 @@ export default function TrooperCastSection() {
             className="flex flex-col bg-canvas-section p-5 sm:p-6 md:p-7"
           >
             <div className="flex items-start gap-3">
-              <TrooperAvatar trooper={trooper} size={44} />
+              <TrooperMark trooper={trooper} size={40} />
               <div className="min-w-0">
                 <h3 className="font-funneldisplay text-lg tracking-tight text-ink sm:text-xl">
-                  <span
-                    className="inline-block px-[0.2em]"
-                    style={{ backgroundColor: trooper.tint, color: trooper.accentDark }}
-                  >
-                    {trooper.name}
-                  </span>
+                  {trooper.name}
                 </h3>
-                <p
-                  className="mt-1 truncate font-mono text-[11px] tracking-tight sm:text-xs"
-                  style={{ color: trooper.accent }}
-                >
+                <p className="mt-1 truncate font-mono text-[11px] tracking-tight text-ink-muted sm:text-xs">
                   {`${trooper.handle}@trooper.so`}
                 </p>
               </div>
@@ -74,9 +69,7 @@ export default function TrooperCastSection() {
             </div>
 
             <p className="mt-5 text-base leading-snug text-ink sm:text-lg">
-              <span className="font-semibold" style={{ color: trooper.accentDark }}>
-                {trooper.name}
-              </span>{' '}
+              <span className="font-semibold">{trooper.name}</span>{' '}
               {trooper.verb}{' '}
               <span className="font-semibold">{trooper.human}&rsquo;s</span> {trooper.artifact}.
             </p>

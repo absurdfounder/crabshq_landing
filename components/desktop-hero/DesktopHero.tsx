@@ -805,32 +805,34 @@ function CliTerminalMock({ cli }: { cli: CliId }) {
 /* Agent cursors                                                       */
 /* ------------------------------------------------------------------ */
 
+/* Rainbow identity — one saturated colour each (Gumloop-style). UI chrome
+ * elsewhere stays monochrome; these cursors are how agents read apart. */
 const AGENTS = [
   {
     id: 'aria',
     name: 'Aria',
     role: 'Growth',
-    arrow: '#8fc63f',
-    pillBg: '#eef6df',
-    pillText: '#4a7a08',
+    arrow: '#FE9A00',
+    pillBg: '#fff4e0',
+    pillText: '#b86a00',
     home: [140, 100] as const,
   },
   {
     id: 'jordan',
     name: 'Jordan',
     role: 'Chief of staff',
-    arrow: '#6a9a28',
-    pillBg: '#e2efd0',
-    pillText: '#3a6808',
+    arrow: '#03A2FE',
+    pillBg: '#e6f5fe',
+    pillText: '#0269a8',
     home: [1420, 120] as const,
   },
   {
     id: 'leo',
     name: 'Leo',
     role: 'Finance',
-    arrow: '#a8d45c',
-    pillBg: '#f3f9e8',
-    pillText: '#5a8a14',
+    arrow: '#9810FA',
+    pillBg: '#f4e8fe',
+    pillText: '#6b0ab0',
     // Resting on Claude Code (bottom-left).
     home: [180, 420] as const,
   },

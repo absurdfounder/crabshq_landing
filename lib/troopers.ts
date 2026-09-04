@@ -9,7 +9,21 @@
  * Each story is anchored to a real loop in `public/loops_catalog.json` — the
  * cast is a friendlier index into work the product actually ships, not
  * decoration. Keep `loopSlug` valid: it links straight to /loops/[slug].
+ *
+ * Colour system (learned from Gumloop-style agent marks):
+ * - UI chrome stays monochrome (ink / line / canvas).
+ * - Rainbow lives on identity marks — one saturated solid per trooper.
+ * - `accent` = fill for marks/avatars (vivid). `accentDark` = text on tint.
+ * - `tint` = soft wash behind names, never a competing UI surface colour.
+ * - `mark` = distinct silhouette so agents read apart even in greyscale.
  */
+
+export type TrooperMarkShape =
+  | 'clover'
+  | 'squircle'
+  | 'round-rect'
+  | 'pebble'
+  | 'circle';
 
 export type Trooper = {
   /** Callsign — short, human, memorable. */
@@ -18,12 +32,14 @@ export type Trooper = {
   handle: string;
   /** What this trooper is hired for. */
   role: string;
-  /** Accent used for the avatar, name highlight and handle annotation. */
+  /** Saturated fill for identity mark + avatar. */
   accent: string;
-  /** Darker shade for avatar shoulders + text on light surfaces. */
+  /** Darker shade for text on light tints / avatar shoulders. */
   accentDark: string;
-  /** Tint used behind the avatar in the cast grid. */
+  /** Soft wash behind the avatar / name plate. */
   tint: string;
+  /** Distinct silhouette for the identity mark. */
+  mark: TrooperMarkShape;
   /** The human this trooper reports to, in the story. */
   human: string;
   /** Verb phrase, e.g. `ships`. Kept separate so it can be styled inline. */
@@ -43,9 +59,10 @@ export const TROOPERS: Trooper[] = [
     name: 'Rex',
     handle: 'rex',
     role: 'Engineering',
-    accent: '#3f6b00',
-    accentDark: '#284800',
-    tint: '#f0f5e6',
+    accent: '#11AC4B',
+    accentDark: '#0a6e2f',
+    tint: '#e8f8ee',
+    mark: 'clover',
     human: 'Priya',
     verb: 'ships',
     artifact: 'Friday release',
@@ -58,9 +75,10 @@ export const TROOPERS: Trooper[] = [
     name: 'Nova',
     handle: 'nova',
     role: 'Support',
-    accent: '#1d5fa8',
-    accentDark: '#123f70',
-    tint: '#e7f0fa',
+    accent: '#03A2FE',
+    accentDark: '#0269a8',
+    tint: '#e6f5fe',
+    mark: 'squircle',
     human: 'Sam',
     verb: 'clears',
     artifact: 'inbox before standup',
@@ -73,9 +91,10 @@ export const TROOPERS: Trooper[] = [
     name: 'Scout',
     handle: 'scout',
     role: 'Growth',
-    accent: '#b4530d',
-    accentDark: '#7d3907',
-    tint: '#fbeee2',
+    accent: '#FE9A00',
+    accentDark: '#b86a00',
+    tint: '#fff4e0',
+    mark: 'round-rect',
     human: 'Dana',
     verb: 'runs',
     artifact: 'ad tests',
@@ -88,9 +107,10 @@ export const TROOPERS: Trooper[] = [
     name: 'Pip',
     handle: 'pip',
     role: 'Operations',
-    accent: '#6d3f9e',
-    accentDark: '#4a2a6b',
-    tint: '#f1eaf9',
+    accent: '#9810FA',
+    accentDark: '#6b0ab0',
+    tint: '#f4e8fe',
+    mark: 'pebble',
     human: 'Ana',
     verb: 'writes',
     artifact: 'morning brief',
@@ -103,9 +123,10 @@ export const TROOPERS: Trooper[] = [
     name: 'Wren',
     handle: 'wren',
     role: 'Design',
-    accent: '#a8175a',
-    accentDark: '#74103e',
-    tint: '#fbe8f0',
+    accent: '#FB3C98',
+    accentDark: '#c0106e',
+    tint: '#fee8f3',
+    mark: 'circle',
     human: 'Marco',
     verb: 'rebuilds',
     artifact: 'landing page',

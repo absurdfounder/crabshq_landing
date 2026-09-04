@@ -142,6 +142,12 @@
   --color-split: #14170f;
   --color-quote-gold: #c4a882;
   --color-line: #e8e8e5;
+  /* Agent rainbow — saturated solids for identity marks only (not UI chrome). */
+  --color-agent-green: #11ac4b;
+  --color-agent-blue: #03a2fe;
+  --color-agent-orange: #fe9a00;
+  --color-agent-purple: #9810fa;
+  --color-agent-pink: #fb3c98;
   --site-header-height: 6rem;
 }
 
