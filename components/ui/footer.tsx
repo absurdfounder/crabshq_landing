@@ -313,6 +313,8 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Trooper is listed on Turbo0"
+              className="invisible"
+              style={{ visibility: 'hidden' }}
             >
               <img
                 src="https://img.turbo0.com/badge-listed-light.svg"
