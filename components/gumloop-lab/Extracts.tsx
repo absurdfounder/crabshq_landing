@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight, Download } from 'lucide-react';
 import { TROOPERS } from '@/lib/troopers';
 import TrooperMark from '@/components/ui/TrooperMark';
 import { TrooperMarkCarousel } from '@/components/ui/TrooperMarkCarousel';
+import PixelButton from '@/components/ui/PixelButton';
 
 /** Gumloop dual CTA — black primary + ring secondary. */
 export function GlDualCta({
@@ -318,7 +320,50 @@ export function GlShippedLog() {
   );
 }
 
+/** Preferred final CTA — Trooper horizontal band (matches homepage newsletter). */
 export function GlFinalCta() {
+  return (
+    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+      <div className="border border-slate-200 bg-canvas px-6 py-10 sm:px-10 sm:py-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+          <div className="max-w-xl">
+            <h3 className="font-funneldisplay text-2xl leading-tight tracking-tight text-slate-900 sm:text-3xl md:text-[2rem]">
+              Try Trooper now.
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+              Stand up AI units that write code, manage tasks, and connect to 3,000+ tools — without
+              the overhead of hiring.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:gap-4">
+            <PixelButton
+              href="https://app.trooper.so?ref=lab-cta"
+              external
+              size="lg"
+              tone="brand"
+              icon={<ArrowRight className="h-4 w-4" />}
+            >
+              Get Started
+            </PixelButton>
+            <PixelButton
+              href="https://github.com/Trooper-AI/trooper-core/releases/download/macos-latest/Trooper.dmg"
+              external
+              size="lg"
+              variant="outline"
+              tone="dark"
+              icon={<Download className="h-4 w-4" />}
+            >
+              Download Mac App
+            </PixelButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Gumloop-style centered closing CTA — kept for side-by-side comparison. */
+export function GlGumloopCenteredCta() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">
       <TrooperMarkCarousel size={26} className="mx-auto mb-6 justify-center" />

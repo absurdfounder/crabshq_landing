@@ -11,4 +11,13 @@ export {
   GlTrustStrip,
   GlShippedLog,
   GlFinalCta,
+  GlGumloopCenteredCta,
 } from './Extracts';
+
+export {
+  GlExpertsBuildSection,
+  GlCompanyBrainBento,
+  GlCollaborateSection,
+  GlOptimizeVisualCards,
+  GlEnterpriseDashboard,
+} from './Sections';

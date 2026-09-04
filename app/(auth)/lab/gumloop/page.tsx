@@ -4,17 +4,22 @@ import { GUMLOOP_EXTRACTS } from '@/lib/gumloop-extract/catalog';
 import {
   GlCursorDecoration,
   GlDualCta,
-  GlEnterpriseDark,
-  GlExpertsSplit,
   GlFinalCta,
+  GlGumloopCenteredCta,
   GlHeroShell,
   GlMarkDriftField,
-  GlOptimizeCards,
   GlOrbitRing,
   GlProductWell,
   GlShippedLog,
   GlTrustStrip,
 } from '@/components/gumloop-lab/Extracts';
+import {
+  GlCollaborateSection,
+  GlCompanyBrainBento,
+  GlEnterpriseDashboard,
+  GlExpertsBuildSection,
+  GlOptimizeVisualCards,
+} from '@/components/gumloop-lab/Sections';
 
 export const metadata: Metadata = {
   title: 'Gumloop extracts lab — Trooper',
@@ -47,6 +52,17 @@ function LabBand({
           <p className="mt-1 max-w-2xl text-[13px] text-neutral-500">{note}</p>
         </div>
       )}
+      {dark && (
+        <div className="bg-[#121212] px-5 pt-10 sm:px-8">
+          <div className="mx-auto max-w-5xl">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
+              extract · {id}
+            </p>
+            <h2 className="mt-1 text-sm font-medium text-white/70">{title}</h2>
+            <p className="mt-1 max-w-2xl text-[13px] text-white/45">{note}</p>
+          </div>
+        </div>
+      )}
       <div className={dark ? '' : 'pb-12 pt-6'}>{children}</div>
     </section>
   );
@@ -69,7 +85,7 @@ export default function GumloopLabPage() {
           </p>
 
           <ol className="mt-8 grid gap-2 sm:grid-cols-2">
-            {GUMLOOP_EXTRACTS.filter((e) => e.id !== 'where-they-work').map((e) => (
+            {GUMLOOP_EXTRACTS.map((e) => (
               <li key={e.id}>
                 <a
                   href={`#${e.id}`}
@@ -141,9 +157,25 @@ export default function GumloopLabPage() {
       <LabBand
         id="experts-split"
         title="Experts build agents"
-        note="Left copy + right list with a traversing cursor."
+        note="Left copy + feature grid + right Data Analysis Agent product mock."
       >
-        <GlExpertsSplit />
+        <GlExpertsBuildSection />
+      </LabBand>
+
+      <LabBand
+        id="company-brain"
+        title="Complete context on your company"
+        note="Bento: company knowledge sphere, Skills stack, live activity feed."
+      >
+        <GlCompanyBrainBento />
+      </LabBand>
+
+      <LabBand
+        id="collaborate"
+        title="Meet your team where they work"
+        note="Slack / Teams / Gmail picker with channel chat mock."
+      >
+        <GlCollaborateSection />
       </LabBand>
 
       <LabBand
@@ -156,17 +188,21 @@ export default function GumloopLabPage() {
         </div>
       </LabBand>
 
-      <LabBand id="optimize" title="Optimize cards" note="Three quiet claims, no cards-as-boxes.">
-        <GlOptimizeCards />
+      <LabBand
+        id="optimize"
+        title="Optimize Your Agents"
+        note="Visual cards: cost reduction, self-improve orbit, evals flag."
+      >
+        <GlOptimizeVisualCards />
       </LabBand>
 
       <LabBand
         id="enterprise-dark"
-        title="Enterprise dark band"
-        note="Ink band with control tiles — maps to DarkSplitSection language."
+        title="Enterprise-grade controls"
+        note="Usage chart, audit log, VPC, five control tiles."
         dark
       >
-        <GlEnterpriseDark />
+        <GlEnterpriseDashboard />
       </LabBand>
 
       <LabBand id="trust" title="Trust strip" note="Quote-forward with one big metric.">
@@ -177,8 +213,20 @@ export default function GumloopLabPage() {
         <GlShippedLog />
       </LabBand>
 
-      <LabBand id="final-cta" title="Final CTA" note="Closing headline + mark carousel + dual CTA.">
+      <LabBand
+        id="final-cta"
+        title="Try Trooper now"
+        note="Preferred closing CTA — horizontal bordered band (homepage newsletter)."
+      >
         <GlFinalCta />
+      </LabBand>
+
+      <LabBand
+        id="gumloop-centered-cta"
+        title="Gumloop centered CTA (reference)"
+        note="Skipped for Trooper — kept here for comparison only."
+      >
+        <GlGumloopCenteredCta />
       </LabBand>
     </div>
   );
