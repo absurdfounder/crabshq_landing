@@ -281,7 +281,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
                 onClick={() => setTab(p.id)}
                 className={`flex flex-col items-center gap-1 rounded-lg px-1 py-2 text-center transition-colors ${
                   active
-                    ? 'bg-white text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.06]'
+                    ? 'bg-white text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.06]'
                     : 'text-neutral-400 hover:bg-white/70 hover:text-neutral-600'
                 }`}
               >
@@ -298,7 +298,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
           <div className="flex items-start gap-3">
             <AgentAv handle={page.handle} size={36} />
             <div className="min-w-0 flex-1">
-              <p className="text-[15px] font-semibold tracking-tight text-neutral-950">{page.title}</p>
+              <p className="text-[15px] font-semibold tracking-tight text-ink">{page.title}</p>
               <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">{page.blurb}</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
@@ -341,7 +341,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
                     ) : (
                       <span
                         className={`size-1.5 shrink-0 rounded-full ${
-                          on ? 'bg-emerald-500' : 'bg-neutral-300'
+                          on ? 'bg-ok' : 'bg-neutral-300'
                         }`}
                       />
                     )}
@@ -420,7 +420,7 @@ function ActionVisual({ focused }: { focused: boolean }) {
     <MockShell className="flex min-h-[360px] flex-col sm:min-h-[400px]">
       <div className="flex items-start justify-between gap-3 border-b border-black/[0.06] px-4 py-3.5 sm:px-5">
         <div className="min-w-0">
-          <p className="truncate text-[14px] font-semibold tracking-tight text-neutral-950">
+          <p className="truncate text-[14px] font-semibold tracking-tight text-ink">
             Ship og-image fix to prod
           </p>
           <p className="mt-1 text-[11px] text-neutral-500">
@@ -431,7 +431,7 @@ function ActionVisual({ focused }: { focused: boolean }) {
         </div>
         <span
           className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide ${
-            allDone ? 'ow-badge-in bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'
+            allDone ? 'ow-badge-in bg-ok-50 text-ok-700 ring-1 ring-ok-200' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'
           }`}
         >
           {allDone ? 'Done' : 'Running'}
@@ -457,9 +457,9 @@ function ActionVisual({ focused }: { focused: boolean }) {
                 <span
                   className={`relative z-[1] mt-0.5 flex size-7 items-center justify-center rounded-lg border bg-white transition-colors duration-300 ${
                     done
-                      ? 'border-emerald-200 text-emerald-700'
+                      ? 'border-ok-200 text-ok-700'
                       : running
-                        ? 'ow-pulse-ring border-emerald-300 text-emerald-700'
+                        ? 'ow-pulse-ring border-ok-200 text-ok-700'
                         : 'border-black/[0.08] text-neutral-400'
                   }`}
                 >
@@ -475,7 +475,7 @@ function ActionVisual({ focused }: { focused: boolean }) {
                   <span
                     aria-hidden
                     className={`mt-1 w-px flex-1 min-h-[18px] transition-colors duration-500 ${
-                      done ? 'bg-emerald-300' : 'bg-neutral-200'
+                      done ? 'bg-ok-200' : 'bg-neutral-200'
                     }`}
                   />
                 ) : null}
@@ -483,19 +483,19 @@ function ActionVisual({ focused }: { focused: boolean }) {
 
               <div
                 className={`min-w-0 flex-1 rounded-xl px-3 py-2 transition-colors duration-300 ${
-                  running ? 'bg-emerald-50/90' : 'bg-transparent'
+                  running ? 'bg-ok-50/90' : 'bg-transparent'
                 }`}
               >
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="font-mono text-[12.5px] font-medium tracking-tight text-neutral-900">
+                  <p className="font-mono text-[12.5px] font-medium tracking-tight text-ink">
                     {r.tool}
                   </p>
                   {done ? (
-                    <span className="ow-badge-in text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
+                    <span className="ow-badge-in text-[10px] font-semibold uppercase tracking-wider text-ok-700">
                       ok
                     </span>
                   ) : running ? (
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-emerald-700/80">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-ok-700/80">
                       live
                     </span>
                   ) : (
@@ -513,11 +513,11 @@ function ActionVisual({ focused }: { focused: boolean }) {
 
       <div className="flex items-center justify-between border-t border-black/[0.06] px-4 py-2.5 text-[11px] sm:px-5">
         <span className="text-neutral-500">
-          <span className="font-semibold tabular-nums text-neutral-900">{doneCount}</span>
+          <span className="font-semibold tabular-nums text-ink">{doneCount}</span>
           <span className="text-neutral-400"> / {rows.length} tools</span>
         </span>
         <span className="inline-flex items-center gap-1.5 font-medium text-neutral-600">
-          <FileCode2 className="size-3.5 text-emerald-600" strokeWidth={2} />
+          <FileCode2 className="size-3.5 text-ok-600" strokeWidth={2} />
           index.html
         </span>
       </div>
@@ -627,7 +627,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
               onClick={() => setTab(t.id)}
               className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
                 active
-                  ? 'bg-white text-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]'
+                  ? 'bg-white text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]'
                   : 'text-neutral-400 hover:text-neutral-600'
               }`}
             >
@@ -659,19 +659,19 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                   key={m.title}
                   className={`flex items-start gap-2.5 px-3 py-2.5 transition-colors ${
                     i ? 'border-t border-black/[0.04]' : ''
-                  } ${isHit ? 'ow-hit-flash bg-emerald-50/70' : 'bg-white'}`}
+                  } ${isHit ? 'ow-hit-flash bg-ok-50/70' : 'bg-white'}`}
                 >
                   <Brain
                     className={`mt-0.5 size-3.5 shrink-0 ${
-                      isHit ? 'text-emerald-700' : 'text-neutral-400'
+                      isHit ? 'text-ok-700' : 'text-neutral-400'
                     }`}
                     strokeWidth={2}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="truncate text-[12px] font-medium text-neutral-950">{m.title}</p>
+                      <p className="truncate text-[12px] font-medium text-ink">{m.title}</p>
                       {isHit ? (
-                        <span className="ow-badge-in shrink-0 rounded bg-emerald-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
+                        <span className="ow-badge-in shrink-0 rounded bg-ok-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
                           Hit
                         </span>
                       ) : null}
@@ -705,7 +705,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                   <line x1="22" y1="72" x2="76" y2="70" />
                 </g>
                 {graphLit ? (
-                  <g stroke="#22c55e" strokeWidth="1.2" strokeLinecap="round" opacity="0.5">
+                  <g stroke="var(--color-ok)" strokeWidth="1.2" strokeLinecap="round" opacity="0.5">
                     <line x1="18" y1="28" x2="76" y2="70" />
                     <line x1="22" y1="72" x2="76" y2="70" />
                     <line x1="18" y1="28" x2="22" y2="72" />
@@ -717,8 +717,8 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                 const kindCls =
                   n.kind === 'memory'
                     ? lit
-                      ? 'bg-emerald-50 text-emerald-800 ring-emerald-200'
-                      : 'bg-emerald-50/70 text-emerald-700/80 ring-emerald-100'
+                      ? 'bg-ok-50 text-ok-800 ring-ok-200'
+                      : 'bg-ok-50/70 text-ok-700/80 ring-ok-200'
                     : n.kind === 'entity'
                       ? 'bg-sky-50 text-sky-800 ring-sky-200/80'
                       : lit
@@ -743,7 +743,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                 Entities
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-emerald-200 ring-1 ring-emerald-400/40" />
+                <span className="size-2 rounded-sm bg-ok-200 ring-1 ring-ok-200" />
                 Memories
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
@@ -758,7 +758,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
       <div
         className={`flex items-center justify-between gap-2 border-t px-4 py-2.5 text-[11px] sm:px-5 ${
           injected
-            ? 'border-emerald-200 bg-emerald-50/80 text-emerald-800'
+            ? 'border-ok-200 bg-ok-50/80 text-ok-800'
             : 'border-black/[0.06] text-neutral-500'
         }`}
       >
@@ -875,7 +875,7 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
       <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
       <div className="flex shrink-0 items-center gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
         <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
-        <span className="text-[13px] font-semibold tracking-tight text-neutral-950">
+        <span className="text-[13px] font-semibold tracking-tight text-ink">
           Refund playbook
         </span>
         <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
@@ -1425,16 +1425,16 @@ export default function OldWays() {
             >
               <BubbleExchange ask={card.ask} reply={card.reply} focused={focused} />
 
-              <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+              <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-[1.15] tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.15]">
                 {card.title}{' '}
                 {card.highlight ? <span className="text-ink-muted">{card.highlight}</span> : null}
               </h3>
-              <p className="mt-3.5 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
+              <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-muted sm:mt-4 sm:text-base sm:leading-7">
                 {card.description}
               </p>
 
               {card.meta ? (
-                <p className="mt-3 text-sm text-neutral-500">{card.meta}</p>
+                <p className="type-meta mt-3">{card.meta}</p>
               ) : null}
 
               {card.cta ? (

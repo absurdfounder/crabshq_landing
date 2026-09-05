@@ -49,16 +49,16 @@ const fernAccent = {
  * the lightness ladder, so no contrast relationship shifts.
  */
 const warmSlate = {
-  50: '#FAFAF8',  // = canvas
-  100: '#e8e8e5', // = --color-line; collapses the two-hairline split
-  200: '#e0e0dc',
-  300: '#cfcfc9',
-  400: '#8f8f8a',
-  500: '#737373', // = ink-faint
-  600: '#525252', // = ink-muted
-  700: '#404040',
+  50: '#fafafa', // closer to Gumloop background-2; still soft, less cream cast
+  100: '#ebebeb', // hairline / elevated border
+  200: '#e0e0e0',
+  300: '#cfcfcf',
+  400: '#9a9aa4', // ≈ Gumloop brand-inverse-muted
+  500: '#8e8e98', // ≈ Gumloop brand-neutral-muted (meta)
+  600: '#5f5f68', // ≈ Gumloop brand-body-muted (body copy)
+  700: '#404046',
   800: '#262626',
-  900: '#1a1a1a', // = ink; collapses the h2 colour split
+  900: '#171717', // ≈ Gumloop neutral-900 (headings)
 };
 
 /** @type {import('tailwindcss').Config} */
@@ -76,14 +76,29 @@ module.exports = {
         fern: fernAccent,
         slate: warmSlate,
         canvas: {
-          DEFAULT: '#FAFAF8',
-          warm: '#F7F7F4',
-          section: '#FCFCFA',
+          DEFAULT: '#fafafa',
+          warm: '#f7f7f7',
+          section: '#fcfcfc',
         },
         ink: {
-          DEFAULT: '#1a1a1a',
-          muted: '#525252',
-          faint: '#737373',
+          DEFAULT: '#171717',
+          muted: '#5f5f68',
+          faint: '#8e8e98',
+        },
+        /*
+         * Status / success green that is NOT the brand fern olive.
+         * Gumloop keeps UI chrome monochrome and uses a crisp green for
+         * "ok / live / done". Brand fern stays on CTAs and marketing accents.
+         */
+        ok: {
+          DEFAULT: '#16a34a',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          500: '#16a34a',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
         },
         split: '#14170f',
         trooper: {
@@ -115,7 +130,7 @@ module.exports = {
          * surface we already retargeted. Same warm ladder, one grey family.
          */
         neutral: { ...warmSlate, 950: '#0f0f0e' },
-        gray: { ...warmSlate, 50: '#FAFAF8', 950: '#0f0f0e' },
+  gray: { ...warmSlate, 50: '#fafafa', 950: '#0f0f0e' },
         // Frozen aliases. `emerald`, `teal` and `lime` all resolve to the brand
         // ramp so legacy subpage call sites keep working and cannot reintroduce
         // a second green. Do not use them in new code — use `trooper`.
