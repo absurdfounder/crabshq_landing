@@ -20,7 +20,6 @@ import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { getTrooper } from '@/lib/troopers';
-import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
 import TrooperMark from './ui/TrooperMark';
 import {
@@ -48,15 +47,31 @@ function MockShell({
   className?: string;
 }) {
   return (
-    // Cool hairline ring — matches org agent panel, not warm stone chrome.
+    // Soft-crop like Gumloop: flush white product surface, bottom dissolve.
     <div
-      className={`relative w-full overflow-hidden rounded-none bg-white ${className}`}
+      className={`relative h-[380px] w-full overflow-hidden bg-white sm:h-[420px] lg:h-[460px] ${className}`}
     >
       {children}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-9 bg-gradient-to-b from-transparent to-white"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-10 bg-gradient-to-b from-transparent to-white"
       />
+    </div>
+  );
+}
+
+/** Quiet ask → reply chips — never louder than the section title. */
+function QuietAsk({ ask, reply }: { ask: string; reply: string }) {
+  return (
+    <div className="mt-5 space-y-2">
+      <p className="max-w-md rounded-xl bg-neutral-100/80 px-3.5 py-2.5 text-[13px] leading-snug text-ink">
+        <span className="block text-[11px] font-medium text-ink-faint">You</span>
+        {ask}
+      </p>
+      <p className="max-w-md px-1 text-[13px] leading-snug text-ink-muted">
+        <span className="font-medium text-ok-700">Trooper · </span>
+        {reply}
+      </p>
     </div>
   );
 }
@@ -417,7 +432,7 @@ function ActionVisual({ focused }: { focused: boolean }) {
   const allDone = phase >= rows.length;
 
   return (
-    <MockShell className="flex min-h-[360px] flex-col sm:min-h-[400px]">
+    <MockShell className="flex flex-col">
       <div className="flex items-start justify-between gap-3 border-b border-black/[0.06] px-4 py-3.5 sm:px-5">
         <div className="min-w-0">
           <p className="truncate text-[14px] font-semibold tracking-tight text-ink">
@@ -611,7 +626,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
   const showGraph = tab === 'graph';
 
   return (
-    <MockShell className="flex min-h-[340px] flex-col sm:min-h-[380px]">
+    <MockShell className="flex flex-col">
       <div className="flex gap-1 border-b border-black/[0.06] px-2 py-2 sm:px-3">
         {(
           [
@@ -875,7 +890,7 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
     activeIds.length > 0 && activeIds.length < WORKFLOW_NODE_IDS.length;
 
   return (
-    <MockShell className="flex h-[340px] flex-col sm:h-[380px] lg:h-[400px]">
+    <MockShell className="flex flex-col">
       <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
       <div className="flex shrink-0 items-center gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
         <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
@@ -1017,16 +1032,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
       <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-visible p-3 sm:p-4 sm:pr-10">
         {/* Preview chrome — overflow visible so the agent tooltip can float out */}
         <div className="relative w-full max-w-[22rem] overflow-visible sm:max-w-[24rem]">
-          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_20px_48px_-20px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.08]">
-            <div className="relative flex items-center gap-1.5 border-b border-black/[0.05] bg-[#fafafa] px-3 py-2">
-              <span className="size-2.5 rounded-full bg-[#ff5f57]" />
-              <span className="size-2.5 rounded-full bg-[#febc2e]" />
-              <span className="size-2.5 rounded-full bg-[#28c840]" />
-              <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-400">
-                Preview — shoulder anatomy
-              </span>
-            </div>
-
+          <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_20px_48px_-20px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.08]">
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -1215,7 +1221,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
 
 /**
  * Soft product stage for smaller card mocks — calm wash, no decorative
- * matrix fade. Full product screens render flush under the traffic-light bar.
+ * matrix fade. Full product screens render flush in the soft-crop panel.
  */
 const PixelFramedVisual = ({ children }: { children: ReactNode }) => (
   <div className="relative flex min-h-[320px] flex-col overflow-hidden bg-[#f3f4f6] sm:min-h-[360px] lg:min-h-[400px]">
@@ -1462,15 +1468,21 @@ export default function OldWays() {
                 visualFirst ? 'lg:order-2' : ''
               }`}
             >
-              <BubbleExchange ask={card.ask} reply={card.reply} focused={focused} />
-
-              <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-[1.15] tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.15]">
+              <p className="text-[13px] font-medium tracking-tight text-ink-faint">
+                {card.tag}
+                <span aria-hidden className="text-ink-faint/70">
+                  {' '}
+                  →
+                </span>
+              </p>
+              <h3 className="mt-3 font-funneldisplay text-[1.65rem] font-medium leading-[1.12] tracking-tight text-balance text-ink sm:text-3xl lg:text-[2.35rem] lg:leading-[1.1]">
                 {card.title}{' '}
                 {card.highlight ? <span className="text-ink-muted">{card.highlight}</span> : null}
               </h3>
-              <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-muted sm:mt-4 sm:text-base sm:leading-7">
+              <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-muted sm:mt-4 sm:leading-7">
                 {card.description}
               </p>
+              <QuietAsk ask={card.ask} reply={card.reply} />
 
               {card.meta ? (
                 <p className="type-meta mt-3">{card.meta}</p>
@@ -1515,29 +1527,14 @@ export default function OldWays() {
             </div>
 
             <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
+              {/* Gumloop soft-crop: flush product panel, no traffic-light toy chrome */}
               <div
-                className={`ow-product-window ${
+                className={`ow-product-panel ${
                   card.overflowVisible ? 'overflow-visible' : 'overflow-hidden'
                 }`}
               >
-                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-[1rem] border-b border-black/[0.05] bg-[#f7f7f8] px-3.5 py-2.5">
-                  <span className="size-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.25)]" />
-                  <span className="size-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.2)]" />
-                  <span className="size-2.5 rounded-full bg-[#28c840] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.2)]" />
-                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium tracking-tight text-neutral-400">
-                    {card.window}
-                  </span>
-                </div>
                 {card.screen ? (
-                  <div
-                    className={
-                      card.overflowVisible
-                        ? 'overflow-visible rounded-b-xl'
-                        : 'overflow-hidden'
-                    }
-                  >
-                    <Visual focused={focused} />
-                  </div>
+                  <Visual focused={focused} />
                 ) : (
                   <PixelFramedVisual>
                     <Visual focused={focused} />

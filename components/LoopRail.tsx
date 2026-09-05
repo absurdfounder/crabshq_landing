@@ -48,43 +48,49 @@ const CATEGORY_ICON: Record<string, LucideIcon> = {
 };
 
 /**
- * Compact card. The grid version stood 12 of these four rows deep and ate a
- * whole screen; at this size two scrolling rows show more loops in a third of
- * the height, and a rail reads as "there are many of these" in a way a static
- * grid never does.
- *
- * The card shows the exit condition rather than the description, because the
- * exit condition is the thing the section's lede claims makes a loop a loop.
- * The description was prose that clipped mid-word at this width; the exit
- * condition is a short clause that differs on every card. The previous version
- * also carried a "Hardened" badge — 115 of 119 loops are hardened, so it
- * appeared on every card and distinguished nothing.
+ * Cast-inspired loop cell: hairline grid, mono category, bold job line, quiet CTA.
+ * Same craft as the cast roster — different job (playbook, not person).
  */
-function LoopCard({ loop }: { loop: LoopRailItem }) {
+function LoopCard({ loop, index }: { loop: LoopRailItem; index: number }) {
   const Icon = CATEGORY_ICON[loop.category] ?? RefreshCw;
 
   return (
-    <Link
-      href={`/loops/${loop.slug}`}
-      className="group flex h-full min-h-[7.5rem] w-full flex-col justify-between rounded-xl bg-white px-4 py-3.5 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: Math.min(index, 5) * 0.05, ease }}
+      viewport={{ once: true, margin: '-20px' }}
+      className="flex flex-col bg-canvas-section p-5 sm:p-6 md:p-7"
     >
-      <div className="flex items-start gap-2.5">
-        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-trooper-50 text-trooper-700">
-          <Icon className="h-4 w-4" />
+      <div className="flex items-start gap-3">
+        <span className="inline-flex size-10 shrink-0 items-center justify-center bg-white text-ink ring-1 ring-[var(--color-line)]">
+          <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] font-medium text-neutral-500">
-            {loop.category}
+          <h3 className="font-funneldisplay text-lg tracking-tight text-ink sm:text-xl">
+            {loop.title}
+          </h3>
+          <p className="mt-1 truncate font-mono text-[11px] tracking-tight text-ink-muted sm:text-xs">
+            /loops/{loop.slug}
           </p>
-          <p className="mt-0.5 truncate text-sm font-medium leading-snug text-neutral-800">{loop.title}</p>
         </div>
+        <span className="ml-auto shrink-0 bg-white px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-ink-faint ring-1 ring-[var(--color-line)]">
+          {loop.category}
+        </span>
       </div>
 
-      <p className="line-clamp-2 text-[13px] leading-relaxed text-neutral-500">
-        <span className="text-neutral-400">Runs until </span>
-        {loop.exitCondition}
+      <p className="mt-5 text-base leading-snug text-ink sm:text-lg">
+        Runs until <span className="font-semibold">{loop.exitCondition}</span>.
       </p>
-    </Link>
+
+      <Link
+        href={`/loops/${loop.slug}`}
+        className="group mt-auto inline-flex items-center gap-1.5 self-start border-b border-transparent pb-0.5 pt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink sm:text-xs"
+      >
+        <span>Open loop</span>
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </Link>
+    </motion.div>
   );
 }
 
@@ -94,49 +100,71 @@ type LoopRailProps = {
 };
 
 /**
- * Loops: the composer, then a grid of them.
+ * Loops — playbook catalog on the home page.
  *
- * Filtering is a browse action and /loops already does it. On the home page
- * the job is to show that there are a lot of these and that you can describe
- * your own, without clipping cards off the rail.
+ * Visual language matches the cast hairline grid so the page feels one system;
+ * the job stays distinct: cast = who, loops = the playbook they run.
+ * Composer stays above the grid; section order on the homepage is unchanged.
  */
 export default function LoopRail({ items, totalCount }: LoopRailProps) {
-  const preview = items.slice(0, 9);
+  // Five loops + the browse cell fills a 3×2 cast-style grid.
+  const preview = items.slice(0, 5);
 
   return (
     <div>
       <motion.div
-        className="mx-auto max-w-3xl text-center"
+        className="mb-6 max-w-3xl md:mb-12"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="h2-section mx-auto">
+        <h2 className="font-funneldisplay text-[1.65rem] leading-[1.15] tracking-tight text-ink sm:text-3xl md:text-4xl lg:text-[2.75rem]">
           Troopers work from a loop,
           <br />
           not a prompt.
         </h2>
-        <p className="lede mx-auto">
-          A loop has a goal, a check, and an exit. Describe one, or start from {totalCount}.
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-muted sm:text-base">
+          A loop has a goal, a check, and an exit. Describe one below, or start from{' '}
+          {totalCount} playbooks the workforce already runs.
         </p>
       </motion.div>
 
-      <div className="mx-auto mt-10 w-full max-w-[52rem] lg:mt-14">
+      <div className="mx-auto w-full max-w-[52rem]">
         <LoopComposer />
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
-        {preview.map((loop) => (
-          <LoopCard key={loop.slug} loop={loop} />
+      {/* Same hairline grid craft as the cast — opaque cells, 1px line gaps. */}
+      <div className="mt-8 grid grid-cols-1 gap-px border border-[var(--color-line)] bg-[var(--color-line)] sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
+        {preview.map((loop, index) => (
+          <LoopCard key={loop.slug} loop={loop} index={index} />
         ))}
-      </div>
 
-      <div className="mt-8 flex justify-center">
-        <Link href="/loops" className="group link-mono">
-          <span>Browse all {totalCount} loops</span>
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </Link>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.28, ease }}
+          viewport={{ once: true, margin: '-20px' }}
+          className="flex flex-col justify-between bg-white p-5 sm:p-6 md:p-7"
+        >
+          <div>
+            <span className="type-eyebrow-num">{totalCount} loops</span>
+            <p className="mt-5 text-base leading-snug text-ink sm:text-lg">
+              The catalog is bigger than this page.
+            </p>
+            <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">
+              CI, review, growth, ops, finance, security. Same deal: a goal, a check, and an
+              exit that says when the job is done.
+            </p>
+          </div>
+          <Link
+            href="/loops"
+            className="group mt-5 inline-flex items-center gap-1.5 self-start border-b border-transparent pb-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-muted transition-colors hover:border-current hover:text-ink sm:text-xs"
+          >
+            <span>Browse all {totalCount} loops</span>
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

@@ -261,12 +261,13 @@
   animation: ow-pulse-ring 1.4s ease-out infinite;
 }
 
-.ow-product-window {
+.ow-product-window,
+.ow-product-panel {
   border-radius: 1rem;
   background: #fff;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 18px 50px -28px rgba(26, 26, 26, 0.42),
+    0 24px 56px -28px rgba(26, 26, 26, 0.28),
     0 0 0 1px rgba(0, 0, 0, 0.07);
 }
 

@@ -63,7 +63,7 @@ const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
 const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
 
 export default function Home() {
-  const loopRailItems = getLoopRailItems(22)
+  const loopRailItems = getLoopRailItems(8)
   const integrationTiles = getIntegrationTiles(36)
   const voices = getVoices()
 
@@ -106,7 +106,6 @@ export default function Home() {
         rhythm
         eyebrow="Loops"
         eyebrowNumber="07"
-        eyebrowAlign="center"
       >
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>

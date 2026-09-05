@@ -64,7 +64,7 @@ export default function TrooperCastSection() {
                   {`${trooper.handle}@trooper.so`}
                 </p>
               </div>
-              <span className="ml-auto shrink-0 bg-white px-2 py-1 font-silkscreen text-[9px] font-bold uppercase tracking-[0.16em] text-ink-faint ring-1 ring-[var(--color-line)]">
+              <span className="ml-auto shrink-0 bg-white px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-ink-faint ring-1 ring-[var(--color-line)]">
                 {trooper.role}
               </span>
             </div>
