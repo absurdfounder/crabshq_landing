@@ -5,22 +5,11 @@ import Footer from '@/components/ui/footer'
 import Newsletter from '@/components/newsletter'
 import SectionShell from '@/components/ui/SectionShell'
 
-const CATALOG_PATH_PREFIXES = ['/plugin', '/integration', '/loops', '/download', '/skill', '/self-host']
-
-function isCatalogPage(pathname: string) {
-  return CATALOG_PATH_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  )
-}
-
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  // Resellers already ends with its own apply CTA — stacking "Try Trooper now"
-  // under it reads as a second footer.
-  const hideNewsletter =
-    pathname === '/wonder-auth' ||
-    pathname === '/resellers' ||
-    isCatalogPage(pathname)
+  // Resellers already ends with its own apply CTA — stacking another closer
+  // under it reads as a second footer. wonder-auth is a focused auth surface.
+  const hideNewsletter = pathname === '/wonder-auth' || pathname === '/resellers'
 
   return (
     <>

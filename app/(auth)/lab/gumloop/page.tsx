@@ -227,16 +227,16 @@ export default function GumloopLabPage() {
 
       <LabBand
         id="final-cta"
-        title="Try Trooper now"
-        note="Preferred closing CTA — horizontal bordered band (homepage newsletter)."
+        title="Build your team of agents"
+        note="Sitewide footer CTA — centered marks + Explore agents (replaces Try Trooper now band)."
       >
         <GlFinalCta />
       </LabBand>
 
       <LabBand
         id="gumloop-centered-cta"
-        title="Gumloop centered CTA (reference)"
-        note="Skipped for Trooper — kept here for comparison only."
+        title="Try Trooper now (old band)"
+        note="Previous horizontal footer CTA — kept for comparison only."
       >
         <GlGumloopCenteredCta />
       </LabBand>

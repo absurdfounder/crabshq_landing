@@ -320,8 +320,34 @@ export function GlShippedLog() {
   );
 }
 
-/** Preferred final CTA — Trooper horizontal band (matches homepage newsletter). */
+/** Preferred final CTA — centered “Build your team of agents” (sitewide newsletter). */
 export function GlFinalCta() {
+  return (
+    <div className="mx-auto max-w-3xl px-5 py-12 sm:px-8">
+      <div className="rounded-2xl border border-slate-200/80 bg-[#f6f7f8] px-6 py-14 text-center sm:px-10 sm:py-16">
+        <TrooperMarkCarousel size={28} className="mx-auto mb-6 justify-center" />
+        <h3 className="font-funneldisplay text-3xl leading-tight tracking-tight text-slate-950 sm:text-4xl">
+          Build your team of agents
+        </h3>
+        <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-slate-500 sm:text-base">
+          Create AI agents that understand your business, work across your tools, and take work from
+          idea to outcome.
+        </p>
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="https://app.trooper.so?ref=lab-cta"
+            className="inline-flex h-11 items-center rounded-lg bg-neutral-950 px-5 text-[14px] font-medium text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            Explore agents
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Old Trooper horizontal band — kept for side-by-side comparison. */
+export function GlGumloopCenteredCta() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
       <div className="border border-slate-200 bg-canvas px-6 py-10 sm:px-10 sm:py-12">
@@ -357,25 +383,6 @@ export function GlFinalCta() {
             </PixelButton>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-/** Gumloop-style centered closing CTA — kept for side-by-side comparison. */
-export function GlGumloopCenteredCta() {
-  return (
-    <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">
-      <TrooperMarkCarousel size={26} className="mx-auto mb-6 justify-center" />
-      <h3 className="font-display text-3xl tracking-tight text-neutral-950 sm:text-4xl">
-        Build your team of agents
-      </h3>
-      <p className="mx-auto mt-3 max-w-md text-[15px] text-neutral-500">
-        Agents that understand your business, work across your tools, and take work from idea to
-        outcome.
-      </p>
-      <div className="mt-7 flex justify-center">
-        <GlDualCta />
       </div>
     </div>
   );

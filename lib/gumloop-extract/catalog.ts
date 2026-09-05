@@ -136,20 +136,20 @@ export const GUMLOOP_EXTRACTS: GumloopExtract[] = [
   },
   {
     id: 'final-cta',
-    title: 'Try Trooper now (final CTA)',
-    gumloopSection: 'Trooper newsletter band (preferred over Gumloop centered CTA)',
-    motion: [],
-    status: 'lab',
+    title: 'Build your team of agents (footer CTA)',
+    gumloopSection: 'Build your team of agents',
+    motion: ['mark-carousel'],
+    status: 'promoted',
     notes:
-      'Horizontal bordered band + Get Started / Download Mac App. Gumloop centered CTA kept as comparison extract.',
+      'Sitewide Newsletter in default + auth layouts. Centered marks + Explore agents. Replaces Try Trooper now band.',
   },
   {
     id: 'gumloop-centered-cta',
-    title: 'Gumloop centered CTA (reference)',
-    gumloopSection: 'Build your team of agents',
+    title: 'Try Trooper now (old band)',
+    gumloopSection: 'Previous Trooper newsletter band',
     motion: [],
     status: 'skip',
-    notes: 'Centered marks + dual CTA — reference only; Trooper prefers the horizontal band.',
+    notes: 'Old horizontal Get Started / Download Mac App band — reference only.',
   },
 ];
 

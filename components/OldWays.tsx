@@ -12,12 +12,12 @@ import {
   GitBranch,
   Globe,
   Terminal,
+  Sparkles,
 } from 'lucide-react';
 import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { getTrooper } from '@/lib/troopers';
-import { DotMatrixFade } from './ui/FeaturePeekStage';
 import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
 import TrooperMark from './ui/TrooperMark';
@@ -49,7 +49,7 @@ function MockShell({
     // Ring on the outer shell; overflow on the inner — pairing them clips the
     // stroke into a half-edge on rounded corners (visible on org/action cards).
     <div
-      className={`w-full rounded-2xl bg-white shadow-[0_24px_56px_-28px_rgba(28,25,23,0.32)] ring-1 ring-black/[0.07] ${className}`}
+      className={`w-full rounded-xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.06] ${className}`}
     >
       <div className="overflow-hidden rounded-2xl">{children}</div>
     </div>
@@ -131,113 +131,183 @@ function OrgVisual({ focused }: { focused: boolean }) {
     phase >= 4 ? 'online' : phase >= 3 ? 'spinning' : 'queued',
   ] as const;
 
-  return (
-    <MockShell>
-      <div className="border-b border-[#E7E5E4] bg-[#FAFAF9] px-3.5 py-2.5">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-[12px] font-semibold text-neutral-900">My Org</span>
-          <span className="text-[11px] text-neutral-500">1 manager · 3 specialists</span>
-        </div>
-        <div
-          className={`mt-2 flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[11px] transition-colors ${
-            phase >= 1 ? 'bg-[#f0f5e6] text-[#325600] ring-1 ring-[#c4d9a0]' : 'bg-white text-neutral-500 ring-1 ring-[#E7E5E4]'
-          }`}
-        >
-          <span className="truncate">
-            {phase >= 1 ? (
-              <>
-                Ask matched · <span className="font-semibold">growth team</span> for launch
-              </>
-            ) : (
-              'Waiting for instruction…'
-            )}
-          </span>
-        </div>
-      </div>
+  const statusLabel = (st: (typeof statuses)[number]) => {
+    if (st === 'online' || st === 'ready') return 'Online';
+    if (st === 'spinning' || st === 'routing') return 'Spinning up';
+    return 'Queued';
+  };
 
-      <div className="flex flex-col items-center bg-[#FAFAF9]/40 px-4 py-5">
-        {/* Jordan routes the ask */}
-        <div className="flex flex-col items-center gap-1">
-          <AgentAv handle={AGENT_ROSTER[0].handle} size={40} />
-          <p className="text-[13px] font-semibold text-neutral-900">{AGENT_ROSTER[0].name}</p>
-          <p className="text-[11px] text-neutral-500">{AGENT_ROSTER[0].role}</p>
-          <span
-            className={`mt-0.5 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
-              statuses[0] === 'routing'
-                ? 'bg-amber-100 text-amber-800'
-                : statuses[0] === 'ready'
-                  ? 'bg-[#f0f5e6] text-[#325600]'
-                  : 'bg-[#FEF3C7] text-[#B45309]'
+  const tabs = ['Growth', 'Sales', 'Support', 'Ops', 'Research'] as const;
+
+  return (
+    // Product surface — one pane, like Gumloop’s agent panel (sidebar + chat + table).
+    // No nested MockShell/cards: the outer window chrome is enough.
+    <div className="flex min-h-[360px] bg-white sm:min-h-[400px]">
+      <aside className="hidden w-[76px] shrink-0 flex-col gap-0.5 border-r border-black/[0.06] bg-[#f7f7f8] p-2 sm:flex">
+        {tabs.map((tab) => (
+          <div
+            key={tab}
+            className={`rounded-lg px-1.5 py-2.5 text-center text-[10px] font-medium transition-colors ${
+              tab === 'Growth'
+                ? 'bg-white text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.06]'
+                : 'text-neutral-400'
             }`}
           >
-            {statuses[0] === 'routing' ? 'Routing' : statuses[0] === 'ready' ? 'Leading' : 'Manager'}
-          </span>
-        </div>
+            {tab === 'Growth' ? (
+              <span className="mx-auto mb-1 flex size-6 items-center justify-center">
+                <AgentAv handle="nova" size={22} />
+              </span>
+            ) : (
+              <span className="mx-auto mb-1 block size-1.5 rounded-full bg-neutral-300" />
+            )}
+            {tab}
+          </div>
+        ))}
+      </aside>
 
-        <span aria-hidden className="my-2 h-4 w-px bg-[#E7E5E4]" />
-
-        <div className="grid w-full grid-cols-3 gap-2">
-          {AGENT_ROSTER.slice(1).map((agent, i) => {
-            const st = statuses[i + 1];
-            const trooper = getTrooper(agent.handle);
-            return (
-              <div
-                key={agent.name}
-                className={`flex flex-col items-center rounded-xl bg-white px-2 py-3 text-center transition-all duration-500 ring-1 ${
-                  st === 'online'
-                    ? 'shadow-[0_8px_20px_-14px_rgba(26,26,26,0.28)]'
-                    : st === 'spinning'
-                      ? 'ring-amber-200 shadow-sm'
-                      : 'ring-[var(--color-line)] opacity-55'
-                }`}
-                style={
-                  st === 'online' && trooper
-                    ? { boxShadow: `0 0 0 1px ${trooper.accent}55, 0 8px 20px -14px rgba(26,26,26,0.28)` }
-                    : undefined
-                }
-              >
-                <AgentAv handle={agent.handle} size={34} />
-                <p className="mt-1.5 text-[12px] font-semibold text-neutral-900">{agent.name}</p>
-                <p className="text-[10px] text-neutral-500">{agent.role}</p>
-                <span
-                  className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${
-                    st === 'online'
-                      ? ''
-                      : st === 'spinning'
-                        ? 'bg-amber-50 text-amber-700'
-                        : 'bg-neutral-100 text-neutral-400'
-                  }`}
-                  style={
-                    st === 'online' && trooper
-                      ? { backgroundColor: trooper.tint, color: trooper.accentDark }
-                      : undefined
-                  }
-                >
-                  {st === 'spinning' ? (
-                    <Loader2 className="size-2.5 animate-spin" strokeWidth={2.5} />
-                  ) : st === 'online' && trooper ? (
-                    <span
-                      className="size-1.5 rounded-full"
-                      style={{ backgroundColor: trooper.accent }}
-                    />
-                  ) : null}
-                  {st === 'online' ? 'Online' : st === 'spinning' ? 'Spinning up' : 'Queued'}
-                </span>
+      <div className="min-w-0 flex-1 px-4 py-4 sm:px-5 sm:py-5">
+        <div className="flex items-start gap-3">
+          <AgentAv handle="nova" size={36} />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+              <p className="text-[15px] font-semibold tracking-tight text-neutral-950">Growth Org</p>
+              <p className="text-[11px] text-neutral-400">1 manager · 3 specialists</p>
+            </div>
+            <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">
+              Coordinates launch work across growth, product, and ops.
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
+                <Sparkles className="size-2.5 text-amber-500" strokeWidth={2} aria-hidden />
+                Claude 4.5 Sonnet
+              </span>
+              <div className="flex -space-x-1.5">
+                {AGENT_ROSTER.slice(0, 4).map((a) => (
+                  <span
+                    key={a.name}
+                    className="inline-flex rounded-full ring-2 ring-white"
+                    title={a.name}
+                  >
+                    <AgentAv handle={a.handle} size={18} />
+                  </span>
+                ))}
               </div>
-            );
-          })}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 space-y-3">
+          <div className="rounded-xl bg-[#f4f4f5] px-3.5 py-2.5">
+            <p className="text-[11px] font-medium text-neutral-500">You</p>
+            <p className="mt-0.5 text-[13px] leading-snug text-neutral-800">
+              I need a growth team on this launch — stand one up.
+            </p>
+          </div>
+
+          <div className="space-y-1.5 pl-0.5 text-[12px] text-neutral-600">
+            <p
+              className={`flex items-center gap-2 transition-opacity ${
+                phase >= 1 ? 'opacity-100' : 'opacity-35'
+              }`}
+            >
+              {phase >= 1 && phase < 4 ? (
+                <Loader2 className="size-3 shrink-0 animate-spin text-neutral-400" strokeWidth={2.25} />
+              ) : (
+                <span
+                  className={`size-1.5 shrink-0 rounded-full ${
+                    phase >= 4 ? 'bg-[#325600]' : 'bg-neutral-300'
+                  }`}
+                />
+              )}
+              Matching specialists to launch brief
+            </p>
+            <p
+              className={`flex items-center gap-2 transition-opacity ${
+                phase >= 2 ? 'opacity-100' : 'opacity-35'
+              }`}
+            >
+              <span
+                className={`size-1.5 shrink-0 rounded-full ${
+                  phase >= 2 ? 'bg-[#325600]' : 'bg-neutral-300'
+                }`}
+              />
+              Spinning up Aria, Ren, Leo
+            </p>
+            <p
+              className={`flex items-center gap-2 transition-opacity ${
+                phase >= 4 ? 'opacity-100' : 'opacity-35'
+              }`}
+            >
+              <span
+                className={`size-1.5 shrink-0 rounded-full ${
+                  phase >= 4 ? 'bg-[#325600]' : 'bg-neutral-300'
+                }`}
+              />
+              Growth pod ready — 3 / 3 live
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-black/[0.06]">
+            <div className="border-b border-black/[0.06] bg-[#fafafa] px-3 py-2">
+              <p className="text-[11px] font-semibold text-neutral-700">Team roster</p>
+            </div>
+            <table className="w-full text-left text-[12px]">
+              <thead>
+                <tr className="border-b border-black/[0.05] text-[10px] font-medium uppercase tracking-wide text-neutral-400">
+                  <th className="px-3 py-2 font-medium">Agent</th>
+                  <th className="hidden px-3 py-2 font-medium sm:table-cell">Role</th>
+                  <th className="px-3 py-2 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody className="text-neutral-700">
+                {AGENT_ROSTER.map((agent, i) => {
+                  const st = statuses[i];
+                  const live = st === 'online' || st === 'ready';
+                  const busy = st === 'spinning' || st === 'routing';
+                  return (
+                    <tr
+                      key={agent.name}
+                      className={`border-b border-black/[0.04] last:border-0 transition-opacity duration-500 ${
+                        live || busy ? 'opacity-100' : 'opacity-45'
+                      }`}
+                    >
+                      <td className="px-3 py-2.5">
+                        <span className="inline-flex items-center gap-2">
+                          <AgentAv handle={agent.handle} size={22} />
+                          <span className="font-medium text-neutral-900">{agent.name}</span>
+                        </span>
+                      </td>
+                      <td className="hidden px-3 py-2.5 text-neutral-500 sm:table-cell">
+                        {agent.role}
+                      </td>
+                      <td className="px-3 py-2.5">
+                        <span className="inline-flex items-center gap-1.5 text-[11px]">
+                          {busy ? (
+                            <Loader2
+                              className="size-3 animate-spin text-neutral-400"
+                              strokeWidth={2.25}
+                            />
+                          ) : (
+                            <span
+                              className={`size-1.5 rounded-full ${
+                                live ? 'bg-[#325600]' : 'bg-neutral-300'
+                              }`}
+                            />
+                          )}
+                          <span className={live ? 'text-[#325600]' : 'text-neutral-500'}>
+                            {statusLabel(st)}
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
-      <div className="flex items-center justify-between border-t border-[#E7E5E4] bg-white px-3.5 py-2 text-[11px]">
-        <span className="text-neutral-500">
-          {phase >= 4 ? 'Growth pod ready' : 'Assembling team…'}
-        </span>
-        <span className="font-medium text-[#325600]">
-          {Math.min(phase, 3)} / 3 troopers live
-        </span>
-      </div>
-    </MockShell>
+    </div>
   );
 }
 
@@ -964,16 +1034,13 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
 }
 
 /**
- * The window's "screen" for smaller card mocks — padded canvas + max-width so
- * org/workflow/etc. visuals stay consistent. Full product screens (browser /
- * desktop / devices) render flush under the traffic-light bar instead.
+ * Soft product stage for smaller card mocks — calm wash, no decorative
+ * matrix fade. Full product screens render flush under the traffic-light bar.
  */
 const PixelFramedVisual = ({ children }: { children: ReactNode }) => (
-  <div className="relative flex min-h-[300px] flex-col overflow-hidden sm:min-h-[340px] lg:min-h-[400px]">
-    <div className="absolute inset-0 bg-gradient-to-br from-canvas via-canvas to-slate-100/50" />
-    <DotMatrixFade />
-    <div className="relative z-10 flex flex-1 items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-[min(100%,27rem)]">{children}</div>
+  <div className="relative flex min-h-[320px] flex-col overflow-hidden bg-[#f3f4f6] sm:min-h-[360px] lg:min-h-[400px]">
+    <div className="relative z-10 flex flex-1 items-center justify-center p-3 sm:p-4 lg:p-5">
+      <div className="w-full max-w-[min(100%,32rem)]">{children}</div>
     </div>
   </div>
 );
@@ -1009,12 +1076,14 @@ const cards: CapabilityCard[] = [
     tag: 'AI organizations',
     ask: 'trooper, I need a growth team on this launch',
     reply: 'on it. spinning up 3 troopers',
-    window: 'Agents — My Org',
+    window: 'Agents — Growth Org',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
     description:
       'Trooper lets you create AI organizations made up of multiple AI employees. Each organization works together on tasks, shares context, and coordinates execution — similar to how real teams operate.',
     Visual: OrgVisual,
+    // Full-bleed product panel (sidebar + chat + roster) — no nested stage toy.
+    screen: true,
   },
   {
     tag: 'Action, not answers',
@@ -1264,15 +1333,15 @@ export default function OldWays() {
 
             <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
               <div
-                className={`rounded-xl bg-white shadow-[0_28px_56px_-24px_rgba(26,26,26,0.4)] ring-1 ring-black/10 ${
+                className={`rounded-2xl bg-white shadow-[0_20px_48px_-28px_rgba(26,26,26,0.35)] ring-1 ring-black/[0.08] ${
                   card.overflowVisible ? 'overflow-visible' : 'overflow-hidden'
                 }`}
               >
-                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-xl border-b border-black/5 bg-neutral-50 px-3 py-2">
+                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-2xl border-b border-black/[0.05] bg-[#fafafa] px-3 py-2">
                   <span className="size-2.5 rounded-full bg-[#ff5f57]" />
                   <span className="size-2.5 rounded-full bg-[#febc2e]" />
                   <span className="size-2.5 rounded-full bg-[#28c840]" />
-                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
+                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-400">
                     {card.window}
                   </span>
                 </div>
