@@ -1,221 +1,255 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { animate, useInView, useReducedMotion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
 import { TROOPERS } from '@/lib/troopers';
 import TrooperMark from '@/components/ui/TrooperMark';
+import KnowledgeOrb from '@/components/gumloop-lab/KnowledgeOrb';
+import { DemoFavicon } from '@trooper/demo';
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
-const DATASETS = [
-  {
-    id: 'wiki',
-    label: 'Wiki',
-    color: '#FB3C98',
-    sources: ['Notion', 'Confluence', 'Drive'],
-    blurb: 'Policies, launch notes, and brand voice — always current.',
-  },
-  {
-    id: 'crm',
-    label: 'CRM',
-    color: '#03A2FE',
-    sources: ['HubSpot', 'Salesforce', 'Attio'],
-    blurb: 'Deals, accounts, and activity the sales org already trusts.',
-  },
-  {
-    id: 'code',
-    label: 'Code',
-    color: '#FE9A00',
-    sources: ['GitHub', 'Linear', 'Sentry'],
-    blurb: 'Repos, issues, and incidents troopers can act on.',
-  },
-  {
-    id: 'finance',
-    label: 'Finance',
-    color: '#16a34a',
-    sources: ['Stripe', 'QuickBooks', 'Sheets'],
-    blurb: 'Ledger, payouts, and close checklists without copy-paste.',
-  },
-] as const;
+/**
+ * Complete context / company brain — Gumloop bento layout + interactive orb,
+ * skills stack, and curved live-activity feed. Trooper marks replace Gumloop
+ * agent glyphs; structure and motion match the reference.
+ */
 
 const ACTIVITY = [
   {
-    title: 'Booked qualified meeting',
-    who: 'Scout',
-    when: '2h',
-    tag: 'Meeting Scheduler',
-    model: 'Claude Sonnet',
-    mark: TROOPERS[2],
+    action: 'Drafted tailored proposal',
+    agent: 'Proposal Builder',
+    who: 'Katherine Duh',
+    when: '2m',
+    domain: 'drive.google.com',
+    model: 'Claude Sonnet 4.6',
+    mark: TROOPERS[0],
   },
   {
-    title: 'Logged notes and follow-ups',
-    who: 'Nova',
-    when: '4h',
-    tag: 'Post-call Actioner',
-    model: 'GPT-4o Mini',
+    action: 'Reviewed deal against criteria',
+    agent: 'Deal Reviewer',
+    who: 'Rahul Behal',
+    when: '9m',
+    domain: 'salesforce.com',
+    model: 'GLM-5.2',
     mark: TROOPERS[1],
   },
   {
-    title: 'Prepped brief before call',
-    who: 'Pip',
-    when: '6h',
-    tag: 'Pre-meeting Prepper',
-    model: 'Claude Haiku',
+    action: 'Rolled up pipeline forecast',
+    agent: 'Forecast Roll-up',
+    who: 'Gonzalo Soto',
+    when: '24m',
+    domain: 'sheets.google.com',
+    model: 'Gemini 3.1 Pro',
+    mark: TROOPERS[2],
+  },
+  {
+    action: 'Personalized outbound sequence',
+    agent: 'Outbound Prospector',
+    who: 'Marcelo Chaman',
+    when: '1h',
+    domain: 'gmail.com',
+    model: 'Claude Haiku 4.5',
     mark: TROOPERS[3],
+  },
+  {
+    action: 'Booked qualified meeting',
+    agent: 'Meeting Scheduler',
+    who: 'Wasay Ahmed',
+    when: '2h',
+    domain: 'calendar.google.com',
+    model: 'Gemini 3 Flash',
+    mark: TROOPERS[4],
+  },
+  {
+    action: 'Logged notes and follow-ups',
+    agent: 'Post-call Actioner',
+    who: 'Max Brodeur-Urbas',
+    when: '4h',
+    domain: 'slack.com',
+    model: 'Kimi K2.6',
+    mark: TROOPERS[1],
+  },
+  {
+    action: 'Prepped brief before call',
+    agent: 'Pre-meeting Prepper',
+    who: 'Aron Schwartz',
+    when: '6h',
+    domain: 'notion.so',
+    model: 'GPT-5.4 Mini',
+    mark: TROOPERS[3],
+  },
+  {
+    action: 'Enriched account in CRM',
+    agent: 'Research Enricher',
+    who: 'Katherine Duh',
+    when: '1d',
+    domain: 'hubspot.com',
+    model: 'Gemini 3 Flash',
+    mark: TROOPERS[2],
   },
 ] as const;
 
-/**
- * Gumloop-inspired company brain — interactive dataset orb + skills + activity.
- * Adapted for Trooper: ink hierarchy, Trooper marks, clickable data layers.
- */
+const SKILL_AGENTS = [
+  { name: 'CRM Agent', accent: TROOPERS[1].accent, top: 8, left: 8 },
+  { name: 'Salesforce Architecture Agent', accent: TROOPERS[2].accent, top: 48, left: 28 },
+  { name: 'Call Analysis Agent', accent: TROOPERS[4].accent, top: 88, left: 12 },
+] as const;
+
 export default function CompanyBrainSection() {
-  const [active, setActive] = useState<(typeof DATASETS)[number]['id']>('wiki');
-  const dataset = DATASETS.find((d) => d.id === active) ?? DATASETS[0];
-
   return (
-    <div>
-      <motion.div
-        className="max-w-3xl"
-        initial={{ opacity: 0, y: 14 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease }}
-        viewport={{ once: true, margin: '-40px' }}
-      >
-        <h2 className="h2-section">Complete context on your company</h2>
-        <p className="lede">
-          Wiki, CRM, code, and finance connect into one brain troopers and humans use —
-          click a layer to see what feeds it.
+    <div className="gl-company-brain">
+      <div className="flex flex-col gap-4">
+        <h2 className="font-funneldisplay text-3xl leading-tight font-medium tracking-tight text-ink md:text-4xl">
+          Complete context on your company
+        </h2>
+        <p className="max-w-[640px] text-base leading-normal text-ink-muted">
+          Your company knowledge, the skills your team runs on, and live context from every tool
+          connect into one company brain.
         </p>
-      </motion.div>
+      </div>
 
-      <div className="mt-10 grid gap-px border border-[var(--color-line)] bg-[var(--color-line)] lg:grid-cols-2 lg:grid-rows-2">
-        {/* Interactive knowledge orb */}
-        <article className="relative overflow-hidden bg-canvas-section p-6 sm:p-8 lg:row-span-2">
-          <div className="relative mx-auto mb-8 flex h-64 max-w-sm items-center justify-center">
-            <div className="absolute inset-6 rounded-full border border-dashed border-black/[0.08]" />
-            <div className="absolute inset-12 rounded-full border border-dashed border-black/[0.06]" />
-            <svg className="absolute inset-0 size-full" viewBox="0 0 320 320" aria-hidden>
-              {DATASETS.map((d, i) => (
-                <path
-                  key={d.id}
-                  d={
-                    i === 0
-                      ? 'M40 160 C80 40, 240 40, 280 160'
-                      : i === 1
-                        ? 'M50 220 C120 280, 220 280, 270 200'
-                        : i === 2
-                          ? 'M60 100 C140 180, 200 60, 260 140'
-                          : 'M48 180 C100 60, 220 260, 272 120'
-                  }
-                  fill="none"
-                  stroke={d.color}
-                  strokeWidth={active === d.id ? 2.25 : 1.25}
-                  opacity={active === d.id ? 0.75 : 0.28}
-                  className="gl-trace-dash transition-[stroke-width,opacity] duration-300"
-                  style={{ animationDelay: `${i * 0.25}s` }}
-                />
-              ))}
-            </svg>
-
-            <div className="relative z-[1] flex flex-col items-center gap-3">
-              <div className="flex flex-wrap justify-center gap-1.5">
-                {DATASETS.map((d) => (
-                  <button
-                    key={d.id}
-                    type="button"
-                    onClick={() => setActive(d.id)}
-                    className={`rounded-lg px-2.5 py-1.5 text-[11px] font-semibold transition-all ${
-                      active === d.id
-                        ? 'bg-ink text-white shadow-sm'
-                        : 'bg-white text-ink-muted ring-1 ring-black/[0.06] hover:text-ink'
-                    }`}
-                  >
-                    {d.label}
-                  </button>
-                ))}
-              </div>
-              <div className="flex flex-wrap justify-center gap-1.5">
-                {dataset.sources.map((name) => (
-                  <span
-                    key={name}
-                    className="rounded-md bg-white px-2 py-1 text-[11px] font-medium text-ink ring-1 ring-black/[0.06]"
-                    style={{ boxShadow: `inset 0 -2px 0 ${dataset.color}33` }}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </div>
+      <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2 lg:grid-rows-2 lg:min-h-[35rem]">
+        {/* Company knowledge — tall left */}
+        <article className="min-w-0 overflow-hidden rounded-md border border-[var(--color-line)] bg-[#f7f7f5] lg:row-span-2">
+          <div className="relative min-h-80 min-w-0 flex-1 overflow-hidden">
+            <KnowledgeOrb />
           </div>
-          <h3 className="text-[16px] font-semibold tracking-tight text-ink">Company knowledge</h3>
-          <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">{dataset.blurb}</p>
+          <div className="border-t border-[var(--color-line)] bg-white px-6 py-5">
+            <h3 className="text-[16px] font-semibold text-ink">Company knowledge</h3>
+            <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
+              Connect your team&apos;s shared knowledge into a centralized, always up-to-date brain
+              agents and humans can use.
+            </p>
+          </div>
         </article>
 
         {/* Skills */}
-        <article className="flex flex-col justify-between gap-4 bg-canvas-section p-6 sm:flex-row sm:items-center sm:p-7">
+        <article className="flex min-w-0 flex-col justify-between gap-4 overflow-hidden rounded-md border border-[var(--color-line)] bg-[#f7f7f5] p-6 sm:flex-row sm:items-center">
           <div className="min-w-0 flex-1">
-            <h3 className="text-[16px] font-semibold tracking-tight text-ink">Skills</h3>
+            <h3 className="text-[16px] font-semibold text-ink">Skills</h3>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
-              Troopers write their own playbooks, self-improve, and run code the way your team
-              already works.
+              Agents write their own playbooks, self-improve, and even run their own code to
+              complete tasks the exact way your team needs.
             </p>
           </div>
-          <div className="relative h-28 w-full shrink-0 sm:w-44">
-            <div
-              className="absolute left-2 top-2 rounded-full px-2.5 py-1 text-[10px] font-semibold text-white"
-              style={{ backgroundColor: TROOPERS[1].accent }}
-            >
-              CRM Agent
-            </div>
-            <div className="absolute left-6 top-10 rounded-xl bg-white px-3 py-2 ring-1 ring-black/[0.06]">
-              <p className="text-[11px] font-medium text-ink">Salesforce Architect</p>
-              <p className="text-[9px] text-ink-faint">Updated just now</p>
-            </div>
-            <div
-              className="absolute bottom-2 right-2 rounded-full px-2.5 py-1 text-[10px] font-semibold text-white"
-              style={{ backgroundColor: TROOPERS[4].accent }}
-            >
-              Call Analysis
-            </div>
-            <div className="gl-mark-float absolute right-8 top-6">
-              <Sparkles className="size-4 text-[#FE9A00]" aria-hidden />
-            </div>
-          </div>
+          <SkillsVisual />
         </article>
 
         {/* Live activity */}
-        <article className="overflow-hidden bg-canvas-section p-6 sm:p-7">
+        <article className="min-w-0 overflow-hidden rounded-md border border-[var(--color-line)] bg-[#f7f7f5] p-6">
           <div className="flex flex-col gap-4 sm:flex-row">
             <div className="min-w-0 flex-1">
-              <h3 className="text-[16px] font-semibold tracking-tight text-ink">Live activity</h3>
+              <h3 className="text-[16px] font-semibold text-ink">Live activity</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-ink-muted">
-                See which apps and skills get used, and which trooper did what, when.
+                See what apps and skills your team uses most frequently, and which agents did what,
+                when.
               </p>
             </div>
-            <ul className="min-w-0 flex-1 space-y-2">
-              {ACTIVITY.map((row) => (
-                <li
-                  key={row.title}
-                  className="flex items-start gap-2.5 rounded-xl bg-white px-2.5 py-2 ring-1 ring-black/[0.06]"
-                >
-                  <TrooperMark trooper={row.mark} size={22} />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[12px] font-medium text-ink">{row.title}</p>
-                    <p className="truncate text-[10px] text-ink-faint">
-                      {row.who} · {row.when}
-                    </p>
-                    <p className="mt-0.5 truncate text-[10px] text-ink-muted">
-                      {row.tag} / {row.model}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <LiveActivityFeed />
           </div>
         </article>
+      </div>
+    </div>
+  );
+}
+
+function SkillsVisual() {
+  return (
+    <div className="relative h-36 w-full shrink-0 sm:w-48">
+      <div className="absolute inset-x-4 top-2 overflow-hidden rounded-md bg-white p-3 shadow-sm ring-1 ring-black/5">
+        <p className="text-[11px] font-medium text-ink">Salesforce Architecture</p>
+        <p className="mt-0.5 text-[9px] text-ink-faint">Updated just now</p>
+        <p className="mt-2 font-mono text-[9px] leading-relaxed text-ink-muted">
+          <span className="text-ink-faint"># Reading SKILL.md</span>
+          <br />
+          - Map objects and ownership.
+          <br />- Capture integration contracts.
+        </p>
+      </div>
+      {SKILL_AGENTS.map((agent) => (
+        <div
+          key={agent.name}
+          className="gl-mark-float absolute rounded-full px-2.5 py-1 text-[10px] font-semibold text-white shadow-sm"
+          style={{ backgroundColor: agent.accent, top: agent.top, left: agent.left }}
+        >
+          {agent.name.replace(' Agent', '')}
+        </div>
+      ))}
+      <div className="gl-mark-float absolute right-2 top-4">
+        <Sparkles className="size-4 text-[#FE9A00]" aria-hidden />
+      </div>
+    </div>
+  );
+}
+
+function LiveActivityFeed() {
+  const reduce = !!useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.3 });
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    if (reduce || !inView) return;
+    const controls = animate(0, -ACTIVITY.length * 64, {
+      duration: ACTIVITY.length * 3.2,
+      ease: 'linear',
+      repeat: Infinity,
+      onUpdate: (v) => setOffset(v),
+    });
+    return () => controls.stop();
+  }, [inView, reduce]);
+
+  const rows = [...ACTIVITY, ...ACTIVITY];
+
+  return (
+    <div ref={ref} className="relative h-[14.5rem] min-w-0 flex-1 overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-8 bg-gradient-to-b from-[#f7f7f5] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-8 bg-gradient-to-t from-[#f7f7f5] to-transparent" />
+      {rows.map((row, index) => (
+        <ActivityRow key={`${row.action}-${index}`} entry={row} index={index} y={offset} />
+      ))}
+    </div>
+  );
+}
+
+function ActivityRow({
+  entry,
+  index,
+  y,
+}: {
+  entry: (typeof ACTIVITY)[number];
+  index: number;
+  y: number;
+}) {
+  // Curve rows along a large circle — same trick as Gumloop’s feed.
+  const x = 360 - Math.sqrt(Math.max(0, 129600 - (64 * index + y + 28 - 124) ** 2));
+
+  return (
+    <div
+      className="absolute inset-x-0 pl-1"
+      style={{ top: 64 * index, transform: `translate3d(${Number.isFinite(x) ? x : 0}px, ${y}px, 0)` }}
+    >
+      <div
+        style={{ height: 56 }}
+        className="flex shrink-0 flex-col justify-center gap-1.5 rounded-md rounded-r-none bg-white px-3 shadow-sm ring-1 ring-black/[0.04]"
+      >
+        <div className="flex items-center justify-between gap-1.5">
+          <span className="flex min-w-0 items-center gap-1.5">
+            <DemoFavicon domain={entry.domain} size={12} />
+            <span className="min-w-0 truncate text-xs font-medium text-ink">{entry.action}</span>
+          </span>
+          <span className="flex shrink-0 items-center gap-1 text-xs text-ink-muted">
+            <TrooperMark trooper={entry.mark} size={12} />
+            {entry.agent}
+          </span>
+        </div>
+        <div className="flex items-center justify-between gap-1.5 text-xs text-ink-muted">
+          <span className="min-w-0 truncate tabular-nums">
+            {entry.who} · {entry.when}
+          </span>
+          <span className="shrink-0 tabular-nums">{entry.model}</span>
+        </div>
       </div>
     </div>
   );

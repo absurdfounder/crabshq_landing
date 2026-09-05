@@ -21,3 +21,5 @@ export {
   GlOptimizeVisualCards,
   GlEnterpriseDashboard,
 } from './Sections';
+
+export { default as KnowledgeOrb } from './KnowledgeOrb';

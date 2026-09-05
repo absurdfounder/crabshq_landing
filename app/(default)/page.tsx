@@ -90,7 +90,7 @@ export default function Home() {
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Company brain" eyebrowNumber="04">
+      <SectionShell rhythm eyebrowNumber="04">
         <CompanyBrainSection />
       </SectionShell>
 
@@ -99,7 +99,7 @@ export default function Home() {
         <OldWays />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Optimize" eyebrowNumber="06">
+      <SectionShell rhythm eyebrowNumber="06">
         <OptimizeAgentsSection />
       </SectionShell>
 
