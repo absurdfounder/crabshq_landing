@@ -47,7 +47,7 @@ export default function DashboardShowcaseSection() {
 
         {/* Dither card, inset from the rail like Loop API — not a full-bleed stripe. */}
         <motion.div
-          className="hero-surface mt-9 hidden rounded-2xl border border-black/5 px-4 py-8 sm:mt-11 sm:px-8 sm:py-10 lg:block"
+          className="hero-surface mt-9 hidden overflow-hidden rounded-2xl border border-black/[0.06] bg-white px-3 py-6 sm:mt-11 sm:px-6 sm:py-8 lg:block"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.08, ease }}

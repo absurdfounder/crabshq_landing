@@ -56,7 +56,7 @@ function FounderAvatar({ size = 'sm' }: { size?: 'sm' | 'md' }) {
   const dim = size === 'md' ? 'size-12' : 'size-10';
   return (
     <span
-      className={`relative ${dim} shrink-0 overflow-hidden rounded-full bg-[#eef5e6] ring-1 ring-black/[0.08]`}
+      className={`relative ${dim} shrink-0 overflow-hidden rounded-full bg-neutral-100 ring-1 ring-black/[0.08]`}
     >
       <Image
         src="/images/founder-portrait.png"
@@ -114,7 +114,7 @@ export default function FounderMessageSection() {
                 <span className="mx-auto truncate text-[9px] font-medium text-neutral-400">Preview</span>
                 <span className="w-6" aria-hidden />
               </div>
-              <div className="relative aspect-[3/4] bg-[#f4faf0]">
+              <div className="relative aspect-[3/4] bg-neutral-50">
                 <Image
                   src="/images/founder-portrait.png"
                   alt="Vaibhav, founder of Trooper"
@@ -130,7 +130,7 @@ export default function FounderMessageSection() {
                   href="https://twitter.com/absurdfounder"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] font-medium text-fern-700 transition-colors hover:text-fern-800"
+                  className="text-[10px] font-medium text-ink-muted transition-colors hover:text-ink"
                 >
                   @absurdfounder
                 </a>
@@ -179,7 +179,7 @@ export default function FounderMessageSection() {
                         href="https://twitter.com/absurdfounder"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-0.5 block text-[12px] lowercase text-neutral-400 transition-colors hover:text-fern-700 sm:hidden sm:text-[13px]"
+                        className="mt-0.5 block text-[12px] lowercase text-neutral-400 transition-colors hover:text-ink sm:hidden sm:text-[13px]"
                       >
                         @absurdfounder
                       </a>

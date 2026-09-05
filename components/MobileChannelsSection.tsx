@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import PixelButton from '@/components/ui/PixelButton';
+import TrooperMark from '@/components/ui/TrooperMark';
+import { getTrooper } from '@/lib/troopers';
 import { PLATFORM_DOWNLOADS } from '@/lib/platformDownload';
 
 const CHANNEL_BADGES: { id: string; name: string }[] = [
@@ -31,27 +33,21 @@ const CHANNEL_BADGES: { id: string; name: string }[] = [
   { id: 'teams', name: 'Teams' },
 ];
 
-const WORKFORCE_AVATARS = [
-  { name: 'Jordan', src: 'https://i.pravatar.cc/150?u=agent-jordan' },
-  { name: 'Aria', src: 'https://i.pravatar.cc/150?u=agent-aria' },
-  { name: 'Ren', src: 'https://i.pravatar.cc/150?u=agent-ren' },
-  { name: 'Leo', src: 'https://i.pravatar.cc/150?u=agent-leo' },
-] as const;
+/** Identity rainbow lives on Trooper marks — not stock photo avatars. */
+const WORKFORCE_HANDLES = ['nova', 'scout', 'wren', 'pip'] as const;
 
 function WorkforceAvatarStack() {
+  const troopers = WORKFORCE_HANDLES.map((h) => getTrooper(h)).filter(Boolean);
   return (
     <span className="mx-1.5 inline-flex translate-y-[-0.05em] items-center align-middle" aria-hidden>
-      {WORKFORCE_AVATARS.map((agent, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={agent.name}
-          src={agent.src}
-          alt=""
-          width={32}
-          height={32}
-          className="relative size-6 rounded-full object-cover ring-[2px] ring-canvas sm:size-7 lg:size-8"
-          style={{ marginLeft: i === 0 ? 0 : -8, zIndex: WORKFORCE_AVATARS.length - i }}
-        />
+      {troopers.map((trooper, i) => (
+        <span
+          key={trooper!.handle}
+          className="relative inline-flex rounded-full ring-[2px] ring-canvas"
+          style={{ marginLeft: i === 0 ? 0 : -8, zIndex: troopers.length - i }}
+        >
+          <TrooperMark trooper={trooper!} size={32} />
+        </span>
       ))}
     </span>
   );

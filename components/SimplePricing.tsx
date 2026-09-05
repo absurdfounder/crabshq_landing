@@ -41,8 +41,8 @@ function planCellClass() {
 
 function FeatureItem({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex items-start gap-2 text-sm leading-5 text-slate-700/90">
-      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" aria-hidden />
+    <li className="flex items-start gap-2 text-sm leading-5 text-ink-muted">
+      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ok-600" aria-hidden />
       <span>{children}</span>
     </li>
   );
@@ -55,7 +55,7 @@ function PlanBadge({ children, featured = false }: { children: React.ReactNode; 
         'border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]',
         featured
           ? 'border-trooper-200 bg-trooper-50 text-trooper'
-          : 'border-slate-100 bg-slate-100 text-slate-600',
+          : 'border-[var(--color-line)] bg-neutral-100 text-ink-muted',
       ].join(' ')}
     >
       {children}
@@ -85,8 +85,8 @@ function PlanHeader({
         <PlanBadge featured={featured}>{badge}</PlanBadge>
       </div>
       <div className="mt-4 flex items-center gap-2.5">
-        <Icon className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
-        <h3 className="font-funneldisplay text-xl font-medium tracking-tight text-slate-900">{title}</h3>
+        <Icon className="h-5 w-5 shrink-0 text-ok-600" aria-hidden />
+        <h3 className="font-funneldisplay text-xl font-medium tracking-tight text-ink">{title}</h3>
       </div>
     </>
   );
@@ -111,25 +111,25 @@ function AllowanceStepper({
 }) {
   const atMax = disableIncrease || value >= max;
   return (
-    <div className="flex items-center justify-between gap-2 border border-slate-100 bg-white px-3 py-2.5">
+    <div className="flex items-center justify-between gap-2 border border-[var(--color-line)] bg-white px-3 py-2.5">
       <div className="min-w-0">
-        <p className="text-sm font-medium text-slate-900">{label}</p>
-        <p className="mt-0.5 text-[11px] leading-snug text-slate-500">{helper}</p>
+        <p className="text-sm font-medium text-ink">{label}</p>
+        <p className="mt-0.5 text-[11px] leading-snug text-ink-muted">{helper}</p>
       </div>
       <div className="flex shrink-0 items-center gap-1" role="group" aria-label={`${label} quantity`}>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
           aria-label={`Decrease ${label.toLowerCase()}`}
         >
           <Minus className="h-3.5 w-3.5" aria-hidden />
         </button>
-        <span className="w-8 text-center text-sm font-medium tabular-nums text-slate-900">{value}</span>
+        <span className="w-8 text-center text-sm font-medium tabular-nums text-ink">{value}</span>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-100 bg-white text-slate-700 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={atMax}
           onClick={() => onChange(Math.min(max, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
@@ -153,7 +153,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
   return (
     <TierRail>
       <div
-        className="grid w-fit gap-1 rounded-sm border border-slate-100/90 bg-slate-50/60 p-1"
+        className="grid w-fit gap-1 rounded-sm border border-[var(--color-line)]/90 bg-neutral-50/60 p-1"
         role="radiogroup"
         aria-label="Hosting mode"
       >
@@ -164,7 +164,7 @@ function HostingModePill({ label, selected = true }: { label: string; selected?:
           tabIndex={-1}
           className={[
             'h-8 cursor-default rounded-sm px-3 py-2 xl:px-3',
-            selected ? 'bg-white text-slate-600 ring-1 ring-slate-200/80' : 'text-slate-400',
+            selected ? 'bg-white text-ink-muted ring-1 ring-black/[0.08]' : 'text-ink-faint',
           ].join(' ')}
         >
           <span className="block text-center text-[10px] font-medium xl:text-[11px]">{label}</span>
@@ -184,7 +184,7 @@ function CloudTierTabs({
   return (
     <TierRail>
       <div
-        className="grid w-full grid-cols-2 gap-1 rounded-sm border border-slate-300 bg-slate-100 p-1 shadow-sm"
+        className="grid w-full grid-cols-2 gap-1 rounded-sm border border-[var(--color-line)] bg-neutral-100 p-1 shadow-sm"
         role="radiogroup"
         aria-label="Trooper Cloud tier"
       >
@@ -202,14 +202,14 @@ function CloudTierTabs({
                 'flex h-8 items-center justify-center gap-1 rounded-sm px-2 transition-all duration-150 xl:gap-1.5 xl:px-2.5',
                 selected
                   ? 'bg-trooper text-white shadow-sm ring-1 ring-trooper/40'
-                  : 'text-slate-600 hover:bg-white hover:text-slate-900',
+                  : 'text-ink-muted hover:bg-white hover:text-ink',
               ].join(' ')}
             >
               <span className="text-[10px] font-semibold leading-none xl:text-[11px]">{tier.label}</span>
               <span
                 className={[
                   'text-[10px] font-medium tabular-nums leading-none xl:text-[11px]',
-                  selected ? 'text-white/90' : 'text-slate-500',
+                  selected ? 'text-white/90' : 'text-ink-muted',
                 ].join(' ')}
               >
                 {formatUsd(tier.price)}/mo
@@ -280,23 +280,23 @@ function PricingAmount({
 }) {
   return (
     <div className="flex items-end gap-1.5 lg:min-h-[2.75rem]">
-      <span className="font-funneldisplay text-3xl font-medium tabular-nums tracking-tight text-slate-900 sm:text-4xl">
+      <span className="font-funneldisplay text-3xl font-medium tabular-nums tracking-tight text-ink sm:text-4xl">
         {price}
       </span>
-      {cadence ? <span className="pb-1 text-sm text-slate-500">{cadence}</span> : null}
+      {cadence ? <span className="pb-1 text-sm text-ink-muted">{cadence}</span> : null}
     </div>
   );
 }
 
 function PricingSubline({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm font-medium leading-snug text-emerald-700 lg:min-h-[2.5rem]">{children}</p>
+    <p className="text-sm font-medium leading-snug text-ok-700 lg:min-h-[2.5rem]">{children}</p>
   );
 }
 
 function PricingNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs leading-5 text-slate-500 lg:min-h-[2.75rem]">
+    <p className="text-xs leading-5 text-ink-muted lg:min-h-[2.75rem]">
       {children ?? <span className="hidden lg:inline">&nbsp;</span>}
     </p>
   );
@@ -345,7 +345,7 @@ function DesktopPlanColumn({
           : 'ring-1 ring-black/5',
       ].join(' ')}
     >
-      <div className={`${planCellClass()} border-b border-slate-100 py-5`}>
+      <div className={`${planCellClass()} border-b border-[var(--color-line)] py-5`}>
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -372,7 +372,7 @@ function DesktopPlanColumn({
         <ul className="space-y-2.5">{features}</ul>
       </div>
 
-      <div className={`${planCellClass()} flex items-center border-t border-slate-100 py-5`}>{cta}</div>
+      <div className={`${planCellClass()} flex items-center border-t border-[var(--color-line)] py-5`}>{cta}</div>
     </article>
   );
 }
@@ -402,7 +402,7 @@ function MobilePlanCard({
           : 'ring-1 ring-black/5',
       ].join(' ')}
     >
-      <div className="border-b border-slate-100 px-4 py-4 sm:px-5 sm:py-5">
+      <div className="border-b border-[var(--color-line)] px-4 py-4 sm:px-5 sm:py-5">
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -421,7 +421,7 @@ function MobilePlanCard({
         <div className="mt-1.5 sm:mt-2">{subline}</div>
         <div className="mt-1">{note}</div>
         <div className="mt-2.5 sm:mt-4">{allowance}</div>
-        <div className="mt-5 border-y border-slate-100 py-4 sm:mt-6">{cta}</div>
+        <div className="mt-5 border-y border-[var(--color-line)] py-4 sm:mt-6">{cta}</div>
         <ul className="mt-4 space-y-2.5 sm:mt-5">{features}</ul>
       </div>
     </section>
@@ -650,7 +650,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
         <h2 className="h2-section">
           Simple pricing, by deployment.
           <br />
-          <span className="text-fern-700">Pay for the plan you need.</span>
+          <span className="text-ink">Pay for the plan you need.</span>
         </h2>
         <p className="lede">
           Every plan runs on a private server with your keys. No surprise bills on model usage. You

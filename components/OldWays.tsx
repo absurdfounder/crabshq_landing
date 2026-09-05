@@ -302,7 +302,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
               <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">{page.blurb}</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
-                  <Sparkles className="size-2.5 text-amber-500" strokeWidth={2} aria-hidden />
+                  <Sparkles className="size-2.5 text-neutral-400" strokeWidth={2} aria-hidden />
                   {page.model}
                 </span>
                 <div className="flex -space-x-1.5">
@@ -431,7 +431,7 @@ function ActionVisual({ focused }: { focused: boolean }) {
         </div>
         <span
           className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide ${
-            allDone ? 'ow-badge-in bg-ok-50 text-ok-700 ring-1 ring-ok-200' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'
+            allDone ? 'ow-badge-in bg-ok-50 text-ok-700 ring-1 ring-ok-200' : 'bg-neutral-100 text-neutral-600 ring-1 ring-black/[0.06]'
           }`}
         >
           {allDone ? 'Done' : 'Running'}
@@ -718,17 +718,17 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                   n.kind === 'memory'
                     ? lit
                       ? 'bg-ok-50 text-ok-800 ring-ok-200'
-                      : 'bg-ok-50/70 text-ok-700/80 ring-ok-200'
+                      : 'bg-white text-neutral-600 ring-black/[0.08]'
                     : n.kind === 'entity'
-                      ? 'bg-sky-50 text-sky-800 ring-sky-200/80'
+                      ? 'bg-white text-neutral-700 ring-black/[0.08]'
                       : lit
-                        ? 'bg-neutral-900 text-white ring-neutral-900'
-                        : 'bg-neutral-100 text-neutral-700 ring-neutral-200';
+                        ? 'bg-ink text-white ring-ink'
+                        : 'bg-neutral-100 text-neutral-600 ring-black/[0.06]';
                 return (
                   <span
                     key={n.id}
                     className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-md px-1.5 py-0.5 text-[10px] font-semibold tracking-tight shadow-sm ring-1 transition-all duration-500 ${kindCls} ${
-                      lit ? 'scale-105 shadow-[0_0_0_3px_rgba(34,197,94,0.12)]' : ''
+                      lit ? 'scale-105 shadow-[0_0_0_3px_rgba(22,163,74,0.12)]' : ''
                     }`}
                     style={{ left: `${n.x}%`, top: `${n.y}%` }}
                   >
@@ -739,15 +739,15 @@ function MemoryVisual({ focused }: { focused: boolean }) {
             </div>
             <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] pt-2">
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-sky-200 ring-1 ring-sky-300" />
+                <span className="size-2 rounded-sm bg-white ring-1 ring-black/15" />
                 Entities
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-ok-200 ring-1 ring-ok-200" />
+                <span className="size-2 rounded-sm bg-ok-200 ring-1 ring-ok-300" />
                 Memories
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-neutral-300 ring-1 ring-neutral-400" />
+                <span className="size-2 rounded-sm bg-ink ring-1 ring-ink" />
                 Context
               </span>
             </div>
@@ -870,6 +870,10 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
     });
   }, [activeIds, svgReady]);
 
+  const allDone = activeIds.length >= WORKFLOW_NODE_IDS.length;
+  const running =
+    activeIds.length > 0 && activeIds.length < WORKFLOW_NODE_IDS.length;
+
   return (
     <MockShell className="flex h-[340px] flex-col sm:h-[380px] lg:h-[400px]">
       <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
@@ -878,19 +882,53 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
         <span className="text-[13px] font-semibold tracking-tight text-ink">
           Refund playbook
         </span>
-        <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
+        <span
+          className={`ml-auto inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums ${
+            allDone
+              ? 'bg-ok-50 text-ok-800 ring-1 ring-ok-200'
+              : running
+                ? 'bg-neutral-100 text-neutral-600 ring-1 ring-black/[0.06]'
+                : 'text-neutral-400'
+          }`}
+        >
+          {allDone ? (
+            <Check className="size-2.5" strokeWidth={2.5} />
+          ) : running ? (
+            <Loader2 className="size-2.5 animate-spin" strokeWidth={2.5} />
+          ) : null}
           {activeIds.length}/{WORKFLOW_NODE_IDS.length} steps
         </span>
       </div>
       <div
         ref={wrapRef}
-        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#fafafa] px-3 py-4"
+        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#fafafa] px-3 py-4 pb-10"
       >
         <MermaidFlowDiagram
           source={REFUND_MERMAID}
           className="min-h-0 w-full [&_svg]:max-h-[280px]"
           onRender={handleRender}
         />
+      </div>
+      <div
+        className={`flex items-center justify-between gap-2 border-t px-4 py-2.5 text-[11px] sm:px-5 ${
+          allDone
+            ? 'border-ok-200 bg-ok-50/80 text-ok-800'
+            : 'border-black/[0.06] text-neutral-500'
+        }`}
+      >
+        <span>
+          {allDone
+            ? 'Playbook complete — refund issued'
+            : running
+              ? 'Following the SOP…'
+              : 'Waiting to start'}
+        </span>
+        {allDone ? (
+          <span className="inline-flex items-center gap-1 font-semibold">
+            <Check className="size-3" strokeWidth={2.5} />
+            Done
+          </span>
+        ) : null}
       </div>
     </MockShell>
   );
@@ -963,12 +1001,13 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
 
   return (
     <div className="relative flex h-[22rem] w-full flex-col overflow-visible sm:h-[26rem]">
+      {/* Cool canvas stage — monochrome like Gumloop product frames, not olive wash */}
       <div
-        className="absolute inset-0 overflow-hidden rounded-b-xl bg-[#c5d4b4]"
+        className="absolute inset-0 overflow-hidden bg-[#f3f4f6]"
         style={{
           backgroundImage: `
-            linear-gradient(180deg, rgba(232,240,220,0.9) 0%, rgba(180,200,160,0.35) 55%, rgba(140,165,120,0.45) 100%),
-            radial-gradient(circle at 1px 1px, rgba(40,56,24,0.08) 1px, transparent 0)
+            linear-gradient(180deg, #fafafa 0%, #f3f4f6 55%, #e8eaed 100%),
+            radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 0)
           `,
           backgroundSize: 'auto, 16px 16px',
         }}
@@ -978,7 +1017,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
       <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-visible p-3 sm:p-4 sm:pr-10">
         {/* Preview chrome — overflow visible so the agent tooltip can float out */}
         <div className="relative w-full max-w-[22rem] overflow-visible sm:max-w-[24rem]">
-          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_16px_40px_-16px_rgba(26,26,26,0.35)] ring-1 ring-black/[0.08]">
+          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_20px_48px_-20px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.08]">
             <div className="relative flex items-center gap-1.5 border-b border-black/[0.05] bg-[#fafafa] px-3 py-2">
               <span className="size-2.5 rounded-full bg-[#ff5f57]" />
               <span className="size-2.5 rounded-full bg-[#febc2e]" />
@@ -1058,7 +1097,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
                   <kbd
                     className={`inline-flex h-5 min-w-[1.65rem] items-center justify-center rounded-[5px] px-1 font-mono text-[10px] font-bold tracking-wide ring-1 transition-colors ${
                       fnDown
-                        ? 'bg-fern-500 text-white ring-fern-400 shadow-[0_0_0_3px_rgba(122,168,36,0.35)]'
+                        ? 'bg-ink text-white ring-ink shadow-[0_0_0_3px_rgba(23,23,23,0.18)]'
                         : 'bg-neutral-100 text-neutral-800 ring-neutral-200'
                     }`}
                   >

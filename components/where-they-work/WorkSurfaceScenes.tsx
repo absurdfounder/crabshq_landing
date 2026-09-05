@@ -84,7 +84,7 @@ export function BrowserScene() {
               <TabFavicon tabId={tab.id} size={14} />
               <span className="truncate font-medium">{tab.title}</span>
               {isActive ? (
-                <span className="ml-0.5 size-1.5 shrink-0 rounded-full bg-[#3f6b00]" title="Claimed" />
+                <span className="ml-0.5 size-1.5 shrink-0 rounded-full bg-ok-700" title="Claimed" />
               ) : null}
             </div>
           );
@@ -93,7 +93,7 @@ export function BrowserScene() {
 
       {/* Address bar */}
       <div className="flex items-center gap-2 border-b border-neutral-200 bg-white px-2 py-1.5">
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#f0f5e6] px-2 py-0.5 text-[10px] font-semibold text-[#325600] ring-1 ring-[#c4d9a0]">
+        <span className="inline-flex items-center gap-1 rounded-full bg-ok-50 px-2 py-0.5 text-[10px] font-semibold text-ok-800 ring-1 ring-ok-200">
           Claimed
         </span>
         <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] text-neutral-600">
@@ -115,7 +115,7 @@ export function BrowserScene() {
           <BrowserClaimPage tabId={active.id} />
         </div>
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-neutral-950/90 px-3 py-1.5 text-[11px] text-white">
-          <Loader2 className="size-3.5 shrink-0 animate-spin text-[#a3e635]" strokeWidth={2.5} />
+          <Loader2 className="size-3.5 shrink-0 animate-spin text-ok-400" strokeWidth={2.5} />
           <span className="min-w-0 truncate font-medium">{active.action}</span>
           <span className="ml-auto shrink-0 tabular-nums text-white/45">09:14:0{tick}</span>
         </div>
@@ -159,7 +159,7 @@ export function DesktopScene() {
           <span className="font-medium">Studio-Mac</span>
           <span className="text-white/40">macOS 15.2</span>
         </div>
-        <span className="rounded-full bg-amber-400/20 px-2 py-0.5 text-[10px] font-semibold text-amber-200 ring-1 ring-amber-400/30">
+        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold text-white/80 ring-1 ring-white/20">
           ● Busy
         </span>
       </div>
@@ -225,17 +225,17 @@ export function DesktopScene() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-black px-3 py-2 font-mono text-[10px] leading-relaxed text-[#a3e635]">
+      <div className="border-t border-white/10 bg-black px-3 py-2 font-mono text-[10px] leading-relaxed text-ok-400">
         <div className="mb-1 flex items-center gap-1.5 text-[10px] text-white/45">
           <Terminal className="size-3" strokeWidth={2} />
           Terminal
         </div>
         {lines.map((line) => (
-          <div key={line} className={line.startsWith('$') ? 'text-white' : 'text-[#a3e635]/85'}>
+          <div key={line} className={line.startsWith('$') ? 'text-white' : 'text-ok-400/85'}>
             {line}
           </div>
         ))}
-        <span className="inline-block h-3 w-1.5 animate-pulse bg-[#a3e635]" />
+        <span className="inline-block h-3 w-1.5 animate-pulse bg-ok-400" />
       </div>
     </div>
   );
@@ -304,9 +304,9 @@ const FLEET: DeviceRow[] = [
 ];
 
 const STATUS_PILL: Record<string, string> = {
-  busy: 'bg-[#3f6b00] text-white',
-  online: 'bg-[#f0f5e6] text-[#325600] ring-1 ring-[#c4d9a0]',
-  done: 'bg-[#f0f5e6] text-[#325600] ring-1 ring-[#c4d9a0]',
+  busy: 'bg-ok-700 text-white',
+  online: 'bg-ok-50 text-ok-800 ring-1 ring-ok-200',
+  done: 'bg-ok-50 text-ok-800 ring-1 ring-ok-200',
   idle: 'bg-neutral-100 text-neutral-500 ring-1 ring-neutral-200',
 };
 
@@ -319,12 +319,12 @@ export function DevicesScene() {
       ref={ref}
       className="flex h-[22rem] w-full flex-col overflow-hidden bg-white sm:h-[26rem]"
     >
-      <div className="border-b border-[#E7E5E4] bg-[#FAFAF9] px-3.5 py-2.5">
+      <div className="border-b border-black/[0.06] bg-[#fafafa] px-3.5 py-2.5">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[12px] font-semibold text-neutral-900">Devices</span>
           <span className="text-[11px] text-neutral-500">4 paired · routing</span>
         </div>
-        <div className="mt-2 rounded-lg bg-[#f0f5e6] px-2.5 py-1.5 text-[11px] text-[#325600] ring-1 ring-[#c4d9a0]">
+        <div className="mt-2 rounded-lg bg-ok-50 px-2.5 py-1.5 text-[11px] text-ok-800 ring-1 ring-ok-200">
           <span className="font-semibold">Ask · </span>
           pull the Q3 ledger from Office QuickBooks, and the forecast from my Home Mac
         </div>
@@ -340,10 +340,10 @@ export function DevicesScene() {
               key={device.name}
               className={`flex items-center gap-2.5 rounded-xl px-2.5 py-2 ring-1 transition-colors ${
                 active
-                  ? 'bg-[#f0f5e6]/60 ring-[#c4d9a0]'
+                  ? 'bg-ok-50/60 ring-ok-200'
                   : state.status === 'done'
-                    ? 'bg-white ring-[#E7E5E4]'
-                    : 'bg-neutral-50/80 ring-[#E7E5E4]'
+                    ? 'bg-white ring-black/[0.06]'
+                    : 'bg-neutral-50/80 ring-black/[0.06]'
               }`}
             >
               <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-white ring-1 ring-black/5">
@@ -366,10 +366,10 @@ export function DevicesScene() {
         })}
       </div>
 
-      <div className="flex items-center justify-between border-t border-[#E7E5E4] bg-[#FAFAF9]/80 px-3.5 py-2 text-[11px]">
+      <div className="flex items-center justify-between border-t border-black/[0.06] bg-[#fafafa]/80 px-3.5 py-2 text-[11px]">
         {phase >= 4 ? (
           <>
-            <span className="inline-flex items-center gap-1.5 font-medium text-[#325600]">
+            <span className="inline-flex items-center gap-1.5 font-medium text-ok-800">
               <Check className="size-3" strokeWidth={2.5} />
               general-ledger.csv + forecast.pdf ready
             </span>
@@ -378,7 +378,7 @@ export function DevicesScene() {
         ) : (
           <>
             <span className="text-neutral-500">Routing across awake machines…</span>
-            <span className="inline-flex items-center gap-1 font-medium text-[#325600]">
+            <span className="inline-flex items-center gap-1 font-medium text-ok-800">
               Devices
               <ArrowRight className="size-3" strokeWidth={2} />
             </span>

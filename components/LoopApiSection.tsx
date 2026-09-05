@@ -76,19 +76,19 @@ function ApiTerminal({ step }: { step: number }) {
   const running = step >= 1 && step < 3;
 
   return (
-    <div className="flex h-full w-full flex-col bg-stone-900" data-mock-ui>
+    <div className="flex h-full w-full flex-col bg-neutral-950" data-mock-ui>
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]" />
         <span className="size-2.5 rounded-full bg-[#febc2e]" />
         <span className="size-2.5 rounded-full bg-[#28c840]" />
-        <span className="ml-2 font-mono text-[11px] text-stone-400">
+        <span className="ml-2 font-mono text-[11px] text-neutral-400">
           loop-api · agent-orchestration
         </span>
         <span
           className={`ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold ring-1 transition-colors duration-300 ${
             running
-              ? 'bg-amber-400/20 text-amber-200 ring-amber-400/40'
-              : 'bg-trooper/25 text-trooper-200 ring-trooper/40'
+              ? 'bg-white/10 text-white/80 ring-white/20'
+              : 'bg-ok/20 text-ok-300 ring-ok/35'
           }`}
         >
           {running ? 'Running' : 'Published'}
@@ -96,36 +96,36 @@ function ApiTerminal({ step }: { step: number }) {
       </div>
 
       <div className="min-h-[248px] flex-1 space-y-1 px-4 py-4 font-mono text-[12.5px] leading-relaxed">
-        <p className="text-stone-500"># call it from your app or internal tools</p>
+        <p className="text-neutral-500"># call it from your app or internal tools</p>
 
         <AnimatePresence initial={false}>
           {step >= 1 ? (
             <TerminalLine key="req">
               <p>
-                <span className="text-emerald-400">POST</span>{' '}
-                <span className="text-stone-100">/v1/loops/agent-orchestration/run</span>
+                <span className="text-ok-400">POST</span>{' '}
+                <span className="text-neutral-100">/v1/loops/agent-orchestration/run</span>
               </p>
-              <p className="text-stone-500">Authorization: Bearer sk-team-····</p>
-              <p className="text-stone-400">{'{ "mention": "@acme", "sentiment": "negative" }'}</p>
+              <p className="text-neutral-500">Authorization: Bearer sk-team-····</p>
+              <p className="text-neutral-400">{'{ "mention": "@acme", "sentiment": "negative" }'}</p>
             </TerminalLine>
           ) : null}
 
           {step >= 2 ? (
             <TerminalLine key="run">
-              <p className="pt-2 text-stone-500"># run</p>
-              <p className="text-stone-300">
-                <span className="text-violet-400">social-agent</span> flagged mention →{' '}
-                <span className="text-sky-400">support-agent</span> triaging…
+              <p className="pt-2 text-neutral-500"># run</p>
+              <p className="text-neutral-300">
+                <span className="text-white">social-agent</span> flagged mention →{' '}
+                <span className="text-neutral-200">support-agent</span> triaging…
               </p>
             </TerminalLine>
           ) : null}
 
           {step >= 3 ? (
             <TerminalLine key="res">
-              <p className="pt-2 text-stone-500"># response</p>
-              <p className="text-stone-300">
+              <p className="pt-2 text-neutral-500"># response</p>
+              <p className="text-neutral-300">
                 {'{ "status": '}
-                <span className="text-emerald-400">"handed_off"</span>
+                <span className="text-ok-400">"handed_off"</span>
                 {', "to": "support-agent" }'}
               </p>
             </TerminalLine>
@@ -133,8 +133,8 @@ function ApiTerminal({ step }: { step: number }) {
 
           {step >= 4 ? (
             <TerminalLine key="rotate">
-              <div className="mt-3 flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-stone-400 ring-1 ring-white/10">
-                <RefreshCw className="h-3 w-3 shrink-0 text-trooper-300" aria-hidden />
+              <div className="mt-3 flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-neutral-400 ring-1 ring-white/10">
+                <RefreshCw className="h-3 w-3 shrink-0 text-ok-300" aria-hidden />
                 token low. switched to backup account, run continued
               </div>
             </TerminalLine>
@@ -142,7 +142,7 @@ function ApiTerminal({ step }: { step: number }) {
         </AnimatePresence>
 
         <p aria-hidden>
-          <span className="inline-block h-[14px] w-[7px] animate-pulse bg-stone-500/80 align-middle" />
+          <span className="inline-block h-[14px] w-[7px] animate-pulse bg-neutral-500/80 align-middle" />
         </p>
       </div>
     </div>
@@ -233,13 +233,13 @@ export default function LoopApiSection() {
           transition={{ duration: 0.6, delay: 0.05, ease }}
           viewport={{ once: true, margin: '-50px' }}
         >
-          <div className="relative mx-auto w-full max-w-4xl rounded-2xl bg-white shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-stone-900/10 lg:grid lg:grid-cols-2">
+          <div className="relative mx-auto w-full max-w-4xl rounded-2xl bg-white shadow-[0_28px_60px_-26px_rgba(28,25,23,0.45)] ring-1 ring-black/10 lg:grid lg:grid-cols-2">
             <WorkflowCanvas />
-            <div className="border-t border-stone-900/10 lg:border-l lg:border-t-0">
+            <div className="border-t border-black/10 lg:border-l lg:border-t-0">
               <ApiTerminal step={step} />
             </div>
             <span
-              className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-stone-500 shadow-md ring-1 ring-stone-900/10 lg:flex"
+              className="absolute left-1/2 top-1/2 z-10 hidden size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-neutral-500 shadow-md ring-1 ring-black/10 lg:flex"
               aria-hidden
             >
               <ArrowRight className="size-4" strokeWidth={2.25} />

@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 import { Check, KeyRound, Lock, ServerCog } from 'lucide-react';
 
 const controls = [
-  { label: 'Pause.', colorClass: 'text-amber-300' },
-  { label: 'Resume.', colorClass: 'text-fern-light' },
+  { label: 'Pause.', colorClass: 'text-white/55' },
+  { label: 'Resume.', colorClass: 'text-ok-300' },
   { label: 'Override.', colorClass: 'text-white' },
-  { label: 'Reassign.', colorClass: 'text-blue-300' },
-  { label: 'Terminate.', colorClass: 'text-red-300' },
+  { label: 'Reassign.', colorClass: 'text-white/70' },
+  { label: 'Terminate.', colorClass: 'text-white' },
 ] as const;
 
 const guarantees = [

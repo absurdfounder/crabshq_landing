@@ -48,11 +48,11 @@ const featureColumn: FooterColumn = {
     {
       heading: 'Features',
       links: [
-        { label: 'AI Workforce', href: '/features/ai-workforce', icon: <Users className="h-3.5 w-3.5 text-emerald-500" /> },
+        { label: 'AI Workforce', href: '/features/ai-workforce', icon: <Users className="h-3.5 w-3.5 text-ok-600" /> },
         { label: 'GitHub Integration', href: '/features/github-integration', icon: <Github className="h-3.5 w-3.5 text-orange-500" /> },
         { label: 'Task Execution', href: '/features/task-execution', icon: <CheckCircle className="h-3.5 w-3.5 text-yellow-500" /> },
         { label: 'Persistent Memory', href: '/features/persistent-memory', icon: <Brain className="h-3.5 w-3.5 text-green-500" /> },
-        { label: 'Browser Control', href: '/features/browser-control', icon: <Globe className="h-3.5 w-3.5 text-emerald-500" /> },
+        { label: 'Browser Control', href: '/features/browser-control', icon: <Globe className="h-3.5 w-3.5 text-ok-600" /> },
         { label: 'System Access', href: '/features/system-access', icon: <Terminal className="h-3.5 w-3.5 text-indigo-500" /> },
         { label: 'Email & Communication', href: '/features/email-automation', icon: <Mail className="h-3.5 w-3.5 text-violet-500" /> },
         { label: 'Powerful Inbox', href: '/features/inbox', icon: <Mail className="h-3.5 w-3.5 text-sky-500" /> },
@@ -62,7 +62,7 @@ const featureColumn: FooterColumn = {
         { label: 'Multi-Agent Teams', href: '/features/multi-agent-collaboration', icon: <Network className="h-3.5 w-3.5 text-cyan-500" /> },
         { label: 'Plugin Integrations', href: '/plugin', icon: <Zap className="h-3.5 w-3.5 text-purple-500" /> },
         { label: 'OpenClaw Skills', href: '/integration', icon: <Puzzle className="h-3.5 w-3.5 text-violet-500" /> },
-        { label: 'Agent Loops', href: '/loops', icon: <Zap className="h-3.5 w-3.5 text-emerald-600" /> },
+        { label: 'Agent Loops', href: '/loops', icon: <Zap className="h-3.5 w-3.5 text-ok-600" /> },
         { label: 'Self-host', href: '/self-host', icon: <Terminal className="h-3.5 w-3.5 text-stone-500" /> },
         { label: 'Benchmarks', href: '/benchmarks', icon: <BarChart3 className="h-3.5 w-3.5 text-amber-600" /> },
       ],
@@ -135,7 +135,7 @@ function LinkList({ links }: { links: LinkItem[] }) {
     <ul className="space-y-1.5">
       {links.map((l) => {
         const className =
-          'group flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900';
+          'group flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink';
         const content = (
           <>
             {l.icon ? <span className="shrink-0">{l.icon}</span> : null}
@@ -179,7 +179,7 @@ function FooterColumnCell({
     <div
       className={[
         'flex flex-col gap-6 px-6 py-8 md:px-8 md:py-10',
-        borderRight ? 'lg:border-r lg:border-slate-100' : '',
+        borderRight ? 'lg:border-r lg:border-[var(--color-line)]' : '',
       ]
         .filter(Boolean)
         .join(' ')}
@@ -187,9 +187,9 @@ function FooterColumnCell({
       {column.groups.map((group, gIdx) => (
         <div
           key={group.heading}
-          className={gIdx > 0 ? 'border-t border-slate-100 pt-5' : ''}
+          className={gIdx > 0 ? 'border-t border-[var(--color-line)] pt-5' : ''}
         >
-          <div className="mb-3 text-sm font-semibold text-slate-900">{group.heading}</div>
+          <div className="mb-3 text-sm font-semibold text-ink">{group.heading}</div>
           <LinkList links={group.links} />
         </div>
       ))}
@@ -207,19 +207,19 @@ export default function Footer() {
         {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
-          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-slate-100 border-b border-slate-100 sm:col-span-2 lg:col-span-1 lg:border-b-0">
+          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
             <TrooperLogo
               characterClassName="h-10 w-10 sm:h-11 sm:w-11 object-contain"
               textClassName="text-lg sm:text-xl"
             />
-            <p className="text-sm leading-relaxed text-slate-600">
+            <p className="text-sm leading-relaxed text-ink-muted">
               AI employees you can give real work to: coding, support, sales, ops. They run loops
               you approved across your tools.
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-ink-muted">
               Built by{' '}
               <a
-                className="text-emerald-600 hover:underline"
+                className="text-ok-600 hover:underline"
                 href="https://twitter.com/absurdfounder"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -231,45 +231,45 @@ export default function Footer() {
             <ul className="mt-auto space-y-1.5 pt-2">
               <li>
                 <a
-                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
+                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={GITHUB_ORG_URL}
                 >
-                  <Github className="h-3.5 w-3.5 text-slate-400" />
+                  <Github className="h-3.5 w-3.5 text-ink-faint" />
                   <span>GitHub</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
+                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://twitter.com/absurdfounder"
                 >
-                  <Twitter className="h-3.5 w-3.5 text-slate-400" />
+                  <Twitter className="h-3.5 w-3.5 text-ink-faint" />
                   <span>Twitter (X)</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
+                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.linkedin.com/company/trooper"
                 >
-                  <Linkedin className="h-3.5 w-3.5 text-slate-400" />
+                  <Linkedin className="h-3.5 w-3.5 text-ink-faint" />
                   <span>LinkedIn</span>
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-slate-900"
+                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://www.youtube.com/@trooper"
                 >
-                  <Youtube className="h-3.5 w-3.5 text-slate-400" />
+                  <Youtube className="h-3.5 w-3.5 text-ink-faint" />
                   <span>YouTube</span>
                 </a>
               </li>
@@ -284,8 +284,8 @@ export default function Footer() {
               <div
                 key={col.number}
                 className={[
-                  !isMobileLast ? 'border-b border-slate-100 sm:border-b lg:border-b-0' : '',
-                  idx % 2 === 0 ? 'sm:border-r sm:border-slate-100 lg:border-r-0' : '',
+                  !isMobileLast ? 'border-b border-[var(--color-line)] sm:border-b lg:border-b-0' : '',
+                  idx % 2 === 0 ? 'sm:border-r sm:border-[var(--color-line)] lg:border-r-0' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
@@ -297,13 +297,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-4 border-t border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 md:text-sm">
+        <div className="flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-muted md:text-sm">
             <span>© Boring Sites LLC. All rights reserved.</span>
-            <Link href="/privacy" className="hover:text-slate-900">
+            <Link href="/privacy" className="hover:text-ink">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-slate-900">
+            <Link href="/terms" className="hover:text-ink">
               Terms
             </Link>
           </div>
@@ -342,7 +342,7 @@ export default function Footer() {
               ariaLabel="Powered by OpenClaw"
             >
               <span className="inline-flex items-center gap-2">
-                <span className="font-medium text-slate-400">Powered by</span>
+                <span className="font-medium text-ink-faint">Powered by</span>
                 <img
                   src={getFaviconUrl('openclaw.ai', 32)}
                   alt=""
@@ -359,10 +359,10 @@ export default function Footer() {
         </div>
 
         {/* Giant trooper. watermark */}
-        <div className="overflow-x-hidden border-t border-slate-100 pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
+        <div className="overflow-x-hidden border-t border-[var(--color-line)] pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
           <p
             aria-hidden
-            className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-none tracking-tight text-slate-200 text-[clamp(2.75rem,18vw,12rem)]"
+            className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-none tracking-tight text-neutral-200 text-[clamp(2.75rem,18vw,12rem)]"
           >
             trooper.
           </p>

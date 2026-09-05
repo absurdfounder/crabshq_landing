@@ -2,12 +2,11 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Github } from 'lucide-react';
 
 import HeroRotatingHeadline from '../HeroRotatingHeadline';
 import HeroDownloadButtons from '../HeroDownloadButtons';
 import PixelButton from '../ui/PixelButton';
-import FernCircleCheckIcon from '../ui/FernCircleCheckIcon';
+import { ArrowRight, Check, Github } from 'lucide-react';
 import Draggable from './Draggable';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
@@ -1528,7 +1527,7 @@ export default function DesktopHero() {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-lg p-2 px-6 font-sans text-sm font-medium tracking-tight text-fern-900 transition-colors hover:text-fern-800"
+              className="inline-flex items-center gap-1.5 rounded-lg p-2 px-6 font-sans text-sm font-medium tracking-tight text-ink transition-colors hover:text-ink-muted"
             >
               <Github className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
               Open source
@@ -1558,7 +1557,7 @@ export default function DesktopHero() {
             <ul className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-1.5" aria-label="Product highlights">
               {TRUST_ITEMS.map((item) => (
                 <li key={item} className="flex items-center gap-1.5 text-[13px] text-neutral-700">
-                  <FernCircleCheckIcon className="h-3.5 w-3.5 shrink-0 text-fern-600" />
+                  <Check className="h-3.5 w-3.5 shrink-0 text-ok-600" strokeWidth={2.5} aria-hidden />
                   <span>{item}</span>
                 </li>
               ))}
@@ -1585,8 +1584,8 @@ function DhStyles() {
     <style>{`
 .dh-wallpaper{
   position:absolute;
-  /* Soft fern tint under the photo — reads as desktop atmosphere, not flat white. */
-  background-color:#e6ecd8;
+  /* Cool neutral wash under the photo — desktop atmosphere without olive cast. */
+  background-color:#eef0f3;
 }
 .dh-wallpaper::before{
   content:'';
@@ -1606,8 +1605,8 @@ function DhStyles() {
   inset:0;
   pointer-events:none;
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(40, 56, 24, 0.11) 1px, transparent 0),
-    linear-gradient(180deg, rgba(230,236,216,0.78) 0%, rgba(230,236,216,0.42) 30%, rgba(230,236,216,0.16) 55%, transparent 72%);
+    radial-gradient(circle at 1px 1px, rgba(23, 23, 23, 0.08) 1px, transparent 0),
+    linear-gradient(180deg, rgba(238,240,243,0.82) 0%, rgba(238,240,243,0.45) 30%, rgba(238,240,243,0.18) 55%, transparent 72%);
   background-size:16px 16px, 100% 100%;
   background-repeat:repeat, no-repeat;
 }
@@ -1657,7 +1656,7 @@ function DhStyles() {
 @keyframes dh-bounce{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
 
 .dh-row{transition:background-color .5s ease;}
-.dh-row.dh-hl{background-color:rgba(122,168,36,0.16) !important;}
+.dh-row.dh-hl{background-color:rgba(22,163,74,0.10) !important;}
 
 .dh-fx{transition:opacity .35s ease,transform .35s ease;}
 .dh-fx.dh-off{opacity:0;transform:translateY(4px) scale(.95);}

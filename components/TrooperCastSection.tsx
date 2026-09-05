@@ -35,7 +35,7 @@ export default function TrooperCastSection() {
           <br />
           gets a trooper.
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-muted sm:text-base">
           They have names, mailboxes and a job. Write to one like you&apos;d write to a
           colleague — and it stops at your desk before anything leaves the building.
         </p>
@@ -75,7 +75,7 @@ export default function TrooperCastSection() {
               <span className="font-semibold">{trooper.human}&rsquo;s</span> {trooper.artifact}.
             </p>
 
-            <p className="mt-2.5 text-sm leading-relaxed text-slate-500">{trooper.detail}</p>
+            <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">{trooper.detail}</p>
 
             <Link
               href={`/loops/${trooper.loopSlug}`}
@@ -99,7 +99,7 @@ export default function TrooperCastSection() {
             <p className="mt-5 text-base leading-snug text-ink sm:text-lg">
               The rest of the roster is hiring.
             </p>
-            <p className="mt-2.5 text-sm leading-relaxed text-slate-500">
+            <p className="mt-2.5 text-[15px] leading-relaxed text-ink-muted">
               Research, QA, security, finance, docs. Same deal: a name, a mailbox, and a loop
               that says when the job is done.
             </p>
