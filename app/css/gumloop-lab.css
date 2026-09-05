@@ -261,6 +261,17 @@
   animation: ow-pulse-ring 1.4s ease-out infinite;
 }
 
+.ow-graph-edge-off {
+  opacity: 0;
+}
+.ow-graph-edge-on {
+  opacity: 0.55;
+  transition: opacity 500ms ease;
+}
+.ow-graph-node-on {
+  animation: ow-badge-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .ow-product-window,
 .ow-product-panel {
   border-radius: 1rem;

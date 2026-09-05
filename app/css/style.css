@@ -173,12 +173,13 @@
   --color-agent-orange: #fe9a00;
   --color-agent-purple: #9810fa;
   --color-agent-pink: #fb3c98;
-  --site-header-height: 6rem;
+  /* Nav only — promo TopBar removed */
+  --site-header-height: 3.5rem;
 }
 
 @media (min-width: 640px) {
   :root {
-    --site-header-height: 6.5rem;
+    --site-header-height: 4rem;
   }
 }
 

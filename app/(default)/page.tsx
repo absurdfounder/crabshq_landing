@@ -58,9 +58,10 @@ import SectionShell from '@/components/ui/SectionShell'
 
 const DashboardShowcaseSection = dynamic(() => import('@/components/DashboardShowcaseSection'))
 const OldWays = dynamic(() => import('@/components/OldWays'))
-const TrooperCastSection = dynamic(() => import('@/components/TrooperCastSection'))
 const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
 const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
+const CompanyBrainSection = dynamic(() => import('@/components/CompanyBrainSection'))
+const OptimizeAgentsSection = dynamic(() => import('@/components/OptimizeAgentsSection'))
 
 export default function Home() {
   const loopRailItems = getLoopRailItems(8)
@@ -89,14 +90,17 @@ export default function Home() {
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="The cast" eyebrowNumber="04">
-        <TrooperCastSection />
+      <SectionShell rhythm eyebrow="Company brain" eyebrowNumber="04">
+        <CompanyBrainSection />
       </SectionShell>
 
-      {/* Orgs / action / memory / tickets, then desktop / browser / devices —
-          one Capabilities rhythm, not a second section. */}
+      {/* Orgs / action / memory / workflows / surfaces */}
       <SectionShell rhythm eyebrowNumber="05">
         <OldWays />
+      </SectionShell>
+
+      <SectionShell rhythm eyebrow="Optimize" eyebrowNumber="06">
+        <OptimizeAgentsSection />
       </SectionShell>
 
       {/* Loop APIs — owns its own section so the dither band runs edge-to-edge. */}

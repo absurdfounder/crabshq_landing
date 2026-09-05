@@ -44,31 +44,33 @@ function replyPath(w: number, h: number) {
 const STYLES = {
   ask: {
     path: askPath,
+    // Cool ink slate — not muddy teal / fern olive
     fill: [
-      ['0', '#1aa5b8'],
-      ['0.55', '#0e8a9c'],
-      ['1', '#0a6f7e'],
+      ['0', '#3f3f46'],
+      ['0.55', '#27272a'],
+      ['1', '#18181b'],
     ],
     stroke: [
-      ['0', '#2bb4c4'],
-      ['1', '#085f6c'],
+      ['0', '#52525b'],
+      ['1', '#18181b'],
     ],
     text: 'text-white',
-    shadow: 'drop-shadow-[0_4px_10px_rgba(10,111,126,0.32)]',
+    shadow: 'drop-shadow-[0_4px_10px_rgba(24,24,27,0.28)]',
   },
   reply: {
     path: replyPath,
+    // Crisp ok green (#16a34a), not brand fern olive
     fill: [
-      ['0', '#2fce6a'],
-      ['0.55', '#22b85c'],
-      ['1', '#16a34a'],
+      ['0', '#22c55e'],
+      ['0.55', '#16a34a'],
+      ['1', '#15803d'],
     ],
     stroke: [
-      ['0', '#3dce6e'],
+      ['0', '#4ade80'],
       ['1', '#16a34a'],
     ],
     text: 'text-white',
-    shadow: 'drop-shadow-[0_4px_10px_rgba(34,197,94,0.28)]',
+    shadow: 'drop-shadow-[0_4px_10px_rgba(22,163,74,0.28)]',
   },
 } as const;
 

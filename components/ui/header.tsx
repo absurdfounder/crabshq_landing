@@ -15,7 +15,6 @@ import {
   teamNavItems,
   type NavItem,
 } from './nav-data'
-import TopBar from './TopBar'
 
 type DropdownKey = 'features' | 'teams' | null
 
@@ -62,7 +61,6 @@ export default function Header() {
       translate="no"
       className={`notranslate site-header fixed top-0 z-[200] w-full transition-all duration-200`}
     >
-      <TopBar />
       <div
         className={`relative transition-[background,box-shadow,border-color] duration-200 ${
           darkNav

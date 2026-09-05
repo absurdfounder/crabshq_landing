@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import {
   Check,
@@ -16,10 +16,10 @@ import {
   CircleCheck,
   Sparkles,
 } from 'lucide-react';
-import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
 import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { getTrooper } from '@/lib/troopers';
+import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
 import TrooperMark from './ui/TrooperMark';
 import {
@@ -56,22 +56,6 @@ function MockShell({
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-10 bg-gradient-to-b from-transparent to-white"
       />
-    </div>
-  );
-}
-
-/** Quiet ask → reply chips — never louder than the section title. */
-function QuietAsk({ ask, reply }: { ask: string; reply: string }) {
-  return (
-    <div className="mt-5 space-y-2">
-      <p className="max-w-md rounded-xl bg-neutral-100/80 px-3.5 py-2.5 text-[13px] leading-snug text-ink">
-        <span className="block text-[11px] font-medium text-ink-faint">You</span>
-        {ask}
-      </p>
-      <p className="max-w-md px-1 text-[13px] leading-snug text-ink-muted">
-        <span className="font-medium text-ok-700">Trooper · </span>
-        {reply}
-      </p>
     </div>
   );
 }
@@ -585,6 +569,8 @@ const GRAPH_NODES = [
 function MemoryVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, MEMORY_DELAYS);
   const [tab, setTab] = useState<'memory' | 'graph'>('memory');
+  // Once the user picks a tab, stop the sim from yanking them around.
+  const [userLocked, setUserLocked] = useState(false);
   // 0 idle, 1 typing query, 2 hits filtered, 3 graph lit, 4 injected
   const queryFull = 'refunds last month';
   const [typedLen, setTypedLen] = useState(queryFull.length);
@@ -592,6 +578,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
   useEffect(() => {
     if (!focused) {
       setTypedLen(queryFull.length);
+      setUserLocked(false);
       return;
     }
     if (phase === 0) {
@@ -612,11 +599,17 @@ function MemoryVisual({ focused }: { focused: boolean }) {
     return () => window.clearInterval(id);
   }, [focused, phase, queryFull.length]);
 
-  // Auto-follow the sim into the graph tab, but allow manual override.
+  // Auto-follow the sim unless the user has taken the tabs.
   useEffect(() => {
+    if (userLocked) return;
     if (phase >= 3) setTab('graph');
     else if (phase < 3) setTab('memory');
-  }, [phase]);
+  }, [phase, userLocked]);
+
+  const pickTab = (id: 'memory' | 'graph') => {
+    setUserLocked(true);
+    setTab(id);
+  };
 
   const query = queryFull.slice(0, typedLen);
   const showHits = phase >= 2;
@@ -639,7 +632,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
             <button
               key={t.id}
               type="button"
-              onClick={() => setTab(t.id)}
+              onClick={() => pickTab(t.id)}
               className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
                 active
                   ? 'bg-white text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]'
@@ -652,8 +645,8 @@ function MemoryVisual({ focused }: { focused: boolean }) {
         })}
       </div>
 
-      <div className="flex-1 px-3 py-3 sm:px-4">
-        <div className="relative mb-3">
+      <div className="flex min-h-0 flex-1 flex-col px-3 py-3 sm:px-4">
+        <div className="relative mb-3 shrink-0">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400" />
           <div className="flex h-9 items-center rounded-xl border border-black/[0.08] bg-[#fafafa] pl-9 pr-3 text-[12px]">
             <span className={query ? 'text-neutral-800' : 'text-neutral-400'}>
@@ -703,56 +696,78 @@ function MemoryVisual({ focused }: { focused: boolean }) {
             })}
           </div>
         ) : (
-          <div className="rounded-xl border border-black/[0.06] bg-[#fafafa] p-3">
-            <div className="relative h-[140px] w-full">
-              <svg
-                className="absolute inset-0 h-full w-full"
-                viewBox="0 0 100 100"
-                fill="none"
-                aria-hidden
-                preserveAspectRatio="none"
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-black/[0.06] bg-[#fafafa]">
+            <svg
+              className="mx-auto h-full min-h-[180px] w-full max-w-md flex-1"
+              viewBox="0 0 320 200"
+              fill="none"
+              aria-hidden
+            >
+              {/* Base edges */}
+              <g stroke="#e5e5e5" strokeWidth="1.25" strokeLinecap="round">
+                <line x1="160" y1="100" x2="64" y2="48" />
+                <line x1="160" y1="100" x2="72" y2="156" />
+                <line x1="160" y1="100" x2="256" y2="44" />
+                <line x1="64" y1="48" x2="248" y2="152" />
+                <line x1="72" y1="156" x2="248" y2="152" />
+              </g>
+              {/* Hit edges — draw on once lit */}
+              <g
+                stroke="#16a34a"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                className={graphLit ? 'ow-graph-edge-on' : 'ow-graph-edge-off'}
               >
-                <g stroke="#e5e5e5" strokeWidth="0.9" strokeLinecap="round">
-                  <line x1="50" y1="50" x2="18" y2="28" />
-                  <line x1="50" y1="50" x2="22" y2="72" />
-                  <line x1="50" y1="50" x2="78" y2="24" />
-                  <line x1="18" y1="28" x2="76" y2="70" />
-                  <line x1="22" y1="72" x2="76" y2="70" />
-                </g>
-                {graphLit ? (
-                  <g stroke="var(--color-ok)" strokeWidth="1.2" strokeLinecap="round" opacity="0.5">
-                    <line x1="18" y1="28" x2="76" y2="70" />
-                    <line x1="22" y1="72" x2="76" y2="70" />
-                    <line x1="18" y1="28" x2="22" y2="72" />
-                  </g>
-                ) : null}
-              </svg>
+                <line x1="64" y1="48" x2="248" y2="152" />
+                <line x1="72" y1="156" x2="248" y2="152" />
+                <line x1="64" y1="48" x2="72" y2="156" />
+                <line x1="160" y1="100" x2="64" y2="48" />
+                <line x1="160" y1="100" x2="72" y2="156" />
+              </g>
               {GRAPH_NODES.map((n) => {
                 const lit = graphLit && n.hit;
-                const kindCls =
-                  n.kind === 'memory'
-                    ? lit
-                      ? 'bg-ok-50 text-ok-800 ring-ok-200'
-                      : 'bg-white text-neutral-600 ring-black/[0.08]'
-                    : n.kind === 'entity'
-                      ? 'bg-white text-neutral-700 ring-black/[0.08]'
-                      : lit
-                        ? 'bg-ink text-white ring-ink'
-                        : 'bg-neutral-100 text-neutral-600 ring-black/[0.06]';
+                const cx = (n.x / 100) * 320;
+                const cy = (n.y / 100) * 200;
+                const fill =
+                  n.kind === 'context' && lit
+                    ? '#171717'
+                    : n.kind === 'memory' && lit
+                      ? '#f0fdf4'
+                      : '#ffffff';
+                const stroke =
+                  n.kind === 'memory' && lit
+                    ? '#16a34a'
+                    : n.kind === 'context' && lit
+                      ? '#171717'
+                      : '#e5e5e5';
+                const text =
+                  n.kind === 'context' && lit ? '#ffffff' : lit ? '#166534' : '#525252';
                 return (
-                  <span
-                    key={n.id}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-md px-1.5 py-0.5 text-[10px] font-semibold tracking-tight shadow-sm ring-1 transition-all duration-500 ${kindCls} ${
-                      lit ? 'scale-105 shadow-[0_0_0_3px_rgba(22,163,74,0.12)]' : ''
-                    }`}
-                    style={{ left: `${n.x}%`, top: `${n.y}%` }}
-                  >
-                    {n.label}
-                  </span>
+                  <g key={n.id} className={lit ? 'ow-graph-node-on' : undefined}>
+                    <rect
+                      x={cx - 36}
+                      y={cy - 12}
+                      width="72"
+                      height="24"
+                      rx="6"
+                      fill={fill}
+                      stroke={stroke}
+                      strokeWidth="1.25"
+                    />
+                    <text
+                      x={cx}
+                      y={cy + 4}
+                      textAnchor="middle"
+                      fill={text}
+                      style={{ fontSize: '10px', fontWeight: 600 }}
+                    >
+                      {n.label}
+                    </text>
+                  </g>
                 );
               })}
-            </div>
-            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] pt-2">
+            </svg>
+            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] px-3 py-2">
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
                 <span className="size-2 rounded-sm bg-white ring-1 ring-black/15" />
                 Entities
@@ -797,101 +812,26 @@ function MemoryVisual({ focused }: { focused: boolean }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
- * 4. Workflows — chat asks to run a playbook → Mermaid graph lights up
+ * 4. Workflows — custom SOP timeline (no brittle Mermaid graph)
  * ═══════════════════════════════════════════════════════════════ */
-const WORKFLOW_NODE_IDS = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'] as const;
-
-const REFUND_MERMAID = `flowchart TD
-  n1(["Refund requested"])
-  n2{"Amount over $200?"}
-  n3["Collect evidence"]
-  n4["Apply refund SOP"]
-  n5["Human review gate"]
-  n6(["Issue refund"])
-  n1 --> n2
-  n2 -->|yes| n3
-  n3 --> n4
-  n4 --> n5
-  n5 --> n6`;
-
-const WORKFLOW_MERMAID_CSS = `
-.workflow-mermaid .node { transition: opacity 280ms ease; }
-.workflow-mermaid .node[data-state="idle"] { opacity: 0.38; }
-.workflow-mermaid .node[data-state="done"] { opacity: 1; }
-.workflow-mermaid .node[data-state="running"] { opacity: 1; }
-.workflow-mermaid .node[data-state="done"] rect,
-.workflow-mermaid .node[data-state="done"] polygon,
-.workflow-mermaid .node[data-state="done"] path,
-.workflow-mermaid .node[data-state="done"] circle {
-  fill: #f0fdf4 !important;
-  stroke: #16a34a !important;
-  stroke-width: 1.75px !important;
-}
-.workflow-mermaid .node[data-state="running"] rect,
-.workflow-mermaid .node[data-state="running"] polygon,
-.workflow-mermaid .node[data-state="running"] path,
-.workflow-mermaid .node[data-state="running"] circle {
-  fill: #ecfdf5 !important;
-  stroke: #16a34a !important;
-  stroke-width: 2.5px !important;
-  filter: drop-shadow(0 0 0 3px rgba(22, 163, 74, 0.14));
-}
-.workflow-mermaid .node label,
-.workflow-mermaid .node .label,
-.workflow-mermaid .node span {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-  font-size: 12px !important;
-}
-.workflow-mermaid .edgePath path {
-  stroke: #d4d4d4 !important;
-  stroke-width: 1.5px !important;
-}
-.workflow-mermaid .edgeLabel {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-  font-size: 11px !important;
-  color: #737373 !important;
-}
-.workflow-mermaid .marker {
-  fill: #d4d4d4 !important;
-  stroke: #d4d4d4 !important;
-}
-`;
+const WORKFLOW_STEPS = [
+  { id: 'n1', label: 'Refund requested', kind: 'start' as const },
+  { id: 'n2', label: 'Amount over $200?', kind: 'gate' as const },
+  { id: 'n3', label: 'Collect evidence', kind: 'step' as const },
+  { id: 'n4', label: 'Apply refund SOP', kind: 'step' as const },
+  { id: 'n5', label: 'Human review gate', kind: 'gate' as const },
+  { id: 'n6', label: 'Issue refund', kind: 'end' as const },
+] as const;
 
 function WorkflowVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, WORKFLOW_DELAYS);
-  const activeIds = WORKFLOW_NODE_IDS.slice(0, phase);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [svgReady, setSvgReady] = useState(0);
-  const handleRender = useCallback(() => setSvgReady((n) => n + 1), []);
-
-  useEffect(() => {
-    const root = wrapRef.current;
-    if (!root) return;
-
-    const runningId =
-      activeIds.length > 0 && activeIds.length < WORKFLOW_NODE_IDS.length
-        ? activeIds[activeIds.length - 1]
-        : null;
-    const done = new Set<string>(
-      runningId ? activeIds.slice(0, -1) : activeIds,
-    );
-
-    root.querySelectorAll<SVGGElement>('g.node').forEach((node) => {
-      const id = node.id.match(/^flowchart-([^-]+)-/)?.[1];
-      if (!id) return;
-      if (runningId && id === runningId) node.dataset.state = 'running';
-      else if (done.has(id)) node.dataset.state = 'done';
-      else node.dataset.state = 'idle';
-    });
-  }, [activeIds, svgReady]);
-
-  const allDone = activeIds.length >= WORKFLOW_NODE_IDS.length;
+  const doneCount = Math.min(phase, WORKFLOW_STEPS.length);
+  const allDone = doneCount >= WORKFLOW_STEPS.length;
   const running =
-    activeIds.length > 0 && activeIds.length < WORKFLOW_NODE_IDS.length;
+    doneCount > 0 && doneCount < WORKFLOW_STEPS.length ? doneCount - 1 : -1;
 
   return (
     <MockShell className="flex flex-col">
-      <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
       <div className="flex shrink-0 items-center gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
         <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
         <span className="text-[13px] font-semibold tracking-tight text-ink">
@@ -901,29 +841,75 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
           className={`ml-auto inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums ${
             allDone
               ? 'bg-ok-50 text-ok-800 ring-1 ring-ok-200'
-              : running
+              : running >= 0
                 ? 'bg-neutral-100 text-neutral-600 ring-1 ring-black/[0.06]'
                 : 'text-neutral-400'
           }`}
         >
           {allDone ? (
             <Check className="size-2.5" strokeWidth={2.5} />
-          ) : running ? (
+          ) : running >= 0 ? (
             <Loader2 className="size-2.5 animate-spin" strokeWidth={2.5} />
           ) : null}
-          {activeIds.length}/{WORKFLOW_NODE_IDS.length} steps
+          {doneCount}/{WORKFLOW_STEPS.length} steps
         </span>
       </div>
-      <div
-        ref={wrapRef}
-        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#fafafa] px-3 py-4 pb-10"
-      >
-        <MermaidFlowDiagram
-          source={REFUND_MERMAID}
-          className="min-h-0 w-full [&_svg]:max-h-[280px]"
-          onRender={handleRender}
-        />
+
+      <div className="relative min-h-0 flex-1 overflow-hidden px-4 py-4 sm:px-5">
+        <div className="relative mx-auto max-w-sm space-y-0">
+          {WORKFLOW_STEPS.map((step, i) => {
+            const isDone = i < doneCount && !(i === running);
+            const isRunning = i === running;
+            const isIdle = i >= doneCount;
+            return (
+              <div key={step.id} className="relative flex gap-3 pb-3 last:pb-0">
+                {i < WORKFLOW_STEPS.length - 1 ? (
+                  <span
+                    aria-hidden
+                    className={`absolute left-[11px] top-7 h-[calc(100%-12px)] w-px ${
+                      isDone || isRunning ? 'bg-ok-300' : 'bg-neutral-200'
+                    }`}
+                  />
+                ) : null}
+                <span
+                  className={`relative z-[1] mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full ring-1 transition-colors ${
+                    isDone
+                      ? 'bg-ok-600 text-white ring-ok-600'
+                      : isRunning
+                        ? 'bg-white text-ok-700 ring-ok-400 ow-pulse-ring'
+                        : 'bg-white text-neutral-300 ring-neutral-200'
+                  }`}
+                >
+                  {isDone ? (
+                    <Check className="size-3" strokeWidth={2.5} />
+                  ) : isRunning ? (
+                    <Loader2 className="size-3 animate-spin" strokeWidth={2.5} />
+                  ) : (
+                    <span className="size-1.5 rounded-full bg-current" />
+                  )}
+                </span>
+                <div
+                  className={`min-w-0 flex-1 rounded-xl px-3 py-2 ring-1 transition-colors ${
+                    isDone
+                      ? 'bg-ok-50/60 ring-ok-200'
+                      : isRunning
+                        ? 'bg-white ring-black/[0.08] shadow-sm'
+                        : 'bg-white/60 ring-black/[0.04] opacity-50'
+                  }`}
+                >
+                  <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    {step.kind === 'gate' ? 'Decision' : step.kind === 'start' || step.kind === 'end' ? 'Event' : 'Action'}
+                  </p>
+                  <p className="mt-0.5 text-[13px] font-medium tracking-tight text-ink">
+                    {step.label}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+
       <div
         className={`flex items-center justify-between gap-2 border-t px-4 py-2.5 text-[11px] sm:px-5 ${
           allDone
@@ -934,7 +920,7 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
         <span>
           {allDone
             ? 'Playbook complete — refund issued'
-            : running
+            : running >= 0
               ? 'Following the SOP…'
               : 'Waiting to start'}
         </span>
@@ -1468,21 +1454,15 @@ export default function OldWays() {
                 visualFirst ? 'lg:order-2' : ''
               }`}
             >
-              <p className="text-[13px] font-medium tracking-tight text-ink-faint">
-                {card.tag}
-                <span aria-hidden className="text-ink-faint/70">
-                  {' '}
-                  →
-                </span>
-              </p>
-              <h3 className="mt-3 font-funneldisplay text-[1.65rem] font-medium leading-[1.12] tracking-tight text-balance text-ink sm:text-3xl lg:text-[2.35rem] lg:leading-[1.1]">
+              <BubbleExchange ask={card.ask} reply={card.reply} focused={focused} />
+
+              <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-[1.15] tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.15]">
                 {card.title}{' '}
                 {card.highlight ? <span className="text-ink-muted">{card.highlight}</span> : null}
               </h3>
-              <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-muted sm:mt-4 sm:leading-7">
+              <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-muted sm:mt-4 sm:text-base sm:leading-7">
                 {card.description}
               </p>
-              <QuietAsk ask={card.ask} reply={card.reply} />
 
               {card.meta ? (
                 <p className="type-meta mt-3">{card.meta}</p>

@@ -62,31 +62,45 @@ function useVisibleTick(steps: number, intervalMs: number) {
  * Browser — claim a real logged-in tab (Stripe / Gmail / QuickBooks)
  * ═══════════════════════════════════════════════════════════════ */
 
+const TAB_LABEL: Record<(typeof CLAIM_TABS)[number]['id'], string> = {
+  gmail: 'Gmail',
+  stripe: 'Stripe',
+  qbo: 'QuickBooks',
+  notion: 'Notion',
+};
+
 export function BrowserScene() {
   const { ref, tick } = useVisibleTick(CLAIM_TABS.length, 2400);
-  const active = CLAIM_TABS[Math.min(tick, CLAIM_TABS.length - 1)];
+  const [pinned, setPinned] = useState<(typeof CLAIM_TABS)[number]['id'] | null>(null);
+  const active =
+    CLAIM_TABS.find((t) => t.id === pinned) ??
+    CLAIM_TABS[Math.min(tick, CLAIM_TABS.length - 1)];
 
   return (
     <div ref={ref} className="flex h-[22rem] w-full flex-col overflow-hidden bg-white sm:h-[26rem]">
-      {/* Chrome tab strip — flush to the capability window chrome above */}
-      <div className="flex items-end gap-0.5 border-b border-neutral-200 bg-[#DEE1E6] px-1.5 pt-1.5">
+      {/* Chrome tab strip — clickable; auto-cycle pauses when pinned */}
+      <div className="flex items-end gap-0.5 border-b border-neutral-200 bg-[#DEE1E6] px-1.5 pt-1.5" role="tablist">
         {CLAIM_TABS.map((tab) => {
           const isActive = tab.id === active.id;
           return (
-            <div
+            <button
               key={tab.id}
-              className={`relative mb-[-1px] flex max-w-[120px] items-center gap-1.5 rounded-t-lg px-2 py-1.5 text-[11px] ${
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setPinned(tab.id)}
+              className={`relative mb-[-1px] flex max-w-[132px] items-center gap-1.5 rounded-t-lg px-2.5 py-1.5 text-[11px] transition-colors ${
                 isActive
                   ? 'bg-white text-neutral-900 shadow-[0_-1px_0_#fff]'
-                  : 'bg-[#D3D6DB] text-neutral-600'
+                  : 'bg-[#D3D6DB] text-neutral-600 hover:bg-[#E4E6EA]'
               }`}
             >
               <TabFavicon tabId={tab.id} size={14} />
-              <span className="truncate font-medium">{tab.title}</span>
+              <span className="truncate font-medium">{TAB_LABEL[tab.id]}</span>
               {isActive ? (
                 <span className="ml-0.5 size-1.5 shrink-0 rounded-full bg-ok-700" title="Claimed" />
               ) : null}
-            </div>
+            </button>
           );
         })}
       </div>
@@ -114,10 +128,12 @@ export function BrowserScene() {
         <div key={active.id} className="absolute inset-0">
           <BrowserClaimPage tabId={active.id} />
         </div>
-        <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-neutral-950/90 px-3 py-1.5 text-[11px] text-white">
-          <Loader2 className="size-3.5 shrink-0 animate-spin text-ok-400" strokeWidth={2.5} />
+        <div className="absolute inset-x-0 bottom-0 flex items-center gap-2 border-t border-black/[0.06] bg-white/95 px-3 py-1.5 text-[11px] text-ink backdrop-blur-sm">
+          <Loader2 className="size-3.5 shrink-0 animate-spin text-ok-600" strokeWidth={2.5} />
           <span className="min-w-0 truncate font-medium">{active.action}</span>
-          <span className="ml-auto shrink-0 tabular-nums text-white/45">09:14:0{tick}</span>
+          <span className="ml-auto shrink-0 font-mono tabular-nums text-ink-faint">
+            {TAB_LABEL[active.id]}
+          </span>
         </div>
       </div>
     </div>
