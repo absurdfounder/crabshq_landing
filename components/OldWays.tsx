@@ -46,15 +46,28 @@ function MockShell({
   className?: string;
 }) {
   return (
-    // Ring on the outer shell; overflow on the inner — pairing them clips the
-    // stroke into a half-edge on rounded corners (visible on org/action cards).
+    // Cool hairline ring — matches org agent panel, not warm stone chrome.
     <div
-      className={`w-full rounded-xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.06] ${className}`}
+      className={`relative w-full overflow-hidden rounded-none bg-white ${className}`}
     >
-      <div className="overflow-hidden rounded-2xl">{children}</div>
+      {children}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-9 bg-gradient-to-b from-transparent to-white"
+      />
     </div>
   );
 }
+
+/** Shared status greens — crisp, not muddy olive. */
+const GL = {
+  tint: '#f0fdf4',
+  tintSoft: '#f7fef9',
+  ring: '#bbf7d0',
+  ink: '#15803d',
+  inkDeep: '#166534',
+  dot: '#22c55e',
+} as const;
 
 const AGENT_ROSTER = [
   {
@@ -336,7 +349,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
                     ) : (
                       <span
                         className={`size-1.5 shrink-0 rounded-full ${
-                          on ? 'bg-[#325600]' : 'bg-neutral-300'
+                          on ? 'bg-emerald-500' : 'bg-neutral-300'
                         }`}
                       />
                     )}
@@ -410,20 +423,27 @@ function ActionVisual({ focused }: { focused: boolean }) {
   ];
 
   return (
-    <MockShell>
-      <div className="flex items-center justify-between gap-2 border-b border-[#E7E5E4] bg-[#FAFAF9] px-3.5 py-2.5">
+    <MockShell className="flex min-h-[340px] flex-col sm:min-h-[380px]">
+      <div className="flex items-center justify-between gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
         <div className="min-w-0">
-          <p className="truncate text-[13px] font-semibold text-neutral-900">
+          <p className="truncate text-[14px] font-semibold tracking-tight text-neutral-950">
             Ship og-image fix to prod
           </p>
           <p className="mt-0.5 text-[11px] text-neutral-500">From chat · Aria · #product-launch</p>
         </div>
-        <span className="shrink-0 rounded-full bg-[#f0f5e6] px-2 py-0.5 text-[10px] font-semibold text-[#325600] ring-1 ring-[#c4d9a0]">
+        <span
+          className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
+          style={{
+            backgroundColor: phase >= 4 ? GL.tint : '#fef3c7',
+            color: phase >= 4 ? GL.inkDeep : '#b45309',
+            boxShadow: `inset 0 0 0 1px ${phase >= 4 ? GL.ring : '#fde68a'}`,
+          }}
+        >
           {phase >= 4 ? 'Done' : 'Running'}
         </span>
       </div>
 
-      <ul className="space-y-0 px-3 py-3">
+      <ul className="flex-1 space-y-0.5 px-3 py-3 sm:px-4">
         {rows.map((r, i) => {
           const done = phase >= 4 || phase > i + 1;
           const running = phase < 4 && phase === i + 1;
@@ -432,52 +452,47 @@ function ActionVisual({ focused }: { focused: boolean }) {
           return (
             <li
               key={r.tool}
-              className={`flex items-stretch gap-2.5 rounded-xl px-2 py-2 transition-colors ${
-                running ? 'bg-[#f0f5e6]' : ''
+              className={`flex items-center gap-3 rounded-xl px-2.5 py-2.5 transition-colors ${
+                running ? 'bg-emerald-50/80' : ''
               } ${pending ? 'opacity-40' : ''}`}
             >
-              <div className="flex w-6 shrink-0 flex-col items-center">
-                <span
-                  className={`flex size-[22px] items-center justify-center rounded-md border bg-white ${
-                    done
-                      ? 'border-[#c4d9a0] text-[#3f6b00]'
-                      : running
-                        ? 'border-amber-200 text-amber-700'
-                        : 'border-[#E7E5E4] text-neutral-400'
-                  }`}
-                >
-                  {done ? (
-                    <Check className="size-3" strokeWidth={3} />
-                  ) : (
-                    <Icon className="size-3" strokeWidth={2} />
-                  )}
-                </span>
-                {i < rows.length - 1 ? (
-                  <span
-                    aria-hidden
-                    className={`mt-1 w-px flex-1 min-h-[10px] ${done ? 'bg-[#c4d9a0]' : 'bg-[#E7E5E4]'}`}
-                  />
-                ) : null}
-              </div>
-              <div className="min-w-0 flex-1 pt-0.5 pb-1">
-                <p className="font-mono text-[12px] font-medium text-neutral-800">{r.tool}</p>
+              <span
+                className={`flex size-6 shrink-0 items-center justify-center rounded-md border bg-white ${
+                  done
+                    ? 'border-emerald-200 text-emerald-700'
+                    : running
+                      ? 'border-amber-200 text-amber-700'
+                      : 'border-black/[0.08] text-neutral-400'
+                }`}
+              >
+                {done ? (
+                  <Check className="size-3" strokeWidth={3} />
+                ) : (
+                  <Icon className="size-3" strokeWidth={2} />
+                )}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-mono text-[12px] font-medium text-neutral-900">{r.tool}</p>
                 <p className="truncate text-[11px] text-neutral-500">{r.detail}</p>
               </div>
               {running ? (
-                <Loader2 className="mt-1 size-3.5 shrink-0 animate-spin text-[#3f6b00]" strokeWidth={2.5} />
+                <Loader2
+                  className="size-3.5 shrink-0 animate-spin text-emerald-700"
+                  strokeWidth={2.5}
+                />
               ) : done ? (
-                <span className="mt-1 text-[10px] font-medium text-[#325600]">ok</span>
+                <span className="text-[10px] font-medium text-emerald-700">ok</span>
               ) : null}
             </li>
           );
         })}
       </ul>
 
-      <div className="flex items-center justify-between border-t border-[#E7E5E4] bg-[#FAFAF9]/60 px-3.5 py-2 text-[11px]">
+      <div className="flex items-center justify-between border-t border-black/[0.06] px-4 py-2.5 text-[11px] sm:px-5">
         <span className="text-neutral-500">
-          <span className="font-semibold text-neutral-700">{Math.min(phase, 3)}</span> / 4 tools
+          <span className="font-semibold text-neutral-800">{Math.min(phase, 4)}</span> / 4 tools
         </span>
-        <span className="inline-flex items-center gap-1.5 font-medium text-[#325600]">
+        <span className="inline-flex items-center gap-1.5 font-medium text-emerald-700">
           <FileText className="size-3" strokeWidth={2} />
           index.html
         </span>
@@ -530,6 +545,7 @@ const GRAPH_NODES = [
 
 function MemoryVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, MEMORY_DELAYS);
+  const [tab, setTab] = useState<'memory' | 'graph'>('memory');
   // 0 idle, 1 typing query, 2 hits filtered, 3 graph lit, 4 injected
   const queryFull = 'refunds last month';
   const [typedLen, setTypedLen] = useState(queryFull.length);
@@ -547,7 +563,6 @@ function MemoryVisual({ focused }: { focused: boolean }) {
       setTypedLen(queryFull.length);
       return;
     }
-    // phase 1 — type the query
     setTypedLen(0);
     let i = 0;
     const id = window.setInterval(() => {
@@ -558,36 +573,50 @@ function MemoryVisual({ focused }: { focused: boolean }) {
     return () => window.clearInterval(id);
   }, [focused, phase, queryFull.length]);
 
+  // Auto-follow the sim into the graph tab, but allow manual override.
+  useEffect(() => {
+    if (phase >= 3) setTab('graph');
+    else if (phase < 3) setTab('memory');
+  }, [phase]);
+
   const query = queryFull.slice(0, typedLen);
   const showHits = phase >= 2;
-  const graphLit = phase >= 3;
+  const graphLit = phase >= 3 || tab === 'graph';
   const injected = phase >= 4;
-
   const listRows = showHits ? MEMORY_ROWS.filter((m) => m.hit) : MEMORY_ROWS.slice(0, 3);
+  const showGraph = tab === 'graph';
 
   return (
-    <MockShell>
-      {/* Tabs — Adaptive Memory active, Knowledge Graph secondary */}
-      <div className="flex gap-1 border-b border-[#E7E5E4] bg-[#F5F5F4]/80 px-2 py-1.5">
-        {['Adaptive Memory', 'Knowledge Graph'].map((tab, i) => (
-          <span
-            key={tab}
-            className={`rounded-xl px-2.5 py-1.5 text-[11px] font-medium ${
-              (i === 0 && phase < 3) || (i === 1 && phase >= 3)
-                ? 'bg-white text-neutral-900 shadow-sm'
-                : 'text-neutral-500'
-            }`}
-          >
-            {tab}
-          </span>
-        ))}
+    <MockShell className="flex min-h-[340px] flex-col sm:min-h-[380px]">
+      <div className="flex gap-1 border-b border-black/[0.06] px-2 py-2 sm:px-3">
+        {(
+          [
+            { id: 'memory' as const, label: 'Adaptive Memory' },
+            { id: 'graph' as const, label: 'Knowledge Graph' },
+          ] as const
+        ).map((t) => {
+          const active = tab === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
+                active
+                  ? 'bg-white text-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]'
+                  : 'text-neutral-400 hover:text-neutral-600'
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="px-3 py-3">
-        {/* Search driven by the chat ask */}
-        <div className="relative mb-2.5">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400" />
-          <div className="flex h-9 items-center rounded-lg border border-[#E7E5E4] bg-white pl-8 pr-2.5 text-[12px]">
+      <div className="flex-1 px-3 py-3 sm:px-4">
+        <div className="relative mb-3">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400" />
+          <div className="flex h-9 items-center rounded-xl border border-black/[0.08] bg-[#fafafa] pl-9 pr-3 text-[12px]">
             <span className={query ? 'text-neutral-800' : 'text-neutral-400'}>
               {query || 'Search memories…'}
             </span>
@@ -597,27 +626,28 @@ function MemoryVisual({ focused }: { focused: boolean }) {
           </div>
         </div>
 
-        {phase < 3 ? (
-          /* Memory list — filters to refund hits */
-          <div className="overflow-hidden rounded-xl border border-[#F5F5F4]">
+        {!showGraph ? (
+          <div className="overflow-hidden rounded-xl border border-black/[0.06]">
             {listRows.map((m, i) => {
               const isHit = showHits && m.hit;
               return (
                 <div
                   key={m.title}
                   className={`flex items-start gap-2.5 px-3 py-2.5 transition-colors ${
-                    i ? 'border-t border-[#F5F5F4]' : ''
-                  } ${isHit ? 'bg-[#f0f5e6]/70' : ''}`}
+                    i ? 'border-t border-black/[0.04]' : ''
+                  } ${isHit ? 'bg-emerald-50/70' : 'bg-white'}`}
                 >
                   <Brain
-                    className={`mt-0.5 size-3.5 shrink-0 ${isHit ? 'text-[#3f6b00]' : 'text-neutral-400'}`}
+                    className={`mt-0.5 size-3.5 shrink-0 ${
+                      isHit ? 'text-emerald-700' : 'text-neutral-400'
+                    }`}
                     strokeWidth={2}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="truncate text-[12px] font-medium text-neutral-900">{m.title}</p>
+                      <p className="truncate text-[12px] font-medium text-neutral-950">{m.title}</p>
                       {isHit ? (
-                        <span className="shrink-0 rounded bg-[#3f6b00] px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
+                        <span className="shrink-0 rounded bg-emerald-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
                           Hit
                         </span>
                       ) : null}
@@ -634,9 +664,8 @@ function MemoryVisual({ focused }: { focused: boolean }) {
             })}
           </div>
         ) : (
-          /* Knowledge graph — matching nodes light up */
-          <div className="rounded-xl border border-[#E7E5E4] bg-[#FAFAF9]/50 p-2.5">
-            <div className="relative h-[132px] w-full">
+          <div className="rounded-xl border border-black/[0.06] bg-[#fafafa] p-3">
+            <div className="relative h-[140px] w-full">
               <svg
                 className="absolute inset-0 h-full w-full"
                 viewBox="0 0 100 100"
@@ -644,7 +673,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                 aria-hidden
                 preserveAspectRatio="none"
               >
-                <g stroke="#D6D3D1" strokeWidth="0.9" strokeLinecap="round">
+                <g stroke="#e5e5e5" strokeWidth="0.9" strokeLinecap="round">
                   <line x1="50" y1="50" x2="18" y2="28" />
                   <line x1="50" y1="50" x2="22" y2="72" />
                   <line x1="50" y1="50" x2="78" y2="24" />
@@ -652,7 +681,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                   <line x1="22" y1="72" x2="76" y2="70" />
                 </g>
                 {graphLit ? (
-                  <g stroke="#3f6b00" strokeWidth="1.2" strokeLinecap="round" opacity="0.55">
+                  <g stroke="#22c55e" strokeWidth="1.2" strokeLinecap="round" opacity="0.5">
                     <line x1="18" y1="28" x2="76" y2="70" />
                     <line x1="22" y1="72" x2="76" y2="70" />
                     <line x1="18" y1="28" x2="22" y2="72" />
@@ -664,18 +693,18 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                 const kindCls =
                   n.kind === 'memory'
                     ? lit
-                      ? 'bg-[#f0f5e6] text-[#325600] ring-[#3f6b00]/40'
-                      : 'bg-[#f0f5e6]/70 text-[#325600]/80 ring-[#c4d9a0]'
+                      ? 'bg-emerald-50 text-emerald-800 ring-emerald-200'
+                      : 'bg-emerald-50/70 text-emerald-700/80 ring-emerald-100'
                     : n.kind === 'entity'
                       ? 'bg-sky-50 text-sky-800 ring-sky-200/80'
                       : lit
-                        ? 'bg-neutral-800 text-white ring-neutral-800'
+                        ? 'bg-neutral-900 text-white ring-neutral-900'
                         : 'bg-neutral-100 text-neutral-700 ring-neutral-200';
                 return (
                   <span
                     key={n.id}
                     className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-md px-1.5 py-0.5 text-[10px] font-semibold tracking-tight shadow-sm ring-1 transition-all duration-500 ${kindCls} ${
-                      lit ? 'scale-105 shadow-[0_0_0_3px_rgba(63,107,0,0.12)]' : ''
+                      lit ? 'scale-105 shadow-[0_0_0_3px_rgba(34,197,94,0.12)]' : ''
                     }`}
                     style={{ left: `${n.x}%`, top: `${n.y}%` }}
                   >
@@ -684,13 +713,13 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                 );
               })}
             </div>
-            <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 border-t border-[#E7E5E4] pt-1.5">
+            <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] pt-2">
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
                 <span className="size-2 rounded-sm bg-sky-200 ring-1 ring-sky-300" />
                 Entities
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-[#c4d9a0] ring-1 ring-[#3f6b00]/30" />
+                <span className="size-2 rounded-sm bg-emerald-200 ring-1 ring-emerald-400/40" />
                 Memories
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
@@ -703,10 +732,10 @@ function MemoryVisual({ focused }: { focused: boolean }) {
       </div>
 
       <div
-        className={`flex items-center justify-between gap-2 border-t px-3.5 py-2 text-[11px] transition-colors ${
+        className={`flex items-center justify-between gap-2 border-t px-4 py-2.5 text-[11px] sm:px-5 ${
           injected
-            ? 'border-[#c4d9a0] bg-[#f0f5e6]/80 text-[#325600]'
-            : 'border-[#E7E5E4] bg-[#FAFAF9]/60 text-neutral-500'
+            ? 'border-emerald-200 bg-emerald-50/80 text-emerald-800'
+            : 'border-black/[0.06] text-neutral-500'
         }`}
       >
         <span className="inline-flex items-center gap-1.5">
@@ -755,18 +784,18 @@ const WORKFLOW_MERMAID_CSS = `
 .workflow-mermaid .node[data-state="done"] polygon,
 .workflow-mermaid .node[data-state="done"] path,
 .workflow-mermaid .node[data-state="done"] circle {
-  fill: #f0f5e6 !important;
-  stroke: #3f6b00 !important;
+  fill: #f0fdf4 !important;
+  stroke: #16a34a !important;
   stroke-width: 1.75px !important;
 }
 .workflow-mermaid .node[data-state="running"] rect,
 .workflow-mermaid .node[data-state="running"] polygon,
 .workflow-mermaid .node[data-state="running"] path,
 .workflow-mermaid .node[data-state="running"] circle {
-  fill: #eef6dc !important;
-  stroke: #3f6b00 !important;
+  fill: #ecfdf5 !important;
+  stroke: #16a34a !important;
   stroke-width: 2.5px !important;
-  filter: drop-shadow(0 0 0 3px rgba(63, 107, 0, 0.16));
+  filter: drop-shadow(0 0 0 3px rgba(22, 163, 74, 0.14));
 }
 .workflow-mermaid .node label,
 .workflow-mermaid .node .label,
@@ -775,17 +804,17 @@ const WORKFLOW_MERMAID_CSS = `
   font-size: 12px !important;
 }
 .workflow-mermaid .edgePath path {
-  stroke: #a8a29e !important;
+  stroke: #d4d4d4 !important;
   stroke-width: 1.5px !important;
 }
 .workflow-mermaid .edgeLabel {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
   font-size: 11px !important;
-  color: #57534e !important;
+  color: #737373 !important;
 }
 .workflow-mermaid .marker {
-  fill: #a8a29e !important;
-  stroke: #a8a29e !important;
+  fill: #d4d4d4 !important;
+  stroke: #d4d4d4 !important;
 }
 `;
 
@@ -818,22 +847,24 @@ function WorkflowVisual({ focused }: { focused: boolean }) {
   }, [activeIds, svgReady]);
 
   return (
-    <MockShell className="flex h-[300px] flex-col sm:h-[320px] lg:h-[340px]">
+    <MockShell className="flex h-[340px] flex-col sm:h-[380px] lg:h-[400px]">
       <style dangerouslySetInnerHTML={{ __html: WORKFLOW_MERMAID_CSS }} />
-      <div className="flex shrink-0 items-center gap-2 border-b border-[#E7E5E4] bg-[#FAFAF9] px-3 py-2.5">
+      <div className="flex shrink-0 items-center gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
         <GitBranch size={13} className="text-neutral-400" strokeWidth={2} />
-        <span className="text-[12px] font-semibold text-neutral-800">Refund playbook</span>
+        <span className="text-[13px] font-semibold tracking-tight text-neutral-950">
+          Refund playbook
+        </span>
         <span className="ml-auto font-mono text-[10px] tabular-nums text-neutral-400">
           {activeIds.length}/{WORKFLOW_NODE_IDS.length} steps
         </span>
       </div>
       <div
         ref={wrapRef}
-        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#FAFAF9] px-2 py-3"
+        className="workflow-mermaid flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[#fafafa] px-3 py-4"
       >
         <MermaidFlowDiagram
           source={REFUND_MERMAID}
-          className="min-h-0 w-full [&_svg]:max-h-[260px]"
+          className="min-h-0 w-full [&_svg]:max-h-[280px]"
           onRender={handleRender}
         />
       </div>
@@ -909,11 +940,11 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
   return (
     <div className="relative flex h-[22rem] w-full flex-col overflow-visible sm:h-[26rem]">
       <div
-        className="absolute inset-0 overflow-hidden rounded-b-xl bg-[#b9c9a8]"
+        className="absolute inset-0 overflow-hidden rounded-b-xl bg-[#c5d4b4]"
         style={{
           backgroundImage: `
-            linear-gradient(180deg, rgba(210,222,190,0.85) 0%, rgba(170,190,150,0.4) 55%, rgba(120,150,100,0.55) 100%),
-            radial-gradient(circle at 1px 1px, rgba(40,56,24,0.1) 1px, transparent 0)
+            linear-gradient(180deg, rgba(232,240,220,0.9) 0%, rgba(180,200,160,0.35) 55%, rgba(140,165,120,0.45) 100%),
+            radial-gradient(circle at 1px 1px, rgba(40,56,24,0.08) 1px, transparent 0)
           `,
           backgroundSize: 'auto, 16px 16px',
         }}
@@ -923,12 +954,12 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
       <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-visible p-3 sm:p-4 sm:pr-10">
         {/* Preview chrome — overflow visible so the agent tooltip can float out */}
         <div className="relative w-full max-w-[22rem] overflow-visible sm:max-w-[24rem]">
-          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_18px_48px_-16px_rgba(26,26,26,0.45)] ring-1 ring-black/10">
-            <div className="relative flex items-center gap-1.5 border-b border-black/5 bg-neutral-50 px-3 py-2">
+          <div className="overflow-hidden rounded-[12px] bg-white shadow-[0_1px_0_rgba(255,255,255,0.85)_inset,0_16px_40px_-16px_rgba(26,26,26,0.35)] ring-1 ring-black/[0.08]">
+            <div className="relative flex items-center gap-1.5 border-b border-black/[0.05] bg-[#fafafa] px-3 py-2">
               <span className="size-2.5 rounded-full bg-[#ff5f57]" />
               <span className="size-2.5 rounded-full bg-[#febc2e]" />
               <span className="size-2.5 rounded-full bg-[#28c840]" />
-              <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-500">
+              <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-400">
                 Preview — shoulder anatomy
               </span>
             </div>
@@ -1181,6 +1212,7 @@ const cards: CapabilityCard[] = [
     description:
       'Instead of replying with suggestions, AI employees create issues, update files, send emails, take screenshots, post updates, and complete real tasks from start to finish.',
     Visual: ActionVisual,
+    screen: true,
   },
   {
     tag: 'Infinite memory',
@@ -1192,6 +1224,7 @@ const cards: CapabilityCard[] = [
     description:
       'AI employees remember past work, decisions, preferences, and project context. Every task builds on previous knowledge, so work gets faster and more accurate over time.',
     Visual: MemoryVisual,
+    screen: true,
   },
   {
     tag: 'Workflows',
@@ -1203,6 +1236,7 @@ const cards: CapabilityCard[] = [
     description:
       'Create SOPs as workflows agents follow end to end — triggers, checks, AI steps, and human gates. The same playbook every time, so work stays consistent and nothing happens off-script.',
     Visual: WorkflowVisual,
+    screen: true,
   },
   {
     tag: 'Screen context',
