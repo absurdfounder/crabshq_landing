@@ -51,13 +51,16 @@ function wrapIndex(v: number, len: number) {
 
 export default function OptimizeAgentsSection() {
   return (
-    <div className="gl-optimize">
-      <p className="text-[13px] text-ink-faint">Optimize</p>
-      <h2 className="mt-2 font-funneldisplay text-3xl leading-tight font-medium tracking-tight text-ink md:text-4xl">
-        Optimize your troopers
-      </h2>
+    <div className="gl-optimize flex flex-col gap-12">
+      <div className="flex flex-col gap-4">
+        <p className="text-sm font-medium text-ink">Optimize</p>
+        <h2 className="font-funneldisplay text-3xl leading-tight font-medium tracking-tight text-ink md:text-4xl">
+          Optimize your troopers
+        </h2>
+      </div>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-3">
+      {/* Gumloop: visual wells are tall bordered panels; title/body sit below, not inside */}
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-5">
         <OptimizeCard
           title="Open-source by default"
           body="Run on open-source models and pay a fraction of the cost, with no lock-in and full control over where your agents run."
@@ -88,13 +91,15 @@ function OptimizeCard({
   visual: ReactNode;
 }) {
   return (
-    <article className="flex flex-col overflow-hidden rounded-md border border-[var(--color-line)] bg-[#f7f7f5]">
-      <div className="relative h-52 overflow-hidden">{visual}</div>
-      <div className="border-t border-[var(--color-line)] bg-white p-5">
-        <h3 className="text-[15px] font-semibold text-ink">{title}</h3>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{body}</p>
+    <div className="flex flex-col gap-5 pb-2 md:gap-6 md:pb-0">
+      <div className="relative h-[400px] overflow-hidden rounded-md border border-[var(--color-line)] bg-[#f3f3f6] md:h-[320px] xl:h-[440px]">
+        {visual}
       </div>
-    </article>
+      <div className="flex flex-col gap-1.5">
+        <h3 className="text-base font-medium text-ink">{title}</h3>
+        <p className="text-base leading-normal text-ink-muted">{body}</p>
+      </div>
+    </div>
   );
 }
 
@@ -272,15 +277,15 @@ function ProviderChip({
     <div
       className="absolute top-1/2"
       style={{
-        [side]: '6%',
+        [side]: '4%',
         transform: `translateY(calc(-50% + ${y}px))`,
+        opacity: selected ? 1 : Math.max(0.25, 1 - Math.abs(y) / 90),
       }}
     >
+      <span className="pointer-events-none absolute -inset-2 z-0 rounded-[16px] bg-black/[0.03] blur-sm" />
       <div
-        className={`rounded-md px-2.5 py-1.5 text-[11px] font-medium ring-1 transition-colors ${
-          selected
-            ? 'bg-white text-ink shadow-sm ring-black/10'
-            : 'bg-transparent text-ink-faint ring-transparent'
+        className={`relative z-10 flex min-w-[5.5rem] items-center justify-center rounded-[12px] bg-white px-3 py-2.5 text-[11px] font-medium shadow-sm ring-1 transition-shadow ${
+          selected ? 'text-ink ring-black/10' : 'text-ink-faint ring-transparent'
         }`}
       >
         {name}
@@ -400,9 +405,9 @@ function SelfImproveVisual() {
 
 function EvalsVisual() {
   return (
-    <div className="relative flex h-full items-start justify-end bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:16px_16px] p-5">
+    <div className="relative flex size-full items-start justify-end bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:16px_16px] p-5 md:p-6">
       <motion.div
-        className="max-w-[200px] rounded-xl bg-white p-3 shadow-md ring-1 ring-black/5"
+        className="max-w-[220px] rounded-xl bg-white p-3.5 shadow-md ring-1 ring-black/5"
         initial={{ opacity: 0, y: 8, scale: 0.96 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.4 }}

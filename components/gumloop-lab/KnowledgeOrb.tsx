@@ -253,8 +253,14 @@ export default function KnowledgeOrb() {
   useMotionValueEvent(rotateX, 'change', paint);
   useMotionValueEvent(rotateY, 'change', paint);
   useEffect(() => {
-    paint();
+    const id = requestAnimationFrame(() => paint());
+    return () => cancelAnimationFrame(id);
   }, [paint]);
+
+  // Seed one paint after layout so the sphere isn't blank before the first yaw tick.
+  useEffect(() => {
+    rotateYRaw.set(18);
+  }, [rotateYRaw]);
 
   useEffect(() => {
     if (reduce || !inView) return;
@@ -333,7 +339,7 @@ export default function KnowledgeOrb() {
       role="button"
       tabIndex={0}
       aria-label="Interactive company knowledge orb. Drag to rotate, use arrow keys, or use Home and End for rotation presets."
-      className="gl-knowledge-orb [container-type:size] relative isolate flex size-full touch-none items-center justify-center overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-pink-500/45 focus-visible:ring-inset active:cursor-grabbing"
+      className="gl-knowledge-orb relative isolate flex size-full min-h-[20rem] touch-none items-center justify-center overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-pink-500/45 focus-visible:ring-inset active:cursor-grabbing"
       onPointerDown={(e) => {
         if (dragRef.current || (e.pointerType === 'mouse' && e.button !== 0)) return;
         setGrabbing(true);
@@ -384,19 +390,14 @@ export default function KnowledgeOrb() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          width: 'min(160cqw, 108cqh)',
-          border: '1px solid color-mix(in srgb, var(--color-line) 82%, #737373)',
-          opacity: 0.52,
-        }}
+        className="pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[min(160%,108%)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        style={{ border: '1px solid color-mix(in srgb, var(--color-line) 82%, #737373)' }}
       />
 
       <div
-        className={`relative shrink-0 transition-transform duration-500 ${
+        className={`relative aspect-square max-h-[min(100%,440px)] w-[min(92%,440px)] shrink-0 transition-transform duration-500 ${
           grabbing ? 'cursor-grabbing' : 'cursor-grab'
         }`}
-        style={{ width: 'min(100cqw, 100cqh)', height: 'min(100cqw, 100cqh)' }}
       >
         <div
           aria-hidden
@@ -464,9 +465,17 @@ export default function KnowledgeOrb() {
                     arcFrontRefs.current[i] = el;
                   }}
                   fill="none"
-                  stroke={i === ARCS.length - 1 ? '#f472b6' : 'color-mix(in srgb, var(--color-line) 72%, #737373)'}
+                  stroke={
+                    i === 0
+                      ? '#f9a8d4'
+                      : i === 1
+                        ? '#93c5fd'
+                        : i === ARCS.length - 1
+                          ? '#f472b6'
+                          : 'color-mix(in srgb, var(--color-line) 72%, #737373)'
+                  }
                   strokeWidth="1.35"
-                  opacity={i === ARCS.length - 1 ? 0.64 : 0.58}
+                  opacity={i === ARCS.length - 1 ? 0.7 : 0.55}
                   strokeDasharray="0.24 0.76"
                   pathLength={1}
                 />
@@ -483,8 +492,8 @@ export default function KnowledgeOrb() {
         >
           <div className="relative size-11 transition-[opacity,transform] duration-200 group-data-[behind]:scale-50 group-data-[behind]:opacity-0">
             <span className="absolute -inset-5 rounded-full bg-pink-500/5 blur-2xl" />
-            <div className="relative flex size-full items-center justify-center rounded-full bg-ink text-[10px] font-bold text-white">
-              AI
+            <div className="relative flex size-full items-center justify-center rounded-full bg-ink text-[11px] font-bold tracking-tight text-white">
+              T
             </div>
           </div>
         </div>
