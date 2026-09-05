@@ -84,11 +84,23 @@ export default function GumloopLabPage() {
             marks and tokens. Nothing here is linked from the marketing nav — pick what to promote.
           </p>
 
+          <p className="mt-6">
+            <a
+              href="/lab/gumloop/exact"
+              className="inline-flex items-center gap-2 rounded-lg bg-neutral-950 px-4 py-2.5 text-[13px] font-medium text-white transition-transform hover:scale-[1.02]"
+            >
+              Open exact Gumloop mirror
+              <span className="font-mono text-[10px] uppercase tracking-wider text-white/50">
+                SSR + CSS
+              </span>
+            </a>
+          </p>
+
           <ol className="mt-8 grid gap-2 sm:grid-cols-2">
             {GUMLOOP_EXTRACTS.map((e) => (
               <li key={e.id}>
                 <a
-                  href={`#${e.id}`}
+                  href={e.id === 'exact-mirror' ? '/lab/gumloop/exact' : `#${e.id}`}
                   className="flex items-baseline justify-between gap-3 rounded-lg px-3 py-2 text-[13px] ring-1 ring-transparent transition-colors hover:bg-white hover:ring-black/5"
                 >
                   <span className="font-medium text-neutral-800">{e.title}</span>

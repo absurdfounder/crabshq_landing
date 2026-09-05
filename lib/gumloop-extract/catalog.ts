@@ -20,6 +20,15 @@ export type GumloopExtract = {
 
 export const GUMLOOP_EXTRACTS: GumloopExtract[] = [
   {
+    id: 'exact-mirror',
+    title: 'Exact SSR + CSS mirror',
+    gumloopSection: 'Full homepage (static capture)',
+    motion: ['all Gumloop @keyframes (see lab-assets/gumloop/keyframes.css)'],
+    status: 'lab',
+    notes:
+      'Fetched HTML/CSS/fonts via scripts/fetch-gumloop-exact.mjs → /lab/gumloop/exact. JS URLs in MANIFEST only.',
+  },
+  {
     id: 'hero-marks',
     title: 'Hero agent-mark carousel',
     gumloopSection: 'Hero — Build, share, optimize & control agents',
