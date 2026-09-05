@@ -1,0 +1,44 @@
+.homeChrome {
+  --color-canvas: #fff;
+  --color-line: #e5e8e5;
+  --color-ink: #202321;
+  --color-ink-muted: #686d69;
+  background: #fff;
+  color: #202321;
+}
+.homeChrome :global(.rail) {
+  border-left: 0;
+  border-right: 0;
+  max-width: 1200px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.homeChrome :global(.type-eyebrow-num),
+.homeChrome :global(.kicker) {
+  display: none;
+}
+.homeChrome > section {
+  border: 0;
+}
+.homeChrome h3 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.045em;
+}
+.homeChrome footer {
+  background: #f8faf6;
+  border-top: 1px solid #e5e8e5;
+}
+.homeChrome footer :global(.font-brand) {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.06em;
+}
+.homeChrome footer :global(.font-brand.text-neutral-200) {
+  color: #e4e9df;
+}
+.homeChrome :global(.pixel-flicker),
+.homeChrome :global(.pixel-flicker-text) {
+  animation: none;
+}
+.homeChrome footer :global(.kicker-sm) {
+  color: #5f7555;
+}
