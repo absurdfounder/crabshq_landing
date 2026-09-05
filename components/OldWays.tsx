@@ -90,7 +90,7 @@ function AgentAv({ handle, size = 36 }: { handle: (typeof AGENT_ROSTER)[number][
 }
 
 /** Advance a staged simulation while the capability row is focused. */
-function useSimPhase(focused: boolean, delays: readonly number[]) {
+function useSimPhase(focused: boolean, delays: readonly number[], resetKey = '') {
   const finalPhase = delays.length;
   const [phase, setPhase] = useState(finalPhase);
   const delayKey = delays.join(',');
@@ -105,7 +105,7 @@ function useSimPhase(focused: boolean, delays: readonly number[]) {
     return () => timers.forEach(clearTimeout);
     // delays captured via delayKey; finalPhase derived from delays.length
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focused, delayKey, finalPhase]);
+  }, [focused, delayKey, finalPhase, resetKey]);
 
   return phase;
 }
@@ -121,192 +121,278 @@ const WORKFLOW_DELAYS = [400, 900, 1400, 1900, 2400, 2900] as const;
 /** 0 idle → 1 Fn → 2 user marks → 3 agent labels → 4 explains */
 const SCREEN_CONTEXT_DELAYS = [400, 900, 2100, 2900] as const;
 
+/** Gumloop-style agent browser: Sales / Support / Data / Meetings / Calls. */
+type OrgAgentTab = 'Sales' | 'Support' | 'Data' | 'Meetings' | 'Calls';
+
+type OrgAgentPage = {
+  id: OrgAgentTab;
+  handle: (typeof AGENT_ROSTER)[number]['handle'];
+  title: string;
+  blurb: string;
+  model: string;
+  askWho: string;
+  ask: string;
+  steps: [string, string, string];
+  resultTitle: string;
+  columns: string[];
+  rows: string[][];
+};
+
+const ORG_AGENT_PAGES: OrgAgentPage[] = [
+  {
+    id: 'Sales',
+    handle: 'nova',
+    title: 'CRM Agent',
+    blurb: 'Keeps pipeline current and flags deals that need attention.',
+    model: 'Claude 4.5 Sonnet',
+    askWho: 'Marcelo',
+    ask: "How's our Q1 pipeline looking? Anything at risk?",
+    steps: [
+      'Fetching Q1 open opportunities',
+      'Cross-referencing HubSpot deals',
+      'Building pipeline summary',
+    ],
+    resultTitle: 'Q1 Pipeline Summary',
+    columns: ['Deal', 'Account', 'Stage', 'Amount', 'Close', 'Prob', 'Owner'],
+    rows: [
+      ['Enterprise renewal', 'Vantage', 'Negotiation', '$142,000', 'Mar 28', '70%', 'Maya'],
+      ['Platform expansion', 'Torchlight', 'Proposal', '$86,500', 'Apr 12', '55%', 'Jon'],
+      ['New logo', 'Northwind', 'Discovery', '$48,000', 'May 02', '35%', 'Ava'],
+      ['Upsell seats', 'Meridian', 'Closed Won', '$22,400', 'Mar 04', '100%', 'Maya'],
+      ['Pilot → annual', 'Orion', 'Qualification', '$61,000', 'Apr 30', '40%', 'Jon'],
+    ],
+  },
+  {
+    id: 'Support',
+    handle: 'scout',
+    title: 'Support Agent',
+    blurb: 'Triages tickets, files bugs, and drafts customer replies.',
+    model: 'GPT-5',
+    askWho: 'Sam',
+    ask: 'Meridian Corp is reporting a broken CSV export — can you create a bug ticket?',
+    steps: [
+      'Searching related tickets',
+      'Drafting BUG-4192',
+      'Logging customer impact',
+    ],
+    resultTitle: 'BUG-4192 — Broken CSV Export',
+    columns: ['Field', 'Value'],
+    rows: [
+      ['Priority', 'High'],
+      ['Type', 'Bug'],
+      ['Customer', 'Meridian Corp'],
+      ['Tags', 'csv-export · export'],
+      ['Status', 'Open · assigned to Eng'],
+    ],
+  },
+  {
+    id: 'Data',
+    handle: 'wren',
+    title: 'Data Analysis Agent',
+    blurb: 'Answers questions from your warehouse with charts and funnels.',
+    model: 'Gemini 3 Flash',
+    askWho: 'Omid',
+    ask: 'Where are we losing people in the onboarding flow?',
+    steps: [
+      'Querying available event types',
+      'Building onboarding funnel query',
+      'Building onboarding funnel chart',
+    ],
+    resultTitle: 'Onboarding funnel',
+    columns: ['Step', 'Users', 'Drop-off'],
+    rows: [
+      ['Signed Up', '4,820', '—'],
+      ['Completed Profile', '3,940', '18%'],
+      ['Viewed Dashboard', '3,105', '21%'],
+      ['Attempted Integration', '1,673', '46%'],
+      ['Completed Integration', '1,054', '37%'],
+    ],
+  },
+  {
+    id: 'Meetings',
+    handle: 'pip',
+    title: 'Meeting Prep Agent',
+    blurb: 'Researches attendees and builds briefs before every call.',
+    model: 'Claude 4.5 Sonnet',
+    askWho: 'Aron',
+    ask: 'Research the other attendees for my upcoming meeting.',
+    steps: [
+      'Pulling calendar invite',
+      'Enriching attendee profiles',
+      'Writing discovery brief',
+    ],
+    resultTitle: 'Meeting Prep: Discovery — Orion',
+    columns: ['Attendee', 'Role', 'Signal'],
+    rows: [
+      ['Tess Holloway', 'VP Eng', 'Left Salesforce recently'],
+      ['Ryan Park', 'CTO', '12+ SaaS clients'],
+      ['Priya Shah', 'Ops', 'Owns procurement'],
+      ['You', 'AE', 'Host'],
+    ],
+  },
+  {
+    id: 'Calls',
+    handle: 'nova',
+    title: 'Call Analysis Agent',
+    blurb: 'Scores calls, extracts objections, and queues follow-ups.',
+    model: 'Kimi K2.6',
+    askWho: 'Maya',
+    ask: 'Summarize yesterday’s discovery call and list the objections.',
+    steps: [
+      'Transcribing call recording',
+      'Tagging objections',
+      'Drafting follow-up email',
+    ],
+    resultTitle: 'Call scorecard',
+    columns: ['Moment', 'Speaker', 'Note'],
+    rows: [
+      ['02:14', 'Prospect', 'Budget frozen until Q3'],
+      ['08:40', 'You', 'ROI vs contractor cost'],
+      ['14:02', 'Prospect', 'Needs SSO + audit log'],
+      ['19:55', 'You', 'Booked technical deep-dive'],
+    ],
+  },
+];
+
 function OrgVisual({ focused }: { focused: boolean }) {
-  const phase = useSimPhase(focused, ORG_DELAYS);
-  // 0 idle, 1 reading ask, 2 Aria online, 3 Ren online, 4 Leo online
-  const statuses = [
-    phase >= 4 ? 'ready' : phase >= 1 ? 'routing' : 'idle',
-    phase >= 2 ? 'online' : phase >= 1 ? 'spinning' : 'queued',
-    phase >= 3 ? 'online' : phase >= 2 ? 'spinning' : 'queued',
-    phase >= 4 ? 'online' : phase >= 3 ? 'spinning' : 'queued',
-  ] as const;
-
-  const statusLabel = (st: (typeof statuses)[number]) => {
-    if (st === 'online' || st === 'ready') return 'Online';
-    if (st === 'spinning' || st === 'routing') return 'Spinning up';
-    return 'Queued';
-  };
-
-  const tabs = ['Growth', 'Sales', 'Support', 'Ops', 'Research'] as const;
+  const [tab, setTab] = useState<OrgAgentTab>('Sales');
+  const phase = useSimPhase(focused, ORG_DELAYS, tab);
+  const page = ORG_AGENT_PAGES.find((p) => p.id === tab) ?? ORG_AGENT_PAGES[0];
+  const visibleCols = page.columns;
 
   return (
-    // Product surface — one pane, like Gumloop’s agent panel (sidebar + chat + table).
-    // No nested MockShell/cards: the outer window chrome is enough.
-    <div className="flex min-h-[360px] bg-white sm:min-h-[400px]">
-      <aside className="hidden w-[76px] shrink-0 flex-col gap-0.5 border-r border-black/[0.06] bg-[#f7f7f8] p-2 sm:flex">
-        {tabs.map((tab) => (
-          <div
-            key={tab}
-            className={`rounded-lg px-1.5 py-2.5 text-center text-[10px] font-medium transition-colors ${
-              tab === 'Growth'
-                ? 'bg-white text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.06]'
-                : 'text-neutral-400'
-            }`}
-          >
-            {tab === 'Growth' ? (
-              <span className="mx-auto mb-1 flex size-6 items-center justify-center">
-                <AgentAv handle="nova" size={22} />
-              </span>
-            ) : (
-              <span className="mx-auto mb-1 block size-1.5 rounded-full bg-neutral-300" />
-            )}
-            {tab}
-          </div>
-        ))}
-      </aside>
+    // Soft-crop panel like Gumloop: overflow clipped, bottom + right fades.
+    <div className="relative h-[380px] overflow-hidden bg-white sm:h-[420px] lg:h-[460px]">
+      <div className="flex h-full min-h-0">
+        <aside className="flex w-[68px] shrink-0 flex-col items-stretch gap-1 overflow-hidden border-r border-black/[0.06] bg-[#f6f7f8] p-1.5 sm:w-[72px]">
+          {ORG_AGENT_PAGES.map((p) => {
+            const active = p.id === tab;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                aria-label={`Preview ${p.title}`}
+                aria-pressed={active}
+                onClick={() => setTab(p.id)}
+                className={`flex flex-col items-center gap-1 rounded-lg px-1 py-2 text-center transition-colors ${
+                  active
+                    ? 'bg-white text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.06]'
+                    : 'text-neutral-400 hover:bg-white/70 hover:text-neutral-600'
+                }`}
+              >
+                <span className="flex size-7 items-center justify-center">
+                  <AgentAv handle={p.handle} size={active ? 24 : 20} />
+                </span>
+                <span className="text-[10px] font-medium leading-none">{p.id}</span>
+              </button>
+            );
+          })}
+        </aside>
 
-      <div className="min-w-0 flex-1 px-4 py-4 sm:px-5 sm:py-5">
-        <div className="flex items-start gap-3">
-          <AgentAv handle="nova" size={36} />
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-              <p className="text-[15px] font-semibold tracking-tight text-neutral-950">Growth Org</p>
-              <p className="text-[11px] text-neutral-400">1 manager · 3 specialists</p>
+        <div className="min-w-0 flex-1 overflow-hidden px-4 py-4 sm:px-5 sm:py-5">
+          <div className="flex items-start gap-3">
+            <AgentAv handle={page.handle} size={36} />
+            <div className="min-w-0 flex-1">
+              <p className="text-[15px] font-semibold tracking-tight text-neutral-950">{page.title}</p>
+              <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">{page.blurb}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
+                  <Sparkles className="size-2.5 text-amber-500" strokeWidth={2} aria-hidden />
+                  {page.model}
+                </span>
+                <div className="flex -space-x-1.5">
+                  {ORG_AGENT_PAGES.slice(0, 4).map((p) => (
+                    <span key={p.id} className="inline-flex rounded-full ring-2 ring-white">
+                      <AgentAv handle={p.handle} size={18} />
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">
-              Coordinates launch work across growth, product, and ops.
-            </p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium text-neutral-600">
-                <Sparkles className="size-2.5 text-amber-500" strokeWidth={2} aria-hidden />
-                Claude 4.5 Sonnet
-              </span>
-              <div className="flex -space-x-1.5">
-                {AGENT_ROSTER.slice(0, 4).map((a) => (
-                  <span
-                    key={a.name}
-                    className="inline-flex rounded-full ring-2 ring-white"
-                    title={a.name}
+          </div>
+
+          <div className="mt-5 space-y-3">
+            <div className="rounded-xl bg-[#f4f4f5] px-3.5 py-2.5">
+              <p className="text-[11px] font-medium text-neutral-500">{page.askWho}</p>
+              <p className="mt-0.5 text-[13px] leading-snug text-neutral-800">{page.ask}</p>
+            </div>
+
+            <div className="space-y-1.5 pl-0.5 text-[12px] text-neutral-600">
+              {page.steps.map((step, i) => {
+                const on = phase >= i + 1;
+                const spinning = focused && phase === i + 1 && phase < 4;
+                return (
+                  <p
+                    key={step}
+                    className={`flex items-center gap-2 transition-opacity ${
+                      on ? 'opacity-100' : 'opacity-35'
+                    }`}
                   >
-                    <AgentAv handle={a.handle} size={18} />
-                  </span>
-                ))}
+                    {spinning ? (
+                      <Loader2
+                        className="size-3 shrink-0 animate-spin text-neutral-400"
+                        strokeWidth={2.25}
+                      />
+                    ) : (
+                      <span
+                        className={`size-1.5 shrink-0 rounded-full ${
+                          on ? 'bg-[#325600]' : 'bg-neutral-300'
+                        }`}
+                      />
+                    )}
+                    {step}
+                  </p>
+                );
+              })}
+            </div>
+
+            <div className="rounded-xl border border-black/[0.06] bg-white">
+              <div className="border-b border-black/[0.06] px-3 py-2">
+                <p className="text-[12px] font-semibold text-neutral-800">{page.resultTitle}</p>
+              </div>
+              {/* Right-edge mask fade — same trick as Gumloop table scroller */}
+              <div
+                className="overflow-x-auto pb-10 pr-1"
+                style={{
+                  maskImage:
+                    'linear-gradient(to right, #000 0%, #000 calc(100% - 14px), transparent 100%)',
+                  WebkitMaskImage:
+                    'linear-gradient(to right, #000 0%, #000 calc(100% - 14px), transparent 100%)',
+                }}
+              >
+                <table className="w-full min-w-[36rem] text-left text-[11px]">
+                  <thead>
+                    <tr className="border-b border-black/[0.05] text-[10px] font-medium text-neutral-400">
+                      {visibleCols.map((c) => (
+                        <th key={c} className="whitespace-nowrap px-3 py-2 font-medium">
+                          {c}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="text-neutral-700">
+                    {page.rows.map((row, ri) => (
+                      <tr key={ri} className="border-b border-black/[0.04] last:border-0">
+                        {visibleCols.map((_, ci) => (
+                          <td key={ci} className="whitespace-nowrap px-3 py-2">
+                            {row[ci] || '—'}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="mt-5 space-y-3">
-          <div className="rounded-xl bg-[#f4f4f5] px-3.5 py-2.5">
-            <p className="text-[11px] font-medium text-neutral-500">You</p>
-            <p className="mt-0.5 text-[13px] leading-snug text-neutral-800">
-              I need a growth team on this launch — stand one up.
-            </p>
-          </div>
-
-          <div className="space-y-1.5 pl-0.5 text-[12px] text-neutral-600">
-            <p
-              className={`flex items-center gap-2 transition-opacity ${
-                phase >= 1 ? 'opacity-100' : 'opacity-35'
-              }`}
-            >
-              {phase >= 1 && phase < 4 ? (
-                <Loader2 className="size-3 shrink-0 animate-spin text-neutral-400" strokeWidth={2.25} />
-              ) : (
-                <span
-                  className={`size-1.5 shrink-0 rounded-full ${
-                    phase >= 4 ? 'bg-[#325600]' : 'bg-neutral-300'
-                  }`}
-                />
-              )}
-              Matching specialists to launch brief
-            </p>
-            <p
-              className={`flex items-center gap-2 transition-opacity ${
-                phase >= 2 ? 'opacity-100' : 'opacity-35'
-              }`}
-            >
-              <span
-                className={`size-1.5 shrink-0 rounded-full ${
-                  phase >= 2 ? 'bg-[#325600]' : 'bg-neutral-300'
-                }`}
-              />
-              Spinning up Aria, Ren, Leo
-            </p>
-            <p
-              className={`flex items-center gap-2 transition-opacity ${
-                phase >= 4 ? 'opacity-100' : 'opacity-35'
-              }`}
-            >
-              <span
-                className={`size-1.5 shrink-0 rounded-full ${
-                  phase >= 4 ? 'bg-[#325600]' : 'bg-neutral-300'
-                }`}
-              />
-              Growth pod ready — 3 / 3 live
-            </p>
-          </div>
-
-          <div className="overflow-hidden rounded-xl border border-black/[0.06]">
-            <div className="border-b border-black/[0.06] bg-[#fafafa] px-3 py-2">
-              <p className="text-[11px] font-semibold text-neutral-700">Team roster</p>
-            </div>
-            <table className="w-full text-left text-[12px]">
-              <thead>
-                <tr className="border-b border-black/[0.05] text-[10px] font-medium uppercase tracking-wide text-neutral-400">
-                  <th className="px-3 py-2 font-medium">Agent</th>
-                  <th className="hidden px-3 py-2 font-medium sm:table-cell">Role</th>
-                  <th className="px-3 py-2 font-medium">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-neutral-700">
-                {AGENT_ROSTER.map((agent, i) => {
-                  const st = statuses[i];
-                  const live = st === 'online' || st === 'ready';
-                  const busy = st === 'spinning' || st === 'routing';
-                  return (
-                    <tr
-                      key={agent.name}
-                      className={`border-b border-black/[0.04] last:border-0 transition-opacity duration-500 ${
-                        live || busy ? 'opacity-100' : 'opacity-45'
-                      }`}
-                    >
-                      <td className="px-3 py-2.5">
-                        <span className="inline-flex items-center gap-2">
-                          <AgentAv handle={agent.handle} size={22} />
-                          <span className="font-medium text-neutral-900">{agent.name}</span>
-                        </span>
-                      </td>
-                      <td className="hidden px-3 py-2.5 text-neutral-500 sm:table-cell">
-                        {agent.role}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <span className="inline-flex items-center gap-1.5 text-[11px]">
-                          {busy ? (
-                            <Loader2
-                              className="size-3 animate-spin text-neutral-400"
-                              strokeWidth={2.25}
-                            />
-                          ) : (
-                            <span
-                              className={`size-1.5 rounded-full ${
-                                live ? 'bg-[#325600]' : 'bg-neutral-300'
-                              }`}
-                            />
-                          )}
-                          <span className={live ? 'text-[#325600]' : 'text-neutral-500'}>
-                            {statusLabel(st)}
-                          </span>
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
+
+      {/* Bottom fade into white — Gumloop: h-8 gradient to white */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-10 bg-gradient-to-b from-transparent to-white"
+      />
     </div>
   );
 }
@@ -1076,13 +1162,13 @@ const cards: CapabilityCard[] = [
     tag: 'AI organizations',
     ask: 'trooper, I need a growth team on this launch',
     reply: 'on it. spinning up 3 troopers',
-    window: 'Agents — Growth Org',
+    window: 'Agents',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
     description:
       'Trooper lets you create AI organizations made up of multiple AI employees. Each organization works together on tasks, shares context, and coordinates execution — similar to how real teams operate.',
     Visual: OrgVisual,
-    // Full-bleed product panel (sidebar + chat + roster) — no nested stage toy.
+    // Full-bleed agent browser (Sales / Support / Data / Meetings / Calls).
     screen: true,
   },
   {
