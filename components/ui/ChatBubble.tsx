@@ -265,7 +265,7 @@ export function BubbleExchange({
   };
 
   return (
-    <div className={`flex flex-col items-start gap-3.5 ${className}`}>
+    <div className={`flex flex-col items-start gap-4 ${className}`}>
       <ChatBubble
         key={`ask-${cycle}`}
         kind="ask"

@@ -3,15 +3,17 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import {
-  FileText,
   Check,
   Loader2,
   Search,
   Brain,
   ArrowRight,
   GitBranch,
-  Globe,
-  Terminal,
+  Globe2,
+  FileCode2,
+  PenLine,
+  Rocket,
+  CircleCheck,
   Sparkles,
 } from 'lucide-react';
 import { MermaidFlowDiagram } from '@/components/loops/MermaidFlowDiagram';
@@ -58,16 +60,6 @@ function MockShell({
     </div>
   );
 }
-
-/** Shared status greens — crisp, not muddy olive. */
-const GL = {
-  tint: '#f0fdf4',
-  tintSoft: '#f7fef9',
-  ring: '#bbf7d0',
-  ink: '#15803d',
-  inkDeep: '#166534',
-  dot: '#22c55e',
-} as const;
 
 const AGENT_ROSTER = [
   {
@@ -127,7 +119,7 @@ function useSimPhase(focused: boolean, delays: readonly number[], resetKey = '')
  * 1. Org — chat asks for a growth team → HQ spins up troopers
  * ═══════════════════════════════════════════════════════════════ */
 const ORG_DELAYS = [400, 1100, 1800, 2600] as const;
-const ACTION_DELAYS = [500, 1200, 2000, 2800] as const;
+const ACTION_DELAYS = [700, 1500, 2400, 3300] as const;
 const MEMORY_DELAYS = [400, 1400, 2200, 3000] as const;
 /** 0 idle → light each workflow node in order */
 const WORKFLOW_DELAYS = [400, 900, 1400, 1900, 2400, 2900] as const;
@@ -416,73 +408,104 @@ function OrgVisual({ focused }: { focused: boolean }) {
 function ActionVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, ACTION_DELAYS);
   const rows = [
-    { tool: 'browser.open', detail: 'wonder.so', icon: Globe },
-    { tool: 'read_file', detail: 'index.html', icon: FileText },
-    { tool: 'apply_patch', detail: 'meta · og:image', icon: Terminal },
-    { tool: 'deploy', detail: 'vercel · prod', icon: Terminal },
+    { tool: 'browser.open', detail: 'wonder.so', icon: Globe2 },
+    { tool: 'read_file', detail: 'index.html', icon: FileCode2 },
+    { tool: 'apply_patch', detail: 'meta · og:image', icon: PenLine },
+    { tool: 'deploy', detail: 'vercel · prod', icon: Rocket },
   ];
+  const doneCount = phase >= rows.length ? rows.length : Math.max(0, phase - 1);
+  const allDone = phase >= rows.length;
 
   return (
-    <MockShell className="flex min-h-[340px] flex-col sm:min-h-[380px]">
-      <div className="flex items-center justify-between gap-2 border-b border-black/[0.06] px-4 py-3 sm:px-5">
+    <MockShell className="flex min-h-[360px] flex-col sm:min-h-[400px]">
+      <div className="flex items-start justify-between gap-3 border-b border-black/[0.06] px-4 py-3.5 sm:px-5">
         <div className="min-w-0">
           <p className="truncate text-[14px] font-semibold tracking-tight text-neutral-950">
             Ship og-image fix to prod
           </p>
-          <p className="mt-0.5 text-[11px] text-neutral-500">From chat · Aria · #product-launch</p>
+          <p className="mt-1 text-[11px] text-neutral-500">
+            From chat · <span className="text-neutral-700">Aria</span>
+            <span className="mx-1.5 text-neutral-300">·</span>
+            <span className="font-mono text-neutral-500">#product-launch</span>
+          </p>
         </div>
         <span
-          className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold"
-          style={{
-            backgroundColor: phase >= 4 ? GL.tint : '#fef3c7',
-            color: phase >= 4 ? GL.inkDeep : '#b45309',
-            boxShadow: `inset 0 0 0 1px ${phase >= 4 ? GL.ring : '#fde68a'}`,
-          }}
+          className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide ${
+            allDone ? 'ow-badge-in bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'
+          }`}
         >
-          {phase >= 4 ? 'Done' : 'Running'}
+          {allDone ? 'Done' : 'Running'}
         </span>
       </div>
 
-      <ul className="flex-1 space-y-0.5 px-3 py-3 sm:px-4">
+      <ul className="flex-1 px-3 py-4 sm:px-4">
         {rows.map((r, i) => {
-          const done = phase >= 4 || phase > i + 1;
-          const running = phase < 4 && phase === i + 1;
+          const done = allDone || phase > i + 1;
+          const running = !allDone && phase === i + 1;
           const pending = phase < i + 1;
           const Icon = r.icon;
           return (
             <li
               key={r.tool}
-              className={`flex items-center gap-3 rounded-xl px-2.5 py-2.5 transition-colors ${
-                running ? 'bg-emerald-50/80' : ''
-              } ${pending ? 'opacity-40' : ''}`}
+              className={`ow-row-in relative flex items-stretch gap-3 px-2 py-1 ${
+                pending ? 'opacity-35' : ''
+              }`}
+              style={{ animationDelay: focused ? `${i * 70}ms` : '0ms' }}
             >
-              <span
-                className={`flex size-6 shrink-0 items-center justify-center rounded-md border bg-white ${
-                  done
-                    ? 'border-emerald-200 text-emerald-700'
-                    : running
-                      ? 'border-amber-200 text-amber-700'
-                      : 'border-black/[0.08] text-neutral-400'
+              {/* Timeline rail */}
+              <div className="relative flex w-7 shrink-0 flex-col items-center">
+                <span
+                  className={`relative z-[1] mt-0.5 flex size-7 items-center justify-center rounded-lg border bg-white transition-colors duration-300 ${
+                    done
+                      ? 'border-emerald-200 text-emerald-700'
+                      : running
+                        ? 'ow-pulse-ring border-emerald-300 text-emerald-700'
+                        : 'border-black/[0.08] text-neutral-400'
+                  }`}
+                >
+                  {done ? (
+                    <CircleCheck className="ow-check-pop size-4" strokeWidth={2.25} />
+                  ) : running ? (
+                    <Loader2 className="size-3.5 animate-spin" strokeWidth={2.5} />
+                  ) : (
+                    <Icon className="size-3.5" strokeWidth={2} />
+                  )}
+                </span>
+                {i < rows.length - 1 ? (
+                  <span
+                    aria-hidden
+                    className={`mt-1 w-px flex-1 min-h-[18px] transition-colors duration-500 ${
+                      done ? 'bg-emerald-300' : 'bg-neutral-200'
+                    }`}
+                  />
+                ) : null}
+              </div>
+
+              <div
+                className={`min-w-0 flex-1 rounded-xl px-3 py-2 transition-colors duration-300 ${
+                  running ? 'bg-emerald-50/90' : 'bg-transparent'
                 }`}
               >
-                {done ? (
-                  <Check className="size-3" strokeWidth={3} />
-                ) : (
-                  <Icon className="size-3" strokeWidth={2} />
-                )}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-mono text-[12px] font-medium text-neutral-900">{r.tool}</p>
-                <p className="truncate text-[11px] text-neutral-500">{r.detail}</p>
+                <div className="flex items-baseline justify-between gap-3">
+                  <p className="font-mono text-[12.5px] font-medium tracking-tight text-neutral-900">
+                    {r.tool}
+                  </p>
+                  {done ? (
+                    <span className="ow-badge-in text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
+                      ok
+                    </span>
+                  ) : running ? (
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-emerald-700/80">
+                      live
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-300">
+                      wait
+                    </span>
+                  )}
+                </div>
+                <p className="mt-0.5 truncate text-[11px] text-neutral-500">{r.detail}</p>
               </div>
-              {running ? (
-                <Loader2
-                  className="size-3.5 shrink-0 animate-spin text-emerald-700"
-                  strokeWidth={2.5}
-                />
-              ) : done ? (
-                <span className="text-[10px] font-medium text-emerald-700">ok</span>
-              ) : null}
             </li>
           );
         })}
@@ -490,10 +513,11 @@ function ActionVisual({ focused }: { focused: boolean }) {
 
       <div className="flex items-center justify-between border-t border-black/[0.06] px-4 py-2.5 text-[11px] sm:px-5">
         <span className="text-neutral-500">
-          <span className="font-semibold text-neutral-800">{Math.min(phase, 4)}</span> / 4 tools
+          <span className="font-semibold tabular-nums text-neutral-900">{doneCount}</span>
+          <span className="text-neutral-400"> / {rows.length} tools</span>
         </span>
-        <span className="inline-flex items-center gap-1.5 font-medium text-emerald-700">
-          <FileText className="size-3" strokeWidth={2} />
+        <span className="inline-flex items-center gap-1.5 font-medium text-neutral-600">
+          <FileCode2 className="size-3.5 text-emerald-600" strokeWidth={2} />
           index.html
         </span>
       </div>
@@ -635,7 +659,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                   key={m.title}
                   className={`flex items-start gap-2.5 px-3 py-2.5 transition-colors ${
                     i ? 'border-t border-black/[0.04]' : ''
-                  } ${isHit ? 'bg-emerald-50/70' : 'bg-white'}`}
+                  } ${isHit ? 'ow-hit-flash bg-emerald-50/70' : 'bg-white'}`}
                 >
                   <Brain
                     className={`mt-0.5 size-3.5 shrink-0 ${
@@ -647,7 +671,7 @@ function MemoryVisual({ focused }: { focused: boolean }) {
                     <div className="flex items-center gap-2">
                       <p className="truncate text-[12px] font-medium text-neutral-950">{m.title}</p>
                       {isHit ? (
-                        <span className="shrink-0 rounded bg-emerald-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
+                        <span className="ow-badge-in shrink-0 rounded bg-emerald-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
                           Hit
                         </span>
                       ) : null}
@@ -1372,7 +1396,7 @@ export default function OldWays() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24">
+    <div className="flex flex-col gap-16 sm:gap-20 lg:gap-28">
       {cards.map((card, i) => {
         const visualFirst = i % 2 === 1;
         const dimmed = active >= 0 && i !== active;
@@ -1388,7 +1412,7 @@ export default function OldWays() {
               'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
               // Soft fade on mobile (no blur); desktop keeps the stronger stage light.
               dimmed
-                ? 'opacity-[0.38] max-lg:opacity-[0.48] lg:scale-[0.985] lg:opacity-40 lg:blur-[1.5px]'
+                ? 'opacity-[0.45] max-lg:opacity-[0.55] lg:opacity-[0.42]'
                 : 'opacity-100',
             ]
               .filter(Boolean)
@@ -1401,11 +1425,11 @@ export default function OldWays() {
             >
               <BubbleExchange ask={card.ask} reply={card.reply} focused={focused} />
 
-              <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
+              <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
                 {card.title}{' '}
                 {card.highlight ? <span className="text-ink-muted">{card.highlight}</span> : null}
               </h3>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
+              <p className="mt-3.5 max-w-md text-sm leading-relaxed text-ink-muted sm:mt-4 sm:text-[15px] sm:leading-7">
                 {card.description}
               </p>
 
@@ -1453,15 +1477,15 @@ export default function OldWays() {
 
             <div className={`min-w-0 ${visualFirst ? 'lg:order-1' : ''}`}>
               <div
-                className={`rounded-2xl bg-white shadow-[0_20px_48px_-28px_rgba(26,26,26,0.35)] ring-1 ring-black/[0.08] ${
+                className={`ow-product-window ${
                   card.overflowVisible ? 'overflow-visible' : 'overflow-hidden'
                 }`}
               >
-                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-2xl border-b border-black/[0.05] bg-[#fafafa] px-3 py-2">
-                  <span className="size-2.5 rounded-full bg-[#ff5f57]" />
-                  <span className="size-2.5 rounded-full bg-[#febc2e]" />
-                  <span className="size-2.5 rounded-full bg-[#28c840]" />
-                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium text-neutral-400">
+                <div className="relative flex items-center gap-1.5 overflow-hidden rounded-t-[1rem] border-b border-black/[0.05] bg-[#f7f7f8] px-3.5 py-2.5">
+                  <span className="size-2.5 rounded-full bg-[#ff5f57] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.25)]" />
+                  <span className="size-2.5 rounded-full bg-[#febc2e] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.2)]" />
+                  <span className="size-2.5 rounded-full bg-[#28c840] shadow-[inset_0_-0.5px_0.5px_rgba(0,0,0,0.2)]" />
+                  <span className="pointer-events-none absolute inset-x-0 text-center text-[11px] font-medium tracking-tight text-neutral-400">
                     {card.window}
                   </span>
                 </div>

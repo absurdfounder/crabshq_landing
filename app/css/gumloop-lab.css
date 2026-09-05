@@ -179,6 +179,97 @@
   animation: gl-trace-dash 0.8s linear infinite;
 }
 
+/* ── Capability mock craft (OldWays) ── */
+@keyframes ow-check-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ow-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ow-badge-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ow-hit-flash {
+  0% {
+    background-color: transparent;
+  }
+  30% {
+    background-color: rgb(236 253 245);
+  }
+  100% {
+    background-color: rgb(236 253 245 / 0.7);
+  }
+}
+
+@keyframes ow-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+.ow-check-pop {
+  animation: ow-check-pop 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ow-row-in {
+  animation: ow-row-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ow-badge-in {
+  animation: ow-badge-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ow-hit-flash {
+  animation: ow-hit-flash 0.55s ease-out both;
+}
+
+.ow-pulse-ring {
+  animation: ow-pulse-ring 1.4s ease-out infinite;
+}
+
+.ow-product-window {
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 18px 50px -28px rgba(26, 26, 26, 0.42),
+    0 0 0 1px rgba(0, 0, 0, 0.07);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gl-mark-float,
   .gl-mark-drift,
@@ -187,7 +278,12 @@
   .gl-orbit-spin,
   .gl-orbit-counter,
   .gl-skills-traverse,
-  .gl-trace-dash {
+  .gl-trace-dash,
+  .ow-check-pop,
+  .ow-row-in,
+  .ow-badge-in,
+  .ow-hit-flash,
+  .ow-pulse-ring {
     animation: none !important;
   }
 }
