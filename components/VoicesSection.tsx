@@ -21,7 +21,7 @@ function Attribution({ voice, compact = false }: { voice: Voice; compact?: boole
       className={
         compact
           ? 'mt-5 flex items-center gap-3 border-t border-white/15 pt-5'
-          : 'mt-6 flex flex-col items-center gap-4 border-t border-white/15 pt-6 sm:mt-7 sm:flex-row sm:justify-between sm:pt-7'
+          : 'mt-6 flex flex-col items-start gap-4 border-t border-white/15 pt-6 sm:mt-7 sm:flex-row sm:items-center sm:justify-between sm:pt-7'
       }
     >
       <div className="flex items-center gap-3 sm:gap-3.5">
@@ -40,7 +40,7 @@ function Attribution({ voice, compact = false }: { voice: Voice; compact?: boole
             {voice.author.charAt(0)}
           </div>
         )}
-        <div className="min-w-0 text-center sm:text-left">
+        <div className="min-w-0 text-left">
           <p className="font-display text-[15px] font-medium tracking-tight text-white sm:text-base">
             {voice.author}
           </p>
@@ -77,7 +77,11 @@ export default function VoicesSection({ voices }: VoicesSectionProps) {
   if (!featured) return null;
 
   return (
-    <div className="py-12 sm:py-20">
+    <div className="py-9 sm:py-16 lg:py-20">
+      <p className="mb-5 flex items-baseline gap-2 sm:mb-7">
+        <span className="font-mono text-[11px] tabular-nums text-white/35 sm:text-[12px]">01</span>
+        <span className="kicker-dark !inline">Voices</span>
+      </p>
       {voices.length === 1 ? (
         <motion.figure
           className="relative"

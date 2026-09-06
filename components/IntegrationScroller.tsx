@@ -87,16 +87,16 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
   return (
     <div>
       <motion.div
-        className="mx-auto mb-10 max-w-3xl text-center"
+        className="mx-auto mb-8 max-w-3xl text-left sm:mb-10 sm:text-center"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="h2-section mx-auto">
+        <h2 className="h2-section sm:mx-auto">
           Works with the tools you already have.
         </h2>
-        <p className="lede mx-auto">
+        <p className="lede sm:mx-auto">
           If it has an API, a trooper can reach it.
         </p>
       </motion.div>

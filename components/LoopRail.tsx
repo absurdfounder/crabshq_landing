@@ -236,7 +236,7 @@ export default function LoopRail({ items, totalCount }: LoopRailProps) {
   return (
     <div>
       <motion.div
-        className="mx-auto mb-6 max-w-3xl text-center md:mb-8"
+        className="mx-auto mb-5 max-w-3xl text-left sm:mb-8 sm:text-center md:mb-8"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}

@@ -339,7 +339,7 @@ export default function KnowledgeOrb() {
       role="button"
       tabIndex={0}
       aria-label="Interactive company knowledge orb. Drag to rotate, use arrow keys, or use Home and End for rotation presets."
-      className="gl-knowledge-orb relative isolate flex size-full min-h-[20rem] touch-none items-center justify-center overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-pink-500/45 focus-visible:ring-inset active:cursor-grabbing"
+      className="gl-knowledge-orb relative isolate flex size-full min-h-0 touch-none items-center justify-center overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-pink-500/45 focus-visible:ring-inset active:cursor-grabbing"
       onPointerDown={(e) => {
         if (dragRef.current || (e.pointerType === 'mouse' && e.button !== 0)) return;
         setGrabbing(true);
@@ -390,12 +390,12 @@ export default function KnowledgeOrb() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[min(160%,108%)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        className="pointer-events-none absolute top-1/2 left-1/2 hidden aspect-square w-[min(118%,100%)] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 lg:block"
         style={{ border: '1px solid color-mix(in srgb, var(--color-line) 82%, #737373)' }}
       />
 
       <div
-        className={`relative aspect-square max-h-[min(100%,440px)] w-[min(92%,440px)] shrink-0 transition-transform duration-500 ${
+        className={`relative aspect-square h-[min(100%,440px)] w-auto max-w-[min(92%,440px)] shrink-0 transition-transform duration-500 ${
           grabbing ? 'cursor-grabbing' : 'cursor-grab'
         }`}
       >

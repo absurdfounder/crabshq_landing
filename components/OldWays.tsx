@@ -284,8 +284,32 @@ function OrgVisual({ focused }: { focused: boolean }) {
   return (
     // Soft-crop panel like Gumloop: overflow clipped, bottom + right fades.
     <div className="relative h-[380px] overflow-hidden bg-white sm:h-[420px] lg:h-[460px]">
-      <div className="flex h-full min-h-0">
-        <aside className="flex w-[68px] shrink-0 flex-col items-stretch gap-1 overflow-hidden border-r border-black/[0.06] bg-[#f6f7f8] p-1.5 sm:w-[72px]">
+      <div className="flex h-full min-h-0 flex-col sm:flex-row">
+        {/* Mobile: horizontal agent tabs — sidebar would crush the content pane. */}
+        <div className="flex shrink-0 gap-1 overflow-x-auto border-b border-black/[0.06] bg-[#f6f7f8] px-2 py-2 scrollbar-hide sm:hidden">
+          {ORG_AGENT_PAGES.map((p) => {
+            const active = p.id === tab;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                aria-label={`Preview ${p.title}`}
+                aria-pressed={active}
+                onClick={() => setTab(p.id)}
+                className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
+                  active
+                    ? 'bg-white text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.06]'
+                    : 'text-neutral-500 hover:bg-white/70 hover:text-neutral-700'
+                }`}
+              >
+                <AgentAv handle={p.handle} size={22} />
+                {p.id}
+              </button>
+            );
+          })}
+        </div>
+
+        <aside className="hidden w-[68px] shrink-0 flex-col items-stretch gap-1 overflow-hidden border-r border-black/[0.06] bg-[#f6f7f8] p-1.5 sm:flex sm:w-[72px]">
           {ORG_AGENT_PAGES.map((p) => {
             const active = p.id === tab;
             return (
@@ -310,7 +334,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
           })}
         </aside>
 
-        <div className="min-w-0 flex-1 overflow-hidden px-4 py-4 sm:px-5 sm:py-5">
+        <div className="min-w-0 flex-1 overflow-hidden px-3 py-3.5 sm:px-5 sm:py-5">
           <div className="flex items-start gap-3">
             <AgentAv handle={page.handle} size={44} live={focused} animation="listening" />
             <div className="min-w-0 flex-1">
@@ -575,13 +599,163 @@ const MEMORY_ROWS = [
   },
 ] as const;
 
-const GRAPH_NODES = [
-  { id: 'org', label: 'Org', kind: 'entity' as const, x: 50, y: 50, hit: false },
-  { id: 'refunds', label: 'Refunds', kind: 'memory' as const, x: 18, y: 28, hit: true },
-  { id: 'policy', label: 'Q3 policy', kind: 'memory' as const, x: 22, y: 72, hit: true },
-  { id: 'vanta', label: 'Vanta', kind: 'entity' as const, x: 78, y: 24, hit: false },
-  { id: 'thread', label: 'This chat', kind: 'context' as const, x: 76, y: 70, hit: true },
-];
+/** Query → Answer knowledge graph — circular nodes + labeled edges (reference style). */
+function MemoryConnectionGraph({ lit }: { lit: boolean }) {
+  return (
+    <svg
+      className="mx-auto h-full min-h-[180px] w-full max-w-md flex-1"
+      viewBox="0 0 360 220"
+      fill="none"
+      aria-hidden
+    >
+      <defs>
+        <marker
+          id="ow-mem-arrow"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M1 1 L9 5 L1 9 Z" fill="#7c6bb5" />
+        </marker>
+        <marker
+          id="ow-mem-arrow-gold"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M1 1 L9 5 L1 9 Z" fill="#c4a035" />
+        </marker>
+        <pattern id="ow-mem-dots" width="12" height="12" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.8" fill="#d4d4d8" />
+        </pattern>
+      </defs>
+
+      <rect width="360" height="220" fill="url(#ow-mem-dots)" opacity="0.55" />
+
+      {/* Edges */}
+      <g
+        className={lit ? 'ow-graph-edge-on' : 'ow-graph-edge-off'}
+        strokeLinecap="round"
+        markerEnd="url(#ow-mem-arrow)"
+      >
+        <path
+          d="M78 108 C 95 70, 110 58, 128 52"
+          stroke="#c4a035"
+          strokeWidth="1.6"
+          fill="none"
+          markerEnd="url(#ow-mem-arrow-gold)"
+        />
+        <path d="M78 118 L 168 112" stroke="#b7a8d9" strokeWidth="1.35" fill="none" />
+        <path d="M148 58 L 172 100" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
+        <path
+          d="M158 48 C 200 28, 240 36, 248 58"
+          stroke="#cfc6e6"
+          strokeWidth="1.1"
+          fill="none"
+          opacity={lit ? 0.85 : 0.4}
+        />
+        <path d="M198 112 L 248 100" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
+        <path d="M188 128 L 198 162" stroke="#a898d0" strokeWidth="1.35" fill="none" />
+        <path d="M258 112 L 210 162" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
+        <path d="M230 172 L 290 172" stroke="#8b7cc0" strokeWidth="1.7" fill="none" />
+      </g>
+
+      {/* Edge labels */}
+      <g
+        className={lit ? 'opacity-100' : 'opacity-40'}
+        style={{ fontSize: '9px', fontWeight: 500 }}
+      >
+        <text x="98" y="68" fill="#b8952e">
+          works at
+        </text>
+        <text x="152" y="82" fill="#7c6bb5">
+          colleague
+        </text>
+        <text x="210" y="98" fill="#7c6bb5">
+          uses tool
+        </text>
+        <text x="168" y="152" fill="#7c6bb5">
+          likes topic
+        </text>
+        <text x="232" y="148" fill="#7c6bb5">
+          likes topic
+        </text>
+      </g>
+
+      {/* Query pill */}
+      <g className={lit ? 'ow-graph-node-on' : undefined}>
+        <rect x="18" y="100" width="58" height="28" rx="14" fill="#f5e6a3" />
+        <text
+          x="47"
+          y="118"
+          textAnchor="middle"
+          fill="#1c1917"
+          style={{ fontSize: '11px', fontWeight: 600 }}
+        >
+          Query
+        </text>
+      </g>
+
+      {/* Circular nodes */}
+      {(
+        [
+          { cx: 142, cy: 48, r: 16, strong: true },
+          { cx: 182, cy: 112, r: 18, strong: true },
+          { cx: 262, cy: 96, r: 16, strong: true },
+          { cx: 204, cy: 168, r: 16, strong: true },
+          { cx: 256, cy: 52, r: 11, strong: false },
+        ] as const
+      ).map((n, i) => (
+        <g key={i} className={lit && n.strong ? 'ow-graph-node-on' : undefined} opacity={n.strong || lit ? 1 : 0.45}>
+          <circle
+            cx={n.cx}
+            cy={n.cy}
+            r={n.r}
+            fill={n.strong ? '#e8e0f5' : '#f3f0f8'}
+            stroke={n.strong ? '#9b8bc9' : '#d4cce6'}
+            strokeWidth="1.25"
+          />
+          <circle
+            cx={n.cx}
+            cy={n.cy}
+            r={n.r * 0.55}
+            fill={n.strong ? '#c4b5e0' : '#e4dcf0'}
+          />
+          <circle cx={n.cx} cy={n.cy} r={n.r * 0.22} fill={n.strong ? '#5b4a8a' : '#9b8bc9'} />
+        </g>
+      ))}
+
+      {/* Answer pill */}
+      <g className={lit ? 'ow-graph-node-on' : undefined}>
+        <rect
+          x="288"
+          y="158"
+          width="58"
+          height="28"
+          rx="14"
+          fill={lit ? '#ddd6f3' : '#ebe6f5'}
+          stroke="#b7a8d9"
+          strokeWidth="1"
+        />
+        <text
+          x="317"
+          y="176"
+          textAnchor="middle"
+          fill="#1c1917"
+          style={{ fontSize: '11px', fontWeight: 600 }}
+        >
+          Answer
+        </text>
+      </g>
+    </svg>
+  );
+}
 
 function MemoryVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, MEMORY_DELAYS);
@@ -714,88 +888,19 @@ function MemoryVisual({ focused }: { focused: boolean }) {
           </div>
         ) : (
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-black/[0.06] bg-[#fafafa]">
-            <svg
-              className="mx-auto h-full min-h-[180px] w-full max-w-md flex-1"
-              viewBox="0 0 320 200"
-              fill="none"
-              aria-hidden
-            >
-              {/* Base edges */}
-              <g stroke="#e5e5e5" strokeWidth="1.25" strokeLinecap="round">
-                <line x1="160" y1="100" x2="64" y2="48" />
-                <line x1="160" y1="100" x2="72" y2="156" />
-                <line x1="160" y1="100" x2="256" y2="44" />
-                <line x1="64" y1="48" x2="248" y2="152" />
-                <line x1="72" y1="156" x2="248" y2="152" />
-              </g>
-              {/* Hit edges — draw on once lit */}
-              <g
-                stroke="#16a34a"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                className={graphLit ? 'ow-graph-edge-on' : 'ow-graph-edge-off'}
-              >
-                <line x1="64" y1="48" x2="248" y2="152" />
-                <line x1="72" y1="156" x2="248" y2="152" />
-                <line x1="64" y1="48" x2="72" y2="156" />
-                <line x1="160" y1="100" x2="64" y2="48" />
-                <line x1="160" y1="100" x2="72" y2="156" />
-              </g>
-              {GRAPH_NODES.map((n) => {
-                const lit = graphLit && n.hit;
-                const cx = (n.x / 100) * 320;
-                const cy = (n.y / 100) * 200;
-                const fill =
-                  n.kind === 'context' && lit
-                    ? '#171717'
-                    : n.kind === 'memory' && lit
-                      ? '#f0fdf4'
-                      : '#ffffff';
-                const stroke =
-                  n.kind === 'memory' && lit
-                    ? '#16a34a'
-                    : n.kind === 'context' && lit
-                      ? '#171717'
-                      : '#e5e5e5';
-                const text =
-                  n.kind === 'context' && lit ? '#ffffff' : lit ? '#166534' : '#525252';
-                return (
-                  <g key={n.id} className={lit ? 'ow-graph-node-on' : undefined}>
-                    <rect
-                      x={cx - 36}
-                      y={cy - 12}
-                      width="72"
-                      height="24"
-                      rx="6"
-                      fill={fill}
-                      stroke={stroke}
-                      strokeWidth="1.25"
-                    />
-                    <text
-                      x={cx}
-                      y={cy + 4}
-                      textAnchor="middle"
-                      fill={text}
-                      style={{ fontSize: '10px', fontWeight: 600 }}
-                    >
-                      {n.label}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
+            <MemoryConnectionGraph lit={graphLit} />
             <div className="flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] px-3 py-2">
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-white ring-1 ring-black/15" />
-                Entities
+                <span className="size-2 rounded-full bg-[#f5e6a3] ring-1 ring-[#c4a035]/40" />
+                Query
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-ok-200 ring-1 ring-ok-300" />
-                Memories
+                <span className="size-2 rounded-full bg-[#c4b5e0] ring-1 ring-[#8b7cc0]/50" />
+                Relations
               </span>
               <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-sm bg-ink ring-1 ring-ink" />
-                Context
+                <span className="size-2 rounded-full bg-[#ddd6f3] ring-1 ring-[#b7a8d9]/60" />
+                Answer
               </span>
             </div>
           </div>
@@ -1018,7 +1123,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
   }, [agentMarked, reduceMotion]);
 
   return (
-    <div className="relative flex h-[22rem] w-full flex-col overflow-visible sm:h-[26rem]">
+    <div className="relative flex h-[22rem] w-full min-w-0 flex-col overflow-x-clip overflow-y-visible sm:h-[26rem] lg:overflow-visible">
       {/* Cool canvas stage — monochrome like Gumloop product frames, not olive wash */}
       <div
         className="absolute inset-0 overflow-hidden bg-[#f3f4f6]"
@@ -1032,9 +1137,9 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
         aria-hidden
       />
 
-      <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-visible p-3 sm:p-4 sm:pr-10">
-        {/* Preview chrome — overflow visible so the agent tooltip can float out */}
-        <div className="relative w-full max-w-[22rem] overflow-visible sm:max-w-[24rem]">
+      <div className="relative z-[1] flex min-h-0 flex-1 items-center justify-center overflow-x-clip overflow-y-visible p-3 pr-8 sm:overflow-visible sm:p-4 sm:pr-10">
+        {/* Preview chrome — tooltip stays inside on mobile; floats out from lg up */}
+        <div className="relative w-full max-w-[22rem] overflow-x-clip sm:max-w-[24rem] lg:overflow-visible">
           <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_20px_48px_-20px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.08]">
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1095,16 +1200,16 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
                 </svg>
               </div>
 
-              <div className="absolute inset-x-0 bottom-2.5 z-20 flex justify-center px-3">
+              <div className="absolute inset-x-0 bottom-2.5 z-20 flex justify-center px-2.5 sm:px-3">
                 <div
-                  className={`inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-[11px] font-medium shadow-md ring-1 backdrop-blur-md transition-colors duration-300 ${
+                  className={`inline-flex max-w-full items-center gap-1.5 rounded-full px-2 py-1.5 text-[10px] font-medium shadow-md ring-1 backdrop-blur-md transition-colors duration-300 sm:gap-2 sm:px-2.5 sm:text-[11px] ${
                     fnDown
                       ? 'bg-neutral-900/90 text-white ring-white/10'
                       : 'bg-white/90 text-neutral-700 ring-black/10'
                   }`}
                 >
                   <kbd
-                    className={`inline-flex h-5 min-w-[1.65rem] items-center justify-center rounded-[5px] px-1 font-mono text-[10px] font-bold tracking-wide ring-1 transition-colors ${
+                    className={`inline-flex h-5 min-w-[1.65rem] shrink-0 items-center justify-center rounded-[5px] px-1 font-mono text-[10px] font-bold tracking-wide ring-1 transition-colors ${
                       fnDown
                         ? 'bg-ink text-white ring-ink shadow-[0_0_0_3px_rgba(23,23,23,0.18)]'
                         : 'bg-neutral-100 text-neutral-800 ring-neutral-200'
@@ -1112,31 +1217,30 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
                   >
                     Fn
                   </kbd>
-                  <span>
+                  <span className="min-w-0 text-left leading-snug">
                     {!fnDown
-                      ? 'Click Fn to mark on screen'
+                      ? 'Hold Fn to mark'
                       : userMarking && !agentMarked
-                        ? 'Outline what you want explained…'
+                        ? 'Outline to explain…'
                         : agentMarked
-                          ? 'Trooper marked it for you'
-                          : 'Marking mode on'}
+                          ? 'Trooper marked it'
+                          : 'Marking on'}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Agent tooltip — Clippy-style character + label */}
+          {/* Agent tooltip — inside frame on mobile; floats beside from sm up */}
           <div
-            className={`pointer-events-none absolute z-30 flex w-[12.5rem] items-start gap-1.5 transition-all duration-300 ease-out sm:w-[13.5rem] ${
+            className={`pointer-events-none absolute z-30 flex w-[10.5rem] items-start gap-1.5 transition-all duration-300 ease-out sm:w-[12.5rem] lg:w-[13.5rem] ${
               agentMarked
                 ? 'translate-x-0 opacity-100'
                 : 'translate-x-1 opacity-0'
-            }`}
-            style={{ left: '68%', top: '18%' }}
+            } right-1.5 top-[12%] sm:right-auto sm:left-[62%] sm:top-[16%] lg:left-[68%] lg:top-[18%]`}
           >
             <span className="mt-1 shrink-0 drop-shadow-[0_8px_18px_rgba(0,0,0,0.18)]">
-              <AgentAv handle="scout" size={40} live={agentMarked} animation="curious" />
+              <AgentAv handle="scout" size={36} live={agentMarked} animation="curious" />
             </span>
             <div className="relative min-w-0 flex-1">
               <span className="absolute -left-1.5 top-3 h-0 w-0 border-y-[6px] border-r-[7px] border-y-transparent border-r-[#b87a28]" />
@@ -1457,7 +1561,7 @@ export default function OldWays() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-16 sm:gap-20 lg:gap-28">
+    <div className="flex flex-col gap-10 sm:gap-16 lg:gap-24">
       {cards.map((card, i) => {
         const visualFirst = i % 2 === 1;
         const dimmed = active >= 0 && i !== active;
@@ -1470,7 +1574,7 @@ export default function OldWays() {
               rowRefs.current[i] = el;
             }}
             className={[
-              'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
+              'grid min-w-0 max-lg:overflow-x-clip items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
               // Soft fade on mobile (no blur); desktop keeps the stronger stage light.
               dimmed
                 ? 'opacity-[0.45] max-lg:opacity-[0.55] lg:opacity-[0.42]'
@@ -1545,7 +1649,9 @@ export default function OldWays() {
               {/* Gumloop soft-crop: flush product panel, no traffic-light toy chrome */}
               <div
                 className={`ow-product-panel ${
-                  card.overflowVisible ? 'overflow-visible' : 'overflow-hidden'
+                  card.overflowVisible
+                    ? 'overflow-x-clip lg:overflow-visible'
+                    : 'overflow-hidden'
                 }`}
               >
                 {card.screen ? (

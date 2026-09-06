@@ -16,7 +16,8 @@
     "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,industry,alternative,channel,loop,compare,showcase,legacy-integration",
     "sync:demo-assets": "rm -rf public/demo && mkdir -p public/demo && cp -r packages/demo/assets/* public/demo/",
     "characters:export": "node scripts/export-cast-svgs.mjs",
-    "characters:build": "cd vendor/bible-strong-avatar-lab && ./node_modules/.bin/vite build --base /character-studio/ --outDir ../../public/character-studio"
+    "characters:build": "cd vendor/bible-strong-avatar-lab && ./node_modules/.bin/vite build --base /character-studio/ --outDir ../../public/character-studio",
+    "characters:presets": "node scripts/generate-character-presets.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

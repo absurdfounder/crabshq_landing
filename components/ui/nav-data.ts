@@ -42,7 +42,14 @@ export type NavItem = {
 }
 
 export const featureNavItems: NavItem[] = [
-  { href: '/characters', title: 'Character Builder', description: 'Design animated agent characters with eyes & motion', icon: Palette, iconColor: 'text-rose-500', bgColor: 'bg-rose-50' },
+  {
+    href: '/characters',
+    title: 'Character Builder',
+    description: 'Pick ready-made looks and theme styles for your virtual team',
+    icon: Palette,
+    iconColor: 'text-rose-500',
+    bgColor: 'bg-rose-50',
+  },
   { href: '/features/ai-workforce', title: 'AI Workforce', description: 'Multiple AI employees working together', icon: Users, iconColor: 'text-purple-500', bgColor: 'bg-purple-50' },
   { href: '/features/github-integration', title: 'GitHub Integration', description: 'Autonomous commits, PRs, and code reviews', icon: Github, iconColor: 'text-slate-700', bgColor: 'bg-slate-50' },
   { href: '/features/task-execution', title: 'Task Execution', description: 'End-to-end task completion, not just answers', icon: CheckCircle, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },

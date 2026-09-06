@@ -268,7 +268,7 @@ export function BubbleExchange({
   };
 
   return (
-    <div className={`flex flex-col items-start gap-4 ${className}`}>
+    <div className={`flex w-full min-w-0 flex-col items-start gap-3 sm:gap-4 ${className}`}>
       <ChatBubble
         key={`ask-${cycle}`}
         kind="ask"
@@ -280,10 +280,15 @@ export function BubbleExchange({
         {ask}
       </ChatBubble>
       {replyOn && focused ? (
-        <div className="flex items-end gap-2.5">
+        <div className="flex max-w-full items-end gap-2 sm:gap-2.5">
           {agent ? (
             <span className="mb-0.5 shrink-0 drop-shadow-[0_6px_14px_rgba(0,0,0,0.12)]">
-              <TrooperAvatar trooper={agent} size={44} live animation="happy" />
+              <span className="sm:hidden">
+                <TrooperAvatar trooper={agent} size={36} live animation="happy" />
+              </span>
+              <span className="hidden sm:inline-flex">
+                <TrooperAvatar trooper={agent} size={44} live animation="happy" />
+              </span>
             </span>
           ) : null}
           <ChatBubble key={`reply-${cycle}`} kind="reply" typing active palette={palette?.reply}>

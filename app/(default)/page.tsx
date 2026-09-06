@@ -70,47 +70,43 @@ export default function Home() {
 
   return (
     <>
-      {/* No page-level overflow clip: it hid misalignment instead of
-          preventing it. The hero keeps a local one for its rotated demo. */}
-      <div>
+      {/* overflow-x-clip stops one misbehaving absolute child from widening the page
+          (same pattern Gumloop/Cursor use) without creating a sticky-breaking scrollport. */}
+      <div className="overflow-x-clip">
       <div className="hero-shell bg-canvas">
         <Header />
         <Hero />
       </div>
 
       <DarkSplitSection>
-        <VoicesSection voices={voices} eyebrowNumber="01" />
+        <VoicesSection voices={voices} />
       </DarkSplitSection>
 
       {/* Ferndesk-style product frame: chat + board coordination after social proof.
           Owns its own section so the dither demo band can run edge-to-edge. */}
       <DashboardShowcaseSection />
 
-      <SectionShell rhythm eyebrow="Works with everything" eyebrowNumber="03">
+      <SectionShell rhythm>
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="04">
+      <SectionShell rhythm>
         <CompanyBrainSection />
       </SectionShell>
 
       {/* Orgs / action / memory / workflows / surfaces */}
-      <SectionShell rhythm eyebrowNumber="05">
+      <SectionShell rhythm>
         <OldWays />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="06">
+      <SectionShell rhythm>
         <OptimizeAgentsSection />
       </SectionShell>
 
       {/* Loop APIs — owns its own section so the dither band runs edge-to-edge. */}
       <LoopApiSection />
 
-      <SectionShell
-        rhythm
-        eyebrow="Loops"
-        eyebrowNumber="07"
-      >
+      <SectionShell rhythm>
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
@@ -118,18 +114,18 @@ export default function Home() {
       <MobileChannelsSection />
 
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="09" />
+        <GovernanceSection />
       </DarkSplitSection>
 
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="10">
+      <SectionShell rhythm>
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="11">
+      <SectionShell rhythm>
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="12">
+      <SectionShell rhythm>
         <FAQ />
       </SectionShell>
       </div>

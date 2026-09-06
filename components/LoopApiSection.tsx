@@ -208,18 +208,21 @@ export default function LoopApiSection() {
 
   return (
     <section className="relative bg-canvas">
-      <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
+      <div className="rail border-t border-[var(--color-line)] py-9 sm:py-16 lg:py-20">
+        <p className="mb-5 flex items-baseline justify-start gap-2 text-left sm:mb-7 sm:justify-center sm:text-center">
+          <span className="kicker !inline">Loop API</span>
+        </p>
         <motion.div
-          className="mx-auto w-full max-w-2xl text-center"
+          className="mx-auto w-full max-w-2xl text-left sm:text-center"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section mx-auto">
+          <h2 className="h2-section sm:mx-auto">
             AI agents built <ForBy /> your team
           </h2>
-          <p className="lede mx-auto">
+          <p className="lede sm:mx-auto">
             Publish a loop as an API for your team or an app. Connect another account so tokens
             never run out.
           </p>

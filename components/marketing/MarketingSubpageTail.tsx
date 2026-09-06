@@ -12,21 +12,21 @@ export default function MarketingSubpageTail() {
       {/* GovernanceSection is a dark trust band and renders its own eyebrow —
           it must sit on the dark surface, not inside a white SectionShell. */}
       <DarkSplitSection>
-        <GovernanceSection eyebrowNumber="05" />
+        <GovernanceSection />
       </DarkSplitSection>
 
       {/* `rhythm` is required here, not optional: SimplePricing,
           FounderMessageSection and FAQ no longer pad themselves, so the shell
           owns their vertical spacing on every page that renders them. */}
-      <SectionShell rhythm eyebrow="Deployment Plans" eyebrowNumber="06" bgClass="bg-canvas">
+      <SectionShell rhythm bgClass="bg-canvas">
         <SimplePricing />
       </SectionShell>
 
-      <SectionShell rhythm eyebrowNumber="07" bgClass="bg-canvas">
+      <SectionShell rhythm bgClass="bg-canvas">
         <FounderMessageSection />
       </SectionShell>
 
-      <SectionShell rhythm eyebrow="Intel Brief" eyebrowNumber="08" bgClass="bg-canvas-warm">
+      <SectionShell rhythm bgClass="bg-canvas-warm">
         <FAQ />
       </SectionShell>
     </>

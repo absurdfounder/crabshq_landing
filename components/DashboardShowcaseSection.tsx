@@ -12,27 +12,31 @@ const ease = [0.22, 1, 0.36, 1] as const;
 /**
  * Ferndesk-style product showcase: centered section header, then the live
  * Trooper dashboard on the same dither ground as the old under-hero band.
- * The ground fills the page rail (not the viewport); the dashboard keeps a
- * gutter so the texture shows at the sides.
+ * Mobile gets a flush (non-rotated) demo so the section isn’t text-only.
  */
 export default function DashboardShowcaseSection() {
   return (
     <section className="relative bg-canvas">
-      <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
+      <div className="rail border-t border-[var(--color-line)] py-9 sm:py-16 lg:py-20">
+        <p className="mb-5 flex items-baseline justify-start gap-2 text-left sm:mb-7 sm:justify-center sm:text-center">
+          <span className="font-mono text-[11px] tabular-nums text-ink-faint sm:text-[12px]">02</span>
+          <span className="kicker !inline">Product</span>
+        </p>
         <motion.div
-          className="mx-auto w-full text-center"
+          className="mx-auto w-full min-w-0 text-left sm:text-center"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section mx-auto !max-w-5xl">
+          <h2 className="h2-section mx-auto !max-w-5xl text-balance">
             Message troopers like teammates. Watch them coordinate.
           </h2>
           <p className="lede mx-auto">
-            Give a task in chat. Watch it move across the board. Open any ticket for the full trace.
+            Give a task in chat. Watch it move across the board. Open any ticket for the full
+            trace.
           </p>
-          <div className="mt-6 flex justify-center sm:mt-7">
+          <div className="mt-6 flex justify-start sm:mt-7 sm:justify-center">
             <PixelButton
               href="https://app.trooper.so"
               external
@@ -45,7 +49,22 @@ export default function DashboardShowcaseSection() {
           </div>
         </motion.div>
 
-        {/* Dither card, inset from the rail like Loop API — not a full-bleed stripe. */}
+        {/* Mobile / tablet: flush product frame (no rotate — fits narrow rails). */}
+        <motion.div
+          className="hero-surface mt-9 overflow-hidden rounded-2xl border border-black/[0.06] bg-white lg:hidden"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.06, ease }}
+          viewport={{ once: true, margin: '-40px' }}
+        >
+          <div className="overflow-x-clip overflow-y-hidden rounded-[inherit] px-2 py-4 sm:px-4 sm:py-6">
+            <DeferredMount minHeight={280}>
+              <LazyHeroArticleDemo flush maxHeight={360} />
+            </DeferredMount>
+          </div>
+        </motion.div>
+
+        {/* Desktop: dither card with slight rotate for presence. */}
         <motion.div
           className="hero-surface mt-9 hidden rounded-2xl border border-black/[0.06] bg-white sm:mt-11 lg:block"
           initial={{ opacity: 0, y: 20 }}

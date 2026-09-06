@@ -382,19 +382,19 @@ export function DevicesScene() {
         })}
       </div>
 
-      <div className="flex items-center justify-between border-t border-black/[0.06] bg-[#fafafa]/80 px-3.5 py-2 text-[11px]">
+      <div className="flex items-center justify-between gap-2 border-t border-black/[0.06] bg-[#fafafa]/80 px-3.5 py-2 text-[11px]">
         {phase >= 4 ? (
           <>
-            <span className="inline-flex items-center gap-1.5 font-medium text-ok-800">
-              <Check className="size-3" strokeWidth={2.5} />
-              general-ledger.csv + forecast.pdf ready
+            <span className="inline-flex min-w-0 items-center gap-1.5 truncate font-medium text-ok-800">
+              <Check className="size-3 shrink-0" strokeWidth={2.5} />
+              <span className="truncate">general-ledger.csv ready</span>
             </span>
-            <span className="text-neutral-500">Awaiting phone approval</span>
+            <span className="shrink-0 text-neutral-500">Awaiting approval</span>
           </>
         ) : (
           <>
-            <span className="text-neutral-500">Routing across awake machines…</span>
-            <span className="inline-flex items-center gap-1 font-medium text-ok-800">
+            <span className="min-w-0 truncate text-neutral-500">Routing across machines…</span>
+            <span className="inline-flex shrink-0 items-center gap-1 font-medium text-ok-800">
               Devices
               <ArrowRight className="size-3" strokeWidth={2} />
             </span>

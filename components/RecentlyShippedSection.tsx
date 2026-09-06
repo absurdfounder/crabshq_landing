@@ -5,7 +5,8 @@ import { ArrowRight } from 'lucide-react';
 
 /**
  * Gumloop-style “Recently shipped” timeline — above the footer CTA.
- * Marks are Trooper silhouette colors so the strip reads as product identity.
+ * Mobile: horizontal snap rail (don’t burn vertical scroll).
+ * Desktop: five-up timeline with a hairline rule.
  */
 
 const SHIPPED = [
@@ -97,6 +98,21 @@ function ShipMark({
   }
 }
 
+function ShipCard({ item }: { item: (typeof SHIPPED)[number] }) {
+  return (
+    <>
+      <span className="relative z-[1] mb-3 inline-flex size-3.5 items-center justify-center bg-canvas md:mb-5">
+        <ShipMark color={item.color} shape={item.shape} />
+      </span>
+      <h3 className="text-[15px] font-medium leading-snug tracking-tight text-ink">{item.title}</h3>
+      <p className="mt-2 flex-1 text-[13px] leading-relaxed text-ink-muted">{item.body}</p>
+      <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.06em] text-ink-faint md:mt-4">
+        {item.date}
+      </p>
+    </>
+  );
+}
+
 export default function RecentlyShippedSection() {
   return (
     <div className="w-full">
@@ -109,28 +125,32 @@ export default function RecentlyShippedSection() {
         See what&apos;s new
         <ArrowRight className="h-3 w-3" aria-hidden />
       </Link>
-      <h2 className="h2-section mt-3">Recently shipped</h2>
+      <h2 className="h2-section mt-2 sm:mt-3">Recently shipped</h2>
 
-      <div className="relative mt-10 md:mt-12">
-        {/* Timeline rule */}
+      <div className="relative mt-6 sm:mt-10 md:mt-12">
+        {/* Desktop timeline rule */}
         <div
           aria-hidden
           className="pointer-events-none absolute left-0 right-0 top-[6px] hidden h-px bg-[var(--color-line)] md:block"
         />
 
-        <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-5 md:gap-5">
+        {/* Mobile: horizontal snap rail — saves vertical scroll */}
+        <ul className="scrollbar-hide -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 overscroll-x-contain sm:-mx-6 sm:px-6 md:hidden">
           {SHIPPED.map((item) => (
-            <li key={item.title} className="relative flex flex-col pt-0 md:pt-0">
-              <span className="relative z-[1] mb-4 inline-flex size-3.5 items-center justify-center bg-canvas md:mb-5">
-                <ShipMark color={item.color} shape={item.shape} />
-              </span>
-              <h3 className="text-[15px] font-medium leading-snug tracking-tight text-ink">
-                {item.title}
-              </h3>
-              <p className="mt-2 flex-1 text-[13px] leading-relaxed text-ink-muted">{item.body}</p>
-              <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.06em] text-ink-faint">
-                {item.date}
-              </p>
+            <li
+              key={item.title}
+              className="flex w-[min(72vw,15.5rem)] shrink-0 snap-start flex-col rounded-xl bg-white p-4 ring-1 ring-black/[0.06]"
+            >
+              <ShipCard item={item} />
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop / tablet: multi-column timeline */}
+        <ul className="hidden gap-5 sm:grid-cols-2 md:grid md:grid-cols-5">
+          {SHIPPED.map((item) => (
+            <li key={item.title} className="relative flex flex-col">
+              <ShipCard item={item} />
             </li>
           ))}
         </ul>

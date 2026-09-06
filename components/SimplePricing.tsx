@@ -642,8 +642,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
     /* Vertical rhythm belongs to the SectionShell wrapping this. */
     <div className="w-full">
       <div className="mx-auto max-w-2xl pb-8 text-center max-md:pb-6">
-        <p className="kicker">Pricing</p>
-        <h2 className="h2-section mx-auto mt-3 max-w-[22ch]">Simple pricing, by deployment.</h2>
+        <h2 className="h2-section mx-auto max-w-[22ch]">Simple pricing, by deployment.</h2>
         <p className="lede mx-auto !mt-4 max-w-lg">
           Every plan runs on a private server with your keys. No surprise bills on model usage —
           you pay providers&nbsp;directly.

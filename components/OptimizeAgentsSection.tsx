@@ -141,8 +141,7 @@ export default function OptimizeAgentsSection() {
   return (
     <div className="gl-optimize flex flex-col gap-10 sm:gap-12">
       <div className="flex flex-col">
-        <p className="kicker">Optimize</p>
-        <h2 className="h2-section mt-3">Optimize your troopers</h2>
+        <h2 className="h2-section">Optimize your troopers</h2>
       </div>
 
       {/* Gumloop rhythm: equal square wells, modest gutters — don’t inflate gaps (that narrows columns and squishes art). */}
@@ -261,8 +260,8 @@ function OpenSourceVisual() {
       <ProviderArc providers={LEFT_PROVIDERS} scroll={leftScroll} side="left" />
       <ProviderArc providers={RIGHT_PROVIDERS} scroll={rightScroll} side="right" />
 
-      <div className="pointer-events-none absolute top-1/2 left-1/2 z-40 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center whitespace-nowrap">
-        <span className="text-[12px] font-medium leading-tight text-ink-muted sm:text-[13px]">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-40 flex max-w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center">
+        <span className="text-[11px] font-medium leading-tight text-ink-muted sm:text-[13px]">
           Cost reduction
           <br />
           per task

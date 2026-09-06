@@ -91,10 +91,9 @@ const ACTIVITY = [
 export default function CompanyBrainSection() {
   return (
     <div className="gl-company-brain w-full">
-      <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-        <p className="kicker">Company brain</p>
-        <h2 className="h2-section mt-3">Complete context on your company</h2>
-        <p className="lede mx-auto max-w-lg">
+      <div className="mx-auto flex max-w-2xl flex-col items-start text-left sm:items-center sm:text-center">
+        <h2 className="h2-section">Complete context on your company</h2>
+        <p className="lede mt-3 max-w-lg sm:mx-auto">
           <span className="block">
             Your company knowledge, the skills your team runs on, and live context from every tool
           </span>
@@ -102,18 +101,19 @@ export default function CompanyBrainSection() {
         </p>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2 lg:grid-rows-2 lg:min-h-[40rem]">
-        <article className="flex min-h-[32rem] min-w-0 flex-col rounded-md border border-[var(--color-line)] bg-white lg:row-span-2 lg:min-h-0">
-          <div className="relative h-[22rem] w-full shrink-0 overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] lg:h-auto lg:min-h-0 lg:flex-1">
-            <div className="absolute inset-0">
+      {/* Mobile: shorter knowledge well so the bento doesn’t dominate the scroll. */}
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-5 lg:grid-cols-2 lg:grid-rows-2 lg:min-h-[40rem]">
+        <article className="flex min-w-0 flex-col rounded-md border border-[var(--color-line)] bg-white lg:row-span-2 lg:min-h-0">
+          <div className="relative h-[14.5rem] w-full shrink-0 overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] sm:h-[18rem] lg:h-auto lg:min-h-0 lg:flex-1">
+            <div className="absolute inset-0 flex items-center justify-center">
               <KnowledgeOrb />
             </div>
           </div>
-          <div className="flex shrink-0 flex-col justify-end gap-2 p-6">
-            <h3 className="font-display text-xl font-medium leading-tight tracking-tight text-ink">
+          <div className="flex shrink-0 flex-col justify-end gap-1.5 p-5 sm:gap-2 sm:p-6">
+            <h3 className="font-display text-lg font-medium leading-tight tracking-tight text-ink sm:text-xl">
               Company knowledge
             </h3>
-            <p className="text-[15px] leading-relaxed text-ink-muted">
+            <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
               Connect your team&apos;s shared knowledge into a centralized, always up-to-date brain
               agents and humans can use.
             </p>
@@ -121,29 +121,31 @@ export default function CompanyBrainSection() {
         </article>
 
         <article className="flex min-w-0 flex-col-reverse rounded-md border border-[var(--color-line)] bg-white sm:flex-row">
-          <div className="flex shrink-0 basis-auto flex-col justify-end gap-2 p-6 sm:basis-2/5">
-            <h3 className="font-display text-xl font-medium leading-tight tracking-tight text-ink">Skills</h3>
-            <p className="text-[15px] leading-relaxed text-ink-muted">
+          <div className="flex shrink-0 basis-auto flex-col justify-end gap-1.5 p-5 sm:basis-2/5 sm:gap-2 sm:p-6">
+            <h3 className="font-display text-lg font-medium leading-tight tracking-tight text-ink sm:text-xl">
+              Skills
+            </h3>
+            <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
               Agents write their own playbooks, self-improve, and even run their own code to
               complete tasks the exact way your team needs.
             </p>
           </div>
-          <div className="relative min-h-[16rem] min-w-0 flex-1 overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] sm:rounded-t-none sm:rounded-r-[inherit]">
+          <div className="relative min-h-[13rem] min-w-0 flex-1 overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] sm:min-h-[16rem] sm:rounded-t-none sm:rounded-r-[inherit]">
             <SkillsVisual />
           </div>
         </article>
 
         <article className="flex min-w-0 flex-col-reverse rounded-md border border-[var(--color-line)] bg-white sm:flex-row">
-          <div className="flex shrink-0 basis-auto flex-col justify-end gap-2 p-6 sm:basis-2/5">
-            <h3 className="font-display text-xl font-medium leading-tight tracking-tight text-ink">
+          <div className="flex shrink-0 basis-auto flex-col justify-end gap-1.5 p-5 sm:basis-2/5 sm:gap-2 sm:p-6">
+            <h3 className="font-display text-lg font-medium leading-tight tracking-tight text-ink sm:text-xl">
               Live activity
             </h3>
-            <p className="text-[15px] leading-relaxed text-ink-muted">
+            <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
               See what apps and skills your team uses most frequently, and which agents did what,
               when.
             </p>
           </div>
-          <div className="relative flex min-h-[16rem] min-w-0 flex-1 items-stretch overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] p-3 sm:rounded-t-none sm:rounded-r-[inherit]">
+          <div className="relative flex min-h-[13rem] min-w-0 flex-1 items-stretch overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] p-3 sm:min-h-[16rem] sm:rounded-t-none sm:rounded-r-[inherit]">
             <div className="relative min-h-0 w-full overflow-hidden rounded-md bg-white ring-1 ring-black/[0.04]">
               <LiveActivityFeed />
             </div>
