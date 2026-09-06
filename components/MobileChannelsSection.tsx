@@ -704,15 +704,16 @@ function PhonePair() {
   return (
     <div
       ref={rootRef}
-      className="relative flex w-full max-w-full flex-row items-end justify-center gap-2.5 sm:gap-5 lg:gap-6"
+      className="relative mx-auto flex w-full max-w-[22rem] flex-row items-end justify-center gap-3 sm:max-w-[28rem] sm:gap-5 lg:mx-0 lg:max-w-none lg:justify-end lg:gap-6"
       aria-label="iMessage chat and Trooper app on iPhone"
     >
-      <div className="w-[min(46%,10.5rem)] min-w-0 sm:w-auto sm:max-w-[210px] sm:flex-none">
+      {/* Fixed widths — never w-auto with aspect-[9/19.4] or phones collapse into pills. */}
+      <div className="w-[48%] max-w-[168px] shrink-0 sm:w-[220px] sm:max-w-[220px]">
         <PhoneDevice screenBg="#ffffff" label="iMessage">
           <ImessageScreen play={play} />
         </PhoneDevice>
       </div>
-      <div className="w-[min(46%,10.5rem)] min-w-0 sm:w-auto sm:max-w-[210px] sm:flex-none">
+      <div className="w-[48%] max-w-[168px] shrink-0 sm:w-[220px] sm:max-w-[220px]">
         <PhoneDevice screenBg="#0c0b09" label="Trooper app">
           <TrooperAppScreen play={play} />
         </PhoneDevice>
