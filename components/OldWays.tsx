@@ -21,7 +21,7 @@ import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { getTrooper } from '@/lib/troopers';
 import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
-import TrooperMark from './ui/TrooperMark';
+import TrooperAvatar from './ui/TrooperAvatar';
 import {
   BrowserScene,
   DesktopScene,
@@ -85,12 +85,29 @@ const AGENT_ROSTER = [
     handle: 'pip' as const,
     kind: 'specialist' as const,
   },
+  {
+    name: 'Rex',
+    role: 'Calls',
+    handle: 'rex' as const,
+    kind: 'specialist' as const,
+  },
 ];
 
-function AgentAv({ handle, size = 36 }: { handle: (typeof AGENT_ROSTER)[number]['handle']; size?: number }) {
+function AgentAv({
+  handle,
+  size = 36,
+  live = false,
+  animation = 'idle',
+}: {
+  handle: (typeof AGENT_ROSTER)[number]['handle'];
+  size?: number;
+  /** Procedural animation — only for the focused agent face. */
+  live?: boolean;
+  animation?: string;
+}) {
   const trooper = getTrooper(handle);
   if (!trooper) return null;
-  return <TrooperMark trooper={trooper} size={size} />;
+  return <TrooperAvatar trooper={trooper} size={size} live={live} animation={animation} />;
 }
 
 /** Advance a staged simulation while the capability row is focused. */
@@ -236,7 +253,7 @@ const ORG_AGENT_PAGES: OrgAgentPage[] = [
   },
   {
     id: 'Calls',
-    handle: 'nova',
+    handle: 'rex',
     title: 'Call Analysis Agent',
     blurb: 'Scores calls, extracts objections, and queues follow-ups.',
     model: 'Kimi K2.6',
@@ -284,8 +301,8 @@ function OrgVisual({ focused }: { focused: boolean }) {
                     : 'text-neutral-400 hover:bg-white/70 hover:text-neutral-600'
                 }`}
               >
-                <span className="flex size-7 items-center justify-center">
-                  <AgentAv handle={p.handle} size={active ? 24 : 20} />
+                <span className="flex size-10 items-center justify-center overflow-visible">
+                  <AgentAv handle={p.handle} size={active ? 32 : 28} />
                 </span>
                 <span className="text-[10px] font-medium leading-none">{p.id}</span>
               </button>
@@ -295,7 +312,7 @@ function OrgVisual({ focused }: { focused: boolean }) {
 
         <div className="min-w-0 flex-1 overflow-hidden px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex items-start gap-3">
-            <AgentAv handle={page.handle} size={36} />
+            <AgentAv handle={page.handle} size={44} live={focused} animation="listening" />
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold tracking-tight text-ink">{page.title}</p>
               <p className="mt-0.5 text-[12px] leading-snug text-neutral-500">{page.blurb}</p>
@@ -304,10 +321,10 @@ function OrgVisual({ focused }: { focused: boolean }) {
                   <Sparkles className="size-2.5 text-neutral-400" strokeWidth={2} aria-hidden />
                   {page.model}
                 </span>
-                <div className="flex -space-x-1.5">
+                <div className="flex -space-x-2">
                   {ORG_AGENT_PAGES.slice(0, 4).map((p) => (
-                    <span key={p.id} className="inline-flex rounded-full ring-2 ring-white">
-                      <AgentAv handle={p.handle} size={18} />
+                    <span key={p.id} className="inline-flex overflow-visible">
+                      <AgentAv handle={p.handle} size={26} />
                     </span>
                   ))}
                 </div>
@@ -1054,7 +1071,7 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
                   rx="52"
                   ry="48"
                   fill="none"
-                  stroke="#16a34a"
+                  stroke="#b87a28"
                   strokeWidth="2.25"
                   strokeDasharray="5 3.5"
                   pathLength={100}
@@ -1109,18 +1126,21 @@ function ScreenContextVisual({ focused }: { focused: boolean }) {
             </div>
           </div>
 
-          {/* Agent tooltip — outside Preview overflow so it can float over the desktop */}
+          {/* Agent tooltip — Clippy-style character + label */}
           <div
-            className={`pointer-events-none absolute z-30 w-[10.5rem] transition-all duration-300 ease-out sm:w-[11.5rem] ${
+            className={`pointer-events-none absolute z-30 flex w-[12.5rem] items-start gap-1.5 transition-all duration-300 ease-out sm:w-[13.5rem] ${
               agentMarked
                 ? 'translate-x-0 opacity-100'
                 : 'translate-x-1 opacity-0'
             }`}
-            style={{ left: '72%', top: '22%' }}
+            style={{ left: '68%', top: '18%' }}
           >
-            <div className="relative">
-              <span className="absolute -left-1.5 top-3 h-0 w-0 border-y-[6px] border-r-[7px] border-y-transparent border-r-[#16a34a]" />
-              <div className="rounded-[8px] bg-[#16a34a] px-2.5 py-1.5 text-white shadow-[0_10px_28px_-10px_rgba(22,163,74,0.65)] ring-1 ring-black/10">
+            <span className="mt-1 shrink-0 drop-shadow-[0_8px_18px_rgba(0,0,0,0.18)]">
+              <AgentAv handle="scout" size={40} live={agentMarked} animation="curious" />
+            </span>
+            <div className="relative min-w-0 flex-1">
+              <span className="absolute -left-1.5 top-3 h-0 w-0 border-y-[6px] border-r-[7px] border-y-transparent border-r-[#b87a28]" />
+              <div className="rounded-[8px] bg-[#b87a28] px-2.5 py-1.5 text-white shadow-[0_10px_28px_-10px_rgba(184,122,40,0.55)] ring-1 ring-black/10">
                 <p className="min-h-[11px] text-[11px] font-semibold leading-none tracking-tight">
                   {typedTitle}
                   {agentMarked && typedTitle.length < SC_LABEL_TITLE.length ? (
@@ -1222,6 +1242,8 @@ type CapabilityCard = {
   tag: string;
   ask: string;
   reply: string;
+  /** Cast handle for the Clippy-style reply character. */
+  agentHandle?: 'rex' | 'nova' | 'scout' | 'pip' | 'wren';
   window: string;
   title: string;
   highlight?: string;
@@ -1248,6 +1270,7 @@ const cards: CapabilityCard[] = [
     tag: 'AI organizations',
     ask: 'trooper, I need a growth team on this launch',
     reply: 'on it. spinning up 3 troopers',
+    agentHandle: 'nova',
     window: 'Agents',
     title: 'AI organizations, not',
     highlight: 'single-purpose agents.',
@@ -1261,6 +1284,7 @@ const cards: CapabilityCard[] = [
     tag: 'Action, not answers',
     ask: 'trooper, ship the og-image fix to prod',
     reply: 'on it!',
+    agentHandle: 'rex',
     window: 'Task run — wonder.so',
     title: 'AI that takes',
     highlight: 'action, not just questions.',
@@ -1273,6 +1297,7 @@ const cards: CapabilityCard[] = [
     tag: 'Infinite memory',
     ask: 'trooper, what did we decide on refunds last month?',
     reply: 'pulling it from memory',
+    agentHandle: 'pip',
     window: 'Memory — Adaptive Memory',
     title: 'Persistent memory across',
     highlight: 'tasks, projects, and time.',
@@ -1285,6 +1310,7 @@ const cards: CapabilityCard[] = [
     tag: 'Workflows',
     ask: 'trooper, run the refund playbook for Acme',
     reply: 'on it. following the SOP',
+    agentHandle: 'wren',
     window: 'Workflow — Refund playbook',
     title: 'Workflows you define.',
     highlight: 'Reliable decisions, every time.',
@@ -1297,6 +1323,7 @@ const cards: CapabilityCard[] = [
     tag: 'Screen context',
     ask: "trooper, what's this muscle called?",
     reply: 'deltoid. it lifts your arm',
+    agentHandle: 'scout',
     window: 'Screen — studio-mac',
     title: 'Use your screen as context.',
     highlight: 'Hold Fn. Mark. Ask.',
@@ -1313,6 +1340,7 @@ const cards: CapabilityCard[] = [
     tag: 'Video editor',
     ask: 'trooper, cut the fillers and pull the highlights',
     reply: 'on it. opening the editor',
+    agentHandle: 'wren',
     window: 'Editor — Demo Project',
     title: 'AI video editor,',
     highlight: 'not a timeline grind.',
@@ -1324,12 +1352,14 @@ const cards: CapabilityCard[] = [
     cta: { label: 'Get started free', href: 'https://app.trooper.so?ref=video-editor', external: true },
   },
   // Desktop / browser / devices — same rhythm as the rows above, not a second section.
-  ...WORK_SURFACES.map((surface) => {
+  ...WORK_SURFACES.map((surface, i) => {
     const Scene = WORK_SCENE[surface.id];
+    const handles = ['scout', 'nova', 'pip'] as const;
     return {
       tag: surface.id,
       ask: surface.ask,
       reply: surface.reply,
+      agentHandle: handles[i % handles.length],
       window: surface.window,
       title: surface.title,
       highlight: surface.highlight,
@@ -1454,7 +1484,12 @@ export default function OldWays() {
                 visualFirst ? 'lg:order-2' : ''
               }`}
             >
-              <BubbleExchange ask={card.ask} reply={card.reply} focused={focused} />
+              <BubbleExchange
+                ask={card.ask}
+                reply={card.reply}
+                focused={focused}
+                agent={card.agentHandle ? getTrooper(card.agentHandle) ?? null : null}
+              />
 
               <h3 className="mt-7 font-funneldisplay text-xl font-medium leading-[1.15] tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.15]">
                 {card.title}{' '}

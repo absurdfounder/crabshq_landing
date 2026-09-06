@@ -10,13 +10,24 @@ const CHANNEL_BRAND_DOMAINS: Record<string, string> = {
   signal: 'signal.org',
   imessage: 'apple.com',
   email: 'gmail.com',
+  gmail: 'gmail.com',
+  sms: 'messages.google.com',
+  teams: 'teams.microsoft.com',
 };
 
 /** Stable direct assets when a simple favicon is not enough. */
 const CHANNEL_ICON_ASSETS: Record<string, string> = {
   imessage:
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IMessage_logo.svg/120px-IMessage_logo.svg.png',
+    'https://www.google.com/s2/favicons?domain=apple.com&sz=128',
   signal: 'https://signal.org/assets/images/header/logo.png',
+  whatsapp: 'https://www.google.com/s2/favicons?domain=whatsapp.com&sz=128',
+  telegram: 'https://www.google.com/s2/favicons?domain=telegram.org&sz=128',
+  slack: 'https://www.google.com/s2/favicons?domain=slack.com&sz=128',
+  discord: 'https://www.google.com/s2/favicons?domain=discord.com&sz=128',
+  email: 'https://www.google.com/s2/favicons?domain=gmail.com&sz=128',
+  gmail: 'https://www.google.com/s2/favicons?domain=gmail.com&sz=128',
+  teams: 'https://www.google.com/s2/favicons?domain=teams.microsoft.com&sz=128',
+  sms: 'https://www.google.com/s2/favicons?domain=messages.google.com&sz=128',
 };
 
 /** Ordered icon candidates for a channel card (best first). */

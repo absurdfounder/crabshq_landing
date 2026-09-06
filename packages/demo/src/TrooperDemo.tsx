@@ -35,6 +35,7 @@ import {
 import { DEMO_KEYFRAMES, DRAG, DUR, EASE_OUT, typingDelayFor, usePrefersReducedMotion } from './lib/demoMotion';
 import { useDemoDrag } from './lib/useDemoDrag';
 import { rectInCanvas, type CanvasRect } from './lib/demoGeometry';
+import { CastAvatarDisc, CastAvatarFallback } from './lib/CastAvatarDisc';
 
 type CanvasReviewState = ArtifactReviewState & { artifactName: string };
 
@@ -132,12 +133,13 @@ function DemoScaleFrame({
 
 function avatarFor(name: string): string | undefined {
   const p = ALL_PEOPLE[name as keyof typeof ALL_PEOPLE];
-  return p?.img || `https://i.pravatar.cc/150?u=${name.toLowerCase()}`;
+  return p?.img;
 }
 
 function Av({ name, size = 28, border = true }: { name: string; size?: number; border?: boolean }) {
   const src = avatarFor(name);
-  return <img src={src} alt={name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", border: border ? `1.5px solid ${C.card}` : "none", flexShrink: 0, display: "block" }} />;
+  if (!src) return <CastAvatarFallback size={size} />;
+  return <CastAvatarDisc src={src} size={size} alt={name} border={border} borderColor={C.card} />;
 }
 
 function renderMentionParts(text: string, chip = false) {
@@ -351,8 +353,7 @@ function DemoSidebarNav({
                       boxShadow: active ? "0 1px 3px rgba(28,25,23,0.06)" : "none",
                     }}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.img} alt="" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover" }} />
+                    <CastAvatarDisc src={a.img} size={32} />
                     <div>
                       <div style={{ fontSize: 13, fontWeight: active ? 600 : 500, color: C.text }}>{a.name}</div>
                       <div style={{ fontSize: 10, color: C.textSubtle }}>{a.role}</div>

@@ -8,6 +8,8 @@ import HeroDownloadButtons from '../HeroDownloadButtons';
 import PixelButton from '../ui/PixelButton';
 import { ArrowRight, Check, Github } from 'lucide-react';
 import Draggable from './Draggable';
+import TrooperAvatar from '@/components/ui/TrooperAvatar';
+import { getTrooper } from '@/lib/troopers';
 
 const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
 const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core';
@@ -811,27 +813,30 @@ const AGENTS = [
     id: 'aria',
     name: 'Aria',
     role: 'Growth',
-    arrow: '#FE9A00',
-    pillBg: '#fff4e0',
-    pillText: '#b86a00',
+    handle: 'scout' as const,
+    arrow: '#f0b45c',
+    pillBg: '#fbf5ea',
+    pillText: '#5a3a12',
     home: [140, 100] as const,
   },
   {
     id: 'jordan',
     name: 'Jordan',
     role: 'Chief of staff',
-    arrow: '#03A2FE',
-    pillBg: '#e6f5fe',
-    pillText: '#0269a8',
+    handle: 'nova' as const,
+    arrow: '#7ebef0',
+    pillBg: '#eef6fc',
+    pillText: '#1a3f5c',
     home: [1420, 120] as const,
   },
   {
     id: 'leo',
     name: 'Leo',
     role: 'Finance',
-    arrow: '#9810FA',
-    pillBg: '#f4e8fe',
-    pillText: '#6b0ab0',
+    handle: 'pip' as const,
+    arrow: '#b49aef',
+    pillBg: '#f5f1fc',
+    pillText: '#3a2866',
     // Resting on Claude Code (bottom-left).
     home: [180, 420] as const,
   },
@@ -861,35 +866,44 @@ function useRailStageScale(sceneRef: React.RefObject<HTMLDivElement | null>) {
 }
 
 function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
+  const trooper = getTrooper(agent.handle);
   return (
     <div
       data-dh={`cursor-${agent.id}`}
       className="dh-cursor"
       style={{ transform: `translate(${agent.home[0]}px, ${agent.home[1]}px)` }}
     >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        className="drop-shadow-[0_2px_4px_rgba(26,26,26,0.18)]"
-        aria-hidden
-      >
-        <path
-          d="M4.2 3.4 Q4 2.6 4.8 2.9 L20.3 9.8 Q21.1 10.2 20.2 10.7 L13.6 12.6 L11.1 19 Q10.7 19.9 10.3 19.1 Z"
-          fill={agent.arrow}
-          stroke="#fff"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-      </svg>
-      {/* Label sits under the arrow so the stage's overflow-hidden can't
-          clip the right edge of a side-mounted pill (Jordan at x≈1420). */}
-      <span
-        className="mt-1 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]"
-        style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
-      >
-        {agent.name} · {agent.role}
-      </span>
+      <div className="flex items-start gap-1">
+        {trooper ? (
+          <span className="-mt-1 shrink-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)]">
+            {/* Static SVG mark — hero already animates cursor travel. */}
+            <TrooperAvatar trooper={trooper} size={32} />
+          </span>
+        ) : null}
+        <div>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            className="drop-shadow-[0_2px_4px_rgba(26,26,26,0.18)]"
+            aria-hidden
+          >
+            <path
+              d="M4.2 3.4 Q4 2.6 4.8 2.9 L20.3 9.8 Q21.1 10.2 20.2 10.7 L13.6 12.6 L11.1 19 Q10.7 19.9 10.3 19.1 Z"
+              fill={agent.arrow}
+              stroke="#fff"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span
+            className="mt-1 block w-max rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)]"
+            style={{ backgroundColor: agent.pillBg, color: agent.pillText }}
+          >
+            {agent.name} · {agent.role}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1533,11 +1547,13 @@ export default function DesktopHero() {
               Open source
             </a>
 
-            <HeroRotatingHeadline className="mx-auto mt-2.5 text-center !text-neutral-900 !text-[2rem] sm:!text-4xl lg:!text-[2.35rem] xl:!text-5xl" />
+            <HeroRotatingHeadline className="mx-auto mt-2.5 text-center" />
 
-            <p className="lede mx-auto !mt-2.5 max-w-xl text-pretty text-center !text-[0.95rem] !leading-relaxed !text-neutral-700 sm:!text-base">
-              <b className="font-semibold text-neutral-900">Hire a workforce, not a chatbot.</b>{' '}
-              They use your tools and come back for your approval.
+            <p className="lede mx-auto !mt-3 max-w-md text-center">
+              <span className="block font-semibold text-ink">Hire a workforce, not a chatbot.</span>
+              <span className="mt-1 block">
+                They use your tools and come back for your&nbsp;approval.
+              </span>
             </p>
 
             <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">

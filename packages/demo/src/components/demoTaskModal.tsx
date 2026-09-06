@@ -27,6 +27,8 @@ import { DemoVideoWorkspace } from '../workspaces/DemoVideoWorkspace';
 import { DemoDesktopWorkspace } from '../workspaces/DemoDesktopWorkspace';
 import { DemoGenerationCard } from '../workspaces/DemoGenerationCard';
 import { DemoNodeGraph } from '../workspaces/DemoNodeGraph';
+import { DEMO_AGENT_CAST, demoCastAvatarSrc } from '../lib/demoAgentAvatars';
+import { CastAvatarDisc, CastAvatarFallback } from '../lib/CastAvatarDisc';
 import type {
   DemoBrowserSession, DemoDesktopSession, DemoGenerationJob, DemoVideoProject, DemoWorkflowGraph,
 } from './demoTaskExecution';
@@ -53,10 +55,10 @@ const MODAL_INSET = 14;
 
 const ALL_PEOPLE: Record<string, { img: string; title?: string }> = {
   Vaibhav: { img: 'https://avatars.githubusercontent.com/u/25829699?v=4' },
-  Jordan: { img: 'https://i.pravatar.cc/150?u=agent-jordan', title: 'Chief of Staff' },
-  Aria: { img: 'https://i.pravatar.cc/150?u=agent-aria', title: 'Research Specialist' },
-  Leo: { img: 'https://i.pravatar.cc/150?u=agent-leo', title: 'DevOps' },
-  Ren: { img: 'https://i.pravatar.cc/150?u=agent-ren', title: 'Frontend' },
+  Jordan: { img: demoCastAvatarSrc(DEMO_AGENT_CAST.Jordan), title: 'Chief of Staff' },
+  Aria: { img: demoCastAvatarSrc(DEMO_AGENT_CAST.Aria), title: 'Research Specialist' },
+  Leo: { img: demoCastAvatarSrc(DEMO_AGENT_CAST.Leo), title: 'DevOps' },
+  Ren: { img: demoCastAvatarSrc(DEMO_AGENT_CAST.Ren), title: 'Frontend' },
 };
 
 function ProviderChip({ provider, size = 14 }: { provider: string; size?: number }) {
@@ -85,8 +87,9 @@ function ToolIcon({ tool }: { tool: string }) {
 }
 
 function Av({ name, size = 24 }: { name: string; size?: number }) {
-  const src = ALL_PEOPLE[name]?.img || `https://i.pravatar.cc/150?u=${name}`;
-  return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />;
+  const src = ALL_PEOPLE[name]?.img;
+  if (!src) return <CastAvatarFallback size={size} />;
+  return <CastAvatarDisc src={src} size={size} />;
 }
 
 type Turn = {
@@ -167,10 +170,11 @@ function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
       style={{
-        display: 'flex', width: '100%', maxWidth: 320, margin: '6px 0 2px',
-        borderRadius: 10, overflow: 'hidden', cursor: 'pointer', padding: '0 14px',
-        border: `1px solid ${hover ? 'rgba(214,211,209,0.9)' : 'rgba(214,211,209,0.4)'}`,
-        background: hover ? 'rgba(255,255,255,0.6)' : 'transparent',
+        display: 'flex', width: '100%', minHeight: 64, margin: '10px 0 4px',
+        borderRadius: 12, overflow: 'hidden', cursor: 'pointer', padding: '0 16px',
+        border: `1px solid ${hover ? 'rgba(214,211,209,0.95)' : C.border}`,
+        background: hover ? 'rgba(255,255,255,0.85)' : C.card,
+        boxSizing: 'border-box',
         transition: `background-color ${DUR.panel}ms ${EASE_OUT}, border-color ${DUR.panel}ms ${EASE_OUT}`,
       }}
     >
@@ -188,9 +192,9 @@ function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string
           {isCode ? <Code size={15} color="#a8a29e" /> : <FileText size={15} color="#a8a29e" />}
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '12px 0', minWidth: 0, flex: 1 }}>
-        <div style={{ fontSize: 12.5, lineHeight: 1.3, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
-        <div style={{ fontSize: 10.5, color: '#a8a29e' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, padding: '14px 0', minWidth: 0, flex: 1 }}>
+        <div style={{ fontSize: 13, lineHeight: 1.35, fontWeight: 500, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
+        <div style={{ fontSize: 11, color: '#a8a29e' }}>
           {isCode ? 'Code' : 'Document'}<span style={{ opacity: 0.5 }}> · </span>{(ext || 'file').toUpperCase()}
         </div>
       </div>
@@ -198,8 +202,8 @@ function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string
   );
 }
 
-const THREAD_AVATAR = 28;
-const THREAD_GAP = 10;
+const THREAD_AVATAR = 32;
+const THREAD_GAP = 12;
 
 function buildTurns(feed: DemoFeedItem[]): Turn[] {
   const turns: Turn[] = [];
@@ -254,11 +258,11 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
       {...(isLatest ? { 'data-demo-target': 'modal-tool-latest' } : {})}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
-      style={{ display: 'flex', gap: 10, alignItems: 'flex-start', minHeight: 28 }}
+      style={{ display: 'flex', gap: 12, alignItems: 'flex-start', minHeight: 32 }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 22, flexShrink: 0, alignSelf: 'stretch' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 24, flexShrink: 0, alignSelf: 'stretch' }}>
         <div style={{
-          width: 22, height: 22, borderRadius: 6, flexShrink: 0,
+          width: 24, height: 24, borderRadius: 7, flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           background: C.card, border: `1px solid ${C.border}`, overflow: 'hidden',
         }}>
@@ -270,22 +274,22 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
             <ToolIcon tool={log.tool} />
           )}
         </div>
-        {!isLast && <div style={{ width: 1, flex: 1, minHeight: 10, background: C.border }} />}
+        {!isLast && <div style={{ width: 1, flex: 1, minHeight: 14, background: C.border }} />}
       </div>
-      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 0 : 10 }}>
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: isLast ? 4 : 14 }}>
         <div
           role={expandable ? 'button' : undefined}
           tabIndex={expandable ? 0 : undefined}
           onClick={expandable ? () => setOpen(v => !v) : undefined}
           onKeyDown={expandable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(v => !v); } } : undefined}
           style={{
-            display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 22,
+            display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, minHeight: 24,
             cursor: expandable ? 'pointer' : 'default',
           }}
         >
           <span style={{
-            fontSize: 12, fontWeight: 600, color: C.text,
-            flexShrink: 0, lineHeight: '22px',
+            fontSize: 12.5, fontWeight: 600, color: C.text,
+            flexShrink: 0, lineHeight: '24px',
           }}>
             {title}
           </span>
@@ -366,14 +370,14 @@ function AgentTurn({ turn, latestToolId, onOpenArtifact }: {
   const person = ALL_PEOPLE[turn.agent];
   const harnessProvider = turn.tools.find(t => t.provider)?.provider;
   return (
-    <div className="demo-thread-turn" style={{ marginBottom: 18 }}>
+    <div className="demo-thread-turn" style={{ marginBottom: 24 }}>
       <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
         <div style={{ flexShrink: 0, paddingTop: 1 }}>
           <Av name={turn.agent} size={THREAD_AVATAR} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.reasoning || turn.tools.length ? 6 : 0,
+            display: 'flex', alignItems: 'center', gap: 6, marginBottom: turn.message || turn.reasoning || turn.tools.length ? 10 : 0,
             minHeight: THREAD_AVATAR, flexWrap: 'wrap',
           }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{turn.agent}</span>
@@ -440,13 +444,13 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
       data-demo-target="modal-delivery"
       onClick={onClick}
       style={{
-        display: 'flex', width: '100%', maxWidth: 360, textAlign: 'left', cursor: 'pointer',
-        borderRadius: 10, border: `1px solid ${active ? C.brand : C.border}`,
+        display: 'flex', width: '100%', minHeight: 64, textAlign: 'left', cursor: 'pointer',
+        borderRadius: 12, border: `1px solid ${active ? C.brand : C.border}`,
         background: active ? '#f0f5e6' : C.card,
-        padding: '10px 12px', marginTop: 6,
+        padding: '12px 16px', marginTop: 10, boxSizing: 'border-box',
       }}
     >
-      <div style={{ display: 'flex', gap: 10, alignItems: 'center', width: '100%' }}>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center', width: '100%' }}>
         <div style={{
           width: 36, height: 44, borderRadius: '6px 6px 0 0', border: `1px solid ${C.border}`,
           background: 'linear-gradient(to bottom, white, transparent)',
@@ -455,8 +459,8 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
           <FileText size={16} strokeWidth={1.75} color={C.textSubtle} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
-          <div style={{ fontSize: 10, color: C.textSubtle, marginTop: 2 }}>Jordan · Document · MD</div>
+          <div style={{ fontSize: 13, fontWeight: 600, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
+          <div style={{ fontSize: 11, color: C.textSubtle, marginTop: 4 }}>Jordan · Document · MD</div>
         </div>
       </div>
     </button>
@@ -477,14 +481,14 @@ function TypingDots({ size = 5, color = '#78716c' }: { size?: number; color?: st
 function ThreadTypingIndicator({ name }: { name: string }) {
   const person = ALL_PEOPLE[name];
   return (
-    <div className="demo-enter demo-thread-turn" style={{ marginBottom: 18 }} aria-live="polite" aria-label={`${name} is typing`}>
+    <div className="demo-enter demo-thread-turn" style={{ marginBottom: 24 }} aria-live="polite" aria-label={`${name} is typing`}>
       <div style={{ display: 'flex', gap: THREAD_GAP, alignItems: 'flex-start' }}>
         <div style={{ flexShrink: 0, paddingTop: 1 }}>
           <Av name={name} size={THREAD_AVATAR} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6,
+            display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10,
             minHeight: THREAD_AVATAR, flexWrap: 'wrap',
           }}>
             <span style={{ fontSize: 13, fontWeight: 600, color: C.text, lineHeight: 1.2 }}>{name}</span>
@@ -803,7 +807,7 @@ export function DemoTaskModal({
           {/* Left: thread */}
           <div style={{ flex: '1 1 50%', width: '50%', minWidth: 0, display: 'flex', flexDirection: 'column', borderRight: `1px solid ${C.border}` }}>
             <div ref={threadRef} data-demo-target="modal-thread" className="Trooper-scrollbar" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
-              <div style={{ padding: '14px 16px 8px' }}>
+              <div style={{ padding: '18px 20px 16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
                   <span style={{ fontSize: 9, fontWeight: 700, color: statusColor, background: statusBg, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: 0.4 }}>
                     {statusLabel}

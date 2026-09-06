@@ -325,10 +325,7 @@ function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
               <Play size={22} fill="white" color="white" style={{ marginLeft: 3 }} />
             </div>
             <div style={{ position: 'absolute', bottom: 10, left: 12, right: 12, zIndex: 1 }}>
-              <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.2)', overflow: 'hidden' }}>
-                <div style={{ width: '42%', height: '100%', background: C.brand, borderRadius: 999 }} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.65)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, color: 'rgba(255,255,255,0.65)' }}>
                 <span>0:14</span><span>0:30</span>
               </div>
             </div>

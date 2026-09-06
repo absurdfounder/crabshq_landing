@@ -2,10 +2,23 @@
 
 import { Check, FileText, Loader2, Megaphone, Play, Search } from 'lucide-react';
 import { DemoFavicon, DemoBrowserFrame, demoAssetPath as assetPath, DEMO_MEDIA } from '@trooper/demo';
+import { CAST_ASSET_REV } from '@/lib/avatars/castColors';
 import { VignetteChrome } from './shared';
 import { AppDocPanel } from './productSurfaces';
 
 const campaignSrc = assetPath('marketing', 'campaign.html');
+
+const AGENT_CAST: Record<string, string> = {
+  Ren: 'wren',
+  Aria: 'scout',
+  Jordan: 'nova',
+  Leo: 'pip',
+};
+
+function agentCastSrc(name: string) {
+  const handle = AGENT_CAST[name] ?? 'nova';
+  return `/images/cast/${handle}.svg?v=${CAST_ASSET_REV}`;
+}
 
 function Step({ label, done, running }: { label: string; done?: boolean; running?: boolean }) {
   return (
@@ -52,9 +65,9 @@ export function MarketingHarnessVisual() {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={name}
-              src={`https://i.pravatar.cc/150?u=agent-${name.toLowerCase()}`}
+              src={agentCastSrc(name)}
               alt=""
-              className="h-6 w-6 rounded-full object-cover ring-2 ring-white"
+              className="h-6 w-6 rounded-full bg-stone-100 object-contain ring-2 ring-white"
             />
           ))}
           <span className="ml-3 self-center text-[11px] text-stone-500">3 agents · in parallel</span>

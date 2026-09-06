@@ -1,61 +1,80 @@
-import React from 'react';
-import type { Trooper } from '@/lib/troopers';
+'use client'
+
+import { createElement, useEffect, useState } from 'react'
+import { Avatar as BsAvatar } from '@bible-strong/avatar-react'
+import { useInView } from 'framer-motion'
+import { useRef } from 'react'
+import '@bible-strong/avatar-react/styles.css'
+
+import { getTrooperAvatar } from '@/lib/avatars'
+import type { Trooper } from '@/lib/troopers'
+import TrooperMark from '@/components/ui/TrooperMark'
 
 type TrooperAvatarProps = {
-  trooper: Trooper;
-  /** Rendered size in px. Inline-in-a-sentence use wants ~26–34. */
-  size?: number;
-  /** Draw the tinted plate behind the helmet. Off for dense inline runs. */
-  plate?: boolean;
-  className?: string;
-};
+  trooper: Trooper
+  size?: number
+  className?: string
+  /**
+   * When true, mounts the procedural avatar and plays only while this
+   * element is on screen. Default is the static SVG mark — cheap, no RAF.
+   */
+  live?: boolean
+  /** Animation key used only when `live` and in view. */
+  animation?: string
+  label?: string
+}
 
 /**
- * Pixel-art trooper helmet, tinted per trooper.
+ * Cast identity.
  *
- * Drawn as unit rects on a 16×16 grid with `shapeRendering="crispEdges"` so it
- * stays hard-edged at any size — no bitmap assets, a few hundred bytes, and it
- * matches the pixel language already used by PixelButton and the silkscreen
- * kickers. Purely decorative: the name always appears as real text beside it.
+ * Default: static SVG snapshot from the character builder (`/images/cast/*.svg`)
+ * — no RAF, low memory. `live`: procedural avatar only while in view.
  */
 export default function TrooperAvatar({
   trooper,
-  size = 32,
-  plate = true,
+  size = 40,
   className = '',
+  live = false,
+  animation = 'idle',
+  label,
 }: TrooperAvatarProps) {
-  const { accent, accentDark, tint } = trooper;
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { amount: 0.4, once: live ? undefined : true })
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    if (!live) return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setReduceMotion(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [live])
+
+  const definition = getTrooperAvatar(trooper.handle)
+  const shouldAnimate = live && !!definition && inView && !reduceMotion
+
+  if (!shouldAnimate) {
+    return (
+      <span ref={ref} className={`inline-flex shrink-0 ${className}`}>
+        <TrooperMark trooper={trooper} size={size} />
+      </span>
+    )
+  }
 
   return (
-    <svg
-      viewBox="0 0 16 16"
-      width={size}
-      height={size}
-      shapeRendering="crispEdges"
-      aria-hidden="true"
-      focusable="false"
-      className={`shrink-0 ${className}`}
-      style={{ display: 'block' }}
+    <span
+      ref={ref}
+      className={`inline-flex shrink-0 items-center justify-center overflow-visible ${className}`}
+      style={{ width: size, height: size }}
     >
-      {plate && <rect x="0" y="0" width="16" height="16" fill={tint} />}
-
-      {/* dome */}
-      <rect x="5" y="2" width="6" height="1" fill={accent} />
-      <rect x="4" y="3" width="8" height="1" fill={accent} />
-      <rect x="3" y="4" width="10" height="2" fill={accent} />
-
-      {/* visor */}
-      <rect x="4" y="6" width="8" height="3" fill="#1a1a1a" />
-      <rect x="5" y="6" width="2" height="1" fill={accent} opacity="0.55" />
-
-      {/* jaw + neck */}
-      <rect x="3" y="9" width="10" height="1" fill={accent} />
-      <rect x="6" y="10" width="4" height="1" fill={accentDark} />
-
-      {/* shoulders */}
-      <rect x="4" y="11" width="8" height="1" fill={accentDark} />
-      <rect x="2" y="12" width="12" height="2" fill={accentDark} />
-      <rect x="1" y="14" width="14" height="2" fill={accentDark} />
-    </svg>
-  );
+      {createElement(BsAvatar as never, {
+        key: `${trooper.handle}-${animation}`,
+        definition,
+        defaultAnimation: animation,
+        size,
+        ariaLabel: label ?? `${trooper.name} avatar`,
+      })}
+    </span>
+  )
 }

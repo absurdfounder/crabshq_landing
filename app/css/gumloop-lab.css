@@ -190,6 +190,27 @@
   animation: gl-trace-dash 0.8s linear infinite;
 }
 
+/* Gumloop self-improve comet along an arc segment */
+@keyframes gl-comet-sweep {
+  0% {
+    stroke-dasharray: 0 var(--comet-len, 200);
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: var(--comet-len, 200) 0;
+    stroke-dashoffset: calc(var(--comet-len, 200) * -0.15);
+    opacity: 0.15;
+  }
+}
+
+.gl-comet-sweep {
+  animation: gl-comet-sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* ── Capability mock craft (OldWays) ── */
 @keyframes ow-check-pop {
   0% {
@@ -302,6 +323,7 @@
   .gl-orbit-counter,
   .gl-skills-traverse,
   .gl-trace-dash,
+  .gl-comet-sweep,
   .ow-check-pop,
   .ow-row-in,
   .ow-badge-in,

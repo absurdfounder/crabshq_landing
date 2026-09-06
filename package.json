@@ -14,7 +14,9 @@
     "start": "next start",
     "lint": "next lint",
     "generate:og:core": "tsx scripts/generate-og-images.ts --kinds=home,hub,page,team,feature,use-case,industry,alternative,channel,loop,compare,showcase,legacy-integration",
-    "sync:demo-assets": "rm -rf public/demo && mkdir -p public/demo && cp -r packages/demo/assets/* public/demo/"
+    "sync:demo-assets": "rm -rf public/demo && mkdir -p public/demo && cp -r packages/demo/assets/* public/demo/",
+    "characters:export": "node scripts/export-cast-svgs.mjs",
+    "characters:build": "cd vendor/bible-strong-avatar-lab && ./node_modules/.bin/vite build --base /character-studio/ --outDir ../../public/character-studio"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -41,7 +43,9 @@
     "react-router-dom": "^6.22.3",
     "remark-gfm": "^4.0.1",
     "thinking-orbs": "^0.1.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@bible-strong/avatar-core": "file:vendor/bible-strong-avatar-lab/packages/avatar-core",
+    "@bible-strong/avatar-react": "file:vendor/bible-strong-avatar-lab/packages/avatar-react"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

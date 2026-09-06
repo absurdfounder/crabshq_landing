@@ -5,6 +5,7 @@ import { MessageCircle, Zap, Clock } from 'lucide-react';
 import { TROOPER_DEMO as C, KANBAN_COLUMNS, type DemoColumnId } from './demoTheme';
 import type { DemoKanbanTask, DemoTaskPriority, DemoTaskProgress } from '../scenarios/types';
 import { DUR, EASE_OUT } from '../lib/demoMotion';
+import { CastAvatarDisc } from '../lib/CastAvatarDisc';
 
 /**
  * Board surfaces ported from the Trooper app so the marketing replica is the
@@ -65,13 +66,20 @@ export function resolveTaskCardModel(task: DemoKanbanTask): DemoTaskCardModel {
 function Avatar({ name, src, size = 20 }: { name: string; src?: string; size?: number }) {
   const [failed, setFailed] = useState(false);
   const initial = name.charAt(0).toUpperCase() || '?';
+  if (src && !failed && src.includes('/images/cast/')) {
+    return (
+      <span title={`Assigned to ${name}`}>
+        <CastAvatarDisc src={src} size={size} alt={name} />
+      </span>
+    );
+  }
   return (
     <div
       title={`Assigned to ${name}`}
       style={{
         position: 'relative', width: size, height: size, flexShrink: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        overflow: 'hidden', borderRadius: 6, border: `1px solid ${C.border}`,
+        overflow: 'hidden', borderRadius: Math.max(6, Math.round(size * 0.28)), border: `1px solid ${C.border}`,
         background: C.brand, color: '#FFFFFF', fontSize: 9, fontWeight: 500,
       }}
     >
@@ -81,7 +89,13 @@ function Avatar({ name, src, size = 20 }: { name: string; src?: string; size?: n
           src={src}
           alt={name}
           onError={() => setFailed(true)}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
         />
       )}
     </div>
@@ -206,31 +220,7 @@ export function DemoTaskCard({
         )}
       </div>
 
-      {/* Execution progress — TaskCard.jsx:139 */}
-      {model.progress && (
-        <div style={{ marginBottom: 8 }}>
-          {model.progress === 'planning' ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span className="demo-pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#fbbf24' }} />
-              <span style={{ fontSize: 10, fontWeight: 500, color: '#d97706' }}>Planning...</span>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ height: 4, flex: 1, overflow: 'hidden', borderRadius: 999, background: 'rgba(231,229,228,0.8)' }}>
-                <div style={{
-                  height: '100%', borderRadius: 999,
-                  width: `${model.progress.total > 0 ? Math.round((model.progress.done / model.progress.total) * 100) : 0}%`,
-                  background: C.brand,
-                  transition: `width ${DUR.progress}ms ${EASE_OUT}`,
-                }} />
-              </div>
-              <span style={{ flexShrink: 0, fontSize: 10, color: C.textMuted, fontVariantNumeric: 'tabular-nums' }}>
-                {model.progress.done}/{model.progress.total}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Execution progress intentionally omitted — keep cards clean. */}
 
       {/* Context links — TaskCard.jsx:167 */}
       {(model.linkedProject || model.linkedGoal || model.artifactCount > 0) && (

@@ -1,5 +1,6 @@
 import Footer from '@/components/ui/footer'
 import Newsletter from '@/components/newsletter'
+import RecentlyShippedSection from '@/components/RecentlyShippedSection'
 import SectionShell from '@/components/ui/SectionShell'
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
@@ -11,6 +12,10 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
       <main className="grow bg-canvas">
         {children}
       </main>
+
+      <SectionShell rhythm eyebrow="Updates" bgClass="bg-canvas">
+        <RecentlyShippedSection />
+      </SectionShell>
 
       {/* No eyebrowNumber — the newsletter is site chrome, not a numbered
           section, and it used to render a third [08] after the page's own. */}

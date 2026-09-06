@@ -11,6 +11,7 @@ import {
   resolveCapabilityPrompt,
   type MarketingFeatureSection,
 } from '@/lib/marketingFeatures';
+import { TROOPERS } from '@/lib/troopers';
 import {
   CodingHarnessVisual,
   CodingBoardVisual,
@@ -236,7 +237,12 @@ export default function MarketingFeatureSections({
                   visualFirst ? 'lg:order-2' : ''
                 }`}
               >
-                <BubbleExchange ask={prompt.ask} reply={prompt.reply} focused={focused} />
+                <BubbleExchange
+                  ask={prompt.ask}
+                  reply={prompt.reply}
+                  focused={focused}
+                  agent={TROOPERS[index % TROOPERS.length] ?? null}
+                />
 
                 <h3 className="mt-6 font-funneldisplay text-xl font-medium leading-snug tracking-tight text-balance text-ink sm:text-2xl lg:text-[1.75rem] lg:leading-[1.2]">
                   {section.title}{' '}

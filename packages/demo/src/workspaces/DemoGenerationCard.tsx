@@ -141,7 +141,7 @@ export function DemoGenerationCard({
             borderRadius: 9, background: 'rgba(28,25,23,0.84)', backdropFilter: 'blur(4px)',
             padding: '8px 11px', color: '#fafaf9',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
               <span className="demo-live-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: '#fbbf24' }} />
               <span style={{ fontSize: 11, fontWeight: 600 }}>
                 {job.kind === 'video' ? 'Generating video…' : 'Generating image…'}
@@ -149,13 +149,6 @@ export function DemoGenerationCard({
               <span style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(250,250,249,0.65)', fontVariantNumeric: 'tabular-nums' }}>
                 {elapsed}s{job.kind === 'video' ? ' · up to ~1 min' : ''}
               </span>
-            </div>
-            <div style={{ height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.16)', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%', borderRadius: 999, background: '#fbbf24',
-                width: `${Math.round(barProgress * 100)}%`,
-                transition: `width ${DUR.panel}ms ${EASE_OUT}`,
-              }} />
             </div>
           </div>
         )}

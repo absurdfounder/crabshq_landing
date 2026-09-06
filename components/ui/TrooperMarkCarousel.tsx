@@ -9,11 +9,9 @@ import TrooperMark from './TrooperMark';
 const MARK_EASE = 'cubic-bezier(0.77, 0, 0.175, 1)';
 const TRANSITION_MS = 500;
 const STEP_MS = 1600;
-/** size-7 (28) + gap-1.5 (6). */
-const SLOT_PX = 34;
-/** How many marks visible in the clipped window. */
-const WINDOW = 4;
-/** Focus slot inside the window (0-indexed from the left of the viewport). */
+const SLOT_PX = 40;
+/** Odd window so focus sits dead-center (2 left · focus · 2 right). */
+const WINDOW = 5;
 const FOCUS = 2;
 
 const LOOPS = 10;
@@ -27,28 +25,19 @@ function poseForDistance(distance: number): Pose {
   const abs = Math.abs(distance);
   if (abs === 0) return { scale: 1, rotate: 0 };
   if (abs === 1) {
-    return {
-      scale: 0.545,
-      rotate: distance < 0 ? -22 : 18,
-    };
+    return { scale: 0.72, rotate: distance < 0 ? -8 : 8 };
   }
   if (abs === 2) {
-    return {
-      scale: 0.32,
-      rotate: distance < 0 ? 26 : -24,
-    };
+    return { scale: 0.5, rotate: distance < 0 ? 10 : -10 };
   }
-  return { scale: 0, rotate: distance < 0 ? -16 : 27 };
+  return { scale: 0, rotate: 0 };
 }
 
 /**
- * Cycling identity marks — Gumloop-style.
- *
- * Track slides one slot at a time; neighbors shrink + tilt while the focus
- * mark settles at full size. Quiet presence, not decoration noise.
+ * Cycling SVG identity marks — static silhouettes, no avatar RAF loops.
  */
 export function TrooperMarkCarousel({
-  size = 28,
+  size = 32,
   className = '',
 }: {
   size?: number;
@@ -74,7 +63,6 @@ export function TrooperMarkCarousel({
     return () => window.clearInterval(id);
   }, [reduceMotion]);
 
-  // Seamlessly rewind the track once we near the end of the duplicated list.
   useEffect(() => {
     if (reduceMotion || index < SNAP_AT) return;
     const t = window.setTimeout(() => {
@@ -89,7 +77,7 @@ export function TrooperMarkCarousel({
 
   if (reduceMotion) {
     return (
-      <div className={`flex items-center gap-1.5 ${className}`} aria-hidden>
+      <div className={`flex items-center justify-center gap-2 ${className}`} aria-hidden>
         {TROOPERS.map((t) => (
           <TrooperMark key={t.handle} trooper={t} size={size} />
         ))}
@@ -98,28 +86,33 @@ export function TrooperMarkCarousel({
   }
 
   const translateX = -(index - FOCUS) * SLOT_PX;
+  const windowPx = WINDOW * SLOT_PX;
 
   return (
     <div
-      className={`pointer-events-none max-w-[8.5rem] overflow-hidden py-1 select-none ${className}`}
+      className={`pointer-events-none overflow-visible py-1 select-none ${className}`}
+      style={{ width: windowPx, maxWidth: '100%' }}
       aria-hidden
     >
-      <div
-        className="flex w-max gap-1.5"
-        style={{
-          transform: `translateX(${translateX}px)`,
-          transition: instant ? 'none' : `transform ${TRANSITION_MS}ms ${MARK_EASE}`,
-        }}
-      >
-        {TRACK.map((trooper, i) => (
-          <MarkSlot
-            key={`${trooper.handle}-${i}`}
-            trooper={trooper}
-            size={size}
-            pose={poseForDistance(i - index)}
-            instant={instant}
-          />
-        ))}
+      <div className="mx-auto overflow-hidden" style={{ width: windowPx }}>
+        <div
+          className="flex w-max"
+          style={{
+            gap: SLOT_PX - size,
+            transform: `translateX(${translateX}px)`,
+            transition: instant ? 'none' : `transform ${TRANSITION_MS}ms ${MARK_EASE}`,
+          }}
+        >
+          {TRACK.map((trooper, i) => (
+            <MarkSlot
+              key={`${trooper.handle}-${i}`}
+              trooper={trooper}
+              size={size}
+              pose={poseForDistance(i - index)}
+              instant={instant}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -140,23 +133,18 @@ function MarkSlot({
 
   return (
     <div
-      className="flex size-7 shrink-0 items-center justify-center"
+      className="flex shrink-0 items-center justify-center overflow-visible"
       style={{
         width: size,
         height: size,
-        transformOrigin: '100% 50%',
+        transformOrigin: '50% 50%',
         transform: `scale(${pose.scale})`,
         transition,
+        opacity: pose.scale === 0 ? 0 : 1,
       }}
     >
-      {/* Float sits outside rotate so the two transforms don't clobber each other. */}
       <div className={pose.scale === 1 ? 'animate-mark-float' : undefined}>
-        <div
-          style={{
-            transform: `rotate(${pose.rotate}deg)`,
-            transition,
-          }}
-        >
+        <div style={{ transform: `rotate(${pose.rotate}deg)`, transition }}>
           <TrooperMark trooper={trooper} size={size} />
         </div>
       </div>

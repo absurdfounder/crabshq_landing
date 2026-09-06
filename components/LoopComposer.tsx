@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { ArrowUp, ChevronDown, Mic, Plus } from 'lucide-react';
 import { DemoFavicon } from '@trooper/demo';
+import { CAST_ASSET_REV } from '@/lib/avatars/castColors';
 
 /**
  * A faithful mock of the real composer in app.trooper.so.
@@ -31,10 +32,12 @@ type Chip =
 
 type Token = string | Chip;
 
+const castAvatar = (handle: string) => `/images/cast/${handle}.svg?v=${CAST_ASSET_REV}`;
+
 const PROMPTS: Token[][] = [
   [
     'hey ',
-    { kind: 'agent', label: 'Leo', avatar: 'https://i.pravatar.cc/150?u=agent-leo' },
+    { kind: 'agent', label: 'Leo', avatar: castAvatar('pip') },
     ' use ',
     { kind: 'tool', label: 'Claude Code', domain: 'claude.ai' },
     ' to plan this, then ',
@@ -51,7 +54,7 @@ const PROMPTS: Token[][] = [
     'when a refund lands in ',
     { kind: 'tool', label: 'Stripe', domain: 'stripe.com' },
     ', reconcile it and tell ',
-    { kind: 'agent', label: 'Aria', avatar: 'https://i.pravatar.cc/150?u=agent-aria' },
+    { kind: 'agent', label: 'Aria', avatar: castAvatar('scout') },
     ' what broke',
   ],
 ];
@@ -83,7 +86,7 @@ function MentionChip({ chip }: { chip: Chip }) {
             alt=""
             referrerPolicy="no-referrer"
             onError={() => setAvatarBroken(true)}
-            className="h-[1.05em] w-[1.05em] shrink-0 rounded-full object-cover"
+            className="h-[1.05em] w-[1.05em] shrink-0 rounded-full bg-neutral-100 object-contain"
           />
         )
       ) : (
@@ -165,12 +168,12 @@ export default function LoopComposer() {
     >
       <div className="flex flex-col gap-0 p-1.5">
         <div className="relative px-4 pb-2 pt-4 sm:px-5 sm:pb-3 sm:pt-5">
-          <div className="relative text-base leading-[1.5] text-neutral-900 sm:text-[17px] sm:leading-[1.65]">
+          <div className="relative text-left text-base leading-[1.5] text-neutral-900 sm:text-[17px] sm:leading-[1.65]">
             <p className="invisible" aria-hidden>
               {plain(longest)}
             </p>
 
-            <p className="absolute inset-0" aria-hidden>
+            <p className="absolute inset-0 text-left" aria-hidden>
               {typed.tokens.slice(0, typed.tokenIndex).map((token, i) =>
                 typeof token === 'string' ? (
                   <span key={i}>{token}</span>

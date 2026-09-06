@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import PixelButton from '@/components/ui/PixelButton';
-import TrooperMark from '@/components/ui/TrooperMark';
+import TrooperAvatar from '@/components/ui/TrooperAvatar';
 import { getTrooper } from '@/lib/troopers';
 import { PLATFORM_DOWNLOADS } from '@/lib/platformDownload';
 
@@ -33,7 +33,7 @@ const CHANNEL_BADGES: { id: string; name: string }[] = [
   { id: 'teams', name: 'Teams' },
 ];
 
-/** Identity rainbow lives on Trooper marks — not stock photo avatars. */
+/** Identity rainbow — static SVG marks in the headline (no RAF). */
 const WORKFORCE_HANDLES = ['nova', 'scout', 'wren', 'pip'] as const;
 
 function WorkforceAvatarStack() {
@@ -43,10 +43,10 @@ function WorkforceAvatarStack() {
       {troopers.map((trooper, i) => (
         <span
           key={trooper!.handle}
-          className="relative inline-flex rounded-full ring-[2px] ring-canvas"
-          style={{ marginLeft: i === 0 ? 0 : -8, zIndex: troopers.length - i }}
+          className="relative inline-flex overflow-visible"
+          style={{ marginLeft: i === 0 ? 0 : -6, zIndex: troopers.length - i }}
         >
-          <TrooperMark trooper={trooper!} size={32} />
+          <TrooperAvatar trooper={trooper!} size={34} />
         </span>
       ))}
     </span>
@@ -122,15 +122,13 @@ function LeadChartCard() {
       </div>
       <div className="space-y-2 p-3">
         {[
-          { label: 'Vanta', w: '92%' },
-          { label: 'Rippling', w: '78%' },
-          { label: 'Gusto', w: '64%' },
+          { label: 'Vanta', score: '92' },
+          { label: 'Rippling', score: '78' },
+          { label: 'Gusto', score: '64' },
         ].map((row) => (
-          <div key={row.label} className="grid grid-cols-[54px_1fr] items-center gap-2">
+          <div key={row.label} className="flex items-center justify-between gap-2">
             <span className="truncate text-[10px] font-medium text-neutral-600">{row.label}</span>
-            <div className="h-[7px] overflow-hidden rounded-full bg-neutral-100">
-              <div className="h-full rounded-full bg-[#34C759]" style={{ width: row.w }} />
-            </div>
+            <span className="tabular-nums text-[11px] font-semibold text-[#34C759]">{row.score}</span>
           </div>
         ))}
       </div>
@@ -479,13 +477,26 @@ function TrooperAppScreen({ play }: { play: boolean }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#0c0b09] font-[system-ui] text-[#f2f0ea]">
-      <div className="shrink-0 px-4 pb-2 pt-1">
+      <div className="shrink-0 px-4 pb-2 pt-1 sm:px-4">
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7a776e]">
           Trooper
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 space-y-3 overflow-hidden px-4 pb-4">
+      <div className="relative min-h-0 flex-1 space-y-3 overflow-y-auto overflow-x-hidden px-3.5 pb-5 sm:px-4 sm:pb-4">
+        {step < 1 ? (
+          <div className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2">
+            {getTrooper('scout') ? (
+              <TrooperAvatar
+                trooper={getTrooper('scout')!}
+                size={56}
+                live
+                animation="listening"
+              />
+            ) : null}
+            <p className="text-[11px] text-[#7a776e]">Scout is on the Vanta task…</p>
+          </div>
+        ) : null}
         <AnimatePresence mode="sync">
           {step >= 1 ? (
             <motion.div
@@ -493,8 +504,9 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease }}
+              className="px-0.5"
             >
-              <h2 className="text-[16px] font-medium leading-[1.25] tracking-[-0.02em]">
+              <h2 className="text-[15px] font-medium leading-[1.3] tracking-[-0.02em] sm:text-[16px] sm:leading-[1.25]">
                 Add Vanta demo page + follow-up assets
               </h2>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-[#9a978e]">
@@ -514,24 +526,26 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease }}
-              className="rounded-[14px] border border-white/[0.09] bg-[#171612] p-3.5"
+              className="rounded-2xl border border-white/[0.09] bg-[#171612] p-4"
             >
               <p className="mb-2.5 text-[13px] font-medium">Ready to Merge</p>
               <div className="mb-3 flex items-center gap-2">
                 <motion.span
-                  className="flex size-6 items-center justify-center rounded-full bg-[#3dd68c] text-black"
+                  className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#3dd68c] text-black"
                   initial={reduceMotion ? false : { scale: 0.6 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 420, damping: 18 }}
                 >
                   <Check className="size-3.5" strokeWidth={3} />
                 </motion.span>
-                <span className="text-[11px] text-[#c8c4b8]">All required checks passed</span>
+                <span className="text-[11px] leading-snug text-[#c8c4b8]">
+                  All required checks passed
+                </span>
               </div>
               <button
                 type="button"
                 disabled
-                className="h-9 w-full rounded-[11px] bg-[#f2f0ea] text-[13px] font-semibold text-[#0c0b09]"
+                className="h-10 w-full rounded-xl bg-[#f2f0ea] text-[13px] font-semibold text-[#0c0b09]"
               >
                 Squash & Merge
               </button>
@@ -546,14 +560,14 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               transition={{ duration: 0.32, ease }}
             >
               <p className="mb-1.5 text-[11px] text-[#7a776e]">Demos</p>
-              <div className="overflow-hidden rounded-[14px] border border-white/[0.09] bg-[#171612]">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.09] bg-[#171612]">
                 <div className="relative aspect-[16/9]">
                   <Image
                     src="/images/desktop/wallpaper.png"
                     alt=""
                     fill
                     className="object-cover opacity-90"
-                    sizes="220px"
+                    sizes="280px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -584,29 +598,29 @@ function TrooperAppScreen({ play }: { play: boolean }) {
             >
               <div>
                 <p className="mb-1.5 text-[11px] text-[#7a776e]">Files</p>
-                <div className="overflow-hidden rounded-[14px] border border-white/[0.09] bg-[#171612]">
-                  <div className="flex items-center gap-2 border-b border-white/[0.09] px-3 py-2">
-                    <ChevronDown className="size-3.5 text-[#9a978e]" />
+                <div className="overflow-hidden rounded-2xl border border-white/[0.09] bg-[#171612]">
+                  <div className="flex items-center gap-2 border-b border-white/[0.09] px-3.5 py-2.5">
+                    <ChevronDown className="size-3.5 shrink-0 text-[#9a978e]" />
                     <span className="min-w-0 flex-1 truncate font-mono text-[11px]">
                       app/demos/vanta.tsx
                     </span>
                     <span className="text-[11px] text-[#3dd68c]">+48</span>
                     <span className="text-[11px] text-[#f09595]">−6</span>
                   </div>
-                  <div className="font-mono text-[10px] leading-[1.55]">
+                  <div className="px-0.5 py-1 font-mono text-[10px] leading-[1.55]">
                     <div className="grid grid-cols-[28px_1fr] bg-[rgba(240,149,149,0.14)]">
                       <span className="px-1 text-right text-[#9a978e]/70">18</span>
-                      <span className="px-1 text-[#f09595]">- title: &quot;Generic demo&quot;</span>
+                      <span className="truncate px-1 text-[#f09595]">- title: &quot;Generic demo&quot;</span>
                     </div>
                     <div className="grid grid-cols-[28px_1fr] bg-[rgba(61,214,140,0.14)]">
                       <span className="px-1 text-right text-[#9a978e]/70">18</span>
-                      <span className="px-1 text-[#3dd68c]">+ title: &quot;Vanta · Thu 2pm&quot;</span>
+                      <span className="truncate px-1 text-[#3dd68c]">+ title: &quot;Vanta · Thu 2pm&quot;</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 rounded-[14px] border border-white/[0.09] bg-[#171612] px-3 py-2">
+              <div className="flex items-center gap-2 rounded-2xl border border-white/[0.09] bg-[#171612] px-3.5 py-2.5">
                 <Check className="size-3.5 text-[#3dd68c]" strokeWidth={3} />
                 <span className="min-w-0 flex-1 truncate text-[11px] text-[#c8c4b8]">
                   Marketing preview live
@@ -678,15 +692,15 @@ function PhonePair() {
   return (
     <div
       ref={rootRef}
-      className="relative mx-auto flex w-full max-w-[36rem] items-end justify-center gap-5 sm:gap-6 lg:max-w-none lg:justify-end lg:gap-7"
+      className="relative mx-auto flex w-full max-w-[20rem] flex-col items-center gap-8 sm:max-w-[36rem] sm:flex-row sm:items-end sm:justify-center sm:gap-6 lg:mx-0 lg:max-w-none lg:justify-end lg:gap-7"
       aria-label="iMessage chat and Trooper app on iPhone"
     >
-      <div className="w-[48%] max-w-[255px]">
+      <div className="w-full max-w-[280px] sm:w-[48%] sm:max-w-[255px]">
         <PhoneDevice screenBg="#ffffff" label="iMessage">
           <ImessageScreen play={play} />
         </PhoneDevice>
       </div>
-      <div className="w-[48%] max-w-[255px]">
+      <div className="w-full max-w-[280px] sm:w-[48%] sm:max-w-[255px]">
         <PhoneDevice screenBg="#0c0b09" label="Trooper app">
           <TrooperAppScreen play={play} />
         </PhoneDevice>
@@ -698,7 +712,7 @@ function PhonePair() {
 function ChannelBadge({ id, name }: { id: string; name: string }) {
   return (
     <span className="inline-flex items-center gap-2 text-[13px] font-medium text-neutral-600">
-      <FieldCommsChannelIcon channelId={id} size={22} />
+      <FieldCommsChannelIcon channelId={id} size={24} className="shadow-sm ring-1 ring-black/[0.06]" />
       <span>{name}</span>
     </span>
   );
@@ -711,8 +725,8 @@ export default function MobileChannelsSection() {
   return (
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-12 sm:py-20">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-14">
-          <div className="max-w-md">
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:items-center lg:gap-12 xl:gap-16">
+          <div className="mx-auto w-full max-w-md lg:mx-0">
             <h2 className="h2-section text-balance">
               Chat with your{' '}
               <span className="inline sm:whitespace-nowrap">

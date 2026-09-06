@@ -81,8 +81,8 @@ module.exports = {
           section: '#fcfcfc',
         },
         ink: {
-          DEFAULT: '#171717',
-          muted: '#5f5f68',
+          DEFAULT: '#191b1d',
+          muted: '#77797e',
           faint: '#8e8e98',
         },
         /*

@@ -10,6 +10,8 @@ import {
 import type { CSSProperties, ReactNode } from 'react';
 import { TROOPER_DEMO as C } from './demoTheme';
 import { getFaviconUrl } from '../lib/favicon';
+import { DEMO_AGENT_CAST, demoCastAvatarSrc } from '../lib/demoAgentAvatars';
+import { CastAvatarDisc } from '../lib/CastAvatarDisc';
 
 /* ─── Shared tokens (mirrors Trooper index.css + PageLayout) ─── */
 const card: CSSProperties = {
@@ -21,15 +23,36 @@ const listCard: CSSProperties = {
 };
 const sectionLabel: CSSProperties = { fontSize: 12, fontWeight: 500, color: '#a3a3a3' };
 
+/** AI roster — cast characters, not stock photo placeholders. */
 export const DEMO_AGENTS = [
-  { name: 'Jordan', role: 'Chief of Staff', badge: 'LEAD', img: 'https://i.pravatar.cc/150?u=agent-jordan' },
-  { name: 'Aria', role: 'Growth & Marketing', badge: 'MEMBER', img: 'https://i.pravatar.cc/150?u=agent-aria' },
-  { name: 'Leo', role: 'Operations & Finance', badge: 'MEMBER', img: 'https://i.pravatar.cc/150?u=agent-leo' },
-  { name: 'Ren', role: 'Product Builder', badge: 'MEMBER', img: 'https://i.pravatar.cc/150?u=agent-ren' },
-];
+  {
+    name: 'Jordan',
+    role: 'Chief of Staff',
+    badge: 'LEAD',
+    img: demoCastAvatarSrc(DEMO_AGENT_CAST.Jordan),
+  },
+  {
+    name: 'Aria',
+    role: 'Growth & Marketing',
+    badge: 'MEMBER',
+    img: demoCastAvatarSrc(DEMO_AGENT_CAST.Aria),
+  },
+  {
+    name: 'Leo',
+    role: 'Operations & Finance',
+    badge: 'MEMBER',
+    img: demoCastAvatarSrc(DEMO_AGENT_CAST.Leo),
+  },
+  {
+    name: 'Ren',
+    role: 'Product Builder',
+    badge: 'MEMBER',
+    img: demoCastAvatarSrc(DEMO_AGENT_CAST.Ren),
+  },
+] as const;
 
 function Av({ src, size = 32 }: { src: string; size?: number }) {
-  return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />;
+  return <CastAvatarDisc src={src} size={size} />;
 }
 
 function DemoPageLayout({ children }: { children: ReactNode }) {
@@ -317,9 +340,6 @@ export function DemoGoalsPage() {
               <span style={{ fontSize: 10, fontWeight: 500, padding: '2px 8px', borderRadius: 999, background: '#F5F5F4', color: C.textMuted }}>{g.priority}</span>
             </div>
             <div style={{ fontSize: 15, fontWeight: 500, color: C.text, marginBottom: 10 }}>{g.title}</div>
-            <div style={{ height: 4, borderRadius: 999, background: C.bg, overflow: 'hidden', marginBottom: 6 }}>
-              <div style={{ width: `${g.progress}%`, height: '100%', background: C.brand, borderRadius: 999 }} />
-            </div>
             <div style={{ fontSize: 11, color: C.textSubtle }}>{g.progress}% · {g.tasks} linked tasks</div>
           </div>
         ))}

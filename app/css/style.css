@@ -144,26 +144,24 @@
   opacity: 0.35;
 }
 
-/* Gumloop-aligned landing tokens
+/* Landing type tokens — calibrated to the design/landing-refresh craft
  *
- * Learnings from gumloop.com:
- * - Chrome is monochrome. Color lives on agent marks + primary CTAs only.
- * - Body copy is a cool muted (#5f5f68), not warm charcoal — reads cleaner.
- * - Headings are near-black (#171717) with tight tracking, never pure #000.
- * - Meta/UI chrome sits at ~13px / #8e8e98; body ~15–16px; display is large.
- * - Status "ok" green is crisp emerald, separate from brand fern/olive.
+ * Display: Funnel, medium weight, tight negative tracking.
+ * Body/lede: Inter 16 / 1.7, muted #77797e.
+ * Kickers: Inter 13 medium, no uppercase tracking.
+ * Ink: #191b1d / muted #77797e / faint #8e8e98 on white.
  */
 :root {
-  --color-canvas: #fafafa;
-  --color-ink: #171717;
-  --color-ink-muted: #5f5f68;
+  --color-canvas: #ffffff;
+  --color-ink: #191b1d;
+  --color-ink-muted: #77797e;
   --color-ink-faint: #8e8e98;
   --color-fern: #3f6b00;
   --color-fern-bright: #7aa824;
   --color-fern-check: #3f6b00;
-  --color-split: #14170f;
+  --color-split: #191b1d;
   --color-quote-gold: #c4a882;
-  --color-line: #ebebeb;
+  --color-line: #e9e9eb;
   --color-ok: #16a34a;
   --color-ok-tint: #f0fdf4;
   --color-ok-ring: #bbf7d0;
@@ -338,53 +336,58 @@ body > iframe.goog-te-menu-frame {
 
 /* Trooper typography utilities — see tailwind.config.js fontFamily */
 @layer components {
-  /* Display face reads thin at 400; default headings to medium unless a weight utility is set */
+  /* Display face — medium + tight negative tracking (landing-refresh craft) */
   .font-display,
   .font-funneldisplay {
     @apply font-medium;
+    letter-spacing: -0.045em;
+  }
+
+  /* Hero display — sized for the centered hero column (not the wide left-rail refresh). */
+  .h1-hero {
+    @apply mx-auto max-w-[22rem] text-balance font-display font-medium text-ink sm:max-w-xl;
+    font-size: clamp(32px, 3.4vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
   }
 
   /*
-   * Section typography.
-   *
-   * These replace a .type-h1/.type-h2/.type-h3/.type-body/.type-caption/
-   * .type-label/.type-code block that had ZERO usages anywhere in the repo
-   * while the Tailwind config still advertised it. Reviving it would have
-   * shrunk every headline on the site — its .type-h2 was text-2xl sm:text-3xl,
-   * matching no heading actually in use.
-   *
-   * What is here instead encodes the string the page had already converged on:
-   * three sections shared it byte-for-byte and two more differed only in class
-   * order or a hundredth of line-height. This documents reality rather than
-   * redesigning it.
-   */
-  /*
-   * Headings. `text-balance` is not decoration — it is the difference between
-   * ragging that looks considered and ragging that looks automatic, and it is
-   * on every single heading in the reference design.
-   *
-   * Colour is neutral-800, not black: a pure-black headline on a warm off-white
-   * canvas is the loudest thing on the page and flattens everything under it.
+   * Section headings. Sized to the refresh craft: clamp 34→46, lh 1.13,
+   * tracking -0.045em — not the previous oversized text-3xl→5xl ramp.
    */
   .h2-section {
-    @apply max-w-3xl text-balance font-display text-3xl font-medium leading-[1.08] tracking-tight text-ink sm:text-4xl lg:text-5xl;
+    @apply max-w-[820px] text-balance font-display font-medium text-ink;
+    font-size: clamp(34px, 3.1vw, 46px);
+    line-height: 1.13;
+    letter-spacing: -0.045em;
   }
 
   .h2-section-dark {
-    @apply max-w-3xl text-balance font-display text-3xl font-medium leading-[1.08] tracking-tight text-white sm:text-4xl lg:text-5xl;
+    @apply max-w-[820px] text-balance font-display font-medium text-white;
+    font-size: clamp(34px, 3.1vw, 46px);
+    line-height: 1.13;
+    letter-spacing: -0.045em;
   }
 
   .h3-card {
     @apply font-sans text-base font-semibold leading-snug tracking-tight text-ink sm:text-lg;
   }
 
-  /* Standfirst under an h2-section. Measure-capped: 2xl is ~65 characters. */
+  /* Standfirst under an h2 — 16 / 1.7, muted, measure-capped. */
   .lede {
-    @apply mt-4 max-w-2xl text-pretty text-base leading-relaxed text-ink-muted sm:text-[17px] sm:leading-7;
+    @apply text-pretty text-ink-muted;
+    margin-top: 20px;
+    max-width: 570px;
+    font-size: 16px;
+    line-height: 1.7;
   }
 
   .lede-dark {
-    @apply mt-4 max-w-2xl text-pretty text-base leading-relaxed text-neutral-300;
+    @apply text-pretty text-neutral-300;
+    margin-top: 20px;
+    max-width: 570px;
+    font-size: 16px;
+    line-height: 1.7;
   }
 
   /* Body copy inside a card — Gumloop marketing body ≈ 15px / muted. */
@@ -451,6 +454,38 @@ body > iframe.goog-te-menu-frame {
     mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
   }
 
+  /* Infinity “oo” — dash travels continuously around the ∞ path. */
+  @keyframes loop-oo-flow {
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  .loop-oo-flow {
+    stroke-dasharray: 28 72;
+    animation: loop-oo-flow 2.4s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loop-oo-flow {
+      animation: none;
+      stroke-dasharray: none;
+      opacity: 0.85;
+    }
+  }
+
+  /* Demo panes: keep scroll, hide the ugly scrollbar track/thumb. */
+  .Trooper-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .Trooper-scrollbar::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
   /*
    * The one tab/chip idiom. Pair with .tab-mono--active.
    *
@@ -465,43 +500,25 @@ body > iframe.goog-te-menu-frame {
   /* Alias of .kicker — see the note there. Both were pixel-font, uppercase,
      wide-tracked labels; neither is now. */
   .type-eyebrow {
-    @apply block font-sans text-base font-medium normal-case tracking-tight text-fern-700 sm:text-lg;
+    @apply block font-sans text-[13px] font-medium normal-case tracking-normal text-[#5c5d62];
   }
 
   /*
    * The kicker: a short phrase above an h2.
-   *
-   * This was a numbered pixel chip — `[02] WORKFORCE` in Silkscreen inside a
-   * notched, green-gradient, bordered box, repeated 75 times across the site.
-   * Numbering a marketing page like a parts catalogue tells the reader there
-   * are nine more of these to sit through, and the chip itself is a piece of
-   * furniture competing with the headline it introduces.
-   *
-   * A kicker is now one line of speech in the accent colour: "Sound familiar?",
-   * "Meet the squad", "Pricing". Class name retained — the call sites are fine,
-   * it was the treatment that was wrong.
+   * Inter 13 / medium / no tracking — matches landing-refresh craft.
    */
   .type-eyebrow-num,
   .kicker {
-    @apply block font-sans text-base font-medium normal-case tracking-tight text-fern-700 sm:text-lg;
+    @apply block font-sans text-[13px] font-medium normal-case tracking-normal text-[#5c5d62];
   }
 
-  /*
-   * The card-level kicker: the same voice as .kicker one step down, for a label
-   * that introduces an h3 rather than an h2.
-   *
-   * Every one of these was `font-mono text-[11px] uppercase tracking-[0.16em]`.
-   * Six of them stack down the page above six headlines, and at that size and
-   * tracking they read as machine labels stamped on the content rather than as
-   * something written.
-   */
   .kicker-sm {
-    @apply block font-sans text-sm font-medium tracking-tight text-fern-700;
+    @apply block font-sans text-[13px] font-medium tracking-normal text-[#5c5d62];
   }
 
   .type-eyebrow-num-dark,
   .kicker-dark {
-    @apply block font-sans text-base font-medium normal-case tracking-tight text-fern-400 sm:text-lg;
+    @apply block font-sans text-[13px] font-medium normal-case tracking-normal text-neutral-400;
   }
 
   /* The pixel flicker belongs to brand moments, not to every section label. */

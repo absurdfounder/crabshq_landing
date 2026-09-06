@@ -174,10 +174,10 @@ function GitHubNavLink({ dark = false }: { dark?: boolean }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Trooper core on GitHub"
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 ${
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-lg transition-colors sm:h-10 sm:w-10 ${
         dark
-          ? 'border-white/20 text-white/75 hover:bg-white/10 hover:text-white'
-          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+          ? 'bg-white text-ink hover:bg-white/90'
+          : 'bg-ink text-white hover:bg-neutral-800'
       }`}
     >
       <Github className="h-[18px] w-[18px] sm:h-5 sm:w-5" strokeWidth={2} />

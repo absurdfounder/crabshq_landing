@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
+
+import TrooperAvatar from '@/components/ui/TrooperAvatar';
+import { bubblePaletteFromAccent, type BubbleStops } from '@/lib/avatars/bubblePalette';
+import type { Trooper } from '@/lib/troopers';
 
 /**
- * Classic iOS-style chat bubbles: dark cyan ask, saturated green reply,
- * white type, soft gloss. SVG path scales with the text box.
+ * Chat bubbles: SVG path scales with the text box.
+ * When an agent is present, both bubbles tint to that cast accent
+ * (darker stops so white type stays readable) — not generic black/green.
  */
 
 const f = (n: number) => +n.toFixed(3);
 
-/** Ask bubble: tail flowing out of the bottom-right corner. */
 function askPath(w: number, h: number) {
   const r = Math.min(23, h / 2);
   return (
@@ -24,7 +28,6 @@ function askPath(w: number, h: number) {
   );
 }
 
-/** Reply bubble: tail flowing out of the bottom-left corner. */
 function replyPath(w: number, h: number) {
   const r = Math.min(19, h / 2);
   return (
@@ -40,39 +43,29 @@ function replyPath(w: number, h: number) {
   );
 }
 
-/** Saturated iOS Message look — white type on dark cyan / green. */
-const STYLES = {
-  ask: {
-    path: askPath,
-    // Cool ink slate — not muddy teal / fern olive
-    fill: [
-      ['0', '#3f3f46'],
-      ['0.55', '#27272a'],
-      ['1', '#18181b'],
-    ],
-    stroke: [
-      ['0', '#52525b'],
-      ['1', '#18181b'],
-    ],
-    text: 'text-white',
-    shadow: 'drop-shadow-[0_4px_10px_rgba(24,24,27,0.28)]',
-  },
-  reply: {
-    path: replyPath,
-    // Crisp ok green (#16a34a), not brand fern olive
-    fill: [
-      ['0', '#22c55e'],
-      ['0.55', '#16a34a'],
-      ['1', '#15803d'],
-    ],
-    stroke: [
-      ['0', '#4ade80'],
-      ['1', '#16a34a'],
-    ],
-    text: 'text-white',
-    shadow: 'drop-shadow-[0_4px_10px_rgba(22,163,74,0.28)]',
-  },
-} as const;
+const DEFAULT_ASK: BubbleStops = {
+  fill: [
+    ['0', '#3f3f46'],
+    ['0.55', '#27272a'],
+    ['1', '#18181b'],
+  ],
+  stroke: [
+    ['0', '#52525b'],
+    ['1', '#18181b'],
+  ],
+};
+
+const DEFAULT_REPLY: BubbleStops = {
+  fill: [
+    ['0', '#22c55e'],
+    ['0.55', '#16a34a'],
+    ['1', '#15803d'],
+  ],
+  stroke: [
+    ['0', '#4ade80'],
+    ['1', '#16a34a'],
+  ],
+};
 
 const TYPE_MS = 26;
 
@@ -83,15 +76,16 @@ export default function ChatBubble({
   typing = false,
   active = true,
   onTyped,
+  palette,
 }: {
-  kind: keyof typeof STYLES;
+  kind: 'ask' | 'reply';
   className?: string;
   children: string;
-  /** Type characters in one by one when `active` becomes true. */
   typing?: boolean;
-  /** Gate for the typewriter — false keeps the bubble hidden/empty. */
   active?: boolean;
   onTyped?: () => void;
+  /** Optional cast-tinted stops; falls back to slate / green. */
+  palette?: BubbleStops;
 }) {
   const uid = useId();
   const ref = useRef<HTMLDivElement>(null);
@@ -100,6 +94,13 @@ export default function ChatBubble({
   const [dim, setDim] = useState({ w: 320, h: 46 });
   const [shown, setShown] = useState(() => (typing ? '' : children));
   const doneRef = useRef(false);
+
+  const stops = palette ?? (kind === 'ask' ? DEFAULT_ASK : DEFAULT_REPLY);
+  const pathFn = kind === 'ask' ? askPath : replyPath;
+  const shadow =
+    kind === 'ask'
+      ? 'drop-shadow-[0_4px_10px_rgba(24,24,27,0.28)]'
+      : 'drop-shadow-[0_4px_10px_rgba(0,0,0,0.22)]';
 
   useEffect(() => {
     const el = ref.current;
@@ -157,7 +158,6 @@ export default function ChatBubble({
 
   if (typing && !active && !shown) return null;
 
-  const s = STYLES[kind];
   const fillId = `bub-f-${uid}`;
   const strokeId = `bub-s-${uid}`;
   const label = shown || (typing && active ? '\u00a0' : children);
@@ -170,38 +170,37 @@ export default function ChatBubble({
       } ${className}`}
     >
       <svg
-        className={`absolute left-0 top-0 ${s.shadow}`}
+        className={`absolute left-0 top-0 ${shadow}`}
         style={{ width: dim.w, height: dim.h + 10 }}
         viewBox={`0 0 ${dim.w} ${dim.h + 10}`}
         aria-hidden
       >
         <defs>
           <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
-            {s.fill.map(([o, c]) => (
+            {stops.fill.map(([o, c]) => (
               <stop key={o} offset={o} stopColor={c} />
             ))}
           </linearGradient>
           <linearGradient id={strokeId} x1="0" y1="0" x2="0" y2="1">
-            {s.stroke.map(([o, c]) => (
+            {stops.stroke.map(([o, c]) => (
               <stop key={o} offset={o} stopColor={c} />
             ))}
           </linearGradient>
         </defs>
         <path
-          d={s.path(dim.w, dim.h)}
+          d={pathFn(dim.w, dim.h)}
           fill={`url(#${fillId})`}
           stroke={`url(#${strokeId})`}
           strokeWidth="1.25"
           strokeLinejoin="round"
         />
       </svg>
-      {/* Rim gloss only. A tall white wash used to sit on the type. */}
       <span
         className="pointer-events-none absolute inset-x-5 top-[3px] h-[6px] rounded-full bg-white/20 blur-[2px]"
         aria-hidden
       />
       <span
-        className={`relative z-[1] block text-[15px] font-semibold leading-snug tracking-[-0.01em] sm:text-[16px] ${s.text}`}
+        className="relative z-[1] block text-[15px] font-semibold leading-snug tracking-[-0.01em] text-white sm:text-[16px]"
         style={{ textShadow: '0 1px 1px rgba(0,0,0,0.28)' }}
       >
         {label}
@@ -213,26 +212,28 @@ export default function ChatBubble({
   );
 }
 
-/**
- * Ask types, then reply. Only runs while `focused` — other capability rows
- * stay idle so background sections don't keep typing while you read another.
- */
 export function BubbleExchange({
   ask,
   reply,
   focused = true,
   className = '',
+  agent = null,
 }: {
   ask: string;
   reply: string;
-  /** When false, typing is paused/reset. Driven by the parent scroll focus. */
   focused?: boolean;
   className?: string;
+  agent?: Trooper | null;
 }) {
   const [askOn, setAskOn] = useState(false);
   const [replyOn, setReplyOn] = useState(false);
   const [cycle, setCycle] = useState(0);
   const replyDelayRef = useRef<number | null>(null);
+
+  const palette = useMemo(
+    () => (agent ? bubblePaletteFromAccent(agent.accent) : null),
+    [agent],
+  );
 
   useEffect(() => {
     const clearReplyDelay = () => {
@@ -274,13 +275,21 @@ export function BubbleExchange({
         typing
         active={askOn && focused}
         onTyped={handleAskTyped}
+        palette={palette?.ask}
       >
         {ask}
       </ChatBubble>
       {replyOn && focused ? (
-        <ChatBubble key={`reply-${cycle}`} kind="reply" typing active>
-          {reply}
-        </ChatBubble>
+        <div className="flex items-end gap-2.5">
+          {agent ? (
+            <span className="mb-0.5 shrink-0 drop-shadow-[0_6px_14px_rgba(0,0,0,0.12)]">
+              <TrooperAvatar trooper={agent} size={44} live animation="happy" />
+            </span>
+          ) : null}
+          <ChatBubble key={`reply-${cycle}`} kind="reply" typing active palette={palette?.reply}>
+            {reply}
+          </ChatBubble>
+        </div>
       ) : null}
     </div>
   );

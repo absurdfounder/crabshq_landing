@@ -31,7 +31,7 @@ function Tile({ tile, cloned }: { tile: IntegrationTile; cloned?: boolean }) {
       // these run across the widest part of the page, so whatever they are, the
       // eye reads it as the site's basic unit — and 72 hard-edged rectangles in
       // a row is the single loudest "assembled by a machine" signal on the page.
-      className="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg bg-white px-3 shadow-xs ring-1 ring-black/5 transition-colors hover:bg-neutral-50"
+      className="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg border border-black/[0.08] bg-white px-3 shadow-xs transition-colors hover:bg-neutral-50"
     >
       {!broken && (
         // Plain <img>: 36 remote logos through the image optimiser is server
@@ -58,7 +58,7 @@ function Row({ tiles, reverse = false }: { tiles: IntegrationTile[]; reverse?: b
   const trackRef = useScrollDrivenRail<HTMLDivElement>(reverse);
 
   return (
-    <div className="rail-fade scrollbar-hide overflow-x-auto">
+    <div className="scrollbar-hide overflow-x-auto py-1.5">
       <div ref={trackRef} className="rail-track flex gap-3">
         {tiles.map((tile) => (
           <Tile key={tile.slug} tile={tile} />
@@ -87,16 +87,16 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
   return (
     <div>
       <motion.div
-        className="mb-10 max-w-3xl"
+        className="mx-auto mb-10 max-w-3xl text-center"
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease }}
         viewport={{ once: true, margin: '-40px' }}
       >
-        <h2 className="h2-section">
+        <h2 className="h2-section mx-auto">
           Works with the tools you already have.
         </h2>
-        <p className="lede">
+        <p className="lede mx-auto">
           If it has an API, a trooper can reach it.
         </p>
       </motion.div>

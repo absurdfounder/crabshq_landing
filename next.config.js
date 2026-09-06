@@ -2,7 +2,7 @@
 const { withPlausibleProxy } = require('next-plausible')
 
 const nextConfig = {
-  transpilePackages: ['@trooper/demo'],
+  transpilePackages: ['@trooper/demo', '@bible-strong/avatar-core', '@bible-strong/avatar-react'],
   images: {
     remotePatterns: [
       {
@@ -33,6 +33,19 @@ const nextConfig = {
         source: '/integrations/:slug',
         destination: '/plugin/ai_agent_for_:slug',
         permanent: true,
+      },
+      {
+        source: '/character-builder',
+        destination: '/characters',
+        permanent: false,
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/character-studio',
+        destination: '/character-studio/index.html',
       },
     ];
   },

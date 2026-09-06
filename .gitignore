@@ -41,3 +41,12 @@ public/demo/
 
 # Vite pre-bundle cache inside the workspace package
 node_modules/
+
+# Vendored avatar lab — keep source, ignore its install tree
+vendor/bible-strong-avatar-lab/node_modules
+vendor/bible-strong-avatar-lab/**/node_modules
+vendor/bible-strong-avatar-lab/dist
+
+# Local package manager cache (never commit)
+.pnpm-store/
+
