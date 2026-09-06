@@ -31,17 +31,16 @@ type SimplePricingProps = {
   showFullPricingLink?: boolean;
 };
 
-/** Shared row bands — keeps headers, prices, steppers, features, and CTAs aligned across columns. */
-const PRICING_GRID_TEMPLATE_ROWS =
-  'auto minmax(4.75rem,auto) minmax(3rem,auto) minmax(2.75rem,auto) minmax(3rem,auto) minmax(12rem,auto) minmax(0px,1fr) auto';
+/** Shared row bands — keep columns aligned without tall empty stretch. */
+const PRICING_GRID_TEMPLATE_ROWS = 'auto auto auto auto auto auto auto auto';
 
 function planCellClass() {
-  return 'bg-transparent px-5 xl:px-6';
+  return 'bg-transparent px-4 xl:px-5';
 }
 
 function FeatureItem({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex items-start gap-2.5 text-sm leading-5 text-ink-muted">
+    <li className="flex items-start gap-2 text-[13px] leading-5 text-ink-muted">
       <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ok-600" aria-hidden />
       <span>{children}</span>
     </li>
@@ -84,9 +83,9 @@ function PlanHeader({
         <span className="kicker">{eyebrow}</span>
         <PlanBadge featured={featured}>{badge}</PlanBadge>
       </div>
-      <div className="mt-3 flex items-center gap-2.5">
-        <Icon className="h-5 w-5 shrink-0 text-ok-600" aria-hidden />
-        <h3 className="font-display text-xl font-medium tracking-tight text-ink">{title}</h3>
+      <div className="mt-2 flex items-center gap-2">
+        <Icon className="h-[18px] w-[18px] shrink-0 text-ok-600" aria-hidden />
+        <h3 className="font-display text-lg font-medium tracking-tight text-ink">{title}</h3>
       </div>
     </>
   );
@@ -111,30 +110,30 @@ function AllowanceStepper({
 }) {
   const atMax = disableIncrease || value >= max;
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--color-line)] bg-white px-3.5 py-3">
+    <div className="flex items-center justify-between gap-2 rounded-md border border-[var(--color-line)] bg-white px-2.5 py-1.5">
       <div className="min-w-0">
-        <p className="text-sm font-medium text-ink">{label}</p>
-        <p className="mt-0.5 text-[11px] leading-snug text-ink-muted">{helper}</p>
+        <p className="text-[13px] font-medium text-ink">{label}</p>
+        <p className="text-[10px] leading-snug text-ink-muted">{helper}</p>
       </div>
-      <div className="flex shrink-0 items-center gap-1" role="group" aria-label={`${label} quantity`}>
+      <div className="flex shrink-0 items-center gap-0.5" role="group" aria-label={`${label} quantity`}>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
           aria-label={`Decrease ${label.toLowerCase()}`}
         >
-          <Minus className="h-3.5 w-3.5" aria-hidden />
+          <Minus className="h-3 w-3" aria-hidden />
         </button>
-        <span className="w-8 text-center text-sm font-medium tabular-nums text-ink">{value}</span>
+        <span className="w-7 text-center text-[13px] font-medium tabular-nums text-ink">{value}</span>
         <button
           type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[var(--color-line)] bg-white text-ink-muted transition hover:bg-neutral-50 disabled:pointer-events-none disabled:opacity-40"
           disabled={atMax}
           onClick={() => onChange(Math.min(max, value + 1))}
           aria-label={`Increase ${label.toLowerCase()}`}
         >
-          <Plus className="h-3.5 w-3.5" aria-hidden />
+          <Plus className="h-3 w-3" aria-hidden />
         </button>
       </div>
     </div>
@@ -143,19 +142,18 @@ function AllowanceStepper({
 
 function TierRail({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex w-full items-center lg:min-h-[4.75rem]">
-      <div className="flex w-full items-center lg:py-1">{children}</div>
+    <div className="flex w-full items-center">
+      <div className="flex w-full items-center">{children}</div>
     </div>
   );
 }
 
 function HostingModePill({ label, selected = true }: { label: string; selected?: boolean }) {
-  // Quiet mode label — same height as CloudTierTabs so subgrid rows stay aligned,
-  // without looking like a disabled single-option radio.
+  // Compact mode chip — same height as CloudTierTabs for subgrid alignment.
   return (
     <TierRail>
       <div
-        className="flex h-10 w-full items-center rounded-lg border border-transparent bg-neutral-50/70 px-3"
+        className="flex h-8 w-full items-center rounded-md bg-neutral-50 px-2.5"
         role="status"
         aria-label={`Hosting mode: ${label}`}
       >
@@ -182,7 +180,7 @@ function CloudTierTabs({
   return (
     <TierRail>
       <div
-        className="grid w-full grid-cols-2 gap-1 rounded-lg border border-[var(--color-line)] bg-neutral-100 p-1"
+        className="grid w-full grid-cols-2 gap-0.5 rounded-md border border-[var(--color-line)] bg-neutral-100 p-0.5"
         role="radiogroup"
         aria-label="Trooper Cloud tier"
       >
@@ -197,16 +195,16 @@ function CloudTierTabs({
               aria-label={`${tier.label} ${formatUsd(tier.price)} per month`}
               onClick={() => onChange(tier.id)}
               className={[
-                'flex h-8 items-center justify-center gap-1 rounded-md px-2 transition-all duration-150 xl:gap-1.5 xl:px-2.5',
+                'flex h-7 items-center justify-center gap-1 rounded-sm px-1.5 transition-all duration-150',
                 selected
                   ? 'bg-trooper text-white shadow-sm'
                   : 'text-ink-muted hover:bg-white hover:text-ink',
               ].join(' ')}
             >
-              <span className="text-[10px] font-semibold leading-none xl:text-[11px]">{tier.label}</span>
+              <span className="text-[10px] font-semibold leading-none">{tier.label}</span>
               <span
                 className={[
-                  'text-[10px] font-medium tabular-nums leading-none xl:text-[11px]',
+                  'text-[10px] font-medium tabular-nums leading-none',
                   selected ? 'text-white/90' : 'text-ink-muted',
                 ].join(' ')}
               >
@@ -246,7 +244,7 @@ function AllowanceBlock({
   disableIncrease?: boolean;
 }) {
   return (
-    <div className="space-y-2.5 lg:min-h-[12rem]">
+    <div className="space-y-1.5">
       <AllowanceStepper
         label="Team members"
         value={seatCount}
@@ -277,24 +275,24 @@ function PricingAmount({
   cadence?: string;
 }) {
   return (
-    <div className="flex items-baseline gap-2 lg:min-h-[3rem]">
-      <span className="font-display text-[2.2rem] font-medium leading-none tracking-tight text-ink tabular-nums sm:text-[2.5rem]">
+    <div className="flex items-baseline gap-1.5">
+      <span className="font-display text-[1.85rem] font-medium leading-none tracking-tight text-ink tabular-nums sm:text-[2.1rem]">
         {price}
       </span>
-      {cadence ? <span className="text-sm font-medium text-ink-muted">{cadence}</span> : null}
+      {cadence ? <span className="text-[13px] font-medium text-ink-muted">{cadence}</span> : null}
     </div>
   );
 }
 
 function PricingSubline({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm font-medium leading-snug text-ok-700 lg:min-h-[2.75rem]">{children}</p>
+    <p className="text-[13px] font-medium leading-snug text-ok-700">{children}</p>
   );
 }
 
 function PricingNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs leading-5 text-ink-muted lg:min-h-[3rem]">
+    <p className="text-[11px] leading-snug text-ink-muted">
       {children ?? <span className="hidden lg:inline">&nbsp;</span>}
     </p>
   );
@@ -343,7 +341,7 @@ function DesktopPlanColumn({
           : 'border border-black/8 bg-white shadow-xs',
       ].join(' ')}
     >
-      <div className={`${planCellClass()} border-b border-[var(--color-line)] py-5`}>
+      <div className={`${planCellClass()} border-b border-[var(--color-line)] py-3.5`}>
         <PlanHeader
           index={index}
           eyebrow={eyebrow}
@@ -354,23 +352,23 @@ function DesktopPlanColumn({
         />
       </div>
 
-      <div className={`${planCellClass()} flex items-center py-2`}>{tierRail}</div>
+      <div className={`${planCellClass()} flex items-center py-1.5`}>{tierRail}</div>
 
-      <div className={`${planCellClass()} py-1.5`}>
+      <div className={`${planCellClass()} py-1`}>
         <PricingAmount price={price} cadence={cadence} />
       </div>
 
-      <div className={`${planCellClass()} flex items-start py-1.5`}>{subline}</div>
+      <div className={`${planCellClass()} flex items-start py-0.5`}>{subline}</div>
 
-      <div className={`${planCellClass()} flex items-start py-1`}>{note}</div>
+      <div className={`${planCellClass()} flex items-start py-0.5`}>{note}</div>
 
-      <div className={`${planCellClass()} py-1.5`}>{allowance}</div>
+      <div className={`${planCellClass()} py-1`}>{allowance}</div>
 
-      <div className={`${planCellClass()} py-4`}>
-        <ul className="space-y-2.5">{features}</ul>
+      <div className={`${planCellClass()} py-2.5`}>
+        <ul className="space-y-1.5">{features}</ul>
       </div>
 
-      <div className={`${planCellClass()} flex items-center border-t border-[var(--color-line)] py-5`}>{cta}</div>
+      <div className={`${planCellClass()} flex items-center border-t border-[var(--color-line)] py-3.5`}>{cta}</div>
     </article>
   );
 }
@@ -557,7 +555,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       subline: (
         <PricingSubline>1 workspace · no connected devices · free forever on your machine</PricingSubline>
       ),
-      note: <PricingNote>Free self-host. Bring your own API keys; model usage is billed by your providers.</PricingNote>,
+      note: <PricingNote>BYO API keys — providers bill usage.</PricingNote>,
       tierRail: <HostingModePill label="On your machine" />,
       allowance: localAllowance,
       features: localFeatures,
@@ -576,7 +574,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
           1 workspace · {PRICING_USD.cloudIncludedMembers} team members · no connected devices
         </PricingSubline>
       ),
-      note: <PricingNote>Bring your own API keys. Model usage billed by your providers.</PricingNote>,
+      note: <PricingNote>BYO API keys — providers bill usage.</PricingNote>,
       tierRail: <HostingModePill label="Pay once · hosted" />,
       allowance: soloAllowance,
       features: lifetimeFeatures,
@@ -598,8 +596,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       subline: <PricingSubline>{PRICING_USD.cloudIncludedMembers} team members included</PricingSubline>,
       note: (
         <PricingNote>
-          Workspace on {cloudTierPrice}/mo. Extra members {formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}
-          /mo. Your keys — providers bill usage.
+          Extra members {formatUsd(PRICING_USD.cloudAdditionalMemberMonthly)}/mo. BYO keys.
         </PricingNote>
       ),
       tierRail: <CloudTierTabs value={cloudTier} onChange={setCloudTier} />,
@@ -619,7 +616,7 @@ export default function SimplePricing({ showFullPricingLink = true }: SimplePric
       icon: Building2,
       price: 'Custom',
       subline: <PricingSubline>Volume pricing and dedicated support</PricingSubline>,
-      note: <PricingNote>Self-hosted deployment with migration and custom agreements.</PricingNote>,
+      note: <PricingNote>Private deployment with custom agreements.</PricingNote>,
       tierRail: <HostingModePill label="Private cloud / VPC" />,
       allowance: enterpriseAllowance,
       features: enterpriseFeatures,

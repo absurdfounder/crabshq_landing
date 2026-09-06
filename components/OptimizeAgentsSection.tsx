@@ -46,31 +46,31 @@ const RIGHT_PROVIDERS: readonly Provider[] = [
   { id: 'minimax', label: 'MiniMax', icon: '/images/providers/minimax.svg', savings: 87 },
 ];
 
-/** Scattered eval tiles — keep inset so overflow/radius never clips a corner. */
+/** Scattered eval tiles — each hosts a different cast agent. */
 const EVAL_CELL_LAYOUTS = [
   [
-    { t: '18%', l: '16%' },
-    { t: '32%', l: '36%' },
-    { t: '56%', l: '22%' },
-    { t: '24%', l: '58%' },
-    { t: '64%', l: '46%' },
-    { t: '46%', l: '68%' },
+    { t: '18%', l: '16%', handle: 'rex' as const },
+    { t: '32%', l: '36%', handle: 'nova' as const },
+    { t: '56%', l: '22%', handle: 'scout' as const },
+    { t: '24%', l: '58%', handle: 'pip' as const },
+    { t: '64%', l: '46%', handle: 'wren' as const },
+    { t: '46%', l: '68%', handle: 'nova' as const },
   ],
   [
-    { t: '26%', l: '20%' },
-    { t: '16%', l: '48%' },
-    { t: '48%', l: '18%' },
-    { t: '38%', l: '56%' },
-    { t: '62%', l: '36%' },
-    { t: '68%', l: '62%' },
+    { t: '26%', l: '20%', handle: 'scout' as const },
+    { t: '16%', l: '48%', handle: 'rex' as const },
+    { t: '48%', l: '18%', handle: 'wren' as const },
+    { t: '38%', l: '56%', handle: 'pip' as const },
+    { t: '62%', l: '36%', handle: 'nova' as const },
+    { t: '68%', l: '62%', handle: 'scout' as const },
   ],
   [
-    { t: '20%', l: '34%' },
-    { t: '40%', l: '20%' },
-    { t: '28%', l: '64%' },
-    { t: '58%', l: '50%' },
-    { t: '66%', l: '26%' },
-    { t: '50%', l: '68%' },
+    { t: '20%', l: '34%', handle: 'pip' as const },
+    { t: '40%', l: '20%', handle: 'nova' as const },
+    { t: '28%', l: '64%', handle: 'rex' as const },
+    { t: '58%', l: '50%', handle: 'wren' as const },
+    { t: '66%', l: '26%', handle: 'scout' as const },
+    { t: '50%', l: '68%', handle: 'pip' as const },
   ],
 ] as const;
 
@@ -139,13 +139,14 @@ function shortestDelta(index: number, scroll: number, total: number) {
 
 export default function OptimizeAgentsSection() {
   return (
-    <div className="gl-optimize flex flex-col gap-12 sm:gap-14">
+    <div className="gl-optimize flex flex-col gap-10 sm:gap-12">
       <div className="flex flex-col">
         <p className="kicker">Optimize</p>
         <h2 className="h2-section mt-3">Optimize your troopers</h2>
       </div>
 
-      <div className="grid grid-cols-1 items-stretch gap-12 md:grid-cols-3 md:gap-8 lg:gap-10 xl:gap-12">
+      {/* Gumloop rhythm: equal square wells, modest gutters — don’t inflate gaps (that narrows columns and squishes art). */}
+      <div className="grid grid-cols-1 items-stretch gap-10 md:grid-cols-3 md:gap-6 lg:gap-8">
         <OptimizeCard
           title="Open-source by default"
           body="Run on open-source models and pay a fraction of the cost, with no lock-in and full control over where your agents run."
@@ -176,12 +177,16 @@ function OptimizeCard({
   visual: ReactNode;
 }) {
   return (
-    <div className="flex h-full min-w-0 flex-col gap-5 sm:gap-6">
-      {/* Equal wells: shared aspect ratio + inset pad so graphics never kiss the radius. */}
-      <div className="relative aspect-[5/4] w-full min-w-0 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[#f3f3f6]">
-        <div className="absolute inset-4 overflow-hidden rounded-xl sm:inset-5">{visual}</div>
+    <div className="flex h-full min-w-0 flex-col gap-4">
+      {/*
+        Full-bleed square well (Gumloop). Breathing room comes from scaling the
+        composition inside the visual — not from nested inset wrappers that
+        shrink the drawable box.
+      */}
+      <div className="relative aspect-square w-full min-w-0 overflow-hidden rounded-xl border border-[var(--color-line)] bg-[#f3f3f6]">
+        <div className="absolute inset-0">{visual}</div>
       </div>
-      <p className="max-w-[38ch] text-[15px] leading-[1.6] text-ink-muted">
+      <p className="text-[15px] leading-[1.55] text-ink-muted">
         <span className="font-medium text-ink">{title}</span> {body}
       </p>
     </div>
@@ -257,17 +262,17 @@ function OpenSourceVisual() {
       <ProviderArc providers={RIGHT_PROVIDERS} scroll={rightScroll} side="right" />
 
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-40 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center whitespace-nowrap">
-        <span className="text-[13px] font-medium leading-tight text-ink-muted">
+        <span className="text-[12px] font-medium leading-tight text-ink-muted sm:text-[13px]">
           Cost reduction
           <br />
           per task
         </span>
-        <span className="mt-1 flex items-start font-display text-[clamp(40px,14cqw,56px)] leading-none font-medium tracking-tight text-ink tabular-nums">
+        <span className="mt-1.5 flex items-start font-display text-[clamp(2.75rem,12cqw,3.5rem)] leading-none font-medium tracking-tight text-ink tabular-nums">
           <span>−</span>
           <DigitRoll value={savings} reduce={reduce} />
           <span>%</span>
         </span>
-        <span className="mt-2 flex items-baseline gap-1.5 text-[13px] tabular-nums">
+        <span className="mt-2.5 flex items-baseline gap-1.5 text-[12px] tabular-nums sm:text-[13px]">
           <span className="text-ink-faint line-through">{money(0.42)}</span>
           <motion.span
             key={after}
@@ -333,12 +338,12 @@ function ProviderLogo({
   }, [index, scroll, total]);
 
   const ad = Math.abs(d);
-  const scale = ad < 0.01 ? 1.12 : ad < 1.01 ? 0.9 : 0.76;
-  const opacity = ad < 0.01 ? 1 : ad < 1.01 ? 0.78 : 0.55;
-  const yPct = 50 + d * 16.5;
-  // Keep logos inside the padded well — never flush against the rounded clip.
-  const xBase = side === 'left' ? 22 : 78;
-  const xBulge = (side === 'left' ? 1 : -1) * (ad < 0.01 ? 4 : ad < 1.01 ? 1.5 : 0);
+  const scale = ad < 0.01 ? 1.06 : ad < 1.01 ? 0.86 : 0.7;
+  const opacity = ad < 0.01 ? 1 : ad < 1.01 ? 0.7 : 0.45;
+  // Use the square’s height — Gumloop arcs run nearly top-to-bottom.
+  const yPct = 50 + d * 19;
+  const xBase = side === 'left' ? 17 : 83;
+  const xBulge = (side === 'left' ? 1 : -1) * (ad < 0.01 ? 2.5 : ad < 1.01 ? 0.8 : 0);
   const xPct = xBase + xBulge;
 
   return (
@@ -353,14 +358,14 @@ function ProviderLogo({
       }}
       aria-hidden
     >
-      <div className="relative z-10 grid size-11 place-items-center rounded-[10px] bg-white p-2 text-ink shadow-[0_4px_16px_-6px_rgba(0,0,0,0.2)] ring-1 ring-black/[0.06] sm:size-12 sm:rounded-[12px] sm:p-2.5 md:size-11 xl:size-12">
+      <div className="relative z-10 grid size-10 place-items-center rounded-[10px] bg-white p-2 text-ink shadow-[0_4px_16px_-6px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06] sm:size-11 sm:rounded-[11px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={entry.icon}
           alt=""
-          width={28}
-          height={28}
-          className="size-6 object-contain sm:size-7"
+          width={24}
+          height={24}
+          className="size-5 object-contain sm:size-6"
           draggable={false}
         />
       </div>
@@ -438,10 +443,8 @@ function SelfImproveVisual() {
       ref={ref}
       className="[container-type:size] relative isolate size-full overflow-hidden"
     >
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ width: 'min(88cqw, 88cqh, 560px)', aspectRatio: '1 / 1' }}
-      >
+      {/* Fill the square — Gumloop’s orbit nearly touches the well edges. */}
+      <div className="absolute inset-[2%]">
         <div className="absolute inset-0">
           <svg viewBox="0 0 600 600" fill="none" className="absolute inset-0 size-full overflow-visible" aria-hidden>
             <defs>
@@ -468,14 +471,14 @@ function SelfImproveVisual() {
               </marker>
             </defs>
 
-            {/* Inner arcs — faint, slowly spinning */}
             <g
               className={inView && !reduce ? 'gl-orbit-spin' : undefined}
               style={{ transformOrigin: '300px 300px', transformBox: 'view-box' }}
             >
               {innerAngles.map((a0, i) => {
                 const a1 = innerAngles[(i + 1) % innerAngles.length]!;
-                const { d } = arcPath(cx, cy, 148, a0, a1);
+                // Keep inner ring outside the white disc — never through Cubee corners.
+                const { d } = arcPath(cx, cy, 178, a0, a1);
                 return (
                   <path
                     key={`in-${i}`}
@@ -490,10 +493,9 @@ function SelfImproveVisual() {
               })}
             </g>
 
-            {/* Outer arcs with arrowheads */}
             {outerAngles.map((a0, i) => {
               const a1 = outerAngles[(i + 1) % outerAngles.length]!;
-              const { d, len } = arcPath(cx, cy, 200, a0, a1);
+              const { d, len } = arcPath(cx, cy, 228, a0, a1);
               const active = phase === i;
               return (
                 <g key={`out-${i}`}>
@@ -535,8 +537,8 @@ function SelfImproveVisual() {
                 <div
                   className={`relative flex aspect-square items-center justify-center rounded-full border bg-white transition-[width,border-color] duration-300 ${
                     active
-                      ? 'w-[min(7.5cqw,7.5cqh,48px)] border-[#9810fa]/35'
-                      : 'w-[min(4.7cqw,4.7cqh,32px)] border-transparent'
+                      ? 'w-[min(11%,42px)] border-[#9810fa]/35'
+                      : 'w-[min(7.5%,30px)] border-transparent'
                   }`}
                 >
                   {active ? (
@@ -554,7 +556,7 @@ function SelfImproveVisual() {
                 </div>
                 <span
                   className={`absolute bottom-full left-1/2 -translate-x-1/2 pb-1.5 whitespace-nowrap transition-[font-size] duration-200 ${
-                    active ? 'text-sm' : 'text-xs'
+                    active ? 'text-[13px]' : 'text-[11px]'
                   }`}
                 >
                   <span
@@ -568,10 +570,13 @@ function SelfImproveVisual() {
           })}
         </div>
 
-        {/* Cast character — soft square pad (never a circle crop; Cubee corners must stay). */}
+        {/*
+          Live cast with expressions. Large white disc + smaller mark so Cubee
+          corners never meet the rim (Gumloop-style platform, not a crop).
+        */}
         <div className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
           <span
-            className="relative flex shrink-0 items-center justify-center overflow-visible rounded-2xl bg-white p-3 sm:p-3.5"
+            className="relative flex h-32 w-32 items-center justify-center overflow-visible rounded-full bg-white sm:h-36 sm:w-36"
             style={{
               boxShadow:
                 'rgba(0,0,0,0.04) 0 0 0 1px, rgba(0,0,0,0.05) 0 8px 20px -8px, rgba(0,0,0,0.04) 0 18px 32px -14px',
@@ -583,9 +588,9 @@ function SelfImproveVisual() {
               return (
                 <TrooperAvatar
                   trooper={center}
-                  size={48}
+                  size={62}
                   live={inView && !reduce}
-                  animation={phase === 0 ? 'working' : phase === 1 ? 'thinking' : 'curious'}
+                  animation={phase === 0 ? 'working' : phase === 1 ? 'thinking' : 'happy'}
                 />
               );
             })()}
@@ -622,18 +627,23 @@ function EvalsVisual() {
       className="relative size-full overflow-hidden bg-[linear-gradient(to_right,rgba(0,0,0,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.045)_1px,transparent_1px)] bg-[size:24px_24px]"
     >
       <AnimatePresence mode="popLayout">
-        {cells.map((p, i) => (
-          <motion.span
-            key={`${cardIdx}-${i}`}
-            aria-hidden
-            className="absolute size-6 rounded-md bg-white/80 shadow-sm ring-1 ring-black/[0.08]"
-            style={{ top: p.t, left: p.l }}
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.04 }}
-          />
-        ))}
+        {cells.map((p, i) => {
+          const agent = getTrooper(p.handle);
+          return (
+            <motion.span
+              key={`${cardIdx}-${i}-${p.handle}`}
+              aria-hidden
+              className="absolute flex size-9 items-center justify-center overflow-visible rounded-lg bg-white shadow-sm sm:size-10"
+              style={{ top: p.t, left: p.l }}
+              initial={reduce ? false : { opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.3, delay: i * 0.04 }}
+            >
+              {agent ? <TrooperAvatar trooper={agent} size={28} live={false} /> : null}
+            </motion.span>
+          );
+        })}
       </AnimatePresence>
 
       {inView && !reduce ? (

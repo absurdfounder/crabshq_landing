@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="smsBubble" x1="24" y1="18" x2="104" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5CE07A"/>
+      <stop offset="0.55" stop-color="#34C759"/>
+      <stop offset="1" stop-color="#1FAE45"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#smsBubble)"/>
+  <path
+    fill="#fff"
+    d="M64 30c-20.4 0-37 13.9-37 31.1 0 9.7 5.1 18.4 13.1 24.2-.4 3.2-1.5 7.4-3.6 10.8-.5.8.3 1.8 1.2 1.5 5.5-1.9 10.2-4.5 13.4-6.6 4.1 1.2 8.5 1.9 13 1.9 20.4 0 37-13.9 37-31.1S84.4 30 64 30Z"
+  />
+</svg>

@@ -1,4 +1,6 @@
-dist/
+# Built package outputs are required by the landing site (file: deps on Netlify).
+# Ignore only the monorepo-root studio build, not packages/*/dist.
+/dist/
 node_modules/
 pnpm-debug.log*
 *.local

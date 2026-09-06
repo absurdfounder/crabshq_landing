@@ -11,7 +11,7 @@ import Draggable from './Draggable';
 import TrooperAvatar from '@/components/ui/TrooperAvatar';
 import { getTrooper } from '@/lib/troopers';
 
-const TRUST_ITEMS = ['Free to start', 'No credit card', 'Nothing ships without your approval'] as const;
+const TRUST_ITEMS = ['Free to start', 'No credit card', 'Your keys stay yours'] as const;
 const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core';
 
 /** Authored desktop size. Scaled to fit the page rail; headline owns the middle. */
@@ -875,9 +875,9 @@ function AgentCursor({ agent }: { agent: (typeof AGENTS)[number] }) {
     >
       <div className="flex items-start gap-1">
         {trooper ? (
-          <span className="-mt-1 shrink-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)]">
+          <span className="-mt-1 flex size-9 shrink-0 items-center justify-center overflow-visible rounded-xl bg-white/90 drop-shadow-[0_4px_10px_rgba(0,0,0,0.18)]">
             {/* Static SVG mark — hero already animates cursor travel. */}
-            <TrooperAvatar trooper={trooper} size={32} />
+            <TrooperAvatar trooper={trooper} size={28} />
           </span>
         ) : null}
         <div>
@@ -1578,12 +1578,6 @@ export default function DesktopHero() {
                 </li>
               ))}
             </ul>
-
-            <p className="mt-4 text-[13px] text-neutral-500">
-              <Link href="/self-host" className="font-medium text-neutral-700 transition-colors hover:text-neutral-900">
-                Open source. Self-host on your machine.
-              </Link>
-            </p>
           </div>
         </div>
       </div>
@@ -1665,9 +1659,16 @@ function DhStyles() {
 .dh-dock *:focus,.dh-dock *:focus-visible{outline:none !important; box-shadow:none !important;}
 
 .dh-cursor{position:absolute;left:0;top:0;z-index:40;pointer-events:none;will-change:transform;}
-.dh-file{position:absolute;z-index:5;pointer-events:none;transition:opacity .45s ease;}
+.dh-file{position:absolute;z-index:5;pointer-events:none;transition:opacity .45s ease;opacity:0.78;}
 .dh-file.dh-hide{opacity:0;}
-
+/* Quiet the desktop chrome so headline + CTAs stay the focus. */
+.dh-stage [data-dh="file-brief"],
+.dh-stage [data-dh="file-app"]{
+  opacity:0.62;
+}
+.dh-dock{
+  opacity:0.92;
+}
 .dh-bounce{animation:dh-bounce .55s ease;}
 @keyframes dh-bounce{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
 

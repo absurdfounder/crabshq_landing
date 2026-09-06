@@ -712,7 +712,7 @@ function PhonePair() {
 function ChannelBadge({ id, name }: { id: string; name: string }) {
   return (
     <span className="inline-flex items-center gap-2 text-[13px] font-medium text-neutral-600">
-      <FieldCommsChannelIcon channelId={id} size={24} className="shadow-sm ring-1 ring-black/[0.06]" />
+      <FieldCommsChannelIcon channelId={id} size={24} />
       <span>{name}</span>
     </span>
   );

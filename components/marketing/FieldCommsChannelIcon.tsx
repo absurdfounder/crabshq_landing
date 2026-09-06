@@ -18,11 +18,11 @@ const CHANNEL_FAVICON_DOMAINS: Record<string, string> = {
   gmail: 'gmail.com',
   slack: 'slack.com',
   discord: 'discord.com',
-  sms: 'messages.google.com',
   teams: 'teams.microsoft.com',
+  // SMS: local asset only (iOS green bubble) — never Android / Google Messages.
 };
 
-/** Local fallbacks if Google favicon fails (transparent-friendly where possible). */
+/** Local assets — preferred for SMS; fallbacks for others when favicon fails. */
 const CHANNEL_LOCAL_FALLBACK: Record<string, string> = {
   whatsapp: '/images/desktop/dock/whatsapp.png',
   telegram: '/images/channels/telegram.png',
@@ -31,6 +31,7 @@ const CHANNEL_LOCAL_FALLBACK: Record<string, string> = {
   teams: '/images/channels/teams.png',
   email: '/images/channels/gmail.png',
   gmail: '/images/channels/gmail.png',
+  sms: '/images/channels/sms.svg',
 };
 
 /**
@@ -43,12 +44,17 @@ export default function FieldCommsChannelIcon({
 }: FieldCommsChannelIconProps) {
   const candidates = useMemo(() => {
     const list: string[] = [];
+    const local = CHANNEL_LOCAL_FALLBACK[channelId];
+    // Prefer local SMS mark first so we never flash the Android robot.
+    if (channelId === 'sms' && local) {
+      list.push(local);
+      return list;
+    }
     const domain = CHANNEL_FAVICON_DOMAINS[channelId];
     if (domain) {
       list.push(getFaviconUrl(domain, Math.max(64, size * 2)));
       list.push(getFaviconUrl(domain, 128));
     }
-    const local = CHANNEL_LOCAL_FALLBACK[channelId];
     if (local) list.push(local);
     return list;
   }, [channelId, size]);
