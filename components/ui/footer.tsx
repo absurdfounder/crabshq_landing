@@ -1,6 +1,7 @@
 'use client';
 
 import TrooperLogo from '@/components/ui/TrooperLogo';
+import FooterWordmark from '@/components/ui/FooterWordmark';
 import PixelButton from '@/components/ui/PixelButton';
 import Link from 'next/link';
 import { getFaviconUrl } from '@/lib/favicon';
@@ -207,8 +208,8 @@ export default function Footer() {
         {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
-          <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
-            <TrooperLogo className="h-8 sm:h-9" />
+          <div className="flex flex-col items-start gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
+            <TrooperLogo className="block h-8 w-auto self-start sm:h-9" />
             <p className="text-sm leading-relaxed text-ink-muted">
               AI employees you can give real work to: coding, support, sales, ops. They run loops
               you approved across your tools.
@@ -224,6 +225,14 @@ export default function Footer() {
                 @absurdfounder
               </a>
               .
+            </p>
+            <p className="text-sm text-ink-muted">
+              <Link
+                href="/characters"
+                className="underline decoration-neutral-300 underline-offset-2 transition-colors hover:text-ink hover:decoration-neutral-500"
+              >
+                Character builder
+              </Link>
             </p>
             <ul className="mt-auto space-y-1.5 pt-2">
               <li>
@@ -294,7 +303,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
+        <div className="flex flex-col items-start gap-4 border-t border-[var(--color-line)] px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-muted md:text-sm">
             <span>© Boring Sites LLC. All rights reserved.</span>
             <Link href="/privacy" className="hover:text-ink">
@@ -304,14 +313,13 @@ export default function Footer() {
               Terms
             </Link>
           </div>
-          <div className="flex flex-wrap items-stretch gap-3">
+          <div className="flex flex-wrap items-stretch justify-start gap-3">
             <a
               href="https://turbo0.com/item/trooper-ai-workforce"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Trooper is listed on Turbo0"
-              className="invisible"
-              style={{ visibility: 'hidden' }}
+              className="hidden"
             >
               <img
                 src="https://img.turbo0.com/badge-listed-light.svg"
@@ -355,14 +363,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Giant trooper. watermark */}
+        {/* Giant tr + live mono characters + per. watermark */}
         <div className="overflow-x-hidden border-t border-[var(--color-line)] pb-5 pt-3 sm:pb-6 sm:pt-4 md:pb-8">
-          <p
-            aria-hidden
-            className="pointer-events-none select-none whitespace-nowrap text-center font-brand lowercase leading-none tracking-tight text-neutral-200 text-[clamp(2.75rem,18vw,12rem)]"
-          >
-            trooper.
-          </p>
+          <FooterWordmark />
         </div>
       </div>
     </footer>

@@ -139,13 +139,13 @@ function shortestDelta(index: number, scroll: number, total: number) {
 
 export default function OptimizeAgentsSection() {
   return (
-    <div className="gl-optimize flex flex-col gap-10 sm:gap-12">
+    <div className="gl-optimize flex flex-col gap-7 sm:gap-10 md:gap-12">
       <div className="flex flex-col">
         <h2 className="h2-section">Optimize your troopers</h2>
       </div>
 
-      {/* Gumloop rhythm: equal square wells, modest gutters — don’t inflate gaps (that narrows columns and squishes art). */}
-      <div className="grid grid-cols-1 items-stretch gap-10 md:grid-cols-3 md:gap-6 lg:gap-8">
+      {/* Mobile: shorter wells so three cards don’t each eat a full viewport. Desktop: square. */}
+      <div className="grid grid-cols-1 items-stretch gap-7 sm:gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
         <OptimizeCard
           title="Open-source by default"
           body="Run on open-source models and pay a fraction of the cost, with no lock-in and full control over where your agents run."
@@ -176,16 +176,15 @@ function OptimizeCard({
   visual: ReactNode;
 }) {
   return (
-    <div className="flex h-full min-w-0 flex-col gap-4">
+    <div className="flex h-full min-w-0 flex-col gap-3 sm:gap-4">
       {/*
-        Full-bleed square well (Gumloop). Breathing room comes from scaling the
-        composition inside the visual — not from nested inset wrappers that
-        shrink the drawable box.
+        Full-bleed well (Gumloop). On mobile use a shorter aspect so stacked cards
+        don’t dominate the viewport; square from md up.
       */}
-      <div className="relative aspect-square w-full min-w-0 overflow-hidden rounded-xl border border-[var(--color-line)] bg-[#f3f3f6]">
+      <div className="relative aspect-[5/4] w-full min-w-0 overflow-hidden rounded-xl border border-[var(--color-line)] bg-[#f3f3f6] sm:aspect-[4/3] md:aspect-square">
         <div className="absolute inset-0">{visual}</div>
       </div>
-      <p className="text-[15px] leading-[1.55] text-ink-muted">
+      <p className="text-[14px] leading-[1.55] text-ink-muted sm:text-[15px]">
         <span className="font-medium text-ink">{title}</span> {body}
       </p>
     </div>

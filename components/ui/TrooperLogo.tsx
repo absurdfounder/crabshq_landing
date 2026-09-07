@@ -15,10 +15,11 @@ export default function TrooperLogo({
   priority = false,
   theme = 'light',
 }: TrooperLogoProps) {
+  // ?v=7 busts the broken transformed SVG that was accidentally shipped earlier.
   const src =
     theme === 'dark'
-      ? '/images/trooper-wordmark-dark.svg'
-      : '/images/trooper-wordmark.svg'
+      ? '/images/trooper-wordmark-dark.svg?v=7'
+      : '/images/trooper-wordmark.svg?v=7'
 
   const content = (
     <img
@@ -26,7 +27,7 @@ export default function TrooperLogo({
       alt=""
       width={122}
       height={30}
-      className={`h-7 w-auto sm:h-8 ${className}`}
+      className={`block h-7 w-auto object-left object-contain sm:h-8 ${className}`}
       loading={priority ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : 'low'}
       decoding="async"
