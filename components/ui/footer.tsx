@@ -22,7 +22,45 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-const GITHUB_ORG_URL = 'https://github.com/Trooper-AI';
+const GITHUB_CORE_URL = 'https://github.com/Trooper-AI/trooper-core';
+
+type SocialItem =
+  | {
+      label: string;
+      href: string;
+      icon: typeof Github;
+      enabled: true;
+    }
+  | {
+      label: string;
+      icon: typeof Github;
+      enabled: false;
+    };
+
+const FOOTER_SOCIALS: SocialItem[] = [
+  {
+    label: 'GitHub',
+    href: GITHUB_CORE_URL,
+    icon: Github,
+    enabled: true,
+  },
+  {
+    label: 'Twitter (X)',
+    href: 'https://twitter.com/absurdfounder',
+    icon: Twitter,
+    enabled: true,
+  },
+  {
+    label: 'LinkedIn',
+    icon: Linkedin,
+    enabled: false,
+  },
+  {
+    label: 'YouTube',
+    icon: Youtube,
+    enabled: false,
+  },
+];
 
 type LinkItem = {
   label: string;
@@ -235,50 +273,36 @@ export default function Footer() {
               </Link>
             </p>
             <ul className="mt-auto space-y-1.5 pt-2">
-              <li>
-                <a
-                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={GITHUB_ORG_URL}
-                >
-                  <Github className="h-3.5 w-3.5 text-ink-faint" />
-                  <span>GitHub</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://twitter.com/absurdfounder"
-                >
-                  <Twitter className="h-3.5 w-3.5 text-ink-faint" />
-                  <span>Twitter (X)</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.linkedin.com/company/trooper"
-                >
-                  <Linkedin className="h-3.5 w-3.5 text-ink-faint" />
-                  <span>LinkedIn</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.youtube.com/@trooper"
-                >
-                  <Youtube className="h-3.5 w-3.5 text-ink-faint" />
-                  <span>YouTube</span>
-                </a>
-              </li>
+              {FOOTER_SOCIALS.map((item) => {
+                const Icon = item.icon;
+                if (!item.enabled) {
+                  return (
+                    <li key={item.label}>
+                      <span
+                        className="flex cursor-not-allowed items-center gap-2 text-sm text-ink-faint/70"
+                        aria-disabled="true"
+                        title="Coming soon"
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                        <span>{item.label}</span>
+                      </span>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={item.label}>
+                    <a
+                      className="flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={item.href}
+                    >
+                      <Icon className="h-3.5 w-3.5 text-ink-faint" />
+                      <span>{item.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -328,7 +352,7 @@ export default function Footer() {
               />
             </a>
             <PixelButton
-              href={GITHUB_ORG_URL}
+              href={GITHUB_CORE_URL}
               external
               size="sm"
               variant="outline"
