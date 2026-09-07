@@ -208,10 +208,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
           <div className="flex flex-col gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
-            <TrooperLogo
-              characterClassName="h-10 w-10 sm:h-11 sm:w-11 object-contain"
-              textClassName="text-lg sm:text-xl"
-            />
+            <TrooperLogo className="h-8 sm:h-9" />
             <p className="text-sm leading-relaxed text-ink-muted">
               AI employees you can give real work to: coding, support, sales, ops. They run loops
               you approved across your tools.

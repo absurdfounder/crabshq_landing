@@ -84,9 +84,7 @@ export default function Header() {
           asLink
           priority
           theme={darkNav ? 'dark' : 'light'}
-          className="shrink-0"
-          characterClassName="h-8 w-8 sm:h-10 sm:w-10 object-contain"
-          textClassName="text-[15px] sm:text-lg"
+          className="h-7 sm:h-8"
         />
 
         <nav
