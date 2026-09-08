@@ -22,8 +22,8 @@ export default function BuddyPersonalAssistantPage() {
       <Header />
       <BuddyHero />
 
-      {/* Pull features up into the fade so the hero dissolves into content */}
-      <div className="relative z-10 -mt-4 bg-white sm:-mt-8">
+      {/* Pull features into the white dissolve */}
+      <div className="relative z-10 bg-white">
         <SectionShell rhythm noBorder bgClass="bg-white">
           <BuddyFeatures />
         </SectionShell>

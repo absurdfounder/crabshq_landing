@@ -12,18 +12,17 @@ const ease = [0.22, 1, 0.36, 1] as const
 const TRUST = ['Free to start', 'Your keys stay yours', 'Full computer, not just chat'] as const
 
 /**
- * Poke-style messaging hero: soft atmosphere that fades to white, Trooper type + Field Comms phone.
+ * Messaging hero: copy + signup beside phone. Atmosphere fades to white before features.
  */
 export default function BuddyHero() {
   return (
-    <section className="site-header-clear relative isolate overflow-hidden bg-white">
+    <section className="site-header-clear relative isolate overflow-x-clip bg-white">
       <BuddyAtmosphere />
 
-      {/* Tall hero so the bottom fade has room before features */}
-      <div className="rail relative z-10 pb-24 pt-10 sm:pb-32 sm:pt-14 lg:pb-40 lg:pt-16">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <div className="rail relative z-10 pb-20 pt-8 sm:pb-28 sm:pt-12 lg:pb-32 lg:pt-14">
+        <div className="grid items-center gap-14 sm:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(260px,340px)] lg:gap-12 xl:gap-16">
           <motion.div
-            className="w-full min-w-0 text-left"
+            className="relative z-20 w-full min-w-0 max-w-lg text-left"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease }}
@@ -40,11 +39,11 @@ export default function BuddyHero() {
               browser, terminal, tools, and approvals when it needs you.
             </p>
 
-            <div className="mt-8 max-w-md">
+            <div className="relative z-30 mt-8 max-w-md">
               <BuddyPhoneForm />
             </div>
 
-            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Buddy highlights">
+            <ul className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2" aria-label="Buddy highlights">
               {TRUST.map((item) => (
                 <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-600">
                   <Check
@@ -70,14 +69,13 @@ export default function BuddyHero() {
           </motion.div>
 
           <motion.div
-            className="relative flex justify-center lg:justify-end"
+            className="relative z-10 flex justify-center lg:justify-end"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease }}
           >
-            {/* Soft glow under the phone */}
             <div
-              className="pointer-events-none absolute bottom-[8%] left-1/2 h-24 w-48 -translate-x-1/2 rounded-full bg-sky-200/40 blur-3xl lg:left-auto lg:right-[18%] lg:translate-x-0"
+              className="pointer-events-none absolute bottom-[8%] left-1/2 h-32 w-64 -translate-x-1/2 rounded-full bg-sky-200/40 blur-3xl lg:left-auto lg:right-[8%] lg:translate-x-0"
               aria-hidden
             />
             <BuddyMessagePhone className="relative" />

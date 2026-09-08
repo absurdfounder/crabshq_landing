@@ -294,7 +294,7 @@ export default function BuddyMessagePhone({ className = '' }: { className?: stri
   return (
     <div
       ref={rootRef}
-      className={`mx-auto w-full max-w-[260px] sm:max-w-[300px] ${className}`}
+      className={`mx-auto w-full max-w-[280px] sm:max-w-[320px] ${className}`}
       aria-label="Buddy on iMessage"
     >
       <PhoneChrome>
