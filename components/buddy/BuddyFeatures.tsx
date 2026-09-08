@@ -100,14 +100,14 @@ export default function BuddyFeatures() {
         </p>
       </div>
 
-      <div className="dot-grid mt-10 rounded-2xl border border-black/5 p-4 sm:mt-12 sm:p-5 md:p-6">
+      <div className="dot-grid mt-10 rounded-2xl border border-black/5 bg-white/50 p-4 backdrop-blur-sm sm:mt-12 sm:p-5 md:p-6">
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => {
             const Icon = f.icon
             return (
               <li
                 key={f.title}
-                className="rounded-2xl bg-white p-5 shadow-xs ring-1 ring-black/5 sm:p-6"
+                className="rounded-2xl bg-white/95 p-5 shadow-[0_12px_28px_-18px_rgba(28,25,23,0.35)] ring-1 ring-black/5 sm:p-6"
               >
                 <span
                   className={`flex size-11 items-center justify-center rounded-xl ${f.tint} ${f.iconColor}`}

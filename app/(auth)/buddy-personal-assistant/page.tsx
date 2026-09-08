@@ -18,15 +18,18 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default function BuddyPersonalAssistantPage() {
   return (
-    <div className="bg-canvas">
+    <div className="bg-white">
       <Header />
       <BuddyHero />
 
-      <SectionShell rhythm>
-        <BuddyFeatures />
-      </SectionShell>
+      {/* Pull features up into the fade so the hero dissolves into content */}
+      <div className="relative z-10 -mt-4 bg-white sm:-mt-8">
+        <SectionShell rhythm noBorder bgClass="bg-white">
+          <BuddyFeatures />
+        </SectionShell>
+      </div>
 
-      <SectionShell rhythm>
+      <SectionShell rhythm bgClass="bg-white">
         <BuddyFaq />
       </SectionShell>
     </div>

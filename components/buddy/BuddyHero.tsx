@@ -4,26 +4,24 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 
+import BuddyAtmosphere from '@/components/buddy/BuddyAtmosphere'
 import BuddyMessagePhone from '@/components/buddy/BuddyMessagePhone'
 import BuddyPhoneForm from '@/components/buddy/BuddyPhoneForm'
-import PixelDitherGradient from '@/components/ui/PixelDitherGradient'
 
 const ease = [0.22, 1, 0.36, 1] as const
 const TRUST = ['Free to start', 'Your keys stay yours', 'Full computer, not just chat'] as const
 
 /**
- * Poke-style messaging hero, Trooper layout: copy + signup left, Field Comms phone right.
+ * Poke-style messaging hero: soft atmosphere that fades to white, Trooper type + Field Comms phone.
  */
 export default function BuddyHero() {
   return (
-    <section className="site-header-clear bg-canvas">
-      <div className="rail relative overflow-hidden border-b border-[var(--color-line)]">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <PixelDitherGradient variant="warm" className="opacity-55" />
-          <div className="absolute inset-0 bg-canvas/60" />
-        </div>
+    <section className="site-header-clear relative isolate overflow-hidden bg-white">
+      <BuddyAtmosphere />
 
-        <div className="relative z-10 grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:gap-12 lg:py-20 xl:gap-16">
+      {/* Tall hero so the bottom fade has room before features */}
+      <div className="rail relative z-10 pb-24 pt-10 sm:pb-32 sm:pt-14 lg:pb-40 lg:pt-16">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-14 xl:gap-20">
           <motion.div
             className="w-full min-w-0 text-left"
             initial={{ opacity: 0, y: 16 }}
@@ -46,10 +44,14 @@ export default function BuddyHero() {
               <BuddyPhoneForm />
             </div>
 
-            <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2" aria-label="Buddy highlights">
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2" aria-label="Buddy highlights">
               {TRUST.map((item) => (
                 <li key={item} className="flex items-center gap-1.5 text-sm text-neutral-600">
-                  <Check className="h-3.5 w-3.5 shrink-0 text-fern-600" strokeWidth={2.5} aria-hidden />
+                  <Check
+                    className="h-3.5 w-3.5 shrink-0 text-fern-600"
+                    strokeWidth={2.5}
+                    aria-hidden
+                  />
                   <span>{item}</span>
                 </li>
               ))}
@@ -68,12 +70,17 @@ export default function BuddyHero() {
           </motion.div>
 
           <motion.div
-            className="flex justify-center lg:justify-end"
-            initial={{ opacity: 0, y: 20 }}
+            className="relative flex justify-center lg:justify-end"
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.08, ease }}
+            transition={{ duration: 0.7, delay: 0.1, ease }}
           >
-            <BuddyMessagePhone />
+            {/* Soft glow under the phone */}
+            <div
+              className="pointer-events-none absolute bottom-[8%] left-1/2 h-24 w-48 -translate-x-1/2 rounded-full bg-sky-200/40 blur-3xl lg:left-auto lg:right-[18%] lg:translate-x-0"
+              aria-hidden
+            />
+            <BuddyMessagePhone className="relative" />
           </motion.div>
         </div>
       </div>
