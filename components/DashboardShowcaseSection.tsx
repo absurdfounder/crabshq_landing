@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import DeferredMount from '@/components/DeferredMount';
 import LazyHeroArticleDemo from '@/components/LazyHeroArticleDemo';
 import PixelButton from '@/components/ui/PixelButton';
+import { useHomeMode } from '@/components/home/HomeModeContext';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -15,6 +16,8 @@ const ease = [0.22, 1, 0.36, 1] as const;
  * Mobile gets a flush (non-rotated) demo so the section isn’t text-only.
  */
 export default function DashboardShowcaseSection() {
+  const { isPersonal } = useHomeMode();
+
   return (
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-9 sm:py-16 lg:py-20">
@@ -30,11 +33,14 @@ export default function DashboardShowcaseSection() {
           viewport={{ once: true, margin: '-40px' }}
         >
           <h2 className="h2-section mx-auto !max-w-5xl text-balance">
-            Message troopers like teammates. Watch them coordinate.
+            {isPersonal
+              ? 'Message Buddy like a teammate. Watch work move.'
+              : 'Message troopers like teammates. Watch them coordinate.'}
           </h2>
           <p className="lede mx-auto">
-            Give a task in chat. Watch it move across the board. Open any ticket for the full
-            trace.
+            {isPersonal
+              ? 'Give Buddy a task in chat. Follow the full trace from start to sign-off.'
+              : 'Give a task in chat. Watch it move across the board. Open any ticket for the full trace.'}
           </p>
           <div className="mt-6 flex justify-start sm:mt-7 sm:justify-center">
             <PixelButton

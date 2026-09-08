@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import { Check, KeyRound, Lock, ServerCog } from 'lucide-react';
 
+import { useHomeMode } from '@/components/home/HomeModeContext';
+
 const controls = [
   { label: 'Pause.', colorClass: 'text-white/55' },
   { label: 'Resume.', colorClass: 'text-ok-300' },
@@ -11,7 +13,7 @@ const controls = [
   { label: 'Terminate.', colorClass: 'text-white' },
 ] as const;
 
-const guarantees = [
+const guaranteesMulti = [
   {
     icon: Check,
     title: 'No action without approval',
@@ -34,6 +36,29 @@ const guarantees = [
   },
 ] as const;
 
+const guaranteesPersonal = [
+  {
+    icon: Check,
+    title: 'No action without approval',
+    body: 'Commits, replies and sends wait in Human Review until you release them. Autonomy is a privilege you grant, not a default.',
+  },
+  {
+    icon: KeyRound,
+    title: 'Your keys stay yours',
+    body: 'API keys are never stored on our servers. Your workspace stays isolated with encrypted connections.',
+  },
+  {
+    icon: ServerCog,
+    title: 'Run it on your own hardware',
+    body: 'Self-host Buddy, or point it at local models. Enterprise adds SSO, private VPC and on-prem deployment.',
+  },
+  {
+    icon: Lock,
+    title: 'You stay in charge',
+    body: 'Buddy cannot raise budgets or run a strategy you have not reviewed. You decide what ships.',
+  },
+] as const;
+
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /**
@@ -50,6 +75,9 @@ type GovernanceSectionProps = {
 };
 
 export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSectionProps) {
+  const { isPersonal } = useHomeMode();
+  const guarantees = isPersonal ? guaranteesPersonal : guaranteesMulti;
+
   return (
     <div id="governance" className="scroll-mt-24 py-12 sm:py-20">
       <motion.div
@@ -60,9 +88,19 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
         viewport={{ once: true, margin: '-40px' }}
       >
         <h2 className="h2-section-dark">
-          Your troopers work for you.
-          <br />
-          Just you.
+          {isPersonal ? (
+            <>
+              Buddy works for you.
+              <br />
+              Just you.
+            </>
+          ) : (
+            <>
+              Your troopers work for you.
+              <br />
+              Just you.
+            </>
+          )}
         </h2>
       </motion.div>
 

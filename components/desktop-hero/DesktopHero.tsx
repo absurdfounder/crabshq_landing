@@ -6,6 +6,8 @@ import Link from 'next/link';
 import HeroRotatingHeadline from '../HeroRotatingHeadline';
 import HeroDownloadButtons from '../HeroDownloadButtons';
 import PixelButton from '../ui/PixelButton';
+import HomeModeToggle from '@/components/home/HomeModeToggle';
+import { useHomeMode } from '@/components/home/HomeModeContext';
 import { ArrowRight, Check, Github } from 'lucide-react';
 import Draggable from './Draggable';
 import TrooperAvatar from '@/components/ui/TrooperAvatar';
@@ -1377,6 +1379,7 @@ export default function DesktopHero() {
   const finderOpenRef = useRef<(() => void) | null>(null);
   const [activeCli, setActiveCli] = useState<CliId>('claude');
   const cli = CLI_APPS[activeCli];
+  const { isPersonal } = useHomeMode();
   useAgentChoreography(stageRef, setActiveCli, finderOpenRef);
   useRailStageScale(sceneRef);
 
@@ -1528,15 +1531,18 @@ export default function DesktopHero() {
               onOpenFinder={() => finderOpenRef.current?.()}
             />
 
-            {AGENTS.map((agent) => (
-              <AgentCursor key={agent.id} agent={agent} />
-            ))}
+            {!isPersonal &&
+              AGENTS.map((agent) => (
+                <AgentCursor key={agent.id} agent={agent} />
+              ))}
           </div>
         </div>
 
         {/* Copy — same rail as the scene; no full-bleed rail-open. */}
         <div className="pointer-events-none relative z-10 pb-16 pt-[calc(var(--site-header-height)+1.5rem)] text-center lg:pb-0 lg:pt-[calc(var(--site-header-height)+1.25rem)]">
           <div className="dh-hero-copy pointer-events-auto mx-auto mt-10 w-full max-w-xl">
+            <HomeModeToggle className="mb-4" />
+
             <a
               href={GITHUB_URL}
               target="_blank"
@@ -1550,10 +1556,23 @@ export default function DesktopHero() {
             <HeroRotatingHeadline className="mx-auto mt-2.5 text-center" />
 
             <p className="lede mx-auto !mt-3 max-w-md text-center">
-              <span className="block font-semibold text-ink">Hire a workforce, not a chatbot.</span>
-              <span className="mt-1 block">
-                They use your tools and come back for your&nbsp;approval.
-              </span>
+              {isPersonal ? (
+                <>
+                  <span className="block font-semibold text-ink">
+                    One personal agent. Always on your side.
+                  </span>
+                  <span className="mt-1 block">
+                    Buddy uses your tools, remembers your context, and comes back for your&nbsp;approval.
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="block font-semibold text-ink">Hire a workforce, not a chatbot.</span>
+                  <span className="mt-1 block">
+                    They use your tools and come back for your&nbsp;approval.
+                  </span>
+                </>
+              )}
             </p>
 
             <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">

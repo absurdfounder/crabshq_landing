@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 import PixelButton from '@/components/ui/PixelButton';
+import { useHomeMode } from '@/components/home/HomeModeContext';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -159,6 +160,7 @@ export default function LoopApiSection() {
   const reduceMotion = useReducedMotion();
   const [play, setPlay] = useState(false);
   const [step, setStep] = useState(0);
+  const { isPersonal } = useHomeMode();
 
   useEffect(() => {
     const el = bandRef.current;
@@ -220,11 +222,20 @@ export default function LoopApiSection() {
           viewport={{ once: true, margin: '-40px' }}
         >
           <h2 className="h2-section sm:mx-auto">
-            AI agents built <ForBy /> your team
+            {isPersonal ? (
+              <>
+                Loops Buddy can run <ForBy /> you
+              </>
+            ) : (
+              <>
+                AI agents built <ForBy /> your team
+              </>
+            )}
           </h2>
           <p className="lede sm:mx-auto">
-            Publish a loop as an API for your team or an app. Connect another account so tokens
-            never run out.
+            {isPersonal
+              ? 'Publish a loop as an API for your apps. Connect another account so tokens never run out.'
+              : 'Publish a loop as an API for your team or an app. Connect another account so tokens never run out.'}
           </p>
         </motion.div>
 

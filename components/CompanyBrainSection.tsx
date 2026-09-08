@@ -7,6 +7,7 @@ import { TROOPERS } from '@/lib/troopers';
 import TrooperAvatar from '@/components/ui/TrooperAvatar';
 import KnowledgeOrb from '@/components/gumloop-lab/KnowledgeOrb';
 import { DemoFavicon } from '@trooper/demo';
+import { useHomeMode } from '@/components/home/HomeModeContext';
 
 /**
  * Company brain bento — knowledge orb, skill-doc grid (focus one at a time),
@@ -89,15 +90,30 @@ const ACTIVITY = [
 ] as const;
 
 export default function CompanyBrainSection() {
+  const { isPersonal } = useHomeMode();
+
   return (
     <div className="gl-company-brain w-full">
       <div className="mx-auto flex max-w-2xl flex-col items-start text-left sm:items-center sm:text-center">
-        <h2 className="h2-section">Complete context on your company</h2>
+        <h2 className="h2-section">
+          {isPersonal ? 'Complete context on your world' : 'Complete context on your company'}
+        </h2>
         <p className="lede mt-3 max-w-lg sm:mx-auto">
-          <span className="block">
-            Your company knowledge, the skills your team runs on, and live context from every tool
-          </span>
-          <span className="block">connect into one company brain.</span>
+          {isPersonal ? (
+            <>
+              <span className="block">
+                Your notes, skills, and live context from every tool you use
+              </span>
+              <span className="block">connect into one brain Buddy can work from.</span>
+            </>
+          ) : (
+            <>
+              <span className="block">
+                Your company knowledge, the skills your team runs on, and live context from every tool
+              </span>
+              <span className="block">connect into one company brain.</span>
+            </>
+          )}
         </p>
       </div>
 
@@ -114,8 +130,9 @@ export default function CompanyBrainSection() {
               Company knowledge
             </h3>
             <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
-              Connect your team&apos;s shared knowledge into a centralized, always up-to-date brain
-              agents and humans can use.
+              {isPersonal
+                ? 'Connect your notes and shared docs into a centralized, always up-to-date brain Buddy can use.'
+                : "Connect your team's shared knowledge into a centralized, always up-to-date brain agents and humans can use."}
             </p>
           </div>
         </article>
@@ -126,8 +143,9 @@ export default function CompanyBrainSection() {
               Skills
             </h3>
             <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
-              Agents write their own playbooks, self-improve, and even run their own code to
-              complete tasks the exact way your team needs.
+              {isPersonal
+                ? 'Buddy writes playbooks, self-improves, and can run code to complete tasks the exact way you need.'
+                : 'Agents write their own playbooks, self-improve, and even run their own code to complete tasks the exact way your team needs.'}
             </p>
           </div>
           <div className="relative min-h-[13rem] min-w-0 flex-1 overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] sm:min-h-[16rem] sm:rounded-t-none sm:rounded-r-[inherit]">
@@ -141,8 +159,9 @@ export default function CompanyBrainSection() {
               Live activity
             </h3>
             <p className="text-[14px] leading-relaxed text-ink-muted sm:text-[15px]">
-              See what apps and skills your team uses most frequently, and which agents did what,
-              when.
+              {isPersonal
+                ? 'See what apps and skills you use most, and what Buddy did, when.'
+                : 'See what apps and skills your team uses most frequently, and which agents did what, when.'}
             </p>
           </div>
           <div className="relative flex min-h-[13rem] min-w-0 flex-1 items-stretch overflow-hidden rounded-t-[inherit] bg-[#f3f3f6] p-3 sm:min-h-[16rem] sm:rounded-t-none sm:rounded-r-[inherit]">
