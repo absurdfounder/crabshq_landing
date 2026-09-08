@@ -59,7 +59,7 @@ function CountryPicker({
         aria-controls={listId}
         aria-label="Country code"
         onClick={() => setOpen((v) => !v)}
-        className="flex h-12 items-center gap-1.5 border-r border-black/5 bg-transparent px-3 text-sm font-medium text-neutral-800 outline-none transition hover:bg-stone-50"
+        className="flex h-12 items-center gap-1.5 border-r border-black/5 bg-transparent px-3 text-sm font-medium text-neutral-800 outline-none transition-colors duration-200 hover:bg-stone-50"
       >
         <span className="text-base leading-none" aria-hidden>
           {value.flag}
@@ -98,8 +98,10 @@ function CountryPicker({
                       setQuery('')
                     }}
                     className={[
-                      'flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm transition',
-                      selected ? 'bg-stone-100 text-neutral-900' : 'text-neutral-700 hover:bg-stone-50',
+                      'flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm transition-colors duration-200',
+                      selected
+                        ? 'bg-stone-100 text-neutral-900'
+                        : 'text-neutral-700 hover:bg-stone-50',
                     ].join(' ')}
                   >
                     <span className="text-base leading-none" aria-hidden>
@@ -121,9 +123,7 @@ function CountryPicker({
   )
 }
 
-/**
- * iMessage number capture — compact flag+dial picker, then start in the app.
- */
+/** iMessage number capture — flag+dial picker, then start in the app. */
 export default function BuddyPhoneForm() {
   const [country, setCountry] = useState<CountryDial>(COUNTRY_DIALS[0])
   const [local, setLocal] = useState('')
@@ -145,7 +145,7 @@ export default function BuddyPhoneForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-md">
+    <form onSubmit={onSubmit} className="w-full">
       <label htmlFor="buddy-phone" className="mb-2 block text-sm text-neutral-500">
         Your iMessage number
       </label>
@@ -174,13 +174,10 @@ export default function BuddyPhoneForm() {
         type="submit"
         size="lg"
         tone="dark"
-        className="mt-3 w-full plausible-event-name=CTA+Click plausible-event-location=Buddy"
+        className="mt-3 w-full plausible-event-name=CTA+Click plausible-event-location=Buddy sm:w-auto"
       >
         Start with Buddy
       </PixelButton>
-      <p className="mt-2.5 text-[13px] leading-relaxed text-neutral-500">
-        Free to start. Buddy texts you on iMessage — with a computer that actually does the work.
-      </p>
     </form>
   )
 }

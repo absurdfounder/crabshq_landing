@@ -1,187 +1,131 @@
+import {
+  CreditCard,
+  MessageCircle,
+  Monitor,
+  Puzzle,
+  Sparkles,
+  Terminal,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
 import { getFaviconUrl } from '@/lib/favicon'
 
-type FeatureCell =
-  | {
-      id: string
-      title: string
-      kind: 'icons'
-      domains: string[]
-      suffix?: string
-    }
-  | {
-      id: string
-      title: string
-      kind: 'mark'
-      mark: 'sparkles' | 'link' | 'lock' | 'mcp'
-    }
+type Feature = {
+  title: string
+  body: string
+  icon: LucideIcon
+  tint: string
+  iconColor: string
+  brands?: string[]
+}
 
-const FEATURES: FeatureCell[] = [
+const FEATURES: Feature[] = [
   {
-    id: 'keys',
-    title: 'Bring your own model keys',
-    kind: 'icons',
-    domains: ['openai.com', 'anthropic.com', 'google.com'],
+    title: 'iMessage in, work out',
+    body: 'Text Buddy like a friend. Assign tasks from Messages — no dashboard required to start.',
+    icon: MessageCircle,
+    tint: 'bg-sky-50',
+    iconColor: 'text-sky-600',
   },
   {
-    id: 'models',
-    title: 'Claude, GPT, Gemini — latest models',
-    kind: 'mark',
-    mark: 'sparkles',
+    title: 'Latest models, your keys',
+    body: 'Claude, GPT, Gemini — bring your own keys. No markup on model usage.',
+    icon: Sparkles,
+    tint: 'bg-violet-50',
+    iconColor: 'text-violet-600',
+    brands: ['anthropic.com', 'openai.com', 'google.com'],
   },
   {
-    id: 'payments',
-    title: 'Agentic payments via Stripe',
-    kind: 'mark',
-    mark: 'link',
+    title: 'Your own computer',
+    body: 'Always-on machine with browser, files, and desktop apps — not a browser tab agent.',
+    icon: Monitor,
+    tint: 'bg-emerald-50',
+    iconColor: 'text-emerald-600',
   },
   {
-    id: 'integrations',
-    title: '1,000+ integrations for your tools',
-    kind: 'icons',
-    domains: ['notion.so', 'slack.com', 'calendar.google.com', 'gmail.com', 'github.com'],
-    suffix: '+999',
+    title: 'Terminal, MCP, CLIs',
+    body: 'Shell commands and custom tools. Buddy uses MCPs and CLIs directly when you connect them.',
+    icon: Terminal,
+    tint: 'bg-amber-50',
+    iconColor: 'text-amber-600',
   },
   {
-    id: 'mcp',
-    title: 'Add any custom MCPs or CLIs',
-    kind: 'mark',
-    mark: 'mcp',
+    title: '1,000+ integrations',
+    body: 'Gmail, Calendar, Notion, GitHub, Slack — if it has an API, Buddy can reach it.',
+    icon: Puzzle,
+    tint: 'bg-rose-50',
+    iconColor: 'text-rose-600',
+    brands: ['gmail.com', 'notion.so', 'github.com', 'slack.com'],
   },
   {
-    id: 'computer',
-    title: 'Full privacy — your personal computer',
-    kind: 'mark',
-    mark: 'lock',
+    title: 'Agentic payments',
+    body: 'Pay and book through Stripe when you approve. Nothing sensitive ships without your say.',
+    icon: CreditCard,
+    tint: 'bg-lime-50',
+    iconColor: 'text-lime-700',
+    brands: ['stripe.com'],
   },
 ]
 
-function Favicon({ domain, size = 20 }: { domain: string; size?: number }) {
+function BrandRow({ domains }: { domains: string[] }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- brand favicon via Google s2
-    <img
-      src={getFaviconUrl(domain, 64)}
-      alt=""
-      width={size}
-      height={size}
-      className="rounded-[5px] bg-white ring-1 ring-black/5"
-      loading="lazy"
-      decoding="async"
-    />
-  )
-}
-
-function Mark({ kind }: { kind: Extract<FeatureCell, { kind: 'mark' }>['mark'] }) {
-  if (kind === 'sparkles') {
-    return (
-      <span className="inline-flex items-center gap-1">
-        <Favicon domain="anthropic.com" />
-        <Favicon domain="openai.com" />
-        <Favicon domain="google.com" />
-      </span>
-    )
-  }
-  if (kind === 'link') {
-    return (
-      <span className="inline-flex size-8 items-center justify-center rounded-full bg-emerald-500 text-white shadow-xs">
-        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
-          <path
-            d="M3.5 8h9M8.5 4.5 12 8l-3.5 3.5"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-    )
-  }
-  if (kind === 'mcp') {
-    return (
-      <span className="inline-flex items-center gap-1.5">
-        <span className="inline-flex size-8 items-center justify-center rounded-lg bg-sky-50 text-sky-700 ring-1 ring-sky-100">
-          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
-            <path
-              d="M3 4.5h4.5M3 8h10M3 11.5h7"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
-        <span className="inline-flex size-8 items-center justify-center rounded-lg bg-violet-50 text-violet-700 ring-1 ring-violet-100">
-          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
-            <path
-              d="M4 11.5 8 4.5l4 7H4Z"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            />
-            <path d="M6.2 9.5h3.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </span>
-      </span>
-    )
-  }
-  return (
-    <span className="inline-flex size-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
-      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
-        <rect x="3.5" y="7" width="9" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-        <path
-          d="M5.5 7V5.8a2.5 2.5 0 0 1 5 0V7"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+    <span className="mt-3 inline-flex items-center gap-1">
+      {domains.map((d) => (
+        // eslint-disable-next-line @next/next/no-img-element -- brand favicon via Google s2
+        <img
+          key={d}
+          src={getFaviconUrl(d, 64)}
+          alt=""
+          width={18}
+          height={18}
+          className="rounded-[4px] bg-white ring-1 ring-black/5"
+          loading="lazy"
+          decoding="async"
         />
-      </svg>
+      ))}
     </span>
   )
 }
 
-/** Companion-style feature grid: brand/model icons in cells, Trooper card language. */
+/** Trooper feature grid — pastel icon tiles, ring cards, brand marks where they matter. */
 export default function BuddyFeatures() {
   return (
-    <section className="w-full" aria-labelledby="buddy-features-heading">
-      <h2
-        id="buddy-features-heading"
-        className="font-display text-2xl font-medium tracking-tight text-balance text-fern-700 sm:text-3xl"
-      >
-        Features
-      </h2>
-      <ul className="mt-5 grid grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-black/5 sm:grid-cols-2">
-        {FEATURES.map((f, i) => (
-          <li
-            key={f.id}
-            className={[
-              'flex items-start gap-3.5 p-5 sm:p-6',
-              i % 2 === 0 ? 'sm:border-r sm:border-black/5' : '',
-              i >= 2 ? 'border-t border-black/5' : '',
-              i === 1 ? 'border-t border-black/5 sm:border-t-0' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            <div className="mt-0.5 shrink-0">
-              {f.kind === 'icons' ? (
-                <span className="inline-flex items-center gap-1">
-                  {f.domains.map((d) => (
-                    <Favicon key={d} domain={d} />
-                  ))}
-                  {f.suffix ? (
-                    <span className="ml-0.5 rounded-md bg-stone-100 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-neutral-600">
-                      {f.suffix}
-                    </span>
-                  ) : null}
+    <div>
+      <div className="mx-auto max-w-2xl text-left sm:text-center">
+        <p className="kicker !inline">Batteries included</p>
+        <h2 className="h2-section mx-auto mt-2">Everything Buddy brings to the thread</h2>
+        <p className="lede mx-auto">
+          A personal agent with a computer — models, tools, payments, and approvals — simplified for
+          one person.
+        </p>
+      </div>
+
+      <div className="dot-grid mt-10 rounded-2xl border border-black/5 p-4 sm:mt-12 sm:p-5 md:p-6">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f) => {
+            const Icon = f.icon
+            return (
+              <li
+                key={f.title}
+                className="rounded-2xl bg-white p-5 shadow-xs ring-1 ring-black/5 sm:p-6"
+              >
+                <span
+                  className={`flex size-11 items-center justify-center rounded-xl ${f.tint} ${f.iconColor}`}
+                >
+                  <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
                 </span>
-              ) : (
-                <Mark kind={f.mark} />
-              )}
-            </div>
-            <h3 className="min-w-0 pt-0.5 text-[15px] font-semibold leading-snug text-pretty text-neutral-800 sm:text-base">
-              {f.title}
-            </h3>
-          </li>
-        ))}
-      </ul>
-    </section>
+                <h3 className="mt-4 text-base font-semibold text-balance text-neutral-800">
+                  {f.title}
+                </h3>
+                <p className="mt-1.5 text-[15px] leading-relaxed text-pretty text-neutral-500">
+                  {f.body}
+                </p>
+                {f.brands ? <BrandRow domains={f.brands} /> : null}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </div>
   )
 }
