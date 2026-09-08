@@ -133,6 +133,13 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     undefined,
     'An iMessage assistant with its own computer — text a task, approve what ships.',
   ),
+  'buddy-personal-assistant': page(
+    'buddy-personal-assistant',
+    'Personal agent',
+    'Meet Buddy',
+    undefined,
+    'An iMessage assistant with its own computer — text a task, approve what ships.',
+  ),
   benchmarks: page(
     'benchmarks',
     'Benchmarks',

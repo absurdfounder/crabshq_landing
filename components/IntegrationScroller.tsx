@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 import type { IntegrationTile } from '@/lib/integrationScroller';
-import { useHomeMode } from '@/components/home/HomeModeContext';
 import { useScrollDrivenRail } from './useScrollDrivenRail';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -84,7 +83,6 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
   const half = Math.ceil(tiles.length / 2);
   const top = tiles.slice(0, half);
   const bottom = tiles.slice(half);
-  const { isPersonal } = useHomeMode();
 
   return (
     <div>
@@ -99,9 +97,7 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
           Works with the tools you already have.
         </h2>
         <p className="lede sm:mx-auto">
-          {isPersonal
-            ? 'If it has an API, Buddy can reach it.'
-            : 'If it has an API, a trooper can reach it.'}
+          If it has an API, a trooper can reach it.
         </p>
       </motion.div>
 

@@ -39,6 +39,11 @@ const nextConfig = {
         destination: '/characters',
         permanent: false,
       },
+      {
+        source: '/buddy',
+        destination: '/buddy-personal-assistant',
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

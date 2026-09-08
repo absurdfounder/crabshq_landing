@@ -125,7 +125,7 @@ const productColumn: FooterColumn = {
       heading: 'Product',
       links: [
         { label: 'How it works', href: '/' },
-        { label: 'Buddy', href: '/buddy' },
+        { label: 'Buddy', href: '/buddy-personal-assistant' },
         { label: 'Plugin Integrations', href: '/plugin' },
         { label: 'OpenClaw Skills', href: '/integration' },
         { label: 'Agent Loops', href: '/loops' },

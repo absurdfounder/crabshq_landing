@@ -14,7 +14,6 @@ import { Bell, ChevronsRight, Flag, Lightbulb, Loader } from 'lucide-react';
 
 import { getTrooper } from '@/lib/troopers';
 import TrooperAvatar from '@/components/ui/TrooperAvatar';
-import { useHomeMode } from '@/components/home/HomeModeContext';
 
 /**
  * Optimize band — rebuilt to Gumloop craft:
@@ -139,14 +138,10 @@ function shortestDelta(index: number, scroll: number, total: number) {
 }
 
 export default function OptimizeAgentsSection() {
-  const { isPersonal } = useHomeMode();
-
   return (
     <div className="gl-optimize flex flex-col gap-7 sm:gap-10 md:gap-12">
       <div className="flex flex-col">
-        <h2 className="h2-section">
-          {isPersonal ? 'Optimize Buddy' : 'Optimize your troopers'}
-        </h2>
+        <h2 className="h2-section">Optimize your troopers</h2>
       </div>
 
       {/* Mobile: shorter wells so three cards don’t each eat a full viewport. Desktop: square. */}

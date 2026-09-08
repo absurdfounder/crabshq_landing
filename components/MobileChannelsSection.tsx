@@ -19,7 +19,6 @@ import {
 import FieldCommsChannelIcon from '@/components/marketing/FieldCommsChannelIcon';
 import PixelButton from '@/components/ui/PixelButton';
 import TrooperAvatar from '@/components/ui/TrooperAvatar';
-import { useHomeMode } from '@/components/home/HomeModeContext';
 import { getTrooper } from '@/lib/troopers';
 import { PLATFORM_DOWNLOADS } from '@/lib/platformDownload';
 
@@ -735,7 +734,6 @@ function ChannelBadge({ id, name }: { id: string; name: string }) {
 export default function MobileChannelsSection() {
   const ios = PLATFORM_DOWNLOADS.ios;
   const android = PLATFORM_DOWNLOADS.android;
-  const { isPersonal } = useHomeMode();
 
   return (
     <section className="relative overflow-visible bg-canvas">
@@ -743,26 +741,16 @@ export default function MobileChannelsSection() {
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:items-center lg:gap-10 xl:gap-14">
           <div className="w-full min-w-0 text-left">
             <h2 className="h2-section text-balance">
-              {isPersonal ? (
-                <>
-                  Chat with{' '}
-                  <span className="inline sm:whitespace-nowrap">Buddy</span> on the go.
-                </>
-              ) : (
-                <>
-                  Chat with your{' '}
-                  <span className="inline sm:whitespace-nowrap">
-                    workforce
-                    <WorkforceAvatarStack />
-                  </span>{' '}
-                  on the go.
-                </>
-              )}
+              Chat with your{' '}
+              <span className="inline sm:whitespace-nowrap">
+                workforce
+                <WorkforceAvatarStack />
+              </span>{' '}
+              on the go.
             </h2>
             <p className="lede">
-              {isPersonal
-                ? 'Text Buddy from the apps you already live in. Review work and ship from the Trooper app.'
-                : 'Text your agents from the apps you already live in. Review work and ship from the Trooper app.'}
+              Text your agents from the apps you already live in. Review work and ship from the
+              Trooper app.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">

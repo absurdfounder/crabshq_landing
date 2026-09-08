@@ -42,7 +42,6 @@ export const metadata = {
 import dynamic from 'next/dynamic'
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
-import HomeModeShell from '@/components/home/HomeModeShell'
 import LoopRail from '@/components/LoopRail'
 import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import IntegrationScroller from '@/components/IntegrationScroller'
@@ -70,7 +69,7 @@ export default function Home() {
   const voices = getVoices()
 
   return (
-    <HomeModeShell>
+    <>
       {/* overflow-x-clip stops one misbehaving absolute child from widening the page
           (same pattern Gumloop/Cursor use) without creating a sticky-breaking scrollport. */}
       <div className="overflow-x-clip">
@@ -130,6 +129,6 @@ export default function Home() {
         <FAQ />
       </SectionShell>
       </div>
-    </HomeModeShell>
+    </>
   )
 }
