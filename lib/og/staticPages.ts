@@ -126,6 +126,13 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
     'on your machine',
     'Open source. Your keys, your models, your laptop or VM.',
   ),
+  buddy: page(
+    'buddy',
+    'Personal agent',
+    'Meet Buddy',
+    undefined,
+    'An iMessage assistant with its own computer — text a task, approve what ships.',
+  ),
   benchmarks: page(
     'benchmarks',
     'Benchmarks',

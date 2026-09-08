@@ -1577,16 +1577,22 @@ export default function DesktopHero() {
 
             <div className="mt-5 flex flex-col items-center justify-center gap-2.5 sm:flex-row sm:gap-3">
               <PixelButton
-                href="https://app.trooper.so?ref=herolanding"
-                external
+                href={
+                  isPersonal
+                    ? '/buddy'
+                    : 'https://app.trooper.so?ref=herolanding'
+                }
+                external={!isPersonal}
                 size="lg"
                 tone="dark"
                 className="plausible-event-name=CTA+Click plausible-event-location=Hero w-full shrink-0 sm:w-auto"
                 icon={<ArrowRight className="h-4 w-4" />}
               >
-                Get started free
+                {isPersonal ? 'Get Buddy' : 'Get started free'}
               </PixelButton>
-              <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+              {!isPersonal ? (
+                <HeroDownloadButtons className="w-full shrink-0 sm:w-auto" />
+              ) : null}
             </div>
 
             <ul className="mt-3.5 flex flex-wrap justify-center gap-x-4 gap-y-1.5" aria-label="Product highlights">

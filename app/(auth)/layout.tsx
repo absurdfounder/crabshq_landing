@@ -9,7 +9,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   // Resellers already ends with its own apply CTA — stacking another closer
   // under it reads as a second footer. wonder-auth is a focused auth surface.
-  const hideNewsletter = pathname === '/wonder-auth' || pathname === '/resellers'
+  const hideNewsletter =
+    pathname === '/wonder-auth' || pathname === '/resellers' || pathname === '/buddy'
 
   return (
     <>
